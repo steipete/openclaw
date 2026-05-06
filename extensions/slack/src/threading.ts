@@ -53,6 +53,10 @@ export function resolveSlackThreadTargets(params: {
     : params.replyToMode === "all"
       ? messageTs
       : undefined;
-  const statusThreadTs = replyThreadTs;
+  const statusThreadTs =
+    replyThreadTs ??
+    (params.message.channel_type === "im" || params.message.channel.startsWith("D")
+      ? messageTs
+      : undefined);
   return { replyThreadTs, statusThreadTs, isThreadReply };
 }

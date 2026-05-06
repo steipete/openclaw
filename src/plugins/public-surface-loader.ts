@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openRootFileSync } from "../infra/boundary-file-read.js";
 import { sameFileIdentity } from "../infra/fs-safe-advanced.js";
+import { getBundledPluginPublicSurfaceStub } from "../plugin-sdk/disabled-stubs/registry.js";
 import { resolveBundledPluginsDir } from "./bundled-dir.js";
 import {
   createPluginModuleLoaderCache,
@@ -120,6 +121,10 @@ export function loadBundledPluginPublicArtifactModuleSync<T extends object>(para
 }): T {
   const location = resolvePublicSurfaceLocation(params);
   if (!location) {
+    const stub = getBundledPluginPublicSurfaceStub(params);
+    if (stub) {
+      return stub as T;
+    }
     throw new Error(
       `Unable to resolve bundled plugin public surface ${params.dirName}/${params.artifactBasename}`,
     );

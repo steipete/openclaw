@@ -39,9 +39,20 @@ beforeAll(async () => {
   WebClient = slackWebApi.WebClient as unknown as ReturnType<typeof vi.fn>;
 });
 
+const originalSlackApiUrlOverride = process.env.OPENCLAW_SLACK_API_URL_OVERRIDE;
+
 beforeEach(() => {
   WebClient.mockClear();
   clearSlackWriteClientCacheForTest();
+  delete process.env.OPENCLAW_SLACK_API_URL_OVERRIDE;
+});
+
+afterEach(() => {
+  if (originalSlackApiUrlOverride === undefined) {
+    delete process.env.OPENCLAW_SLACK_API_URL_OVERRIDE;
+  } else {
+    process.env.OPENCLAW_SLACK_API_URL_OVERRIDE = originalSlackApiUrlOverride;
+  }
 });
 
 describe("slack web client config", () => {
@@ -68,6 +79,21 @@ describe("slack web client config", () => {
         retryConfig: SLACK_DEFAULT_RETRY_OPTIONS,
       }),
     );
+  });
+
+  it("applies the Slack API URL override from env", () => {
+    process.env.OPENCLAW_SLACK_API_URL_OVERRIDE = "http://127.0.0.1:18080/api/";
+
+    expect(resolveSlackWebClientOptions().slackApiUrl).toBe("http://127.0.0.1:18080/api/");
+    expect(resolveSlackWriteClientOptions().slackApiUrl).toBe("http://127.0.0.1:18080/api/");
+  });
+
+  it("prefers explicit Slack API URL options over env overrides", () => {
+    process.env.OPENCLAW_SLACK_API_URL_OVERRIDE = "http://127.0.0.1:18080/api/";
+
+    const options = resolveSlackWebClientOptions({ slackApiUrl: "https://slack.example/api/" });
+
+    expect(options.slackApiUrl).toBe("https://slack.example/api/");
   });
 
   it("applies the write retry config when none is provided", () => {

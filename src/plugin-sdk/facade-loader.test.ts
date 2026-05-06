@@ -242,6 +242,25 @@ describe("plugin-sdk facade loader", () => {
     ).toThrow("Unable to resolve bundled plugin public surface browser/browser-maintenance.js");
   });
 
+  it("returns a disabled public-surface stub when a declared sandbox surface is absent", () => {
+    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = "1";
+
+    const loaded = loadBundledPluginPublicSurfaceModuleSync<{
+      isTtsEnabled: () => boolean;
+    }>({
+      dirName: "speech-core",
+      artifactBasename: "runtime-api.js",
+    });
+
+    expect(loaded.isTtsEnabled()).toBe(false);
+    expect(() =>
+      loadBundledPluginPublicSurfaceModuleSync({
+        dirName: "browser",
+        artifactBasename: "browser-maintenance.js",
+      }),
+    ).toThrow("Unable to resolve bundled plugin public surface browser/browser-maintenance.js");
+  });
+
   it("shares loaded facade ids with facade-runtime", () => {
     const fixture = createBundledPluginFixture({
       prefix: "openclaw-facade-loader-ids-",
