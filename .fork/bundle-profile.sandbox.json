@@ -1,0 +1,24 @@
+{
+  "profile": "sandbox",
+  "disabledOptionalNativeModules": {
+    "sharp": "scripts/sandbox-bundle/disabled-optional.cjs",
+    "keytar": "scripts/sandbox-bundle/disabled-optional.cjs",
+    "@reflink/reflink": "scripts/sandbox-bundle/disabled-optional.cjs",
+    "@napi-rs/canvas": "scripts/sandbox-bundle/disabled-optional.cjs"
+  },
+  "externalRuntimeDeps": ["jiti"],
+  "disabledPublicSurfaces": [
+    {
+      "dirName": "speech-core",
+      "artifactBasename": "runtime-api.js",
+      "reason": "TTS disabled in the single-file sandbox bundle"
+    }
+  ],
+  "budgets": {
+    "bundleMaxBytes": 47185920,
+    "bundleWarnBytes": 31457280,
+    "runtimeDepsTarMaxBytes": 262144000,
+    "openclawPackageTarMaxBytes": 1048576,
+    "releaseTarMaxBytes": 314572800
+  }
+}

@@ -1,0 +1,192 @@
+name: Sandbox Bundle Assets
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to build sandbox bundle assets for, for example v2026.4.27
+        required: true
+        type: string
+      upload_release_assets:
+        description: Upload the generated sandbox bundle assets to the GitHub Release
+        required: true
+        default: false
+        type: boolean
+      clobber:
+        description: Replace existing GitHub Release assets with the same names when uploading
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: sandbox-bundle-assets-${{ github.event_name == 'push' && github.ref || inputs.tag }}
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  NODE_VERSION: "24.x"
+  PNPM_VERSION: "10.33.0"
+
+jobs:
+  build_sandbox_bundle_assets:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Validate manual tag input format
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          if [[ ! "${RELEASE_TAG}" =~ ^v[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*((-beta\.[1-9][0-9]*)|(-[1-9][0-9]*))?$ ]]; then
+            echo "Invalid release tag format: ${RELEASE_TAG}" >&2
+            exit 1
+          fi
+
+      - name: Checkout source
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event_name == 'push' && github.sha || format('refs/tags/{0}', inputs.tag) }}
+          fetch-depth: 0
+
+      - name: Resolve release tag
+        id: release
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_UPLOAD_RELEASE_ASSETS: ${{ inputs.upload_release_assets }}
+          INPUT_CLOBBER: ${{ inputs.clobber }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            release_tag="${INPUT_TAG}"
+            upload_release_assets="${INPUT_UPLOAD_RELEASE_ASSETS}"
+            clobber="${INPUT_CLOBBER}"
+            auto_release="false"
+          else
+            version="$(node -p "require('./package.json').version")"
+            release_tag="v${version}-${GITHUB_RUN_NUMBER}${GITHUB_RUN_ATTEMPT}"
+            upload_release_assets="true"
+            clobber="false"
+            auto_release="true"
+          fi
+          if [[ ! "${release_tag}" =~ ^v[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*((-beta\.[1-9][0-9]*)|(-[1-9][0-9]*))?$ ]]; then
+            echo "Invalid release tag format: ${release_tag}" >&2
+            exit 1
+          fi
+          {
+            echo "tag=${release_tag}"
+            echo "upload_release_assets=${upload_release_assets}"
+            echo "clobber=${clobber}"
+            echo "auto_release=${auto_release}"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Setup Node environment
+        uses: ./.github/actions/setup-node-env
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+          install-bun: "true"
+
+      - name: Build OpenClaw
+        run: pnpm build
+
+      - name: Build Control UI
+        run: pnpm ui:build
+
+      - name: Build sandbox bundle assets
+        run: pnpm build:sandbox-bundle
+
+      - name: Verify sandbox bundle contract and assets
+        run: pnpm verify:sandbox-bundle
+
+      - name: Upload sandbox bundle workflow artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: openclaw-sandbox-bundle-${{ steps.release.outputs.tag }}
+          path: dist/sandbox/release-assets
+          if-no-files-found: error
+
+      - name: Ensure matching GitHub Release exists before upload
+        if: ${{ steps.release.outputs.upload_release_assets == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          AUTO_RELEASE: ${{ steps.release.outputs.auto_release }}
+        run: |
+          set -euo pipefail
+          if gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            exit 0
+          fi
+          if [[ "${AUTO_RELEASE}" != "true" ]]; then
+            echo "GitHub Release ${RELEASE_TAG} does not exist" >&2
+            exit 1
+          fi
+          git tag "${RELEASE_TAG}" "${GITHUB_SHA}"
+          git push origin "refs/tags/${RELEASE_TAG}"
+          gh release create "${RELEASE_TAG}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --target "${GITHUB_SHA}" \
+            --title "OpenClaw sandbox bundle ${RELEASE_TAG}" \
+            --notes "Automated sandbox bundle release for ${GITHUB_SHA}."
+
+      - name: Upload sandbox bundle assets to GitHub Release
+        if: ${{ steps.release.outputs.upload_release_assets == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          CLOBBER: ${{ steps.release.outputs.clobber }}
+        run: |
+          set -euo pipefail
+          args=(--tag "${RELEASE_TAG}" --asset-dir dist/sandbox/release-assets)
+          if [[ "${CLOBBER}" == "true" ]]; then
+            args+=(--clobber)
+          fi
+          node scripts/publish-github-release-assets.mjs "${args[@]}"
+
+      - name: Verify uploaded GitHub Release assets
+        if: ${{ steps.release.outputs.upload_release_assets == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          download_dir="${RUNNER_TEMP}/sandbox-bundle-release-download"
+          rm -rf "${download_dir}"
+          mkdir -p "${download_dir}"
+          gh release download "${RELEASE_TAG}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --dir "${download_dir}" \
+            --pattern 'openclaw-sandbox-bundle-*.tar.gz' \
+            --pattern 'openclaw.bundle.mjs' \
+            --pattern 'bundle-deps.tar.gz' \
+            --pattern 'bundle-openclaw-pkg.tar.gz' \
+            --pattern 'channels.tar.gz' \
+            --pattern 'channel-catalog.json' \
+            --pattern 'workspace-templates.tar.gz' \
+            --pattern 'channel-shared-chunks.tar.gz' \
+            --pattern 'control-ui.tar.gz' \
+            --pattern 'release.json' \
+            --pattern 'bundle-contract.json' \
+            --pattern 'asset-manifest.json' \
+            --pattern 'checksums.sha256'
+          (cd "${download_dir}" && sha256sum -c checksums.sha256)
+          pnpm verify:sandbox-bundle:assets --asset-dir "${download_dir}"
+
+      - name: Summarize sandbox bundle assets
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          UPLOAD_RELEASE_ASSETS: ${{ steps.release.outputs.upload_release_assets }}
+        run: |
+          {
+            echo "## Sandbox bundle assets"
+            echo
+            echo "Tag: `${RELEASE_TAG}`"
+            echo "GitHub Release upload: `${UPLOAD_RELEASE_ASSETS}`"
+            echo
+            echo "Generated assets:"
+            find dist/sandbox/release-assets -maxdepth 1 -type f -printf '- %f\n' | sort
+          } >> "${GITHUB_STEP_SUMMARY}"
