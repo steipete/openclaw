@@ -103,6 +103,42 @@ function listTarEntries(assetDir, fileName) {
   });
 }
 
+function readTarEntry(assetDir, fileName, entryName) {
+  return new Promise((resolve, reject) => {
+    const child = spawn("tar", ["-xOf", fileName, entryName], {
+      cwd: assetDir,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk.toString("utf8");
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString("utf8");
+    });
+    child.on("error", reject);
+    child.on("exit", (code, signal) => {
+      if (code === 0) {
+        resolve(stdout);
+      } else {
+        reject(
+          new Error(
+            "tar -xOf " +
+              fileName +
+              " " +
+              entryName +
+              " exited with " +
+              (code ?? signal) +
+              ": " +
+              stderr,
+          ),
+        );
+      }
+    });
+  });
+}
+
 function parseChecksums(raw) {
   const entries = new Map();
   for (const [index, line] of raw.split(/\r?\n/u).entries()) {
@@ -158,6 +194,14 @@ async function verifyNestedAssets(assetDir, contract) {
   if (pluginSdkSubpaths.length === 0) {
     throw new Error("bundle-contract.json pluginSdkSubpaths is empty");
   }
+  const openclawPackageJson = JSON.parse(
+    await readTarEntry(
+      assetDir,
+      "bundle-openclaw-pkg.tar.gz",
+      "node_modules/openclaw/package.json",
+    ),
+  );
+  const openclawExports = openclawPackageJson?.exports ?? {};
   for (const subpath of pluginSdkSubpaths) {
     if (typeof subpath !== "string" || subpath.length === 0) {
       throw new Error("bundle-contract.json has invalid pluginSdkSubpaths entry");
@@ -167,6 +211,10 @@ async function verifyNestedAssets(assetDir, contract) {
       "bundle-openclaw-pkg.tar.gz",
       "node_modules/openclaw/plugin-sdk/" + subpath + ".cjs",
     );
+    const exportKey = "./plugin-sdk/" + subpath;
+    if (openclawExports[exportKey] !== "./plugin-sdk/" + subpath + ".cjs") {
+      throw new Error("bundle-openclaw-pkg.tar.gz package.json missing export: " + exportKey);
+    }
   }
 
   const controlUiEntries = await listTarEntries(assetDir, "control-ui.tar.gz");

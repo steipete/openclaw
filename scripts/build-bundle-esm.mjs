@@ -40,6 +40,12 @@ const SRC_PLUGIN_SDK_DIR = path.join(REPO_ROOT, "src", "plugin-sdk");
 const DISABLED_STUB_REGISTRY_FILE = path.join(SRC_PLUGIN_SDK_DIR, "disabled-stubs", "registry.ts");
 const PLUGIN_SDK_IMPORT_PATTERN =
   /(?:from\s+["']openclaw\/plugin-sdk\/([^"']+)["']|import\s+["']openclaw\/plugin-sdk\/([^"']+)["'])/g;
+const REQUIRED_BUNDLED_PLUGIN_SDK_SUBPATHS = new Set([
+  // The sandbox bundle public-surface smoke and the speech-core facade import
+  // this at runtime even when no channel extension statically imports it.
+  "tts-runtime",
+]);
+
 const BUNDLED_PLUGIN_SDK_EXCLUDED_SUBPATHS = new Set([
   "agent-runtime-test-contracts",
   "channel-contract-testing",
@@ -329,6 +335,13 @@ async function collectPluginSdkSubpathsUsedByBundledExtensions() {
         subpaths.add(subpath);
       }
     }
+  }
+
+  for (const subpath of REQUIRED_BUNDLED_PLUGIN_SDK_SUBPATHS) {
+    if (!publicPluginSdkSubpaths.includes(subpath)) {
+      throw new Error(`required bundled plugin-sdk subpath is not public: ${subpath}`);
+    }
+    subpaths.add(subpath);
   }
 
   if (subpaths.size === 0) {
