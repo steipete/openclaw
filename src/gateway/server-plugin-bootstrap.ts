@@ -2,7 +2,10 @@ import { primeConfiguredBindingRegistry } from "../channels/plugins/binding-regi
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import type { OpenClawConfig } from "../config/types.openclaw.js";
 import type { PluginRegistry } from "../plugins/registry.js";
-import { pinActivePluginChannelRegistry } from "../plugins/runtime.js";
+import {
+  pinActivePluginChannelRegistry,
+  pinActivePluginHttpRouteRegistry,
+} from "../plugins/runtime.js";
 import { setGatewaySubagentRuntime } from "../plugins/runtime/index.js";
 import type { GatewayRequestHandler } from "./server-methods/types.js";
 import {
@@ -107,6 +110,21 @@ export function reloadDeferredGatewayPlugins(
 ) {
   return prepareGatewayPluginLoad({
     ...params,
-    beforePrimeRegistry: pinActivePluginChannelRegistry,
+    beforePrimeRegistry: (pluginRegistry) => {
+      pinActivePluginChannelRegistry(pluginRegistry);
+      pinActivePluginHttpRouteRegistry(pluginRegistry);
+      params.log.info(
+        `[plugins] deferred full channel registry activated (${pluginRegistry.httpRoutes.length} http route${
+          pluginRegistry.httpRoutes.length === 1 ? "" : "s"
+        })`,
+      );
+      params.log.debug(
+        `[plugins] deferred full channel http routes: ${
+          pluginRegistry.httpRoutes
+            .map((route) => `${route.pluginId ?? "unknown"}:${route.path}`)
+            .join(", ") || "none"
+        }`,
+      );
+    },
   });
 }

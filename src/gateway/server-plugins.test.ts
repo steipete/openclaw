@@ -373,6 +373,42 @@ describe("loadGatewayPlugins", () => {
     expect(runtimeRegistryModule.getActivePluginChannelRegistry()).toBe(startupRegistry);
   });
 
+  test("deferred full reload activates channel http routes", async () => {
+    const { reloadDeferredGatewayPlugins } = serverPluginBootstrapModule;
+    const setupRuntimeRegistry = createRegistry([]);
+    const fullRegistry = createRegistry([]);
+    fullRegistry.httpRoutes.push({
+      pluginId: "slack",
+      path: "/slack/events",
+      auth: "plugin",
+      match: "exact",
+      handler: vi.fn(),
+      source: "/tmp/slack/index.ts",
+    });
+    runtimeRegistryModule.pinActivePluginHttpRouteRegistry(setupRuntimeRegistry);
+    loadOpenClawPlugins.mockReturnValue(fullRegistry);
+    const log = createTestLog();
+
+    reloadDeferredGatewayPlugins({
+      cfg: {},
+      workspaceDir: "/tmp",
+      log,
+      coreGatewayHandlers: {},
+      baseMethods: [],
+      pluginIds: ["slack"],
+      logDiagnostics: false,
+    });
+
+    expect(runtimeRegistryModule.getActivePluginChannelRegistry()).toBe(fullRegistry);
+    expect(runtimeRegistryModule.getActivePluginHttpRouteRegistry()).toBe(fullRegistry);
+    expect(log.info).toHaveBeenCalledWith(
+      "[plugins] deferred full channel registry activated (1 http route)",
+    );
+    expect(log.debug).toHaveBeenCalledWith(
+      "[plugins] deferred full channel http routes: slack:/slack/events",
+    );
+  });
+
   test("keeps the raw activation source when a precomputed startup scope is reused", async () => {
     const rawConfig = { channels: { slack: { botToken: "x" } } };
     const resolvedConfig = {
@@ -914,7 +950,10 @@ describe("loadGatewayPlugins", () => {
     });
 
     expect(log.error).not.toHaveBeenCalled();
-    expect(log.info).not.toHaveBeenCalled();
+    expect(log.info).toHaveBeenCalledWith(
+      "[plugins] deferred full channel registry activated (0 http routes)",
+    );
+    expect(log.info).not.toHaveBeenCalledWith(expect.stringContaining("failed to load plugin"));
   });
 
   test("reuses the initial startup plugin scope during deferred reloads", async () => {
