@@ -133,6 +133,9 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
     expect(coordinator.hasFailedVisibleTextDelivery()).toBe(false);
 
     await coordinator.deliver("final", { text: "hello" }, { skipTts: true });
+
+    expect(coordinator.hasDeliveredFinalReply()).toBe(false);
+
     await coordinator.settleVisibleText();
 
     expect(coordinator.hasDeliveredFinalReply()).toBe(true);
@@ -257,6 +260,41 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
 
     await coordinator.deliver("block", { text: "hello" }, { skipTts: true });
 
+    expect(coordinator.hasDeliveredVisibleText()).toBe(false);
+    expect(coordinator.hasFailedVisibleTextDelivery()).toBe(true);
+  });
+
+  it("does not mark queued direct final replies delivered when dispatcher send fails", async () => {
+    const dispatcher: ReplyDispatcher = {
+      sendToolResult: vi.fn(() => true),
+      sendBlockReply: vi.fn(() => true),
+      sendFinalReply: vi.fn(() => true),
+      waitForIdle: vi.fn(async () => {}),
+      getQueuedCounts: vi.fn(() => ({ tool: 0, block: 0, final: 1 })),
+      getFailedCounts: vi.fn(() => ({ tool: 0, block: 0, final: 1 })),
+      markComplete: vi.fn(),
+    };
+    const coordinator = createAcpDispatchDeliveryCoordinator({
+      cfg: createAcpTestConfig(),
+      ctx: buildTestCtx({
+        Provider: "discord",
+        Surface: "discord",
+        SessionKey: "agent:codex-acp:session-1",
+      }),
+      dispatcher,
+      inboundAudio: false,
+      shouldRouteToOriginating: false,
+    });
+
+    const queued = await coordinator.deliver("final", { text: "hello" }, { skipTts: true });
+
+    expect(queued).toBe(true);
+    expect(coordinator.hasDeliveredFinalReply()).toBe(false);
+
+    await coordinator.settleVisibleText();
+
+    expect(dispatcher.waitForIdle).toHaveBeenCalledOnce();
+    expect(coordinator.hasDeliveredFinalReply()).toBe(false);
     expect(coordinator.hasDeliveredVisibleText()).toBe(false);
     expect(coordinator.hasFailedVisibleTextDelivery()).toBe(true);
   });

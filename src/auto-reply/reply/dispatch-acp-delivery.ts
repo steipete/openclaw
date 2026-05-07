@@ -131,6 +131,7 @@ type AcpDispatchDeliveryState = {
   deliveredFinalReply: boolean;
   deliveredVisibleText: boolean;
   failedVisibleTextDelivery: boolean;
+  queuedDirectFinalReplies: number;
   queuedDirectVisibleTextDeliveries: number;
   settledDirectVisibleText: boolean;
   routedCounts: Record<ReplyDispatchKind, number>;
@@ -174,6 +175,7 @@ export function createAcpDispatchDeliveryCoordinator(params: {
     deliveredFinalReply: false,
     deliveredVisibleText: false,
     failedVisibleTextDelivery: false,
+    queuedDirectFinalReplies: 0,
     queuedDirectVisibleTextDeliveries: 0,
     settledDirectVisibleText: false,
     routedCounts: {
@@ -202,6 +204,12 @@ export function createAcpDispatchDeliveryCoordinator(params: {
     await params.dispatcher.waitForIdle();
     const failedCounts = params.dispatcher.getFailedCounts();
     const failedVisibleCount = failedCounts.block + failedCounts.final;
+    if (failedCounts.final > 0) {
+      state.deliveredFinalReply = false;
+    }
+    if (state.queuedDirectFinalReplies > failedCounts.final) {
+      state.deliveredFinalReply = true;
+    }
     if (failedVisibleCount > 0) {
       state.failedVisibleTextDelivery = true;
     }
@@ -372,7 +380,8 @@ export function createAcpDispatchDeliveryCoordinator(params: {
           ? params.dispatcher.sendBlockReply(ttsPayload)
           : params.dispatcher.sendFinalReply(ttsPayload);
     if (kind === "final" && delivered) {
-      state.deliveredFinalReply = true;
+      state.queuedDirectFinalReplies += 1;
+      state.settledDirectVisibleText = false;
     }
     if (delivered && tracksVisibleText) {
       state.queuedDirectVisibleTextDeliveries += 1;
