@@ -101,6 +101,7 @@ async function loadBundleProfile() {
   }
   assertObject(manifest.disabledOptionalNativeModules, "disabledOptionalNativeModules");
   assertStringArray(manifest.externalRuntimeDeps, "externalRuntimeDeps");
+  assertStringArray(manifest.skipRuntimeSidecarDeps ?? [], "skipRuntimeSidecarDeps");
   if (!Array.isArray(manifest.disabledPublicSurfaces)) {
     throw new Error(`bundle profile ${PROFILE_NAME} has invalid disabledPublicSurfaces`);
   }
@@ -358,6 +359,13 @@ function packageNameFromBareSpecifier(specifier) {
   return specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0];
 }
 
+function matchesRuntimeSidecarSkipPattern(pattern, packageName) {
+  if (pattern.endsWith("*")) {
+    return packageName.startsWith(pattern.slice(0, -1));
+  }
+  return packageName === pattern;
+}
+
 function shouldSkipRuntimeSidecarDep(skipRuntimeDeps, packageName) {
   if (!packageName) {
     return true;
@@ -365,7 +373,7 @@ function shouldSkipRuntimeSidecarDep(skipRuntimeDeps, packageName) {
   if (NODE_BUILTIN_MODULES.has(packageName)) {
     return true;
   }
-  return skipRuntimeDeps.has(packageName);
+  return skipRuntimeDeps.some((pattern) => matchesRuntimeSidecarSkipPattern(pattern, packageName));
 }
 
 async function addInstalledPackageDependencyClosure(runtimeDeps, packageName, skipRuntimeDeps) {
@@ -619,6 +627,7 @@ async function writeBundleContract({
   version,
   pluginSdkSubpaths,
   runtimeDeps,
+  skipRuntimeDeps,
   outputSizes,
 }) {
   await writeFile(
@@ -631,6 +640,7 @@ async function writeBundleContract({
         disabledPublicSurfaces: manifest.disabledPublicSurfaces,
         externalRuntimeDeps: runtimeDeps,
         disabledOptionalNativeModules: manifest.disabledOptionalNativeModules,
+        skipRuntimeSidecarDeps: skipRuntimeDeps,
         outputs: {
           bundle: { path: "openclaw.bundle.mjs", bytes: outputSizes.bundle },
           depsTar: { path: "bundle-deps.tar.gz", bytes: outputSizes.depsTar },
@@ -672,7 +682,10 @@ const main = async () => {
   const manifest = await loadBundleProfile();
   await assertDisabledPublicSurfaceManifest(manifest);
   const disabledOptionalAliases = createDisabledOptionalAliasMap(manifest);
-  const skipRuntimeDeps = new Set(Object.keys(disabledOptionalAliases));
+  const skipRuntimeDeps = [
+    ...Object.keys(disabledOptionalAliases),
+    ...(manifest.skipRuntimeSidecarDeps ?? []),
+  ];
   const runtimeDeps = await collectChannelSharedChunkRuntimeDeps(
     manifest.externalRuntimeDeps,
     skipRuntimeDeps,
@@ -798,6 +811,7 @@ const main = async () => {
       version: VERSION,
       pluginSdkSubpaths,
       runtimeDeps,
+      skipRuntimeDeps,
       outputSizes: {
         bundle: outStat.size,
         depsTar: depsStat.size,

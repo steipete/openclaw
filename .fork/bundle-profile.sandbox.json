@@ -20,5 +20,6 @@
     "runtimeDepsTarMaxBytes": 262144000,
     "openclawPackageTarMaxBytes": 1048576,
     "releaseTarMaxBytes": 314572800
-  }
+  },
+  "skipRuntimeSidecarDeps": ["@napi-rs/canvas-*", "@node-llama-cpp/*", "node-llama-cpp"]
 }
