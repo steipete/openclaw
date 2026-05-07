@@ -358,8 +358,18 @@ function packageNameFromBareSpecifier(specifier) {
   return specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0];
 }
 
-async function addInstalledPackageDependencyClosure(runtimeDeps, packageName) {
-  if (!packageName || NODE_BUILTIN_MODULES.has(packageName)) {
+function shouldSkipRuntimeSidecarDep(skipRuntimeDeps, packageName) {
+  if (!packageName) {
+    return true;
+  }
+  if (NODE_BUILTIN_MODULES.has(packageName)) {
+    return true;
+  }
+  return skipRuntimeDeps.has(packageName);
+}
+
+async function addInstalledPackageDependencyClosure(runtimeDeps, packageName, skipRuntimeDeps) {
+  if (shouldSkipRuntimeSidecarDep(skipRuntimeDeps, packageName)) {
     return;
   }
   const packageJsonPath = path.join(REPO_ROOT, "node_modules", packageName, "package.json");
@@ -381,11 +391,11 @@ async function addInstalledPackageDependencyClosure(runtimeDeps, packageName) {
     ...Object.keys(pkg.optionalDependencies ?? {}),
   ];
   for (const dependencyName of dependencyNames) {
-    await addInstalledPackageDependencyClosure(runtimeDeps, dependencyName);
+    await addInstalledPackageDependencyClosure(runtimeDeps, dependencyName, skipRuntimeDeps);
   }
 }
 
-async function collectNestedInstalledPackageDependencies(runtimeDeps) {
+async function collectNestedInstalledPackageDependencies(runtimeDeps, skipRuntimeDeps) {
   let changed = true;
   while (changed) {
     changed = false;
@@ -407,7 +417,7 @@ async function collectNestedInstalledPackageDependencies(runtimeDeps) {
         ];
         for (const dependencyName of dependencyNames) {
           const beforeSize = runtimeDeps.size;
-          await addInstalledPackageDependencyClosure(runtimeDeps, dependencyName);
+          await addInstalledPackageDependencyClosure(runtimeDeps, dependencyName, skipRuntimeDeps);
           if (runtimeDeps.size !== beforeSize) {
             changed = true;
           }
@@ -417,13 +427,13 @@ async function collectNestedInstalledPackageDependencies(runtimeDeps) {
   }
 }
 
-async function collectChannelSharedChunkRuntimeDeps(baseRuntimeDeps) {
+async function collectChannelSharedChunkRuntimeDeps(baseRuntimeDeps, skipRuntimeDeps = new Set()) {
   const runtimeDeps = new Set();
   const importPattern =
     /(?:^|[;\n])\s*(?:import|export)\s+(?:[^"']*?\s+from\s+)?["']([^"']+)["']|\bimport\(\s*["']([^"']+)["']\s*\)/g;
 
   for (const dep of baseRuntimeDeps) {
-    await addInstalledPackageDependencyClosure(runtimeDeps, dep);
+    await addInstalledPackageDependencyClosure(runtimeDeps, dep, skipRuntimeDeps);
   }
 
   for (const file of await walkFiles(path.join(REPO_ROOT, "dist"))) {
@@ -441,12 +451,12 @@ async function collectChannelSharedChunkRuntimeDeps(baseRuntimeDeps) {
       }
       const packageName = packageNameFromBareSpecifier(specifier);
       if (packageName) {
-        await addInstalledPackageDependencyClosure(runtimeDeps, packageName);
+        await addInstalledPackageDependencyClosure(runtimeDeps, packageName, skipRuntimeDeps);
       }
     }
   }
 
-  await collectNestedInstalledPackageDependencies(runtimeDeps);
+  await collectNestedInstalledPackageDependencies(runtimeDeps, skipRuntimeDeps);
 
   return [...runtimeDeps].toSorted((left, right) => left.localeCompare(right));
 }
@@ -661,8 +671,12 @@ const main = async () => {
   await mkdir(OUT_DIR, { recursive: true });
   const manifest = await loadBundleProfile();
   await assertDisabledPublicSurfaceManifest(manifest);
-  const runtimeDeps = await collectChannelSharedChunkRuntimeDeps(manifest.externalRuntimeDeps);
   const disabledOptionalAliases = createDisabledOptionalAliasMap(manifest);
+  const skipRuntimeDeps = new Set(Object.keys(disabledOptionalAliases));
+  const runtimeDeps = await collectChannelSharedChunkRuntimeDeps(
+    manifest.externalRuntimeDeps,
+    skipRuntimeDeps,
+  );
 
   if (!(await stat(DIST_ENTRY).catch(() => null))) {
     throw new Error(`missing dist/entry.js — run pnpm build first`);
