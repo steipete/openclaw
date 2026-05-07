@@ -1,7 +1,18 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { importFreshModule } from "../../test/helpers/import-fresh.ts";
 
+const JITI_FACTORY_OVERRIDE_KEY = Symbol.for("openclaw.pluginJitiLoaderFactoryOverride");
+
+function stubCreateJiti(createJiti: (...args: never[]) => unknown): void {
+  (globalThis as typeof globalThis & { [JITI_FACTORY_OVERRIDE_KEY]?: typeof createJiti })[
+    JITI_FACTORY_OVERRIDE_KEY
+  ] = createJiti;
+}
+
 afterEach(() => {
+  delete (globalThis as typeof globalThis & { [JITI_FACTORY_OVERRIDE_KEY]?: unknown })[
+    JITI_FACTORY_OVERRIDE_KEY
+  ];
   vi.resetModules();
   vi.doUnmock("jiti");
 });
@@ -13,9 +24,7 @@ describe("getCachedPluginJitiLoader", () => {
         filename,
       }),
     );
-    vi.doMock("jiti", () => ({
-      createJiti,
-    }));
+    stubCreateJiti(createJiti as never);
 
     const { getCachedPluginJitiLoader } = await importFreshModule<
       typeof import("./jiti-loader-cache.js")
@@ -45,9 +54,7 @@ describe("getCachedPluginJitiLoader", () => {
         options,
       }),
     );
-    vi.doMock("jiti", () => ({
-      createJiti,
-    }));
+    stubCreateJiti(createJiti as never);
 
     const { getCachedPluginJitiLoader } = await importFreshModule<
       typeof import("./jiti-loader-cache.js")
@@ -100,9 +107,7 @@ describe("getCachedPluginJitiLoader", () => {
         options,
       }),
     );
-    vi.doMock("jiti", () => ({
-      createJiti,
-    }));
+    stubCreateJiti(createJiti as never);
 
     const { getCachedPluginJitiLoader } = await importFreshModule<
       typeof import("./jiti-loader-cache.js")
@@ -153,9 +158,7 @@ describe("getCachedPluginJitiLoader", () => {
         options,
       }),
     );
-    vi.doMock("jiti", () => ({
-      createJiti,
-    }));
+    stubCreateJiti(createJiti as never);
 
     const { getCachedPluginJitiLoader } = await importFreshModule<
       typeof import("./jiti-loader-cache.js")

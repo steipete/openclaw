@@ -1,4 +1,5 @@
-import { createJiti } from "jiti";
+import { createRequire } from "node:module";
+import type { createJiti } from "jiti";
 import {
   buildPluginLoaderJitiOptions,
   createPluginLoaderJitiCacheKey,
@@ -8,6 +9,34 @@ import {
 export type PluginJitiLoader = ReturnType<typeof createJiti>;
 export type PluginJitiLoaderFactory = typeof createJiti;
 export type PluginJitiLoaderCache = Map<string, PluginJitiLoader>;
+
+const JITI_FACTORY_OVERRIDE_KEY = Symbol.for("openclaw.pluginJitiLoaderFactoryOverride");
+const requireForJiti = createRequire(import.meta.url);
+let createJitiLoaderFactory: PluginJitiLoaderFactory | undefined;
+
+function readCreateJitiLoaderFactoryOverride(): PluginJitiLoaderFactory | undefined {
+  return (
+    globalThis as typeof globalThis & {
+      [JITI_FACTORY_OVERRIDE_KEY]?: PluginJitiLoaderFactory;
+    }
+  )[JITI_FACTORY_OVERRIDE_KEY];
+}
+
+function loadCreateJitiLoaderFactory(): PluginJitiLoaderFactory {
+  const override = readCreateJitiLoaderFactoryOverride();
+  if (override) {
+    return override;
+  }
+  if (createJitiLoaderFactory) {
+    return createJitiLoaderFactory;
+  }
+  const loaded = requireForJiti("jiti") as { createJiti?: PluginJitiLoaderFactory };
+  if (typeof loaded.createJiti !== "function") {
+    throw new Error("jiti module did not export createJiti");
+  }
+  createJitiLoaderFactory = loaded.createJiti;
+  return createJitiLoaderFactory;
+}
 
 export function getCachedPluginJitiLoader(params: {
   cache: PluginJitiLoaderCache;
@@ -51,10 +80,13 @@ export function getCachedPluginJitiLoader(params: {
   if (cached) {
     return cached;
   }
-  const loader = (params.createLoader ?? createJiti)(params.jitiFilename ?? params.modulePath, {
-    ...buildPluginLoaderJitiOptions(aliasMap),
-    tryNative,
-  });
+  const loader = (params.createLoader ?? loadCreateJitiLoaderFactory())(
+    params.jitiFilename ?? params.modulePath,
+    {
+      ...buildPluginLoaderJitiOptions(aliasMap),
+      tryNative,
+    },
+  );
   params.cache.set(scopedCacheKey, loader);
   return loader;
 }
