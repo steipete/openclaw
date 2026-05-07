@@ -14,6 +14,13 @@ export const SLACK_WRITE_RETRY_OPTIONS: RetryOptions = {
   retries: 0,
 };
 
+const SLACK_API_URL_OVERRIDE_ENV = "OPENCLAW_SLACK_API_URL_OVERRIDE";
+
+function resolveSlackApiUrlOverride(env: NodeJS.ProcessEnv = process.env): string | undefined {
+  const value = env[SLACK_API_URL_OVERRIDE_ENV]?.trim();
+  return value || undefined;
+}
+
 /**
  * Check whether a hostname is excluded from proxying by `NO_PROXY` / `no_proxy`.
  * Supports comma-separated entries with optional leading dots (e.g. `.slack.com`).
@@ -83,6 +90,7 @@ export function resolveSlackWebClientOptions(options: WebClientOptions = {}): We
     ...options,
     agent: options.agent ?? resolveSlackProxyAgent(),
     retryConfig: options.retryConfig ?? SLACK_DEFAULT_RETRY_OPTIONS,
+    slackApiUrl: options.slackApiUrl ?? resolveSlackApiUrlOverride(),
   };
 }
 
@@ -92,5 +100,6 @@ export function resolveSlackWriteClientOptions(options: WebClientOptions = {}): 
     agent: options.agent ?? resolveSlackProxyAgent(),
     retryConfig: options.retryConfig ?? SLACK_WRITE_RETRY_OPTIONS,
     maxRequestConcurrency: options.maxRequestConcurrency ?? 1,
+    slackApiUrl: options.slackApiUrl ?? resolveSlackApiUrlOverride(),
   };
 }

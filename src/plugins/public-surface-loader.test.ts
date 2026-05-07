@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const tempDirs: string[] = [];
 const originalBundledPluginsDir = process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
 const originalTrustBundledPluginsDir = process.env.OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR;
+const originalDisableBundledPlugins = process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
 
 function createTempDir(): string {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-public-surface-loader-"));
@@ -32,6 +33,11 @@ afterEach(() => {
     delete process.env.OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR;
   } else {
     process.env.OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR = originalTrustBundledPluginsDir;
+  }
+  if (originalDisableBundledPlugins === undefined) {
+    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+  } else {
+    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = originalDisableBundledPlugins;
   }
 });
 
@@ -159,6 +165,30 @@ describe("bundled plugin public surface loader", () => {
     ).toBe("demo-b");
 
     expect(createJiti).not.toHaveBeenCalled();
+  });
+
+  it("returns a disabled public-surface stub when a declared sandbox artifact is absent", async () => {
+    vi.resetModules();
+    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = "1";
+
+    const publicSurfaceLoader = await importFreshModule<
+      typeof import("./public-surface-loader.js")
+    >(import.meta.url, "./public-surface-loader.js?scope=disabled-public-surface-stub");
+
+    const loaded = publicSurfaceLoader.loadBundledPluginPublicArtifactModuleSync<{
+      isTtsEnabled: () => boolean;
+    }>({
+      dirName: "speech-core",
+      artifactBasename: "runtime-api.js",
+    });
+
+    expect(loaded.isTtsEnabled()).toBe(false);
+    expect(() =>
+      publicSurfaceLoader.loadBundledPluginPublicArtifactModuleSync({
+        dirName: "demo",
+        artifactBasename: "api.js",
+      }),
+    ).toThrow("Unable to resolve bundled plugin public surface demo/api.js");
   });
 
   it("does not cache missing public artifact locations", async () => {

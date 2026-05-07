@@ -20,6 +20,14 @@ type LockPayload = {
   createdAt: string;
   configPath: string;
   startTime?: number;
+  /**
+   * Linux kernel boot id captured when the lock was written. After a
+   * sandbox snapshot/warm-restore the kernel exposes a new boot id, so a
+   * mismatch here is an unambiguous "this lock belongs to a previous VM
+   * lifetime" signal even when the recorded pid happens to be alive in
+   * the new sandbox.
+   */
+  bootId?: string;
 };
 
 const LockPayloadSchema = z.object({
@@ -27,6 +35,7 @@ const LockPayloadSchema = z.object({
   createdAt: z.string(),
   configPath: z.string(),
   startTime: z.number().optional(),
+  bootId: z.string().optional(),
 }) as z.ZodType<LockPayload>;
 
 type GatewayLockHandle = {
@@ -48,6 +57,8 @@ export type GatewayLockOptions = {
   lockDir?: string;
   /** Override process command-line reader (testing seam). */
   readProcessCmdline?: (pid: number) => string[] | null;
+  /** Override kernel boot id reader (testing seam). */
+  readBootId?: () => string | null;
 };
 
 export class GatewayLockError extends Error {
@@ -126,6 +137,21 @@ function readDarwinCmdline(pid: number): string[] | null {
   }
 }
 
+/**
+ * Read the kernel boot id (Linux only). Returns null on other platforms or if
+ * the proc file is unreadable. The boot id is regenerated on every kernel
+ * boot, including after a sandbox snapshot is restored into a fresh microVM,
+ * which lets us detect "the recorded lock belongs to a previous VM lifetime"
+ * even if the recorded pid is alive in the new sandbox.
+ */
+function readLinuxBootId(): string | null {
+  try {
+    return fsSync.readFileSync("/proc/sys/kernel/random/boot_id", "utf8").trim() || null;
+  } catch {
+    return null;
+  }
+}
+
 function readLinuxStartTime(pid: number): number | null {
   try {
     const raw = fsSync.readFileSync(`/proc/${pid}/stat`, "utf8").trim();
@@ -189,7 +215,20 @@ async function resolveGatewayOwnerStatus(
   platform: NodeJS.Platform,
   port: number | undefined,
   readCmdline?: (pid: number) => string[] | null,
+  readBootId?: () => string | null,
 ): Promise<LockOwnerStatus> {
+  // Sandbox snapshot/warm-restore detection: if the lock recorded a boot id
+  // and the current kernel boot id differs, the lock is unambiguously stale
+  // regardless of pid liveness. This is the failure mode that left
+  // gateways stuck behind a 5s lock timeout on Vercel Sandbox warm restores.
+  if (platform === "linux" && payload?.bootId) {
+    const readBoot = readBootId ?? readLinuxBootId;
+    const currentBootId = readBoot();
+    if (currentBootId && currentBootId !== payload.bootId) {
+      return "dead";
+    }
+  }
+
   if (port != null) {
     const portFree = await checkPortFree(port);
     if (portFree) {
@@ -269,10 +308,13 @@ export async function acquireGatewayLock(
   const startedAt = now();
   let lastPayload: LockPayload | null = null;
 
+  const readBoot = opts.readBootId ?? readLinuxBootId;
+
   while (now() - startedAt < timeoutMs) {
     try {
       const handle = await fs.open(lockPath, "wx");
       const startTime = platform === "linux" ? readLinuxStartTime(process.pid) : null;
+      const bootId = platform === "linux" ? readBoot() : null;
       const payload: LockPayload = {
         pid: process.pid,
         createdAt: new Date(now()).toISOString(),
@@ -280,6 +322,9 @@ export async function acquireGatewayLock(
       };
       if (typeof startTime === "number" && Number.isFinite(startTime)) {
         payload.startTime = startTime;
+      }
+      if (typeof bootId === "string" && bootId.length > 0) {
+        payload.bootId = bootId;
       }
       await handle.writeFile(JSON.stringify(payload), "utf8");
       return {
@@ -297,6 +342,21 @@ export async function acquireGatewayLock(
       }
 
       lastPayload = await readLockPayload(lockPath);
+      // Corrupt or unparseable lockfile: nothing to validate. Treat as
+      // unconditionally stale so we don't strand the gateway on garbage left
+      // behind by a crash mid-write.
+      if (!lastPayload) {
+        try {
+          const raw = await fs.readFile(lockPath, "utf8");
+          if (raw.length > 0) {
+            await fs.rm(lockPath, { force: true });
+            continue;
+          }
+        } catch {
+          // Lock vanished between failures — retry the open.
+          continue;
+        }
+      }
       const ownerPid = lastPayload?.pid;
       const ownerStatus = ownerPid
         ? await resolveGatewayOwnerStatus(
@@ -305,6 +365,7 @@ export async function acquireGatewayLock(
             platform,
             port,
             opts.readProcessCmdline,
+            opts.readBootId,
           )
         : "unknown";
       if (ownerStatus === "dead" && ownerPid) {

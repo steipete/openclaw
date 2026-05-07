@@ -10,6 +10,7 @@ import {
   type PluginModuleLoaderFactory,
 } from "../plugins/plugin-module-loader-cache.js";
 import { resolveLoaderPackageRoot } from "../plugins/sdk-alias.js";
+import { getBundledPluginPublicSurfaceStub } from "./disabled-stubs/registry.js";
 import { resolveBundledFacadeModuleLocation } from "./facade-resolution-shared.js";
 
 const CURRENT_MODULE_PATH = fileURLToPath(import.meta.url);
@@ -197,6 +198,10 @@ export function loadBundledPluginPublicSurfaceModuleSync<T extends object>(param
 }): T {
   const location = resolveFacadeModuleLocation(params);
   if (!location) {
+    const stub = getBundledPluginPublicSurfaceStub(params);
+    if (stub) {
+      return stub as T;
+    }
     throw new Error(
       `Unable to resolve bundled plugin public surface ${params.dirName}/${params.artifactBasename}`,
     );
@@ -214,6 +219,10 @@ export async function loadBundledPluginPublicSurfaceModule<T extends object>(par
 }): Promise<T> {
   const location = resolveFacadeModuleLocation(params);
   if (!location) {
+    const stub = getBundledPluginPublicSurfaceStub(params);
+    if (stub) {
+      return stub as T;
+    }
     throw new Error(
       `Unable to resolve bundled plugin public surface ${params.dirName}/${params.artifactBasename}`,
     );

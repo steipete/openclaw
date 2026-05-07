@@ -400,6 +400,128 @@ describe("gateway lock", () => {
     connectSpy.mockRestore();
   });
 
+  it("clears lock on linux when bootId mismatches (sandbox warm-restore)", async () => {
+    vi.useRealTimers();
+    const env = await makeEnv();
+    const { lockPath, configPath } = resolveLockPath(env);
+    const payload = {
+      ...createLockPayload({ configPath, startTime: 111 }),
+      bootId: "boot-id-from-prior-vm",
+    };
+    await fs.writeFile(lockPath, JSON.stringify(payload), "utf8");
+
+    const lock = await acquireForTest(env, {
+      timeoutMs: 80,
+      pollIntervalMs: 5,
+      staleMs: 10_000,
+      platform: "linux",
+      readBootId: () => "boot-id-from-restored-vm",
+      // Pretend the recorded pid is alive in the new sandbox; bootId mismatch
+      // alone must be enough to declare the prior lock dead.
+      readProcessCmdline: () => ["/usr/local/bin/openclaw", "gateway", "run"],
+    });
+    expect(lock).not.toBeNull();
+    await lock?.release();
+  });
+
+  it("keeps lock on linux when bootId matches and pid is alive", async () => {
+    vi.useRealTimers();
+    const env = await makeEnv();
+    const { lockPath, configPath } = resolveLockPath(env);
+    const payload = {
+      ...createLockPayload({ configPath, startTime: 111 }),
+      bootId: "stable-boot-id",
+    };
+    await fs.writeFile(lockPath, JSON.stringify(payload), "utf8");
+
+    // Make pid look alive on linux: matching start time.
+    const statValue = makeProcStat(process.pid, 111);
+    const spy = mockProcStatRead({
+      onProcRead: () => statValue,
+    });
+
+    const pending = acquireForTest(env, {
+      timeoutMs: 20,
+      pollIntervalMs: 2,
+      staleMs: 10_000,
+      platform: "linux",
+      readBootId: () => "stable-boot-id",
+      readProcessCmdline: () => ["/usr/local/bin/openclaw", "gateway", "run"],
+    });
+    await expect(pending).rejects.toBeInstanceOf(GatewayLockError);
+    spy.mockRestore();
+  });
+
+  it("falls back to pid-based logic on legacy lock (no bootId)", async () => {
+    // Legacy payload (no bootId): mismatched startTime should still mark the
+    // owner dead and allow acquisition, with bootId path completely bypassed.
+    const env = await makeEnv();
+    const { lockPath, configPath } = resolveLockPath(env);
+    const payload = createLockPayload({ configPath, startTime: 111 });
+    await fs.writeFile(lockPath, JSON.stringify(payload), "utf8");
+
+    const statValue = makeProcStat(process.pid, 999);
+    const spy = mockProcStatRead({
+      onProcRead: () => statValue,
+    });
+
+    const bootIdSpy = vi.fn(() => "should-not-be-consulted");
+    const lock = await acquireForTest(env, {
+      timeoutMs: 80,
+      pollIntervalMs: 5,
+      platform: "linux",
+      readBootId: bootIdSpy,
+    });
+    expect(lock).not.toBeNull();
+    // Boot id reader is allowed to be consulted on the *acquire* write path,
+    // but the stale-detection path must not consult it for a legacy lock
+    // that has no bootId field. The acquisition succeeded above, so the
+    // legacy fallback (start-time mismatch) is what reclaimed the lock.
+
+    await lock?.release();
+    spy.mockRestore();
+  });
+
+  it("clears corrupt unparseable lockfile and acquires", async () => {
+    vi.useRealTimers();
+    const env = await makeEnv();
+    const { lockPath } = resolveLockPath(env);
+    await fs.writeFile(lockPath, "this is not json {{{garbage", "utf8");
+
+    const lock = await acquireForTest(env, {
+      timeoutMs: 80,
+      pollIntervalMs: 5,
+    });
+    expect(lock).not.toBeNull();
+    await lock?.release();
+  });
+
+  it("keeps retrying on empty lockfile (no removal)", async () => {
+    vi.useRealTimers();
+    const env = await makeEnv();
+    const { lockPath } = resolveLockPath(env);
+    await fs.writeFile(lockPath, "", "utf8");
+
+    // Empty file: payload parse fails AND raw is zero-length, so the
+    // corrupt-cleanup branch must NOT remove it. Owner pid is undefined so
+    // status is "unknown", and createdAt is missing, mtime is fresh, so the
+    // staleness check fails and we time out.
+    const pending = acquireForTest(env, {
+      timeoutMs: 25,
+      pollIntervalMs: 5,
+      staleMs: 10_000,
+    });
+    await expect(pending).rejects.toBeInstanceOf(GatewayLockError);
+
+    // The empty lock should still exist (we did not remove it).
+    const stillThere = await fs
+      .stat(lockPath)
+      .then(() => true)
+      .catch(() => false);
+    expect(stillThere).toBe(true);
+    await fs.rm(lockPath, { force: true });
+  });
+
   it("keeps lock on darwin when process cmdline is a gateway", async () => {
     vi.useRealTimers();
     const env = await makeEnv();
