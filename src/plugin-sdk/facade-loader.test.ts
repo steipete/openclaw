@@ -171,6 +171,21 @@ describe("plugin-sdk facade loader", () => {
     expect(loaded.marker).toBe("circular-ok");
   });
 
+  it("falls back to disabled bundled public-surface stubs when no file exists", () => {
+    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = createTempDirSync(
+      "openclaw-facade-loader-disabled-stubs-",
+    );
+
+    const loaded = loadBundledPluginPublicSurfaceModuleSync<{ isTtsEnabled: () => boolean }>({
+      dirName: "speech-core",
+      artifactBasename: "runtime-api.js",
+    });
+
+    expect(loaded.isTtsEnabled()).toBe(false);
+    expect(listImportedBundledPluginFacadeIds()).toEqual(["speech-core"]);
+    expect(listImportedFacadeRuntimeIds()).toEqual(["speech-core"]);
+  });
+
   it("clears the cache on load failure so retries re-execute", () => {
     const dir = createThrowingPluginDir("openclaw-facade-loader-throw-");
     process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = dir;

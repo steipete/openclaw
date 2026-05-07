@@ -14,6 +14,7 @@ import {
   resolveBundledPluginPublicSurfacePath,
 } from "../plugins/public-surface-runtime.js";
 import { resolveLoaderPackageRoot } from "../plugins/sdk-alias.js";
+import { getBundledPluginPublicSurfaceStub } from "./disabled-stubs/registry.js";
 
 const CURRENT_MODULE_PATH = fileURLToPath(import.meta.url);
 
@@ -265,6 +266,15 @@ export function loadBundledPluginPublicSurfaceModuleSync<T extends object>(param
 }): T {
   const location = resolveFacadeModuleLocation(params);
   if (!location) {
+    const stub = getBundledPluginPublicSurfaceStub(params);
+    if (stub && typeof stub === "object") {
+      loadedFacadePluginIds.add(
+        typeof params.trackedPluginId === "function"
+          ? params.trackedPluginId()
+          : (params.trackedPluginId ?? params.dirName),
+      );
+      return stub as T;
+    }
     throw new Error(
       `Unable to resolve bundled plugin public surface ${params.dirName}/${params.artifactBasename}`,
     );
