@@ -9,6 +9,14 @@ import {
 import { chunkText } from "../../../auto-reply/chunk.js";
 import type { OpenClawConfig } from "../../../config/types.openclaw.js";
 import type { OutboundSendDeps } from "../../../infra/outbound/deliver.js";
+import {
+  createDeliveryAttemptId,
+  hashForLog,
+  logDeliveryEvent,
+  summarizeErrorForLog,
+  summarizePayloadForLog,
+  validateProviderMessageIdResult,
+} from "../../../infra/outbound/delivery-evidence.js";
 import type { OutboundMediaAccess } from "../../../media/load-options.js";
 import { resolveChannelMediaMaxBytes } from "../media-limits.js";
 import type { ChannelOutboundAdapter } from "../types.adapters.js";
@@ -17,6 +25,7 @@ type DirectSendOptions = {
   cfg: OpenClawConfig;
   accountId?: string | null;
   replyToId?: string | null;
+  threadId?: string | number | null;
   mediaUrl?: string;
   mediaAccess?: OutboundMediaAccess;
   mediaLocalRoots?: readonly string[];
@@ -82,6 +91,7 @@ export function createDirectTextMediaOutbound<
     accountId?: string | null;
     deps?: OutboundSendDeps;
     replyToId?: string | null;
+    threadId?: string | number | null;
     mediaUrl?: string;
     mediaAccess?: OutboundMediaAccess;
     buildOptions: (params: DirectSendOptions) => TOpts;
@@ -91,21 +101,70 @@ export function createDirectTextMediaOutbound<
       cfg: sendParams.cfg,
       accountId: sendParams.accountId,
     });
-    const result = await send(
-      sendParams.to,
-      sendParams.text,
-      sendParams.buildOptions({
-        cfg: sendParams.cfg,
-        mediaUrl: sendParams.mediaUrl,
-        mediaAccess: sendParams.mediaAccess,
-        mediaLocalRoots: sendParams.mediaAccess?.localRoots,
-        mediaReadFile: sendParams.mediaAccess?.readFile,
+    const deliveryAttemptId = createDeliveryAttemptId(params.channel);
+    const startedAt = Date.now();
+    logDeliveryEvent("outbound.delivery.start", {
+      deliveryAttemptId,
+      channel: params.channel,
+      via: "direct",
+      accountId: sendParams.accountId,
+      targetHash: hashForLog(sendParams.to),
+      replyToIdHash: hashForLog(sendParams.replyToId),
+      threadHash: hashForLog(sendParams.threadId),
+      payload: summarizePayloadForLog({ text: sendParams.text, mediaUrl: sendParams.mediaUrl }),
+      status: "provider_started",
+    });
+    try {
+      const result = await send(
+        sendParams.to,
+        sendParams.text,
+        sendParams.buildOptions({
+          cfg: sendParams.cfg,
+          mediaUrl: sendParams.mediaUrl,
+          mediaAccess: sendParams.mediaAccess,
+          mediaLocalRoots: sendParams.mediaAccess?.localRoots,
+          mediaReadFile: sendParams.mediaAccess?.readFile,
+          accountId: sendParams.accountId,
+          replyToId: sendParams.replyToId,
+          threadId: sendParams.threadId,
+          maxBytes,
+        }),
+      );
+      validateProviderMessageIdResult(result, { channel: params.channel });
+      const providerChannelId = typeof result.channel === "string" ? result.channel : undefined;
+      logDeliveryEvent("outbound.delivery.provider_result", {
+        deliveryAttemptId,
+        channel: params.channel,
+        via: "direct",
         accountId: sendParams.accountId,
-        replyToId: sendParams.replyToId,
-        maxBytes,
-      }),
-    );
-    return { channel: params.channel, ...result };
+        targetHash: hashForLog(sendParams.to),
+        replyToIdHash: hashForLog(sendParams.replyToId),
+        threadHash: hashForLog(sendParams.threadId),
+        providerMessageId: result.messageId,
+        providerConversationId: providerChannelId,
+        status: "provider_delivered",
+        elapsedMs: Date.now() - startedAt,
+      });
+      return {
+        ...result,
+        ...(providerChannelId ? { providerChannelId } : {}),
+        channel: params.channel,
+      };
+    } catch (error) {
+      logDeliveryEvent("outbound.delivery.error", {
+        deliveryAttemptId,
+        channel: params.channel,
+        via: "direct",
+        accountId: sendParams.accountId,
+        targetHash: hashForLog(sendParams.to),
+        replyToIdHash: hashForLog(sendParams.replyToId),
+        threadHash: hashForLog(sendParams.threadId),
+        status: "failed",
+        elapsedMs: Date.now() - startedAt,
+        ...summarizeErrorForLog(error),
+      });
+      throw error;
+    }
   };
 
   const outbound: ChannelOutboundAdapter = {
@@ -116,7 +175,7 @@ export function createDirectTextMediaOutbound<
     sanitizeText: ({ text }) => sanitizeForPlainText(text),
     sendPayload: async (ctx) =>
       await sendTextMediaPayload({ channel: params.channel, ctx, adapter: outbound }),
-    sendText: async ({ cfg, to, text, accountId, deps, replyToId }) => {
+    sendText: async ({ cfg, to, text, accountId, deps, replyToId, threadId }) => {
       return await sendDirect({
         cfg,
         to,
@@ -124,6 +183,7 @@ export function createDirectTextMediaOutbound<
         accountId,
         deps,
         replyToId,
+        threadId,
         buildOptions: params.buildTextOptions,
       });
     },
@@ -138,6 +198,7 @@ export function createDirectTextMediaOutbound<
       accountId,
       deps,
       replyToId,
+      threadId,
     }) => {
       return await sendDirect({
         cfg,
@@ -155,6 +216,7 @@ export function createDirectTextMediaOutbound<
         accountId,
         deps,
         replyToId,
+        threadId,
         buildOptions: params.buildMediaOptions,
       });
     },

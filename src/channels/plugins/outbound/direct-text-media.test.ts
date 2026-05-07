@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  createDirectTextMediaOutbound,
   sendPayloadMediaSequenceAndFinalize,
   sendPayloadMediaSequenceOrFallback,
 } from "./direct-text-media.js";
@@ -78,5 +79,68 @@ describe("sendPayloadMediaSequenceAndFinalize", () => {
 
     expect(send).toHaveBeenCalledTimes(2);
     expect(finalize).toHaveBeenCalledOnce();
+  });
+});
+
+describe("createDirectTextMediaOutbound", () => {
+  it("validates provider message IDs", async () => {
+    const outbound = createDirectTextMediaOutbound({
+      channel: "slack",
+      resolveSender: () => vi.fn(async () => ({ messageId: "" })),
+      resolveMaxBytes: () => undefined,
+      buildTextOptions: () => ({}),
+      buildMediaOptions: () => ({}),
+    });
+
+    await expect(outbound.sendText?.({ cfg: {}, to: "C123", text: "hello" })).rejects.toThrow(
+      "slack send returned no messageId",
+    );
+  });
+
+  it("preserves OpenClaw channel and stores provider channel separately", async () => {
+    const outbound = createDirectTextMediaOutbound({
+      channel: "slack",
+      resolveSender: () => vi.fn(async () => ({ messageId: "171.1", channel: "C123" })),
+      resolveMaxBytes: () => undefined,
+      buildTextOptions: () => ({}),
+      buildMediaOptions: () => ({}),
+    });
+
+    await expect(outbound.sendText?.({ cfg: {}, to: "C123", text: "hello" })).resolves.toEqual({
+      channel: "slack",
+      providerChannelId: "C123",
+      messageId: "171.1",
+    });
+  });
+
+  it("forwards threadId into text and media send options", async () => {
+    const send = vi.fn(async () => ({ messageId: "m1" }));
+    const buildTextOptions = vi.fn((opts) => ({ threadId: opts.threadId }));
+    const buildMediaOptions = vi.fn((opts) => ({ threadId: opts.threadId }));
+    const outbound = createDirectTextMediaOutbound({
+      channel: "discord",
+      resolveSender: () => send,
+      resolveMaxBytes: () => undefined,
+      buildTextOptions,
+      buildMediaOptions,
+    });
+
+    await outbound.sendText?.({ cfg: {}, to: "chan", text: "hello", threadId: "thread-1" });
+    await outbound.sendMedia?.({
+      cfg: {},
+      to: "chan",
+      text: "caption",
+      mediaUrl: "file:///tmp/a.png",
+      threadId: "thread-2",
+    });
+
+    expect(buildTextOptions).toHaveBeenCalledWith(
+      expect.objectContaining({ threadId: "thread-1" }),
+    );
+    expect(buildMediaOptions).toHaveBeenCalledWith(
+      expect.objectContaining({ threadId: "thread-2" }),
+    );
+    expect(send).toHaveBeenNthCalledWith(1, "chan", "hello", { threadId: "thread-1" });
+    expect(send).toHaveBeenNthCalledWith(2, "chan", "caption", { threadId: "thread-2" });
   });
 });
