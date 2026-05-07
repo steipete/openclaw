@@ -111,6 +111,20 @@ describe("sendMessage channel normalization", () => {
     expect(seen.to).toBe("+15551234567");
   });
 
+  it("rejects malformed gateway send results", async () => {
+    setMattermostGatewayRegistry();
+    callGatewayMock.mockResolvedValueOnce({});
+
+    await expect(
+      sendMessage({
+        cfg: {},
+        to: "channel:town-square",
+        content: "hi",
+        channel: "mattermost",
+      }),
+    ).rejects.toThrow("gateway send returned no messageId");
+  });
+
   it.each([
     {
       name: "normalizes plugin aliases",
@@ -303,6 +317,29 @@ describe("gateway url override hardening", () => {
       expected: {
         params: {
           agentId: "work",
+        },
+      },
+    },
+    {
+      name: "forwards reply and thread fields in gateway send params",
+      params: {
+        replyToId: "reply-1",
+        threadId: "thread-1",
+        silent: true,
+        forceDocument: true,
+        requesterSessionKey: "agent:main:slack:channel:C1",
+        requesterAccountId: "source-account",
+        requesterSenderId: "sender-1",
+      },
+      expected: {
+        params: {
+          replyToId: "reply-1",
+          threadId: "thread-1",
+          silent: true,
+          forceDocument: true,
+          requesterSessionKey: "agent:main:slack:channel:C1",
+          requesterAccountId: "source-account",
+          requesterSenderId: "sender-1",
         },
       },
     },

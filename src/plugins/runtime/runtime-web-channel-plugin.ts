@@ -2,6 +2,13 @@ import type { AgentToolResult } from "@mariozechner/pi-agent-core";
 import type { ChannelAgentTool } from "../../channels/plugins/types.core.js";
 import type { OpenClawConfig } from "../../config/types.openclaw.js";
 import {
+  createDeliveryAttemptId,
+  hashForLog,
+  logDeliveryEvent,
+  summarizeErrorForLog,
+  validateProviderMessageIdResult,
+} from "../../infra/outbound/delivery-evidence.js";
+import {
   getDefaultLocalRoots as getDefaultLocalRootsImpl,
   loadWebMedia as loadWebMediaImpl,
   loadWebMediaRaw as loadWebMediaRawImpl,
@@ -235,16 +242,114 @@ export function webAuthExists(
   return getLightExport("webAuthExists")(...args);
 }
 
-export function sendWebChannelMessage(
+export async function sendWebChannelMessage(
   ...args: Parameters<WebChannelHeavyRuntimeModule["sendMessageWhatsApp"]>
 ): ReturnType<WebChannelHeavyRuntimeModule["sendMessageWhatsApp"]> {
-  return loadWebChannelHeavyModule().then((loaded) => loaded.sendMessageWhatsApp(...args));
+  const [to, body, options] = args;
+  const deliveryAttemptId = createDeliveryAttemptId("whatsapp");
+  const startedAt = Date.now();
+  logDeliveryEvent("outbound.delivery.start", {
+    deliveryAttemptId,
+    channel: "whatsapp",
+    provider: "whatsapp-web",
+    via: "direct",
+    accountId: options?.accountId,
+    targetHash: hashForLog(to),
+    payload: {
+      textLength: body.length,
+      textHash: hashForLog(body),
+      mediaCount: options?.mediaUrl ? 1 : 0,
+      hasMedia: Boolean(options?.mediaUrl),
+    },
+    status: "provider_started",
+  });
+  try {
+    const loaded = await loadWebChannelHeavyModule();
+    const result = await loaded.sendMessageWhatsApp(...args);
+    validateProviderMessageIdResult(result, { channel: "whatsapp", provider: "whatsapp-web" });
+    if (typeof result.toJid !== "string" || !result.toJid.trim()) {
+      throw new Error("whatsapp-web send returned no toJid");
+    }
+    logDeliveryEvent("outbound.delivery.provider_result", {
+      deliveryAttemptId,
+      channel: "whatsapp",
+      provider: "whatsapp-web",
+      via: "direct",
+      accountId: options?.accountId,
+      targetHash: hashForLog(to),
+      providerMessageId: result.messageId,
+      providerConversationId: hashForLog(result.toJid),
+      status: "provider_delivered",
+      elapsedMs: Date.now() - startedAt,
+    });
+    return result;
+  } catch (error) {
+    logDeliveryEvent("outbound.delivery.error", {
+      deliveryAttemptId,
+      channel: "whatsapp",
+      provider: "whatsapp-web",
+      via: "direct",
+      accountId: options?.accountId,
+      targetHash: hashForLog(to),
+      status: "failed",
+      elapsedMs: Date.now() - startedAt,
+      ...summarizeErrorForLog(error),
+    });
+    throw error;
+  }
 }
 
-export function sendWebChannelPoll(
+export async function sendWebChannelPoll(
   ...args: Parameters<WebChannelHeavyRuntimeModule["sendPollWhatsApp"]>
 ): ReturnType<WebChannelHeavyRuntimeModule["sendPollWhatsApp"]> {
-  return loadWebChannelHeavyModule().then((loaded) => loaded.sendPollWhatsApp(...args));
+  const [to, _poll, options] = args;
+  const deliveryAttemptId = createDeliveryAttemptId("whatsapp-poll");
+  const startedAt = Date.now();
+  logDeliveryEvent("outbound.delivery.start", {
+    deliveryAttemptId,
+    channel: "whatsapp",
+    provider: "whatsapp-web",
+    via: "direct",
+    accountId: options?.accountId,
+    targetHash: hashForLog(to),
+    kind: "poll",
+    status: "provider_started",
+  });
+  try {
+    const loaded = await loadWebChannelHeavyModule();
+    const result = await loaded.sendPollWhatsApp(...args);
+    validateProviderMessageIdResult(result, { channel: "whatsapp", provider: "whatsapp-web" });
+    if (typeof result.toJid !== "string" || !result.toJid.trim()) {
+      throw new Error("whatsapp-web poll returned no toJid");
+    }
+    logDeliveryEvent("outbound.delivery.provider_result", {
+      deliveryAttemptId,
+      channel: "whatsapp",
+      provider: "whatsapp-web",
+      via: "direct",
+      accountId: options?.accountId,
+      targetHash: hashForLog(to),
+      providerMessageId: result.messageId,
+      providerConversationId: hashForLog(result.toJid),
+      status: "provider_delivered",
+      elapsedMs: Date.now() - startedAt,
+    });
+    return result;
+  } catch (error) {
+    logDeliveryEvent("outbound.delivery.error", {
+      deliveryAttemptId,
+      channel: "whatsapp",
+      provider: "whatsapp-web",
+      via: "direct",
+      accountId: options?.accountId,
+      targetHash: hashForLog(to),
+      kind: "poll",
+      status: "failed",
+      elapsedMs: Date.now() - startedAt,
+      ...summarizeErrorForLog(error),
+    });
+    throw error;
+  }
 }
 
 export function sendWebChannelReaction(

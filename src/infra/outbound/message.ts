@@ -14,6 +14,14 @@ import {
   type OutboundDeliveryResult,
   type OutboundSendDeps,
 } from "./deliver.js";
+import {
+  createDeliveryAttemptId,
+  hashForLog,
+  logDeliveryEvent,
+  summarizeErrorForLog,
+  validateProviderMessageIdResult,
+  type DeliveryStatus,
+} from "./delivery-evidence.js";
 import type { OutboundMirror } from "./mirror.js";
 import {
   createOutboundPayloadPlan,
@@ -89,7 +97,11 @@ export type MessageSendResult = {
   via: "direct" | "gateway";
   mediaUrl: string | null;
   mediaUrls?: string[];
-  result?: OutboundDeliveryResult | { messageId: string };
+  result?: OutboundDeliveryResult | { messageId: string; deliveryStatus?: DeliveryStatus };
+  results?: OutboundDeliveryResult[];
+  deliveryAttemptId?: string;
+  deliveryStatus?: DeliveryStatus;
+  chunkCount?: number;
   dryRun?: boolean;
 };
 
@@ -122,6 +134,7 @@ export type MessagePollResult = {
   via: "gateway";
   result?: {
     messageId: string;
+    deliveryStatus?: DeliveryStatus;
     toJid?: string;
     channelId?: string;
     conversationId?: string;
@@ -232,9 +245,14 @@ async function resolveGatewayIdempotencyKey(idempotencyKey?: string): Promise<st
   return randomIdempotencyKey();
 }
 
+function resolveGatewayDeliveryStatus(result: { deliveryStatus?: DeliveryStatus }): DeliveryStatus {
+  return result.deliveryStatus ?? "gateway_accepted";
+}
+
 export async function sendMessage(params: MessageSendParams): Promise<MessageSendResult> {
   const cfg = await resolveMessageConfig(params.cfg);
   const channel = await resolveRequiredChannel({ cfg, channel: params.channel });
+  const deliveryAttemptId = createDeliveryAttemptId(channel);
   const plugin = resolveRequiredPlugin(channel, cfg);
   const deliveryMode = plugin.outbound?.deliveryMode ?? "direct";
   const outboundPlan = createOutboundPayloadPlan([
@@ -257,6 +275,8 @@ export async function sendMessage(params: MessageSendParams): Promise<MessageSen
       via: deliveryMode === "gateway" ? "gateway" : "direct",
       mediaUrl: primaryMediaUrl,
       mediaUrls: mirrorMediaUrls.length ? mirrorMediaUrls : undefined,
+      deliveryAttemptId,
+      deliveryStatus: "skipped",
       dryRun: true,
     };
   }
@@ -284,29 +304,72 @@ export async function sendMessage(params: MessageSendParams): Promise<MessageSen
       requesterSenderUsername: params.requesterSenderUsername,
       requesterSenderE164: params.requesterSenderE164,
     });
-    const results = await deliverOutboundPayloads({
-      cfg,
-      channel: outboundChannel,
-      to: resolvedTarget.to,
-      session: outboundSession,
+    logDeliveryEvent("outbound.delivery.start", {
+      deliveryAttemptId,
+      channel,
+      via: "direct",
       accountId: params.accountId,
-      payloads: normalizedPayloads,
-      replyToId: params.replyToId,
-      threadId: params.threadId,
-      gifPlayback: params.gifPlayback,
-      forceDocument: params.forceDocument,
-      deps: params.deps,
-      bestEffort: params.bestEffort,
-      abortSignal: params.abortSignal,
-      silent: params.silent,
-      mirror: params.mirror
-        ? {
-            ...params.mirror,
-            text: mirrorText || params.content,
-            mediaUrls: mirrorMediaUrls.length ? mirrorMediaUrls : undefined,
-            idempotencyKey: params.mirror.idempotencyKey ?? params.idempotencyKey,
-          }
-        : undefined,
+      targetHash: hashForLog(resolvedTarget.to),
+      replyToIdHash: hashForLog(params.replyToId),
+      threadHash: hashForLog(params.threadId),
+      status: "provider_started",
+    });
+    let results: OutboundDeliveryResult[];
+    try {
+      results = await deliverOutboundPayloads({
+        cfg,
+        channel: outboundChannel,
+        to: resolvedTarget.to,
+        session: outboundSession,
+        accountId: params.accountId,
+        payloads: normalizedPayloads,
+        replyToId: params.replyToId,
+        threadId: params.threadId,
+        gifPlayback: params.gifPlayback,
+        forceDocument: params.forceDocument,
+        deps: params.deps,
+        bestEffort: params.bestEffort,
+        abortSignal: params.abortSignal,
+        silent: params.silent,
+        mirror: params.mirror
+          ? {
+              ...params.mirror,
+              text: mirrorText || params.content,
+              mediaUrls: mirrorMediaUrls.length ? mirrorMediaUrls : undefined,
+              idempotencyKey: params.mirror.idempotencyKey ?? params.idempotencyKey,
+            }
+          : undefined,
+      });
+    } catch (error) {
+      logDeliveryEvent("outbound.delivery.error", {
+        deliveryAttemptId,
+        channel,
+        via: "direct",
+        accountId: params.accountId,
+        targetHash: hashForLog(resolvedTarget.to),
+        replyToIdHash: hashForLog(params.replyToId),
+        threadHash: hashForLog(params.threadId),
+        status: "failed",
+        ...summarizeErrorForLog(error),
+      });
+      throw error;
+    }
+    const lastResult = results.at(-1);
+    if (lastResult) {
+      validateProviderMessageIdResult(lastResult, { channel });
+    }
+    const deliveryStatus: DeliveryStatus = results.length > 0 ? "provider_delivered" : "skipped";
+    logDeliveryEvent("outbound.delivery.provider_result", {
+      deliveryAttemptId,
+      channel,
+      via: "direct",
+      accountId: params.accountId,
+      targetHash: hashForLog(resolvedTarget.to),
+      replyToIdHash: hashForLog(params.replyToId),
+      threadHash: hashForLog(params.threadId),
+      providerMessageId: lastResult?.messageId,
+      status: deliveryStatus,
+      chunkCount: results.length,
     });
 
     return {
@@ -315,11 +378,15 @@ export async function sendMessage(params: MessageSendParams): Promise<MessageSen
       via: "direct",
       mediaUrl: primaryMediaUrl,
       mediaUrls: mirrorMediaUrls.length ? mirrorMediaUrls : undefined,
-      result: results.at(-1),
+      result: lastResult,
+      results,
+      deliveryAttemptId,
+      deliveryStatus,
+      chunkCount: results.length,
     };
   }
 
-  const result = await callMessageGateway<{ messageId: string }>({
+  const result = await callMessageGateway<{ messageId: string; deliveryStatus?: DeliveryStatus }>({
     gateway: params.gateway,
     method: "send",
     params: {
@@ -328,12 +395,36 @@ export async function sendMessage(params: MessageSendParams): Promise<MessageSen
       mediaUrl: params.mediaUrl,
       mediaUrls: mirrorMediaUrls.length ? mirrorMediaUrls : params.mediaUrls,
       gifPlayback: params.gifPlayback,
+      forceDocument: params.forceDocument,
+      replyToId: params.replyToId,
+      threadId: params.threadId,
+      silent: params.silent,
       accountId: params.accountId,
       agentId: params.agentId,
       channel,
+      requesterSessionKey: params.requesterSessionKey,
+      requesterAccountId: params.requesterAccountId,
+      requesterSenderId: params.requesterSenderId,
+      requesterSenderName: params.requesterSenderName,
+      requesterSenderUsername: params.requesterSenderUsername,
+      requesterSenderE164: params.requesterSenderE164,
       sessionKey: params.mirror?.sessionKey,
       idempotencyKey: await resolveGatewayIdempotencyKey(params.idempotencyKey),
     },
+  });
+
+  validateProviderMessageIdResult(result, { channel, provider: "gateway" });
+  const deliveryStatus = resolveGatewayDeliveryStatus(result);
+  logDeliveryEvent("outbound.delivery.gateway_result", {
+    deliveryAttemptId,
+    channel,
+    via: "gateway",
+    accountId: params.accountId,
+    targetHash: hashForLog(params.to),
+    replyToIdHash: hashForLog(params.replyToId),
+    threadHash: hashForLog(params.threadId),
+    providerMessageId: result.messageId,
+    status: deliveryStatus,
   });
 
   return {
@@ -343,6 +434,9 @@ export async function sendMessage(params: MessageSendParams): Promise<MessageSen
     mediaUrl: primaryMediaUrl,
     mediaUrls: mirrorMediaUrls.length ? mirrorMediaUrls : undefined,
     result,
+    deliveryAttemptId,
+    deliveryStatus,
+    chunkCount: 1,
   };
 }
 
@@ -377,6 +471,7 @@ export async function sendPoll(params: MessagePollParams): Promise<MessagePollRe
 
   const result = await callMessageGateway<{
     messageId: string;
+    deliveryStatus?: DeliveryStatus;
     toJid?: string;
     channelId?: string;
     conversationId?: string;
@@ -400,6 +495,7 @@ export async function sendPoll(params: MessagePollParams): Promise<MessagePollRe
     },
   });
 
+  validateProviderMessageIdResult(result, { channel, provider: "gateway" });
   return buildMessagePollResult({
     channel,
     to: params.to,

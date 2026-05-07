@@ -11,6 +11,12 @@ import { resolveAgentScopedOutboundMediaAccess } from "../../media/read-capabili
 import type { GatewayClientMode, GatewayClientName } from "../../utils/message-channel.js";
 import { throwIfAborted } from "./abort.js";
 import type { OutboundSendDeps } from "./deliver.js";
+import {
+  createDeliveryAttemptId,
+  hashForLog,
+  logDeliveryEvent,
+  summarizeErrorForLog,
+} from "./delivery-evidence.js";
 import type { MessagePollResult, MessageSendResult } from "./message.js";
 import { sendMessage, sendPoll } from "./message.js";
 import type { OutboundMirror } from "./mirror.js";
@@ -93,27 +99,76 @@ async function tryHandleWithPluginAction(params: {
     mediaAccess: params.ctx.mediaAccess,
     mediaReadFile: params.ctx.mediaReadFile,
   });
-  const handled = await dispatchChannelMessageAction({
+  const deliveryAttemptId = createDeliveryAttemptId(params.ctx.channel);
+  const startedAt = Date.now();
+  logDeliveryEvent("outbound.plugin_action.start", {
+    deliveryAttemptId,
     channel: params.ctx.channel,
-    action: params.action,
-    cfg: params.ctx.cfg,
-    params: params.ctx.params,
-    mediaAccess,
-    mediaLocalRoots: mediaAccess.localRoots,
-    mediaReadFile: mediaAccess.readFile,
-    accountId: params.ctx.accountId ?? undefined,
-    requesterSenderId: params.ctx.requesterSenderId,
-    senderIsOwner: params.ctx.senderIsOwner,
-    sessionKey: params.ctx.sessionKey,
-    sessionId: params.ctx.sessionId,
-    agentId: params.ctx.agentId,
-    gateway: params.ctx.gateway,
-    toolContext: params.ctx.toolContext,
-    dryRun: params.ctx.dryRun,
+    via: "plugin-action",
+    accountId: params.ctx.accountId,
+    targetHash: hashForLog(params.ctx.params.to),
+    threadHash: hashForLog(params.ctx.params.threadId),
+    kind: params.action,
+    status: "provider_started",
   });
+  let handled: AgentToolResult<unknown> | null;
+  try {
+    handled = await dispatchChannelMessageAction({
+      channel: params.ctx.channel,
+      action: params.action,
+      cfg: params.ctx.cfg,
+      params: params.ctx.params,
+      mediaAccess,
+      mediaLocalRoots: mediaAccess.localRoots,
+      mediaReadFile: mediaAccess.readFile,
+      accountId: params.ctx.accountId ?? undefined,
+      requesterSenderId: params.ctx.requesterSenderId,
+      senderIsOwner: params.ctx.senderIsOwner,
+      sessionKey: params.ctx.sessionKey,
+      sessionId: params.ctx.sessionId,
+      agentId: params.ctx.agentId,
+      gateway: params.ctx.gateway,
+      toolContext: params.ctx.toolContext,
+      dryRun: params.ctx.dryRun,
+    });
+  } catch (error) {
+    logDeliveryEvent("outbound.plugin_action.error", {
+      deliveryAttemptId,
+      channel: params.ctx.channel,
+      via: "plugin-action",
+      accountId: params.ctx.accountId,
+      targetHash: hashForLog(params.ctx.params.to),
+      threadHash: hashForLog(params.ctx.params.threadId),
+      kind: params.action,
+      status: "failed",
+      elapsedMs: Date.now() - startedAt,
+      ...summarizeErrorForLog(error),
+    });
+    throw error;
+  }
   if (!handled) {
+    logDeliveryEvent("outbound.plugin_action.result", {
+      deliveryAttemptId,
+      channel: params.ctx.channel,
+      via: "plugin-action",
+      accountId: params.ctx.accountId,
+      kind: params.action,
+      status: "skipped",
+      elapsedMs: Date.now() - startedAt,
+    });
     return null;
   }
+  logDeliveryEvent("outbound.plugin_action.result", {
+    deliveryAttemptId,
+    channel: params.ctx.channel,
+    via: "plugin-action",
+    accountId: params.ctx.accountId,
+    targetHash: hashForLog(params.ctx.params.to),
+    threadHash: hashForLog(params.ctx.params.threadId),
+    kind: params.action,
+    status: "unknown",
+    elapsedMs: Date.now() - startedAt,
+  });
   await params.onHandled?.();
   return {
     handledBy: "plugin",
