@@ -1,5 +1,6 @@
 import type { TypingCallbacks } from "../../channels/typing.js";
 import type { HumanDelayConfig } from "../../config/types.js";
+import { summarizeErrorForLog, logDeliveryEvent } from "../../infra/outbound/delivery-evidence.js";
 import { generateSecureInt } from "../../infra/secure-random.js";
 import { sleep } from "../../utils.js";
 import type { GetReplyOptions, ReplyPayload } from "../types.js";
@@ -166,6 +167,11 @@ export function createReplyDispatcher(options: ReplyDispatcherOptions): ReplyDis
       })
       .catch((err) => {
         failedCounts[kind] += 1;
+        logDeliveryEvent("reply.dispatch.deliver.error", {
+          kind,
+          status: "failed",
+          ...summarizeErrorForLog(err),
+        });
         options.onError?.(err, { kind });
       })
       .finally(() => {
