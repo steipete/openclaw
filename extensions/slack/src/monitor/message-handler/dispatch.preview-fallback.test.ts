@@ -74,6 +74,7 @@ function createPreparedSlackMessage() {
 }
 
 vi.mock("openclaw/plugin-sdk/agent-runtime", () => ({
+  resolveAgentWorkspaceDir: () => "/tmp/openclaw-workspace",
   resolveHumanDelayConfig: () => undefined,
 }));
 
@@ -278,6 +279,9 @@ describe("dispatchPreparedSlackMessage preview fallback", () => {
     expect(deliverRepliesMock).toHaveBeenCalledTimes(1);
     expect(deliverRepliesMock).toHaveBeenCalledWith(
       expect.objectContaining({
+        mediaAccess: expect.objectContaining({
+          workspaceDir: "/tmp/openclaw-workspace",
+        }),
         replyThreadTs: THREAD_TS,
         replies: [expect.objectContaining({ text: FINAL_REPLY_TEXT })],
       }),

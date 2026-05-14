@@ -52,6 +52,45 @@ describe("deliverReplies identity passthrough", () => {
     expect(sendMock.mock.calls[0][2]).toMatchObject({ identity });
   });
 
+  it("passes media local roots to sendMessageSlack for media replies", async () => {
+    sendMock.mockResolvedValue(undefined);
+    const mediaLocalRoots = ["/tmp/openclaw-workspace"];
+
+    await deliverReplies(
+      baseParams({
+        mediaLocalRoots,
+        replies: [{ text: "caption", mediaUrls: ["generated-image.png"] }],
+      }),
+    );
+
+    expect(sendMock).toHaveBeenCalledOnce();
+    expect(sendMock.mock.calls[0][2]).toMatchObject({
+      mediaUrl: "generated-image.png",
+      mediaLocalRoots,
+    });
+  });
+
+  it("passes workspace-aware media access to sendMessageSlack for relative media replies", async () => {
+    sendMock.mockResolvedValue(undefined);
+    const mediaAccess = {
+      localRoots: ["/tmp/openclaw-workspace"],
+      workspaceDir: "/tmp/openclaw-workspace",
+    };
+
+    await deliverReplies(
+      baseParams({
+        mediaAccess,
+        replies: [{ text: "caption", mediaUrls: ["generated-image.png"] }],
+      }),
+    );
+
+    expect(sendMock).toHaveBeenCalledOnce();
+    expect(sendMock.mock.calls[0][2]).toMatchObject({
+      mediaUrl: "generated-image.png",
+      mediaAccess,
+    });
+  });
+
   it("omits identity key when not provided", async () => {
     sendMock.mockResolvedValue(undefined);
     await deliverReplies(baseParams());

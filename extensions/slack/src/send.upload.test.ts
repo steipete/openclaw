@@ -278,4 +278,113 @@ describe("sendMessageSlack file upload with user IDs", () => {
       }),
     );
   });
+
+  it("passes workspace-aware media access to the media loader for relative media", async () => {
+    const client = createUploadTestClient();
+    const mediaAccess = {
+      localRoots: ["/tmp/openclaw-workspace"],
+      workspaceDir: "/tmp/openclaw-workspace",
+    };
+
+    await sendMessageSlack("channel:C123CHAN", "caption", {
+      token: "xoxb-test",
+      client,
+      mediaUrl: "generated-image.png",
+      mediaAccess,
+    });
+
+    expect(loadOutboundMediaFromUrlMock).toHaveBeenCalledWith(
+      "generated-image.png",
+      expect.objectContaining({ mediaAccess }),
+    );
+    expect(client.files.completeUploadExternal).toHaveBeenCalledWith(
+      expect.objectContaining({ channel_id: "C123CHAN" }),
+    );
+  });
+
+  it("retries transient presigned upload failures and preserves the thread", async () => {
+    const client = createUploadTestClient();
+    client.files.getUploadURLExternal
+      .mockResolvedValueOnce({
+        ok: true,
+        upload_url: "https://uploads.slack.test/upload-1",
+        file_id: "F001",
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        upload_url: "https://uploads.slack.test/upload-2",
+        file_id: "F002",
+      });
+    vi.mocked(globalThis.fetch)
+      .mockResolvedValueOnce(new Response("timeout", { status: 504 }))
+      .mockResolvedValueOnce(new Response("ok", { status: 200 }));
+
+    await sendMessageSlack("channel:C123CHAN", "caption", {
+      token: "xoxb-test",
+      client,
+      mediaUrl: "/tmp/threaded.png",
+      threadTs: "1778530504.140709",
+    });
+
+    expect(client.files.getUploadURLExternal).toHaveBeenCalledTimes(2);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+    expect(client.files.completeUploadExternal).toHaveBeenCalledTimes(1);
+    expect(client.files.completeUploadExternal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        files: [expect.objectContaining({ id: "F002" })],
+        channel_id: "C123CHAN",
+        thread_ts: "1778530504.140709",
+      }),
+    );
+  });
+
+  it("does not complete upload when transient presigned upload retries exhaust", async () => {
+    const client = createUploadTestClient();
+    vi.mocked(globalThis.fetch).mockResolvedValue(new Response("timeout", { status: 504 }));
+
+    await expect(
+      sendMessageSlack("channel:C123CHAN", "caption", {
+        token: "xoxb-test",
+        client,
+        mediaUrl: "/tmp/threaded.png",
+        threadTs: "1778530504.140709",
+      }),
+    ).rejects.toThrow(/Failed to upload file: HTTP 504/);
+
+    expect(client.files.getUploadURLExternal).toHaveBeenCalledTimes(3);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(3);
+    expect(client.files.completeUploadExternal).not.toHaveBeenCalled();
+  });
+
+  it("retries transient completeUploadExternal failures with the same thread payload", async () => {
+    const client = createUploadTestClient();
+    client.files.completeUploadExternal
+      .mockRejectedValueOnce(Object.assign(new Error("gateway timeout"), { statusCode: 504 }))
+      .mockResolvedValueOnce({ ok: true });
+
+    await sendMessageSlack("channel:C123CHAN", "caption", {
+      token: "xoxb-test",
+      client,
+      mediaUrl: "/tmp/threaded.png",
+      threadTs: "1778530504.140709",
+    });
+
+    expect(client.files.completeUploadExternal).toHaveBeenCalledTimes(2);
+    expect(client.files.completeUploadExternal).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        files: [expect.objectContaining({ id: "F001" })],
+        channel_id: "C123CHAN",
+        thread_ts: "1778530504.140709",
+      }),
+    );
+    expect(client.files.completeUploadExternal).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        files: [expect.objectContaining({ id: "F001" })],
+        channel_id: "C123CHAN",
+        thread_ts: "1778530504.140709",
+      }),
+    );
+  });
 });

@@ -29,6 +29,100 @@ const SLACK_UPLOAD_SSRF_POLICY = {
   allowedHostnames: ["*.slack.com", "*.slack-edge.com", "*.slack-files.com"],
   allowRfc2544BenchmarkRange: true,
 };
+const SLACK_UPLOAD_ATTEMPTS = 3;
+const SLACK_UPLOAD_RETRY_BASE_MS = 250;
+const SLACK_UPLOAD_RETRY_MAX_DELAY_MS = 2_000;
+
+class SlackUploadHttpError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+    this.name = "SlackUploadHttpError";
+  }
+}
+
+function isRetryableSlackUploadStatus(status: number): boolean {
+  return status === 429 || status >= 500;
+}
+
+function getSlackUploadErrorStatus(error: unknown): number | undefined {
+  if (error instanceof SlackUploadHttpError) {
+    return error.status;
+  }
+  if (typeof error === "object" && error !== null) {
+    const maybeStatus = error as { statusCode?: unknown; data?: { statusCode?: unknown } };
+    if (typeof maybeStatus.statusCode === "number") {
+      return maybeStatus.statusCode;
+    }
+    if (typeof maybeStatus.data?.statusCode === "number") {
+      return maybeStatus.data.statusCode;
+    }
+  }
+  if (error instanceof Error) {
+    const match = /\bHTTP (\d{3})\b/i.exec(error.message);
+    if (match?.[1]) {
+      return Number.parseInt(match[1], 10);
+    }
+  }
+  return undefined;
+}
+
+function isLikelySlackUploadNetworkError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+  const message = error.message.toLowerCase();
+  return (
+    error.name === "AbortError" ||
+    error.name === "TimeoutError" ||
+    message.includes("fetch failed") ||
+    message.includes("network") ||
+    message.includes("timeout") ||
+    message.includes("timed out") ||
+    message.includes("econn") ||
+    message.includes("enotfound") ||
+    message.includes("socket")
+  );
+}
+
+function isRetryableSlackUploadError(error: unknown): boolean {
+  const status = getSlackUploadErrorStatus(error);
+  if (typeof status === "number") {
+    return isRetryableSlackUploadStatus(status);
+  }
+  return isLikelySlackUploadNetworkError(error);
+}
+
+async function delaySlackUploadRetry(ms: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function slackUploadRetryDelayMs(attempt: number): number {
+  return Math.min(SLACK_UPLOAD_RETRY_BASE_MS * 2 ** (attempt - 1), SLACK_UPLOAD_RETRY_MAX_DELAY_MS);
+}
+
+async function withSlackUploadRetry<T>(
+  label: string,
+  operation: (attempt: number) => Promise<T>,
+): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= SLACK_UPLOAD_ATTEMPTS; attempt += 1) {
+    try {
+      return await operation(attempt);
+    } catch (error) {
+      lastError = error;
+      if (attempt >= SLACK_UPLOAD_ATTEMPTS || !isRetryableSlackUploadError(error)) {
+        throw error;
+      }
+      const message = error instanceof Error ? error.message : String(error);
+      logVerbose(`slack upload: retrying ${label} attempt=${attempt + 1} error=${message}`);
+      await delaySlackUploadRetry(slackUploadRetryDelayMs(attempt));
+    }
+  }
+  throw lastError;
+}
 const SLACK_DM_CHANNEL_CACHE_MAX = 1024;
 const slackDmChannelCache = new Map<string, string>();
 
@@ -56,6 +150,7 @@ type SlackSendOpts = {
   mediaAccess?: {
     localRoots?: readonly string[];
     readFile?: (filePath: string) => Promise<Buffer>;
+    workspaceDir?: string;
   };
   uploadFileName?: string;
   uploadTitle?: string;
@@ -243,6 +338,7 @@ async function uploadSlackFile(params: {
   mediaAccess?: {
     localRoots?: readonly string[];
     readFile?: (filePath: string) => Promise<Buffer>;
+    workspaceDir?: string;
   };
   uploadFileName?: string;
   uploadTitle?: string;
@@ -263,48 +359,60 @@ async function uploadSlackFile(params: {
   // Use the 3-step upload flow (getUploadURLExternal -> POST -> completeUploadExternal)
   // instead of files.uploadV2 which relies on the deprecated files.upload endpoint
   // and can fail with missing_scope even when files:write is granted.
-  const uploadUrlResp = await params.client.files.getUploadURLExternal({
-    filename: uploadFileName,
-    length: buffer.length,
-  });
-  if (!uploadUrlResp.ok || !uploadUrlResp.upload_url || !uploadUrlResp.file_id) {
-    throw new Error(`Failed to get upload URL: ${uploadUrlResp.error ?? "unknown error"}`);
-  }
-
-  // Upload the file content to the presigned URL
-  const uploadBody = new Uint8Array(buffer) as BodyInit;
-  const { response: uploadResp, release } = await fetchWithSsrFGuard(
-    withTrustedEnvProxyGuardedFetchMode({
-      url: uploadUrlResp.upload_url,
-      init: {
-        method: "POST",
-        ...(contentType ? { headers: { "Content-Type": contentType } } : {}),
-        body: uploadBody,
-      },
-      policy: SLACK_UPLOAD_SSRF_POLICY,
-      auditContext: "slack-upload-file",
-    }),
-  );
-  try {
-    if (!uploadResp.ok) {
-      throw new Error(`Failed to upload file: HTTP ${uploadResp.status}`);
+  const uploadUrlResp = await withSlackUploadRetry("get-url-and-transfer", async () => {
+    const response = await params.client.files.getUploadURLExternal({
+      filename: uploadFileName,
+      length: buffer.length,
+    });
+    if (!response.ok || !response.upload_url || !response.file_id) {
+      throw new Error(`Failed to get upload URL: ${response.error ?? "unknown error"}`);
     }
-  } finally {
-    await release();
-  }
 
-  // Complete the upload and share to channel/thread
-  const completeResp = await params.client.files.completeUploadExternal({
-    files: [{ id: uploadUrlResp.file_id, title: uploadTitle }],
-    channel_id: params.channelId,
-    ...(params.caption ? { initial_comment: params.caption } : {}),
-    ...(params.threadTs ? { thread_ts: params.threadTs } : {}),
+    // Upload URLs can be single-use, so a retry starts over with a fresh file_id.
+    const uploadBody = new Uint8Array(buffer) as BodyInit;
+    const { response: uploadResp, release } = await fetchWithSsrFGuard(
+      withTrustedEnvProxyGuardedFetchMode({
+        url: response.upload_url,
+        init: {
+          method: "POST",
+          ...(contentType ? { headers: { "Content-Type": contentType } } : {}),
+          body: uploadBody,
+        },
+        policy: SLACK_UPLOAD_SSRF_POLICY,
+        auditContext: "slack-upload-file",
+      }),
+    );
+    try {
+      if (!uploadResp.ok) {
+        throw new SlackUploadHttpError(
+          `Failed to upload file: HTTP ${uploadResp.status}`,
+          uploadResp.status,
+        );
+      }
+    } finally {
+      await release();
+    }
+
+    return {
+      fileId: response.file_id,
+    };
   });
-  if (!completeResp.ok) {
-    throw new Error(`Failed to complete upload: ${completeResp.error ?? "unknown error"}`);
-  }
 
-  return uploadUrlResp.file_id;
+  // Complete the upload and share to channel/thread. Retry keeps the same file_id
+  // and payload to avoid creating duplicate uploaded files after a transient response.
+  await withSlackUploadRetry("complete", async () => {
+    const completeResp = await params.client.files.completeUploadExternal({
+      files: [{ id: uploadUrlResp.fileId, title: uploadTitle }],
+      channel_id: params.channelId,
+      ...(params.caption ? { initial_comment: params.caption } : {}),
+      ...(params.threadTs ? { thread_ts: params.threadTs } : {}),
+    });
+    if (!completeResp.ok) {
+      throw new Error(`Failed to complete upload: ${completeResp.error ?? "unknown error"}`);
+    }
+  });
+
+  return uploadUrlResp.fileId;
 }
 
 export async function sendMessageSlack(

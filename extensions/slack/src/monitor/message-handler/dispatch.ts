@@ -1,4 +1,8 @@
-import { resolveHumanDelayConfig } from "openclaw/plugin-sdk/agent-runtime";
+import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/agent-media-payload";
+import {
+  resolveAgentWorkspaceDir,
+  resolveHumanDelayConfig,
+} from "openclaw/plugin-sdk/agent-runtime";
 import {
   createStatusReactionController,
   DEFAULT_TIMING,
@@ -189,6 +193,14 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
 
   // Resolve agent identity for Slack chat:write.customize overrides.
   const outboundIdentity = resolveAgentOutboundIdentity(cfg, route.agentId);
+  const mediaLocalRoots = getAgentScopedMediaLocalRoots(cfg, route.agentId);
+  const mediaWorkspaceDir = route.agentId
+    ? resolveAgentWorkspaceDir(cfg, route.agentId)
+    : undefined;
+  const mediaAccess = {
+    ...(mediaLocalRoots.length ? { localRoots: mediaLocalRoots } : {}),
+    ...(mediaWorkspaceDir ? { workspaceDir: mediaWorkspaceDir } : {}),
+  };
   const slackIdentity = outboundIdentity
     ? {
         username: outboundIdentity.name,
@@ -425,6 +437,8 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
       textLimit: ctx.textLimit,
       replyThreadTs,
       replyToMode: prepared.replyToMode,
+      mediaAccess,
+      mediaLocalRoots,
       ...(slackIdentity ? { identity: slackIdentity } : {}),
     });
     observedReplyDelivery = true;
