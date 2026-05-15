@@ -14,6 +14,7 @@ const listSlackReactions = vi.fn(async (..._args: unknown[]) => ({}));
 const pinSlackMessage = vi.fn(async (..._args: unknown[]) => ({}));
 const reactSlackMessage = vi.fn(async (..._args: unknown[]) => ({}));
 const readSlackMessages = vi.fn(async (..._args: unknown[]) => ({}));
+const recordSlackThreadParticipation = vi.fn();
 const removeOwnSlackReactions = vi.fn(async (..._args: unknown[]) => ["thumbsup"]);
 const removeSlackReaction = vi.fn(async (..._args: unknown[]) => ({}));
 const sendSlackMessage = vi.fn(async (..._args: unknown[]) => ({ channelId: "C123" }));
@@ -102,6 +103,7 @@ describe("handleSlackAction", () => {
       pinSlackMessage,
       reactSlackMessage,
       readSlackMessages,
+      recordSlackThreadParticipation,
       removeOwnSlackReactions,
       removeSlackReaction,
       sendSlackMessage,
@@ -629,6 +631,65 @@ describe("handleSlackAction", () => {
         blocks: undefined,
       }),
     );
+  });
+
+  it("auto-injects threadTs for current DM user upload targets", async () => {
+    sendSlackMessage.mockResolvedValueOnce({ channelId: "D123" });
+
+    await handleSlackAction(
+      {
+        action: "uploadFile",
+        to: "user:U123",
+        filePath: "/tmp/self-portrait.png",
+        initialComment: "Here it is",
+      },
+      slackConfig(),
+      {
+        currentChannelId: "D123",
+        currentUserId: "U123",
+        currentThreadTs: "1111111111.111111",
+        replyToMode: "all",
+      },
+    );
+
+    expect(sendSlackMessage).toHaveBeenCalledWith("user:U123", "Here it is", {
+      cfg: expect.any(Object),
+      mediaUrl: "/tmp/self-portrait.png",
+      mediaLocalRoots: undefined,
+      mediaReadFile: undefined,
+      threadTs: "1111111111.111111",
+    });
+    expect(recordSlackThreadParticipation).toHaveBeenCalledWith(
+      "default",
+      "D123",
+      "1111111111.111111",
+    );
+  });
+
+  it("does not auto-inject threadTs for other DM user upload targets", async () => {
+    await handleSlackAction(
+      {
+        action: "uploadFile",
+        to: "user:U999",
+        filePath: "/tmp/self-portrait.png",
+        initialComment: "Here it is",
+      },
+      slackConfig(),
+      {
+        currentChannelId: "D123",
+        currentUserId: "U123",
+        currentThreadTs: "1111111111.111111",
+        replyToMode: "all",
+      },
+    );
+
+    expect(sendSlackMessage).toHaveBeenCalledWith("user:U999", "Here it is", {
+      cfg: expect.any(Object),
+      mediaUrl: "/tmp/self-portrait.png",
+      mediaLocalRoots: undefined,
+      mediaReadFile: undefined,
+      threadTs: undefined,
+    });
   });
 
   it("explicit threadTs overrides context threadTs", async () => {

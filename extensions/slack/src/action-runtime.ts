@@ -1,6 +1,6 @@
 import type { AgentToolResult } from "@mariozechner/pi-agent-core";
 import { isSingleUseReplyToMode } from "openclaw/plugin-sdk/reply-reference";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/text-runtime";
+import { slackTargetMatchesCurrentThread } from "./action-threading.js";
 import { parseSlackBlocksInput } from "./blocks-input.js";
 import {
   createActionGate,
@@ -12,7 +12,8 @@ import {
   type OpenClawConfig,
   withNormalizedTimestamp,
 } from "./runtime-api.js";
-import { parseSlackTarget, resolveSlackChannelId } from "./targets.js";
+import { recordSlackThreadParticipation } from "./sent-thread-cache.js";
+import { resolveSlackChannelId } from "./targets.js";
 
 const messagingActions = new Set([
   "sendMessage",
@@ -25,19 +26,6 @@ const messagingActions = new Set([
 
 const reactionsActions = new Set(["react", "reactions"]);
 const pinActions = new Set(["pinMessage", "unpinMessage", "listPins"]);
-
-function sameSlackChannelTarget(targetChannel: string, currentChannelId: string): boolean {
-  const parsedTarget = parseSlackTarget(targetChannel, {
-    defaultKind: "channel",
-  });
-  if (!parsedTarget || parsedTarget.kind !== "channel") {
-    return false;
-  }
-  return (
-    normalizeLowercaseStringOrEmpty(parsedTarget.id) ===
-    normalizeLowercaseStringOrEmpty(currentChannelId)
-  );
-}
 
 type SlackActionsRuntimeModule = typeof import("./actions.runtime.js");
 type SlackAccountsRuntimeModule = typeof import("./accounts.runtime.js");
@@ -77,6 +65,7 @@ export const slackActionRuntime = {
   pinSlackMessage: createLazySlackAction("pinSlackMessage"),
   reactSlackMessage: createLazySlackAction("reactSlackMessage"),
   readSlackMessages: createLazySlackAction("readSlackMessages"),
+  recordSlackThreadParticipation,
   removeOwnSlackReactions: createLazySlackAction("removeOwnSlackReactions"),
   removeSlackReaction: createLazySlackAction("removeSlackReaction"),
   sendSlackMessage: createLazySlackAction("sendSlackMessage"),
@@ -86,6 +75,8 @@ export const slackActionRuntime = {
 export type SlackActionContext = {
   /** Current channel ID for auto-threading. */
   currentChannelId?: string;
+  /** Current Slack user ID for DM auto-threading. */
+  currentUserId?: string;
   /** Current thread timestamp for auto-threading. */
   currentThreadTs?: string;
   /** Reply-to mode for auto-threading. */
@@ -117,8 +108,7 @@ function resolveThreadTsFromContext(
     return undefined;
   }
 
-  // Different channel - don't inject
-  if (!sameSlackChannelTarget(targetChannel, context.currentChannelId)) {
+  if (!slackTargetMatchesCurrentThread({ to: targetChannel, toolContext: context })) {
     return undefined;
   }
 
@@ -274,10 +264,11 @@ export async function handleSlackAction(
         // Keep "first" mode consistent even when the agent explicitly provided
         // threadTs: once we send a message to the current channel, consider the
         // first reply "used" so later tool calls don't auto-thread again.
-        if (context?.hasRepliedRef && context.currentChannelId) {
-          if (sameSlackChannelTarget(to, context.currentChannelId)) {
-            context.hasRepliedRef.value = true;
-          }
+        if (
+          context?.hasRepliedRef &&
+          slackTargetMatchesCurrentThread({ to, toolContext: context })
+        ) {
+          context.hasRepliedRef.value = true;
         }
 
         return jsonResult({ ok: true, result });
@@ -308,10 +299,19 @@ export async function handleSlackAction(
           ...(title ? { uploadTitle: title } : {}),
         });
 
-        if (context?.hasRepliedRef && context.currentChannelId) {
-          if (sameSlackChannelTarget(to, context.currentChannelId)) {
-            context.hasRepliedRef.value = true;
-          }
+        if (threadTs && result.channelId && account.accountId) {
+          slackActionRuntime.recordSlackThreadParticipation(
+            account.accountId,
+            result.channelId,
+            threadTs,
+          );
+        }
+
+        if (
+          context?.hasRepliedRef &&
+          slackTargetMatchesCurrentThread({ to, toolContext: context })
+        ) {
+          context.hasRepliedRef.value = true;
         }
 
         return jsonResult({ ok: true, result });

@@ -19,7 +19,7 @@ function secondsBetween(start, end) {
 }
 
 function formatSeconds(value) {
-  return value === null ? "" : `${value}s`;
+  return value === null ? "" : `${String(value)}s`;
 }
 
 function normalizeRun(run) {
