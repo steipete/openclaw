@@ -5,6 +5,7 @@ import {
   SILENT_REPLY_TOKEN,
   type ChunkMode,
 } from "openclaw/plugin-sdk/reply-chunking";
+import type { OutboundMediaAccess } from "openclaw/plugin-sdk/media-runtime";
 import {
   deliverTextOrMediaReply,
   resolveSendableOutboundReplyParts,
@@ -43,6 +44,9 @@ export async function deliverReplies(params: {
   replyThreadTs?: string;
   replyToMode: "off" | "first" | "all" | "batched";
   identity?: SlackSendIdentity;
+  mediaAccess?: OutboundMediaAccess;
+  mediaLocalRoots?: readonly string[];
+  mediaReadFile?: (filePath: string) => Promise<Buffer>;
 }) {
   for (const payload of params.replies) {
     const threadTs = resolveDeliveredSlackReplyThreadTs({
@@ -102,6 +106,9 @@ export async function deliverReplies(params: {
           cfg: params.cfg,
           token: params.token,
           mediaUrl,
+          mediaAccess: params.mediaAccess,
+          mediaLocalRoots: params.mediaLocalRoots,
+          mediaReadFile: params.mediaReadFile,
           threadTs,
           accountId: params.accountId,
           ...(params.identity ? { identity: params.identity } : {}),
