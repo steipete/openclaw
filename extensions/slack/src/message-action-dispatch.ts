@@ -26,15 +26,18 @@ export async function handleSlackMessageAction(params: {
   const { providerId, ctx, invoke, normalizeChannelId, includeReadThreadId = false } = params;
   const { action, cfg, params: actionParams } = ctx;
   const accountId = ctx.accountId ?? undefined;
+  const readTargetParam = () =>
+    readStringParam(actionParams, "to") ?? readStringParam(actionParams, "target");
   const resolveChannelId = () => {
     const channelId =
       readStringParam(actionParams, "channelId") ??
+      readTargetParam() ??
       readStringParam(actionParams, "to", { required: true });
     return normalizeChannelId ? normalizeChannelId(channelId) : channelId;
   };
 
   if (action === "send") {
-    const to = readStringParam(actionParams, "to", { required: true });
+    const to = readTargetParam() ?? readStringParam(actionParams, "to", { required: true });
     const content = readStringParam(actionParams, "message", {
       required: false,
       allowEmpty: true,
@@ -200,7 +203,7 @@ export async function handleSlackMessageAction(params: {
   }
 
   if (action === "upload-file") {
-    const to = readStringParam(actionParams, "to") ?? resolveChannelId();
+    const to = readTargetParam() ?? resolveChannelId();
     const filePath =
       readStringParam(actionParams, "filePath", { trim: false }) ??
       readStringParam(actionParams, "path", { trim: false }) ??

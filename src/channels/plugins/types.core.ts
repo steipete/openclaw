@@ -412,6 +412,8 @@ export type ChannelThreadingContext = {
 
 export type ChannelThreadingToolContext = {
   currentChannelId?: string;
+  /** Platform-native user id for the current direct-message turn, when known. */
+  currentUserId?: string;
   currentGraphChannelId?: string;
   currentChannelProvider?: ChannelId;
   currentThreadTs?: string;

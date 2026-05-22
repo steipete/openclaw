@@ -175,4 +175,31 @@ describe("handleSlackMessageAction", () => {
       expect.any(Object),
     );
   });
+
+  it("maps upload-file target alias to the internal to field", async () => {
+    const invoke = createInvokeSpy();
+
+    await handleSlackMessageAction({
+      providerId: "slack",
+      ctx: {
+        action: "upload-file",
+        cfg: {},
+        params: {
+          target: "U0AT934Q9K9",
+          filePath: "/tmp/image.png",
+        },
+      } as never,
+      invoke: invoke as never,
+    });
+
+    expect(invoke).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "uploadFile",
+        to: "U0AT934Q9K9",
+        filePath: "/tmp/image.png",
+      }),
+      expect.any(Object),
+      undefined,
+    );
+  });
 });

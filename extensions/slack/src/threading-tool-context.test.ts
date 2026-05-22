@@ -165,6 +165,7 @@ describe("buildSlackThreadingToolContext", () => {
       },
     });
     expect(result.currentChannelId).toBe("D8SRXRDNF");
+    expect(result.currentUserId).toBe("U8SUVSVGS");
   });
 
   it("returns undefined currentChannelId when neither channel: To nor NativeChannelId is set", () => {

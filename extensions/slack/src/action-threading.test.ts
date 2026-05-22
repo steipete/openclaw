@@ -3,6 +3,7 @@ import { resolveSlackAutoThreadId } from "./action-threading.js";
 
 type SlackThreadingToolContext = {
   currentChannelId?: string;
+  currentUserId?: string;
   currentThreadTs?: string;
   replyToMode?: "off" | "first" | "all" | "batched";
   hasRepliedRef?: { value: boolean };
@@ -37,6 +38,27 @@ describe("resolveSlackAutoThreadId", () => {
       resolveSlackAutoThreadId({
         to: "user:U123",
         toolContext: createToolContext(),
+      }),
+    ).toBeUndefined();
+  });
+
+  it("uses the active thread for the current DM user target only", () => {
+    expect(
+      resolveSlackAutoThreadId({
+        to: "user:U123",
+        toolContext: createToolContext({
+          currentChannelId: "D123",
+          currentUserId: "U123",
+        }),
+      }),
+    ).toBe("thread-1");
+    expect(
+      resolveSlackAutoThreadId({
+        to: "user:U999",
+        toolContext: createToolContext({
+          currentChannelId: "D123",
+          currentUserId: "U123",
+        }),
       }),
     ).toBeUndefined();
   });
