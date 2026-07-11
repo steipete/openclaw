@@ -73,6 +73,7 @@ jobs:
             clobber="false"
             auto_release="true"
           fi
+          checkout_sha="$(git rev-parse HEAD)"
           if [[ ! "${release_tag}" =~ ^v[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*((-beta\.[1-9][0-9]*)|(-[1-9][0-9]*))?$ ]]; then
             echo "Invalid release tag format: ${release_tag}" >&2
             exit 1
@@ -83,6 +84,28 @@ jobs:
             echo "clobber=${clobber}"
             echo "auto_release=${auto_release}"
           } >> "${GITHUB_OUTPUT}"
+          if git rev-parse --verify "refs/tags/${release_tag}^{commit}" >/dev/null 2>&1; then
+            tag_sha="$(git rev-parse "refs/tags/${release_tag}^{commit}")"
+            if [[ "${tag_sha}" != "${checkout_sha}" ]]; then
+              echo "Release tag ${release_tag} points to ${tag_sha}, expected ${checkout_sha}" >&2
+              exit 1
+            fi
+          else
+            git tag "${release_tag}" "${checkout_sha}"
+          fi
+          echo "OPENCLAW_BUNDLE_FORK_REF=${release_tag}" >> "${GITHUB_ENV}"
+
+      - name: Resolve exact upstream source SHA
+        run: |
+          set -euo pipefail
+          git remote add upstream https://github.com/openclaw/openclaw.git
+          git fetch --no-tags upstream main
+          upstream_sha="$(git merge-base HEAD refs/remotes/upstream/main)"
+          if [[ ! "${upstream_sha}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Unable to resolve exact upstream SHA" >&2
+            exit 1
+          fi
+          echo "OPENCLAW_BUNDLE_UPSTREAM_SHA=${upstream_sha}" >> "${GITHUB_ENV}"
 
       - name: Setup Node environment
         uses: ./.github/actions/setup-node-env
@@ -90,6 +113,16 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           pnpm-version: ${{ env.PNPM_VERSION }}
           install-bun: "true"
+
+      - name: Verify exact external plugin release
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          published="$(npm view "@openclaw/slack@${version}" version)"
+          if [[ "${published}" != "${version}" ]]; then
+            echo "Publish @openclaw/slack@${version} before building the sandbox bundle" >&2
+            exit 1
+          fi
 
       - name: Build OpenClaw
         run: pnpm build
@@ -134,13 +167,18 @@ jobs:
             echo "GitHub Release ${RELEASE_TAG} does not exist" >&2
             exit 1
           fi
-          git tag "${RELEASE_TAG}" "${GITHUB_SHA}"
+          checkout_sha="$(git rev-parse HEAD)"
+          tag_sha="$(git rev-parse "refs/tags/${RELEASE_TAG}^{commit}")"
+          if [[ "${tag_sha}" != "${checkout_sha}" ]]; then
+            echo "Release tag ${RELEASE_TAG} points to ${tag_sha}, expected ${checkout_sha}" >&2
+            exit 1
+          fi
           git push origin "refs/tags/${RELEASE_TAG}"
           gh release create "${RELEASE_TAG}" \
             --repo "${GITHUB_REPOSITORY}" \
-            --target "${GITHUB_SHA}" \
+            --target "${checkout_sha}" \
             --title "OpenClaw sandbox bundle ${RELEASE_TAG}" \
-            --notes "Automated sandbox bundle release for ${GITHUB_SHA}."
+            --notes "Automated sandbox bundle release for ${checkout_sha}."
 
       - name: Upload sandbox bundle assets to GitHub Release
         if: ${{ steps.release.outputs.upload_release_assets == 'true' }}
@@ -174,6 +212,10 @@ jobs:
             --pattern 'bundle-deps.tar.gz' \
             --pattern 'bundle-openclaw-pkg.tar.gz' \
             --pattern 'channels.tar.gz' \
+            --pattern 'runtime-plugins.tar.gz' \
+            --pattern 'external-plugins.json' \
+            --pattern 'external-plugin-*.tgz' \
+            --pattern 'bundle-capabilities.json' \
             --pattern 'channel-catalog.json' \
             --pattern 'workspace-templates.tar.gz' \
             --pattern 'channel-shared-chunks.tar.gz' \

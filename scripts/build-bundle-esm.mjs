@@ -31,6 +31,9 @@ const RELEASE_TAR_REQUIRED_FILES = [
   "bundle-deps.tar.gz",
   "bundle-openclaw-pkg.tar.gz",
   "channels.tar.gz",
+  "runtime-plugins.tar.gz",
+  "external-plugins.json",
+  "bundle-capabilities.json",
   "release.json",
   "bundle-contract.json",
 ];
@@ -101,6 +104,18 @@ async function loadBundleProfile() {
   }
   assertObject(manifest.disabledOptionalNativeModules, "disabledOptionalNativeModules");
   assertStringArray(manifest.externalRuntimeDeps, "externalRuntimeDeps");
+  assertStringArray(manifest.runtimePluginIds, "runtimePluginIds");
+  assertStringArray(manifest.capabilities, "capabilities");
+  if (!Array.isArray(manifest.externalPlugins) || manifest.externalPlugins.length === 0) {
+    throw new Error(`bundle profile ${PROFILE_NAME} has invalid externalPlugins`);
+  }
+  const source = assertObject(manifest.source, "source");
+  if (typeof source.forkRepository !== "string" || !source.forkRepository) {
+    throw new Error(`bundle profile ${PROFILE_NAME} has invalid source.forkRepository`);
+  }
+  if (typeof source.upstreamRepository !== "string" || !source.upstreamRepository) {
+    throw new Error(`bundle profile ${PROFILE_NAME} has invalid source.upstreamRepository`);
+  }
   if (!Array.isArray(manifest.disabledPublicSurfaces)) {
     throw new Error(`bundle profile ${PROFILE_NAME} has invalid disabledPublicSurfaces`);
   }
@@ -179,9 +194,134 @@ function gitRevParse(ref) {
   return value || null;
 }
 
+function gitMergeBase(left, right) {
+  const result = spawnSync("git", ["merge-base", left, right], {
+    cwd: REPO_ROOT,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
+  if (result.status !== 0) {
+    return null;
+  }
+  return result.stdout.trim() || null;
+}
+
+function gitExactTag(ref) {
+  const result = spawnSync("git", ["describe", "--tags", "--exact-match", ref], {
+    cwd: REPO_ROOT,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
+  if (result.status !== 0) {
+    return null;
+  }
+  return result.stdout.trim() || null;
+}
+
+function gitIsAncestor(ancestor, descendant) {
+  return (
+    spawnSync("git", ["merge-base", "--is-ancestor", ancestor, descendant], {
+      cwd: REPO_ROOT,
+      stdio: "ignore",
+    }).status === 0
+  );
+}
+
+function gitShowFile(ref, fileName) {
+  const result = spawnSync("git", ["show", `${ref}:${fileName}`], {
+    cwd: REPO_ROOT,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
+  if (result.status !== 0) {
+    throw new Error(`unable to read ${fileName} from ${ref}`);
+  }
+  return result.stdout;
+}
+
+function requireGitSha(value, label) {
+  if (!/^[a-f0-9]{40}$/u.test(value ?? "")) {
+    throw new Error(`${label} must be an exact 40-character lowercase git SHA`);
+  }
+  return value;
+}
+
+function resolveSourceIdentity(manifest, packageName, packageVersion) {
+  const forkSha = requireGitSha(gitRevParse("HEAD"), "fork SHA");
+  const upstreamSha = requireGitSha(
+    process.env.OPENCLAW_BUNDLE_UPSTREAM_SHA ?? gitMergeBase("HEAD", "upstream/main"),
+    "upstream SHA (set OPENCLAW_BUNDLE_UPSTREAM_SHA or fetch upstream/main)",
+  );
+  if (!gitIsAncestor(upstreamSha, forkSha)) {
+    throw new Error(`upstream SHA ${upstreamSha} is not an ancestor of fork SHA ${forkSha}`);
+  }
+  const upstreamPackage = JSON.parse(gitShowFile(upstreamSha, "package.json"));
+  if (typeof upstreamPackage.version !== "string" || !upstreamPackage.version) {
+    throw new Error(`upstream ${upstreamSha} package.json lacks version`);
+  }
+  const forkRef =
+    process.env.OPENCLAW_BUNDLE_FORK_REF ??
+    process.env.INPUT_TAG ??
+    gitExactTag("HEAD") ??
+    process.env.GITHUB_REF_NAME;
+  if (typeof forkRef !== "string" || forkRef.length === 0) {
+    throw new Error(
+      "fork ref is required (set OPENCLAW_BUNDLE_FORK_REF or build an exact tagged commit)",
+    );
+  }
+  if (gitRevParse(`${forkRef}^{commit}`) !== forkSha) {
+    throw new Error(`fork ref ${forkRef} does not resolve to fork SHA ${forkSha}`);
+  }
+  return {
+    package: { name: packageName, version: packageVersion },
+    source: {
+      fork: {
+        repository: manifest.source.forkRepository,
+        ref: forkRef,
+        sha: forkSha,
+      },
+      upstream: {
+        repository: manifest.source.upstreamRepository,
+        version: upstreamPackage.version,
+        sha: upstreamSha,
+      },
+    },
+  };
+}
+
 async function sha256File(filePath) {
   const data = await readFile(filePath);
   return createHash("sha256").update(data).digest("hex");
+}
+
+async function loadExternalPluginManifest(manifest, packageVersion) {
+  const external = await readJson(path.join(OUT_DIR, "external-plugins.json"));
+  if (external.schemaVersion !== 1 || !Array.isArray(external.plugins)) {
+    throw new Error("external-plugins.json has invalid schemaVersion or plugins");
+  }
+  const expectedById = new Map(
+    manifest.externalPlugins.map((plugin) => [plugin.id, plugin.packageName]),
+  );
+  if (external.plugins.length !== expectedById.size) {
+    throw new Error("external-plugins.json package count does not match bundle profile");
+  }
+  for (const plugin of external.plugins) {
+    if (
+      expectedById.get(plugin.id) !== plugin.packageName ||
+      plugin.version !== packageVersion ||
+      plugin.spec !== `${plugin.packageName}@${packageVersion}` ||
+      typeof plugin.artifact !== "string" ||
+      path.basename(plugin.artifact) !== plugin.artifact ||
+      typeof plugin.sha256 !== "string"
+    ) {
+      throw new Error(`external-plugins.json has invalid identity for ${plugin?.id ?? "plugin"}`);
+    }
+    const actualSha = await sha256File(path.join(OUT_DIR, plugin.artifact));
+    if (actualSha !== plugin.sha256) {
+      throw new Error(`external plugin artifact digest mismatch for ${plugin.id}`);
+    }
+  }
+  return external;
 }
 
 function resolveEsbuildLoader(filePath) {
@@ -288,6 +428,13 @@ function listTar(args, cwd) {
     throw new Error(`tar ${args.join(" ")} exited with code ${result.status ?? result.signal}`);
   }
   return result.stdout.trim().split(/\r?\n/u).filter(Boolean);
+}
+
+function listPluginIdsFromTar(fileName) {
+  return listTar(["-tzf", fileName], OUT_DIR)
+    .filter((entry) => /^[^/]+\/package\.json$/u.test(entry))
+    .map((entry) => entry.slice(0, -"/package.json".length))
+    .toSorted((left, right) => left.localeCompare(right));
 }
 
 async function walkFiles(root) {
@@ -607,6 +754,8 @@ async function writeOpenClawPackageSidecar(subpaths) {
 async function writeBundleContract({
   manifest,
   version,
+  sourceIdentity,
+  externalPlugins,
   pluginSdkSubpaths,
   runtimeDeps,
   outputSizes,
@@ -617,6 +766,11 @@ async function writeBundleContract({
       {
         profile: manifest.profile,
         packageVersion: version,
+        package: sourceIdentity.package,
+        source: sourceIdentity.source,
+        capabilities: manifest.capabilities,
+        runtimePluginIds: manifest.runtimePluginIds,
+        externalPlugins,
         pluginSdkSubpaths,
         disabledPublicSurfaces: manifest.disabledPublicSurfaces,
         externalRuntimeDeps: runtimeDeps,
@@ -627,6 +781,84 @@ async function writeBundleContract({
           openclawTar: { path: "bundle-openclaw-pkg.tar.gz", bytes: outputSizes.openclawTar },
           releaseTar: { path: "openclaw-release.tar.gz", bytes: outputSizes.releaseTar },
         },
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+}
+
+async function writeBundleCapabilities({ manifest, sourceIdentity, externalPlugins }) {
+  const channelPluginIds = listPluginIdsFromTar("channels.tar.gz");
+  const runtimePluginIds = listPluginIdsFromTar("runtime-plugins.tar.gz");
+  const missingRuntimePlugins = manifest.runtimePluginIds.filter(
+    (pluginId) => !runtimePluginIds.includes(pluginId),
+  );
+  if (missingRuntimePlugins.length > 0) {
+    throw new Error(
+      `runtime-plugins.tar.gz lacks required plugin(s): ${missingRuntimePlugins.join(", ")}`,
+    );
+  }
+  const pluginIds = [
+    ...new Set([
+      ...channelPluginIds,
+      ...runtimePluginIds,
+      ...externalPlugins.map((plugin) => plugin.id),
+    ]),
+  ].toSorted((left, right) => left.localeCompare(right));
+  const capabilities = [...new Set(manifest.capabilities)].toSorted((left, right) =>
+    left.localeCompare(right),
+  );
+  const bundleSource = await readFile(OUT_FILE, "utf8");
+  if (capabilities.includes("admin-http-rpc-v1")) {
+    const adminPluginSource = (
+      await Promise.all(
+        (
+          await walkFiles(path.join(DIST_EXTENSIONS_DIR, "admin-http-rpc"))
+        )
+          .filter((file) => file.endsWith(".js"))
+          .map((file) => readFile(file, "utf8")),
+      )
+    ).join("\n");
+    for (const method of [
+      "gateway.suspend.prepare",
+      "gateway.suspend.status",
+      "gateway.suspend.resume",
+    ]) {
+      if (!adminPluginSource.includes(method)) {
+        throw new Error(`cannot publish admin-http-rpc-v1: plugin lacks ${method}`);
+      }
+    }
+  }
+  const capabilityProofStrings = {
+    "cron-projection-v1": ["cron_reconciled"],
+    "gateway-suspend-v1": [
+      "gateway.suspend.prepare",
+      "gateway.suspend.status",
+      "gateway.suspend.resume",
+    ],
+  };
+  for (const [capability, proofStrings] of Object.entries(capabilityProofStrings)) {
+    if (!capabilities.includes(capability)) {
+      continue;
+    }
+    for (const proofString of proofStrings) {
+      if (!bundleSource.includes(proofString)) {
+        throw new Error(`cannot publish ${capability}: openclaw.bundle.mjs lacks ${proofString}`);
+      }
+    }
+  }
+  await writeFile(
+    path.join(OUT_DIR, "bundle-capabilities.json"),
+    JSON.stringify(
+      {
+        schemaVersion: 1,
+        profile: manifest.profile,
+        package: sourceIdentity.package,
+        source: sourceIdentity.source,
+        pluginIds,
+        externalPlugins,
+        capabilities,
       },
       null,
       2,
@@ -648,7 +880,18 @@ async function resolveReleaseTarFiles() {
       optionalFiles.push(fileName);
     }
   }
-  return [...RELEASE_TAR_REQUIRED_FILES, ...optionalFiles];
+  const external = await readJson(path.join(OUT_DIR, "external-plugins.json"));
+  const externalArtifacts = (external.plugins ?? []).map((plugin) => plugin.artifact);
+  for (const fileName of externalArtifacts) {
+    if (
+      typeof fileName !== "string" ||
+      path.basename(fileName) !== fileName ||
+      !(await stat(path.join(OUT_DIR, fileName)).catch(() => null))
+    ) {
+      throw new Error(`missing external plugin artifact: ${fileName}`);
+    }
+  }
+  return [...RELEASE_TAR_REQUIRED_FILES, ...externalArtifacts, ...optionalFiles];
 }
 
 async function createReleaseTarball() {
@@ -679,6 +922,8 @@ const main = async () => {
   if (typeof VERSION !== "string" || VERSION.length === 0) {
     throw new Error("package.json is missing a version field");
   }
+  const sourceIdentity = resolveSourceIdentity(manifest, pkg.name ?? "openclaw", VERSION);
+  const externalPluginManifest = await loadExternalPluginManifest(manifest, VERSION);
   log(`stamping bundle as OpenClaw ${VERSION}`);
 
   const { build } = await import("esbuild");
@@ -765,9 +1010,15 @@ const main = async () => {
     path.join(OUT_DIR, "release.json"),
     JSON.stringify(
       {
+        schemaVersion: 2,
         profile: manifest.profile,
-        upstreamSha: gitRevParse("upstream/main"),
-        forkSha: gitRevParse("HEAD"),
+        package: sourceIdentity.package,
+        source: sourceIdentity.source,
+        upstreamSha: sourceIdentity.source.upstream.sha,
+        forkSha: sourceIdentity.source.fork.sha,
+        forkRef: sourceIdentity.source.fork.ref,
+        capabilityManifest: "bundle-capabilities.json",
+        externalPlugins: externalPluginManifest.plugins,
         bundleSha256: await sha256File(OUT_FILE),
         builtAt: new Date().toISOString(),
       },
@@ -775,6 +1026,11 @@ const main = async () => {
       2,
     ) + "\n",
   );
+  await writeBundleCapabilities({
+    manifest,
+    sourceIdentity,
+    externalPlugins: externalPluginManifest.plugins,
+  });
 
   let releaseTarSize = 0;
   let releaseTarStat;
@@ -782,6 +1038,8 @@ const main = async () => {
     await writeBundleContract({
       manifest,
       version: VERSION,
+      sourceIdentity,
+      externalPlugins: externalPluginManifest.plugins,
       pluginSdkSubpaths,
       runtimeDeps,
       outputSizes: {

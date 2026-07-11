@@ -12,7 +12,8 @@ const REPO_ROOT = path.resolve(HERE, "..");
 const DEFAULT_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox", "release-assets");
 const FALLBACK_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox");
 const WALL_CLOCK_MS = 60_000;
-const REQUIRED_PLUGIN_IDS = ["slack"];
+const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack"];
+const REQUIRED_CAPABILITIES = ["admin-http-rpc-v1", "cron-projection-v1", "gateway-suspend-v1"];
 const FORBIDDEN_OUTPUT = [
   "Unable to resolve bundled plugin public surface",
   "Cannot find module",
@@ -113,7 +114,7 @@ function runBundle(cwd, homeDir, extensionsDir, extraEnv = {}, options = {}) {
     const start = performance.now();
     let output = "";
     let settled = false;
-    const child = spawn(process.execPath, ["openclaw.bundle.mjs"], {
+    const child = spawn(process.execPath, options.args ?? ["openclaw.bundle.mjs"], {
       cwd,
       env: {
         HOME: homeDir,
@@ -191,7 +192,15 @@ async function main() {
       await copyAsset(assetDir, tmpRoot, "openclaw.bundle.mjs");
     }
 
-    for (const sidecar of ["bundle-deps.tar.gz", "bundle-openclaw-pkg.tar.gz", "channels.tar.gz"]) {
+    for (const sidecar of [
+      "bundle-deps.tar.gz",
+      "bundle-openclaw-pkg.tar.gz",
+      "channels.tar.gz",
+      "runtime-plugins.tar.gz",
+      "bundle-capabilities.json",
+      "bundle-contract.json",
+      "external-plugins.json",
+    ]) {
       if (releaseTar) {
         await requireStagedAsset(tmpRoot, sidecar, releaseTar);
       } else if (!(await exists(path.join(tmpRoot, sidecar)))) {
@@ -201,6 +210,45 @@ async function main() {
     await extractTarball("bundle-deps.tar.gz", tmpRoot);
     await extractTarball("bundle-openclaw-pkg.tar.gz", tmpRoot);
     await extractTarball("channels.tar.gz", tmpRoot, extensionsDir);
+    await extractTarball("runtime-plugins.tar.gz", tmpRoot, extensionsDir);
+
+    const externalPlugins = JSON.parse(
+      await readFile(path.join(tmpRoot, "external-plugins.json"), "utf8"),
+    );
+    if (externalPlugins.schemaVersion !== 1 || !Array.isArray(externalPlugins.plugins)) {
+      throw new Error("external-plugins.json has invalid schemaVersion or plugins");
+    }
+    for (const plugin of externalPlugins.plugins) {
+      if (releaseTar) {
+        await requireStagedAsset(tmpRoot, plugin.artifact, releaseTar);
+      } else {
+        await copyAsset(assetDir, tmpRoot, plugin.artifact);
+      }
+      const installResult = await runBundle(
+        tmpRoot,
+        homeDir,
+        extensionsDir,
+        {
+          npm_config_audit: "false",
+          npm_config_fund: "false",
+          npm_config_offline: "true",
+        },
+        {
+          bundleSmoke: false,
+          args: [
+            "openclaw.bundle.mjs",
+            "plugins",
+            "install",
+            `npm-pack:${path.join(tmpRoot, plugin.artifact)}`,
+          ],
+        },
+      );
+      if (installResult.code !== 0) {
+        throw new Error(
+          `failed to install packaged plugin ${plugin.id}: ${installResult.code ?? installResult.signal}\n${installResult.output}`,
+        );
+      }
+    }
 
     if (
       !releaseTar &&
@@ -214,6 +262,25 @@ async function main() {
     }
 
     const contract = JSON.parse(await readFile(path.join(tmpRoot, "bundle-contract.json"), "utf8"));
+    const capabilities = JSON.parse(
+      await readFile(path.join(tmpRoot, "bundle-capabilities.json"), "utf8"),
+    );
+    if (capabilities.schemaVersion !== 1 || capabilities.profile !== "sandbox") {
+      throw new Error("bundle-capabilities.json has invalid schemaVersion or profile");
+    }
+    for (const capability of REQUIRED_CAPABILITIES) {
+      if (!capabilities.capabilities?.includes(capability)) {
+        throw new Error(`bundle-capabilities.json missing required capability ${capability}`);
+      }
+    }
+    for (const pluginId of REQUIRED_PLUGIN_IDS) {
+      if (!capabilities.pluginIds?.includes(pluginId)) {
+        throw new Error(`bundle-capabilities.json missing packaged plugin ${pluginId}`);
+      }
+    }
+    if (JSON.stringify(capabilities.externalPlugins) !== JSON.stringify(externalPlugins.plugins)) {
+      throw new Error("external plugin metadata differs across bundle manifests");
+    }
     const disabledPublicSurfaces = Array.isArray(contract.disabledPublicSurfaces)
       ? contract.disabledPublicSurfaces
       : [];
@@ -293,6 +360,7 @@ async function main() {
         assetDir: path.relative(REPO_ROOT, assetDir),
         elapsedMs: result.elapsedMs,
         bundleSmoke: smoke,
+        capabilities: capabilities.capabilities,
         pluginLoadProfileCount,
         publicSurfaceSmoke,
       }),

@@ -18,6 +18,9 @@ const REQUIRED_ASSETS = [
   ["bundle-deps.tar.gz", "runtime-deps"],
   ["bundle-openclaw-pkg.tar.gz", "openclaw-package-shim"],
   ["channels.tar.gz", "bundled-channel-extensions"],
+  ["runtime-plugins.tar.gz", "explicit-runtime-plugins"],
+  ["external-plugins.json", "external-plugin-metadata"],
+  ["bundle-capabilities.json", "bundle-capabilities"],
   ["channel-catalog.json", "channel-catalog"],
   ["workspace-templates.tar.gz", "workspace-templates"],
   ["control-ui.tar.gz", "control-ui-assets"],
@@ -153,7 +156,6 @@ async function main() {
     throw new Error("unable to resolve git HEAD sha");
   }
   const sha7 = sha.slice(0, 7);
-  const tag = process.env.INPUT_TAG || process.env.GITHUB_REF_NAME || "v" + packageVersion;
   const canonicalTarName = "openclaw-sandbox-bundle-v" + packageVersion + "-" + sha7 + ".tar.gz";
 
   await rm(ASSET_DIR, { recursive: true, force: true });
@@ -168,6 +170,23 @@ async function main() {
     }
     await copyRequiredAsset(fileName);
   }
+  const externalPluginManifest = JSON.parse(
+    await readFile(path.join(ASSET_DIR, "external-plugins.json"), "utf8"),
+  );
+  const externalPluginAssets = [];
+  for (const plugin of externalPluginManifest.plugins ?? []) {
+    if (
+      typeof plugin?.artifact !== "string" ||
+      path.basename(plugin.artifact) !== plugin.artifact
+    ) {
+      throw new Error("external-plugins.json contains invalid artifact path");
+    }
+    await copyRequiredAsset(plugin.artifact);
+    externalPluginAssets.push(plugin.artifact);
+  }
+  if (externalPluginAssets.length === 0) {
+    throw new Error("external-plugins.json contains no plugin artifacts");
+  }
   const optionalAssets = [];
   for (const [fileName] of OPTIONAL_ASSETS) {
     if (await copyOptionalAsset(fileName)) {
@@ -175,7 +194,13 @@ async function main() {
     }
   }
 
-  const assetNames = [...REQUIRED_ASSETS.map(([fileName]) => fileName), ...optionalAssets];
+  const assetNames = [
+    ...REQUIRED_ASSETS.map(([fileName]) => fileName),
+    ...externalPluginAssets,
+    ...optionalAssets,
+  ];
+  await createTarball(canonicalTarName, assetNames);
+
   const assets = {};
   for (const [fileName, role] of REQUIRED_ASSETS) {
     assets[fileName] = await assetRecord(fileName, role);
@@ -183,15 +208,50 @@ async function main() {
   for (const fileName of optionalAssets) {
     assets[fileName] = await assetRecord(fileName, OPTIONAL_ASSETS.get(fileName));
   }
+  for (const fileName of externalPluginAssets) {
+    assets[fileName] = await assetRecord(fileName, "external-plugin-package");
+  }
+  assets[canonicalTarName] = await assetRecord(canonicalTarName, "canonical-release-tarball");
+
+  const capabilities = JSON.parse(
+    await readFile(path.join(ASSET_DIR, "bundle-capabilities.json"), "utf8"),
+  );
+  const packageName = pkg.name ?? "openclaw";
+  if (
+    capabilities.package?.name !== packageName ||
+    capabilities.package?.version !== packageVersion
+  ) {
+    throw new Error("bundle-capabilities.json package identity does not match package.json");
+  }
+  if (capabilities.source?.fork?.sha !== sha) {
+    throw new Error("bundle-capabilities.json fork SHA does not match git HEAD");
+  }
+  const requestedTag =
+    process.env.OPENCLAW_BUNDLE_FORK_REF || process.env.INPUT_TAG || process.env.GITHUB_REF_NAME;
+  const tag = requestedTag ?? capabilities.source?.fork?.ref;
+  if (typeof tag !== "string" || tag.length === 0) {
+    throw new Error("bundle-capabilities.json lacks source.fork.ref");
+  }
+  if (tag !== capabilities.source.fork.ref) {
+    throw new Error(
+      `requested bundle tag ${tag} does not match source fork ref ${capabilities.source.fork.ref}`,
+    );
+  }
 
   const manifest = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     name: "openclaw-sandbox-bundle",
     profile: PROFILE_NAME,
-    packageName: pkg.name ?? "openclaw",
-    packageVersion,
+    package: capabilities.package,
+    source: capabilities.source,
+    capabilityManifest: "bundle-capabilities.json",
+    externalPlugins: capabilities.externalPlugins,
     tag,
-    git: { sha, sha7, upstreamSha: gitRevParse("upstream/main") },
+    git: {
+      sha,
+      sha7,
+      upstreamSha: capabilities.source?.upstream?.sha,
+    },
     runtime: { nodeTarget: "node22", engines: pkg.engines?.node ?? ">=22.14.0" },
     canonicalTarball: canonicalTarName,
     assets,
@@ -201,11 +261,8 @@ async function main() {
     JSON.stringify(manifest, null, 2) + "\n",
   );
 
-  const tarEntries = [...assetNames, "asset-manifest.json"];
-  await createTarball(canonicalTarName, tarEntries);
-
-  const uploadedAssets = [canonicalTarName, ...tarEntries].toSorted((left, right) =>
-    left.localeCompare(right),
+  const uploadedAssets = [canonicalTarName, ...assetNames, "asset-manifest.json"].toSorted(
+    (left, right) => left.localeCompare(right),
   );
   const checksumLines = [];
   for (const fileName of uploadedAssets) {

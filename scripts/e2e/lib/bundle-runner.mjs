@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
-import { copyFile, mkdir, mkdtemp, readdir, rm, writeFile, stat } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, readdir, rm, writeFile, stat } from "node:fs/promises";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
@@ -14,6 +14,7 @@ const DEFAULT_ASSET_DIR = path.join(OUT_DIR, "release-assets");
 
 const DEFAULT_SIGNING_SECRET = "test-signing-secret-1234567890abcdef";
 const DEFAULT_BOT_TOKEN = "xoxb-e2e-test-token";
+const DEFAULT_GATEWAY_TOKEN = "bundle-e2e-gateway-token-1234567890";
 
 // Stderr patterns that indicate the dual-load class of bug we want to catch
 // before deploy. Matching any of these aborts the run with a precise message.
@@ -124,6 +125,9 @@ async function stageBundle(tmpDir, { assetDir: explicitAssetDir } = {}) {
       "bundle-deps.tar.gz",
       "bundle-openclaw-pkg.tar.gz",
       "channels.tar.gz",
+      "runtime-plugins.tar.gz",
+      "bundle-capabilities.json",
+      "external-plugins.json",
     ]) {
       await requireStagedAsset(tmpDir, sidecar, releaseTar);
     }
@@ -133,6 +137,9 @@ async function stageBundle(tmpDir, { assetDir: explicitAssetDir } = {}) {
       "bundle-deps.tar.gz",
       "bundle-openclaw-pkg.tar.gz",
       "channels.tar.gz",
+      "runtime-plugins.tar.gz",
+      "bundle-capabilities.json",
+      "external-plugins.json",
     ]) {
       await copyRequiredAsset(assetDir, tmpDir, sidecar);
     }
@@ -144,6 +151,21 @@ async function stageBundle(tmpDir, { assetDir: explicitAssetDir } = {}) {
 
   const extensionsDir = path.join(tmpDir, "extensions");
   await extractTarball(tmpDir, "channels.tar.gz", extensionsDir);
+  await extractTarball(tmpDir, "runtime-plugins.tar.gz", extensionsDir);
+
+  const externalPlugins = JSON.parse(
+    await readFile(path.join(tmpDir, "external-plugins.json"), "utf8"),
+  );
+  if (externalPlugins.schemaVersion !== 1 || !Array.isArray(externalPlugins.plugins)) {
+    throw new Error("bundle-runner: invalid external-plugins.json");
+  }
+  for (const plugin of externalPlugins.plugins) {
+    if (releaseTar) {
+      await requireStagedAsset(tmpDir, plugin.artifact, releaseTar);
+    } else {
+      await copyRequiredAsset(assetDir, tmpDir, plugin.artifact);
+    }
+  }
 
   const sharedChunks = path.join(tmpDir, "channel-shared-chunks.tar.gz");
   if (!(await fileExists(sharedChunks)) && !releaseTar) {
@@ -155,17 +177,101 @@ async function stageBundle(tmpDir, { assetDir: explicitAssetDir } = {}) {
   if (await fileExists(sharedChunks)) {
     await extractTarball(tmpDir, "channel-shared-chunks.tar.gz");
   }
-  return { assetDir, releaseTar };
+  return { assetDir, releaseTar, externalPlugins: externalPlugins.plugins };
 }
 
-function makeSlackConfig({ signingSecret, botToken }) {
+async function writeCapabilityProbe(extensionsDir) {
+  const pluginDir = path.join(extensionsDir, "bundle-capability-probe");
+  await mkdir(pluginDir, { recursive: true });
+  await writeFile(
+    path.join(pluginDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "@openclaw/bundle-capability-probe",
+        version: "0.0.0",
+        private: true,
+        type: "module",
+        openclaw: { extensions: ["./index.js"] },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  await writeFile(
+    path.join(pluginDir, "openclaw.plugin.json"),
+    `${JSON.stringify(
+      {
+        id: "bundle-capability-probe",
+        configSchema: { type: "object", additionalProperties: false, properties: {} },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  await writeFile(
+    path.join(pluginDir, "index.js"),
+    [
+      'import { writeFile } from "node:fs/promises";',
+      "export default {",
+      '  id: "bundle-capability-probe",',
+      '  name: "Bundle capability probe",',
+      "  register(api) {",
+      "    let resolveSeed;",
+      "    let rejectSeed;",
+      "    const seeded = new Promise((resolve, reject) => {",
+      "      resolveSeed = resolve;",
+      "      rejectSeed = reject;",
+      "    });",
+      '    api.on("gateway_start", async (_event, ctx) => {',
+      "      try {",
+      "        const cron = ctx.getCron?.();",
+      '        if (!cron) throw new Error("cron service unavailable");',
+      "        const add = async (name, enabled) => cron.add({",
+      "          name,",
+      '          description: "bundle reconciliation probe",',
+      "          enabled,",
+      '          schedule: { kind: "every", everyMs: 86400000 },',
+      '          sessionTarget: "main",',
+      '          wakeMode: "next-heartbeat",',
+      '          payload: { kind: "systemEvent", text: name },',
+      "        });",
+      '        const enabledJob = await add("bundle-probe-enabled", true);',
+      '        const disabledJob = await add("bundle-probe-disabled", false);',
+      "        const ids = [enabledJob?.id, disabledJob?.id];",
+      '        if (ids.some((id) => typeof id !== "string" || !id)) {',
+      '          throw new Error("cron add did not return job ids");',
+      "        }",
+      "        resolveSeed(ids);",
+      "      } catch (error) {",
+      "        rejectSeed(error);",
+      "        throw error;",
+      "      }",
+      "    });",
+      '    api.on("cron_reconciled", async (event, ctx) => {',
+      "      const markerPath = process.env.OPENCLAW_BUNDLE_CRON_PROBE_PATH;",
+      '      if (!markerPath) throw new Error("missing cron probe path");',
+      "      const seededIds = await seeded;",
+      "      const jobs = await ctx.getCron?.()?.list({ includeDisabled: true }) ?? [];",
+      '      await writeFile(markerPath, JSON.stringify({ event, jobs, seededIds }) + "\\n");',
+      "    });",
+      "  },",
+      "};",
+      "",
+    ].join("\n"),
+  );
+}
+
+function makeSlackConfig({ signingSecret, botToken, gatewayToken, capabilityProbe }) {
   return {
     gateway: {
       mode: "local",
+      auth: { mode: "token", token: gatewayToken },
     },
     plugins: {
       entries: {
         slack: { enabled: true },
+        "admin-http-rpc": { enabled: true },
+        ...(capabilityProbe ? { "bundle-capability-probe": { enabled: true } } : {}),
       },
     },
     channels: {
@@ -209,6 +315,8 @@ export async function runBundle({
   extraEnv = {},
   signingSecret = DEFAULT_SIGNING_SECRET,
   botToken = DEFAULT_BOT_TOKEN,
+  gatewayToken = DEFAULT_GATEWAY_TOKEN,
+  capabilityProbe = false,
   slackApiUrl,
   assetDir,
   port,
@@ -232,11 +340,48 @@ export async function runBundle({
   await mkdir(stateDir, { recursive: true });
 
   const stagedBundle = await stageBundle(tmpDir, { assetDir });
+  const extensionsDir = path.join(tmpDir, "extensions");
+  const cronProbePath = path.join(tmpDir, "cron-reconciled.json");
+  if (capabilityProbe) {
+    await writeCapabilityProbe(extensionsDir);
+  }
 
   await writeFile(
     configPath,
-    `${JSON.stringify(makeSlackConfig({ signingSecret, botToken, slackApiUrl }), null, 2)}\n`,
+    `${JSON.stringify(
+      makeSlackConfig({ signingSecret, botToken, gatewayToken, capabilityProbe }),
+      null,
+      2,
+    )}\n`,
   );
+
+  for (const plugin of stagedBundle.externalPlugins) {
+    await runChild(
+      process.execPath,
+      [
+        "openclaw.bundle.mjs",
+        "plugins",
+        "install",
+        `npm-pack:${path.join(tmpDir, plugin.artifact)}`,
+      ],
+      {
+        cwd: tmpDir,
+        env: {
+          PATH: process.env.PATH ?? "",
+          NODE_ENV: "production",
+          HOME: homeDir,
+          OPENCLAW_HOME: homeDir,
+          OPENCLAW_CONFIG_PATH: configPath,
+          OPENCLAW_BUNDLE_PROFILE: "sandbox",
+          OPENCLAW_BUNDLED_PLUGINS_DIR: extensionsDir,
+          npm_config_audit: "false",
+          npm_config_fund: "false",
+          npm_config_offline: "true",
+        },
+        stdio: ["ignore", "inherit", "inherit"],
+      },
+    );
+  }
 
   const resolvedPort = port ?? (await findFreePort());
 
@@ -247,7 +392,8 @@ export async function runBundle({
     OPENCLAW_HOME: homeDir,
     OPENCLAW_CONFIG_PATH: configPath,
     OPENCLAW_BUNDLE_PROFILE: "sandbox",
-    OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(tmpDir, "extensions"),
+    OPENCLAW_BUNDLED_PLUGINS_DIR: extensionsDir,
+    ...(capabilityProbe ? { OPENCLAW_BUNDLE_CRON_PROBE_PATH: cronProbePath } : {}),
     // Disable any startup probes that might block on outbound network.
     OPENCLAW_DISABLE_TELEMETRY: "1",
     OPENCLAW_E2E_VERBOSE_ERRORS: "1",
@@ -343,6 +489,8 @@ export async function runBundle({
     releaseTar: stagedBundle.releaseTar,
     signingSecret,
     botToken,
+    gatewayToken,
+    cronProbePath: capabilityProbe ? cronProbePath : null,
     pid: child.pid,
     isDualLoadHit: () => dualLoadHit,
     getStderr: () => stderrChunks.join(""),

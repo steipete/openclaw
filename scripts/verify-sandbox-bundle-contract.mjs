@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { spawn } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -17,6 +18,9 @@ const REQUIRED_FILES = [
   "bundle-deps.tar.gz",
   "bundle-openclaw-pkg.tar.gz",
   "channels.tar.gz",
+  "runtime-plugins.tar.gz",
+  "external-plugins.json",
+  "bundle-capabilities.json",
   "openclaw-release.tar.gz",
   "meta.json",
   "release.json",
@@ -28,10 +32,14 @@ const RELEASE_TAR_REQUIRED_ENTRIES = [
   "bundle-contract.json",
   "bundle-deps.tar.gz",
   "bundle-openclaw-pkg.tar.gz",
+  "bundle-capabilities.json",
   "channels.tar.gz",
+  "external-plugins.json",
+  "runtime-plugins.tar.gz",
   "openclaw.bundle.mjs",
   "release.json",
 ];
+const REQUIRED_CAPABILITIES = ["admin-http-rpc-v1", "cron-projection-v1", "gateway-suspend-v1"];
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
@@ -39,6 +47,12 @@ async function readJson(filePath) {
 
 function fail(message) {
   throw new Error(message);
+}
+
+function requireExactSha(value, label) {
+  if (!/^[a-f0-9]{40}$/u.test(value ?? "")) {
+    fail(`${label} must be an exact 40-character lowercase git SHA`);
+  }
 }
 
 async function fileSize(fileName) {
@@ -50,6 +64,12 @@ async function fileSize(fileName) {
     throw err;
   });
   return info.size;
+}
+
+async function sha256File(fileName) {
+  return createHash("sha256")
+    .update(await readFile(path.join(OUT_DIR, fileName)))
+    .digest("hex");
 }
 
 function listTarEntries(fileName) {
@@ -156,8 +176,20 @@ async function main() {
     "openclaw-release.tar.gz",
   );
 
+  const externalPlugins = await readJson(path.join(OUT_DIR, "external-plugins.json"));
+  if (externalPlugins.schemaVersion !== 1 || !Array.isArray(externalPlugins.plugins)) {
+    fail("external-plugins.json has invalid schemaVersion or plugins");
+  }
+  const externalPluginArtifacts = externalPlugins.plugins.map((plugin) => plugin.artifact);
+  for (const plugin of externalPlugins.plugins) {
+    await fileSize(plugin.artifact);
+    if ((await sha256File(plugin.artifact)) !== plugin.sha256) {
+      fail(`external plugin artifact digest mismatch for ${plugin.id}`);
+    }
+  }
   const expectedReleaseTarEntries = [
     ...RELEASE_TAR_REQUIRED_ENTRIES,
+    ...externalPluginArtifacts,
     ...(typeof sizes["channel-shared-chunks.tar.gz"] === "number"
       ? ["channel-shared-chunks.tar.gz"]
       : []),
@@ -231,11 +263,40 @@ async function main() {
   );
 
   const release = await readJson(path.join(OUT_DIR, "release.json"));
-  if (typeof release.forkSha !== "string" || release.forkSha.length === 0) {
-    fail("release.json lacks forkSha");
-  }
+  const capabilities = await readJson(path.join(OUT_DIR, "bundle-capabilities.json"));
+  requireExactSha(release.forkSha, "release.json forkSha");
+  requireExactSha(release.upstreamSha, "release.json upstreamSha");
   if (typeof release.bundleSha256 !== "string" || release.bundleSha256.length === 0) {
     fail("release.json lacks bundleSha256");
+  }
+  if (capabilities.schemaVersion !== 1 || capabilities.profile !== manifest.profile) {
+    fail("bundle-capabilities.json has invalid schemaVersion or profile");
+  }
+  for (const capability of REQUIRED_CAPABILITIES) {
+    if (!capabilities.capabilities?.includes(capability)) {
+      fail(`bundle-capabilities.json lacks required capability ${capability}`);
+    }
+  }
+  if (!capabilities.pluginIds?.includes("admin-http-rpc")) {
+    fail("bundle-capabilities.json lacks admin-http-rpc plugin");
+  }
+  if (!capabilities.pluginIds?.includes("slack")) {
+    fail("bundle-capabilities.json lacks Slack plugin");
+  }
+  if (
+    JSON.stringify(capabilities.externalPlugins) !== JSON.stringify(externalPlugins.plugins) ||
+    JSON.stringify(contract.externalPlugins) !== JSON.stringify(externalPlugins.plugins) ||
+    JSON.stringify(release.externalPlugins) !== JSON.stringify(externalPlugins.plugins)
+  ) {
+    fail("external plugin metadata differs across bundle manifests");
+  }
+  if (
+    JSON.stringify(capabilities.package) !== JSON.stringify(release.package) ||
+    JSON.stringify(capabilities.source) !== JSON.stringify(release.source) ||
+    JSON.stringify(contract.package) !== JSON.stringify(release.package) ||
+    JSON.stringify(contract.source) !== JSON.stringify(release.source)
+  ) {
+    fail("release.json identity does not match bundle-capabilities.json");
   }
 
   console.log(
@@ -247,6 +308,7 @@ async function main() {
       pkgTarBytes: sizes["bundle-openclaw-pkg.tar.gz"],
       releaseTarBytes: sizes["openclaw-release.tar.gz"],
       channelsTarBytes: sizes["channels.tar.gz"],
+      runtimePluginsTarBytes: sizes["runtime-plugins.tar.gz"],
       sharedChunksTarBytes: sizes["channel-shared-chunks.tar.gz"] ?? null,
       pluginSdkSubpathCount: contract.pluginSdkSubpaths.length,
       disabledPublicSurfaceCount: Array.isArray(contract.disabledPublicSurfaces)
