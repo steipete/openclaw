@@ -114,6 +114,9 @@ jobs:
           pnpm-version: ${{ env.PNPM_VERSION }}
           install-bun: "true"
 
+      - name: Verify sandbox bundle contract helpers
+        run: pnpm test:sandbox-bundle:contracts
+
       - name: Verify exact external plugin release
         run: |
           set -euo pipefail

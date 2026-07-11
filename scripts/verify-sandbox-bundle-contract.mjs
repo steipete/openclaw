@@ -10,6 +10,7 @@ import {
   findReachableTelegramDurableAckProducer,
   readSandboxArchiveJavaScriptModules,
 } from "./lib/sandbox-bundle-capability-proof.mjs";
+import { assertSafeSandboxArchive, sandboxArchiveLimits } from "./lib/sandbox-archive-contract.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -204,6 +205,7 @@ function inputMatchesModule(inputPath, moduleName) {
 async function main() {
   const manifest = await readJson(PROFILE_PATH);
   const budgets = manifest.budgets ?? {};
+  const archiveLimits = sandboxArchiveLimits(budgets);
 
   const sizes = {};
   for (const file of REQUIRED_FILES) {
@@ -237,13 +239,36 @@ async function main() {
     "openclaw-release.tar.gz",
   );
 
+  for (const fileName of [
+    "bundle-deps.tar.gz",
+    "bundle-openclaw-pkg.tar.gz",
+    "channels.tar.gz",
+    "runtime-plugins.tar.gz",
+    "openclaw-release.tar.gz",
+    ...(typeof sizes["channel-shared-chunks.tar.gz"] === "number"
+      ? ["channel-shared-chunks.tar.gz"]
+      : []),
+  ]) {
+    await assertSafeSandboxArchive({
+      archivePath: path.join(OUT_DIR, fileName),
+      archiveLabel: fileName,
+      limits: archiveLimits,
+    });
+  }
+
   const externalPlugins = await readJson(path.join(OUT_DIR, "external-plugins.json"));
   if (externalPlugins.schemaVersion !== 1 || !Array.isArray(externalPlugins.plugins)) {
     fail("external-plugins.json has invalid schemaVersion or plugins");
   }
   const externalPluginArtifacts = externalPlugins.plugins.map((plugin) => plugin.artifact);
   for (const plugin of externalPlugins.plugins) {
-    await fileSize(plugin.artifact);
+    const pluginBytes = await fileSize(plugin.artifact);
+    assertBudget(pluginBytes, budgets.externalPluginTarMaxBytes, plugin.artifact);
+    await assertSafeSandboxArchive({
+      archivePath: path.join(OUT_DIR, plugin.artifact),
+      archiveLabel: plugin.artifact,
+      limits: archiveLimits,
+    });
     if ((await sha256File(plugin.artifact)) !== plugin.sha256) {
       fail(`external plugin artifact digest mismatch for ${plugin.id}`);
     }
@@ -367,10 +392,13 @@ async function main() {
 
   const release = await readJson(path.join(OUT_DIR, "release.json"));
   const capabilities = await readJson(path.join(OUT_DIR, "bundle-capabilities.json"));
+  if (release.schemaVersion !== 2 || release.capabilityManifest !== "bundle-capabilities.json") {
+    fail("release.json has invalid schemaVersion or capabilityManifest");
+  }
   requireExactSha(release.forkSha, "release.json forkSha");
   requireExactSha(release.upstreamSha, "release.json upstreamSha");
-  if (typeof release.bundleSha256 !== "string" || release.bundleSha256.length === 0) {
-    fail("release.json lacks bundleSha256");
+  if (release.bundleSha256 !== (await sha256File("openclaw.bundle.mjs"))) {
+    fail("release.json bundleSha256 does not match openclaw.bundle.mjs");
   }
   if (capabilities.schemaVersion !== 1 || capabilities.profile !== manifest.profile) {
     fail("bundle-capabilities.json has invalid schemaVersion or profile");
@@ -412,6 +440,16 @@ async function main() {
     JSON.stringify(contract.source) !== JSON.stringify(release.source)
   ) {
     fail("release.json identity does not match bundle-capabilities.json");
+  }
+  if (
+    release.forkSha !== release.source?.fork?.sha ||
+    release.upstreamSha !== release.source?.upstream?.sha ||
+    release.forkRef !== release.source?.fork?.ref ||
+    release.source?.fork?.repository !== manifest.source?.forkRepository ||
+    release.source?.upstream?.repository !== manifest.source?.upstreamRepository ||
+    contract.packageVersion !== release.package?.version
+  ) {
+    fail("release.json source identity does not match the profile or legacy identity fields");
   }
 
   console.log(

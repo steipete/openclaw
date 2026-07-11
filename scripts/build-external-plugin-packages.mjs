@@ -9,6 +9,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { assertSafeSandboxArchive, sandboxArchiveLimits } from "./lib/sandbox-archive-contract.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -16,6 +17,8 @@ const OUT_DIR = path.join(REPO_ROOT, "dist", "sandbox");
 const OUT_MANIFEST = path.join(OUT_DIR, "external-plugins.json");
 const PROFILE_NAME = process.env.OPENCLAW_BUNDLE_PROFILE ?? "sandbox";
 const PROFILE_PATH = path.join(REPO_ROOT, ".fork", `bundle-profile.${PROFILE_NAME}.json`);
+const NPM_REGISTRY_ORIGIN = "https://registry.npmjs.org";
+const NPM_METADATA_MAX_BYTES = 1024 * 1024;
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -60,7 +63,72 @@ function validateProfilePlugin(plugin) {
   return plugin;
 }
 
-function validatePackedPlugin({ expected, packageVersion, archivePath }) {
+async function readPublishedMetadata(spec, expected, packageVersion) {
+  const metadataUrl = new URL(
+    `${encodeURIComponent(expected.packageName)}/${encodeURIComponent(packageVersion)}`,
+    `${NPM_REGISTRY_ORIGIN}/`,
+  );
+  const response = await fetch(metadataUrl, {
+    headers: { accept: "application/json" },
+    redirect: "error",
+    signal: AbortSignal.timeout(10_000),
+  });
+  const contentLength = Number(response.headers.get("content-length"));
+  if (
+    !response.ok ||
+    response.url !== metadataUrl.href ||
+    (Number.isFinite(contentLength) && contentLength > NPM_METADATA_MAX_BYTES)
+  ) {
+    throw new Error(`official npm metadata request failed for ${spec}: ${response.status}`);
+  }
+  if (!response.body) {
+    throw new Error(`official npm metadata response has no body for ${spec}`);
+  }
+  const chunks = [];
+  let metadataBytesRead = 0;
+  for await (const chunk of response.body) {
+    metadataBytesRead += chunk.byteLength;
+    if (metadataBytesRead > NPM_METADATA_MAX_BYTES) {
+      await response.body.cancel().catch(() => {});
+      throw new Error(`official npm metadata response exceeds size limit for ${spec}`);
+    }
+    chunks.push(Buffer.from(chunk));
+  }
+  if (metadataBytesRead === 0) {
+    throw new Error(`official npm metadata response has invalid size for ${spec}`);
+  }
+  const metadataBytes = Buffer.concat(chunks, metadataBytesRead);
+  const metadata = JSON.parse(metadataBytes.toString("utf8"));
+  let tarball;
+  try {
+    tarball = new URL(metadata.dist?.tarball);
+  } catch {
+    throw new Error(`published ${spec} has an invalid dist.tarball URL`);
+  }
+  if (
+    metadata.name !== expected.packageName ||
+    metadata.version !== packageVersion ||
+    typeof metadata.dist?.integrity !== "string" ||
+    typeof metadata.dist?.shasum !== "string" ||
+    tarball.protocol !== "https:" ||
+    tarball.hostname !== "registry.npmjs.org" ||
+    tarball.port ||
+    tarball.username ||
+    tarball.password ||
+    tarball.search ||
+    tarball.hash
+  ) {
+    throw new Error(`published ${spec} does not have exact official npm HTTPS metadata`);
+  }
+  return metadata.dist;
+}
+
+async function validatePackedPlugin({ expected, packageVersion, archivePath, archiveLimits }) {
+  await assertSafeSandboxArchive({
+    archivePath,
+    archiveLabel: path.basename(archivePath),
+    limits: archiveLimits,
+  });
   const entries = new Set(listTarEntries(archivePath));
   const packageJson = JSON.parse(readTarEntry(archivePath, "package/package.json"));
   const manifest = JSON.parse(readTarEntry(archivePath, "package/openclaw.plugin.json"));
@@ -119,6 +187,11 @@ async function main() {
     throw new Error(`bundle profile ${PROFILE_NAME} has no externalPlugins`);
   }
   const externalPlugins = profile.externalPlugins.map(validateProfilePlugin);
+  const archiveLimits = sandboxArchiveLimits(profile.budgets);
+  const externalPluginTarMaxBytes = profile.budgets?.externalPluginTarMaxBytes;
+  if (!Number.isSafeInteger(externalPluginTarMaxBytes) || externalPluginTarMaxBytes <= 0) {
+    throw new Error(`bundle profile ${PROFILE_NAME} has invalid externalPluginTarMaxBytes`);
+  }
   await mkdir(OUT_DIR, { recursive: true });
   await removePriorArtifacts();
 
@@ -127,9 +200,18 @@ async function main() {
     const records = [];
     for (const plugin of externalPlugins) {
       const spec = `${plugin.packageName}@${packageVersion}`;
+      const published = await readPublishedMetadata(spec, plugin, packageVersion);
       const output = run(
         process.platform === "win32" ? "npm.cmd" : "npm",
-        ["pack", spec, "--json", "--ignore-scripts", "--pack-destination", tempDir],
+        [
+          "pack",
+          spec,
+          "--json",
+          "--ignore-scripts",
+          `--@openclaw:registry=${NPM_REGISTRY_ORIGIN}/`,
+          "--pack-destination",
+          tempDir,
+        ],
         { cwd: tempDir },
       );
       const parsedOutput = JSON.parse(output);
@@ -139,12 +221,22 @@ async function main() {
         packed?.version !== packageVersion ||
         typeof packed.filename !== "string" ||
         typeof packed.integrity !== "string" ||
-        typeof packed.shasum !== "string"
+        typeof packed.shasum !== "string" ||
+        !Number.isSafeInteger(packed.size) ||
+        packed.size <= 0 ||
+        packed.size > externalPluginTarMaxBytes ||
+        packed.integrity !== published.integrity ||
+        packed.shasum !== published.shasum
       ) {
         throw new Error(`npm pack returned invalid identity metadata for ${spec}`);
       }
       const sourcePath = path.join(tempDir, packed.filename);
-      validatePackedPlugin({ expected: plugin, packageVersion, archivePath: sourcePath });
+      await validatePackedPlugin({
+        expected: plugin,
+        packageVersion,
+        archivePath: sourcePath,
+        archiveLimits,
+      });
       const artifact = `external-plugin-${plugin.id}.tgz`;
       const targetPath = path.join(OUT_DIR, artifact);
       await copyFile(sourcePath, targetPath);

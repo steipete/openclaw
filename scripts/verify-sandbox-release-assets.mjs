@@ -10,10 +10,12 @@ import {
   findReachableTelegramDurableAckProducer,
   readSandboxArchiveJavaScriptModules,
 } from "./lib/sandbox-bundle-capability-proof.mjs";
+import { assertSafeSandboxArchive, sandboxArchiveLimits } from "./lib/sandbox-archive-contract.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
 const DEFAULT_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox", "release-assets");
+const PROFILE_PATH = path.join(REPO_ROOT, ".fork", "bundle-profile.sandbox.json");
 const REQUIRED_ASSETS = [
   "openclaw.bundle.mjs",
   "bundle-deps.tar.gz",
@@ -236,6 +238,14 @@ function verifyCapabilityManifest(manifest, capabilities, externalPlugins) {
   requireExactSha(capabilities.source?.fork?.sha, "bundle-capabilities.json fork SHA");
   requireExactSha(capabilities.source?.upstream?.sha, "bundle-capabilities.json upstream SHA");
   if (
+    capabilities.source?.fork?.repository !== "vercel-labs/openclaw" ||
+    capabilities.source?.upstream?.repository !== "openclaw/openclaw" ||
+    typeof capabilities.source?.fork?.ref !== "string" ||
+    !capabilities.source.fork.ref
+  ) {
+    throw new Error("bundle-capabilities.json source repository or ref is invalid");
+  }
+  if (
     JSON.stringify(capabilities.package) !== JSON.stringify(manifest.package) ||
     JSON.stringify(capabilities.source) !== JSON.stringify(manifest.source)
   ) {
@@ -362,6 +372,8 @@ async function verifyNestedAssets(assetDir, contract, externalPlugins) {
 
 async function main() {
   const { assetDir } = parseArgs(process.argv.slice(2));
+  const profile = await readJson(PROFILE_PATH);
+  const archiveLimits = sandboxArchiveLimits(profile.budgets);
   for (const fileName of REQUIRED_ASSETS) {
     await requireFile(assetDir, fileName);
   }
@@ -381,6 +393,21 @@ async function main() {
     throw new Error("asset-manifest.json capabilityManifest mismatch");
   }
   verifyCapabilityManifest(manifest, capabilities, externalPlugins);
+  if (
+    release.schemaVersion !== 2 ||
+    release.capabilityManifest !== "bundle-capabilities.json" ||
+    release.bundleSha256 !== (await sha256File(path.join(assetDir, "openclaw.bundle.mjs"))) ||
+    manifest.tag !== manifest.source?.fork?.ref ||
+    manifest.git?.sha !== manifest.source?.fork?.sha ||
+    manifest.git?.sha7 !== manifest.source?.fork?.sha?.slice(0, 7) ||
+    manifest.git?.upstreamSha !== manifest.source?.upstream?.sha ||
+    release.forkSha !== manifest.source?.fork?.sha ||
+    release.forkRef !== manifest.source?.fork?.ref ||
+    release.upstreamSha !== manifest.source?.upstream?.sha ||
+    contract.packageVersion !== manifest.package?.version
+  ) {
+    throw new Error("release source identity differs across bundle manifests");
+  }
   if (
     JSON.stringify(release.package) !== JSON.stringify(manifest.package) ||
     JSON.stringify(release.source) !== JSON.stringify(manifest.source) ||
@@ -436,6 +463,9 @@ async function main() {
       throw new Error("external-plugins.json has invalid Slack identity");
     }
     await requireFile(assetDir, plugin.artifact);
+    if (manifestAssets[plugin.artifact]?.bytes > profile.budgets.externalPluginTarMaxBytes) {
+      throw new Error("external plugin exceeds compressed size budget: " + plugin.artifact);
+    }
     if (!manifestAssets[plugin.artifact]) {
       throw new Error("asset-manifest.json lacks external plugin asset " + plugin.artifact);
     }
@@ -497,6 +527,24 @@ async function main() {
         "; got " +
         actualTarEntries.join(", "),
     );
+  }
+
+  for (const fileName of [
+    manifest.canonicalTarball,
+    "bundle-deps.tar.gz",
+    "bundle-openclaw-pkg.tar.gz",
+    "channels.tar.gz",
+    "runtime-plugins.tar.gz",
+    "control-ui.tar.gz",
+    "workspace-templates.tar.gz",
+    ...externalPluginArtifacts,
+    ...(hasOptionalChunk ? ["channel-shared-chunks.tar.gz"] : []),
+  ]) {
+    await assertSafeSandboxArchive({
+      archivePath: path.join(assetDir, fileName),
+      archiveLabel: fileName,
+      limits: archiveLimits,
+    });
   }
 
   await verifyNestedAssets(assetDir, contract, externalPlugins);
