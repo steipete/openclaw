@@ -17,6 +17,10 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { pluginSdkSubpaths as publicPluginSdkSubpaths } from "./lib/plugin-sdk-entries.mjs";
+import {
+  findReachableTelegramDurableAckProducer,
+  readSandboxArchiveJavaScriptModules,
+} from "./lib/sandbox-bundle-capability-proof.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -39,6 +43,7 @@ const RELEASE_TAR_REQUIRED_FILES = [
 ];
 const RELEASE_TAR_OPTIONAL_FILES = ["channel-shared-chunks.tar.gz", "asset-manifest.json"];
 const DIST_EXTENSIONS_DIR = path.join(REPO_ROOT, "dist", "extensions");
+const SOURCE_EXTENSIONS_DIR = path.join(REPO_ROOT, "extensions");
 const SRC_PLUGIN_SDK_DIR = path.join(REPO_ROOT, "src", "plugin-sdk");
 const DISABLED_STUB_REGISTRY_FILE = path.join(SRC_PLUGIN_SDK_DIR, "disabled-stubs", "registry.ts");
 const PLUGIN_SDK_IMPORT_PATTERN =
@@ -64,6 +69,12 @@ const NODE_BUILTIN_MODULES = new Set([
 ]);
 const PROFILE_NAME = process.env.OPENCLAW_BUNDLE_PROFILE ?? "sandbox";
 const PROFILE_PATH = path.join(REPO_ROOT, ".fork", `bundle-profile.${PROFILE_NAME}.json`);
+const SUPPORTED_CAPABILITIES = [
+  "admin-http-rpc-v1",
+  "cron-projection-v1",
+  "gateway-suspend-v1",
+  "telegram-durable-ack-v1",
+];
 
 const log = (...parts) => process.stderr.write(parts.join(" ") + "\n");
 
@@ -106,6 +117,15 @@ async function loadBundleProfile() {
   assertStringArray(manifest.externalRuntimeDeps, "externalRuntimeDeps");
   assertStringArray(manifest.runtimePluginIds, "runtimePluginIds");
   assertStringArray(manifest.capabilities, "capabilities");
+  const capabilities = [...new Set(manifest.capabilities)].toSorted();
+  if (
+    capabilities.length !== manifest.capabilities.length ||
+    JSON.stringify(capabilities) !== JSON.stringify(SUPPORTED_CAPABILITIES)
+  ) {
+    throw new Error(
+      `bundle profile ${PROFILE_NAME} capabilities must be exactly: ${SUPPORTED_CAPABILITIES.join(", ")}`,
+    );
+  }
   if (!Array.isArray(manifest.externalPlugins) || manifest.externalPlugins.length === 0) {
     throw new Error(`bundle profile ${PROFILE_NAME} has invalid externalPlugins`);
   }
@@ -121,6 +141,30 @@ async function loadBundleProfile() {
   }
   assertObject(manifest.budgets, "budgets");
   return manifest;
+}
+
+async function assertRuntimePluginSources(runtimePluginIds) {
+  for (const id of new Set(runtimePluginIds)) {
+    const pluginRoot = path.join(SOURCE_EXTENSIONS_DIR, id);
+    let pkg;
+    let pluginManifest;
+    try {
+      pkg = await readJson(path.join(pluginRoot, "package.json"));
+      pluginManifest = await readJson(path.join(pluginRoot, "openclaw.plugin.json"));
+    } catch (error) {
+      throw new Error(
+        `bundle profile ${PROFILE_NAME} requires missing runtime plugin source ${id}; rebase the fork onto an OpenClaw revision that contains it`,
+        { cause: error },
+      );
+    }
+    if (
+      pluginManifest.id !== id ||
+      !Array.isArray(pkg.openclaw?.extensions) ||
+      pkg.openclaw.extensions.length === 0
+    ) {
+      throw new Error(`bundle profile ${PROFILE_NAME} runtime plugin source ${id} is invalid`);
+    }
+  }
 }
 
 function resolveRepoPath(relativePath) {
@@ -435,6 +479,39 @@ function listPluginIdsFromTar(fileName) {
     .filter((entry) => /^[^/]+\/package\.json$/u.test(entry))
     .map((entry) => entry.slice(0, -"/package.json".length))
     .toSorted((left, right) => left.localeCompare(right));
+}
+
+function readTarText(fileName, entryName) {
+  const result = spawnSync("tar", ["-xOf", fileName, entryName], {
+    cwd: OUT_DIR,
+    encoding: "utf8",
+    env: { ...process.env, COPYFILE_DISABLE: "1" },
+    maxBuffer: 16 * 1024 * 1024,
+    stdio: ["ignore", "pipe", "inherit"],
+  });
+  if (result.status !== 0) {
+    throw new Error(
+      `tar -xOf ${fileName} ${entryName} exited with code ${result.status ?? result.signal}`,
+    );
+  }
+  return result.stdout;
+}
+
+async function findPackagedTelegramDurableAckProducer() {
+  const archives = ["channels.tar.gz"];
+  if (await stat(path.join(OUT_DIR, "channel-shared-chunks.tar.gz")).catch(() => null)) {
+    archives.push("channel-shared-chunks.tar.gz");
+  }
+  const modules = await readSandboxArchiveJavaScriptModules({
+    archives: archives.map((fileName) => ({
+      archivePath: path.join(OUT_DIR, fileName),
+      fileName,
+    })),
+  });
+  return findReachableTelegramDurableAckProducer({
+    modules,
+    readText: (module) => module.content.toString("utf8"),
+  });
 }
 
 async function walkFiles(root) {
@@ -811,15 +888,35 @@ async function writeBundleCapabilities({ manifest, sourceIdentity, externalPlugi
   );
   const bundleSource = await readFile(OUT_FILE, "utf8");
   if (capabilities.includes("admin-http-rpc-v1")) {
-    const adminPluginSource = (
-      await Promise.all(
-        (
-          await walkFiles(path.join(DIST_EXTENSIONS_DIR, "admin-http-rpc"))
-        )
-          .filter((file) => file.endsWith(".js"))
-          .map((file) => readFile(file, "utf8")),
-      )
-    ).join("\n");
+    const runtimePluginEntries = listTar(["-tzf", "runtime-plugins.tar.gz"], OUT_DIR);
+    for (const entry of [
+      "admin-http-rpc/index.js",
+      "admin-http-rpc/openclaw.plugin.json",
+      "admin-http-rpc/package.json",
+    ]) {
+      if (!runtimePluginEntries.includes(entry)) {
+        throw new Error(`cannot publish admin-http-rpc-v1: packaged plugin lacks ${entry}`);
+      }
+    }
+    const adminPackage = JSON.parse(
+      readTarText("runtime-plugins.tar.gz", "admin-http-rpc/package.json"),
+    );
+    const adminManifest = JSON.parse(
+      readTarText("runtime-plugins.tar.gz", "admin-http-rpc/openclaw.plugin.json"),
+    );
+    if (
+      adminPackage.name !== "@openclaw/admin-http-rpc" ||
+      !adminPackage.openclaw?.extensions?.includes("./index.js") ||
+      adminManifest.id !== "admin-http-rpc" ||
+      !adminManifest.activation?.onConfigPaths?.includes("plugins.entries.admin-http-rpc") ||
+      !adminManifest.contracts?.gatewayMethodDispatch?.includes("authenticated-request")
+    ) {
+      throw new Error("cannot publish admin-http-rpc-v1: packaged plugin contract is invalid");
+    }
+    const adminPluginSource = runtimePluginEntries
+      .filter((entry) => entry.startsWith("admin-http-rpc/") && entry.endsWith(".js"))
+      .map((entry) => readTarText("runtime-plugins.tar.gz", entry))
+      .join("\n");
     for (const method of [
       "gateway.suspend.prepare",
       "gateway.suspend.status",
@@ -829,6 +926,18 @@ async function writeBundleCapabilities({ manifest, sourceIdentity, externalPlugi
         throw new Error(`cannot publish admin-http-rpc-v1: plugin lacks ${method}`);
       }
     }
+  }
+  if (capabilities.includes("telegram-durable-ack-v1")) {
+    if (!channelPluginIds.includes("telegram")) {
+      throw new Error("cannot publish telegram-durable-ack-v1: channels archive lacks telegram");
+    }
+    const producer = await findPackagedTelegramDurableAckProducer();
+    if (!producer) {
+      throw new Error(
+        "cannot publish telegram-durable-ack-v1: packaged Telegram runtime lacks durable enqueue -> acceptance header -> 200 response ordering",
+      );
+    }
+    log(`verified telegram-durable-ack-v1 producer in ${producer}`);
   }
   const capabilityProofStrings = {
     "cron-projection-v1": ["cron_reconciled"],
@@ -903,6 +1012,7 @@ async function createReleaseTarball() {
 const main = async () => {
   await mkdir(OUT_DIR, { recursive: true });
   const manifest = await loadBundleProfile();
+  await assertRuntimePluginSources(manifest.runtimePluginIds);
   await assertDisabledPublicSurfaceManifest(manifest);
   const runtimeDeps = await collectChannelSharedChunkRuntimeDeps(manifest.externalRuntimeDeps);
   const disabledOptionalAliases = createDisabledOptionalAliasMap(manifest);

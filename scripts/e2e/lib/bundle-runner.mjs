@@ -15,6 +15,9 @@ const DEFAULT_ASSET_DIR = path.join(OUT_DIR, "release-assets");
 const DEFAULT_SIGNING_SECRET = "test-signing-secret-1234567890abcdef";
 const DEFAULT_BOT_TOKEN = "xoxb-e2e-test-token";
 const DEFAULT_GATEWAY_TOKEN = "bundle-e2e-gateway-token-1234567890";
+const DEFAULT_TELEGRAM_BOT_TOKEN = "1234567890:bundle-telegram-e2e-token";
+const DEFAULT_TELEGRAM_WEBHOOK_SECRET = "bundle-telegram-webhook-secret";
+const DEFAULT_TELEGRAM_WEBHOOK_PATH = "/telegram-webhook";
 
 // Stderr patterns that indicate the dual-load class of bug we want to catch
 // before deploy. Matching any of these aborts the run with a precise message.
@@ -261,7 +264,18 @@ async function writeCapabilityProbe(extensionsDir) {
   );
 }
 
-function makeSlackConfig({ signingSecret, botToken, gatewayToken, capabilityProbe }) {
+function makeBundleConfig({
+  signingSecret,
+  botToken,
+  gatewayToken,
+  capabilityProbe,
+  telegramApiUrl,
+  telegramBotToken,
+  telegramWebhookPort,
+  telegramWebhookSecret,
+  telegramWebhookPath,
+}) {
+  const telegramEnabled = Boolean(telegramApiUrl && telegramWebhookPort);
   return {
     gateway: {
       mode: "local",
@@ -271,6 +285,7 @@ function makeSlackConfig({ signingSecret, botToken, gatewayToken, capabilityProb
       entries: {
         slack: { enabled: true },
         "admin-http-rpc": { enabled: true },
+        ...(telegramEnabled ? { telegram: { enabled: true } } : {}),
         ...(capabilityProbe ? { "bundle-capability-probe": { enabled: true } } : {}),
       },
     },
@@ -287,6 +302,24 @@ function makeSlackConfig({ signingSecret, botToken, gatewayToken, capabilityProb
           },
         },
       },
+      ...(telegramEnabled
+        ? {
+            telegram: {
+              accounts: {
+                default: {
+                  enabled: true,
+                  botToken: telegramBotToken,
+                  apiRoot: telegramApiUrl,
+                  webhookUrl: `http://127.0.0.1:${telegramWebhookPort}${telegramWebhookPath}`,
+                  webhookSecret: telegramWebhookSecret,
+                  webhookHost: "127.0.0.1",
+                  webhookPort: telegramWebhookPort,
+                  webhookPath: telegramWebhookPath,
+                },
+              },
+            },
+          }
+        : {}),
     },
   };
 }
@@ -318,6 +351,10 @@ export async function runBundle({
   gatewayToken = DEFAULT_GATEWAY_TOKEN,
   capabilityProbe = false,
   slackApiUrl,
+  telegramApiUrl,
+  telegramBotToken = DEFAULT_TELEGRAM_BOT_TOKEN,
+  telegramWebhookSecret = DEFAULT_TELEGRAM_WEBHOOK_SECRET,
+  telegramWebhookPath = DEFAULT_TELEGRAM_WEBHOOK_PATH,
   assetDir,
   port,
   readyTimeoutMs = 45_000,
@@ -345,11 +382,22 @@ export async function runBundle({
   if (capabilityProbe) {
     await writeCapabilityProbe(extensionsDir);
   }
+  const telegramWebhookPort = telegramApiUrl ? await findFreePort() : null;
 
   await writeFile(
     configPath,
     `${JSON.stringify(
-      makeSlackConfig({ signingSecret, botToken, gatewayToken, capabilityProbe }),
+      makeBundleConfig({
+        signingSecret,
+        botToken,
+        gatewayToken,
+        capabilityProbe,
+        telegramApiUrl,
+        telegramBotToken,
+        telegramWebhookPort,
+        telegramWebhookSecret,
+        telegramWebhookPath,
+      }),
       null,
       2,
     )}\n`,
@@ -490,6 +538,11 @@ export async function runBundle({
     signingSecret,
     botToken,
     gatewayToken,
+    telegramBotToken: telegramApiUrl ? telegramBotToken : null,
+    telegramWebhookSecret: telegramApiUrl ? telegramWebhookSecret : null,
+    telegramWebhookUrl: telegramWebhookPort
+      ? `http://127.0.0.1:${telegramWebhookPort}${telegramWebhookPath}`
+      : null,
     cronProbePath: capabilityProbe ? cronProbePath : null,
     pid: child.pid,
     isDualLoadHit: () => dualLoadHit,

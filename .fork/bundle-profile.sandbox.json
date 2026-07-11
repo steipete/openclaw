@@ -6,7 +6,12 @@
   },
   "runtimePluginIds": ["admin-http-rpc"],
   "externalPlugins": [{ "id": "slack", "packageName": "@openclaw/slack" }],
-  "capabilities": ["admin-http-rpc-v1", "cron-projection-v1", "gateway-suspend-v1"],
+  "capabilities": [
+    "admin-http-rpc-v1",
+    "cron-projection-v1",
+    "gateway-suspend-v1",
+    "telegram-durable-ack-v1"
+  ],
   "disabledOptionalNativeModules": {
     "sharp": "scripts/sandbox-bundle/disabled-optional.cjs",
     "keytar": "scripts/sandbox-bundle/disabled-optional.cjs",

@@ -6,6 +6,10 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import {
+  findReachableTelegramDurableAckProducer,
+  readSandboxArchiveJavaScriptModules,
+} from "./lib/sandbox-bundle-capability-proof.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -39,7 +43,12 @@ const RELEASE_TAR_REQUIRED_ENTRIES = [
   "openclaw.bundle.mjs",
   "release.json",
 ];
-const REQUIRED_CAPABILITIES = ["admin-http-rpc-v1", "cron-projection-v1", "gateway-suspend-v1"];
+const REQUIRED_CAPABILITIES = [
+  "admin-http-rpc-v1",
+  "cron-projection-v1",
+  "gateway-suspend-v1",
+  "telegram-durable-ack-v1",
+];
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
@@ -95,6 +104,58 @@ function listTarEntries(fileName) {
       reject(new Error(`tar -tzf ${fileName} exited with code ${code ?? signal}: ${stderr}`));
     });
   });
+}
+
+function readTarEntry(fileName, entryName) {
+  return new Promise((resolve, reject) => {
+    const child = spawn("tar", ["-xOf", fileName, entryName], {
+      cwd: OUT_DIR,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk.toString("utf8");
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString("utf8");
+    });
+    child.on("error", reject);
+    child.on("exit", (code, signal) => {
+      if (code === 0) {
+        resolve(stdout);
+      } else {
+        reject(
+          new Error(
+            `tar -xOf ${fileName} ${entryName} exited with code ${code ?? signal}: ${stderr}`,
+          ),
+        );
+      }
+    });
+  });
+}
+
+async function verifyPackagedTelegramDurableAck(hasSharedChunks) {
+  const archives = ["channels.tar.gz"];
+  if (hasSharedChunks) {
+    archives.push("channel-shared-chunks.tar.gz");
+  }
+  const modules = await readSandboxArchiveJavaScriptModules({
+    archives: archives.map((fileName) => ({
+      archivePath: path.join(OUT_DIR, fileName),
+      fileName,
+    })),
+  });
+  if (
+    !(await findReachableTelegramDurableAckProducer({
+      modules,
+      readText: (module) => module.content.toString("utf8"),
+    }))
+  ) {
+    fail(
+      "packaged Telegram runtime lacks durable enqueue -> acceptance header -> 200 response ordering",
+    );
+  }
 }
 
 function assertBudget(bytes, maxBytes, label) {
@@ -202,6 +263,48 @@ async function main() {
       `openclaw-release.tar.gz entries mismatch: expected ${expectedReleaseTarEntries.join(", ")}; got ${releaseTarEntries.join(", ")}`,
     );
   }
+  const runtimePluginEntries = await listTarEntries("runtime-plugins.tar.gz");
+  for (const entry of [
+    "admin-http-rpc/index.js",
+    "admin-http-rpc/openclaw.plugin.json",
+    "admin-http-rpc/package.json",
+  ]) {
+    if (!runtimePluginEntries.includes(entry)) {
+      fail(`runtime-plugins.tar.gz lacks required entry ${entry}`);
+    }
+  }
+  const adminPackage = JSON.parse(
+    await readTarEntry("runtime-plugins.tar.gz", "admin-http-rpc/package.json"),
+  );
+  const adminManifest = JSON.parse(
+    await readTarEntry("runtime-plugins.tar.gz", "admin-http-rpc/openclaw.plugin.json"),
+  );
+  if (
+    adminPackage.name !== "@openclaw/admin-http-rpc" ||
+    !adminPackage.openclaw?.extensions?.includes("./index.js") ||
+    adminManifest.id !== "admin-http-rpc" ||
+    !adminManifest.activation?.onConfigPaths?.includes("plugins.entries.admin-http-rpc") ||
+    !adminManifest.contracts?.gatewayMethodDispatch?.includes("authenticated-request")
+  ) {
+    fail("runtime-plugins.tar.gz has invalid admin-http-rpc contract");
+  }
+  const adminSource = (
+    await Promise.all(
+      runtimePluginEntries
+        .filter((entry) => entry.startsWith("admin-http-rpc/") && entry.endsWith(".js"))
+        .map((entry) => readTarEntry("runtime-plugins.tar.gz", entry)),
+    )
+  ).join("\n");
+  for (const method of [
+    "gateway.suspend.prepare",
+    "gateway.suspend.status",
+    "gateway.suspend.resume",
+  ]) {
+    if (!adminSource.includes(method)) {
+      fail(`runtime-plugins.tar.gz admin-http-rpc lacks ${method}`);
+    }
+  }
+  await verifyPackagedTelegramDurableAck(typeof sizes["channel-shared-chunks.tar.gz"] === "number");
 
   // Static-import dual-load guard.
   // Bundling a static `import { ... } from "<dep>"` for a dep that is also
@@ -272,16 +375,28 @@ async function main() {
   if (capabilities.schemaVersion !== 1 || capabilities.profile !== manifest.profile) {
     fail("bundle-capabilities.json has invalid schemaVersion or profile");
   }
-  for (const capability of REQUIRED_CAPABILITIES) {
-    if (!capabilities.capabilities?.includes(capability)) {
-      fail(`bundle-capabilities.json lacks required capability ${capability}`);
-    }
+  if (
+    JSON.stringify([...(capabilities.capabilities ?? [])].toSorted()) !==
+    JSON.stringify(REQUIRED_CAPABILITIES)
+  ) {
+    fail(
+      `bundle-capabilities.json capabilities must be exactly: ${REQUIRED_CAPABILITIES.join(", ")}`,
+    );
+  }
+  if (
+    JSON.stringify([...(contract.capabilities ?? [])].toSorted()) !==
+    JSON.stringify(capabilities.capabilities)
+  ) {
+    fail("bundle-contract.json capabilities do not match bundle-capabilities.json");
   }
   if (!capabilities.pluginIds?.includes("admin-http-rpc")) {
     fail("bundle-capabilities.json lacks admin-http-rpc plugin");
   }
   if (!capabilities.pluginIds?.includes("slack")) {
     fail("bundle-capabilities.json lacks Slack plugin");
+  }
+  if (!capabilities.pluginIds?.includes("telegram")) {
+    fail("bundle-capabilities.json lacks Telegram plugin");
   }
   if (
     JSON.stringify(capabilities.externalPlugins) !== JSON.stringify(externalPlugins.plugins) ||

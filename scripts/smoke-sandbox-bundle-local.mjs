@@ -12,8 +12,13 @@ const REPO_ROOT = path.resolve(HERE, "..");
 const DEFAULT_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox", "release-assets");
 const FALLBACK_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox");
 const WALL_CLOCK_MS = 60_000;
-const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack"];
-const REQUIRED_CAPABILITIES = ["admin-http-rpc-v1", "cron-projection-v1", "gateway-suspend-v1"];
+const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack", "telegram"];
+const REQUIRED_CAPABILITIES = [
+  "admin-http-rpc-v1",
+  "cron-projection-v1",
+  "gateway-suspend-v1",
+  "telegram-durable-ack-v1",
+];
 const FORBIDDEN_OUTPUT = [
   "Unable to resolve bundled plugin public surface",
   "Cannot find module",
@@ -268,15 +273,24 @@ async function main() {
     if (capabilities.schemaVersion !== 1 || capabilities.profile !== "sandbox") {
       throw new Error("bundle-capabilities.json has invalid schemaVersion or profile");
     }
-    for (const capability of REQUIRED_CAPABILITIES) {
-      if (!capabilities.capabilities?.includes(capability)) {
-        throw new Error(`bundle-capabilities.json missing required capability ${capability}`);
-      }
+    if (
+      JSON.stringify([...(capabilities.capabilities ?? [])].toSorted()) !==
+      JSON.stringify(REQUIRED_CAPABILITIES)
+    ) {
+      throw new Error(
+        `bundle-capabilities.json capabilities must be exactly: ${REQUIRED_CAPABILITIES.join(", ")}`,
+      );
     }
     for (const pluginId of REQUIRED_PLUGIN_IDS) {
       if (!capabilities.pluginIds?.includes(pluginId)) {
         throw new Error(`bundle-capabilities.json missing packaged plugin ${pluginId}`);
       }
+    }
+    if (
+      JSON.stringify([...(contract.capabilities ?? [])].toSorted()) !==
+      JSON.stringify(capabilities.capabilities)
+    ) {
+      throw new Error("bundle-contract.json capabilities do not match bundle-capabilities.json");
     }
     if (JSON.stringify(capabilities.externalPlugins) !== JSON.stringify(externalPlugins.plugins)) {
       throw new Error("external plugin metadata differs across bundle manifests");

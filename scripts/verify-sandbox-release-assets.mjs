@@ -6,6 +6,10 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import {
+  findReachableTelegramDurableAckProducer,
+  readSandboxArchiveJavaScriptModules,
+} from "./lib/sandbox-bundle-capability-proof.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -40,8 +44,13 @@ const REQUIRED_TAR_ENTRIES = [
   "release.json",
   "workspace-templates.tar.gz",
 ];
-const REQUIRED_CAPABILITIES = ["admin-http-rpc-v1", "cron-projection-v1", "gateway-suspend-v1"];
-const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack"];
+const REQUIRED_CAPABILITIES = [
+  "admin-http-rpc-v1",
+  "cron-projection-v1",
+  "gateway-suspend-v1",
+  "telegram-durable-ack-v1",
+];
+const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack", "telegram"];
 
 function parseArgs(argv) {
   const args = { assetDir: process.env.OPENCLAW_SANDBOX_BUNDLE_ASSET_DIR };
@@ -183,15 +192,42 @@ function requireStringSetIncludes(actual, required, label) {
   }
 }
 
+async function verifyPackagedTelegramDurableAck(assetDir) {
+  const archives = ["channels.tar.gz"];
+  const sharedChunksPath = path.join(assetDir, "channel-shared-chunks.tar.gz");
+  if (await stat(sharedChunksPath).catch(() => null)) {
+    archives.push("channel-shared-chunks.tar.gz");
+  }
+  const modules = await readSandboxArchiveJavaScriptModules({
+    archives: archives.map((fileName) => ({
+      archivePath: path.join(assetDir, fileName),
+      fileName,
+    })),
+  });
+  if (
+    !(await findReachableTelegramDurableAckProducer({
+      modules,
+      readText: (module) => module.content.toString("utf8"),
+    }))
+  ) {
+    throw new Error(
+      "packaged Telegram runtime lacks durable enqueue -> acceptance header -> 200 response ordering",
+    );
+  }
+}
+
 function verifyCapabilityManifest(manifest, capabilities, externalPlugins) {
   if (capabilities.schemaVersion !== 1 || capabilities.profile !== "sandbox") {
     throw new Error("bundle-capabilities.json has invalid schemaVersion or profile");
   }
-  requireStringSetIncludes(
-    capabilities.capabilities,
-    REQUIRED_CAPABILITIES,
-    "bundle-capabilities.json capabilities",
-  );
+  if (
+    JSON.stringify([...(capabilities.capabilities ?? [])].toSorted()) !==
+    JSON.stringify(REQUIRED_CAPABILITIES)
+  ) {
+    throw new Error(
+      `bundle-capabilities.json capabilities must be exactly: ${REQUIRED_CAPABILITIES.join(", ")}`,
+    );
+  }
   requireStringSetIncludes(
     capabilities.pluginIds,
     REQUIRED_PLUGIN_IDS,
@@ -229,10 +265,47 @@ async function verifyNestedAssets(assetDir, contract, externalPlugins) {
   }
   requireTarEntry(channelsEntries, "channels.tar.gz", "telegram/package.json");
   requireTarEntry(channelsEntries, "channels.tar.gz", "telegram/index.js");
+  await verifyPackagedTelegramDurableAck(assetDir);
 
   const runtimePluginEntries = await listTarEntries(assetDir, "runtime-plugins.tar.gz");
   requireTarEntry(runtimePluginEntries, "runtime-plugins.tar.gz", "admin-http-rpc/package.json");
   requireTarEntry(runtimePluginEntries, "runtime-plugins.tar.gz", "admin-http-rpc/index.js");
+  requireTarEntry(
+    runtimePluginEntries,
+    "runtime-plugins.tar.gz",
+    "admin-http-rpc/openclaw.plugin.json",
+  );
+  const adminPackage = JSON.parse(
+    await readTarEntry(assetDir, "runtime-plugins.tar.gz", "admin-http-rpc/package.json"),
+  );
+  const adminManifest = JSON.parse(
+    await readTarEntry(assetDir, "runtime-plugins.tar.gz", "admin-http-rpc/openclaw.plugin.json"),
+  );
+  if (
+    adminPackage.name !== "@openclaw/admin-http-rpc" ||
+    !adminPackage.openclaw?.extensions?.includes("./index.js") ||
+    adminManifest.id !== "admin-http-rpc" ||
+    !adminManifest.activation?.onConfigPaths?.includes("plugins.entries.admin-http-rpc") ||
+    !adminManifest.contracts?.gatewayMethodDispatch?.includes("authenticated-request")
+  ) {
+    throw new Error("runtime-plugins.tar.gz has invalid admin-http-rpc contract");
+  }
+  const adminSource = (
+    await Promise.all(
+      runtimePluginEntries
+        .filter((entry) => entry.startsWith("admin-http-rpc/") && entry.endsWith(".js"))
+        .map((entry) => readTarEntry(assetDir, "runtime-plugins.tar.gz", entry)),
+    )
+  ).join("\n");
+  for (const method of [
+    "gateway.suspend.prepare",
+    "gateway.suspend.status",
+    "gateway.suspend.resume",
+  ]) {
+    if (!adminSource.includes(method)) {
+      throw new Error(`runtime-plugins.tar.gz admin-http-rpc lacks ${method}`);
+    }
+  }
 
   for (const plugin of externalPlugins.plugins) {
     const packageEntries = await listTarEntries(assetDir, plugin.artifact);
@@ -317,6 +390,12 @@ async function main() {
     JSON.stringify(contract.externalPlugins) !== JSON.stringify(externalPlugins.plugins)
   ) {
     throw new Error("release identity differs across bundle manifests");
+  }
+  if (
+    JSON.stringify([...(contract.capabilities ?? [])].toSorted()) !==
+    JSON.stringify(capabilities.capabilities)
+  ) {
+    throw new Error("bundle-contract.json capabilities do not match bundle-capabilities.json");
   }
   if (manifest.name !== "openclaw-sandbox-bundle" || manifest.profile !== "sandbox") {
     throw new Error("asset-manifest.json does not describe the sandbox bundle");

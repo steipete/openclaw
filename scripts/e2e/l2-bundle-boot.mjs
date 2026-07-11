@@ -2,8 +2,11 @@
 
 import process from "node:process";
 import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { runBundle } from "./lib/bundle-runner.mjs";
 import { startMockSlackServer } from "./lib/mock-slack-server.mjs";
+import { startMockTelegramServer } from "./lib/mock-telegram-server.mjs";
 import { buildAppMentionPayload, signSlackRequest } from "./lib/slack-fixture.mjs";
 
 const WALL_CLOCK_MS = 60_000;
@@ -12,6 +15,35 @@ const SUSPEND_METHODS = [
   "gateway.suspend.status",
   "gateway.suspend.resume",
 ];
+const TELEGRAM_ACCEPTED_HEADER = "x-openclaw-delivery-accepted";
+const TELEGRAM_UPDATE_ID = 424242;
+const TELEGRAM_FAILURE_UPDATE_ID = TELEGRAM_UPDATE_ID - 1;
+const TELEGRAM_ALLOWED_UPDATES = [
+  "message",
+  "edited_message",
+  "channel_post",
+  "edited_channel_post",
+  "business_connection",
+  "business_message",
+  "edited_business_message",
+  "deleted_business_messages",
+  "guest_message",
+  "inline_query",
+  "chosen_inline_result",
+  "callback_query",
+  "shipping_query",
+  "pre_checkout_query",
+  "purchased_paid_media",
+  "poll",
+  "poll_answer",
+  "my_chat_member",
+  "managed_bot",
+  "chat_join_request",
+  "chat_boost",
+  "removed_chat_boost",
+  "message_reaction",
+];
+const SQLITE_PROBE_BUSY_TIMEOUT_MS = 5_000;
 
 async function readJsonWhenAvailable(filePath, timeoutMs = 10_000) {
   const deadline = Date.now() + timeoutMs;
@@ -38,6 +70,258 @@ async function callAdminRpc(runner, method, params, authenticated = true) {
   return { response, body };
 }
 
+async function waitForTelegramWebhookHealth(webhookUrl, timeoutMs = 10_000) {
+  const healthUrl = new URL("/healthz", webhookUrl);
+  const deadline = Date.now() + timeoutMs;
+  let lastError;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(healthUrl);
+      if (response.status === 200) {
+        return response;
+      }
+      lastError = new Error(`health returned ${response.status}`);
+    } catch (error) {
+      lastError = error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error(
+    `Telegram webhook was not healthy within ${timeoutMs}ms: ${lastError?.message ?? "unknown"}`,
+  );
+}
+
+function telegramStateDatabasePath(homeDir) {
+  return path.join(homeDir, ".openclaw", "state", "openclaw.sqlite");
+}
+
+async function waitForTelegramIngressTable(homeDir, timeoutMs = 10_000) {
+  const databasePath = telegramStateDatabasePath(homeDir);
+  const deadline = Date.now() + timeoutMs;
+  let lastError;
+  while (Date.now() < deadline) {
+    let database;
+    try {
+      database = new DatabaseSync(databasePath, { readOnly: true });
+      const row = database
+        .prepare(
+          "SELECT 1 AS found FROM sqlite_master WHERE type = 'table' AND name = 'channel_ingress_events'",
+        )
+        .get();
+      if (row?.found === 1) {
+        return;
+      }
+      lastError = new Error("channel_ingress_events table is absent");
+    } catch (error) {
+      lastError = error;
+    } finally {
+      database?.close();
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error(
+    `Telegram durable ingress table was not available within ${timeoutMs}ms: ${lastError?.message ?? "unknown"}`,
+  );
+}
+
+async function waitForTelegramIngressRow(homeDir, updateId, timeoutMs = 10_000) {
+  const databasePath = telegramStateDatabasePath(homeDir);
+  const queueName = JSON.stringify(["telegram", "default"]);
+  const eventId = String(updateId).padStart(16, "0");
+  const deadline = Date.now() + timeoutMs;
+  let lastError;
+  while (Date.now() < deadline) {
+    let database;
+    try {
+      database = new DatabaseSync(databasePath, { readOnly: true });
+      const rows = database
+        .prepare(
+          "SELECT event_id, status FROM channel_ingress_events WHERE queue_name = ? AND event_id = ?",
+        )
+        .all(queueName, eventId);
+      if (rows.length === 1) {
+        return rows[0];
+      }
+      lastError = new Error(`expected one durable ingress row, got ${rows.length}`);
+    } catch (error) {
+      lastError = error;
+    } finally {
+      database?.close();
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error(
+    `Telegram durable ingress row was not available within ${timeoutMs}ms: ${lastError?.message ?? "unknown"}`,
+  );
+}
+
+function readTelegramIngressRows(homeDir) {
+  const database = new DatabaseSync(telegramStateDatabasePath(homeDir), { readOnly: true });
+  try {
+    return database
+      .prepare(
+        "SELECT event_id, status FROM channel_ingress_events WHERE queue_name = ? ORDER BY event_id",
+      )
+      .all(JSON.stringify(["telegram", "default"]));
+  } finally {
+    database.close();
+  }
+}
+
+async function proveTelegramDurableAck(runner, mockTelegram) {
+  if (!runner.telegramWebhookUrl || !runner.telegramWebhookSecret) {
+    throw new Error("bundle runner did not configure the Telegram webhook probe");
+  }
+  const registration = await mockTelegram.waitForCall((call) => call.method === "setWebhook");
+  const expectedRegistration = {
+    url: runner.telegramWebhookUrl,
+    secret_token: runner.telegramWebhookSecret,
+    allowed_updates: TELEGRAM_ALLOWED_UPDATES,
+  };
+  const registrationKeys = Object.keys(registration.body ?? {}).toSorted();
+  const expectedRegistrationKeys = Object.keys(expectedRegistration).toSorted();
+  if (
+    JSON.stringify(registrationKeys) !== JSON.stringify(expectedRegistrationKeys) ||
+    registration.body?.url !== expectedRegistration.url ||
+    registration.body?.secret_token !== expectedRegistration.secret_token ||
+    JSON.stringify(registration.body?.allowed_updates) !==
+      JSON.stringify(expectedRegistration.allowed_updates)
+  ) {
+    throw new Error(
+      `Telegram setWebhook registration mismatch: ${JSON.stringify(registration.body)}`,
+    );
+  }
+
+  const health = await waitForTelegramWebhookHealth(runner.telegramWebhookUrl);
+  if (health.headers.get(TELEGRAM_ACCEPTED_HEADER) !== null) {
+    throw new Error("Telegram health route exposed the durable acceptance marker");
+  }
+
+  const notFound = await fetch(new URL("/not-telegram-webhook", runner.telegramWebhookUrl), {
+    method: "POST",
+  });
+  if (notFound.status !== 404 || notFound.headers.get(TELEGRAM_ACCEPTED_HEADER) !== null) {
+    throw new Error(`Telegram negative route returned an acceptance marker (${notFound.status})`);
+  }
+
+  const unauthorizedBody = JSON.stringify({ update_id: TELEGRAM_UPDATE_ID });
+  const unauthorized = await fetch(runner.telegramWebhookUrl, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: unauthorizedBody,
+  });
+  if (unauthorized.status !== 401 || unauthorized.headers.get(TELEGRAM_ACCEPTED_HEADER) !== null) {
+    throw new Error(
+      `Telegram unauthorized route returned an acceptance marker (${unauthorized.status})`,
+    );
+  }
+
+  const postDurableUpdate = (updateId) =>
+    fetch(runner.telegramWebhookUrl, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-telegram-bot-api-secret-token": runner.telegramWebhookSecret,
+      },
+      body: JSON.stringify({ update_id: updateId }),
+    });
+
+  await waitForTelegramIngressTable(runner.homeDir);
+  const databasePath = telegramStateDatabasePath(runner.homeDir);
+  const faultDatabase = new DatabaseSync(databasePath);
+  try {
+    faultDatabase.exec(`PRAGMA busy_timeout = ${SQLITE_PROBE_BUSY_TIMEOUT_MS}`);
+    faultDatabase.exec(`
+      CREATE TRIGGER bundle_e2e_reject_telegram_ingress
+      BEFORE INSERT ON channel_ingress_events
+      WHEN NEW.queue_name = '["telegram","default"]'
+        AND NEW.event_id = '${String(TELEGRAM_FAILURE_UPDATE_ID).padStart(16, "0")}'
+      BEGIN
+        SELECT RAISE(ABORT, 'bundle injected durable write failure');
+      END;
+    `);
+    const failed = await postDurableUpdate(TELEGRAM_FAILURE_UPDATE_ID);
+    if (failed.status !== 500 || failed.headers.get(TELEGRAM_ACCEPTED_HEADER) !== null) {
+      throw new Error(
+        `Telegram persistence failure expected 500 without an acceptance marker (${failed.status})`,
+      );
+    }
+  } finally {
+    try {
+      faultDatabase.exec("DROP TRIGGER IF EXISTS bundle_e2e_reject_telegram_ingress");
+    } finally {
+      faultDatabase.close();
+    }
+  }
+
+  const commitGateDatabase = new DatabaseSync(databasePath);
+  let gateOpen = false;
+  let responseSettled = false;
+  let acceptedTask;
+  try {
+    commitGateDatabase.exec(`PRAGMA busy_timeout = ${SQLITE_PROBE_BUSY_TIMEOUT_MS}`);
+    commitGateDatabase.exec("BEGIN IMMEDIATE");
+    gateOpen = true;
+    acceptedTask = postDurableUpdate(TELEGRAM_UPDATE_ID).then(
+      (response) => {
+        responseSettled = true;
+        return { response };
+      },
+      (error) => {
+        responseSettled = true;
+        return { error };
+      },
+    );
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    if (responseSettled) {
+      throw new Error("Telegram durable response completed before the SQLite write lock released");
+    }
+    commitGateDatabase.exec("ROLLBACK");
+    gateOpen = false;
+  } finally {
+    if (gateOpen) {
+      commitGateDatabase.exec("ROLLBACK");
+    }
+    commitGateDatabase.close();
+  }
+  const acceptedResult = await acceptedTask;
+  if (acceptedResult.error) {
+    throw acceptedResult.error;
+  }
+  const accepted = acceptedResult.response;
+  if (accepted.status !== 200 || accepted.headers.get(TELEGRAM_ACCEPTED_HEADER) !== "durable") {
+    throw new Error(
+      `Telegram initial durable update was not acknowledged after persistence (${accepted.status})`,
+    );
+  }
+
+  const row = await waitForTelegramIngressRow(runner.homeDir, TELEGRAM_UPDATE_ID);
+  const expectedEventId = String(TELEGRAM_UPDATE_ID).padStart(16, "0");
+  if (row.event_id !== expectedEventId) {
+    throw new Error(`Telegram durable ingress row has wrong event id: ${row.event_id}`);
+  }
+
+  const duplicate = await postDurableUpdate(TELEGRAM_UPDATE_ID);
+  if (duplicate.status !== 200 || duplicate.headers.get(TELEGRAM_ACCEPTED_HEADER) !== "durable") {
+    throw new Error(
+      `Telegram duplicate durable update was not acknowledged after persistence (${duplicate.status})`,
+    );
+  }
+  const rowsAfterDuplicate = readTelegramIngressRows(runner.homeDir);
+  if (rowsAfterDuplicate.length !== 1 || rowsAfterDuplicate[0]?.event_id !== expectedEventId) {
+    throw new Error(
+      `Telegram duplicate did not preserve one durable ingress row: ${JSON.stringify(rowsAfterDuplicate)}`,
+    );
+  }
+  return {
+    updateId: TELEGRAM_UPDATE_ID,
+    status: rowsAfterDuplicate[0].status,
+    rows: rowsAfterDuplicate.length,
+    commitGateBlockedResponse: true,
+    persistenceFailureRejected: true,
+  };
+}
+
 async function main() {
   const startedAt = performance.now();
   const wallClock = setTimeout(() => {
@@ -46,24 +330,32 @@ async function main() {
   }, WALL_CLOCK_MS);
   wallClock.unref();
 
-  // Boot a loopback mock Slack API so the bundled slack channel can complete
-  // its auth.test handshake and register the /slack/events route. Without
-  // this, slack channel registration fails on `invalid_auth` and L2 cannot
-  // observe whether the route surface is wired up.
-  const mockSlack = await startMockSlackServer();
-  const runner = await runBundle({ slackApiUrl: mockSlack.url, capabilityProbe: true });
-  // Debug aid: snapshot what the gateway thinks it has registered.
-  if (process.env.OPENCLAW_E2E_DEBUG === "1") {
-    for (const probePath of ["/healthz", "/ready", "/status", "/channels"]) {
-      try {
-        const r = await fetch(`${runner.url}${probePath}`);
-        process.stderr.write(`[l2-debug] ${probePath} -> ${r.status}\n`);
-      } catch (err) {
-        process.stderr.write(`[l2-debug] ${probePath} -> err: ${err.message}\n`);
+  let mockSlack;
+  let mockTelegram;
+  let runner;
+  try {
+    // Loopback APIs let the packaged channels complete startup without external
+    // credentials while the probes still exercise their real HTTP surfaces.
+    mockSlack = await startMockSlackServer();
+    mockTelegram = await startMockTelegramServer();
+    runner = await runBundle({
+      slackApiUrl: mockSlack.url,
+      telegramApiUrl: mockTelegram.url,
+      telegramBotToken: mockTelegram.botToken,
+      capabilityProbe: true,
+    });
+    // Debug aid: snapshot what the gateway thinks it has registered.
+    if (process.env.OPENCLAW_E2E_DEBUG === "1") {
+      for (const probePath of ["/healthz", "/ready", "/status", "/channels"]) {
+        try {
+          const r = await fetch(`${runner.url}${probePath}`);
+          process.stderr.write(`[l2-debug] ${probePath} -> ${r.status}\n`);
+        } catch (err) {
+          process.stderr.write(`[l2-debug] ${probePath} -> err: ${err.message}\n`);
+        }
       }
     }
-  }
-  try {
+
     // Probe the slack webhook with an event_callback body and a deliberately
     // wrong signature. If the slack channel registered, the route exists and
     // signature verification rejects it. If the channel did not register, we
@@ -125,6 +417,8 @@ async function main() {
         `slack channel /slack/events failed to reject bad signature; got ${probe.status}\nstderr:\n${stderrText}`,
       );
     }
+
+    const telegramDurableAck = await proveTelegramDurableAck(runner, mockTelegram);
 
     const unauthorized = await callAdminRpc(runner, "commands.list", undefined, false);
     if (unauthorized.response.status !== 401) {
@@ -192,14 +486,16 @@ async function main() {
         signatureVerified,
         adminRpcAuthenticated: true,
         suspensionRoundtrip: true,
+        telegramDurableAck,
         cronReconciled: cronProbe.event,
         probeStatus: probe.status,
       })}\n`,
     );
   } finally {
     clearTimeout(wallClock);
-    await runner.stop().catch(() => {});
-    await mockSlack.stop().catch(() => {});
+    await runner?.stop().catch(() => {});
+    await mockSlack?.stop().catch(() => {});
+    await mockTelegram?.stop().catch(() => {});
   }
 }
 

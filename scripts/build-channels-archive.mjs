@@ -33,6 +33,7 @@ const REPO_ROOT = path.resolve(HERE, "..");
 // dist/extensions/ holds the real compiled output plus the dependency
 // node_modules tree (deduped under each extension via symlink).
 const SRC_DIR = path.join(REPO_ROOT, "dist", "extensions");
+const SOURCE_EXTENSIONS_DIR = path.join(REPO_ROOT, "extensions");
 const OUT_DIR = path.join(REPO_ROOT, "dist", "sandbox");
 const OUT_FILE = path.join(OUT_DIR, "channels.tar.gz");
 const RUNTIME_PLUGINS_OUT_FILE = path.join(OUT_DIR, "runtime-plugins.tar.gz");
@@ -109,6 +110,32 @@ async function loadBundleProfile() {
   return profile;
 }
 
+async function assertRuntimePluginSources(runtimePluginIds) {
+  for (const id of new Set(runtimePluginIds)) {
+    const pluginRoot = path.join(SOURCE_EXTENSIONS_DIR, id);
+    let pkg;
+    let pluginManifest;
+    try {
+      pkg = JSON.parse(await readFile(path.join(pluginRoot, "package.json"), "utf8"));
+      pluginManifest = JSON.parse(
+        await readFile(path.join(pluginRoot, "openclaw.plugin.json"), "utf8"),
+      );
+    } catch (error) {
+      throw new Error(
+        `bundle profile ${PROFILE_NAME} requires missing runtime plugin source ${id}; rebase the fork onto an OpenClaw revision that contains it`,
+        { cause: error },
+      );
+    }
+    if (
+      pluginManifest.id !== id ||
+      !Array.isArray(pkg.openclaw?.extensions) ||
+      pkg.openclaw.extensions.length === 0
+    ) {
+      throw new Error(`bundle profile ${PROFILE_NAME} runtime plugin source ${id} is invalid`);
+    }
+  }
+}
+
 function selectExtensionIds(extensions, profile) {
   const externalPluginIds = new Set(profile.externalPlugins.map((plugin) => plugin.id));
   const channels = [...extensions]
@@ -151,6 +178,7 @@ function runTar(args, cwd) {
 const main = async () => {
   await mkdir(OUT_DIR, { recursive: true });
   const profile = await loadBundleProfile();
+  await assertRuntimePluginSources(profile.runtimePluginIds);
   const extensions = await listBuiltExtensions();
   const { channels, runtimePlugins } = selectExtensionIds(extensions, profile);
   if (channels.length === 0) {
