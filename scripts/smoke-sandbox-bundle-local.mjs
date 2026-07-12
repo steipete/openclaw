@@ -6,6 +6,10 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import {
+  assertSandboxBundleCapabilities,
+  assertSandboxBundleCapabilityHooks,
+} from "./lib/sandbox-bundle-capabilities.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -13,12 +17,6 @@ const DEFAULT_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox", "release-asset
 const FALLBACK_ASSET_DIR = path.join(REPO_ROOT, "dist", "sandbox");
 const WALL_CLOCK_MS = 60_000;
 const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack", "telegram"];
-const REQUIRED_CAPABILITIES = [
-  "admin-http-rpc-v1",
-  "cron-projection-v1",
-  "gateway-suspend-v1",
-  "telegram-durable-ack-v1",
-];
 const FORBIDDEN_OUTPUT = [
   "Unable to resolve bundled plugin public surface",
   "Cannot find module",
@@ -273,23 +271,19 @@ async function main() {
     if (capabilities.schemaVersion !== 1 || capabilities.profile !== "sandbox") {
       throw new Error("bundle-capabilities.json has invalid schemaVersion or profile");
     }
-    if (
-      JSON.stringify([...(capabilities.capabilities ?? [])].toSorted()) !==
-      JSON.stringify(REQUIRED_CAPABILITIES)
-    ) {
-      throw new Error(
-        `bundle-capabilities.json capabilities must be exactly: ${REQUIRED_CAPABILITIES.join(", ")}`,
-      );
-    }
+    assertSandboxBundleCapabilities(capabilities.capabilities, "bundle-capabilities.json");
+    assertSandboxBundleCapabilityHooks({
+      capabilities: capabilities.capabilities,
+      bundleSource: await readFile(path.join(tmpRoot, "openclaw.bundle.mjs"), "utf8"),
+      label: "openclaw.bundle.mjs",
+    });
     for (const pluginId of REQUIRED_PLUGIN_IDS) {
       if (!capabilities.pluginIds?.includes(pluginId)) {
         throw new Error(`bundle-capabilities.json missing packaged plugin ${pluginId}`);
       }
     }
-    if (
-      JSON.stringify([...(contract.capabilities ?? [])].toSorted()) !==
-      JSON.stringify(capabilities.capabilities)
-    ) {
+    assertSandboxBundleCapabilities(contract.capabilities, "bundle-contract.json");
+    if (JSON.stringify(contract.capabilities) !== JSON.stringify(capabilities.capabilities)) {
       throw new Error("bundle-contract.json capabilities do not match bundle-capabilities.json");
     }
     if (JSON.stringify(capabilities.externalPlugins) !== JSON.stringify(externalPlugins.plugins)) {

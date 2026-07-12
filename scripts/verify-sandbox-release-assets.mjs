@@ -10,6 +10,10 @@ import {
   findReachableTelegramDurableAckProducer,
   readSandboxArchiveJavaScriptModules,
 } from "./lib/sandbox-bundle-capability-proof.mjs";
+import {
+  assertSandboxBundleCapabilities,
+  assertSandboxBundleCapabilityHooks,
+} from "./lib/sandbox-bundle-capabilities.mjs";
 import { assertSafeSandboxArchive, sandboxArchiveLimits } from "./lib/sandbox-archive-contract.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -45,12 +49,6 @@ const REQUIRED_TAR_ENTRIES = [
   "openclaw.bundle.mjs",
   "release.json",
   "workspace-templates.tar.gz",
-];
-const REQUIRED_CAPABILITIES = [
-  "admin-http-rpc-v1",
-  "cron-projection-v1",
-  "gateway-suspend-v1",
-  "telegram-durable-ack-v1",
 ];
 const REQUIRED_PLUGIN_IDS = ["admin-http-rpc", "slack", "telegram"];
 
@@ -218,18 +216,16 @@ async function verifyPackagedTelegramDurableAck(assetDir) {
   }
 }
 
-function verifyCapabilityManifest(manifest, capabilities, externalPlugins) {
+function verifyCapabilityManifest(manifest, capabilities, externalPlugins, bundleSource) {
   if (capabilities.schemaVersion !== 1 || capabilities.profile !== "sandbox") {
     throw new Error("bundle-capabilities.json has invalid schemaVersion or profile");
   }
-  if (
-    JSON.stringify([...(capabilities.capabilities ?? [])].toSorted()) !==
-    JSON.stringify(REQUIRED_CAPABILITIES)
-  ) {
-    throw new Error(
-      `bundle-capabilities.json capabilities must be exactly: ${REQUIRED_CAPABILITIES.join(", ")}`,
-    );
-  }
+  assertSandboxBundleCapabilities(capabilities.capabilities, "bundle-capabilities.json");
+  assertSandboxBundleCapabilityHooks({
+    capabilities: capabilities.capabilities,
+    bundleSource,
+    label: "openclaw.bundle.mjs",
+  });
   requireStringSetIncludes(
     capabilities.pluginIds,
     REQUIRED_PLUGIN_IDS,
@@ -392,7 +388,12 @@ async function main() {
   if (manifest.capabilityManifest !== "bundle-capabilities.json") {
     throw new Error("asset-manifest.json capabilityManifest mismatch");
   }
-  verifyCapabilityManifest(manifest, capabilities, externalPlugins);
+  verifyCapabilityManifest(
+    manifest,
+    capabilities,
+    externalPlugins,
+    await readFile(path.join(assetDir, "openclaw.bundle.mjs"), "utf8"),
+  );
   if (
     release.schemaVersion !== 2 ||
     release.capabilityManifest !== "bundle-capabilities.json" ||
@@ -418,10 +419,8 @@ async function main() {
   ) {
     throw new Error("release identity differs across bundle manifests");
   }
-  if (
-    JSON.stringify([...(contract.capabilities ?? [])].toSorted()) !==
-    JSON.stringify(capabilities.capabilities)
-  ) {
+  assertSandboxBundleCapabilities(contract.capabilities, "bundle-contract.json");
+  if (JSON.stringify(contract.capabilities) !== JSON.stringify(capabilities.capabilities)) {
     throw new Error("bundle-contract.json capabilities do not match bundle-capabilities.json");
   }
   if (manifest.name !== "openclaw-sandbox-bundle" || manifest.profile !== "sandbox") {

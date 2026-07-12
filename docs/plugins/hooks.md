@@ -145,6 +145,7 @@ observation-only.
 **Lifecycle**
 
 - `gateway_start` / `gateway_stop` - start or stop plugin-owned services with the Gateway
+- `cron_reconciled` - reconcile against the complete Gateway cron state after startup or reload
 - `cron_changed` - observe gateway-owned cron lifecycle changes (added, updated, removed, started, finished, scheduled)
 - **`before_install`** - inspect skill or plugin install scans and optionally block
 
@@ -380,13 +381,25 @@ install.
 
 ## Gateway lifecycle
 
-Use `gateway_start` for plugin services that need Gateway-owned state. The
-context exposes `ctx.config`, `ctx.workspaceDir`, and `ctx.getCron?.()` for
-cron inspection and updates. Use `gateway_stop` to clean up long-running
-resources.
+Use `gateway_start` to start general plugin services and `gateway_stop` to
+clean up long-running resources. The cron scheduler can still be loading when
+`gateway_start` runs, so do not use it as the baseline signal for an external
+cron projection.
 
 Do not rely on the internal `gateway:startup` hook for plugin-owned runtime
 services.
+
+`cron_reconciled` fires after the Gateway cron scheduler has reconciled its
+durable state. It fires for both initial startup and scheduler replacement
+during config reload. The event reports `reason` (`startup` or `reload`) and
+the effective `enabled` state. Disabled cron still emits with `enabled: false`,
+allowing an external projection to clear stale wakes. Use `ctx.getCron?.()` for
+the exact scheduler instance that completed reconciliation; a later reload
+does not retarget that callback. `ctx.abortSignal` owns that same scheduler
+snapshot. The Gateway aborts it as soon as a newer scheduler is armed or
+shutdown starts, so durable side effects must not accept the snapshot after it
+aborts. This is a scheduler lifecycle signal, not a plugin-activation signal: a
+plugin-only hot reload does not replay it.
 
 `cron_changed` fires for gateway-owned cron lifecycle events with a typed
 event payload covering `added`, `updated`, `removed`, `started`, `finished`,

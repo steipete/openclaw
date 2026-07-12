@@ -28,6 +28,7 @@ import type { ChannelHealthMonitor } from "./channel-health-monitor.js";
 import type { ChannelKind } from "./config-reload-plan.js";
 import { startGatewayConfigReloader, type GatewayReloadPlan } from "./config-reload.js";
 import { resolveHooksConfig } from "./hooks.js";
+import type { GatewayCronReconciliation } from "./server-cron-reconciled.js";
 import { buildGatewayCronService, type GatewayCronState } from "./server-cron.js";
 import { applyGatewayLaneConcurrency } from "./server-lanes.js";
 import { markGatewayModelCatalogStaleForReload } from "./server-model-catalog.js";
@@ -111,6 +112,7 @@ type GatewayReloadHandlerParams = {
   logChannels: { info: (msg: string) => void; error: (msg: string) => void };
   logCron: { error: (msg: string) => void };
   logReload: GatewayReloadLog;
+  cronReconciliation: GatewayCronReconciliation;
   createHealthMonitor: (config: OpenClawConfig) => ChannelHealthMonitor | null;
   onCronRestart?: () => void;
 };
@@ -310,6 +312,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
     }
 
     if (plan.restartCron) {
+      params.cronReconciliation.invalidate();
       params.onCronRestart?.();
       state.cronState.cron.stop();
       nextState.cronState = buildGatewayCronService({
@@ -318,7 +321,10 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
         broadcast: params.broadcast,
       });
       startGatewayCronWithLogging({
-        cron: nextState.cronState.cron,
+        cronState: nextState.cronState,
+        cronReconciliation: params.cronReconciliation,
+        reason: "reload",
+        config: nextConfig,
         logCron: params.logCron,
       });
     }
@@ -490,6 +496,7 @@ export function startManagedGatewayConfigReloader(params: ManagedGatewayConfigRe
     logChannels: params.logChannels,
     logCron: params.logCron,
     logReload: params.logReload,
+    cronReconciliation: params.cronReconciliation,
     ...(params.onCronRestart ? { onCronRestart: params.onCronRestart } : {}),
     createHealthMonitor: (config) =>
       startGatewayChannelHealthMonitor({

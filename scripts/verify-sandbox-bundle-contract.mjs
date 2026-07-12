@@ -10,6 +10,10 @@ import {
   findReachableTelegramDurableAckProducer,
   readSandboxArchiveJavaScriptModules,
 } from "./lib/sandbox-bundle-capability-proof.mjs";
+import {
+  assertSandboxBundleCapabilities,
+  assertSandboxBundleCapabilityHooks,
+} from "./lib/sandbox-bundle-capabilities.mjs";
 import { assertSafeSandboxArchive, sandboxArchiveLimits } from "./lib/sandbox-archive-contract.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -44,13 +48,6 @@ const RELEASE_TAR_REQUIRED_ENTRIES = [
   "openclaw.bundle.mjs",
   "release.json",
 ];
-const REQUIRED_CAPABILITIES = [
-  "admin-http-rpc-v1",
-  "cron-projection-v1",
-  "gateway-suspend-v1",
-  "telegram-durable-ack-v1",
-];
-
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
 }
@@ -403,18 +400,14 @@ async function main() {
   if (capabilities.schemaVersion !== 1 || capabilities.profile !== manifest.profile) {
     fail("bundle-capabilities.json has invalid schemaVersion or profile");
   }
-  if (
-    JSON.stringify([...(capabilities.capabilities ?? [])].toSorted()) !==
-    JSON.stringify(REQUIRED_CAPABILITIES)
-  ) {
-    fail(
-      `bundle-capabilities.json capabilities must be exactly: ${REQUIRED_CAPABILITIES.join(", ")}`,
-    );
-  }
-  if (
-    JSON.stringify([...(contract.capabilities ?? [])].toSorted()) !==
-    JSON.stringify(capabilities.capabilities)
-  ) {
+  assertSandboxBundleCapabilities(capabilities.capabilities, "bundle-capabilities.json");
+  assertSandboxBundleCapabilityHooks({
+    capabilities: capabilities.capabilities,
+    bundleSource,
+    label: "openclaw.bundle.mjs",
+  });
+  assertSandboxBundleCapabilities(contract.capabilities, "bundle-contract.json");
+  if (JSON.stringify(contract.capabilities) !== JSON.stringify(capabilities.capabilities)) {
     fail("bundle-contract.json capabilities do not match bundle-capabilities.json");
   }
   if (!capabilities.pluginIds?.includes("admin-http-rpc")) {

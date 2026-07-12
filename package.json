@@ -1508,7 +1508,7 @@
     "runtime-sidecars:check": "node --import tsx scripts/generate-runtime-sidecar-paths-baseline.ts --check",
     "runtime-sidecars:gen": "node --import tsx scripts/generate-runtime-sidecar-paths-baseline.ts --write",
     "smoke:sandbox-bundle:local": "node scripts/smoke-sandbox-bundle-local.mjs",
-    "test:sandbox-bundle:contracts": "node --test scripts/lib/sandbox-archive-contract.test.mjs",
+    "test:sandbox-bundle:contracts": "node --test scripts/lib/sandbox-archive-contract.test.mjs scripts/lib/sandbox-bundle-capabilities.test.mjs",
     "start": "node scripts/run-node.mjs",
     "test": "node scripts/test-projects.mjs",
     "test:all": "pnpm lint && pnpm build && pnpm test && pnpm test:e2e && pnpm test:live && pnpm test:docker:all",

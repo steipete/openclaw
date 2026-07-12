@@ -56,6 +56,7 @@ const {
   activateGatewayScheduledServices,
   runGatewayPostReadyMaintenance,
   scheduleGatewayPostReadyMaintenance,
+  startGatewayCronWithLogging,
   startGatewayRuntimeServices,
 } = await import("./server-runtime-services.js");
 
@@ -81,7 +82,8 @@ describe("server-runtime-services", () => {
       cfgAtStart: { models: { pricing: { enabled: false } } } as never,
       deps: {} as never,
       sessionDeliveryRecoveryMaxEnqueuedAt: 123,
-      cron: { start: vi.fn(async () => undefined) },
+      cronState: createTestCronState(),
+      cronReconciliation: createTestCronReconciliation(),
       logCron: { error: vi.fn() },
       log: createLog(),
     });
@@ -128,7 +130,8 @@ describe("server-runtime-services", () => {
       cfgAtStart: {} as never,
       deps: {} as never,
       sessionDeliveryRecoveryMaxEnqueuedAt: 123,
-      cron,
+      cronState: createTestCronState(cron),
+      cronReconciliation: createTestCronReconciliation(),
       logCron: { error: vi.fn() },
       log,
       pluginLookUpTable: pluginLookUpTable as never,
@@ -152,7 +155,8 @@ describe("server-runtime-services", () => {
       cfgAtStart: {} as never,
       deps: {} as never,
       sessionDeliveryRecoveryMaxEnqueuedAt: 123,
-      cron,
+      cronState: createTestCronState(cron),
+      cronReconciliation: createTestCronReconciliation(),
       logCron: { error: vi.fn() },
       log: createLog(),
     });
@@ -174,7 +178,8 @@ describe("server-runtime-services", () => {
       cfgAtStart: {} as never,
       deps: {} as never,
       sessionDeliveryRecoveryMaxEnqueuedAt: 123,
-      cron,
+      cronState: createTestCronState(cron),
+      cronReconciliation: createTestCronReconciliation(),
       logCron: { error: vi.fn() },
       log,
     });
@@ -208,7 +213,8 @@ describe("server-runtime-services", () => {
       cfgAtStart: {} as never,
       deps: {} as never,
       sessionDeliveryRecoveryMaxEnqueuedAt: 123,
-      cron,
+      cronState: createTestCronState(cron),
+      cronReconciliation: createTestCronReconciliation(),
       startCron: false,
       logCron: { error: vi.fn() },
       log,
@@ -219,6 +225,58 @@ describe("server-runtime-services", () => {
     await vi.advanceTimersByTimeAsync(1_250);
     await vi.dynamicImportSettled();
     expect(hoisted.recoverPendingDeliveries).toHaveBeenCalledTimes(1);
+  });
+
+  it("publishes reconciliation only after scheduler startup completes", async () => {
+    const order: string[] = [];
+    const cron = {
+      start: vi.fn(async () => {
+        order.push("start");
+      }),
+    };
+    const cronReconciliation = createTestCronReconciliation(async () => {
+      order.push("reconciled");
+    });
+    const cronState = createTestCronState(cron);
+    const config = { cron: { enabled: true } } as never;
+
+    startGatewayCronWithLogging({
+      cronState,
+      cronReconciliation,
+      reason: "startup",
+      config,
+      logCron: { error: vi.fn() },
+    });
+
+    await vi.waitFor(() => expect(order).toEqual(["start", "reconciled"]));
+    expect(cronReconciliation.arm).toHaveBeenCalledWith({
+      reason: "startup",
+      config,
+      cronState,
+    });
+  });
+
+  it("does not publish reconciliation when scheduler startup rejects", async () => {
+    const cron = {
+      start: vi.fn(async () => {
+        throw new Error("store unavailable");
+      }),
+    };
+    const cronReconciliation = createTestCronReconciliation();
+    const logCron = { error: vi.fn() };
+
+    startGatewayCronWithLogging({
+      cronState: createTestCronState(cron),
+      cronReconciliation,
+      reason: "reload",
+      config: {} as never,
+      logCron,
+    });
+
+    await vi.waitFor(() =>
+      expect(logCron.error).toHaveBeenCalledWith("failed to start: Error: store unavailable"),
+    );
+    expect(cronReconciliation.complete).not.toHaveBeenCalled();
   });
 
   it("starts cron and records memory when post-ready maintenance fails", async () => {
@@ -233,7 +291,9 @@ describe("server-runtime-services", () => {
       applyMaintenance: vi.fn(),
       shouldStartCron: () => true,
       markCronStartHandled: vi.fn(),
-      cron,
+      cronState: createTestCronState(cron),
+      cronReconciliation: createTestCronReconciliation(),
+      cronConfig: {} as never,
       logCron: { error: vi.fn() },
       log,
       recordPostReadyMemory,
@@ -285,7 +345,7 @@ describe("server-runtime-services", () => {
         isClosing: () => closing,
         startMaintenance,
         applyMaintenance,
-        cron,
+        cronState: createTestCronState(cron),
         recordPostReadyMemory,
       }),
     );
@@ -312,7 +372,8 @@ describe("server-runtime-services", () => {
       cfgAtStart: {} as never,
       deps: {} as never,
       sessionDeliveryRecoveryMaxEnqueuedAt: 123,
-      cron,
+      cronState: createTestCronState(cron),
+      cronReconciliation: createTestCronReconciliation(),
       logCron: { error: vi.fn() },
       log: createLog(),
     });
@@ -349,11 +410,30 @@ function createPostReadyMaintenanceScheduleParams(
     applyMaintenance: vi.fn(),
     shouldStartCron: () => true,
     markCronStartHandled: vi.fn(),
-    cron: { start: vi.fn(async () => undefined) },
+    cronState: createTestCronState(),
+    cronReconciliation: createTestCronReconciliation(),
+    cronConfig: {} as never,
     logCron: { error: vi.fn() },
     log: createLog(),
     recordPostReadyMemory: vi.fn(),
     ...overrides,
+  };
+}
+
+function createTestCronState(cron = { start: vi.fn(async () => undefined) }) {
+  return {
+    cron,
+    storePath: "/tmp/cron.json",
+    cronEnabled: true,
+  } as never;
+}
+
+function createTestCronReconciliation(onComplete: () => Promise<void> = async () => undefined) {
+  const complete = vi.fn<() => Promise<void>>(onComplete);
+  return {
+    arm: vi.fn<() => { complete: () => Promise<void> }>(() => ({ complete })),
+    invalidate: vi.fn(),
+    complete,
   };
 }
 

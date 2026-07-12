@@ -5,6 +5,8 @@ import type { PluginMetadataRegistryView } from "../plugins/plugin-metadata-snap
 import type { ChannelHealthMonitor } from "./channel-health-monitor.js";
 import { startChannelHealthMonitor } from "./channel-health-monitor.js";
 import { isGatewayModelPricingEnabled } from "./model-pricing-config.js";
+import type { GatewayCronReconciliation } from "./server-cron-reconciled.js";
+import type { GatewayCronState } from "./server-cron.js";
 import type { startGatewayMaintenanceTimers } from "./server-maintenance.js";
 
 type GatewayRuntimeServiceLogger = {
@@ -54,10 +56,21 @@ export function startGatewayChannelHealthMonitor(params: {
 }
 
 export function startGatewayCronWithLogging(params: {
-  cron: { start: () => Promise<void> };
+  cronState: GatewayCronState;
+  cronReconciliation: GatewayCronReconciliation;
+  reason: "startup" | "reload";
+  config: OpenClawConfig;
   logCron: { error: (message: string) => void };
 }): void {
-  void params.cron.start().catch((err) => params.logCron.error(`failed to start: ${String(err)}`));
+  const reconciliation = params.cronReconciliation.arm({
+    reason: params.reason,
+    config: params.config,
+    cronState: params.cronState,
+  });
+  void params.cronState.cron
+    .start()
+    .then(() => reconciliation.complete())
+    .catch((err) => params.logCron.error(`failed to start: ${String(err)}`));
 }
 
 function clearGatewayMaintenanceHandles(maintenance: GatewayMaintenanceHandles | null): void {
@@ -77,7 +90,9 @@ export async function runGatewayPostReadyMaintenance(params: {
   applyMaintenance: (maintenance: GatewayMaintenanceHandles) => void;
   shouldStartCron: () => boolean;
   markCronStartHandled: () => void;
-  cron: { start: () => Promise<void> };
+  cronState: GatewayCronState;
+  cronReconciliation: GatewayCronReconciliation;
+  cronConfig: OpenClawConfig;
   logCron: { error: (message: string) => void };
   log: GatewayPostReadyLogger;
   recordPostReadyMemory: () => void;
@@ -93,7 +108,10 @@ export async function runGatewayPostReadyMaintenance(params: {
   if (params.shouldStartCron()) {
     params.markCronStartHandled();
     startGatewayCronWithLogging({
-      cron: params.cron,
+      cronState: params.cronState,
+      cronReconciliation: params.cronReconciliation,
+      reason: "startup",
+      config: params.cronConfig,
       logCron: params.logCron,
     });
   }
@@ -108,7 +126,9 @@ export function scheduleGatewayPostReadyMaintenance(params: {
   applyMaintenance: (maintenance: GatewayMaintenanceHandles) => void;
   shouldStartCron: () => boolean;
   markCronStartHandled: () => void;
-  cron: { start: () => Promise<void> };
+  cronState: GatewayCronState;
+  cronReconciliation: GatewayCronReconciliation;
+  cronConfig: OpenClawConfig;
   logCron: { error: (message: string) => void };
   log: GatewayPostReadyLogger;
   recordPostReadyMemory: () => void;
@@ -139,7 +159,9 @@ export function scheduleGatewayPostReadyMaintenance(params: {
       },
       shouldStartCron: () => !params.isClosing() && params.shouldStartCron(),
       markCronStartHandled: params.markCronStartHandled,
-      cron: params.cron,
+      cronState: params.cronState,
+      cronReconciliation: params.cronReconciliation,
+      cronConfig: params.cronConfig,
       logCron: params.logCron,
       log: params.log,
       recordPostReadyMemory: () => {
@@ -247,7 +269,8 @@ export function activateGatewayScheduledServices(params: {
   cfgAtStart: OpenClawConfig;
   deps: import("../cli/deps.types.js").CliDeps;
   sessionDeliveryRecoveryMaxEnqueuedAt: number;
-  cron: { start: () => Promise<void> };
+  cronState: GatewayCronState;
+  cronReconciliation: GatewayCronReconciliation;
   startCron?: boolean;
   logCron: { error: (message: string) => void };
   log: GatewayRuntimeServiceLogger;
@@ -259,7 +282,10 @@ export function activateGatewayScheduledServices(params: {
   const heartbeatRunner = startHeartbeatRunner({ cfg: params.cfgAtStart });
   if (params.startCron !== false) {
     startGatewayCronWithLogging({
-      cron: params.cron,
+      cronState: params.cronState,
+      cronReconciliation: params.cronReconciliation,
+      reason: "startup",
+      config: params.cfgAtStart,
       logCron: params.logCron,
     });
   }

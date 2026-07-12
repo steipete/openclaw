@@ -9,6 +9,7 @@
   "capabilities": [
     "admin-http-rpc-v1",
     "cron-projection-v1",
+    "cron-projection-v2",
     "gateway-suspend-v1",
     "telegram-durable-ack-v1"
   ],

@@ -21,6 +21,10 @@ import {
   findReachableTelegramDurableAckProducer,
   readSandboxArchiveJavaScriptModules,
 } from "./lib/sandbox-bundle-capability-proof.mjs";
+import {
+  assertSandboxBundleCapabilities,
+  assertSandboxBundleCapabilityHooks,
+} from "./lib/sandbox-bundle-capabilities.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "..");
@@ -69,13 +73,6 @@ const NODE_BUILTIN_MODULES = new Set([
 ]);
 const PROFILE_NAME = process.env.OPENCLAW_BUNDLE_PROFILE ?? "sandbox";
 const PROFILE_PATH = path.join(REPO_ROOT, ".fork", `bundle-profile.${PROFILE_NAME}.json`);
-const SUPPORTED_CAPABILITIES = [
-  "admin-http-rpc-v1",
-  "cron-projection-v1",
-  "gateway-suspend-v1",
-  "telegram-durable-ack-v1",
-];
-
 const log = (...parts) => process.stderr.write(parts.join(" ") + "\n");
 
 async function readJson(filePath) {
@@ -117,15 +114,7 @@ async function loadBundleProfile() {
   assertStringArray(manifest.externalRuntimeDeps, "externalRuntimeDeps");
   assertStringArray(manifest.runtimePluginIds, "runtimePluginIds");
   assertStringArray(manifest.capabilities, "capabilities");
-  const capabilities = [...new Set(manifest.capabilities)].toSorted();
-  if (
-    capabilities.length !== manifest.capabilities.length ||
-    JSON.stringify(capabilities) !== JSON.stringify(SUPPORTED_CAPABILITIES)
-  ) {
-    throw new Error(
-      `bundle profile ${PROFILE_NAME} capabilities must be exactly: ${SUPPORTED_CAPABILITIES.join(", ")}`,
-    );
-  }
+  assertSandboxBundleCapabilities(manifest.capabilities, `bundle profile ${PROFILE_NAME}`);
   if (!Array.isArray(manifest.externalPlugins) || manifest.externalPlugins.length === 0) {
     throw new Error(`bundle profile ${PROFILE_NAME} has invalid externalPlugins`);
   }
@@ -939,8 +928,12 @@ async function writeBundleCapabilities({ manifest, sourceIdentity, externalPlugi
     }
     log(`verified telegram-durable-ack-v1 producer in ${producer}`);
   }
+  assertSandboxBundleCapabilityHooks({
+    capabilities,
+    bundleSource,
+    label: "openclaw.bundle.mjs",
+  });
   const capabilityProofStrings = {
-    "cron-projection-v1": ["cron_reconciled"],
     "gateway-suspend-v1": [
       "gateway.suspend.prepare",
       "gateway.suspend.status",

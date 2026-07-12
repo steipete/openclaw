@@ -64,6 +64,7 @@ import {
 } from "./plugin-channel-reload-targets.js";
 import { resolveGatewayControlUiRootState } from "./server-control-ui-root.js";
 import { createLazyGatewayCronState } from "./server-cron-lazy.js";
+import { createGatewayCronReconciliation } from "./server-cron-reconciled.js";
 import { applyGatewayLaneConcurrency } from "./server-lanes.js";
 import { createGatewayServerLiveState, type GatewayServerLiveState } from "./server-live-state.js";
 import { GATEWAY_EVENTS } from "./server-methods-list.js";
@@ -898,6 +899,21 @@ export async function startGatewayServer(
   deps.cron = runtimeState.cronState.cron;
 
   let closePreludeStarted = false;
+  const cronReconciliation = createGatewayCronReconciliation({
+    port,
+    workspaceDir: defaultWorkspaceDir,
+    isClosing: () => closePreludeStarted,
+    runHook: async (event, ctx) => {
+      try {
+        const hookRunner = (await import("../plugins/hook-runner-global.js")).getGlobalHookRunner();
+        if (hookRunner?.hasHooks("cron_reconciled")) {
+          await hookRunner.runCronReconciled(event, ctx);
+        }
+      } catch (err) {
+        logCron.error(`cron_reconciled hook failed: ${String(err)}`);
+      }
+    },
+  });
   let postReadyMaintenanceTimer: ReturnType<typeof setTimeout> | null = null;
   const clearPostReadyMaintenanceTimer = () => {
     if (!postReadyMaintenanceTimer) {
@@ -908,6 +924,7 @@ export async function startGatewayServer(
   };
   const markClosePreludeStarted = () => {
     closePreludeStarted = true;
+    cronReconciliation.invalidate();
     clearPostReadyMaintenanceTimer();
   };
   const runClosePrelude = async () => {
@@ -1387,7 +1404,8 @@ export async function startGatewayServer(
         cfgAtStart,
         deps,
         sessionDeliveryRecoveryMaxEnqueuedAt,
-        cron: runtimeState.cronState.cron,
+        cronState: runtimeState.cronState,
+        cronReconciliation,
         startCron: false,
         logCron,
         log,
@@ -1506,6 +1524,7 @@ export async function startGatewayServer(
       logChannels,
       logCron,
       logReload,
+      cronReconciliation,
       onCronRestart: () => {
         gatewayCronStartHandled = true;
       },
@@ -1550,7 +1569,9 @@ export async function startGatewayServer(
         markCronStartHandled: () => {
           gatewayCronStartHandled = true;
         },
-        cron: runtimeState.cronState.cron,
+        cronState: runtimeState.cronState,
+        cronReconciliation,
+        cronConfig: cfgAtStart,
         logCron,
         log,
         recordPostReadyMemory: () => {

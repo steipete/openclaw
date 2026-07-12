@@ -75,6 +75,10 @@ function createReloadHandlersForTest(logReload = { info: vi.fn(), warn: vi.fn() 
     logChannels: { info: vi.fn(), error: vi.fn() },
     logCron: { error: vi.fn() },
     logReload,
+    cronReconciliation: {
+      arm: vi.fn(() => ({ complete: vi.fn(async () => undefined) })),
+      invalidate: vi.fn(),
+    },
     createHealthMonitor: () => null,
   });
 }
@@ -194,6 +198,10 @@ describe("gateway plugin hot reload handlers", () => {
       logChannels: { info: vi.fn(), error: vi.fn() },
       logCron: { error: vi.fn() },
       logReload: { info: vi.fn(), warn: vi.fn() },
+      cronReconciliation: {
+        arm: vi.fn(() => ({ complete: vi.fn(async () => undefined) })),
+        invalidate: vi.fn(),
+      },
       createHealthMonitor: () => null,
     });
 
