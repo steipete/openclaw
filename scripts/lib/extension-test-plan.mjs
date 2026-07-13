@@ -108,6 +108,9 @@ function isSkippedTrackedTestFile(relativePath) {
 }
 
 let trackedRepoTestFiles;
+// Large checkouts exceed Node's 1 MiB spawnSync default. Preserve the Git inventory path;
+// ENOBUFS would otherwise trigger expensive extension-directory walks.
+const GIT_LS_FILES_MAX_BUFFER_BYTES = 16 * 1024 * 1024;
 
 function loadTrackedRepoTestFiles() {
   if (trackedRepoTestFiles !== undefined) {
@@ -119,6 +122,7 @@ function loadTrackedRepoTestFiles() {
   const result = spawnSync("git", ["ls-files", "--", ...TRACKED_EXTENSION_TEST_PATHSPECS], {
     cwd: repoRoot,
     encoding: "utf8",
+    maxBuffer: GIT_LS_FILES_MAX_BUFFER_BYTES,
     stdio: ["ignore", "pipe", "ignore"],
   });
   if (result.status !== 0 || result.error) {
