@@ -138,6 +138,9 @@ describe("Claude CLI model aliases", () => {
     expect(aliases?.["claude-opus-4-8"]).toBe("claude-opus-4-8");
     expect(aliases?.["claude-opus-4-7"]).toBe("claude-opus-4-7");
     expect(aliases?.["claude-opus-4-6"]).toBe("claude-opus-4-6");
+    expect(aliases?.["fable"]).toBe("fable");
+    expect(aliases?.["fable-5"]).toBe("claude-fable-5");
+    expect(aliases?.["claude-fable-5"]).toBe("claude-fable-5");
   });
 });
 

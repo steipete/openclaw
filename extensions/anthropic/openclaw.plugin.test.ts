@@ -57,6 +57,21 @@ describe("Anthropic plugin manifest", () => {
     });
   });
 
+  it("publishes the exact Claude Fable 5 CLI contract", () => {
+    const models = manifest.modelCatalog?.providers?.["claude-cli"]?.models ?? [];
+    expect(models.find((model) => model.id === "claude-fable-5")).toEqual({
+      id: "claude-fable-5",
+      name: "Claude Fable 5 (Claude CLI)",
+      reasoning: true,
+      input: ["text", "image"],
+      mediaInput: {
+        image: { maxSidePx: 2576, preferredSidePx: 2576, tokenMode: "provider" },
+      },
+      contextWindow: 1_000_000,
+      maxTokens: 128_000,
+    });
+  });
+
   it("declares direct API limits without overstating bare Claude CLI context", () => {
     const models = manifest.modelCatalog?.providers?.anthropic?.models ?? [];
     for (const id of ["claude-opus-4-7", "claude-sonnet-4-6", "claude-opus-4-6"]) {

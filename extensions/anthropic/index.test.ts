@@ -147,7 +147,6 @@ describe("anthropic provider replay hooks", () => {
       },
     });
   });
-
   it("keeps bare Claude CLI context plan-safe while publishing output limits", () => {
     const models = buildClaudeCliCatalogEntries();
     for (const id of [
