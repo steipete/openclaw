@@ -561,6 +561,7 @@ describe("resolveContextTokensForModel", () => {
     ["claude-cli", "claude-fable-5", ANTHROPIC_FABLE_CONTEXT_TOKENS],
     ["anthropic", "claude-mythos-5", ANTHROPIC_MYTHOS_5_CONTEXT_TOKENS],
     ["anthropic-vertex", "claude-mythos-5", ANTHROPIC_MYTHOS_5_CONTEXT_TOKENS],
+    ["claude-cli", "claude-mythos-5", 200_000],
     ["anthropic", "claude-sonnet-5", ANTHROPIC_SONNET_5_CONTEXT_TOKENS],
     ["anthropic-vertex", "claude-sonnet-5", ANTHROPIC_SONNET_5_CONTEXT_TOKENS],
     ["claude-cli", "claude-sonnet-5", ANTHROPIC_SONNET_5_CONTEXT_TOKENS],
@@ -600,17 +601,6 @@ describe("resolveContextTokensForModel", () => {
     });
 
     expect(result).toBe(200_000);
-  });
-
-  it("does not apply the direct-only Mythos 5 contract to Claude CLI", () => {
-    expect(
-      resolveContextTokensForModel({
-        provider: "claude-cli",
-        model: "claude-mythos-5",
-        fallbackContextTokens: 200_000,
-        allowAsyncLoad: false,
-      }),
-    ).toBe(200_000);
   });
 
   it.each([
@@ -712,6 +702,7 @@ describe("resolveContextTokensForModel", () => {
     ["claude-cli", "claude-fable-5", ANTHROPIC_FABLE_CONTEXT_TOKENS],
     ["anthropic", "claude-mythos-5", ANTHROPIC_MYTHOS_5_CONTEXT_TOKENS],
     ["anthropic-vertex", "claude-mythos-5", ANTHROPIC_MYTHOS_5_CONTEXT_TOKENS],
+    ["claude-cli", "claude-mythos-5", 200_000],
     ["anthropic", "claude-sonnet-5", ANTHROPIC_SONNET_5_CONTEXT_TOKENS],
     ["anthropic-vertex", "claude-sonnet-5", ANTHROPIC_SONNET_5_CONTEXT_TOKENS],
     ["claude-cli", "claude-sonnet-5", ANTHROPIC_SONNET_5_CONTEXT_TOKENS],
