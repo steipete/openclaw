@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "enabled": true,
+  "mode": "unit",
+  "nativeAssertions": [],
+  "nativeDriverSha256": null,
+  "sourceSha": "f486627d6667e1f4cd6053ce986089811e4ae4c4",
+  "overlaySha256": "fcf23709021f281a4a17675e29015d9eba57972b3cfabb8afdf208c6eec3cf9d",
+  "overlayPaths": [
+    "apps/android/app/src/test/java/ai/openclaw/app/NodeRuntimeTestCleanup.kt",
+    "apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageOwnershipLayoutTest.kt",
+    "apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageDispatchTest.kt"
+  ],
+  "testFilters": [
+    "ai.openclaw.app.ui.chat.ChatFullMessageOwnershipLayoutTest",
+    "ai.openclaw.app.ui.chat.ChatFullMessageDispatchTest"
+  ],
+  "expectedFailures": [
+    {
+      "classname": "ai.openclaw.app.ui.chat.ChatFullMessageOwnershipLayoutTest",
+      "name": "retainedDisclosureCannotReadTheSameEntryIdInAnotherSession",
+      "messageContains": "Retained disclosure must enqueue zero reads after another session"
+    },
+    {
+      "classname": "ai.openclaw.app.ui.chat.ChatFullMessageOwnershipLayoutTest",
+      "name": "retainedDisclosureCannotReviveAfterSelectingAwayAndBack",
+      "messageContains": "Retained disclosure must enqueue zero reads after selection ABA"
+    },
+    {
+      "classname": "ai.openclaw.app.ui.chat.ChatFullMessageOwnershipLayoutTest",
+      "name": "retainedDisclosureCannotReadThroughAReplacementConnection",
+      "messageContains": "Retained disclosure must enqueue zero reads after replacement connection"
+    },
+    {
+      "classname": "ai.openclaw.app.ui.chat.ChatFullMessageDispatchTest",
+      "name": "admittedFullMessageReadDoesNotMoveToAReplacementSocket",
+      "messageContains": "An admitted read belongs to its physical connection, not merely the endpoint id"
+    }
+  ]
+}

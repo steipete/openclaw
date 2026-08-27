@@ -1,0 +1,68 @@
+name: Android PR 122200 isolated proof
+
+on:
+  push:
+    branches: [codex/android-ten-pr-122200-proof]
+
+permissions: {}
+
+concurrency:
+  group: android-pr-122200-proof-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  proof:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    permissions: {}
+    timeout-minutes: 45
+    steps:
+      - name: Fetch exact trusted proof tooling without credentials
+        shell: bash
+        env:
+          TOOLING_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$TOOLING_SHA" =~ ^[0-9a-f]{40}$ ]]
+          mkdir -m 700 "$RUNNER_TEMP/proof-tooling-home" "$RUNNER_TEMP/proof-tooling"
+          public_git() {
+            env -i PATH=/usr/bin:/bin HOME="$RUNNER_TEMP/proof-tooling-home" \
+              /usr/bin/git -c credential.helper= -c core.hooksPath=/dev/null "$@"
+          }
+          public_git -C "$RUNNER_TEMP/proof-tooling" init
+          public_git -C "$RUNNER_TEMP/proof-tooling" fetch --depth=1 --no-tags \
+            https://github.com/steipete/openclaw.git "$TOOLING_SHA"
+          public_git -C "$RUNNER_TEMP/proof-tooling" checkout --detach "$TOOLING_SHA"
+          test "$(public_git -C "$RUNNER_TEMP/proof-tooling" rev-parse HEAD)" = "$TOOLING_SHA"
+
+      - name: Run manifest-bound isolated proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Only public toolchain paths and runner identity enter source execution.
+          env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 CI=1 \
+            /bin/bash "$RUNNER_TEMP/proof-tooling/.qa/android-pr-122200/run-proof.sh" \
+            "$RUNNER_TEMP/proof-tooling" "$RUNNER_TEMP/android-pr-122200" \
+            "$RUNNER_TEMP/android-pr-122200-artifacts" "$JAVA_HOME_21_X64" \
+            "$ANDROID_SDK_ROOT" "$ImageOS" "$ImageVersion"
+
+      - name: Seal the finite public proof artifact set
+        id: seal
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+            python3 "$RUNNER_TEMP/proof-tooling/.qa/android-pr-122200/seal-artifacts.py" \
+            "$RUNNER_TEMP/android-pr-122200-artifacts" "$RUNNER_TEMP/android-pr-122200-sealed"
+
+      - name: Upload sealed proof artifacts
+        if: always() && steps.seal.outcome == 'success'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: android-pr-122200-proof-${{ github.sha }}
+          path: ${{ runner.temp }}/android-pr-122200-sealed/
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 7
+          compression-level: 6

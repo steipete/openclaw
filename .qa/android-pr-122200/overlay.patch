@@ -1,0 +1,608 @@
+diff --git a/apps/android/app/src/test/java/ai/openclaw/app/NodeRuntimeTestCleanup.kt b/apps/android/app/src/test/java/ai/openclaw/app/NodeRuntimeTestCleanup.kt
+new file mode 100644
+index 00000000000..b00e530afd3
+--- /dev/null
++++ b/apps/android/app/src/test/java/ai/openclaw/app/NodeRuntimeTestCleanup.kt
+@@ -0,0 +1,85 @@
++package ai.openclaw.app
++
++import ai.openclaw.app.chat.AndroidClientDatabases
++import android.os.Handler
++import android.os.Looper
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.async
++import kotlinx.coroutines.cancelAndJoin
++import kotlinx.coroutines.job
++import kotlinx.coroutines.runBlocking
++import org.robolectric.Shadows.shadowOf
++import org.robolectric.android.controller.ServiceController
++import org.robolectric.shadows.ShadowPausedLooper
++import org.robolectric.util.ReflectionHelpers
++
++internal fun closeNodeRuntimeTestFixture(runtime: NodeRuntime) = drainWithMainLooper { closeRuntime(runtime) }
++
++internal fun closeNodeServiceTestFixture(
++  controller: ServiceController<NodeForegroundService>,
++  app: NodeApp,
++) {
++  try {
++    controller.destroy()
++  } finally {
++    drainWithMainLooper {
++      // A canceled service can still be constructing the process runtime. Join its producer
++      // before taking the app's final runtime snapshot, including the asynchronous STOP task.
++      ReflectionHelpers
++        .getField<CoroutineScope>(controller.get(), "scope")
++        .coroutineContext.job
++        .join()
++      ReflectionHelpers
++        .getField<CoroutineScope>(app, "runtimeScope")
++        .coroutineContext.job
++        .cancelAndJoin()
++      app.peekRuntime()?.let { closeRuntime(it) }
++    }
++  }
++}
++
++private suspend fun closeRuntime(runtime: NodeRuntime) {
++  val databases = ReflectionHelpers.getField<AndroidClientDatabases>(runtime, "clientDatabases")
++  try {
++    try {
++      runtime.disconnect()
++    } finally {
++      ReflectionHelpers
++        .getField<CoroutineScope>(runtime, "scope")
++        .coroutineContext.job
++        .cancelAndJoin()
++    }
++  } finally {
++    try {
++      // Database initialization has its own IO scope. Await its real result before closing so
++      // native loading cannot escape this sandbox and initialization failures remain test failures.
++      databases.clientStateDatabase()
++    } finally {
++      databases.close()
++    }
++  }
++}
++
++private fun drainWithMainLooper(block: suspend () -> Unit) {
++  val mainLooper = Looper.getMainLooper()
++  val shadowLooper = shadowOf(mainLooper) as ShadowPausedLooper
++  val handler = Handler(mainLooper)
++  var completed = false
++  val wakeMain = Runnable { completed = true }
++  try {
++    runBlocking {
++      val cleanup = async(Dispatchers.Default) { block() }
++      cleanup.invokeOnCompletion { handler.post(wakeMain) }
++      // Robolectric's paused Main looper needs pumping while worker finalizers dispatch to it.
++      // Completion posts a wakeup so poll cannot strand Main after the last worker finishes.
++      while (!completed) {
++        shadowLooper.poll(0)
++        shadowLooper.idle()
++      }
++      cleanup.await()
++    }
++  } finally {
++    handler.removeCallbacks(wakeMain)
++  }
++}
+diff --git a/apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageOwnershipLayoutTest.kt b/apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageOwnershipLayoutTest.kt
+new file mode 100644
+index 00000000000..a086e9a817a
+--- /dev/null
++++ b/apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageOwnershipLayoutTest.kt
+@@ -0,0 +1,366 @@
++package ai.openclaw.app.ui.chat
++
++import ai.openclaw.app.MainViewModel
++import ai.openclaw.app.NodeApp
++import ai.openclaw.app.NodeRuntime
++import ai.openclaw.app.SecurePrefs
++import ai.openclaw.app.closeNodeRuntimeTestFixture
++import ai.openclaw.app.gateway.GatewayEndpoint
++import ai.openclaw.app.ui.design.ClawDesignTheme
++import android.content.Context
++import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.size
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.draw.clipToBounds
++import androidx.compose.ui.semantics.SemanticsActions
++import androidx.compose.ui.test.assertDoesNotExist
++import androidx.compose.ui.test.assertIsDisplayed
++import androidx.compose.ui.test.assertIsEnabled
++import androidx.compose.ui.test.hasClickAction
++import androidx.compose.ui.test.hasText
++import androidx.compose.ui.test.junit4.v2.createComposeRule
++import androidx.compose.ui.test.onNodeWithText
++import androidx.compose.ui.test.performClick
++import androidx.compose.ui.unit.dp
++import androidx.lifecycle.SavedStateHandle
++import androidx.lifecycle.ViewModelStore
++import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.flow.combine
++import kotlinx.coroutines.flow.first
++import kotlinx.coroutines.flow.update
++import kotlinx.coroutines.runBlocking
++import kotlinx.coroutines.withTimeout
++import kotlinx.serialization.json.Json
++import kotlinx.serialization.json.JsonArray
++import kotlinx.serialization.json.JsonObject
++import kotlinx.serialization.json.JsonPrimitive
++import kotlinx.serialization.json.buildJsonObject
++import kotlinx.serialization.json.jsonObject
++import kotlinx.serialization.json.jsonPrimitive
++import okhttp3.Response
++import okhttp3.WebSocket
++import okhttp3.WebSocketListener
++import okhttp3.mockwebserver.Dispatcher
++import okhttp3.mockwebserver.MockResponse
++import okhttp3.mockwebserver.MockWebServer
++import okhttp3.mockwebserver.RecordedRequest
++import org.junit.After
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertNull
++import org.junit.Assert.assertTrue
++import org.junit.Before
++import org.junit.Rule
++import org.junit.Test
++import org.junit.runner.RunWith
++import org.robolectric.RobolectricTestRunner
++import org.robolectric.RuntimeEnvironment
++import java.net.InetAddress
++import java.util.UUID
++import java.util.concurrent.CopyOnWriteArrayList
++import java.util.concurrent.atomic.AtomicInteger
++
++internal const val FULL_MESSAGE_FIRST_CHAT = "agent:main:disclosure-a"
++internal const val FULL_MESSAGE_SECOND_CHAT = "agent:main:disclosure-b"
++internal const val FULL_MESSAGE_ENTRY = "shared-transcript-entry"
++internal const val FULL_MESSAGE_TAIL = "The complete answer ends here."
++internal const val FULL_MESSAGE_READY_TIMEOUT_MS = 15_000L
++
++/** Real ChatScreen callbacks, live NodeRuntime, and physical WebSockets; no injected chat state. */
++@RunWith(RobolectricTestRunner::class)
++class ChatFullMessageOwnershipLayoutTest {
++  @get:Rule
++  val composeRule = createComposeRule()
++
++  private lateinit var app: NodeApp
++  private lateinit var runtime: NodeRuntime
++  private lateinit var model: MainViewModel
++  private lateinit var gateway: FullMessageGateway
++  private var previousRuntime: NodeRuntime? = null
++  private val models = ViewModelStore()
++
++  @Before
++  fun setUp() {
++    app = RuntimeEnvironment.getApplication() as NodeApp
++    previousRuntime = app.peekRuntime()
++    gateway = FullMessageGateway()
++    val prefs = SecurePrefs(app, app.getSharedPreferences("full-message-${UUID.randomUUID()}", Context.MODE_PRIVATE))
++    prefs.setManualTls(false)
++    prefs.saveGatewayCredentials(gateway.endpoint.stableId, token = "synthetic-full-message-proof")
++    runtime = NodeRuntime(app, prefs)
++    bindRuntime(runtime)
++    model = MainViewModel(app, prefs, SavedStateHandle())
++    models.put("chat", model)
++    model.setForeground(true)
++    composeRule.setContent {
++      ClawDesignTheme {
++        Box(Modifier.size(width = 360.dp, height = 800.dp).clipToBounds()) {
++          ChatScreen(
++            viewModel = model,
++            talkActive = false,
++            showSidebarButton = true,
++            onOpenSidebar = {},
++            onToggleTalk = {},
++            onOpenSessions = {},
++            onOpenDashboard = {},
++            onOpenGatewaySettings = {},
++          )
++        }
++      }
++    }
++    composeRule.runOnIdle { runtime.connect(gateway.endpoint) }
++    composeRule.waitUntil(FULL_MESSAGE_READY_TIMEOUT_MS) {
++      runtime.gatewayConnectionDisplay.value.isConnected &&
++        runtime.serverName.value == "full-message-${gateway.operatorConnection.get()}"
++    }
++    selectChat(FULL_MESSAGE_FIRST_CHAT)
++  }
++
++  @After
++  fun tearDown() {
++    try {
++      models.clear()
++    } finally {
++      try {
++        if (::runtime.isInitialized) closeNodeRuntimeTestFixture(runtime)
++      } finally {
++        try {
++          if (::app.isInitialized) bindRuntime(previousRuntime)
++        } finally {
++          if (::gateway.isInitialized) gateway.close()
++        }
++      }
++    }
++  }
++
++  @Test
++  fun viewAllLoadsTheCompleteAnswerAndCloseRestoresThePreview() {
++    assertTrue(
++      "Gateway-capped assistant answers must expose View all",
++      composeRule.onAllNodes(hasText("View all") and hasClickAction()).fetchSemanticsNodes().isNotEmpty(),
++    )
++    viewAll().assertIsDisplayed().assertIsEnabled().performClick()
++    awaitExpanded()
++    assertEquals(listOf(expectedRequest()), gateway.fullReads.toList())
++    composeRule.onNodeWithText("Close").performClick()
++    composeRule.onNode(hasText(FULL_MESSAGE_TAIL, substring = true)).assertDoesNotExist()
++    viewAll().assertIsDisplayed().performClick()
++    awaitExpanded()
++    assertEquals("Re-expansion reuses the loaded entry", 1, gateway.fullReads.size)
++  }
++
++  @Test
++  fun retainedDisclosureCannotReadTheSameEntryIdInAnotherSession() {
++    assertRetiredDisclosureCannotLoad("another session") {
++      selectBeforeRecomposition(FULL_MESSAGE_SECOND_CHAT)
++    }
++  }
++
++  @Test
++  fun retainedDisclosureCannotReviveAfterSelectingAwayAndBack() {
++    assertRetiredDisclosureCannotLoad("selection ABA") {
++      selectBeforeRecomposition(FULL_MESSAGE_SECOND_CHAT)
++      selectBeforeRecomposition(FULL_MESSAGE_FIRST_CHAT)
++    }
++  }
++
++  @Test
++  fun retainedDisclosureCannotReadThroughAReplacementConnection() {
++    assertRetiredDisclosureCannotLoad("replacement connection") {
++      val oldConnection = gateway.operatorConnection.get()
++      runtime.refreshGatewayConnection()
++      runBlocking {
++        withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) {
++          gateway.historyReads.first { reads -> reads.any { it.first > oldConnection && it.second == FULL_MESSAGE_FIRST_CHAT } }
++        }
++      }
++      assertTrue(gateway.operatorConnection.get() > oldConnection)
++      assertEquals("full-message-${gateway.operatorConnection.get()}", runtime.serverName.value)
++      awaitRuntimeReady(FULL_MESSAGE_FIRST_CHAT)
++    }
++  }
++
++  private fun assertRetiredDisclosureCannotLoad(retirement: String, retire: () -> Unit) {
++    val oldAction = checkNotNull(viewAll().assertIsDisplayed().fetchSemanticsNode().config[SemanticsActions.OnClick].action)
++    assertTrue(gateway.fullReads.isEmpty())
++    composeRule.runOnIdle {
++      // Runtime IO consumes the real replacement history while Main is occupied. Replay the
++      // retained rendered callback before Compose can apply the changed owner (including ABA).
++      retire()
++      assertFalse(runtime.chatHistoryLoading.value)
++      assertTrue(runtime.chatHealthOk.value)
++      assertNull(runtime.chatError.value)
++      oldAction()
++    }
++    composeRule.waitForIdle()
++    val previousHistoryCount = gateway.historyReads.value.size
++    val currentConnection = gateway.operatorConnection.get()
++    val currentSession = runtime.chatSessionKey.value
++    composeRule.runOnIdle { model.refreshChat() }
++    runBlocking {
++      withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) {
++        gateway.historyReads.first { reads ->
++          reads.drop(previousHistoryCount).any { it.first == currentConnection && it.second == currentSession }
++        }
++      }
++    }
++    awaitRuntimeReady(currentSession)
++    // The click has reached its first suspension before Main goes idle. A subsequent history
++    // request on the same socket orders the packet check without a sleep-based absence window.
++    assertEquals("Retained disclosure must enqueue zero reads after $retirement", emptyList<FullMessageRead>(), gateway.fullReads.toList())
++    viewAll().assertIsDisplayed().assertIsEnabled().performClick()
++    awaitExpanded()
++    assertEquals("Only the current rendered action may enqueue a full-message read", listOf(expectedRequest()), gateway.fullReads.toList())
++  }
++
++  private fun selectChat(key: String) {
++    composeRule.runOnIdle { model.switchChatSession(key, ownerAgentId = "main") }
++    composeRule.waitUntil(FULL_MESSAGE_READY_TIMEOUT_MS) {
++      model.chatSessionKey.value == key &&
++        !model.chatHistoryLoading.value &&
++        model.chatHealthOk.value &&
++        model.chatMessages.value.singleOrNull()?.content?.singleOrNull()?.text == gateway.preview(key)
++    }
++    composeRule.waitForIdle()
++    assertTrue(model.chatHealthOk.value)
++    assertNull(model.chatError.value)
++  }
++
++  private fun selectBeforeRecomposition(key: String) {
++    model.switchChatSession(key, ownerAgentId = "main")
++    awaitRuntimeReady(key)
++    assertEquals(key, runtime.chatSessionKey.value)
++  }
++
++  private fun awaitRuntimeReady(key: String) {
++    runBlocking {
++      withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) {
++        combine(runtime.chatMessages, runtime.chatHistoryLoading, runtime.chatHealthOk) { messages, loading, healthy ->
++          !loading && healthy && messages.singleOrNull()?.content?.singleOrNull()?.text == gateway.preview(key)
++        }.first { it }
++      }
++    }
++    assertNull(runtime.chatError.value)
++  }
++
++  private fun awaitExpanded() {
++    composeRule.waitUntil(FULL_MESSAGE_READY_TIMEOUT_MS) {
++      composeRule.onAllNodes(hasText(FULL_MESSAGE_TAIL, substring = true)).fetchSemanticsNodes().isNotEmpty()
++    }
++    composeRule.onNodeWithText("Close").assertIsDisplayed()
++    composeRule.waitForIdle()
++  }
++
++  private fun viewAll() = composeRule.onNode(hasText("View all") and hasClickAction())
++
++  private fun expectedRequest() = FullMessageRead(gateway.operatorConnection.get(), model.chatSessionKey.value, "main", FULL_MESSAGE_ENTRY)
++
++  private fun bindRuntime(value: NodeRuntime?) {
++    // Existing app-fixture binding only: the object itself is the normal live runtime.
++    NodeApp::class.java.getDeclaredField("runtimeInstance").apply { isAccessible = true }.set(app, value)
++  }
++}
++
++internal data class FullMessageRead(val connection: Int, val sessionKey: String, val agentId: String, val messageId: String)
++
++internal class FullMessageGateway : AutoCloseable {
++  private val json = Json { ignoreUnknownKeys = true }
++  private val server = MockWebServer()
++  private val sequence = AtomicInteger()
++  private val sockets = CopyOnWriteArrayList<WebSocket>()
++  val operatorConnection = AtomicInteger()
++  val fullReads = CopyOnWriteArrayList<FullMessageRead>()
++  val historyReads = MutableStateFlow<List<Pair<Int, String>>>(emptyList())
++  val endpoint: GatewayEndpoint
++
++  init {
++    server.dispatcher = object : Dispatcher() {
++      override fun dispatch(request: RecordedRequest): MockResponse =
++        if (request.getHeader("Upgrade").equals("websocket", ignoreCase = true)) {
++          MockResponse().withWebSocketUpgrade(listener(sequence.incrementAndGet()))
++        } else {
++          MockResponse().setResponseCode(404)
++        }
++    }
++    server.start(InetAddress.getByName("127.0.0.1"), 0)
++    endpoint = GatewayEndpoint.manual("127.0.0.1", server.port)
++  }
++
++  fun preview(session: String) = fullText(session).take(8_000) + "\n...(truncated)..."
++
++  private fun fullText(session: String) = "$session\n" + "An ordinary paragraph in a long answer. ".repeat(240) + "\n\n$FULL_MESSAGE_TAIL"
++
++  private fun listener(connection: Int) = object : WebSocketListener() {
++    override fun onOpen(webSocket: WebSocket, response: Response) {
++      sockets += webSocket
++      webSocket.send("""{"type":"event","event":"connect.challenge","payload":{"nonce":"full-message-proof","ts":1700000000123}}""")
++    }
++
++    override fun onMessage(webSocket: WebSocket, text: String) {
++      val frame = json.parseToJsonElement(text).jsonObject
++      if (frame["type"]?.jsonPrimitive?.content != "req") return
++      val id = checkNotNull(frame["id"])
++      val method = frame["method"]?.jsonPrimitive?.content
++      val params = frame["params"] as? JsonObject ?: JsonObject(emptyMap())
++      val session = params["sessionKey"]?.jsonPrimitive?.content.orEmpty()
++      val payload = when (method) {
++        "connect" -> {
++          val role = checkNotNull(params["role"]?.jsonPrimitive?.content)
++          if (role == "operator") operatorConnection.set(connection)
++          json.parseToJsonElement(
++            """{"type":"hello-ok","protocol":3,"server":{"host":"full-message-$connection","version":"proof"},"features":{"methods":["chat.history","chat.message.get","chat.metadata","health","sessions.list"],"events":[]},"auth":{"role":"$role","scopes":${if (role == "operator") "[\"operator.read\",\"operator.write\"]" else "[]"}},"snapshot":{"sessionDefaults":{"mainSessionKey":"agent:main:main"}}}""",
++          )
++        }
++        "chat.history" -> {
++          historyReads.update { it + (connection to session) }
++          buildJsonObject {
++            put("sessionId", JsonPrimitive("transcript-$session"))
++            put("messages", JsonArray(listOf(message(session, truncated = true))))
++          }
++        }
++        "chat.message.get" -> {
++          fullReads += FullMessageRead(connection, session, params["agentId"]?.jsonPrimitive?.content.orEmpty(), params["messageId"]?.jsonPrimitive?.content.orEmpty())
++          buildJsonObject {
++            put("ok", JsonPrimitive(true))
++            put("message", message(session, truncated = false))
++          }
++        }
++        "chat.metadata" -> json.parseToJsonElement("""{"commands":[],"models":[]}""")
++        "sessions.list" -> json.parseToJsonElement("""{"sessions":[]}""")
++        "health", "sessions.subscribe", "sessions.messages.subscribe" -> JsonObject(emptyMap())
++        else -> {
++          webSocket.send(buildJsonObject {
++            put("type", JsonPrimitive("res"))
++            put("id", id)
++            put("ok", JsonPrimitive(false))
++            put("error", buildJsonObject {
++              put("code", JsonPrimitive("INVALID_REQUEST"))
++              put("message", JsonPrimitive("Proof Gateway does not implement $method"))
++            })
++          }.toString())
++          return
++        }
++      }
++      webSocket.send(buildJsonObject {
++        put("type", JsonPrimitive("res"))
++        put("id", id)
++        put("ok", JsonPrimitive(true))
++        put("payload", payload)
++      }.toString())
++    }
++  }
++
++  private fun message(session: String, truncated: Boolean) = buildJsonObject {
++    put("role", JsonPrimitive("assistant"))
++    put("content", JsonPrimitive(if (truncated) preview(session) else fullText(session)))
++    put("__openclaw", buildJsonObject {
++      put("id", JsonPrimitive(FULL_MESSAGE_ENTRY))
++      if (truncated) put("truncated", JsonPrimitive(true))
++    })
++  }
++
++  override fun close() {
++    sockets.forEach(WebSocket::cancel)
++    server.shutdown()
++  }
++}
+diff --git a/apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageDispatchTest.kt b/apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageDispatchTest.kt
+new file mode 100644
+index 00000000000..68c0e799c4e
+--- /dev/null
++++ b/apps/android/app/src/test/java/ai/openclaw/app/ui/chat/ChatFullMessageDispatchTest.kt
+@@ -0,0 +1,139 @@
++package ai.openclaw.app.ui.chat
++
++import ai.openclaw.app.NodeApp
++import ai.openclaw.app.SecurePrefs
++import ai.openclaw.app.chat.ChatCacheScope
++import ai.openclaw.app.chat.ChatFullMessageLoadResult
++import ai.openclaw.app.chat.createChatController
++import ai.openclaw.app.gateway.DeviceAuthStore
++import ai.openclaw.app.gateway.GatewayClientInfo
++import ai.openclaw.app.gateway.GatewayConnectOptions
++import ai.openclaw.app.gateway.GatewaySession
++import ai.openclaw.app.gateway.testDeviceIdentityStore
++import android.content.Context
++import kotlinx.coroutines.CompletableDeferred
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.CoroutineStart
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.SupervisorJob
++import kotlinx.coroutines.async
++import kotlinx.coroutines.cancelAndJoin
++import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.flow.first
++import kotlinx.coroutines.flow.update
++import kotlinx.coroutines.runBlocking
++import kotlinx.coroutines.withTimeout
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertTrue
++import org.junit.Test
++import org.junit.runner.RunWith
++import org.robolectric.RobolectricTestRunner
++import org.robolectric.RuntimeEnvironment
++import java.util.UUID
++
++/** The gate reifies preemption at the existing RPC seam; both paths use the same gate and real sockets. */
++@RunWith(RobolectricTestRunner::class)
++class ChatFullMessageDispatchTest {
++  @Test
++  fun admittedFullMessageReadDoesNotMoveToAReplacementSocket() = runBlocking {
++    val app = RuntimeEnvironment.getApplication() as NodeApp
++    val prefs = SecurePrefs(app, app.getSharedPreferences("full-message-wire-${UUID.randomUUID()}", Context.MODE_PRIVATE))
++    val gateway = FullMessageGateway()
++    val ownerJob = SupervisorJob()
++    val ownerScope = CoroutineScope(ownerJob + Dispatchers.Default)
++    val connected = MutableStateFlow(0)
++    val methods = MutableStateFlow<Set<String>?>(null)
++    val session = GatewaySession(
++      scope = ownerScope,
++      identityStore = testDeviceIdentityStore(app),
++      deviceAuthStore = DeviceAuthStore(prefs),
++      onConnected = { hello ->
++        methods.value = hello.methods
++        connected.update { it + 1 }
++      },
++      onDisconnected = { methods.value = null },
++      onEvent = { _, _ -> },
++    )
++    val atDispatch = CompletableDeferred<Unit>()
++    val releaseDispatch = CompletableDeferred<Unit>()
++    suspend fun awaitDispatch(method: String) {
++      if (method == "chat.message.get") {
++        atDispatch.complete(Unit)
++        releaseDispatch.await()
++      }
++    }
++    val controller = ownerScope.createChatController(
++      cacheScope = { ChatCacheScope(gateway.endpoint.stableId, 1L) },
++      supportsChatMessageGet = { methods.value?.contains("chat.message.get") == true },
++      gatewayAdvertisesMethod = { methods.value?.contains(it) },
++      requestGatewayForGateway = { gatewayId, method, params ->
++        awaitDispatch(method)
++        session.requestForEndpoint(gatewayId, method, params)
++      },
++      captureSettingsRequestLease = { scope ->
++        session.captureRequestLease(scope?.gatewayId)?.let { lease ->
++          GatewaySession.RequestLease(
++            endpointStableId = lease.endpointStableId,
++            isCurrentImpl = lease::isCurrent,
++            commitIfCurrentImpl = lease::commitIfCurrent,
++          ) { method, params, timeout ->
++            awaitDispatch(method)
++            lease.request(method, params, timeout)
++          }
++        }
++      },
++      requestGateway = { method, params -> session.request(method, params) },
++    )
++    try {
++      session.connect(
++        endpoint = gateway.endpoint,
++        token = "synthetic-full-message-proof",
++        bootstrapToken = null,
++        password = null,
++        options = GatewayConnectOptions(
++          role = "operator",
++          scopes = listOf("operator.read"),
++          caps = emptyList(),
++          commands = emptyList(),
++          permissions = emptyMap(),
++          client = GatewayClientInfo("openclaw-android-test", "Full message proof", "proof", "android", "ui", "full-message-proof", "android", "test"),
++        ),
++        tls = null,
++      )
++      withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) { connected.first { it == 1 } }
++      controller.load(FULL_MESSAGE_FIRST_CHAT, ownerAgentId = "main")
++      withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) {
++        controller.messages.first { it.singleOrNull()?.content?.singleOrNull()?.text == gateway.preview(FULL_MESSAGE_FIRST_CHAT) }
++      }
++      val oldConnection = gateway.operatorConnection.get()
++      val pending = async(start = CoroutineStart.UNDISPATCHED) { controller.loadFullAssistantMessage(FULL_MESSAGE_ENTRY) }
++      withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) { atDispatch.await() }
++      session.reconnect()
++      withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) { connected.first { it == 2 } }
++      assertTrue(gateway.operatorConnection.get() > oldConnection)
++      releaseDispatch.complete(Unit)
++      val retiredResult = withTimeout(FULL_MESSAGE_READY_TIMEOUT_MS) { pending.await() }
++      // Fresh admission proves the replacement is healthy and orders the final packet assertion.
++      val currentResult = controller.loadFullAssistantMessage(FULL_MESSAGE_ENTRY)
++      assertTrue(currentResult is ChatFullMessageLoadResult.Loaded)
++      assertEquals(
++        "An admitted read belongs to its physical connection, not merely the endpoint id",
++        listOf(FullMessageRead(gateway.operatorConnection.get(), FULL_MESSAGE_FIRST_CHAT, "main", FULL_MESSAGE_ENTRY)),
++        gateway.fullReads.toList(),
++      )
++      assertFalse(retiredResult is ChatFullMessageLoadResult.Loaded)
++    } finally {
++      releaseDispatch.complete(Unit)
++      try {
++        session.disconnect()
++      } finally {
++        try {
++          ownerJob.cancelAndJoin()
++        } finally {
++          gateway.close()
++        }
++      }
++    }
++  }
++}
