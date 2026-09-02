@@ -144,6 +144,7 @@ async function main() {
     state = await createOpenClawTestState({
       label: "metadata-progress-proof",
       env: {
+        OPENCLAW_ENABLE_PRIVATE_QA_CLI: "1",
         OPENCLAW_GATEWAY_STARTUP_TRACE: "1",
         OPENCLAW_DIAGNOSTICS: "timeline",
         OPENCLAW_DIAGNOSTICS_TIMELINE_PATH: path.join(outputDir, "startup-timeline.jsonl"),

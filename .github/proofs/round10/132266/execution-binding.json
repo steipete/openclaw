@@ -137,11 +137,23 @@
     "src/shared/listeners.ts": "be569b3a9a435b6569633ec53e95ce399dedbf329a431b057f35aa5710557d59",
     "extensions/qa-lab/tsconfig.json": "b9dbf2cb1c798b967787b1339054cacdb79f61df1a830612d2f4c304f2246950",
     "extensions/tsconfig.package-boundary.base.json": "f5afba6f094f2702726ecd12f5cc3edacc9610f3657cdb31fd46f335f2bd604b",
-    "extensions/tsconfig.package-boundary.paths.json": "63c9aab5342a63c8cdb5fd29b1dbd60fcfca9f3046609fdb8b35544a31bae29b"
+    "extensions/tsconfig.package-boundary.paths.json": "63c9aab5342a63c8cdb5fd29b1dbd60fcfca9f3046609fdb8b35544a31bae29b",
+    "src/plugins/sdk-alias.ts": "4c75746abecd3775f3c79815a7e3c4e90327370558fcb65b436b261aee44e23c",
+    "src/plugins/sdk-alias.test.ts": "dfef60b4bd8b44a09979b5e41179353378c74d9878ea4145df4ffccad5380751",
+    "src/plugins/plugin-sdk-native-resolver.ts": "bcbf1e026c14ca7f7ff338655bd6f1a9f40eed670a109f79857ee903bb81af7f",
+    "scripts/qa-e2e.ts": "b39eda79ffd73fa48efd4b176c231a8f2372efa2c9fd76f1eb4c421740715cd5",
+    "scripts/lib/plugin-sdk-entries.mts": "b7480fc1bb5674bb5d5c96388a22b5c3467470b8d92432aa80c2809205654df1",
+    "scripts/lib/plugin-sdk-entrypoints.json": "24b2f219aa817144af6d99cc46ea3ac53c4127339a2b54a2c3c151507dbf89b5",
+    "scripts/lib/plugin-sdk-private-local-only-subpaths.json": "dc26149e54dd476a1c733b26490ea4806aa17ec02426c3b3f2ed21b1a08ee1cf",
+    "scripts/sync-plugin-sdk-exports.mts": "5e4edd41654526854a31a72d86225a82246643b0c48c1b9e67c87eec17cc58ce",
+    "src/plugin-sdk/qa-channel-protocol.ts": "f99f7e5f7f4322c7cc9f1c154336331bc1512e1c2039e7d9eacaa44beb1bb80a",
+    "extensions/qa-channel/src/bus-client.ts": "1f6ba64bc52d5060629fac084c04e4fc608e9a4488f5ecbb304e80bdfd1e2eba",
+    "extensions/qa-channel/src/protocol.ts": "3c89f31bac4f2e868f45a40fe866a8358ba0e9e1169fb5465fed3fa25b0c00e9",
+    "packages/plugin-sdk/package.json": "581de113f4447701fa3facbebef6437da92a8b1a55293fc25396f58a431c1faa"
   },
-  "sourceFileCount": 138,
+  "sourceFileCount": 150,
   "proofTestRemotePath": "extensions/qa-lab/src/plugin-tool-progress.gateway-proof.test.ts",
-  "proofTestSHA256": "bfede2e524dadac86b9d63fade3ef058be6c625c9cd733f68ab64980cd9036c3",
+  "proofTestSHA256": "482e8f58b7cc80440f8704da75393f9ffc13db9a0efac225c91782f1cbedf862",
   "expectedScenarioIds": [
     "hidden-cold",
     "hidden-reused",
@@ -270,5 +282,13 @@
     "priorFixtureSHA256": "1efe47dd33696cc83bf4db5109161842241deb1c14650ff12ef8a7f1bfa5ab69",
     "ownerBoundaryEvidence": "mandatory fresh same-head six-case metadata phase; Gateway verdict links its exact SHA256",
     "diagnosticReplaced": "prior postBindDiagnostic manual vi.mock removed; canonical trace and timeline retained"
+  },
+  "privateQaBootstrapCorrection": {
+    "previousFixtureSHA256": "bfede2e524dadac86b9d63fade3ef058be6c625c9cd733f68ab64980cd9036c3",
+    "currentFixtureSHA256": "482e8f58b7cc80440f8704da75393f9ffc13db9a0efac225c91782f1cbedf862",
+    "change": "Enable existing OPENCLAW_ENABLE_PRIVATE_QA_CLI=1 before creating the Gateway loader so its canonical private QA source aliases are available.",
+    "productionSourceUnchanged": true,
+    "assertionsTimeoutsConfigPluginSourceAndProviderImplementationUnchanged": true,
+    "sourceContract": "scripts/qa-e2e.ts:24; src/plugins/sdk-alias.ts:985; private QA subpath gate at1106 and preparation at1389"
   }
 }
