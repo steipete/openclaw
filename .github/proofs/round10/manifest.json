@@ -1,0 +1,12 @@
+{
+  "schema": "openclaw-round10-automatic-127959-proof-assets-v1",
+  "sha256": {
+    ".github/proofs/round10/127959/execution-binding.json": "8d064bdc37bf705e310e383b05cd5d26842139cd4b82015fb34fb763860eb655",
+    ".github/proofs/round10/127959/extract-and-assess.py": "f3bd13de742a69abd7d11afdd2de7803d195b5f42353b95a513e1c7f9f0e26b5",
+    ".github/proofs/round10/127959/proof-driver.mjs": "8fe5ba6c59f9ac4ee896cf735db4c6d4d3c6ebcee389a629992d621086cfafa0",
+    ".github/proofs/round10/127959/proof.test.ts": "bb46fd7f8195e808c20b8936a30c5693760529c64d26908f06811fb09b29bc9f",
+    ".github/proofs/round10/run-proof.py": "5a85134aadad36d616bbaea693b9f2628c188cb228e955d82114e2d8842b5b5b",
+    ".github/workflows/round10-automatic-quote-proof.yml": "03869ee82aeb635fcf726cae510b5e3caa0e5077f736014735ad0c2503afcca2",
+    "README.md": "b715a1256faa6d5e3b1a332af113b2671ef66708be34830db8add84dea37b7f0"
+  }
+}

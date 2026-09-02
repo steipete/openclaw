@@ -1,0 +1,220 @@
+{
+  "schema": "openclaw-pr-127959-automatic-source-binding-v1",
+  "candidateHead": "378bd531c142e380c5b08265b9d4a37f385f2b56",
+  "candidateTree": "a7dddaf280d73d09acb996202acd2f50fcda121d",
+  "candidateFileSHA256": {
+    "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
+    "docs/channels/whatsapp.md": "be9e5a09f6ac0e9b356760616779dff7f9c914b30aea7e743421da1da0e488d0",
+    "extensions/AGENTS.md": "ba85d81f0649a3d5ba8fdab5b9a939ed624aa984a2bc0fb5e2f996a885d8fa73",
+    "extensions/whatsapp/package.json": "726670dae2a215b2d0895fb9329e3129f500e5fb0469d6e4f1d69534d0a14ee7",
+    "extensions/whatsapp/src/auth-store.ts": "5a2af88d364bf04fc122d9aa6eb3798e99f8d9d35b4b8a42d69a438dda1a73b4",
+    "extensions/whatsapp/src/auto-reply/deliver-reply.ts": "b98013cfd205abd1590be4ec4a7df5858801eb4c481b96f0aee117a7c5442f25",
+    "extensions/whatsapp/src/auto-reply/monitor/process-message.ts": "bfd5b27c1199f7cee97b1c84549ead434be64b68d23d8b43e37d1b307a03a181",
+    "extensions/whatsapp/src/inbound-policy.ts": "59fefa80ef196d1538e613812548cde0b2f1d980e52b99c8542c5924b12fa476",
+    "extensions/whatsapp/src/inbound/access-control.ts": "e7181c6affb641d81fb3b004f80b39a673f93e2e8127c417d83ab404055107d8",
+    "extensions/whatsapp/src/inbound/admission.ts": "7ec721a043e1a2974823db603cf9e30ae894af7cbc423f26817c7972820e3df5",
+    "extensions/whatsapp/src/inbound/durable-payload.ts": "32152f0feb2ee0c730c67a6354c6fc0cbba99e878da747be6ab3ec1557c14341",
+    "extensions/whatsapp/src/inbound/durable-receive.ts": "48270e04297822372c51bf4e2a1a8f3b860f580d6707e543c1ecb95b08f2d5fc",
+    "extensions/whatsapp/src/inbound/group-metadata-cache.ts": "868b9213bcf5e5ceb0a75a0d4b29c566e162944cba983c64547a75f5cac17d0e",
+    "extensions/whatsapp/src/inbound/ingress-lifecycle.ts": "62818939ce91e49d69c41853fb1fd100202d61f374cefc713842354c144b452f",
+    "extensions/whatsapp/src/inbound/lifecycle.ts": "03220385f1c4028a59e9de978dc221f145d8b5138744b0fc2a2f3e62ca84dc5b",
+    "extensions/whatsapp/src/inbound/message-debounce.ts": "11539d7a6cbac5e401796c30c7b0eba9ffb795a42f994f70dab1ac3aba82d9b3",
+    "extensions/whatsapp/src/inbound/message-delivery.ts": "d8d4c51b2fa4b266d3d03db4248f67d0458b736468936ef804357dc96b0ba557",
+    "extensions/whatsapp/src/inbound/message-enrichment.ts": "2b617625d854132abc32eed6c3581183b664325d78090b4cf64c42a3ac88fc13",
+    "extensions/whatsapp/src/inbound/message-normalization.ts": "7770f247fb9c6052363cbf17092e547a7fa45d888ddd311bf0e5c494ee546f90",
+    "extensions/whatsapp/src/inbound/monitor.ts": "de2c3129f8e5dc8e1a6896ccfff45d3efb6305e741f85d9f51f709c22b4277dc",
+    "extensions/whatsapp/src/inbound/send-api.ts": "5c91610be8a18331088494cf9253bcb8c582d3eda8884a9a3876c1a8bdacec69",
+    "extensions/whatsapp/src/inbound/send-result.ts": "cd18a381bab4e95a5ce44fd83127f8be03db417b012fd3e567842a2911793196",
+    "extensions/whatsapp/src/inbound/socket-session.ts": "7ec84da97e4b395fcc1a669042f19395a8c3aa84f37ccfefa2a77eb654a2ca51",
+    "extensions/whatsapp/src/inbound/types.ts": "ad421e74f0460efd1b2538555f5047fa33d5e7c3372385e7a159da6c30e47d64",
+    "extensions/whatsapp/src/quoted-message.test.ts": "e097249858a18b3618bfb41fbcf8f4d4ade3bb713fe6334ae0c1476a669622e1",
+    "extensions/whatsapp/src/quoted-message.ts": "aae5c95f1e81c59b875f4c0ad6f662edf4c69e2308f5d369474a8db4620f56b0",
+    "extensions/whatsapp/src/runtime.ts": "4643771d4067218dc4d4ba06bca1b96f56aa0c891f3b706944fdbbcbab4f684c",
+    "extensions/whatsapp/src/socket-timing.ts": "a529cfa744b0dc046b2bda30ca4a68a5088f8efdec7b882a0411d0a77cab62fa",
+    "package.json": "97ac89b068940894bccd937044c66b7d764157774b3bf89ef8a9b82ac36155b1",
+    "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443",
+    "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
+    "scripts/AGENTS.md": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
+    "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+    "scripts/lib/vitest-build-prerequisites.mts": "41892e8ef8b8a75fb02f1a0556de2eb4b6432ddf7c8c567aa74a4c8412e0d4ca",
+    "scripts/lib/vitest-home-selection.mts": "b60c13518500b7dd32d95c8ce4c2f273b412a5977431efb1abc2576fa3eb38ee",
+    "scripts/lib/vitest-process-env.mts": "c1c6b9d4f0b269e0ccf38e75329c14bb744d6c997997e50f9bb6322e84448b43",
+    "scripts/run-vitest-child.mts": "27dee5ab6b593acf3f7e370f237b4b55a43acf8ca18ca0cd33a15f2756c7ebb0",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest.mts": "5a9a97bf9e89ff2121f6cfd580ed29432b2b980ce288166666522209d6535b29",
+    "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+    "src/channels/message-access/runtime.ts": "14492bdbef39b9d486742e70f7c7aea426c53e1ae6eff69f438953c4bfaab2ce",
+    "src/channels/message/ingress-monitor.ts": "70576e255d228138520b4ac8f8557da611df020e82159b181c0cd3e9c44f1e6c",
+    "src/channels/message/ingress-queue.ts": "52523eb7f48e90761e9e9efdab1ae5486a0f92ffe5a040732e1de435ba825a0a",
+    "src/plugin-sdk/channel-ingress-runtime.ts": "d00af96099cff2b0623957baa6d0683ddfa0bf24793ff62ab35d87cb1e2bcf84",
+    "src/plugin-sdk/channel-ingress-test-runtime.ts": "46a0d6adf5ef09daa1ff9670adb1e88a10ae8b907fa102877cf864acc6824c22",
+    "src/state/openclaw-state-db-cache.ts": "079913975ec99b800af00cdd3ae37f713d89b88eeb996918cbe66629c7656c42",
+    "src/state/openclaw-state-db.ts": "72b252c826052eeae60486d22eacb71298c464fd654b759c5d5e704417281be4",
+    "src/test-utils/openclaw-test-state.ts": "2e0bd5e236668023dbad11477fda7592988dc52a4b4942de361d54c4c9fb53a8",
+    "test/AGENTS.md": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
+    "test/setup-openclaw-runtime.ts": "7cafcbcc17dc5eb7912a79973a592464ae71aabbefd5b535877cb7d90e22770f",
+    "test/setup.extensions.ts": "f81c89d5119c9eef82a8e42f5a32945a7dcc10598bd1a59631be5e3fa7980889",
+    "test/setup.shared.ts": "cdee6b99f9ffb1bf1f966c6ee25b3e2b865091548505e8635a77ac79cf476917",
+    "test/test-home-policy.mts": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+    "test/vitest/vitest.extension-config.ts": "e15826f1519eb359a184a1e3287c8e917e447ae6b0ac34822839fcc67a599646",
+    "test/vitest/vitest.extension-whatsapp-paths.mjs": "3a1824b9f3cfe19509207ab58111e0e1fe0eba77598f83f741b3f2585a365971",
+    "test/vitest/vitest.extension-whatsapp.config.ts": "91d51320128a56ef94ce9b11319c80831e8d673976b9d696a94f2a6a1406a15a",
+    "test/vitest/vitest.scoped-config.ts": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+    "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549"
+  },
+  "sourceFileCount": 58,
+  "sourceCoverage": "Selected changed owner, automatic delivery composition, dependency manifest/lock, queue/test-state seams and canonical runner. Full checkout HEAD/tree/index cleanliness also required; not an enumeration of all transitive modules.",
+  "proofTestRemotePath": "extensions/whatsapp/src/auto-reply/quoted-message.automatic-proof.test.ts",
+  "proofTestSHA256": "bb46fd7f8195e808c20b8936a30c5693760529c64d26908f06811fb09b29bc9f",
+  "expectedScenarioIds": [
+    "group-missing",
+    "group-warm",
+    "group-expired",
+    "direct-missing",
+    "direct-warm",
+    "direct-expired",
+    "group-media",
+    "group-unquoted"
+  ],
+  "nodeVersion": "24.19.0",
+  "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+  "baileys": {
+    "version": "7.0.0-rc14",
+    "source": "Previously frozen installed dependency; inspected as data only. Fresh candidate installation must match approved source lockfile.",
+    "inspectedFiles": [
+      {
+        "path": "package.json",
+        "sha256": "55dd58bf3944a426e2e72f397464a2ef9173f54ae7cbca4082cac743a4a5c178"
+      },
+      {
+        "path": "lib/Utils/messages.js",
+        "sha256": "3dde841c3caa0698862507e6c4268600494288817139f33152f490f3a715861f"
+      },
+      {
+        "path": "lib/Utils/messages.d.ts",
+        "sha256": "5bbbe63b1af434b72f99197afd5aba1b0b893e7519796c0d26c65a79539cd324"
+      },
+      {
+        "path": "lib/Types/Message.d.ts",
+        "sha256": "20a92ad339e918c1b4718e9e4dfa23ca96bc7333ecfcef2c4eede6c1b7b74c7d"
+      },
+      {
+        "path": "WAProto/index.js",
+        "sha256": "87c18c860e17ec66ecd5e1e5d4cf95a901bc4968d3318ad9238a66e20eee1684"
+      }
+    ]
+  },
+  "runtimeExecutionStatus": "NOT_RUN",
+  "trustedMainComparison": {
+    "head": "bf898e2fce7ce4fb2998db27d16664ac90f2aa8b",
+    "differentSelectedFiles": [
+      "docs/channels/whatsapp.md",
+      "extensions/whatsapp/src/quoted-message.test.ts",
+      "extensions/whatsapp/src/quoted-message.ts"
+    ]
+  },
+  "environment": "Secretless GitHub-hosted candidate checkout with frozen install and isolated HOME/state. No local candidate execution, credentials, hydration or actual WhatsApp connection.",
+  "provider": "github-actions",
+  "executionEnvironment": "github-hosted",
+  "hydrate": false,
+  "proofRepository": "steipete/openclaw",
+  "proofBranch": "codex/round10-automatic-quote-proof",
+  "remoteArchive": "/tmp/openclaw-127959-automatic-quote-proof.tgz",
+  "commandTimeoutSecondsAfterInstall": 1200,
+  "artifactUncompressedLimitBytes": 67108864,
+  "expectedCases": [
+    {
+      "id": "group-missing",
+      "inboundId": "SYNTHETIC-TRIGGER-group-missing",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-group-missing",
+      "body": "Synthetic automatic reply group-missing: the complete outgoing body must survive.",
+      "jid": "120363000127959@g.us",
+      "admissionKind": "group",
+      "quote": null
+    },
+    {
+      "id": "group-warm",
+      "inboundId": "SYNTHETIC-TRIGGER-group-warm",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-group-warm",
+      "body": "Synthetic automatic reply group-warm: the complete outgoing body must survive.",
+      "jid": "120363000127959@g.us",
+      "admissionKind": "group",
+      "quote": {
+        "id": "SYNTHETIC-QUOTE-group-warm",
+        "participant": "15550001279@s.whatsapp.net",
+        "text": "Synthetic original message for the quote preview."
+      }
+    },
+    {
+      "id": "group-expired",
+      "inboundId": "SYNTHETIC-TRIGGER-group-expired",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-group-expired",
+      "body": "Synthetic automatic reply group-expired: the complete outgoing body must survive.",
+      "jid": "120363000127959@g.us",
+      "admissionKind": "group",
+      "quote": null
+    },
+    {
+      "id": "direct-missing",
+      "inboundId": "SYNTHETIC-TRIGGER-direct-missing",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-direct-missing",
+      "body": "Synthetic automatic reply direct-missing: the complete outgoing body must survive.",
+      "jid": "15550001279@s.whatsapp.net",
+      "admissionKind": "direct",
+      "quote": null
+    },
+    {
+      "id": "direct-warm",
+      "inboundId": "SYNTHETIC-TRIGGER-direct-warm",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-direct-warm",
+      "body": "Synthetic automatic reply direct-warm: the complete outgoing body must survive.",
+      "jid": "15550001279@s.whatsapp.net",
+      "admissionKind": "direct",
+      "quote": {
+        "id": "SYNTHETIC-QUOTE-direct-warm",
+        "participant": "15550001279@s.whatsapp.net",
+        "text": "Synthetic original message for the quote preview."
+      }
+    },
+    {
+      "id": "direct-expired",
+      "inboundId": "SYNTHETIC-TRIGGER-direct-expired",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-direct-expired",
+      "body": "Synthetic automatic reply direct-expired: the complete outgoing body must survive.",
+      "jid": "15550001279@s.whatsapp.net",
+      "admissionKind": "direct",
+      "quote": null
+    },
+    {
+      "id": "group-media",
+      "inboundId": "SYNTHETIC-TRIGGER-group-media",
+      "requestedQuoteId": "SYNTHETIC-QUOTE-group-media",
+      "body": "Synthetic automatic reply group-media: the complete outgoing body must survive.",
+      "jid": "120363000127959@g.us",
+      "admissionKind": "group",
+      "quote": {
+        "id": "SYNTHETIC-QUOTE-group-media",
+        "participant": "15550001279@s.whatsapp.net",
+        "text": "<media:sticker>"
+      }
+    },
+    {
+      "id": "group-unquoted",
+      "inboundId": "SYNTHETIC-TRIGGER-group-unquoted",
+      "requestedQuoteId": null,
+      "body": "Synthetic automatic reply group-unquoted: the complete outgoing body must survive.",
+      "jid": "120363000127959@g.us",
+      "admissionKind": "group",
+      "quote": null
+    }
+  ],
+  "commandSuffix": [
+    "scripts/run-vitest.mjs",
+    "run",
+    "--config",
+    "test/vitest/vitest.extension-whatsapp.config.ts",
+    "extensions/whatsapp/src/auto-reply/quoted-message.automatic-proof.test.ts"
+  ],
+  "driverSHA256": "8fe5ba6c59f9ac4ee896cf735db4c6d4d3c6ebcee389a629992d621086cfafa0",
+  "extractorSHA256": "f3bd13de742a69abd7d11afdd2de7803d195b5f42353b95a513e1c7f9f0e26b5"
+}
