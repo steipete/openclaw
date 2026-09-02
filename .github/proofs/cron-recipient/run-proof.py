@@ -9,6 +9,7 @@ import signal
 import stat
 import subprocess
 import sys
+import tempfile
 import time
 import traceback
 
@@ -176,8 +177,7 @@ try:
     assert subprocess.check_output([node, '--version'], text=True).strip() == 'v' + binding['nodeVersion']
     corepack = Path(node).parent / 'corepack'
     assert corepack.is_file()
-    scratch = evidence.parent / 'cron-recipient-runtime'
-    scratch.mkdir(mode=0o700, exist_ok=False)
+    scratch = Path(tempfile.mkdtemp(prefix='oc-cron-', dir='/tmp'))
     for name in ['home', 'corepack', 'bin', 'tmp', 'config', 'cache', 'data', 'browsers']:
         (scratch / name).mkdir(mode=0o700)
     child_env = {
