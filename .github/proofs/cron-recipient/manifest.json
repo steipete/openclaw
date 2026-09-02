@@ -1,0 +1,12 @@
+{
+  "schema": "openclaw-cron-recipient-proof-assets-v1",
+  "sha256": {
+    ".github/proofs/cron-recipient/binding.json": "15f3b2fb298ab602e42c55fdf3cef23c56163ff0f4f256f018602ff05852471a",
+    ".github/proofs/cron-recipient/form-suggestions.ts": "4e1b18dcd4dcc841ab1285990bcd25b8d817d67ada8100e8ad01f951770d86c5",
+    ".github/proofs/cron-recipient/proof.e2e.test.ts": "0ef14d4c3be62bedddb48ac7bef451795362f44120f9b8738070b1af63c43266",
+    ".github/proofs/cron-recipient/run-proof.py": "0976f995f0d1681922c7ffb0cfb1474fa4a0dabcc59284f0e6f7f2b0e0cfe5be",
+    ".github/proofs/cron-recipient/vitest.ui-e2e.config.ts": "8b06b8bf6d4655675684394572f94d4198c0c7d80902cd3c8c28c5e23cc3e573",
+    ".github/workflows/cron-recipient-ui-proof.yml": "a5dc0e69481c0c1ed6dadc7f17cd2103975b242d4ebb90fac75f51b0d221ac29",
+    "README.md": "40a0b5f27ceebd60f88ef08576571985ff1de9d543256d19735620c2a5a93c8f"
+  }
+}
