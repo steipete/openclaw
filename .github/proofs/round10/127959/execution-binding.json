@@ -1,0 +1,108 @@
+{
+  "candidateFileSHA256": {
+    "src/gateway/minimal-gateway.test-helpers.ts": "a4a38ddfcc642dcd6e1b87490075728059ca36d61c7f84e37195567d6ccb1c40",
+    "src/gateway/server-methods/send.ts": "c1e5e26b12b31b9ce0e0cc3e34598c25ca9fd141598fb3f768b8146163e29b93",
+    "src/test-utils/channel-plugins.ts": "fd9e3c414e826562628ee8b53980f178a52d47b46aa89a0f6a010c451743375d",
+    "src/test-utils/openclaw-test-state.ts": "2e0bd5e236668023dbad11477fda7592988dc52a4b4942de361d54c4c9fb53a8",
+    "extensions/whatsapp/src/channel-outbound.ts": "f6b3b44c78527958eafeadbf341d15fa9f51b7964b80b7420d7bda46a5d7ebbe",
+    "extensions/whatsapp/src/outbound-base.ts": "d4c1c69d80f79e38a8a12dc8cb9a90d150ab247ad32451992b88c97171f08288",
+    "extensions/whatsapp/src/send.ts": "ebcd79c48250c884cde896c8241f7dd98957fd5ed5281b3ffff9561660a7e691",
+    "extensions/whatsapp/src/inbound/send-api.ts": "5c91610be8a18331088494cf9253bcb8c582d3eda8884a9a3876c1a8bdacec69",
+    "extensions/whatsapp/src/inbound/send-result.ts": "cd18a381bab4e95a5ce44fd83127f8be03db417b012fd3e567842a2911793196",
+    "extensions/whatsapp/src/connection-controller-runtime-context.ts": "cea256363c6972f5fdc518857c306bf1f02c2f0700b05bccb16d5db1f3b065f7",
+    "extensions/qa-lab/src/gateway-rpc-client.ts": "11d164d47ba93268e11368822a30b415957b317df490a39f1bfa585623e967be",
+    "extensions/qa-lab/src/report.ts": "833e25a28fce853e31fba64f5b70ef497cf71d6fa47457af590af9f457343056",
+    "packages/gateway-protocol/src/schema/agent.ts": "e1566061e29163f27276456b11a1ee29d8ab4245b577c34ad3d5cf9cabbe2f52",
+    "src/cli/deps.ts": "284f0084ddfb618ec5e79d1b26a51240a3432470a6c859289573d72affb7a24e",
+    "src/cli/outbound-send-deps.ts": "cf626c4694519b892bb982c735b5c627b74e8e327799bf6a30421ffa7e225ff1",
+    "src/infra/outbound/message-account-selection.ts": "bd21cc794e2f270840784b80c013f6fdf75b380e04bc0975981c7699dbc94fca",
+    "test/setup.extensions.ts": "f81c89d5119c9eef82a8e42f5a32945a7dcc10598bd1a59631be5e3fa7980889",
+    "test/setup-openclaw-runtime.ts": "7cafcbcc17dc5eb7912a79973a592464ae71aabbefd5b535877cb7d90e22770f",
+    "test/vitest/vitest.extension-whatsapp.config.ts": "91d51320128a56ef94ce9b11319c80831e8d673976b9d696a94f2a6a1406a15a",
+    "test/vitest/vitest.extension-whatsapp-paths.mjs": "3a1824b9f3cfe19509207ab58111e0e1fe0eba77598f83f741b3f2585a365971",
+    "test/vitest/vitest.extension-config.ts": "e15826f1519eb359a184a1e3287c8e917e447ae6b0ac34822839fcc67a599646",
+    "test/vitest/vitest.scoped-config.ts": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest-child.mts": "27dee5ab6b593acf3f7e370f237b4b55a43acf8ca18ca0cd33a15f2756c7ebb0",
+    "package.json": "97ac89b068940894bccd937044c66b7d764157774b3bf89ef8a9b82ac36155b1",
+    "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443",
+    "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
+    "extensions/whatsapp/package.json": "726670dae2a215b2d0895fb9329e3129f500e5fb0469d6e4f1d69534d0a14ee7",
+    "extensions/qa-lab/package.json": "f8d010c441c892ca6f39e01cb5aa71f32faaee90d399f611d90d51b57276d7ad",
+    "extensions/whatsapp/src/quoted-message.ts": "aae5c95f1e81c59b875f4c0ad6f662edf4c69e2308f5d369474a8db4620f56b0",
+    "extensions/whatsapp/src/quoted-message.test.ts": "e097249858a18b3618bfb41fbcf8f4d4ade3bb713fe6334ae0c1476a669622e1",
+    "docs/channels/whatsapp.md": "be9e5a09f6ac0e9b356760616779dff7f9c914b30aea7e743421da1da0e488d0",
+    "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
+    "extensions/AGENTS.md": "ba85d81f0649a3d5ba8fdab5b9a939ed624aa984a2bc0fb5e2f996a885d8fa73",
+    "scripts/AGENTS.md": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
+    "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+    "scripts/lib/vitest-build-prerequisites.mts": "41892e8ef8b8a75fb02f1a0556de2eb4b6432ddf7c8c567aa74a4c8412e0d4ca",
+    "scripts/lib/vitest-home-selection.mts": "b60c13518500b7dd32d95c8ce4c2f273b412a5977431efb1abc2576fa3eb38ee",
+    "scripts/lib/vitest-process-env.mts": "c1c6b9d4f0b269e0ccf38e75329c14bb744d6c997997e50f9bb6322e84448b43",
+    "scripts/run-vitest.mts": "5a9a97bf9e89ff2121f6cfd580ed29432b2b980ce288166666522209d6535b29",
+    "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+    "test/AGENTS.md": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
+    "test/test-home-policy.mts": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+    "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549"
+  },
+  "sourceFileCount": 44,
+  "proofTestRemotePath": "extensions/whatsapp/src/quoted-message.gateway-proof.test.ts",
+  "proofTestSHA256": "c9ba556ac4da3a66cef78ac28f7b83ed07882f9d48ad754d2c9fc0d985fecbf2",
+  "expectedScenarioIds": [
+    "group-warm",
+    "group-missing",
+    "group-expired",
+    "direct-warm",
+    "direct-missing",
+    "direct-expired",
+    "group-media",
+    "group-unquoted"
+  ],
+  "remoteArchive": "/tmp/openclaw-127959-gateway-quote-proof.tgz",
+  "commandTimeoutSecondsAfterInstall": 1200,
+  "artifactUncompressedLimitBytes": 67108864,
+  "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+  "baileys": {
+    "version": "7.0.0-rc14",
+    "source": "Previously frozen installed dependency; inspected as data only. Fresh candidate installation must match approved source lockfile.",
+    "inspectedFiles": [
+      {
+        "path": "package.json",
+        "sha256": "55dd58bf3944a426e2e72f397464a2ef9173f54ae7cbca4082cac743a4a5c178"
+      },
+      {
+        "path": "lib/Utils/messages.js",
+        "sha256": "3dde841c3caa0698862507e6c4268600494288817139f33152f490f3a715861f"
+      },
+      {
+        "path": "lib/Utils/messages.d.ts",
+        "sha256": "5bbbe63b1af434b72f99197afd5aba1b0b893e7519796c0d26c65a79539cd324"
+      },
+      {
+        "path": "lib/Types/Message.d.ts",
+        "sha256": "20a92ad339e918c1b4718e9e4dfa23ca96bc7333ecfcef2c4eede6c1b7b74c7d"
+      },
+      {
+        "path": "WAProto/index.js",
+        "sha256": "87c18c860e17ec66ecd5e1e5d4cf95a901bc4968d3318ad9238a66e20eee1684"
+      }
+    ]
+  },
+  "candidateHead": "378bd531c142e380c5b08265b9d4a37f385f2b56",
+  "candidateTree": "a7dddaf280d73d09acb996202acd2f50fcda121d",
+  "provider": "github-actions",
+  "executionEnvironment": "github-hosted",
+  "hydrate": false,
+  "nodeVersion": "24.19.0",
+  "proofRepository": "steipete/openclaw",
+  "proofBranch": "codex/round10-secretless-proof",
+  "commandSuffix": [
+    "scripts/run-vitest.mjs",
+    "run",
+    "--config",
+    "test/vitest/vitest.extension-whatsapp.config.ts",
+    "extensions/whatsapp/src/quoted-message.gateway-proof.test.ts"
+  ],
+  "driverSHA256": "622078a7675f1663f5d8bd5351e16e48ecd717f72573976bc68f91f778de3180",
+  "extractorSHA256": "d002047586dec8bfe7a7e7b782aacff0210ed01bcafa4c89690460829fb41c22"
+}
