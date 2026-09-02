@@ -7,9 +7,11 @@ import { createHash } from "node:crypto";
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const archive = "/tmp/openclaw-132266-after-proof.tgz";
-const phaseNames = ["unit-normalizer", "unit-cache", "unit-resolver", "metadata", "gateway"];
+const phaseNames = ["build", "unit-normalizer", "unit-cache", "unit-resolver", "metadata", "gateway"];
 let output, root, binding, before, snapshot, proofPath;
 let overlayCreated = false;
+let runtimeBuild;
+let gatewayPhaseStarted = false;
 let expectedHead = null;
 const verdict = { passed: false, fullProofCompleted: false, phase: "setup", phases: [], cleanupErrors: [] };
 const writeJson = (name, value) => fs.writeFileSync(path.join(output, name), JSON.stringify(value, null, 2) + "\n", { mode: 0o600 });
@@ -29,6 +31,67 @@ function hashIndexEntries(directory) {
     child.on("close", (code, signal) => {
       if (code !== 0) reject(new Error(`git index listing failed: code=${code} signal=${signal}; ${stderr.toString("utf8")}`));
       else resolve({ sha256: hash.digest("hex"), bytes });
+    });
+  });
+}
+
+// Runtime outputs are generated only by the canonical build, then frozen for proof.
+function snapshotRuntimeArtifacts() {
+  const roots = ["dist"];
+  if (fs.existsSync(path.join(root, "dist-runtime"))) roots.push("dist-runtime");
+  for (const entry of fs.readdirSync(path.join(root, "packages"), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+    if (entry.isDirectory() && fs.existsSync(path.join(root, "packages", entry.name, "dist"))) roots.push(`packages/${entry.name}/dist`);
+  }
+  const files = {};
+  function visit(name) {
+    const absolute = path.join(root, name);
+    const stat = fs.lstatSync(absolute);
+    if (stat.isSymbolicLink()) {
+      const target = fs.realpathSync(absolute);
+      assert.ok(target.startsWith(root + path.sep), `Runtime symlink escapes repository: ${name}`);
+      files[name] = { symlink: fs.readlinkSync(absolute) };
+    } else if (stat.isDirectory()) {
+      for (const entry of fs.readdirSync(absolute).sort()) visit(`${name}/${entry}`);
+    } else {
+      assert.ok(stat.isFile(), `Unexpected runtime file kind: ${name}`);
+      files[name] = { sha256: sha256(fs.readFileSync(absolute)), bytes: stat.size };
+    }
+  }
+  for (const name of roots) visit(name);
+  for (const name of ["dist/index.js", "dist/extensions/qa-channel/index.js", "dist/extensions/openai/index.js", "dist/plugin-sdk/qa-channel-protocol.js"]) assert.ok(files[name]?.sha256, `Missing required built entry: ${name}`);
+  const stamps = {};
+  for (const name of ["dist/.buildstamp", "dist/.runtime-postbuildstamp"]) {
+    const value = JSON.parse(fs.readFileSync(path.join(root, name), "utf8"));
+    assert.equal(value.head, expectedHead, name);
+    stamps[name] = value;
+  }
+  return { head: expectedHead, tree: binding.candidateTree, profile: "qaRuntime", privateQa: true, roots, files, stamps };
+}
+
+// Execution deadlines fail the phase immediately; the reserve only permits owned teardown.
+async function runPhase(command, env, out, err) {
+  const executionTimeoutMs = command.name === "gateway" ? 180_000 : 1_200_000;
+  const cleanupReserveMs = 60_000;
+  return await new Promise((resolve) => {
+    const child = spawn(command.argv[0], command.argv.slice(1), { cwd: root, env, detached: true, stdio: ["ignore", out, err] });
+    let timedOut = false;
+    let failure;
+    let forceTimer;
+    const signalGroup = (signal) => {
+      if (!child.pid) return;
+      try { process.kill(-child.pid, signal); }
+      catch (error) { if (error.code !== "ESRCH") failure ??= error; }
+    };
+    const timer = setTimeout(() => {
+      timedOut = true;
+      signalGroup("SIGTERM");
+      forceTimer = setTimeout(() => signalGroup("SIGKILL"), cleanupReserveMs);
+    }, executionTimeoutMs);
+    child.once("error", (error) => { failure = error; });
+    child.once("close", (code, signal) => {
+      clearTimeout(timer);
+      clearTimeout(forceTimer);
+      resolve({ status: code, signal, error: timedOut ? { code: "ETIMEDOUT" } : failure, executionTimeoutMs, cleanupReserveMs, timedOut });
     });
   });
 }
@@ -100,7 +163,7 @@ try {
   fs.writeFileSync(path.join(output, "metadata-after.mjs"), metadataBytes, { flag: "wx", mode: 0o600 });
   const behaviorDirectory = path.join(output, "behavior");
   fs.mkdirSync(behaviorDirectory, { mode: 0o700 });
-  const commands = binding.unitSuites.map((suite) => ({ name: suite.phase, argv: [process.execPath, "scripts/run-vitest.mjs", "run", suite.path, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, suite.phase + ".json")}`] }));
+  const commands = [{ name: "build", argv: [process.execPath, "--import", path.join(root, "scripts/tsx.mjs"), "scripts/build-all.mts", "qaRuntime"] }, ...binding.unitSuites.map((suite) => ({ name: suite.phase, argv: [process.execPath, "scripts/run-vitest.mjs", "run", suite.path, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, suite.phase + ".json")}`] }))];
   commands.push({ name: "metadata", argv: [process.execPath, "--import", path.join(root, "scripts/tsx.mjs"), path.join(output, "metadata-after.mjs"), "candidate", path.join(output, "runtime/metadata/workspace")] });
   commands.push({ name: "gateway", argv: [process.execPath, "--import", path.join(root, "scripts/tsx.mjs"), proofPath] });
   assert.deepEqual(commands.map((command) => command.name), phaseNames);
@@ -115,6 +178,7 @@ try {
       fs.mkdirSync(env[key], { mode: 0o700 });
     }
     fs.mkdirSync(path.join(home, "workspace"), { mode: 0o700 });
+    if (name === "build") env.OPENCLAW_BUILD_PRIVATE_QA = "1";
     if (name === "gateway") {
       env.OPENCLAW_METADATA_PROOF_DIR = behaviorDirectory;
       env.OPENCLAW_METADATA_PROOF_BINDING = path.join(output, "source-binding.json");
@@ -126,23 +190,32 @@ try {
   writeJson("source-binding.json", sourceBinding);
   for (const command of commands) {
     verdict.phase = command.name;
+    if (command.name === "gateway") gatewayPhaseStarted = true;
     console.log(`PROOF_PHASE:132266_${command.name}`);
     const out = fs.openSync(path.join(output, command.name + ".stdout"), "wx", 0o600);
     const err = fs.openSync(path.join(output, command.name + ".stderr"), "wx", 0o600);
     let result;
     const started = performance.now();
     try {
-      result = spawnSync(command.argv[0], command.argv.slice(1), { cwd: root, env: envs[command.name], stdio: ["ignore", out, err], timeout: command.name === "gateway" ? 180_000 : 1_200_000, killSignal: "SIGTERM" });
+      result = await runPhase(command, envs[command.name], out, err);
     } finally {
       fs.closeSync(out);
       fs.closeSync(err);
     }
-    const phaseResult = { name: command.name, argv: command.argv, exitCode: result.status, signal: result.signal, errorCode: result.error?.code ?? null, durationMs: Math.round(performance.now() - started) };
+    const phaseResult = { name: command.name, argv: command.argv, exitCode: result.status, signal: result.signal, errorCode: result.error?.code ?? null, durationMs: Math.round(performance.now() - started), executionTimeoutMs: result.executionTimeoutMs, cleanupReserveMs: result.cleanupReserveMs, timedOut: result.timedOut };
     verdict.phases.push(phaseResult);
     writeJson(command.name + "-result.json", phaseResult);
     assert.deepEqual(await snapshot(true), before);
     assert.equal(sha256(fs.readFileSync(path.join(output, "metadata-after.mjs"))), binding.metadataHarnessSHA256);
+    assert.equal(result.error?.code ?? null, null, command.name);
     assert.equal(result.status, 0, command.name);
+    if (command.name === "build") {
+      runtimeBuild = snapshotRuntimeArtifacts();
+      writeJson("runtime-build.json", runtimeBuild);
+      verdict.buildCompleted = true;
+    } else {
+      assert.deepEqual(snapshotRuntimeArtifacts(), runtimeBuild, "Built runtime changed after build");
+    }
     const unit = binding.unitSuites.find((suite) => suite.phase === command.name);
     if (unit) checkVitest(command.name, unit.path, unit.expectedTests);
     if (command.name === "metadata") {
@@ -168,7 +241,14 @@ try {
   const behavior = JSON.parse(fs.readFileSync(path.join(behaviorDirectory, "verdict.json"), "utf8"));
   assert.deepEqual(behavior.binding, sourceBinding);
   assert.equal(behavior.schema, "openclaw-pr-132266-gateway-progress-proof-v2");
-  assert.equal(behavior.runtime, "node/tsx");
+  assert.equal(behavior.runtime, "built-child-gateway");
+  assert.equal(behavior.childCleanup.confirmed, true);
+  assert.equal(behavior.childCleanup.interrupted, false);
+  assert.equal(behavior.childCleanup.result.process, "confirmed-stopped");
+  assert.deepEqual(behavior.childCleanup.result.errors, []);
+  assert.deepEqual(behavior.stagedAfter, behavior.stagedBefore);
+  assert.equal(behavior.childRuntime.buildOutputSHA256, sha256(fs.readFileSync(path.join(output, "runtime-build.json"))));
+  assert.equal(behavior.fixture.eventOverflow, false);
   assert.equal(behavior.status, "pass");
   for (const key of ["expectedScenarios", "executedScenarios", "passedScenarios"]) assert.equal(behavior[key], 5, key);
   assert.deepEqual(behavior.results.map((row) => row.id), binding.expectedScenarioIds);
@@ -190,6 +270,12 @@ try {
   Object.assign(verdict, { passed: false, fullProofCompleted: false, error: error instanceof Error ? error.message : String(error), stack: error instanceof Error ? error.stack : null });
 } finally {
   try {
+    if (runtimeBuild) {
+      const runtimeAfter = snapshotRuntimeArtifacts();
+      writeJson("runtime-after.json", runtimeAfter);
+      assert.deepEqual(runtimeAfter, runtimeBuild, "Built runtime changed");
+      verdict.runtimeArtifactsUnchanged = true;
+    }
     if (before && snapshot) {
       const after = await snapshot(overlayCreated);
       assert.deepEqual(after, before);
@@ -204,6 +290,13 @@ try {
       verdict.proofOverlayRemoved = true;
     }
     if (output) {
+      if (gatewayPhaseStarted) {
+        const cleanup = JSON.parse(fs.readFileSync(path.join(output, "behavior/child-cleanup.json"), "utf8"));
+        assert.equal(cleanup.confirmed, true, "Child cleanup unconfirmed; runtime HOME retained");
+        assert.notEqual(cleanup.result.process, "unconfirmed");
+        assert.deepEqual(cleanup.result.errors, []);
+        verdict.gatewayChildCleanupConfirmed = true;
+      }
       fs.rmSync(path.join(output, "runtime"), { recursive: true, force: true });
       verdict.runtimeHomesRemoved = true;
     }
@@ -213,7 +306,7 @@ try {
   try {
     assert.ok(output, "No safe receipt directory created");
     writeJson("proof-verdict.json", { ...verdict, head: expectedHead });
-    const names = ["proof-verdict.json", "requested-binding.json", "source-binding.json", "source-after.json", "proof.test.ts", "metadata-after.mjs", "metadata-verdict.json", "behavior/verdict.json", "behavior/report.md", "behavior/startup-timeline.jsonl", ...phaseNames.flatMap((name) => [`${name}.stdout`, `${name}.stderr`, `${name}.json`, `${name}-result.json`])].filter((name) => fs.existsSync(path.join(output, name)));
+    const names = ["proof-verdict.json", "requested-binding.json", "source-binding.json", "source-after.json", "runtime-build.json", "runtime-after.json", "proof.test.ts", "metadata-after.mjs", "metadata-verdict.json", "behavior/verdict.json", "behavior/report.md", "behavior/startup-timeline.jsonl", "behavior/staged-before.json", "behavior/staged-after.json", "behavior/child-cleanup.json", "behavior/gateway.stdout.log", "behavior/gateway.stderr.log", "behavior/README.txt", ...phaseNames.flatMap((name) => [`${name}.stdout`, `${name}.stderr`, `${name}.json`, `${name}-result.json`])].filter((name) => fs.existsSync(path.join(output, name)));
     const entries = names.map((name) => ({ name, stats: fs.lstatSync(path.join(output, name)) }));
     assert.ok(entries.every(({ stats }) => stats.isFile()));
     assert.ok(entries.every(({ name, stats }) => name !== "behavior/startup-timeline.jsonl" || stats.size <= 4 * 1024 * 1024), "Startup timeline exceeds 4 MiB");

@@ -26,10 +26,10 @@ archive = G / ('proof-success.tgz' if receipt.get('passed') else 'proof-failure.
 assert receipt['artifact'] == binding['remoteArchive']
 assert archive.stat().st_size == receipt['artifactBytes'] <= 65 * 1024 * 1024
 assert hashlib.sha256(archive.read_bytes()).hexdigest() == receipt['artifactSHA256']
-phases = ['unit-normalizer', 'unit-cache', 'unit-resolver', 'metadata', 'gateway']
-allowed = {'proof-verdict.json', 'requested-binding.json', 'source-binding.json', 'source-after.json', 'proof.test.ts', 'metadata-after.mjs', 'metadata-verdict.json', 'behavior/verdict.json', 'behavior/report.md'}
+phases = ['build', 'unit-normalizer', 'unit-cache', 'unit-resolver', 'metadata', 'gateway']
+allowed = {'proof-verdict.json', 'requested-binding.json', 'source-binding.json', 'source-after.json', 'runtime-build.json', 'runtime-after.json', 'proof.test.ts', 'metadata-after.mjs', 'metadata-verdict.json', 'behavior/verdict.json', 'behavior/report.md'}
 allowed.update(f'{phase}{suffix}' for phase in phases for suffix in ['.stdout', '.stderr', '.json', '-result.json'])
-allowed.add('behavior/startup-timeline.jsonl')
+allowed.update({'behavior/startup-timeline.jsonl', 'behavior/staged-before.json', 'behavior/staged-after.json', 'behavior/child-cleanup.json', 'behavior/gateway.stdout.log', 'behavior/gateway.stderr.log', 'behavior/README.txt'})
 out = G / 'extracted'
 assert not out.exists(), 'Do not overwrite earlier evidence'
 os.umask(0o077)
@@ -64,19 +64,26 @@ if proof['passed']:
     base_env = {'PATH', 'HOME', 'CI', 'COREPACK_HOME', 'COREPACK_ENABLE_DOWNLOAD_PROMPT', 'TMPDIR', 'XDG_CONFIG_HOME', 'XDG_CACHE_HOME', 'XDG_DATA_HOME', 'OPENCLAW_STATE_DIR'}
     assert set(before['envNames']) == set(phases)
     for phase, names in before['envNames'].items():
-        assert set(names) == base_env | ({'OPENCLAW_METADATA_PROOF_DIR', 'OPENCLAW_METADATA_PROOF_BINDING'} if phase == 'gateway' else set())
+        assert set(names) == base_env | ({'OPENCLAW_METADATA_PROOF_DIR', 'OPENCLAW_METADATA_PROOF_BINDING'} if phase == 'gateway' else {'OPENCLAW_BUILD_PRIVATE_QA'} if phase == 'build' else set())
     assert hashlib.sha256((out / 'proof.test.ts').read_bytes()).hexdigest() == binding['proofTestSHA256']
     assert hashlib.sha256((out / 'metadata-after.mjs').read_bytes()).hexdigest() == binding['metadataHarnessSHA256']
     assert [phase['name'] for phase in proof['phases']] == phases
     assert all(phase['exitCode'] == 0 and phase['signal'] is None and phase['errorCode'] is None for phase in proof['phases'])
     assert proof['sourceUnchanged'] and proof['proofOverlayRemoved'] and proof['runtimeHomesRemoved'] and proof['fullProofCompleted']
     assert proof['cleanupErrors'] == []
+    assert proof['buildCompleted'] and proof['runtimeArtifactsUnchanged'] and proof['gatewayChildCleanupConfirmed']
     assert [phase['argv'] for phase in proof['phases']] == [command['argv'] for command in before['commands']]
     commands = {command['name']: command['argv'] for command in before['commands']}
     for suite in binding['unitSuites']:
         argv = commands[suite['phase']]
         assert argv[:6] == [binding['nodeExecutable'], 'scripts/run-vitest.mjs', 'run', suite['path'], '--reporter=default', '--reporter=json']
         assert len(argv) == 7 and argv[6].startswith('--outputFile=/tmp/openclaw-132266-after-proof-') and argv[6].endswith('/' + suite['phase'] + '.json')
+    build_command = commands['build']
+    assert len(build_command) == 5 and build_command[:2] == [binding['nodeExecutable'], '--import']
+    assert build_command[2].endswith('/scripts/tsx.mjs') and build_command[3:] == ['scripts/build-all.mts', 'qaRuntime']
+    for phase in proof['phases']:
+        assert phase['executionTimeoutMs'] == (180000 if phase['name'] == 'gateway' else 1200000)
+        assert phase['cleanupReserveMs'] == 60000 and phase['timedOut'] is False
     gateway_command = commands['gateway']
     assert len(gateway_command) == 4 and gateway_command[:2] == [binding['nodeExecutable'], '--import']
     assert gateway_command[2].endswith('/scripts/tsx.mjs')
@@ -96,7 +103,41 @@ if proof['passed']:
     behavior = json.loads((out / 'behavior/verdict.json').read_text())
     assert behavior['binding'] == before
     assert behavior['schema'] == 'openclaw-pr-132266-gateway-progress-proof-v2'
-    assert behavior['runtime'] == 'node/tsx'
+    assert behavior['runtime'] == 'built-child-gateway'
+    build = json.loads((out / 'runtime-build.json').read_text())
+    runtime_after = json.loads((out / 'runtime-after.json').read_text())
+    assert runtime_after == build
+    assert build['head'] == binding['candidateHead'] and build['tree'] == binding['candidateTree']
+    assert build['profile'] == 'qaRuntime' and build['privateQa'] is True
+    assert all(row['head'] == binding['candidateHead'] for row in build['stamps'].values())
+    for name in ['dist/index.js', 'dist/extensions/qa-channel/index.js', 'dist/extensions/openai/index.js', 'dist/plugin-sdk/qa-channel-protocol.js']:
+        assert len(build['files'][name]['sha256']) == 64
+    assert behavior['childRuntime']['buildOutputSHA256'] == hashlib.sha256((out / 'runtime-build.json').read_bytes()).hexdigest()
+    candidate_root = gateway_command[3].removesuffix('/' + binding['proofTestRemotePath'])
+    assert behavior['childRuntime']['argv'][1:4] == [candidate_root + '/dist/index.js', 'gateway', 'run']
+    assert behavior['childRuntime']['executable'] == binding['nodeExecutable']
+    assert behavior['childCleanup']['confirmed'] is True and behavior['childCleanup']['interrupted'] is False
+    assert behavior['childCleanup']['result'] == {'process': 'confirmed-stopped', 'errors': []}
+    cleanup = json.loads((out / 'behavior/child-cleanup.json').read_text())
+    assert cleanup['phase'] == 'finished' and cleanup['confirmed'] is True and cleanup['interrupted'] is False
+    assert cleanup['result'] == behavior['childCleanup']['result'] and cleanup['errors'] == []
+    staged = json.loads((out / 'behavior/staged-before.json').read_text())
+    assert staged == json.loads((out / 'behavior/staged-after.json').read_text()) == behavior['stagedBefore'] == behavior['stagedAfter']
+    assert staged['runtimeRoot'].startswith(candidate_root + '/.artifacts/qa-runtime/openclaw-qa-suite-')
+    assert staged['bundledDir'] == staged['runtimeRoot'] + '/dist/extensions'
+    assert set(staged['plugins']) == {'qa-channel', 'openai'}
+    for plugin_id, plugin in staged['plugins'].items():
+        assert plugin['directory'] == staged['bundledDir'] + '/' + plugin_id
+        assert 'index.js' in plugin['files']
+        for name, fact in plugin['files'].items():
+            assert not Path(name).is_absolute() and '..' not in Path(name).parts
+            assert not name.endswith(('.ts', '.tsx', '.mts', '.cts')) or name.endswith(('.d.ts', '.d.mts', '.d.cts'))
+            source = f'extensions/{plugin_id}/{name}' if name == 'openclaw.plugin.json' else f'dist/extensions/{plugin_id}/{name}'
+            expected = binding['candidateFileSHA256'][source] if name == 'openclaw.plugin.json' else build['files'][source]['sha256']
+            assert fact['sha256'] == expected
+    for name in ['gateway.stdout.log', 'gateway.stderr.log', 'README.txt']:
+        assert (out / 'behavior' / name).is_file()
+    assert behavior['fixture']['observerReady'] is True and behavior['fixture']['eventOverflow'] is False
     assert behavior['status'] == 'pass' and behavior['expectedScenarios'] == behavior['executedScenarios'] == behavior['passedScenarios'] == 5
     assert [row['id'] for row in behavior['results']] == binding['expectedScenarioIds']
     assert all(row['status'] == 'pass' for row in behavior['results'])
@@ -119,6 +160,6 @@ if proof['passed']:
         hidden = row['label'] not in ['cache-hit-visible', 'visible']
         assert row['marker'] == hidden and row['lifecycleEvents'] == 3 and row['finalReplies'] == 1
         assert row['progressCallbacks'] == (0 if hidden else 2) and row['itemCallbacks'] == (0 if hidden else 1)
-save({'passed': proof['passed'], 'candidateHead': binding['candidateHead'], 'proof': proof, 'archiveSHA256': receipt['artifactSHA256'], 'archiveBytes': receipt['artifactBytes'], 'sourceFileCount': binding['sourceFileCount'], 'candidateExecution': 'GitHub-hosted runner; no injected repository secrets', 'limitations': ['Synthetic QA-channel plus mock OpenAI HTTP, not Telegram or public model service.', 'Native strict-normalizer metadata lane is a production channel-handler projection, not native OpenAI HTTP.', 'No Codex process executed.']})
+save({'passed': proof['passed'], 'candidateHead': binding['candidateHead'], 'proof': proof, 'archiveSHA256': receipt['artifactSHA256'], 'archiveBytes': receipt['artifactBytes'], 'sourceFileCount': binding['sourceFileCount'], 'candidateExecution': 'GitHub-hosted runner; no injected repository secrets', 'limitations': ['Synthetic QA-channel plus mock OpenAI HTTP, not Telegram or public model service.', 'The separate same-head metadata lane proves descriptor cache and normalizer invariants; built child Gateway proves the five external flows.', 'No Codex process executed.']})
 print(json.dumps({'passed': proof['passed'], 'head': binding['candidateHead']}))
 sys.exit(0 if proof['passed'] else 1)

@@ -1,16 +1,12 @@
-// Ephemeral Node/tsx proof overlay. Production owners are imported without mocks.
+// Ephemeral proof parent; the product Gateway runs canonical built dist in a child.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
 import type { OpenClawConfig } from "../../../src/config/types.openclaw.js";
-import {
-  disconnectGatewayClient,
-  startGatewayWithClient,
-} from "../../../src/gateway/test-helpers.e2e.js";
+import { createQaGatewayChild } from "./gateway-child.js";
 import { buildMockOpenAiResponsesProvider } from "../../../src/gateway/test-openai-responses-model.js";
-import { onAgentEvent } from "../../../src/infra/agent-events.js";
 import { createOpenClawTestState } from "../../../src/test-utils/openclaw-test-state.js";
 import { startQaBusServer } from "./bus-server.js";
 import { createQaBusState } from "./bus-state.js";
@@ -21,7 +17,6 @@ import { waitForQaTransportAccountReady, waitForQaTransportCondition } from "./q
 import { renderQaMarkdownReport } from "./report.js";
 
 const pluginId = "metadata-progress-proof";
-const fixtureSymbol = Symbol.for("openclaw.proof132266.fixture");
 const cases = [
   { id: "hidden-cold", tool: "metadata_hidden", hidden: true },
   { id: "hidden-reused", tool: "metadata_hidden", hidden: true },
@@ -32,17 +27,51 @@ const cases = [
 type FixtureState = {
   factories: number;
   executions: Array<{ name: string; callId: string; caseId: string }>;
+  agentEvents: Array<{ runId: string; stream: string; data: Record<string, unknown> }>;
+  observerReady: boolean;
+  eventOverflow: boolean;
+  runtime: { pid: number; executable: string; argv: string[] };
 };
 type RunCase = { id: string; status: "pass" | "fail"; error?: string; acceptedMessage?: unknown };
 
 // The plugin is a synthetic input. Loader, descriptor owner, normalizer, agent loop,
 // channel admission, progress consumer, delivery, and HTTP bus are unmodified.
 const fixtureSource = `
-const state = globalThis[Symbol.for("openclaw.proof132266.fixture")];
+// Inert synthetic-input proposal: execute only inside the reviewed isolated child proof.
+const state = globalThis[Symbol.for("openclaw.proof132266.fixture")] ??= {
+  factories: 0, executions: [], agentEvents: [], observerReady: false, eventOverflow: false,
+};
 module.exports = {
   id: "metadata-progress-proof",
   name: "Synthetic metadata progress proof",
   register(api) {
+    // Full and tool-discovery registrations share child-owned fixture observations.
+    // Parent observation uses authenticated RPC, never parent module/global identity.
+    if (api.registrationMode === "full") {
+      let unsubscribe;
+      api.registerService({
+        id: "metadata-progress-proof-observer",
+        start() {
+          if (state.observerReady) throw new Error("duplicate proof observer startup");
+          unsubscribe = api.runtime.events.onAgentEvent(event => {
+            if (state.agentEvents.length >= 2000) {
+              state.eventOverflow = true;
+              return;
+            }
+            state.agentEvents.push(structuredClone(event));
+          });
+          state.observerReady = true;
+        },
+        stop() {
+          unsubscribe?.();
+          unsubscribe = undefined;
+          state.observerReady = false;
+        },
+      });
+      api.registerGatewayMethod("metadata-proof.inspect", ({respond}) => {
+        respond(true, { ...structuredClone(state), runtime: { pid: process.pid, executable: process.execPath, argv: [...process.argv] } });
+      }, {scope: "operator.read"});
+    }
     api.registerTool(() => {
       state.factories++;
       return ["metadata_hidden", "metadata_nonenumerable", "metadata_visible", "metadata_false"].map(name => {
@@ -65,6 +94,42 @@ module.exports = {
   }
 };
 `;
+
+function parseFixture(value: unknown): FixtureState {
+  assert.ok(value && typeof value === "object");
+  const data = value as Record<string, unknown>;
+  assert.ok(Number.isSafeInteger(data.factories) && Number(data.factories) >= 0);
+  assert.ok(Array.isArray(data.executions));
+  assert.ok(data.executions.every((row) => row && typeof row.name === "string" && typeof row.callId === "string" && typeof row.caseId === "string"));
+  assert.ok(Array.isArray(data.agentEvents));
+  assert.ok(data.agentEvents.every((row) => row && typeof row.runId === "string" && typeof row.stream === "string" && row.data && typeof row.data === "object"));
+  assert.equal(typeof data.observerReady, "boolean");
+  assert.equal(typeof data.eventOverflow, "boolean");
+  assert.ok(data.runtime && typeof data.runtime === "object");
+  const runtime = data.runtime as Record<string, unknown>;
+  assert.ok(Number.isSafeInteger(runtime.pid) && Number(runtime.pid) > 0);
+  assert.equal(typeof runtime.executable, "string");
+  assert.ok(Array.isArray(runtime.argv) && runtime.argv.every((arg) => typeof arg === "string"));
+  return value as FixtureState;
+}
+
+async function hashTree(directory: string): Promise<Record<string, { sha256: string; bytes: number }>> {
+  const files: Record<string, { sha256: string; bytes: number }> = {};
+  async function visit(relative: string) {
+    for (const entry of (await fs.readdir(path.join(directory, relative), { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+      const name = path.join(relative, entry.name);
+      assert.equal(entry.isSymbolicLink(), false, `Unexpected staged symlink: ${name}`);
+      if (entry.isDirectory()) await visit(name);
+      else {
+        assert.ok(entry.isFile(), `Unexpected staged file kind: ${name}`);
+        const bytes = await fs.readFile(path.join(directory, name));
+        files[name] = { sha256: createHash("sha256").update(bytes).digest("hex"), bytes: bytes.length };
+      }
+    }
+  }
+  await visit("");
+  return files;
+}
 
 async function main() {
   const milestone = (phase: string) => process.stderr.write(`METADATA_PROOF_PHASE ${phase}\n`);
@@ -89,17 +154,76 @@ async function main() {
     verdictSHA256: createHash("sha256").update(metadataBytes).digest("hex"),
     scenarios: binding.metadataScenarioIds,
   };
+  const buildBytes = await fs.readFile(path.join(path.dirname(bindingPath), "runtime-build.json"));
+  const build = JSON.parse(buildBytes.toString("utf8"));
+  assert.equal(build.head, binding.head);
+  assert.equal(build.tree, binding.tree);
   const startedAt = new Date();
-  const fixture: FixtureState = { factories: 0, executions: [] };
-  Reflect.set(globalThis, fixtureSymbol, fixture);
-  const agentEvents: Array<Parameters<Parameters<typeof onAgentEvent>[0]>[0]> = [];
+  let fixture: FixtureState = { factories: 0, executions: [], agentEvents: [], observerReady: false, eventOverflow: false, runtime: { pid: 0, executable: "", argv: [] } };
+  let agentEvents: FixtureState["agentEvents"] = [];
   const providerRequests: Array<Record<string, unknown>> = [];
   const results: RunCase[] = [];
   const cleanupErrors: string[] = [];
   const invariantErrors: string[] = [];
-  let unsubscribe = () => {};
   let state: Awaited<ReturnType<typeof createOpenClawTestState>> | undefined;
-  let gateway: Awaited<ReturnType<typeof startGatewayWithClient>> | undefined;
+  const gatewayOwner = createQaGatewayChild();
+  let gateway: Awaited<ReturnType<typeof gatewayOwner.start>> | undefined;
+  let stopPromise: ReturnType<typeof gatewayOwner.stop> | undefined;
+  let stopResult: { process: string; errors: string[] } | undefined;
+  let debugDir: string | undefined;
+  let interrupted = false;
+  let rejectInterrupted!: (error: Error) => void;
+  const interruption = new Promise<never>((_, reject) => { rejectInterrupted = reject; });
+  void interruption.catch(() => {});
+  const guard = async <T>(operation: Promise<T>): Promise<T> => {
+    if (interrupted) throw new Error("Gateway proof interrupted");
+    return await Promise.race([operation, interruption]);
+  };
+  const stop = () => stopPromise ??= gatewayOwner.stop(debugDir ? { preserveToDir: debugDir } : undefined);
+  const onTerminate = () => {
+    if (interrupted) return;
+    interrupted = true;
+    const error = new Error("Gateway proof execution deadline/SIGTERM; no further scenario admission");
+    invariantErrors.push(String(error));
+    rejectInterrupted(error);
+    // stop closes child spawn admission synchronously before its first await.
+    void stop().catch((error) => cleanupErrors.push(String(error)));
+  };
+  process.once("SIGTERM", onTerminate);
+  let stagedBefore: Record<string, unknown> | undefined;
+  let stagedAfter: Record<string, unknown> | undefined;
+  let childRuntime: Record<string, unknown> | undefined;
+  const repoRoot = path.resolve(".");
+  const readFixture = async (deadlineMs?: number) => {
+    const next = parseFixture(await guard(gateway!.call("metadata-proof.inspect", {}, {
+      timeoutMs: 5_000, ...(deadlineMs === undefined ? {} : { deadlineMs }),
+    })));
+    assert.equal(next.observerReady, true);
+    assert.equal(next.eventOverflow, false);
+    fixture = next;
+    agentEvents = next.agentEvents;
+  };
+  const readStaging = async () => {
+    const bundledDir = gateway!.runtimeEnv.OPENCLAW_BUNDLED_PLUGINS_DIR;
+    assert.ok(bundledDir);
+    const runtimeRoot = gateway!.runtimeEnv.OPENCLAW_QA_STAGED_RUNTIME_ROOT;
+    assert.ok(runtimeRoot && runtimeRoot.startsWith(path.join(repoRoot, ".artifacts", "qa-runtime") + path.sep));
+    assert.equal(bundledDir, path.join(runtimeRoot, "dist", "extensions"));
+    const rows: Record<string, unknown> = {};
+    for (const id of ["qa-channel", "openai"]) {
+      const files = await hashTree(path.join(bundledDir, id));
+      assert.ok(files["index.js"], `Missing built ${id} entry`);
+      for (const [name, fact] of Object.entries(files)) {
+        assert.ok(!/(?<!\.d)\.[cm]?tsx?$/.test(name), `Source staged instead of dist: ${id}/${name}`);
+        const sourceName = name === "openclaw.plugin.json" ? `extensions/${id}/${name}` : `dist/extensions/${id}/${name}`;
+        const expected = name === "openclaw.plugin.json" ? {sha256: binding.sourceHashes[sourceName]} : build.files[sourceName];
+        assert.ok(expected, `Unbound staged file: ${sourceName}`);
+        assert.equal(fact.sha256, expected.sha256, sourceName);
+      }
+      rows[id] = { directory: path.join(bundledDir, id), files };
+    }
+    return { bundledDir, runtimeRoot, plugins: rows };
+  };
   const busState = createQaBusState();
   let bus: Awaited<ReturnType<typeof startQaBusServer>> | undefined;
   const calls = new Map<string, { callId: string; requests: number }>();
@@ -155,7 +279,7 @@ async function main() {
         OPENCLAW_SKIP_CANVAS_HOST: "1",
         OPENCLAW_SKIP_BROWSER_CONTROL_SERVER: "1",
         OPENCLAW_SKIP_PROVIDERS: undefined,
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
+        OPENCLAW_DISABLE_BUNDLED_PLUGINS: "0",
         OPENCLAW_GATEWAY_TOKEN: undefined,
         OPENCLAW_GATEWAY_PASSWORD: undefined,
       },
@@ -192,7 +316,6 @@ async function main() {
       `http://127.0.0.1:${address.port}/v1`,
       "metadata-proof",
     );
-    const token = "synthetic-metadata-proof-token";
     const cfg = {
       agents: {
         defaults: {
@@ -217,33 +340,59 @@ async function main() {
       plugins: {
         enabled: true,
         allow: ["qa-channel", pluginId],
-        load: { paths: [path.resolve("extensions/qa-channel"), fixtureDir] },
+        load: { paths: [fixtureDir] },
         entries: { "qa-channel": { enabled: true }, [pluginId]: { enabled: true } },
         slots: { memory: "none" },
       },
       channels: { "qa-channel": { enabled: true, baseUrl: bus.baseUrl } },
       tools: { profile: "full", allow: [...new Set(cases.map((item) => item.tool))] },
-      gateway: { auth: { mode: "token", token } },
     } satisfies OpenClawConfig;
+    await fs.mkdir(path.join(repoRoot, ".artifacts"), { recursive: true });
+    debugDir = await fs.mkdtemp(path.join(repoRoot, ".artifacts", "proof-132266-debug-"));
+    if (interrupted) throw new Error("Proof interrupted before child startup");
     milestone("gateway-starting");
-    gateway = await startGatewayWithClient({
-      cfg,
-      configPath: state.configPath,
-      token,
-      scopes: ["operator.admin", "operator.read", "operator.write"],
-    });
+    gateway = await guard(gatewayOwner.start({
+      repoRoot,
+      providerMode: "mock-openai",
+      providerBaseUrl: `http://127.0.0.1:${address.port}/v1`,
+      primaryModel: model.modelRef,
+      alternateModel: model.modelRef,
+      transportBaseUrl: bus.baseUrl,
+      controlUiEnabled: false,
+      runtimeEnvPatch: {
+        OPENCLAW_ENABLE_PRIVATE_QA_CLI: "1",
+        OPENCLAW_DISABLE_BUNDLED_PLUGINS: "0",
+        OPENCLAW_SKIP_CRON: "1",
+        OPENCLAW_GATEWAY_STARTUP_TRACE: "1",
+        OPENCLAW_DIAGNOSTICS: "timeline",
+        OPENCLAW_DIAGNOSTICS_TIMELINE_PATH: path.join(outputDir, "startup-timeline.jsonl"),
+      },
+      mutateConfig(base) {
+        return {
+          ...base, ...cfg,
+          agents: { defaults: { ...base.agents?.defaults, ...cfg.agents.defaults, workspace: base.agents!.defaults!.workspace } },
+          gateway: base.gateway,
+          memory: { search: { enabled: false } },
+        };
+      },
+    }));
     milestone("gateway-connected");
-    unsubscribe = onAgentEvent((event) => agentEvents.push(structuredClone(event)));
-    await waitForQaTransportAccountReady({
-      accountId: "default",
-      channel: "qa-channel",
-      gateway: { call: (method, params, opts) => gateway!.client.request(method, params, opts) },
-    });
+    await readFixture();
+    assert.equal(fixture.runtime.pid, gateway.pid);
+    assert.equal(await fs.realpath(fixture.runtime.executable), await fs.realpath(process.execPath));
+    assert.equal(fixture.runtime.argv[1], path.join(repoRoot, "dist", "index.js"));
+    assert.deepEqual(fixture.runtime.argv.slice(2, 4), ["gateway", "run"]);
+    childRuntime = { ...fixture.runtime, buildOutputSHA256: createHash("sha256").update(buildBytes).digest("hex") };
+    stagedBefore = await readStaging();
+    await fs.writeFile(path.join(outputDir, "staged-before.json"), JSON.stringify(stagedBefore, null, 2) + "\n");
+    assert.equal(fixture.executions.length, 0);
+    await guard(waitForQaTransportAccountReady({ accountId: "default", channel: "qa-channel", gateway }));
     milestone("channel-ready");
     for (const scenario of cases) {
+      if (interrupted) throw new Error("Proof interrupted; remaining cases were not admitted");
       const result: RunCase = { id: scenario.id, status: "fail" };
       try {
-        const response = await fetch(`${bus.baseUrl}/v1/inbound/message`, {
+        const response = await guard(fetch(`${bus.baseUrl}/v1/inbound/message`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
@@ -252,14 +401,14 @@ async function main() {
             senderId: "synthetic-user",
             text: `PROOF132266:${scenario.id} Call ${scenario.tool} once and finish with the returned result.`,
           }),
-        });
+        }));
         assert.equal(response.status, 200);
-        await busState.waitFor({
+        await guard(busState.waitFor({
           kind: "message-text",
           direction: "outbound",
           textIncludes: `FINAL132266:${scenario.id}`,
           timeoutMs: 30_000,
-        });
+        }));
         const final = busState
           .getSnapshot()
           .messages.filter(
@@ -273,6 +422,7 @@ async function main() {
         const reported = final[0]!.toolCalls?.map((tool) => tool.name) ?? [];
         assert.deepEqual(reported, scenario.hidden ? [] : [scenario.tool]);
         assert.equal(calls.get(scenario.id)?.requests, 2);
+        await readFixture();
         const executed = fixture.executions.filter((item) => item.caseId === scenario.id);
         assert.equal(executed.length, 1);
         const lifecycle = agentEvents.filter(
@@ -284,12 +434,14 @@ async function main() {
           (event) => (event.data.hideFromChannelProgress === true) === scenario.hidden,
         ));
         const runId = lifecycle[0]!.runId;
-        await waitForQaTransportCondition(
-          () => agentEvents.some(
-            (event) => event.runId === runId && event.stream === "lifecycle" && event.data.phase === "end",
-          ) ? true : undefined,
+        const lifecycleDeadline = Date.now() + 5_000;
+        await guard(waitForQaTransportCondition(
+          async () => {
+            await readFixture(lifecycleDeadline);
+            return agentEvents.some((event) => event.runId === runId && event.stream === "lifecycle" && event.data.phase === "end") ? true : undefined;
+          },
           5_000,
-        );
+        ));
         assert.ok(agentEvents.some(
           (event) => event.runId === runId && event.stream === "lifecycle" && event.data.phase === "start",
         ));
@@ -300,6 +452,10 @@ async function main() {
       results.push(result);
       milestone(`${scenario.id}:${result.status}`);
     }
+    await readFixture();
+    stagedAfter = await readStaging();
+    assert.deepEqual(stagedAfter, stagedBefore);
+    await fs.writeFile(path.join(outputDir, "staged-after.json"), JSON.stringify(stagedAfter, null, 2) + "\n");
     try {
       // Factory counts are diagnostic; cached execute wrappers can invoke the factory.
       // Exact cache-hit and normalization claims belong to the separately bound phase.
@@ -313,14 +469,31 @@ async function main() {
     invariantErrors.push(String(error));
   } finally {
     milestone("cleanup-starting");
-    if (gateway) {
-      for (const close of [
-        () => disconnectGatewayClient(gateway!.client),
-        () => gateway!.server.close({ reason: "metadata proof complete" }),
-      ]) {
-        try { await close(); } catch (error) { cleanupErrors.push(String(error)); }
-      }
+    if (gateway && childRuntime) {
+      childRuntime.cpuMsAtCleanup = gateway.getProcessCpuMs();
+      childRuntime.rssBytesAtCleanup = gateway.getProcessRssBytes();
     }
+    await fs.mkdir(outputDir, { recursive: true });
+    await fs.writeFile(path.join(outputDir, "child-cleanup.json"), JSON.stringify({ phase: "stopping", confirmed: false, interrupted }) + "\n");
+    try {
+      const result = await stop();
+      stopResult = { process: result.process, errors: result.errors.map(String) };
+      cleanupErrors.push(...stopResult.errors);
+      if (gateway) assert.equal(stopResult.process, "confirmed-stopped");
+      assert.notEqual(stopResult.process, "unconfirmed");
+      if (debugDir) {
+        for (const name of ["gateway.stdout.log", "gateway.stderr.log", "README.txt"]) {
+          const bytes = await fs.readFile(path.join(debugDir, name));
+          assert.ok(bytes.length <= 4 * 1024 * 1024, `Sanitized child log too large: ${name}`);
+          await fs.writeFile(path.join(outputDir, name), bytes);
+        }
+        await fs.rm(debugDir, { recursive: true });
+      }
+    } catch (error) {
+      cleanupErrors.push(String(error));
+    }
+    const childCleanupConfirmed = stopResult?.process !== undefined && stopResult.process !== "unconfirmed" && stopResult.errors.length === 0 && cleanupErrors.length === 0;
+    await fs.writeFile(path.join(outputDir, "child-cleanup.json"), JSON.stringify({ phase: "finished", confirmed: childCleanupConfirmed, interrupted, result: stopResult, errors: cleanupErrors }) + "\n");
     // QA bus shutdown clears its ephemeral store; retain accepted facts before close.
     const busSnapshot = busState.getSnapshot();
     provider.closeAllConnections();
@@ -331,16 +504,20 @@ async function main() {
       cleanupErrors.push(String(error));
     }
     try {
-      await state?.cleanup();
+      if (childCleanupConfirmed) await state?.cleanup();
+      else throw new Error("Child cleanup unconfirmed; preserve owned runtime directories");
     } catch (error) {
       cleanupErrors.push(String(error));
     }
-    unsubscribe();
-    Reflect.deleteProperty(globalThis, fixtureSymbol);
+    process.removeListener("SIGTERM", onTerminate);
     milestone("cleanup-finished");
     const verdict = {
       schema: "openclaw-pr-132266-gateway-progress-proof-v2",
-      runtime: "node/tsx",
+      runtime: "built-child-gateway",
+      childRuntime,
+      childCleanup: { confirmed: childCleanupConfirmed, interrupted, result: stopResult },
+      stagedBefore,
+      stagedAfter,
       binding,
       status:
         results.length === 5 &&
@@ -365,7 +542,7 @@ async function main() {
       cleanupErrors,
       limitations: [
         "Synthetic QA-channel and mock OpenAI HTTP; no Telegram, real provider, or Codex process executed.",
-        "No module mocks or runtime spies. Gateway scenarios prove downstream tool-event metadata and accepted channel visibility.",
+        "Built child Gateway; actual agent events are observed by a fixture plugin service and authenticated read-only RPC. No module mocks or runtime spies.",
         "Exact descriptor cache cold/hit and normalizer clone invariants are mandatory in the same-head six-case metadata phase; Gateway factory totals alone do not prove a cache hit.",
       ],
     };
