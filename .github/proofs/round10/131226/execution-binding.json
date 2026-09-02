@@ -11,7 +11,7 @@
     "net": 0
   },
   "proofPath": "extensions/qa-lab/src/tool-media-terminal.gateway-proof.mjs",
-  "proofSHA256": "2c33a92e64071dffe78673fab59f0a31124f7bc739db04c03e1a82e2e985ebd6",
+  "proofSHA256": "83177eadfc293dd5177b250fcfcfc0be67f00462c5551bc20289f0c0119ff550",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "sourceHashes": {
     ".agents/skills/openclaw-qa-testing/SKILL.md": "e003a81751cc140bd003658f02c10c80930599883479dbed0dccb582dce8111f",
