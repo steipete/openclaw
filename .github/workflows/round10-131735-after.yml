@@ -28,7 +28,7 @@ jobs:
           - revision: baseline
             head: bf898e2fce7ce4fb2998db27d16664ac90f2aa8b
           - revision: candidate
-            head: b23707455480f99038347fb4f13112c980bf1157
+            head: 5af9fd2eeb6e60e81920d9158892bf339143a529
     steps:
       - name: Checkout reviewed proof packet
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

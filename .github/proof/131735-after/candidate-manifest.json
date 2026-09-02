@@ -1,5 +1,5 @@
 {
-  "head": "b23707455480f99038347fb4f13112c980bf1157",
+  "head": "5af9fd2eeb6e60e81920d9158892bf339143a529",
   "files": {
     "src/agents/subagents/registry/subagent-registry-completion-runtime.ts": "404f2f5ca339c4a3c99a81653796ba5b76af81349fa6c0bb9753e2b7747cf184",
     "src/agents/subagents/registry/subagent-registry-pending-lifecycle.ts": "2cbcf34eb33df18fac684d9b848d6d7fbbd98ca4647a948ca7e5bfc040871354",
