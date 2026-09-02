@@ -1,0 +1,13 @@
+{
+  "head": "bf898e2fce7ce4fb2998db27d16664ac90f2aa8b",
+  "files": {
+    "src/agents/subagents/registry/subagent-registry-completion-runtime.ts": "ba5c68c07f1a40255627db5f5c810dc7211f38386196c33187c67e9a3d4335e9",
+    "src/agents/subagents/registry/subagent-registry-pending-lifecycle.ts": "2cbcf34eb33df18fac684d9b848d6d7fbbd98ca4647a948ca7e5bfc040871354",
+    "src/agents/subagents/registry/subagent-lifecycle-events.ts": "fe558612bb4cb96bf99c4639d159be55ada1df63e3a19caa4f64892e95f4b386",
+    "src/agents/agent-run-terminal-outcome.ts": "efb92bc6083d1e93ee47a50d88cb74b6e9f37eb510de531f6d2a49c0a4ce0c67",
+    "src/process/gateway-work-admission.ts": "68aa7b7faeb099ea7070fe59db24e84eb0afd141c0d73d3c8a0edb45ba676d6a",
+    "src/infra/unhandled-rejections.ts": "85a15f3df1d56cfceeb84dd9b3f021511a137e960a092286bc6db0595ce26cb6",
+    "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+    "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443"
+  }
+}

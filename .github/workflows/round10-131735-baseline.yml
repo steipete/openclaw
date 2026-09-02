@@ -1,0 +1,89 @@
+name: Proof 131735 detached completion baseline
+
+on:
+  push:
+    branches: [codex/round10-131735-proof]
+    paths:
+      - .github/workflows/round10-131735-baseline.yml
+      - .github/proof/131735/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: round10-131735-baseline
+  cancel-in-progress: false
+
+jobs:
+  baseline:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout proof packet
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-packet
+          persist-credentials: false
+
+      - name: Checkout unchanged trusted main baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: bf898e2fce7ce4fb2998db27d16664ac90f2aa8b
+          path: baseline
+          persist-credentials: false
+
+      - name: Set up Node
+        id: node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+
+      - name: Install and prove the unchanged baseline
+        id: proof
+        run: |
+          set -euo pipefail
+          proof_home="$(mktemp -d "$RUNNER_TEMP/completion-baseline-home.XXXXXX")"
+          trap 'rm -rf -- "$proof_home"' EXIT
+          mkdir -p "$proof_home/bin" "$RUNNER_TEMP/completion-baseline"
+          env -i \
+            PATH="$proof_home/bin:$PATH" \
+            HOME="$proof_home" \
+            CI=1 \
+            BASELINE_DIR="$GITHUB_WORKSPACE/baseline" \
+            PROOF_DIR="$GITHUB_WORKSPACE/proof-packet/.github/proof/131735" \
+            ARTIFACT_DIR="$RUNNER_TEMP/completion-baseline" \
+            PNPM_PACKAGE_MANAGER="pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037" \
+            bash --noprofile --norc <<'SH'
+          set -euo pipefail
+          cd "$BASELINE_DIR"
+          node --version 2>&1 | tee "$ARTIFACT_DIR/setup.log"
+          corepack --version 2>&1 | tee -a "$ARTIFACT_DIR/setup.log"
+          corepack enable --install-directory "$HOME/bin" 2>&1 | tee -a "$ARTIFACT_DIR/setup.log"
+          corepack prepare "$PNPM_PACKAGE_MANAGER" --activate 2>&1 | tee -a "$ARTIFACT_DIR/setup.log"
+          pnpm --version 2>&1 | tee -a "$ARTIFACT_DIR/setup.log"
+          pnpm install --frozen-lockfile 2>&1 | tee "$ARTIFACT_DIR/install.log"
+          node "$PROOF_DIR/run-completion-proof.mjs" \
+            "$BASELINE_DIR" "$PROOF_DIR/baseline-manifest.json" \
+            baseline "$ARTIFACT_DIR" 2>&1 | tee "$ARTIFACT_DIR/proof.log"
+          SH
+
+      - name: Record bootstrap outcomes
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/completion-baseline"
+          printf 'node_setup=%s\nproof_step=%s\n' \
+            '${{ steps.node.outcome }}' '${{ steps.proof.outcome }}' \
+            > "$RUNNER_TEMP/completion-baseline/bootstrap-status.txt"
+
+      - name: Upload baseline observations
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: completion-baseline-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/completion-baseline
+          if-no-files-found: warn
+          retention-days: 7
