@@ -11,7 +11,7 @@
     "net": 0
   },
   "proofPath": "extensions/qa-lab/src/tool-media-terminal.gateway-proof.mjs",
-  "proofSHA256": "83177eadfc293dd5177b250fcfcfc0be67f00462c5551bc20289f0c0119ff550",
+  "proofSHA256": "dd731fd38f1e786433fa5cb447ba41eee7cc5b02b1edacc13e589a979b392049",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "sourceHashes": {
     ".agents/skills/openclaw-qa-testing/SKILL.md": "e003a81751cc140bd003658f02c10c80930599883479dbed0dccb582dce8111f",
@@ -27,6 +27,7 @@
     "extensions/codex/src/app-server/event-projector-media.ts": "acfef501b1f8a5a3082542fba81322fd63aaa6abd950675dbd57cb8cdb12fd31",
     "extensions/openai/openclaw.plugin.json": "54db59820904dbe927cd80b22e93ba8d5592029c34eecd8440166f0226ca9c79",
     "extensions/qa-channel/openclaw.plugin.json": "3210ee3c02c23aa62309984a7ec86ab897aec01ba051e6cdd187fda5cbb010e8",
+    "extensions/qa-lab/openclaw.plugin.json": "0bec83e460c6f613f1ead60b908a756cbd2753bbc30203b3ba69f18ceb0a3ed1",
     "extensions/qa-lab/src/bundled-plugin-staging.ts": "9e27e8a6caae47e5d2b964277be31dd521c2d782dd93701c425b557bb20e7607",
     "extensions/qa-lab/src/bus-server.ts": "f7dc55f4f5bd7dc1b6865c03008569df08776256dce8d5508aaa046367d60f66",
     "extensions/qa-lab/src/bus-state.ts": "1bf8a7910c2b8a1ffbe19517061d48ef13deaf6335890eeb2df156ec91cd7c98",
@@ -43,6 +44,9 @@
     "extensions/qa-lab/src/live-transports/shared/live-gateway.runtime.ts": "951559b96fced10fb44d902f686285f482cd58d64b65f998c2f64175d1d07e14",
     "extensions/qa-lab/src/node-exec.ts": "f189008b25a1d33da5c3e7f0e859b7a7855f3512f1fe8596b1062677916bc87b",
     "extensions/qa-lab/src/providers/env.ts": "6a4eed1839ac272f299234f24b1f2d47f38966684bd743a7736e4211f4437201",
+    "extensions/qa-lab/src/providers/mock-openai/mock-openai-contracts.ts": "21cb66166b3bea9ed4f4edb8565d4ff9a15904d02f3d97cd04d41b7f2bd912aa",
+    "extensions/qa-lab/src/providers/mock-openai/mock-openai-input.ts": "0fbf82b13c8688689d05d0df129d1560b2ece49c223a291f768bd38e419095a2",
+    "extensions/qa-lab/src/providers/mock-openai/mock-openai-responses-websocket.ts": "198bcf8b8e1eb4e5525b6c60579050893bc0dc42a533d593a9cbf6f75b4cda7e",
     "extensions/qa-lab/src/providers/mock-openai/mock-openai-tooling.ts": "21352e49b8bdd0b8db0489551ed5453ea2caa74cf54e1af1b4a72f9de30972a7",
     "extensions/qa-lab/src/providers/mock-openai/server.ts": "0f8c32cadcd3192dbcfe4aae2a3338222aeeef6ec83e72cabc685151cd48f83d",
     "extensions/qa-lab/src/providers/server-runtime.ts": "a85cb91b596dab7e02ebc66e191b47090511b5fcd1c7a16011331af66554e365",
@@ -52,6 +56,10 @@
     "extensions/qa-lab/src/qa-gateway-config.ts": "4e9d69e25a9207788b55f3b5f6ee3661ff41bab67a986c2d5fb5edce11766b97",
     "extensions/qa-lab/src/qa-transport.ts": "227d6a891866407c645a48599fe124b80aadf3a03aeb43c350ea12d50c2d5b43",
     "package.json": "97ac89b068940894bccd937044c66b7d764157774b3bf89ef8a9b82ac36155b1",
+    "packages/ai/src/providers/openai-responses-shared.ts": "291e9ecdd4901e13ab67ec9aff055837c1faf5dad2b7eedec485cfd54197782e",
+    "packages/ai/src/providers/tool-result-text.ts": "d898c12d56afff5aaf8e1eb1e603c69447282b1c3c338c453265a826d8fbfa12",
+    "packages/ai/src/transports/openai-responses-replay-messages-internal.ts": "2cae8e1b877c0ad18ca317bfb7303b0322c6027e6f4ba0d223fa60c1eac82afd",
+    "packages/ai/src/transports/transport-stream-shared.ts": "8972ae249f72f80e940cd29a16cc4c240ef7a5cbeccf8557e195c03cb0632bc4",
     "packages/markdown-core/src/image-spans.ts": "7652ec74e22500dec2a19acac99518afb1e275c38564323853be0772751a69aa",
     "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443",
     "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
@@ -122,10 +130,9 @@
     "test/e2e/qa-lab/runtime/media-talk-gateway.ts": "92a086ecdafb0035f5a6f07104d631ba05e8546122e47d64c69788e768418847",
     "test/e2e/qa-lab/runtime/webchat-media-artifacts.e2e.test.ts": "6cfdc467333163aa7646e44221a77b93eed75c9ab21feaa8b2c4256d381a0b94",
     "test/vitest/vitest.e2e.config.ts": "d896a40a636f8825df1cab80e27c83caca645de9858cae75b1a58c1b3465c9a3",
-    "tsdown.config.ts": "bbb8a7bf5ffe4d7741ad8aeba3eaeb4f909f960df06d21521358663cf35370d9",
-    "extensions/qa-lab/openclaw.plugin.json": "0bec83e460c6f613f1ead60b908a756cbd2753bbc30203b3ba69f18ceb0a3ed1"
+    "tsdown.config.ts": "bbb8a7bf5ffe4d7741ad8aeba3eaeb4f909f960df06d21521358663cf35370d9"
   },
-  "sourceFileCount": 110,
+  "sourceFileCount": 117,
   "expectedDownloaded": {
     "sha256": "60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068",
     "bytes": 204,
@@ -142,5 +149,15 @@
     "hasActiveRun": false,
     "deadlineMs": 90000,
     "missingEvent": "incomplete; never RED"
+  },
+  "proofRevision": "provider-consumed-tts-success-v1",
+  "completionEvidenceContract": {
+    "evidenceSource": "provider-consumed-successful-tts-result",
+    "wireType": "function_call_output",
+    "returnedText": "(spoken) Runtime parity voice fixture.",
+    "chronology": "empty initial provider history; exactly two requests; direct TTS plan then matching successful raw HTTP tool result consumed by failing continuation",
+    "producerContract": "core TTS emits exact success text only after canonical audio persistence",
+    "missingHook": "retained diagnostic and unresolved named follow-up; not retroactive RED",
+    "wireLimitation": "tool-output text does not expose media provenance or prove final delivery"
   }
 }

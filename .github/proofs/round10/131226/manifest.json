@@ -2,9 +2,9 @@
   "sha256": {
     ".github/proofs/round10/131226/candidate-owner.diff": "4b6fc8f464043404ba66fd57e0a1710ea664a56f6201e6f9864e26aa139494dd",
     ".github/proofs/round10/131226/candidate-owner.ts.txt": "525210523174c339d2930365ba52f76275c9fd406a30c624a9c16f193b46e282",
-    ".github/proofs/round10/131226/execution-binding.json": "3f376098969d6d72008c4562d5087df70bf36c9ce53d54418e195b1acbb9ee5f",
-    ".github/proofs/round10/131226/gateway-proof.mjs": "83177eadfc293dd5177b250fcfcfc0be67f00462c5551bc20289f0c0119ff550",
-    ".github/proofs/round10/131226/run-proof.py": "56904190abcb56e3ec80b3a196591c7d85aa239a47620c83ed8cfd80d864feaf",
+    ".github/proofs/round10/131226/execution-binding.json": "6301a71f1a3c5bf626fcf2923a16405d9c455419e21b116584ba7b6d09d881ed",
+    ".github/proofs/round10/131226/gateway-proof.mjs": "dd731fd38f1e786433fa5cb447ba41eee7cc5b02b1edacc13e589a979b392049",
+    ".github/proofs/round10/131226/run-proof.py": "5c81f36a6e83ebe894341903ada63501c6416568dd56312b77e28a256eaa7cef",
     ".github/workflows/round10-media-terminal-proof.yml": "954572089519ded03a5297b7df8e72fb10b7b6c809b4a3b8b9e312b05123be8c"
   }
 }

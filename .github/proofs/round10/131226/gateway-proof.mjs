@@ -16,6 +16,7 @@ const SPEECH = "qa-terminal-speech";
 const SESSION = "agent:qa:tool-media-terminal";
 const MODEL = "mock-openai/gpt-5.6-luna";
 const SPOKEN = "Runtime parity voice fixture.";
+const SUCCESSFUL_TTS_RESULT = "(spoken) Runtime parity voice fixture.";
 const WAV = "UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 const PROMPT = "Tool search QA check target=tts. Provider HTTP 503 after tool QA check.";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -202,6 +203,9 @@ try {
   client = await connect();
   const subscription = await guard(client.request("sessions.subscribe", {}));
   assert.equal(subscription?.subscribed, true, "Session subscription must be acknowledged before chat.send");
+  const initialRequests = await guard(fetch(harness.mock.baseUrl + "/debug/requests", {signal: AbortSignal.timeout(5_000)}));
+  assert.equal(initialRequests.ok, true);
+  assert.deepEqual(await initialRequests.json(), [], "Fresh proof must have no earlier provider requests");
   milestone("admitting-one-turn");
   const runId = randomUUID();
   const deadline = Date.now() + 90_000;
@@ -230,20 +234,83 @@ try {
   const response = await guard(fetch(harness.mock.baseUrl + "/debug/requests", {signal: AbortSignal.timeout(5_000)}));
   assert.equal(response.ok, true);
   const requests = await response.json();
-  diagnostics.phase = "planned-tts";
-  const toolRequests = requests.filter(row => row.prompt.includes(PROMPT) && row.plannedToolName === "tts");
-  diagnostics.prerequisites.plannedTts = toolRequests.map(row => ({cursor: row.cursor,
-    toolName: row.plannedToolName, callId: row.plannedToolCallId,
-    textMatches: row.plannedToolArgs?.text === SPOKEN}));
+  diagnostics.phase = "provider-consumed-tts-result";
+  assert.ok(Array.isArray(requests));
+  assert.deepEqual(requests.map(row => row.cursor), [1, 2], "Require the complete fixed two-request flow");
+  const requestBodies = requests.map(row => {
+    assert.equal(typeof row.raw, "string");
+    assert.ok(Buffer.byteLength(row.raw) <= 4 * 1024 * 1024);
+    const body = JSON.parse(row.raw);
+    assert.ok(body && typeof body === "object" && !Array.isArray(body));
+    assert.deepEqual(body, row.body, "Captured raw HTTP body must match the recorded parsed body");
+    // The WebSocket adapter retains response.create and reconstructs cached input.
+    // Only the plain HTTP request path supports this proof's HTTP 503 claim.
+    assert.equal(Object.hasOwn(body, "type"), false, "Expected HTTP Responses request, not a WebSocket frame");
+    assert.ok(Array.isArray(body.input));
+    return body;
+  });
+  const toolRequests = requests.filter(row => row.plannedToolName === "tts");
   assert.equal(toolRequests.length, 1, "Require exactly one planned real TTS call");
-  assert.equal(toolRequests[0].plannedToolArgs?.text, SPOKEN);
-  const failedFollowup = requests.find(row => row.cursor > toolRequests[0].cursor && row.prompt.includes(PROMPT) && row.outcome === "error" && row.toolOutput.includes(SPOKEN));
-  diagnostics.phase = "failed-followup";
-  diagnostics.prerequisites.failedFollowup = failedFollowup && {cursor: failedFollowup.cursor,
+  const planned = toolRequests[0];
+  assert.equal(planned.cursor, 1);
+  assert.equal(planned.requestKind, "agent-initial");
+  assert.equal(planned.outcome, "success");
+  assert.equal(planned.model, "gpt-5.6-luna");
+  assert.ok(planned.prompt.includes(PROMPT));
+  assert.deepEqual(planned.plannedToolArgs, {text: SPOKEN});
+  assert.equal(planned.plannedWireToolName ?? planned.plannedToolName, "tts");
+  assert.equal(typeof planned.plannedToolCallId, "string");
+  assert.ok(planned.plannedToolCallId.length > 0);
+  assert.equal(planned.toolOutput, "");
+  assert.equal(requestBodies[0].input.some(item =>
+    item?.type === "function_call_output" || item?.type === "custom_tool_call_output"), false);
+  diagnostics.prerequisites.plannedTts = [{cursor: planned.cursor, toolName: planned.plannedToolName,
+    callId: planned.plannedToolCallId, textMatches: true}];
+  const failedFollowup = requests[1];
+  assert.equal(failedFollowup.requestKind, "tool-continuation");
+  assert.equal(failedFollowup.outcome, "error");
+  assert.equal(failedFollowup.model, planned.model);
+  assert.ok(failedFollowup.prompt.includes(PROMPT));
+  assert.equal(failedFollowup.plannedToolName, undefined);
+  assert.equal(failedFollowup.toolOutputCallId, planned.plannedToolCallId);
+  assert.equal(failedFollowup.toolOutput, SUCCESSFUL_TTS_RESULT);
+  assert.ok(failedFollowup.toolOutputStructuredError === undefined || failedFollowup.toolOutputStructuredError === false);
+  const input = requestBodies[1].input;
+  const outputItems = input.map((item, index) => ({item, index})).filter(({item}) =>
+    item?.type === "function_call_output" || item?.type === "custom_tool_call_output");
+  assert.equal(outputItems.length, 1, "Require one actual current-turn tool result");
+  const {item: toolOutput, index: outputIndex} = outputItems[0];
+  assert.equal(toolOutput.type, "function_call_output");
+  assert.equal(toolOutput.call_id, planned.plannedToolCallId);
+  assert.equal(typeof toolOutput.output, "string");
+  assert.equal(toolOutput.output, SUCCESSFUL_TTS_RESULT);
+  assert.ok(toolOutput.is_error === undefined || toolOutput.is_error === false);
+  assert.ok(toolOutput.isError === undefined || toolOutput.isError === false);
+  const calls = input.map((item, index) => ({item, index})).filter(({item}) =>
+    item?.type === "function_call" || item?.type === "custom_tool_call");
+  assert.equal(calls.length, 1, "Require one real tool call in the fixed current turn");
+  const {item: toolCall, index: callIndex} = calls[0];
+  assert.equal(toolCall.type, "function_call");
+  assert.equal(toolCall.name, "tts");
+  assert.equal(toolCall.call_id, planned.plannedToolCallId);
+  assert.equal(typeof toolCall.arguments, "string");
+  assert.deepEqual(JSON.parse(toolCall.arguments), {text: SPOKEN});
+  const userIndex = input.findLastIndex(item => item?.role === "user");
+  assert.ok(userIndex >= 0 && userIndex < callIndex && callIndex < outputIndex,
+    "Current user input must precede the exact TTS call and its success output");
+  const completedTool = {
+    evidenceSource: "provider-consumed-successful-tts-result",
+    transport: "http", requestKind: failedFollowup.requestKind,
+    plannedCursor: planned.cursor, outputCursor: failedFollowup.cursor,
+    toolCallId: toolOutput.call_id, wireType: toolOutput.type,
+    returnedText: toolOutput.output, outputSHA256: hash(toolOutput.output),
+    requestBodySHA256: hash(failedFollowup.raw), userIndex, callIndex, outputIndex,
+    explicitErrorFlag: false,
+  };
+  diagnostics.prerequisites.failedFollowup = {cursor: failedFollowup.cursor,
     toolOutputCallId: failedFollowup.toolOutputCallId, outcome: failedFollowup.outcome,
-    receivedSpokenText: failedFollowup.toolOutput.includes(SPOKEN)};
-  assert.ok(failedFollowup, "503 must follow the real completed speech tool output");
-  assert.equal(failedFollowup.toolOutputCallId, toolRequests[0].plannedToolCallId);
+    receivedExactSuccessResult: true};
+  diagnostics.prerequisites.completedTool = completedTool;
   diagnostics.phase = "fixture-inspection";
   const fixture = await inspect();
   const observations = fixture.observations;
@@ -258,14 +325,10 @@ try {
   await save("gateway-diagnostics.json", diagnostics);
   assert.equal(fixture.overflow, false);
   assert.deepEqual(observations.filter(row => row.kind === "synthesis"), [{kind: "synthesis", text: SPOKEN}]);
-  const completed = observations.filter(row => row.kind === "tool" && row.toolName === "tts");
-  diagnostics.phase = "completed-tts-count";
-  await save("gateway-diagnostics.json", diagnostics);
-  assert.equal(completed.length, 1, "Require exactly one completed real TTS after_tool_call observation");
+  // Successful core TTS returns this exact text only after audio persistence.
+  // Missing after_tool_call observations remain diagnostic follow-up evidence.
   diagnostics.phase = "completed-tts-result";
-  assert.equal(completed[0].error, undefined);
-  assert.equal(completed[0].media?.trustedLocalMedia, true);
-  assert.equal(typeof completed[0].media?.mediaUrl, "string");
+  await save("gateway-diagnostics.json", diagnostics);
   assert.equal(terminal.state, "error", "Media must preserve the authoritative terminal error");
   diagnostics.phase = "history-and-media";
   const history = await guard(client.request("chat.history", {sessionKey: SESSION, limit: 50}));
@@ -273,13 +336,13 @@ try {
   const mediaReplies = observations.filter(row => row.kind === "reply").map(row => row.payload)
     .filter(payload => payload?.mediaUrl || payload?.mediaUrls?.length);
   observation = {scenario: "tts-wav-then-provider-503", prerequisitesPassed: true,
-    ttsCalls: completed.length, failedFollowupReceivedToolOutput: true,
+    ttsCalls: observations.filter(row => row.kind === "synthesis").length, failedFollowupReceivedToolOutput: true,
     persistenceBarrier: {subscriptionAcknowledged: true, sessionKey: settled.sessionKey,
       reason: settled.reason, lastRunId: settled.lastRunId, hasActiveRun: settled.hasActiveRun,
       admittedRunId: runId, deadlineMs: 90_000},
     chronology: {plannedTool: {cursor: toolRequests[0].cursor, callId: toolRequests[0].plannedToolCallId},
       failedFollowup: {cursor: failedFollowup.cursor, toolOutputCallId: failedFollowup.toolOutputCallId},
-      completedTool: {runId: completed[0].runId, toolCallId: completed[0].toolCallId, trustedLocalMedia: true}},
+      completedTool},
     terminalState: terminal.state, mediaReplies: mediaReplies.length,
     errorMarkedMediaReplies: mediaReplies.filter(row => row.isError).length,
     persistedAudioArtifacts: audio.length};
@@ -341,7 +404,8 @@ try {
     completed: Boolean(completed), errors, cleanupErrors, childCleanup: cleanup, childRuntime,
     stagedBefore, stagedAfter, observation, historySummary, downloaded, diagnostics,
     limitations: ["Synthetic TTS/WAV and HTTP 503; no image-generation, overload, real provider, browser rendering, or Codex runtime claim.",
-      "Read-only fixture hooks observe actual tool and delivery events; all persisted media originates in the real turn."]};
+      "Provider-consumed exact TTS success text proves core completion after persistence; wire output does not expose media provenance.",
+      "after_tool_call was absent in the prior diagnostic run; its cause remains an unresolved follow-up. Hooks remain diagnostic and cannot manufacture media."]};
   await save("gateway-diagnostics.json", diagnostics);
   await save("gateway-verdict.json", verdict);
   process.removeListener("SIGTERM", onTerminate);

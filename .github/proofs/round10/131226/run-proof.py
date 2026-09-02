@@ -189,6 +189,17 @@ def prove(mode):
     facts = verdict['observation']
     assert facts['scenario'] == 'tts-wav-then-provider-503' and facts['prerequisitesPassed'] is True
     assert facts['ttsCalls'] == 1 and facts['failedFollowupReceivedToolOutput'] is True and facts['terminalState'] == 'error'
+    completion = facts['chronology']['completedTool']
+    assert completion['evidenceSource'] == 'provider-consumed-successful-tts-result'
+    assert completion['transport'] == 'http' and completion['requestKind'] == 'tool-continuation'
+    assert completion['plannedCursor'] == 1 and completion['outputCursor'] == 2
+    assert completion['wireType'] == 'function_call_output'
+    assert completion['returnedText'] == '(spoken) Runtime parity voice fixture.'
+    assert completion['outputSHA256'] == hashlib.sha256(completion['returnedText'].encode()).hexdigest()
+    assert completion['explicitErrorFlag'] is False
+    assert completion['userIndex'] < completion['callIndex'] < completion['outputIndex']
+    assert completion['toolCallId'] == facts['chronology']['plannedTool']['callId']
+    assert completion['toolCallId'] == facts['chronology']['failedFollowup']['toolOutputCallId']
     barrier = facts['persistenceBarrier']
     assert barrier['subscriptionAcknowledged'] is True and barrier['sessionKey'] == 'agent:qa:tool-media-terminal'
     assert barrier['reason'] == 'chat.run.settled' and barrier['hasActiveRun'] is False
