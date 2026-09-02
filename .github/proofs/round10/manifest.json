@@ -1,15 +1,15 @@
 {
   "schema": "openclaw-round10-proof-assets-v1",
   "sha256": {
-    ".github/proofs/round10/127959/execution-binding.json": "1beb156b18d268f51646e9fccccda4724b671ff77577a1524b6117cf5515f599",
+    ".github/proofs/round10/127959/execution-binding.json": "fc663a5ca5facf0441bb805468a3fa8cd1d455874ea1d72f857b5ff2c595e3d1",
     ".github/proofs/round10/127959/extract-and-assess.py": "d002047586dec8bfe7a7e7b782aacff0210ed01bcafa4c89690460829fb41c22",
     ".github/proofs/round10/127959/proof-driver.mjs": "622078a7675f1663f5d8bd5351e16e48ecd717f72573976bc68f91f778de3180",
-    ".github/proofs/round10/127959/proof.test.ts": "c9ba556ac4da3a66cef78ac28f7b83ed07882f9d48ad754d2c9fc0d985fecbf2",
-    ".github/proofs/round10/132266/execution-binding.json": "19a33273063d90f9977b214a6150677581a0ec69c32ea5cc0866a34d94e3afa1",
+    ".github/proofs/round10/127959/proof.test.ts": "08a7b8d9f20dfccd1956f405816acab7920b105f3efc19c9fe9f393ede7fbb32",
+    ".github/proofs/round10/132266/execution-binding.json": "c11034d7d63e692278101f0bf76d73619eabd0f304d6f5ba737dff2514407d18",
     ".github/proofs/round10/132266/extract-and-assess.py": "a5761e057d8fc4757d0a531ca14343c126ad1ba56e6cbd65fbcfc6d525ff083f",
     ".github/proofs/round10/132266/metadata-after.mjs": "076a4c798b1a79767cc4fcbc22b82507d3205daeeb259b2b1c70063db57ef241",
     ".github/proofs/round10/132266/proof-driver.mjs": "002140c1706f6711f53747783aecf45bf97860f168f5639b7b4a8af6b61b0346",
-    ".github/proofs/round10/132266/proof.test.ts": "d93b9d99dd5ce38b6165db5afa0a5830ec1e318a39df5fd707d676bee573ed4d",
+    ".github/proofs/round10/132266/proof.test.ts": "746dc5da2f50639d52de1dc569f062db0cb834d656b1ac78434663e9aade6e33",
     ".github/proofs/round10/run-proof.py": "65a2e3c5e68a72f7e3cbe1ff36f2570bb04720f99e463302c3f5d4c50f61a83e",
     ".github/workflows/round10-secretless-proof.yml": "3d7306c49e4ef2899ec73e9b8eabc4935e81851a0a3adc9d07ec276e23a69c9d",
     "README.md": "ab3f2566219932e20c4be6d1b91ae2ed2f3989e7c0797123de34ff26a1a8332a"

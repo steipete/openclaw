@@ -10,7 +10,6 @@ import {
 import { expect, it, vi } from "vitest";
 import { startMinimalRealGateway } from "../../../src/gateway/minimal-gateway.test-helpers.js";
 import {
-  activateTestChannelRegistry,
   createChannelTestPluginBase,
   createTestRegistry,
 } from "../../../src/test-utils/channel-plugins.js";
@@ -86,8 +85,8 @@ it("preserves accepted Gateway reply bodies and emits quotes only with cached pr
   let observations: Observation[] = [];
   let sequence = 0;
   try {
-    gateway = await startMinimalRealGateway();
-    await activateTestChannelRegistry(
+    const { setActivePluginRegistry } = await import("../../../src/plugins/runtime.js");
+    setActivePluginRegistry(
       createTestRegistry([
         {
           pluginId: "whatsapp",
@@ -107,6 +106,7 @@ it("preserves accepted Gateway reply bodies and emits quotes only with cached pr
         },
       ]),
     );
+    gateway = await startMinimalRealGateway();
     const sendApi = createWebSendApi({
       defaultAccountId: accountId,
       sock: {

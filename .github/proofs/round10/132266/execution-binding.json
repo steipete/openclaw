@@ -96,7 +96,7 @@
   },
   "sourceFileCount": 93,
   "proofTestRemotePath": "extensions/qa-lab/src/plugin-tool-progress.gateway-proof.test.ts",
-  "proofTestSHA256": "d93b9d99dd5ce38b6165db5afa0a5830ec1e318a39df5fd707d676bee573ed4d",
+  "proofTestSHA256": "746dc5da2f50639d52de1dc569f062db0cb834d656b1ac78434663e9aade6e33",
   "expectedScenarioIds": [
     "hidden-cold",
     "hidden-reused",
@@ -152,5 +152,10 @@
       "Use the full fixture profile while retaining the same exact four-tool allowlist."
     ],
     "scenarioAssertionsUnchanged": true
+  },
+  "diagnosticMilestones": {
+    "previousSHA256": "d93b9d99dd5ce38b6165db5afa0a5830ec1e318a39df5fd707d676bee573ed4d",
+    "currentSHA256": "746dc5da2f50639d52de1dc569f062db0cb834d656b1ac78434663e9aade6e33",
+    "change": "Emit actual test/setup/Gateway/channel/scenario/cleanup milestones to retained stderr; all assertions and timeouts unchanged."
   }
 }

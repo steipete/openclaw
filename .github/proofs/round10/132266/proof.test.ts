@@ -68,6 +68,8 @@ module.exports = {
 `;
 
 it("preserves hidden tool metadata through real Gateway QA-channel turns", async () => {
+  const milestone = (phase: string) => process.stderr.write(`METADATA_PROOF_PHASE ${phase}\n`);
+  milestone("test-entered");
   const outputDir = process.env.OPENCLAW_METADATA_PROOF_DIR;
   const bindingPath = process.env.OPENCLAW_METADATA_PROOF_BINDING;
   if (!outputDir || !bindingPath)
@@ -180,6 +182,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
         OPENCLAW_GATEWAY_PASSWORD: undefined,
       },
     });
+    milestone("state-ready");
     const fixtureDir = state.path("plugin");
     await fs.mkdir(fixtureDir);
     await fs.writeFile(path.join(fixtureDir, "index.cjs"), fixtureSource);
@@ -244,18 +247,21 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
       tools: { profile: "full", allow: [...new Set(cases.map((item) => item.tool))] },
       gateway: { auth: { mode: "token", token } },
     } satisfies OpenClawConfig;
+    milestone("gateway-starting");
     gateway = await startGatewayWithClient({
       cfg,
       configPath: state.configPath,
       token,
       scopes: ["operator.admin", "operator.read", "operator.write"],
     });
+    milestone("gateway-connected");
     unsubscribe = onAgentEvent((event) => agentEvents.push(structuredClone(event)));
     await waitForQaTransportAccountReady({
       accountId: "default",
       channel: "qa-channel",
       gateway: { call: (method, params, opts) => gateway!.client.request(method, params, opts) },
     });
+    milestone("channel-ready");
     for (const scenario of cases) {
       const result: RunCase = { id: scenario.id, status: "fail" };
       try {
@@ -326,6 +332,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
         result.error = String(error);
       }
       results.push(result);
+      milestone(`${scenario.id}:${result.status}`);
     }
     try {
       expect(resolverRows.some((row) => Number(row.factoryAfter) > Number(row.factoryBefore))).toBe(
@@ -343,6 +350,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
   } catch (error) {
     invariantErrors.push(String(error));
   } finally {
+    milestone("cleanup-starting");
     try {
       if (gateway) {
         await disconnectGatewayClient(gateway.client);
@@ -369,6 +377,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
     resolverObserver.mockRestore();
     normalizationObserver.mockRestore();
     Reflect.deleteProperty(globalThis, fixtureSymbol);
+    milestone("cleanup-finished");
     const verdict = {
       schema: "openclaw-pr-132266-gateway-progress-proof-v1",
       binding,

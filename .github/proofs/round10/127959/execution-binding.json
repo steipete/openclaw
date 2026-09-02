@@ -43,11 +43,18 @@
     "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
     "test/AGENTS.md": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
     "test/test-home-policy.mts": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
-    "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549"
+    "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+    "src/gateway/server-startup-plugins.ts": "37df7093f39aa1ae1805e92f6d4c1eabc3ac7774e59d28a5d976ab6808e89957",
+    "src/channels/plugins/registry.ts": "2d1fe018596cb0612ca14d28442f68cc8308db4fa38bd4f3e5bc3f223e4c2a37",
+    "src/channels/plugins/registry-loader.ts": "3107413897fec90dc770eb01256d50bd8187333540b3f25d3a6fbb4d34548db6",
+    "src/channels/plugins/registry-loaded.ts": "715eed031187de51d33075201e6ffb825a462198fd67a3774fd96d77b8ae00f1",
+    "src/channels/plugins/outbound/load.ts": "fcd7958fac4fb8c41761c7907d79faef952564c47c284e7c218e1cc5e8a7a899",
+    "src/cli/send-runtime/channel-outbound-send.ts": "521b6f6a9036467817e152a82951a363db216fb0400cb994f84a80df8bd11840",
+    "src/plugins/runtime.ts": "571da8d44ff1e56c7bc48cf6e3092d1daff2d048082e202637d95660dbc54c2a"
   },
-  "sourceFileCount": 44,
+  "sourceFileCount": 51,
   "proofTestRemotePath": "extensions/whatsapp/src/quoted-message.gateway-proof.test.ts",
-  "proofTestSHA256": "c9ba556ac4da3a66cef78ac28f7b83ed07882f9d48ad754d2c9fc0d985fecbf2",
+  "proofTestSHA256": "08a7b8d9f20dfccd1956f405816acab7920b105f3efc19c9fe9f393ede7fbb32",
   "expectedScenarioIds": [
     "group-warm",
     "group-missing",
@@ -104,5 +111,11 @@
     "extensions/whatsapp/src/quoted-message.gateway-proof.test.ts"
   ],
   "driverSHA256": "622078a7675f1663f5d8bd5351e16e48ecd717f72573976bc68f91f778de3180",
-  "extractorSHA256": "d002047586dec8bfe7a7e7b782aacff0210ed01bcafa4c89690460829fb41c22"
+  "extractorSHA256": "d002047586dec8bfe7a7e7b782aacff0210ed01bcafa4c89690460829fb41c22",
+  "fixtureSetupCorrection": {
+    "previousSHA256": "c9ba556ac4da3a66cef78ac28f7b83ed07882f9d48ad754d2c9fc0d985fecbf2",
+    "correctedSHA256": "08a7b8d9f20dfccd1956f405816acab7920b105f3efc19c9fe9f393ede7fbb32",
+    "change": "Publish sole actual WhatsApp fixture registry through canonical setActivePluginRegistry before starting minimal Gateway. Remove appending to the preexisting stub registry.",
+    "scenarioAssertionsUnchanged": true
+  }
 }
