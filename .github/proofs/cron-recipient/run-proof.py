@@ -98,7 +98,7 @@ def observations(stage_dir):
     rows = [json.loads(p.read_text()) for p in (stage_dir / 'ui').rglob('observations.json')]
     result = {row['caseId']: row for row in rows}
     assert len(rows) == len(result) == 4, 'Require exactly four executed cases'
-    assert set(result) == {'telegram', 'last', 'webhook', 'same-channel-collision'}
+    assert set(result) == {'telegram', 'last', 'webhook', 'same-channel-collision-manual-entry'}
     for row in rows:
         assert row['schema'] == 'openclaw-cron-recipient-ui-proof-v1'
         assert row['servedOwner']['path'] == '/src/pages/cron/form-suggestions.ts'
@@ -109,8 +109,9 @@ def observations(stage_dir):
         assert {'channels.status', 'cron.list'} <= methods
         assert 'cron.run' not in methods
         assert row['screenshot'].endswith('.png')
-    assert result['same-channel-collision']['selectedRecipient'] == '-1001234567890'
-    assert result['same-channel-collision']['status'] == 'pass'
+    assert result['same-channel-collision-manual-entry']['inputMethod'] == 'manual-keyboard-text'
+    assert result['same-channel-collision-manual-entry']['enteredRecipient'] == '-1001234567890'
+    assert result['same-channel-collision-manual-entry']['status'] == 'pass'
     return result
 
 

@@ -62,7 +62,7 @@
   "classificationBeforeSHA256": "eda6ea3ca7f0490ef1099f8b91f0d692867a4ef26f90e5b8653da0b9b90cf420",
   "classificationAfterSHA256": "8b06b8bf6d4655675684394572f94d4198c0c7d80902cd3c8c28c5e23cc3e573",
   "proofPath": "ui/src/e2e/cron-recipient-suggestions.e2e.test.ts",
-  "proofSHA256": "0ef14d4c3be62bedddb48ac7bef451795362f44120f9b8738070b1af63c43266",
+  "proofSHA256": "208e34349c3cb8a702200e4da746b7d56665abd3bc41ce63461b8f1aa5764b26",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "nodeVersion": "24.19.0",
   "productionLOC": {

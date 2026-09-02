@@ -183,7 +183,12 @@ suite.define(() => {
             .toEqual([...telegramAccounts, "discord-only", "Discord account only"]);
         } else if (selected === "webhook") {
           await choose(page, "cron-delivery-mode", "webhook");
-          await page.getByText("Webhook URL", { exact: true }).waitFor({ state: "visible" });
+          const label = page.locator('label[for="cron-delivery-to"]');
+          await label.waitFor({ state: "visible" });
+          await expect
+            .poll(() => label.locator(".settings-row__title").textContent())
+            .toContain("Webhook URL");
+          expect(await page.locator("#cron-delivery-to").getAttribute("aria-required")).toBe("true");
         }
         await captureOptions(page, record, `${selected}-editor.png`);
         expect(record.recipientInputList).toBe("cron-delivery-to-suggestions");
@@ -198,19 +203,18 @@ suite.define(() => {
     });
   }
 
-  it("selects and saves a same-channel recipient that equals an account display name", async () => {
-    await withCronProof("same-channel-collision", async (page, gateway, record) => {
+  it("retains and saves a manually entered recipient that equals an account display name", async () => {
+    await withCronProof("same-channel-collision-manual-entry", async (page, gateway, record) => {
       await captureOptions(page, record, "collision-options.png");
       expect(record.recipientOptions).toContain(collisionTarget);
       const recipient = page.locator("#cron-delivery-to");
       await recipient.fill("");
-      await recipient.pressSequentially("-100");
-      await recipient.press("ArrowDown");
-      await recipient.press("Enter");
+      await recipient.pressSequentially(collisionTarget);
       await expect.poll(() => recipient.inputValue()).toBe(collisionTarget);
-      record.selectedRecipient = await recipient.inputValue();
+      record.inputMethod = "manual-keyboard-text";
+      record.enteredRecipient = await recipient.inputValue();
       expect(await page.locator("#cron-delivery-account-id").inputValue()).toBe("work");
-      await page.screenshot({ path: path.join(suite.artifactDir, "collision-selected.png"), fullPage: true });
+      await page.screenshot({ path: path.join(suite.artifactDir, "collision-entered.png"), fullPage: true });
       await page.locator('[data-test-id="cron-submit"]').click();
       record.updateRequest = await gateway.waitForRequest("cron.update");
       expect(record.updateRequest).toMatchObject({
