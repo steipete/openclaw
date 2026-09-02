@@ -1,0 +1,200 @@
+{
+  "publicationReady": true,
+  "baselineSHA": "50f02ecf4410c78269d7bbda7c47d891c9666d19",
+  "baselineTree": "ffdb218beec301f502379390f37319ac6ba52825",
+  "candidate": null,
+  "setupNodeVersion": "24.19.0",
+  "bundledNodeVersion": "24.19.0",
+  "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+  "sourceBindings": [
+    {
+      "path": ".github/CODEOWNERS",
+      "sha256": "2e8017189be04ef313231228e05e37a6d7442f8d708846e08aaaecfc2eec6935"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "e1a161316f42fcd22d02103a3952b5e570ea923d803519983e8bd1e61a242cb3"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9"
+    },
+    {
+      "path": "VISION.md",
+      "sha256": "46e253fa54a37082efa9d5df10cc77e6e156e92fe40bc3a9cf9215c68befc910"
+    },
+    {
+      "path": "apps/macos/Package.resolved",
+      "sha256": "851b0a3db53b8be5dbf70738697459152c181fed1cf9fee65b333010018ec9ab"
+    },
+    {
+      "path": "apps/macos/Package.swift",
+      "sha256": "f2127970860a36ea9e0d4a251d63c336e78ecba7ebe74e48f1290de8dc175bef"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/CommandResolver.swift",
+      "sha256": "8e8615c83b3d0b1f2ce71d10a81e9d441e32e59566ac55f70cb050569a4fdf70"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/ManagedProcess.swift",
+      "sha256": "e7fd3f18b97d750b9a3c41c64cdaee1250c8c17f3d270e13e17adead1d235db1"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/NodeMode/BundledNodeWorker.swift",
+      "sha256": "8a0091a8eb57ed58f0c9f03ee72a89f9bcb5981494b88993da74a0d27ebf1b68"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/NodeMode/MacNodeCodexThreadCatalogClient.swift",
+      "sha256": "c1c3596f8f2234e03a68398afb07184e7af15d479db9128deb7280ce8de79f19"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/NodeMode/MacNodeHostWorker.swift",
+      "sha256": "40cf8502b5ebf2d970ea996274e3b092f22a31a2a4a504a52b5e805d857d5bed"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/NodeMode/MacNodeModeCoordinator.swift",
+      "sha256": "46037713332bd7e2e05254ef0726cf19c9e3cdec4dbc90ed9675397e5dbb038c"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/RemotePortTunnel.swift",
+      "sha256": "5c5e1ce68ff45a25dd0f8e519e8737dc53c682aed953a76a9e02884500884463"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/TalkMLXSpeechSynthesizer.swift",
+      "sha256": "27098e15c979f8020f1208ff135c05785fa1363184d8ba107950582ee5f2f345"
+    },
+    {
+      "path": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerTests.swift",
+      "sha256": "d987401e1eb030df83803d3e20b28b1b1ddd8663c2e7d89ad32742ef07ebbcfc"
+    },
+    {
+      "path": "docs/platforms/mac/bundled-gateway.md",
+      "sha256": "759f2d8402a72c30f456f13af3884d9938481edf10825f8c091b5331132833b3"
+    },
+    {
+      "path": "extensions/codex/src/app-server/transport-stdio.ts",
+      "sha256": "db816206eeaf50668d0531ff7c58ffa6342aa0f2ca7c2fe9eb823ba1f68bc8a7"
+    },
+    {
+      "path": "node-version.mjs",
+      "sha256": "8ca5102f3beaea724f23bab3f92527d772de1470b3af6f3edce18b296342c8da"
+    },
+    {
+      "path": "package.json",
+      "sha256": "3047c7bf619632486f6d1c8924294c83a53f372dd7ad922b46be1b4ca3419dc8"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "26438bb4ed67df2bd625b3375e0dae15425e02e19880f7ef1cc43a8e476e801d"
+    },
+    {
+      "path": "scripts/AGENTS.md",
+      "sha256": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f"
+    },
+    {
+      "path": "scripts/install-cli.sh",
+      "sha256": "1a0f57d05eff9e9aa2eaec8016ae87b5c9a74dcbff651a323baa29feaf1dfdbb"
+    },
+    {
+      "path": "scripts/lib/mac-node-worker-proof-state.mjs",
+      "sha256": "8ba83a0adad167544064ffe4b309c4e1344eb6c3af5311836d409853066c85f4"
+    },
+    {
+      "path": "scripts/lib/mac-worker-portability.mjs",
+      "sha256": "cdb273c89195ddf90584f22f5a53b76e5bdbbbd0f85db9b30b5758d1f3ae80cc"
+    },
+    {
+      "path": "scripts/lib/managed-child-process.mts",
+      "sha256": "d7217f13b032eb5197e681b5584a033c330a0ae0b032efd938edbc36eba49133"
+    },
+    {
+      "path": "scripts/lib/tsx-cli-shim.mjs",
+      "sha256": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168"
+    },
+    {
+      "path": "scripts/run-node.mjs",
+      "sha256": "0768844b54d785359d07a907c36acbc40f0251bddd0f3fa75e56eb80df0bff1e"
+    },
+    {
+      "path": "scripts/run-node.mts",
+      "sha256": "1bbee9c5e628bccbcda0429e423e96e3b85710d25ef9c12b6dccd0ba45c45760"
+    },
+    {
+      "path": "scripts/stage-mac-node-worker.sh",
+      "sha256": "bbe33397066f6695ff0056af97399b06186f5f46aee1e325225a34dbbef6b9a0"
+    },
+    {
+      "path": "scripts/test-macos-native.mts",
+      "sha256": "58f79c0d94e6890cb1e1f5e10380b021a8149b7e3b67cc1df3ecf38d5b56d05f"
+    },
+    {
+      "path": "scripts/verify-mac-node-worker-fs.mjs",
+      "sha256": "a69e42d51b632fe852549f9b62bf146c288d82f355aa32af623234563cfd773f"
+    },
+    {
+      "path": "scripts/verify-mac-node-worker.mjs",
+      "sha256": "4101125336cd8c1a9464a8c5b344933e03655c72b5e016978a27bb8973b7e151"
+    },
+    {
+      "path": "scripts/write-build-info.ts",
+      "sha256": "377583f7faa9d160ca93a1767b2476623a07b85a65f2825e1f76aaf17b51fa11"
+    },
+    {
+      "path": "src/bootstrap/node-extra-ca-certs.ts",
+      "sha256": "14679b97cfdb8365c4e13fcf78a3e8086739f2533b399a6f0ac9dce083b4cbc7"
+    },
+    {
+      "path": "src/bootstrap/node-startup-env.ts",
+      "sha256": "ca7a1682eec8aff132a96073978d7c2906fb870691df67abeb02271b4bbd89d8"
+    },
+    {
+      "path": "src/cli/respawn-policy.ts",
+      "sha256": "76ed7ae818553a43b6f91fcebcd3d4f12b55a2980ac16ee1e84994c9862f8707"
+    },
+    {
+      "path": "src/cli/update-dry-run-state.process.test.ts",
+      "sha256": "fc1d30f3cb55f53d3193f8e29a3aed28aa9adc6295ca4c2aaeda46c28197a5c2"
+    },
+    {
+      "path": "src/entry.compile-cache.test.ts",
+      "sha256": "53e18a846c3dc1ccf5180d0fea9c043c5c15665326c01d0d165018d3e2b5c368"
+    },
+    {
+      "path": "src/entry.compile-cache.ts",
+      "sha256": "f11755eae5f851f3e60029a1deef48fadc2dea340151862a43d5ccd79cb9893b"
+    },
+    {
+      "path": "src/entry.respawn.ts",
+      "sha256": "068213409d91ea1d124166480af8bb7fe41c7bef732d04006b6b92f4a5050108"
+    },
+    {
+      "path": "src/entry.ts",
+      "sha256": "27a177b6c7f6543c51207ff4162cb699b229bf9fa691b8a2fecb2251bb31c001"
+    },
+    {
+      "path": "src/node-host/node-worker-environment.ts",
+      "sha256": "f32119b3ddefdf293f1d277dd69bf1168fa2e4e261568e818c62a7a8196948d8"
+    },
+    {
+      "path": "src/node-host/worker.ts",
+      "sha256": "8c5132c676d6678ed724e47881c8cf1cfa9ac46e0380400ebfe90ceab6178a89"
+    },
+    {
+      "path": "src/process/respawn-child-runner.ts",
+      "sha256": "94609a2d5c9b3ed24a8047150df771ddb64fa7e0bc379730d75ce94eeb1006b4"
+    }
+  ],
+  "permanentTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerTests.swift",
+  "permanentTestSHA256": "48432e8e496119ef4dc6d3a331e8a1d60ec3a21570bf8b16345c37388d4280e3",
+  "proofTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerProcessGroupProof.swift",
+  "proofTestSHA256": "096169bc41bafdc714984aa1db935274105c83c9f39da7fef421d24b3557714f",
+  "requiredControlNames": [
+    "changed worker command replaces the running process",
+    "stop cancels a changed launch during worker cleanup",
+    "stop waits for the worker leader and reaps its descendants"
+  ],
+  "cooperativeExitFix": {
+    "commit": "64bcb0cbd4b471a7a5241a4fe720f0f4a9796985",
+    "ancestorVerified": true
+  }
+}
