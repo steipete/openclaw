@@ -1,10 +1,10 @@
 {
   "schema": "openclaw-pr-134368-permanent-hosted-assets-v1",
   "sha256": {
-    ".github/proofs/cron-recipient-permanent/binding.json": "67f07d6a016fb51db0a3430d769c59f59f00165a49d4a5c5374b7e32e047a5b5",
-    ".github/proofs/cron-recipient-permanent/cron-page.test.ts": "48ff0647a62841566d75f4366c0f94dad67c23fe38b2ea3cfe1dbda66ab94f0b",
+    ".github/proofs/cron-recipient-permanent/binding.json": "aa5787ac6e87fdce1f6351637683f692f405b93bb106804e65ab473a5995143d",
+    ".github/proofs/cron-recipient-permanent/form-suggestions.test.ts": "32570f486c743f565df771b971b51f596e795e3615518a79c71afe01db4fda79",
     ".github/proofs/cron-recipient-permanent/form-suggestions.ts": "4e1b18dcd4dcc841ab1285990bcd25b8d817d67ada8100e8ad01f951770d86c5",
-    ".github/proofs/cron-recipient-permanent/run-proof.py": "521befff8d08e8190f42fc240134636730c7375215d3448b1091f6dd9416f2e6",
+    ".github/proofs/cron-recipient-permanent/run-proof.py": "10cefd1444128e9fb8d2b2d1859c056c6d526715fc12c7545cb559d7d022bbd5",
     ".github/workflows/cron-recipient-permanent-proof.yml": "1352d0442e1a9439d33af7c23b6f52b6bd88102bde1a8b27ae7db74215bca29f"
   }
 }

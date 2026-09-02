@@ -60,29 +60,34 @@
     ".agents/skills/openclaw-testing/SKILL.md": "846eecd94f6c8f3aeda60bd44d980d8341e3404b76ee113e8147e9a4d08781eb",
     "test/non-isolated-runner.ts": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
     "test/jsdom-custom-elements.ts": "061c334cba1e34e344d1795d6f1f00aff4d8aa83399c79a22b6cee634dfdf8f7",
-    "test/repository-test-api-publications.ts": "6f1d1855fbe06fe6453eed7802ff94094ddcfb6187f4bb43c2e3cba67452f289"
+    "test/repository-test-api-publications.ts": "6f1d1855fbe06fe6453eed7802ff94094ddcfb6187f4bb43c2e3cba67452f289",
+    "src/shared/operator-scope-compat.ts": "d67a6e8e9d5ae4dcbcef60b4cfa0ea89271c308eef8d10f9c18f237c7649b0b4",
+    "ui/src/lib/gateway-errors.ts": "535f393d44b5092ef50f781157220d825a15f6a5e539d2f8dceb401ef538ffcf",
+    "ui/src/lib/format-error.ts": "f083d216aa23e04434d65b8e8043cd47bd5f64e57b7e6416ca420aedaf0a56c4",
+    "ui/src/i18n/index.ts": "f27c9e10c4c1a1d9be5ec89173e04a5f123125e060b1ea0e9007bcc8ac744fa8"
   },
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "pnpmVersion": "12.1.0",
   "nodeVersion": "24.19.0",
-  "testPath": "ui/src/pages/cron/cron-page.test.ts",
-  "testBeforeSHA256": "b0cbfaf4a99387e63f565e9d8d29f7c46e8e2e1fcc25c3ae47f36286ba826ef9",
-  "testAfterSHA256": "48ff0647a62841566d75f4366c0f94dad67c23fe38b2ea3cfe1dbda66ab94f0b",
+  "testPath": "ui/src/pages/cron/form-suggestions.test.ts",
+  "testAfterSHA256": "32570f486c743f565df771b971b51f596e795e3615518a79c71afe01db4fda79",
   "ownerPath": "ui/src/pages/cron/form-suggestions.ts",
   "ownerBeforeSHA256": "04d373d34a59c9f0a5125258b58ed0c5e56b6aef3d7f0fe297e0f8ffdc5d6217",
   "ownerAfterSHA256": "4e1b18dcd4dcc841ab1285990bcd25b8d817d67ada8100e8ad01f951770d86c5",
   "vitestConfig": "test/vitest/vitest.ui.config.ts",
   "testFiles": [
+    "ui/src/pages/cron/form-suggestions.test.ts",
     "ui/src/pages/cron/cron-page.test.ts",
     "ui/src/pages/cron/view.editor.test.ts",
     "ui/src/pages/cron/timezone-suggestions.test.ts"
   ],
-  "regressionAncestor": "CronPage delivery suggestions",
+  "regressionAncestor": "buildCronSuggestions",
   "regressionTitles": [
     "keeps 'telegram' 'announce' recipients separate from account options",
     "keeps 'last' 'announce' recipients separate from account options",
     "keeps 'telegram' 'webhook' recipients separate from account options"
   ],
-  "regressionAssertionLine": 265,
-  "runtimeProofPending": true
+  "regressionAssertionLine": 82,
+  "runtimeProofPending": true,
+  "testAbsentOnBaseline": true
 }

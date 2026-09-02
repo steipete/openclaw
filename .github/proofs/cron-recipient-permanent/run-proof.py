@@ -20,6 +20,8 @@ evidence = Path(sys.argv[2]).resolve()
 evidence.mkdir(mode=0o700, parents=True, exist_ok=False)
 receipt = {'passed': False, 'phase': 'preflight', 'commands': [], 'stages': {}, 'cleanupErrors': []}
 scratch = None
+proof = None
+proof_created = False
 
 
 def digest(file):
@@ -94,6 +96,17 @@ def assert_tree(expected):
     return actual
 
 
+def test_snapshot():
+    assert proof is not None and proof_created
+    assert proof.is_file() and not proof.is_symlink(), 'Proof test must remain a regular file'
+    assert proof.resolve() == source / binding['testPath'], 'Proof test path changed'
+    assert binding['testPath'] not in pristine['tracked'], 'Require an untracked proof overlay'
+    actual = {'path': binding['testPath'], 'sha256': digest(proof),
+              'bytes': proof.stat().st_size, 'mode': stat.S_IMODE(proof.stat().st_mode)}
+    assert actual['sha256'] == binding['testAfterSHA256'], 'Proof test bytes changed'
+    return actual
+
+
 def assess(stage, exit_code, stage_dir):
     report = json.loads((stage_dir / 'vitest.json').read_text())
     suites = report['testResults']
@@ -103,7 +116,7 @@ def assess(stage, exit_code, stage_dir):
     rows = [(str(Path(suite['name']).relative_to(source)), row)
             for suite in suites for row in suite['assertionResults']]
     identities = [(file, row['fullName']) for file, row in rows]
-    assert len(rows) == len(set(identities)) == report['numTotalTests']
+    assert len(rows) == len(set(identities)) == report['numTotalTests'] == 67
     assert all(suite['assertionResults'] for suite in suites), 'No empty selected test file'
     assert report['numPendingTests'] == report.get('numTodoTests', 0) == 0
     assert report.get('numRuntimeErrorTestSuites', 0) == 0
@@ -191,13 +204,17 @@ try:
     assert_tree(pristine)
     installed_lock = source / 'node_modules/.pnpm/lock.yaml'
     dependency_lock_sha = digest(installed_lock)
+    assert binding['testAbsentOnBaseline'] is True
     proof = source / binding['testPath']
-    assert digest(proof) == binding['testBeforeSHA256']
-    proof.write_bytes((assets / 'cron-page.test.ts').read_bytes())
-    assert digest(proof) == binding['testAfterSHA256']
-    expected = snapshot()
-    assert all(expected[key] == pristine[key] for key in ['head', 'tree', 'indexSHA256'])
-    assert {p for p in pristine['tracked'] if pristine['tracked'][p] != expected['tracked'][p]} == {binding['testPath']}
+    assert binding['testPath'] not in pristine['tracked']
+    assert not proof.exists() and not proof.is_symlink(), 'Proof path must start absent'
+    assert proof.parent.resolve() == source / Path(binding['testPath']).parent
+    with proof.open('xb') as stream:
+        proof_created = True
+        stream.write((assets / 'form-suggestions.test.ts').read_bytes())
+    proof_expected = test_snapshot()
+    save(evidence / 'untracked-test-overlay.json', proof_expected)
+    expected = assert_tree(pristine)
     save(evidence / 'dependency-lock.json', {'repositoryLockSHA256': digest(source / 'pnpm-lock.yaml'),
                                           'installedLockSHA256': dependency_lock_sha,
                                           'packageManager': binding['packageManager']})
@@ -219,7 +236,9 @@ try:
             location.mkdir(mode=0o700)
             stage_env[key] = str(location)
         save(stage_dir / 'source-before.json', assert_tree(expected))
-        assert digest(proof) == binding['testAfterSHA256']
+        proof_before = test_snapshot()
+        save(stage_dir / 'untracked-test-before.json', proof_before)
+        assert proof_before == proof_expected
         assert digest(installed_lock) == dependency_lock_sha
         argv = [node, 'scripts/run-vitest.mjs', 'run', '--config', binding['vitestConfig'], '--configLoader', 'runner', *binding['testFiles'], '--reporter=default', '--reporter=json', '--outputFile.json=' + str(stage_dir / 'vitest.json')]
         try:
@@ -227,6 +246,9 @@ try:
         finally:
             observed_after = snapshot()
             save(stage_dir / 'source-after.json', observed_after)
+            proof_after = test_snapshot()
+            save(stage_dir / 'untracked-test-after.json', proof_after)
+            assert proof_after == proof_expected
             lock_after = digest(installed_lock)
             save(stage_dir / 'dependency-lock.json', {'beforeSHA256': dependency_lock_sha,
                                                      'afterSHA256': lock_after,
@@ -246,6 +268,15 @@ except Exception as error:
     receipt['error'] = str(error)
     (evidence / 'failure.txt').write_text(traceback.format_exc())
 finally:
+    try:
+        if proof_created:
+            test_snapshot()
+            proof.unlink()
+            assert not proof.exists() and not proof.is_symlink()
+            receipt['testOverlayRemoved'] = True
+    except Exception as error:
+        receipt['cleanupErrors'].append(str(error))
+        receipt['passed'] = False
     try:
         if scratch is not None:
             shutil.rmtree(scratch)
