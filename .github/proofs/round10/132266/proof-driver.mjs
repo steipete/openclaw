@@ -205,9 +205,10 @@ try {
   try {
     assert.ok(output, "No safe receipt directory created");
     writeJson("proof-verdict.json", { ...verdict, head: expectedHead });
-    const names = ["proof-verdict.json", "requested-binding.json", "source-binding.json", "source-after.json", "proof.test.ts", "metadata-after.mjs", "metadata-verdict.json", "behavior/verdict.json", "behavior/report.md", ...phaseNames.flatMap((name) => [`${name}.stdout`, `${name}.stderr`, `${name}.json`, `${name}-result.json`])].filter((name) => fs.existsSync(path.join(output, name)));
+    const names = ["proof-verdict.json", "requested-binding.json", "source-binding.json", "source-after.json", "proof.test.ts", "metadata-after.mjs", "metadata-verdict.json", "behavior/verdict.json", "behavior/report.md", "behavior/startup-timeline.jsonl", ...phaseNames.flatMap((name) => [`${name}.stdout`, `${name}.stderr`, `${name}.json`, `${name}-result.json`])].filter((name) => fs.existsSync(path.join(output, name)));
     const entries = names.map((name) => ({ name, stats: fs.lstatSync(path.join(output, name)) }));
     assert.ok(entries.every(({ stats }) => stats.isFile()));
+    assert.ok(entries.every(({ name, stats }) => name !== "behavior/startup-timeline.jsonl" || stats.size <= 4 * 1024 * 1024), "Startup timeline exceeds 4 MiB");
     assert.ok(entries.reduce((sum, { stats }) => sum + stats.size, 0) <= 64 * 1024 * 1024, "Proof exceeds 64 MiB envelope");
     fs.closeSync(fs.openSync(archive, "wx", 0o600));
     execFileSync("/usr/bin/tar", ["-czf", archive, "-C", output, ...names], { stdio: "ignore" });

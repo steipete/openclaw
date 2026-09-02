@@ -29,6 +29,7 @@ assert hashlib.sha256(archive.read_bytes()).hexdigest() == receipt['artifactSHA2
 phases = ['unit-normalizer', 'unit-cache', 'unit-resolver', 'gateway', 'metadata']
 allowed = {'proof-verdict.json', 'requested-binding.json', 'source-binding.json', 'source-after.json', 'proof.test.ts', 'metadata-after.mjs', 'metadata-verdict.json', 'behavior/verdict.json', 'behavior/report.md'}
 allowed.update(f'{phase}{suffix}' for phase in phases for suffix in ['.stdout', '.stderr', '.json', '-result.json'])
+allowed.add('behavior/startup-timeline.jsonl')
 out = G / 'extracted'
 assert not out.exists(), 'Do not overwrite earlier evidence'
 os.umask(0o077)
@@ -39,6 +40,7 @@ with tarfile.open(archive, 'r:gz') as tar:
     for m in members:
         p = PurePosixPath(m.name)
         assert m.name in allowed and not p.is_absolute() and '..' not in p.parts and m.isfile()
+        assert m.name != 'behavior/startup-timeline.jsonl' or m.size <= 4 * 1024 * 1024
     out.mkdir(mode=0o700)
     for m in members:
         dest = out / m.name

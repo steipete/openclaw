@@ -10,6 +10,7 @@ import {
   startGatewayWithClient,
 } from "../../../src/gateway/test-helpers.e2e.js";
 import { buildMockOpenAiResponsesProvider } from "../../../src/gateway/test-openai-responses-model.js";
+import * as gatewayServer from "../../../src/gateway/server.js";
 import { onAgentEvent } from "../../../src/infra/agent-events.js";
 import * as pluginTools from "../../../src/plugins/tools.js";
 import { createOpenClawTestState } from "../../../src/test-utils/openclaw-test-state.js";
@@ -85,6 +86,15 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
   const results: RunCase[] = [];
   const cleanupErrors: string[] = [];
   const invariantErrors: string[] = [];
+  const originalStartGatewayServer = gatewayServer.startGatewayServer;
+  const gatewayEntryObserver = vi
+    .spyOn(gatewayServer, "startGatewayServer")
+    .mockImplementation(async (...args) => {
+      milestone("gateway-server-entry");
+      const server = await originalStartGatewayServer(...args);
+      milestone("gateway-server-returned");
+      return server;
+    });
   const originalResolve = pluginTools.resolvePluginTools;
   const resolverObserver = vi
     .spyOn(pluginTools, "resolvePluginTools")
@@ -170,6 +180,9 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
     state = await createOpenClawTestState({
       label: "metadata-progress-proof",
       env: {
+        OPENCLAW_GATEWAY_STARTUP_TRACE: "1",
+        OPENCLAW_DIAGNOSTICS: "timeline",
+        OPENCLAW_DIAGNOSTICS_TIMELINE_PATH: path.join(outputDir, "startup-timeline.jsonl"),
         OPENCLAW_TEST_MINIMAL_GATEWAY: undefined,
         OPENCLAW_SKIP_CHANNELS: undefined,
         OPENCLAW_SKIP_GMAIL_WATCHER: "1",
@@ -374,6 +387,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
       cleanupErrors.push(String(error));
     }
     unsubscribe();
+    gatewayEntryObserver.mockRestore();
     resolverObserver.mockRestore();
     normalizationObserver.mockRestore();
     Reflect.deleteProperty(globalThis, fixtureSymbol);

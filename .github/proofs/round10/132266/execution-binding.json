@@ -10,7 +10,7 @@
     "src/plugins/runtime/load-context.resolve.ts": "52b19f2fb450a992028e02c00e5eed413f96fc62eb5f51f35a47acf52e187e76",
     "src/plugin-sdk/provider-tools.ts": "bbfa956827eab17af4098a2d3a38bf02d5df72e0572f7827be0339d7eaaf27f5",
     "src/auto-reply/reply/agent-runner-event-handler.ts": "7b551f61ea02ccc71b68c75d6d61b1bcc5c056d43ded41256badb3bd64a5f5ab",
-    "packages/agent-core/src/agent-loop.ts": "04e48cc4108902e3373e46cae4ed562f5ce393f6e279d1241a490a6c1744da56",
+    "packages/agent-core/src/agent-loop.ts": "f1d3c37469132d3e86f6aae8ecd827aa6bef99088aa65314a42cf74e39219873",
     "packages/agent-core/src/llm.ts": "9ad54dbf8938aa278a9ab0e6af7c9d54f36f72670ef9f328d0f1a1f716f1cd68",
     "src/agents/embedded-agent-subscribe.handlers.tools.start.ts": "44f2f5cce23a179f1a15651783bbf8fd884c7266cd7b4aa4c1ca8e29c88640f6",
     "src/agents/embedded-agent-subscribe.handlers.tools.progress.ts": "f1af3fc51a5584561a46b924f20061d750e06690d8d7e15ad01bd50e54bfbe12",
@@ -92,11 +92,25 @@
     "src/plugins/registry-api.ts": "4780858e3d8bff135be626ba6366d8bd8707b51fc6f608f1b2b7971ee5fb3aa4",
     "src/plugin-sdk/channel-entry-contract.ts": "25ca5574b895aa3124f269468b8d92b3b00f64424152ae0a66d0774aaab6bb98",
     "extensions/qa-channel/channel-plugin-api.ts": "45b4af13bf3738d47ca073153080aa722fe245592e013c8d47f32dbcffec97be",
-    "docs/gateway/config-tools.md": "9dcc753ecb13ee3dccf1b97e5ae8f9d7a21b86c3be4057a4dbb8d9d535bf5e7c"
+    "docs/gateway/config-tools.md": "9dcc753ecb13ee3dccf1b97e5ae8f9d7a21b86c3be4057a4dbb8d9d535bf5e7c",
+    "src/test-utils/ports.ts": "31d744006aa015c26017b704f6502169c3c7bec7b73af38f6f6ca9abe7207fbd",
+    "src/gateway/server.ts": "b7fecc0b4a8fdec46599a73156e7adffac816080f65622f9414a09809270c0a3",
+    "src/gateway/server-start.ts": "f94395a8191b4ff69f2c64d7d7c111682a267a5612aa159f88b02f341033125d",
+    "src/gateway/server-kernel.ts": "d17bb403edd61422b162691ece8c0406d970781ff6ff365a42697962972dd596",
+    "src/gateway/server-startup-bootstrap.ts": "89573948cef75e58274e56e5be3f2fbd6aa11404440324beeb8d9197596b881a",
+    "src/gateway/server-runtime-state-prepare.ts": "405e2fbcb2abb87270bfd32e16d3645cffb5def2e5d79ce469d391081a840658",
+    "src/gateway/server-core-runtime.ts": "62e238fab330897222af484999b85c5305938c8985e219155bf9984542fc079d",
+    "src/gateway/server-startup-trace.ts": "6830b8aa20844524a0a053a451eb3cefe396bc93940982173ae149200dd9aa80",
+    "src/infra/diagnostics-timeline.ts": "5d2524f416a59729e0f7670b1702464813d0da800efd70e7f580b9e8050d8cc0",
+    "src/infra/diagnostic-flags.ts": "145ac08187ac1b68228890afd87f957917b667c100a6403a37a29107ef07eba3",
+    "scripts/lib/vitest-profiler.mts": "2bdf6bd51bc11a5078c190443e0575166d9e4058f6806db29f751c66b6d57a08",
+    "config/assertion-safety-baseline.txt": "ac8e7b57c25fbde81627d4c965fc167dbb51d41ac98be74417aa945284beac56",
+    "src/config/sessions/session-accessor.conformance.test.ts": "43b72274b1c0b3134a91868b4cc73e87858e5940962fb3b39891165553a83f2b",
+    "ui/src/styles/corner-shape.browser.test.ts": "1e0cee1e510a4db43dafb18d8f7bb6c5dd0fad2d61ded1df5fccd519ba8fb71a"
   },
-  "sourceFileCount": 93,
+  "sourceFileCount": 107,
   "proofTestRemotePath": "extensions/qa-lab/src/plugin-tool-progress.gateway-proof.test.ts",
-  "proofTestSHA256": "746dc5da2f50639d52de1dc569f062db0cb834d656b1ac78434663e9aade6e33",
+  "proofTestSHA256": "6584d66ca93c309650071911f9497d57895afa575882c66cad0dfb20e4a1d667",
   "expectedScenarioIds": [
     "hidden-cold",
     "hidden-reused",
@@ -134,16 +148,16 @@
       "expectedTests": 92
     }
   ],
-  "candidateHead": "d5fe57837181ce7faa322960504bcf359329fbb9",
-  "candidateTree": "78e3bcd6eefcc6fc9db801e61fcb7b68affc3454",
+  "candidateHead": "fcb43fa95337a7729814adef36cca18c69bc1ece",
+  "candidateTree": "b3ca936bfb02caf8e9467bd48bc2602ab8343cdb",
   "provider": "github-actions",
   "executionEnvironment": "github-hosted",
   "hydrate": false,
   "nodeVersion": "24.19.0",
   "proofRepository": "steipete/openclaw",
   "proofBranch": "codex/round10-secretless-proof",
-  "driverSHA256": "002140c1706f6711f53747783aecf45bf97860f168f5639b7b4a8af6b61b0346",
-  "extractorSHA256": "a5761e057d8fc4757d0a531ca14343c126ad1ba56e6cbd65fbcfc6d525ff083f",
+  "driverSHA256": "913b64ff201f2fdaf1212ddc7f93af0248557645cc0abf68977dcf881c7c0895",
+  "extractorSHA256": "aa6edd28855f25d1a112d59458a3e7546e20834fa5b78f09e85ebb81d38448d7",
   "fixtureSetupCorrection": {
     "previousSHA256": "d0beca2b313254c09cc4eb85e90f378e4bb57aa7c591d6c3a5e3ec416640cbc4",
     "correctedSHA256": "d93b9d99dd5ce38b6165db5afa0a5830ec1e318a39df5fd707d676bee573ed4d",
@@ -157,5 +171,30 @@
     "previousSHA256": "d93b9d99dd5ce38b6165db5afa0a5830ec1e318a39df5fd707d676bee573ed4d",
     "currentSHA256": "746dc5da2f50639d52de1dc569f062db0cb834d656b1ac78434663e9aade6e33",
     "change": "Emit actual test/setup/Gateway/channel/scenario/cleanup milestones to retained stderr; all assertions and timeouts unchanged."
+  },
+  "sourceRebinding": {
+    "previousHead": "b587632772af9972c61378bb3196aecc6fdb8217",
+    "selectedSourceInputs": 107,
+    "unchangedSelectedSourceInputs": 105,
+    "changedSelectedSourceInputs": [
+      {
+        "path": "packages/agent-core/src/agent-loop.ts",
+        "before": "04e48cc4108902e3373e46cae4ed562f5ce393f6e279d1241a490a6c1744da56",
+        "after": "f1d3c37469132d3e86f6aae8ecd827aa6bef99088aa65314a42cf74e39219873"
+      },
+      {
+        "path": "src/config/sessions/session-accessor.conformance.test.ts",
+        "before": "1817b44fdd4cb8dc629eb337207b1d5dca4c59bf129e866da6ee923af9766a6f",
+        "after": "43b72274b1c0b3134a91868b4cc73e87858e5940962fb3b39891165553a83f2b"
+      }
+    ],
+    "changes": "Merge main 0ebdbe6155adc2413896989f61ca6fadc5fb4b12. Agent loop now releases replaced contexts; archive test uses the stronger upstream temporary-file regression. Diagnostic owner files, metadata repair files, and permanent metadata suites are unchanged. Prior 119-test passes were at d5fe; new head requires fresh execution."
+  },
+  "startupDiagnostics": {
+    "trace": true,
+    "timelineFlag": "timeline",
+    "relativeArtifact": "behavior/startup-timeline.jsonl",
+    "maxBytes": 4194304,
+    "assertionsAndTimeoutsUnchanged": true
   }
 }

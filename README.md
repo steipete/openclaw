@@ -1,11 +1,11 @@
 # Two exact-source behavior proofs
 
-This temporary branch runs one workflow, with two jobs on GitHub-hosted Ubuntu 24.04 runners. It belongs only on `steipete/openclaw:codex/round10-secretless-proof`; it is not an upstream product or CI change. Pushing the branch starts the proof. The manual trigger has no arbitrary source or command inputs. No default-branch change is required.
+This temporary branch runs exact-source proof on GitHub-hosted Ubuntu 24.04 runners. The current matrix focuses on #132266 startup diagnosis; #127959 already passed all eight Gateway scenarios in [run 33658362660](https://github.com/steipete/openclaw/actions/runs/33658362660). It belongs only on `steipete/openclaw:codex/round10-secretless-proof`; it is not an upstream product or CI change. Pushing the branch starts the selected proof. The manual trigger has no arbitrary source or command inputs. No default-branch change is required.
 
 | PR | Exact candidate commit | Required observed result |
 | --- | --- | --- |
 | [#127959](https://github.com/openclaw/openclaw/pull/127959) | `378bd531c142e380c5b08265b9d4a37f385f2b56` | Eight Gateway send scenarios, each with one real Baileys-encoded outbound message |
-| [#132266](https://github.com/openclaw/openclaw/pull/132266) | `d5fe57837181ce7faa322960504bcf359329fbb9` | 119 permanent tests, five Gateway QA-channel turns, and six strict-normalizer metadata cases |
+| [#132266](https://github.com/openclaw/openclaw/pull/132266) | `fcb43fa95337a7729814adef36cca18c69bc1ece` | 119 permanent tests, five Gateway QA-channel turns, and six strict-normalizer metadata cases |
 
 The proof assets and candidate source use separate checkouts. Actions are pinned to complete commits; both checkouts disable persisted credentials. The jobs request only read access to repository contents, inject no repository secrets, and use no environment, cloud role, cache restore, or credential hydration. Candidate installation and test subprocesses receive an explicit small environment with fresh HOME, XDG and OpenClaw state paths. The runner is ephemeral; this is not a network firewall or a claim that the test code has no access to the runner filesystem. Network installation uses public package sources; test model and channel services are synthetic and local.
 
