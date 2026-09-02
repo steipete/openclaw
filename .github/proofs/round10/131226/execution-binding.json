@@ -122,9 +122,10 @@
     "test/e2e/qa-lab/runtime/media-talk-gateway.ts": "92a086ecdafb0035f5a6f07104d631ba05e8546122e47d64c69788e768418847",
     "test/e2e/qa-lab/runtime/webchat-media-artifacts.e2e.test.ts": "6cfdc467333163aa7646e44221a77b93eed75c9ab21feaa8b2c4256d381a0b94",
     "test/vitest/vitest.e2e.config.ts": "d896a40a636f8825df1cab80e27c83caca645de9858cae75b1a58c1b3465c9a3",
-    "tsdown.config.ts": "bbb8a7bf5ffe4d7741ad8aeba3eaeb4f909f960df06d21521358663cf35370d9"
+    "tsdown.config.ts": "bbb8a7bf5ffe4d7741ad8aeba3eaeb4f909f960df06d21521358663cf35370d9",
+    "extensions/qa-lab/openclaw.plugin.json": "0bec83e460c6f613f1ead60b908a756cbd2753bbc30203b3ba69f18ceb0a3ed1"
   },
-  "sourceFileCount": 109,
+  "sourceFileCount": 110,
   "expectedDownloaded": {
     "sha256": "60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068",
     "bytes": 204,
