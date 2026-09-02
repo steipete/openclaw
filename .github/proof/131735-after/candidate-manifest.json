@@ -1,5 +1,5 @@
 {
-  "head": "85b65fb964d68d6f7c5c0414d7c4d280430eb66e",
+  "head": "b23707455480f99038347fb4f13112c980bf1157",
   "files": {
     "src/agents/subagents/registry/subagent-registry-completion-runtime.ts": "404f2f5ca339c4a3c99a81653796ba5b76af81349fa6c0bb9753e2b7747cf184",
     "src/agents/subagents/registry/subagent-registry-pending-lifecycle.ts": "2cbcf34eb33df18fac684d9b848d6d7fbbd98ca4647a948ca7e5bfc040871354",
@@ -18,6 +18,6 @@
     "scripts/lib/vitest-report-owner.mts": "ebd7212131ab3de152e02757fab052598a6a932fd5214f4b96d3e7d8b70a5b84",
     "test/vitest/vitest.unit-fast-paths.mjs": "695619f070a089e8350ad3eaa71a13759f7a01bd6734d09878b6ae5782aafe52",
     "src/agents/subagents/registry/subagent-registry.types.ts": "49cef0b747871149dc2fb1157f26d4ed78a63b18cb0d4c30b1eeabe3e0ce321b",
-    "src/agents/subagents/registry/subagent-registry-completion-runtime.test.ts": "2386a466fdfe8b510f9e8f346fa3c3cf19d619511d8578bd712efbfc13ec117b"
+    "src/agents/subagents/registry/subagent-registry-completion-runtime.test.ts": "e0de61e389a071e2d0093185a4734ba2637a01e13c0a76cd88b8b4130b0ffcd6"
   }
 }
