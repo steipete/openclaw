@@ -193,9 +193,12 @@
     "tsdown.config.ts": "bbb8a7bf5ffe4d7741ad8aeba3eaeb4f909f960df06d21521358663cf35370d9",
     "src/gateway/methods/descriptor.ts": "f00d80fabd20d78f420a92ff8bfe8abc1eb23cefc3dddab4e72720f7b03a5db9",
     "src/gateway/server-methods.ts": "54fae122a8281953d417e9373baf3f045fb6846165e050f875e8ba7c392ebf74",
-    "src/gateway/server-methods/gateway-client-identity.ts": "9ecbf868f14d368b751c5b13072f2565e9db90fa91b35d2732282e8918202151"
+    "src/gateway/server-methods/gateway-client-identity.ts": "9ecbf868f14d368b751c5b13072f2565e9db90fa91b35d2732282e8918202151",
+    "scripts/copy-bundled-plugin-metadata.mts": "6336ca59cacf9ab6d75b2bfe16b4524bb4c38c92079d3873c08098aec3adfa0a",
+    "scripts/stage-bundled-plugin-runtime.mts": "4a015bb7f60e3f743c1a91c4d622edccf37eaf1c8f0c0516e4bafc4d2b8140f4",
+    "extensions/buzz/package.json": "db408967ebe27a28f9f2da6c34ada87be96bcb1df793e272204289551dfdc45c"
   },
-  "sourceFileCount": 194,
+  "sourceFileCount": 197,
   "proofTestRemotePath": "extensions/qa-lab/src/plugin-tool-progress.gateway-proof.test.ts",
   "proofTestSHA256": "5fa4d9ec93f1f6da2783a6f421b165c654ea8497623c76ac3cf99eac19dbf62b",
   "expectedScenarioIds": [
@@ -243,7 +246,7 @@
   "nodeVersion": "24.19.0",
   "proofRepository": "steipete/openclaw",
   "proofBranch": "codex/round10-secretless-proof",
-  "driverSHA256": "8eb0117b61bdd17da1ddbe0992039c2dc497dcad27e0cebc436b0ecf234a95cc",
+  "driverSHA256": "9d601d5b1eeb140733f26fc78eed5d7511ff26c592c0c6eada0ed452b3ecd5bb",
   "extractorSHA256": "971244c985d34e833f8f954adc6d9de424290bf082ff5a0098f628aaba83d449",
   "sourceRebinding": {
     "previousHead": "b587632772af9972c61378bb3196aecc6fdb8217",
@@ -356,5 +359,6 @@
       "Keep channel/provider skip flags unset and retain the same full-profile four-tool allowlist."
     ],
     "scenarioAssertionsUnchanged": true
-  }
+  },
+  "runtimeSymlinkContract": "Canonical metadata staging links isolated workspace host dependencies to this same repository root; equality and descendants are contained. Resolved relative link targets are recorded; outside targets remain rejected."
 }

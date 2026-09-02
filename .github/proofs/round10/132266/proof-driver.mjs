@@ -48,8 +48,9 @@ function snapshotRuntimeArtifacts() {
     const stat = fs.lstatSync(absolute);
     if (stat.isSymbolicLink()) {
       const target = fs.realpathSync(absolute);
-      assert.ok(target.startsWith(root + path.sep), `Runtime symlink escapes repository: ${name}`);
-      files[name] = { symlink: fs.readlinkSync(absolute) };
+      // Workspace host-package links resolve to the repository itself.
+      assert.ok(target === root || target.startsWith(root + path.sep), `Runtime symlink escapes repository: ${name} -> ${target}`);
+      files[name] = { symlink: fs.readlinkSync(absolute), resolvedRelativeTarget: path.relative(root, target) || "." };
     } else if (stat.isDirectory()) {
       for (const entry of fs.readdirSync(absolute).sort()) visit(`${name}/${entry}`);
     } else {
