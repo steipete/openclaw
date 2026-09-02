@@ -1,0 +1,45 @@
+name: Portable Node extraction behavior proof
+
+on:
+  push:
+    branches: [codex/round10-windows-node-proof]
+
+permissions:
+  contents: read
+
+jobs:
+  extraction-proof:
+    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-windows-node-proof'
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - name: Checkout reviewed proof assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout frozen original installer
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: af531525c46444521986002d64b888ee5ed097cb
+          path: baseline
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: scripts/install.ps1
+      - name: Run before and after extraction matrix
+        shell: pwsh
+        run: |
+          python "$env:GITHUB_WORKSPACE/proof-assets/.github/proofs/135410/run-proof.py" "$env:GITHUB_WORKSPACE/baseline" "$env:RUNNER_TEMP/portable-node-proof-work" "$env:RUNNER_TEMP/portable-node-proof-output"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Retain success or failure evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: portable-node-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/portable-node-proof-output/
+          if-no-files-found: warn
+          retention-days: 14
