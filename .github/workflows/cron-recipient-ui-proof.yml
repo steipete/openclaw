@@ -21,11 +21,11 @@ jobs:
           path: proof-assets
           persist-credentials: false
           fetch-depth: 1
-      - name: Checkout fixed trusted baseline
+      - name: Checkout exact published candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: openclaw/openclaw
-          ref: af531525c46444521986002d64b888ee5ed097cb
+          ref: 75ed93cf6a29f113e5c1556f896a711f13f22e2d
           path: source
           persist-credentials: false
           fetch-depth: 1

@@ -1,4 +1,4 @@
-"""Hosted-only, fixed-source CronPage RED/GREEN proof. No credential hydration."""
+"""Hosted-only, published-head CronPage owner-reversal RED/GREEN proof. No credential hydration."""
 from pathlib import Path
 import hashlib
 import json
@@ -167,8 +167,8 @@ try:
     credential_keys = subprocess.run(['/usr/bin/git', 'config', '--local', '--name-only', '--get-regexp', '(extraheader|credential)'], cwd=source, capture_output=True)
     assert credential_keys.returncode == 1 and not credential_keys.stdout
     pristine = snapshot()
-    assert pristine['head'] == binding['baselineHead'] and pristine['tree'] == binding['baselineTree']
-    for name, expected in binding['baselineSourceSHA256'].items():
+    assert pristine['head'] == binding['checkoutHead'] and pristine['tree'] == binding['checkoutTree']
+    for name, expected in binding['checkoutSourceSHA256'].items():
         assert digest(source / name) == expected, name
     assert json.loads((source / 'package.json').read_text())['packageManager'] == binding['packageManager']
     assert not (source / 'node_modules').exists(), 'Require fresh frozen installation'
@@ -215,6 +215,16 @@ try:
     assert all(expected[key] == pristine[key] for key in ['head', 'tree', 'indexSHA256'])
     assert {p for p in pristine['tracked'] if pristine['tracked'][p] != expected['tracked'][p]} == {binding['classificationPath']}
     for stage in ['before', 'after']:
+        if stage == 'before':
+            owner = source / binding['ownerPath']
+            assert digest(owner) == binding['ownerAfterSHA256']
+            assert pristine['tracked'][binding['ownerPath']]['sha256'] == binding['ownerAfterSHA256']
+            owner.write_bytes((assets / 'before-form-suggestions.ts').read_bytes())
+            assert digest(owner) == binding['ownerBeforeSHA256']
+            next_snapshot = snapshot()
+            assert {p for p in expected['tracked'] if expected['tracked'][p] != next_snapshot['tracked'][p]} == {binding['ownerPath']}
+            assert all(next_snapshot[key] == expected[key] for key in ['head', 'tree', 'indexSHA256'])
+            expected = next_snapshot
         if stage == 'after':
             owner = source / binding['ownerPath']
             assert digest(owner) == binding['ownerBeforeSHA256']
@@ -247,7 +257,11 @@ try:
         assert digest(installed_lock) == dependency_lock_sha
         receipt['stages'][stage] = assess(stage, code, stage_dir)
         save(evidence / 'hosted-proof-result.json', receipt)
-    receipt.update(passed=True, phase='complete', baselineHead=binding['baselineHead'],
+    assert {p for p in pristine['tracked'] if pristine['tracked'][p] != expected['tracked'][p]} == {binding['classificationPath']}
+    assert expected['tracked'][binding['ownerPath']] == pristine['tracked'][binding['ownerPath']]
+    receipt.update(passed=True, phase='complete', checkoutHead=binding['checkoutHead'],
+                   beforeOwnerSource=binding['beforeOwnerSource'],
+                   ownerRestoredToPublishedHead=True,
                    ownerAfterSHA256=binding['ownerAfterSHA256'], installedLockSHA256=dependency_lock_sha)
 except Exception as error:
     receipt['error'] = str(error)
