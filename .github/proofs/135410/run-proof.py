@@ -44,9 +44,11 @@ def child_environment(temp):
     names = {
         "systemroot", "windir", "comspec", "path", "pathext", "userprofile",
         "localappdata", "appdata", "programfiles", "programfiles(x86)",
-        "programw6432", "psmodulepath", "processor_architecture", "processor_architew6432",
+        "programw6432", "processor_architecture", "processor_architew6432",
         "os", "number_of_processors",
     }
+    # PS7 -> Python -> Windows PowerShell must not inherit PS7 module paths.
+    # Each engine reconstructs its stock module path; no caller modules are injected.
     env = {key: value for key, value in os.environ.items() if key.lower() in names}
     profile = temp / "profile"
     local = profile / "AppData/Local"
@@ -193,6 +195,7 @@ def main():
                 require(record_path.is_file(), case_id + " lacks a verdict")
                 row = json.loads(record_path.read_text(encoding="utf-8-sig"))
                 require(row["id"] == case_id and row["schema"] == "openclaw-portable-node-extraction-proof-v1", "Verdict identity mismatch")
+                require("completed" in row, case_id + " fixture setup failed: " + "; ".join(row.get("errors", [])))
                 require(row.get("cleanupComplete") and row.get("pathRestored"), case_id + " cleanup failed")
                 require(row.get("preferenceRestored") and row.get("locationRestored"), case_id + " caller state leaked")
                 require(row.get("actualArguments") == row.get("expectedArguments") and len(row["actualArguments"]) == 6, case_id + " argv mismatch")
