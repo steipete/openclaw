@@ -77,13 +77,16 @@ if proof['passed']:
         argv = commands[suite['phase']]
         assert argv[:6] == [binding['nodeExecutable'], 'scripts/run-vitest.mjs', 'run', suite['path'], '--reporter=default', '--reporter=json']
         assert len(argv) == 7 and argv[6].startswith('--outputFile=/tmp/openclaw-132266-after-proof-') and argv[6].endswith('/' + suite['phase'] + '.json')
-    assert commands['gateway'][:8] == [binding['nodeExecutable'], 'scripts/run-vitest.mjs', 'run', '--config', 'test/vitest/vitest.extension-qa.config.ts', binding['proofTestRemotePath'], '--reporter=default', '--reporter=json']
-    assert len(commands['gateway']) == 9 and commands['gateway'][8].startswith('--outputFile=/tmp/openclaw-132266-after-proof-') and commands['gateway'][8].endswith('/gateway.json')
+    gateway_command = commands['gateway']
+    assert len(gateway_command) == 4 and gateway_command[:2] == [binding['nodeExecutable'], '--import']
+    assert gateway_command[2].endswith('/scripts/tsx.mjs')
+    assert gateway_command[3].endswith('/' + binding['proofTestRemotePath'])
+    assert gateway_command[2].removesuffix('/scripts/tsx.mjs') == gateway_command[3].removesuffix('/' + binding['proofTestRemotePath'])
     metadata_command = commands['metadata']
     assert len(metadata_command) == 6 and metadata_command[:2] == [binding['nodeExecutable'], '--import']
     assert metadata_command[2].endswith('/scripts/tsx.mjs') and metadata_command[3].startswith('/tmp/openclaw-132266-after-proof-') and metadata_command[3].endswith('/metadata-after.mjs')
     assert metadata_command[4] == 'candidate' and metadata_command[5].startswith('/tmp/openclaw-132266-after-proof-') and metadata_command[5].endswith('/runtime/metadata/workspace')
-    for suite in [*binding['unitSuites'], {'phase': 'gateway', 'path': binding['proofTestRemotePath'], 'expectedTests': 1}]:
+    for suite in binding['unitSuites']:
         report = json.loads((out / (suite['phase'] + '.json')).read_text())
         assert report['success'] and report['numTotalTests'] == report['numPassedTests'] == suite['expectedTests']
         assert report['numFailedTests'] == report['numPendingTests'] == report['numTodoTests'] == 0
@@ -92,14 +95,22 @@ if proof['passed']:
         assert len(assertions) == suite['expectedTests'] and all(a['status'] == 'passed' for a in assertions)
     behavior = json.loads((out / 'behavior/verdict.json').read_text())
     assert behavior['binding'] == before
-    assert behavior['schema'] == 'openclaw-pr-132266-gateway-progress-proof-v1'
+    assert behavior['schema'] == 'openclaw-pr-132266-gateway-progress-proof-v2'
+    assert behavior['runtime'] == 'node/tsx'
     assert behavior['status'] == 'pass' and behavior['expectedScenarios'] == behavior['executedScenarios'] == behavior['passedScenarios'] == 5
     assert [row['id'] for row in behavior['results']] == binding['expectedScenarioIds']
     assert all(row['status'] == 'pass' for row in behavior['results'])
     assert behavior['providerErrors'] == behavior['invariantErrors'] == behavior['cleanupErrors'] == []
-    assert any(row['factoryAfter'] > row['factoryBefore'] for row in behavior['resolverRows'])
-    assert any(row['factoryAfter'] == row['factoryBefore'] for row in behavior['resolverRows'])
-    assert behavior['normalizationRows'] and all(row['sourceHidden'] == row['targetHidden'] for row in behavior['normalizationRows'])
+    assert proof['metadataScenariosPassed'] == 6
+    assert before['metadataScenarioIds'] == binding['metadataScenarioIds']
+    assert behavior['ownerBoundaryEvidence'] == {
+        'kind': 'same-head-metadata-phase',
+        'head': binding['candidateHead'],
+        'harnessSHA256': binding['metadataHarnessSHA256'],
+        'verdictSHA256': hashlib.sha256((out / 'metadata-verdict.json').read_bytes()).hexdigest(),
+        'scenarios': binding['metadataScenarioIds'],
+    }
+    assert behavior['fixture']['factories'] > 0
     assert len(behavior['providerRequests']) == 10 and len(behavior['fixture']['executions']) == 5
     metadata = json.loads((out / 'metadata-verdict.json').read_text())
     assert metadata['mode'] == 'candidate' and metadata['factories'] == 3 and metadata['executions'] == 6

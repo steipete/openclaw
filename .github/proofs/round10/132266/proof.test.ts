@@ -1,60 +1,24 @@
-// Ephemeral proof overlay. All source observers call through to the real owners.
+// Ephemeral Node/tsx proof overlay. Production owners are imported without mocks.
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
-import { expect, it, vi } from "vitest";
-import * as runtimeTools from "../../../src/agents/runtime-plan/tools.js";
 import type { OpenClawConfig } from "../../../src/config/types.openclaw.js";
 import {
   disconnectGatewayClient,
   startGatewayWithClient,
 } from "../../../src/gateway/test-helpers.e2e.js";
 import { buildMockOpenAiResponsesProvider } from "../../../src/gateway/test-openai-responses-model.js";
-import * as gatewayServer from "../../../src/gateway/server.js";
 import { onAgentEvent } from "../../../src/infra/agent-events.js";
-import * as pluginTools from "../../../src/plugins/tools.js";
 import { createOpenClawTestState } from "../../../src/test-utils/openclaw-test-state.js";
 import { startQaBusServer } from "./bus-server.js";
 import { createQaBusState } from "./bus-state.js";
 import { readBody, writeSse } from "./providers/mock-openai/mock-openai-contracts.js";
 import { MockResponseStream } from "./providers/mock-openai/mock-openai-stream.js";
 import { buildMockFunctionCall } from "./providers/mock-openai/mock-openai-tooling.js";
-import { waitForQaTransportAccountReady } from "./qa-transport.js";
+import { waitForQaTransportAccountReady, waitForQaTransportCondition } from "./qa-transport.js";
 import { renderQaMarkdownReport } from "./report.js";
-
-// A lazy import factory observes the real bootstrap load without preloading it.
-vi.mock("../../../src/gateway/server-plugin-bootstrap.js", async (importOriginal) => {
-  const mark = (phase: string) => process.stderr.write(`METADATA_PROOF_POSTBIND ${phase}\n`);
-  mark("import-start");
-  let actual: typeof import("../../../src/gateway/server-plugin-bootstrap.js");
-  try {
-    actual =
-      await importOriginal<typeof import("../../../src/gateway/server-plugin-bootstrap.js")>();
-  } catch (error) {
-    mark("import-error");
-    throw error;
-  }
-  mark("import-ready");
-  const load = actual.loadGatewayStartupPlugins;
-  const observedLoad = (...args: Parameters<typeof load>) => {
-    mark("load-enter");
-    try {
-      const result = load(...args);
-      mark("load-return");
-      return result;
-    } catch (error) {
-      mark("load-error");
-      throw error;
-    }
-  };
-  return {
-    ...actual,
-    get loadGatewayStartupPlugins() {
-      mark("load-export-read");
-      return observedLoad;
-    },
-  };
-});
 
 const pluginId = "metadata-progress-proof";
 const fixtureSymbol = Symbol.for("openclaw.proof132266.fixture");
@@ -102,71 +66,37 @@ module.exports = {
 };
 `;
 
-it("preserves hidden tool metadata through real Gateway QA-channel turns", async () => {
+async function main() {
   const milestone = (phase: string) => process.stderr.write(`METADATA_PROOF_PHASE ${phase}\n`);
-  milestone("test-entered");
+  milestone("node-harness-entered");
   const outputDir = process.env.OPENCLAW_METADATA_PROOF_DIR;
   const bindingPath = process.env.OPENCLAW_METADATA_PROOF_BINDING;
   if (!outputDir || !bindingPath)
     throw new Error("Reviewed controller must supply output and source binding.");
   const binding = JSON.parse(await fs.readFile(bindingPath, "utf8"));
+  // The controller accepts this same-head phase before starting the Gateway process.
+  const metadataBytes = await fs.readFile(path.join(path.dirname(bindingPath), "metadata-verdict.json"));
+  const metadata = JSON.parse(metadataBytes.toString("utf8"));
+  assert.equal(metadata.mode, "candidate");
+  assert.equal(metadata.factories, 3);
+  assert.equal(metadata.executions, 6);
+  assert.equal(metadata.rows.length, 6);
+  assert.deepEqual(metadata.rows.map((row: { label: string }) => row.label), binding.metadataScenarioIds);
+  const ownerBoundaryEvidence = {
+    kind: "same-head-metadata-phase",
+    head: binding.head,
+    harnessSHA256: binding.metadataHarnessSHA256,
+    verdictSHA256: createHash("sha256").update(metadataBytes).digest("hex"),
+    scenarios: binding.metadataScenarioIds,
+  };
   const startedAt = new Date();
   const fixture: FixtureState = { factories: 0, executions: [] };
   Reflect.set(globalThis, fixtureSymbol, fixture);
-  const resolverRows: Array<Record<string, unknown>> = [];
-  const normalizationRows: Array<Record<string, unknown>> = [];
   const agentEvents: Array<Parameters<Parameters<typeof onAgentEvent>[0]>[0]> = [];
   const providerRequests: Array<Record<string, unknown>> = [];
   const results: RunCase[] = [];
   const cleanupErrors: string[] = [];
   const invariantErrors: string[] = [];
-  const originalStartGatewayServer = gatewayServer.startGatewayServer;
-  const gatewayEntryObserver = vi
-    .spyOn(gatewayServer, "startGatewayServer")
-    .mockImplementation(async (...args) => {
-      milestone("gateway-server-entry");
-      const server = await originalStartGatewayServer(...args);
-      milestone("gateway-server-returned");
-      return server;
-    });
-  const originalResolve = pluginTools.resolvePluginTools;
-  const resolverObserver = vi
-    .spyOn(pluginTools, "resolvePluginTools")
-    .mockImplementation((params) => {
-      const before = fixture.factories;
-      const tools = originalResolve(params);
-      const selected = tools.filter((tool) => tool.name.startsWith("metadata_"));
-      if (selected.length)
-        resolverRows.push({
-          factoryBefore: before,
-          factoryAfter: fixture.factories,
-          tools: selected.map((tool) => ({
-            name: tool.name,
-            hidden: tool.hideFromChannelProgress === true,
-          })),
-        });
-      return tools;
-    });
-  const originalNormalize = runtimeTools.normalizeAgentRuntimeTools;
-  const normalizationObserver = vi
-    .spyOn(runtimeTools, "normalizeAgentRuntimeTools")
-    .mockImplementation((params) => {
-      const normalized = originalNormalize(params);
-      for (const source of params.tools.filter((tool) => tool.name.startsWith("metadata_"))) {
-        const target = normalized.find((tool) => tool.name === source.name);
-        normalizationRows.push({
-          name: source.name,
-          sourceHidden: source.hideFromChannelProgress === true,
-          targetHidden: target?.hideFromChannelProgress === true,
-          sourceEnumerable: Object.prototype.propertyIsEnumerable.call(
-            source,
-            "hideFromChannelProgress",
-          ),
-          cloned: source !== target,
-        });
-      }
-      return normalized;
-    });
   let unsubscribe = () => {};
   let state: Awaited<ReturnType<typeof createOpenClawTestState>> | undefined;
   let gateway: Awaited<ReturnType<typeof startGatewayWithClient>> | undefined;
@@ -322,7 +252,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
             text: `PROOF132266:${scenario.id} Call ${scenario.tool} once and finish with the returned result.`,
           }),
         });
-        expect(response.status).toBe(200);
+        assert.equal(response.status, 200);
         await busState.waitFor({
           kind: "message-text",
           direction: "outbound",
@@ -337,43 +267,31 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
               message.direction === "outbound" &&
               message.text === `FINAL132266:${scenario.id}`,
           );
-        expect(final).toHaveLength(1);
+        assert.equal(final.length, 1);
         result.acceptedMessage = final[0];
         const reported = final[0]!.toolCalls?.map((tool) => tool.name) ?? [];
-        expect(reported).toEqual(scenario.hidden ? [] : [scenario.tool]);
-        expect(calls.get(scenario.id)?.requests).toBe(2);
+        assert.deepEqual(reported, scenario.hidden ? [] : [scenario.tool]);
+        assert.equal(calls.get(scenario.id)?.requests, 2);
         const executed = fixture.executions.filter((item) => item.caseId === scenario.id);
-        expect(executed).toHaveLength(1);
+        assert.equal(executed.length, 1);
         const lifecycle = agentEvents.filter(
           (event) => event.stream === "tool" && event.data.toolCallId === executed[0]!.callId,
         );
-        expect(lifecycle.map((event) => event.data.phase)).toEqual(
-          expect.arrayContaining(["start", "update", "result"]),
-        );
-        expect(
-          lifecycle.every(
-            (event) => (event.data.hideFromChannelProgress === true) === scenario.hidden,
-          ),
-        ).toBe(true);
+        const toolPhases = lifecycle.map((event) => event.data.phase);
+        assert.ok(["start", "update", "result"].every((phase) => toolPhases.includes(phase)));
+        assert.ok(lifecycle.every(
+          (event) => (event.data.hideFromChannelProgress === true) === scenario.hidden,
+        ));
         const runId = lifecycle[0]!.runId;
-        await expect
-          .poll(
-            () =>
-              agentEvents.some(
-                (event) =>
-                  event.runId === runId &&
-                  event.stream === "lifecycle" &&
-                  event.data.phase === "end",
-              ),
-            { timeout: 5_000 },
-          )
-          .toBe(true);
-        expect(
-          agentEvents.some(
-            (event) =>
-              event.runId === runId && event.stream === "lifecycle" && event.data.phase === "start",
-          ),
-        ).toBe(true);
+        await waitForQaTransportCondition(
+          () => agentEvents.some(
+            (event) => event.runId === runId && event.stream === "lifecycle" && event.data.phase === "end",
+          ) ? true : undefined,
+          5_000,
+        );
+        assert.ok(agentEvents.some(
+          (event) => event.runId === runId && event.stream === "lifecycle" && event.data.phase === "start",
+        ));
         result.status = "pass";
       } catch (error) {
         result.error = String(error);
@@ -382,15 +300,11 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
       milestone(`${scenario.id}:${result.status}`);
     }
     try {
-      expect(resolverRows.some((row) => Number(row.factoryAfter) > Number(row.factoryBefore))).toBe(
-        true,
-      );
-      expect(resolverRows.some((row) => row.factoryAfter === row.factoryBefore)).toBe(true);
-      // The localhost mock is an OpenAI-compatible proxy. Native-only strict
-      // cloning is exercised separately; this route must retain its real policy.
-      expect(normalizationRows.length).toBeGreaterThan(0);
-      expect(normalizationRows.every((row) => row.sourceHidden === row.targetHidden)).toBe(true);
-      expect(providerErrors).toEqual([]);
+      // Factory counts are diagnostic; cached execute wrappers can invoke the factory.
+      // Exact cache-hit and normalization claims belong to the separately bound phase.
+      assert.ok(fixture.factories > 0);
+      assert.equal(fixture.executions.length, 5);
+      assert.deepEqual(providerErrors, []);
     } catch (error) {
       invariantErrors.push(String(error));
     }
@@ -398,13 +312,13 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
     invariantErrors.push(String(error));
   } finally {
     milestone("cleanup-starting");
-    try {
-      if (gateway) {
-        await disconnectGatewayClient(gateway.client);
-        await gateway.server.close({ reason: "metadata proof complete" });
+    if (gateway) {
+      for (const close of [
+        () => disconnectGatewayClient(gateway!.client),
+        () => gateway!.server.close({ reason: "metadata proof complete" }),
+      ]) {
+        try { await close(); } catch (error) { cleanupErrors.push(String(error)); }
       }
-    } catch (error) {
-      cleanupErrors.push(String(error));
     }
     // QA bus shutdown clears its ephemeral store; retain accepted facts before close.
     const busSnapshot = busState.getSnapshot();
@@ -421,13 +335,11 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
       cleanupErrors.push(String(error));
     }
     unsubscribe();
-    gatewayEntryObserver.mockRestore();
-    resolverObserver.mockRestore();
-    normalizationObserver.mockRestore();
     Reflect.deleteProperty(globalThis, fixtureSymbol);
     milestone("cleanup-finished");
     const verdict = {
-      schema: "openclaw-pr-132266-gateway-progress-proof-v1",
+      schema: "openclaw-pr-132266-gateway-progress-proof-v2",
+      runtime: "node/tsx",
       binding,
       status:
         results.length === 5 &&
@@ -442,8 +354,7 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
       executedScenarios: results.length,
       passedScenarios: results.filter((result) => result.status === "pass").length,
       results,
-      resolverRows,
-      normalizationRows,
+      ownerBoundaryEvidence,
       fixture,
       providerRequests,
       providerErrors,
@@ -453,8 +364,8 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
       cleanupErrors,
       limitations: [
         "Synthetic QA-channel and mock OpenAI HTTP; no Telegram, real provider, or Codex process executed.",
-        "Call-through observers record resolver/normalizer results; all dispatched values are the real production results.",
-        "Precise descriptor-before-runtime-factory ordering and direct nonenumerable clone controls remain separately bound metadata harness evidence.",
+        "No module mocks or runtime spies. Gateway scenarios prove downstream tool-event metadata and accepted channel visibility.",
+        "Exact descriptor cache cold/hit and normalizer clone invariants are mandatory in the same-head six-case metadata phase; Gateway factory totals alone do not prove a cache hit.",
       ],
     };
     await fs.mkdir(outputDir, { recursive: true });
@@ -476,12 +387,12 @@ it("preserves hidden tool metadata through real Gateway QA-channel turns", async
         notes: verdict.limitations,
       }),
     );
-    expect(verdict).toMatchObject({
-      status: "pass",
-      executedScenarios: 5,
-      passedScenarios: 5,
-      invariantErrors: [],
-      cleanupErrors: [],
-    });
+    assert.equal(verdict.status, "pass");
+    assert.equal(verdict.executedScenarios, 5);
+    assert.equal(verdict.passedScenarios, 5);
+    assert.deepEqual(verdict.invariantErrors, []);
+    assert.deepEqual(verdict.cleanupErrors, []);
   }
-}, 180_000);
+}
+
+await main();

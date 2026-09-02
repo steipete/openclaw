@@ -102,7 +102,7 @@ try {
   fs.mkdirSync(behaviorDirectory, { mode: 0o700 });
   const commands = binding.unitSuites.map((suite) => ({ name: suite.phase, argv: [process.execPath, "scripts/run-vitest.mjs", "run", suite.path, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, suite.phase + ".json")}`] }));
   commands.push({ name: "metadata", argv: [process.execPath, "--import", path.join(root, "scripts/tsx.mjs"), path.join(output, "metadata-after.mjs"), "candidate", path.join(output, "runtime/metadata/workspace")] });
-  commands.push({ name: "gateway", argv: [process.execPath, "scripts/run-vitest.mjs", "run", "--config", "test/vitest/vitest.extension-qa.config.ts", proofRelativePath, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, "gateway.json")}`] });
+  commands.push({ name: "gateway", argv: [process.execPath, "--import", path.join(root, "scripts/tsx.mjs"), proofPath] });
   assert.deepEqual(commands.map((command) => command.name), phaseNames);
   const envs = {};
   for (const { name } of commands) {
@@ -121,7 +121,7 @@ try {
     }
     envs[name] = env;
   }
-  const sourceBinding = { ...before, commands, proofTest: { path: proofRelativePath, sha256: binding.proofTestSHA256, tracked: false }, metadataHarnessSHA256: binding.metadataHarnessSHA256, expectedScenarioIds: binding.expectedScenarioIds, packageManager: pkg.packageManager, nodeVersion: process.version, envNames: Object.fromEntries(Object.entries(envs).map(([name, env]) => [name, Object.keys(env)])), dependencyExecution: "fresh frozen-lockfile install by hash-bound hosted controller", provider: "github-actions", executionEnvironment: "github-hosted", hostedProvenance: binding.hostedProvenance, hydrate: false };
+  const sourceBinding = { ...before, commands, proofTest: { path: proofRelativePath, sha256: binding.proofTestSHA256, tracked: false }, metadataHarnessSHA256: binding.metadataHarnessSHA256, expectedScenarioIds: binding.expectedScenarioIds, metadataScenarioIds: binding.metadataScenarioIds, packageManager: pkg.packageManager, nodeVersion: process.version, envNames: Object.fromEntries(Object.entries(envs).map(([name, env]) => [name, Object.keys(env)])), dependencyExecution: "fresh frozen-lockfile install by hash-bound hosted controller", provider: "github-actions", executionEnvironment: "github-hosted", hostedProvenance: binding.hostedProvenance, hydrate: false };
   writeJson("requested-binding.json", binding);
   writeJson("source-binding.json", sourceBinding);
   for (const command of commands) {
@@ -132,7 +132,7 @@ try {
     let result;
     const started = performance.now();
     try {
-      result = spawnSync(command.argv[0], command.argv.slice(1), { cwd: root, env: envs[command.name], stdio: ["ignore", out, err], timeout: 1_200_000, killSignal: "SIGTERM" });
+      result = spawnSync(command.argv[0], command.argv.slice(1), { cwd: root, env: envs[command.name], stdio: ["ignore", out, err], timeout: command.name === "gateway" ? 180_000 : 1_200_000, killSignal: "SIGTERM" });
     } finally {
       fs.closeSync(out);
       fs.closeSync(err);
@@ -167,19 +167,24 @@ try {
   }
   const behavior = JSON.parse(fs.readFileSync(path.join(behaviorDirectory, "verdict.json"), "utf8"));
   assert.deepEqual(behavior.binding, sourceBinding);
-  assert.equal(behavior.schema, "openclaw-pr-132266-gateway-progress-proof-v1");
+  assert.equal(behavior.schema, "openclaw-pr-132266-gateway-progress-proof-v2");
+  assert.equal(behavior.runtime, "node/tsx");
   assert.equal(behavior.status, "pass");
   for (const key of ["expectedScenarios", "executedScenarios", "passedScenarios"]) assert.equal(behavior[key], 5, key);
   assert.deepEqual(behavior.results.map((row) => row.id), binding.expectedScenarioIds);
   assert.ok(behavior.results.every((row) => row.status === "pass"));
   for (const key of ["invariantErrors", "providerErrors", "cleanupErrors"]) assert.deepEqual(behavior[key], [], key);
-  assert.ok(behavior.resolverRows.some((row) => row.factoryAfter > row.factoryBefore));
-  assert.ok(behavior.resolverRows.some((row) => row.factoryAfter === row.factoryBefore));
-  assert.ok(behavior.normalizationRows.length > 0);
-  assert.ok(behavior.normalizationRows.every((row) => row.sourceHidden === row.targetHidden));
+  assert.equal(verdict.metadataScenariosPassed, 6);
+  assert.deepEqual(behavior.ownerBoundaryEvidence, {
+    kind: "same-head-metadata-phase",
+    head: expectedHead,
+    harnessSHA256: binding.metadataHarnessSHA256,
+    verdictSHA256: sha256(fs.readFileSync(path.join(output, "metadata-verdict.json"))),
+    scenarios: binding.metadataScenarioIds,
+  });
+  assert.ok(behavior.fixture.factories > 0);
   assert.equal(behavior.providerRequests.length, 10);
   assert.equal(behavior.fixture.executions.length, 5);
-  checkVitest("gateway", proofRelativePath, 1);
   Object.assign(verdict, { passed: true, fullProofCompleted: true, phase: "complete", permanentTestsPassed: binding.unitSuites.reduce((sum, suite) => sum + suite.expectedTests, 0), gatewayScenariosPassed: 5, metadataScenariosPassed: 6 });
 } catch (error) {
   Object.assign(verdict, { passed: false, fullProofCompleted: false, error: error instanceof Error ? error.message : String(error), stack: error instanceof Error ? error.stack : null });
