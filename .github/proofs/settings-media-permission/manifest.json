@@ -1,0 +1,13 @@
+{
+  "schema": "openclaw-settings-media-permission-baseline-manifest-v1",
+  "sha256": {
+    ".github/proofs/settings-media-permission/binding.json": "c1d086a48dfd6a6319b795eb0648613605c8c80b6bb50e4eda7a36c782c0592c",
+    ".github/proofs/settings-media-permission/lifecycle-reporter.mjs": "0c117083cb8e8ba0f744e34802fc44f3268efca5d423c598d55db049f0e229f9",
+    ".github/proofs/settings-media-permission/proof.e2e.test.ts": "6025e546d57c1eaa31fc8628783d703da7d25eaf9ad2a110a1a30e46837e2b93",
+    ".github/proofs/settings-media-permission/run-proof.py": "52072df5b2fefe3e8f726c804fbd1a7721b653915bd4d0aaeaf4962830b54da3",
+    ".github/proofs/settings-media-permission/tests/ui/src/pages/chat/composer-microphone-picker.test.ts": "33d6f0292eea159fdf7f9ed20c667884da1c218fbc22bec91399ca546a701b93",
+    ".github/proofs/settings-media-permission/tests/ui/src/pages/config/config-page.test.ts": "3fcf2496f3079fa4296627fcdb785d40a4c398f50ad21bea3c0402a0d652890f",
+    ".github/proofs/settings-media-permission/vitest.ui-e2e.config.ts": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",
+    ".github/workflows/settings-media-permission-proof.yml": "4f0c29231ad16541fdb064dfc0ce59d26e5853a1c6c740d4133de14d323be926"
+  }
+}
