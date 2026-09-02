@@ -118,11 +118,19 @@
     "src/plugins/loader-module-runtime.ts": "8cb82c4b436875a7d744a9a795f4d65038d44215f344e51d5d55caa943ae9395",
     "src/plugins/plugin-module-loader-cache.ts": "aaec49f303a2732f01c8867202a8b6407b5f1899eae2b1855ef5610eb6bfdacb",
     "src/plugins/plugin-load-profile.ts": "bd944b8009a20d2fd2dc7c7e16128c14a383471d06aa366591b17db8ba16675e",
-    "src/plugins/loader-shared.ts": "4f48deccd0a1b93c69a9feb1f254ed1a8d5888ab92b0b837905e3a888f022394"
+    "src/plugins/loader-shared.ts": "4f48deccd0a1b93c69a9feb1f254ed1a8d5888ab92b0b837905e3a888f022394",
+    "src/gateway/server-plugin-runtime-generation.test.ts": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d",
+    "src/shared/deferred.ts": "2fd613018154ee1ab3e43d183d9f0c770d286dfef05562f1493cd9674545b884",
+    "src/shared/lazy-runtime.ts": "092ba8a75c1a2580b2efc856880c099e4acafd82101a02526ed7b532736064ea",
+    "test/non-isolated-runner.ts": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
+    "src/gateway/server-lifecycle.ts": "3d1d949c8d3b761f95b42afc7c458ab0b1612fcd1df08a8f25f87d164e98e1c6",
+    "src/gateway/server-reload-hot.ts": "e4f0776cc12986fc3e11326b73620018f4ac44ba15f7ae6c0e0b9ac0c911d1ad",
+    "src/gateway/server-reload-managed.ts": "6c7d0fc30451ebe8f1d20ddaed7f28feacfc8e8a26372e509cfd00a5e12ac5d0",
+    "test/vitest/vitest.performance-config.ts": "bda75268da4e8920890a32dfc836670a2874b4f9da3c2876f1d89be65e59fab3"
   },
-  "sourceFileCount": 119,
+  "sourceFileCount": 127,
   "proofTestRemotePath": "extensions/qa-lab/src/plugin-tool-progress.gateway-proof.test.ts",
-  "proofTestSHA256": "32eaea286f3cc6fdc0d5a7a315ae08a959f616caeb3d752c49ccbeb93e6953cb",
+  "proofTestSHA256": "1efe47dd33696cc83bf4db5109161842241deb1c14650ff12ef8a7f1bfa5ab69",
   "expectedScenarioIds": [
     "hidden-cold",
     "hidden-reused",
@@ -168,8 +176,8 @@
   "nodeVersion": "24.19.0",
   "proofRepository": "steipete/openclaw",
   "proofBranch": "codex/round10-secretless-proof",
-  "driverSHA256": "913b64ff201f2fdaf1212ddc7f93af0248557645cc0abf68977dcf881c7c0895",
-  "extractorSHA256": "aa6edd28855f25d1a112d59458a3e7546e20834fa5b78f09e85ebb81d38448d7",
+  "driverSHA256": "6a5d5c0979d8cc33ea25e0eaf6a236a83323db2ba4712ac19885e0079ba4737c",
+  "extractorSHA256": "7727eda5505f1c810cdf136b18752b39f37a3e752452923453de85f5a6f36d3f",
   "fixtureSetupCorrection": {
     "previousSHA256": "d0beca2b313254c09cc4eb85e90f378e4bb57aa7c591d6c3a5e3ec416640cbc4",
     "correctedSHA256": "d93b9d99dd5ce38b6165db5afa0a5830ec1e318a39df5fd707d676bee573ed4d",
@@ -210,8 +218,8 @@
     "assertionsAndTimeoutsUnchanged": true
   },
   "postBindDiagnostic": {
-    "previousProofSHA256": "6584d66ca93c309650071911f9497d57895afa575882c66cad0dfb20e4a1d667",
-    "currentProofSHA256": "32eaea286f3cc6fdc0d5a7a315ae08a959f616caeb3d752c49ccbeb93e6953cb",
+    "previousProofSHA256": "32eaea286f3cc6fdc0d5a7a315ae08a959f616caeb3d752c49ccbeb93e6953cb",
+    "currentProofSHA256": "1efe47dd33696cc83bf4db5109161842241deb1c14650ff12ef8a7f1bfa5ab69",
     "module": "src/gateway/server-plugin-bootstrap.ts",
     "function": "loadGatewayStartupPlugins",
     "markerPrefix": "METADATA_PROOF_POSTBIND ",
@@ -221,11 +229,26 @@
       "import-error",
       "load-enter",
       "load-return",
-      "load-error"
+      "load-error",
+      "load-export-read"
     ],
     "productionSourceUnchanged": true,
-    "originalHarnessBytesUnchangedExceptInsertedObserver": true,
     "assertionsAndTimeoutsUnchanged": true,
-    "limitation": "Vitest hoists the registration, rewrites static imports, and importOriginal uses its original-module query identity. Interpret phase reachability; do not claim identical module-loader timing or cycle behavior."
+    "limitation": "Vitest hoists registration and rewrites static imports. importActual uses an original-request query that transport strips before RPC fetching; manual and actual paths differ, without a claim of distinct underlying real-module identity. Interpret reached boundaries, not identical loader timing or an established circular dependency.",
+    "observation": "Explicit read-only getter records consumption of the loader export; returns one stable call-through function. No claim/runtime identity changes.",
+    "originalBehaviorHarnessBytesUnchanged": true
+  },
+  "phaseOrder": [
+    "unit-normalizer",
+    "unit-cache",
+    "unit-resolver",
+    "metadata",
+    "gateway"
+  ],
+  "metadataBeforeGateway": {
+    "separateProcessAndHome": true,
+    "sixCaseAssertionsUnchanged": true,
+    "verdictPersistedImmediatelyAfterSuccessfulPhase": true,
+    "fullProofStillRequiresGateway": true
   }
 }

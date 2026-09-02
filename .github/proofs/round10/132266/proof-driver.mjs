@@ -7,7 +7,7 @@ import { createHash } from "node:crypto";
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const archive = "/tmp/openclaw-132266-after-proof.tgz";
-const phaseNames = ["unit-normalizer", "unit-cache", "unit-resolver", "gateway", "metadata"];
+const phaseNames = ["unit-normalizer", "unit-cache", "unit-resolver", "metadata", "gateway"];
 let output, root, binding, before, snapshot, proofPath;
 let overlayCreated = false;
 let expectedHead = null;
@@ -101,8 +101,8 @@ try {
   const behaviorDirectory = path.join(output, "behavior");
   fs.mkdirSync(behaviorDirectory, { mode: 0o700 });
   const commands = binding.unitSuites.map((suite) => ({ name: suite.phase, argv: [process.execPath, "scripts/run-vitest.mjs", "run", suite.path, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, suite.phase + ".json")}`] }));
-  commands.push({ name: "gateway", argv: [process.execPath, "scripts/run-vitest.mjs", "run", "--config", "test/vitest/vitest.extension-qa.config.ts", proofRelativePath, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, "gateway.json")}`] });
   commands.push({ name: "metadata", argv: [process.execPath, "--import", path.join(root, "scripts/tsx.mjs"), path.join(output, "metadata-after.mjs"), "candidate", path.join(output, "runtime/metadata/workspace")] });
+  commands.push({ name: "gateway", argv: [process.execPath, "scripts/run-vitest.mjs", "run", "--config", "test/vitest/vitest.extension-qa.config.ts", proofRelativePath, "--reporter=default", "--reporter=json", `--outputFile=${path.join(output, "gateway.json")}`] });
   assert.deepEqual(commands.map((command) => command.name), phaseNames);
   const envs = {};
   for (const { name } of commands) {
@@ -145,6 +145,25 @@ try {
     assert.equal(result.status, 0, command.name);
     const unit = binding.unitSuites.find((suite) => suite.phase === command.name);
     if (unit) checkVitest(command.name, unit.path, unit.expectedTests);
+    if (command.name === "metadata") {
+      const metadataLines = fs.readFileSync(path.join(output, "metadata.stdout"), "utf8").split("\n").filter((line) => line.startsWith("METADATA_PROOF "));
+      assert.equal(metadataLines.length, 1);
+      const metadata = JSON.parse(metadataLines[0].slice("METADATA_PROOF ".length));
+      assert.equal(metadata.mode, "candidate");
+      assert.equal(metadata.factories, 3);
+      assert.equal(metadata.executions, 6);
+      assert.deepEqual(metadata.rows.map((row) => row.label), binding.metadataScenarioIds);
+      for (const row of metadata.rows) {
+        const hidden = !["cache-hit-visible", "visible"].includes(row.label);
+        assert.equal(row.marker, hidden, row.label);
+        assert.equal(row.lifecycleEvents, 3, row.label);
+        assert.equal(row.finalReplies, 1, row.label);
+        assert.equal(row.progressCallbacks, hidden ? 0 : 2, row.label);
+        assert.equal(row.itemCallbacks, hidden ? 0 : 1, row.label);
+      }
+      writeJson("metadata-verdict.json", metadata);
+      verdict.metadataScenariosPassed = 6;
+    }
   }
   const behavior = JSON.parse(fs.readFileSync(path.join(behaviorDirectory, "verdict.json"), "utf8"));
   assert.deepEqual(behavior.binding, sourceBinding);
@@ -161,22 +180,6 @@ try {
   assert.equal(behavior.providerRequests.length, 10);
   assert.equal(behavior.fixture.executions.length, 5);
   checkVitest("gateway", proofRelativePath, 1);
-  const metadataLines = fs.readFileSync(path.join(output, "metadata.stdout"), "utf8").split("\n").filter((line) => line.startsWith("METADATA_PROOF "));
-  assert.equal(metadataLines.length, 1);
-  const metadata = JSON.parse(metadataLines[0].slice("METADATA_PROOF ".length));
-  assert.equal(metadata.mode, "candidate");
-  assert.equal(metadata.factories, 3);
-  assert.equal(metadata.executions, 6);
-  assert.deepEqual(metadata.rows.map((row) => row.label), binding.metadataScenarioIds);
-  for (const row of metadata.rows) {
-    const hidden = !["cache-hit-visible", "visible"].includes(row.label);
-    assert.equal(row.marker, hidden, row.label);
-    assert.equal(row.lifecycleEvents, 3, row.label);
-    assert.equal(row.finalReplies, 1, row.label);
-    assert.equal(row.progressCallbacks, hidden ? 0 : 2, row.label);
-    assert.equal(row.itemCallbacks, hidden ? 0 : 1, row.label);
-  }
-  writeJson("metadata-verdict.json", metadata);
   Object.assign(verdict, { passed: true, fullProofCompleted: true, phase: "complete", permanentTestsPassed: binding.unitSuites.reduce((sum, suite) => sum + suite.expectedTests, 0), gatewayScenariosPassed: 5, metadataScenariosPassed: 6 });
 } catch (error) {
   Object.assign(verdict, { passed: false, fullProofCompleted: false, error: error instanceof Error ? error.message : String(error), stack: error instanceof Error ? error.stack : null });

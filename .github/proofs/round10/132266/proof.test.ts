@@ -36,18 +36,22 @@ vi.mock("../../../src/gateway/server-plugin-bootstrap.js", async (importOriginal
   }
   mark("import-ready");
   const load = actual.loadGatewayStartupPlugins;
+  const observedLoad = (...args: Parameters<typeof load>) => {
+    mark("load-enter");
+    try {
+      const result = load(...args);
+      mark("load-return");
+      return result;
+    } catch (error) {
+      mark("load-error");
+      throw error;
+    }
+  };
   return {
     ...actual,
-    loadGatewayStartupPlugins(...args: Parameters<typeof load>) {
-      mark("load-enter");
-      try {
-        const result = load(...args);
-        mark("load-return");
-        return result;
-      } catch (error) {
-        mark("load-error");
-        throw error;
-      }
+    get loadGatewayStartupPlugins() {
+      mark("load-export-read");
+      return observedLoad;
     },
   };
 });

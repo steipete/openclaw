@@ -26,7 +26,7 @@ archive = G / ('proof-success.tgz' if receipt.get('passed') else 'proof-failure.
 assert receipt['artifact'] == binding['remoteArchive']
 assert archive.stat().st_size == receipt['artifactBytes'] <= 65 * 1024 * 1024
 assert hashlib.sha256(archive.read_bytes()).hexdigest() == receipt['artifactSHA256']
-phases = ['unit-normalizer', 'unit-cache', 'unit-resolver', 'gateway', 'metadata']
+phases = ['unit-normalizer', 'unit-cache', 'unit-resolver', 'metadata', 'gateway']
 allowed = {'proof-verdict.json', 'requested-binding.json', 'source-binding.json', 'source-after.json', 'proof.test.ts', 'metadata-after.mjs', 'metadata-verdict.json', 'behavior/verdict.json', 'behavior/report.md'}
 allowed.update(f'{phase}{suffix}' for phase in phases for suffix in ['.stdout', '.stderr', '.json', '-result.json'])
 allowed.add('behavior/startup-timeline.jsonl')
