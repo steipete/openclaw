@@ -143,6 +143,7 @@ def run(argv, cwd, env, prefix, timeout):
                 process.kill()
                 process.wait(timeout=15)
         receipt = {"argv": argv, "cwd": str(cwd), "exitCode": process.returncode,
+                   "leaderExitObserved": process.returncode is not None,
                    "termination": termination, "seconds": round(time.monotonic() - started, 3)}
     total_bytes = 0
     for stream in ("stdout", "stderr"):
@@ -179,7 +180,22 @@ def child_environment(root, node):
     return env
 
 
-def read_tests(path, title, before):
+def expected_native_failure_block(stderr, test):
+    # JSON reports the assertion stack; the verbose reporter owns received-value diffs.
+    lines = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", stderr).splitlines()
+    chain = " > ".join([*test["ancestorTitles"], test["title"]])
+    heading = re.compile(r"\s*FAIL\s+\S+\s+test/scripts/install-ps1\.test\.ts\s+>\s+" + re.escape(chain) + r"\s*")
+    starts = [index for index, line in enumerate(lines) if heading.fullmatch(line)]
+    require(len(starts) == 1, "Expected named verbose failure block missing or duplicated")
+    ends = [index for index, line in enumerate(lines) if index > starts[0] and re.fullmatch(r"\s*⎯+\[1/1\]⎯+\s*", line)]
+    require(len(ends) == 1, "Expected single-failure block terminator missing or duplicated")
+    block = "\n".join(lines[starts[0]:ends[0] + 1])
+    require("tar.cmd : tar fixture failure" in block and "FullyQualifiedErrorId : NativeCommandError" in block,
+            "Named original failure was not redirected native stderr")
+    return block
+
+
+def read_tests(path, title, before, stderr, expected_count):
     require(path.is_file(), "Canonical Vitest JSON was not produced")
     require(path.stat().st_size < MAX_LOG_BYTES, "Oversized Vitest JSON")
     data = json.loads(path.read_text(encoding="utf-8-sig"))
@@ -188,7 +204,9 @@ def read_tests(path, title, before):
     require(not files[0].get("message"), "Vitest reported a module or hook error")
     tests = files[0].get("assertionResults", [])
     require(tests, "No actual test cases")
-    require(data.get("numTotalTests") == len(tests), "Incomplete case inventory")
+    require(data.get("numTotalTests") == len(tests) == expected_count, "Incomplete case inventory")
+    require(data.get("numPassedTests") == expected_count - (1 if before else 0), "Unexpected passed-test count")
+    require(data.get("numPendingTests") == 0 and data.get("numTodoTests") == 0, "Unexpected skipped or pending tests")
     require(data.get("numFailedTests") == (1 if before else 0), "Unexpected failed-test count")
     require(data.get("success") is (not before), "Unexpected Vitest success flag")
     target = [test for test in tests if test.get("title") == title]
@@ -196,8 +214,8 @@ def read_tests(path, title, before):
     failed = [test for test in tests if test["status"] == "failed"]
     if before:
         require(failed == target and target[0]["status"] == "failed", "Original must fail only the new regression")
-        failure = "\n".join(target[0].get("failureMessages") or [])
-        require("tar fixture failure" in failure, "Original failure was not redirected native stderr")
+        block = expected_native_failure_block(stderr, target[0])
+        (path.parent / "expected-failure-block.stderr").write_text(block + "\n", encoding="utf-8")
     else:
         require(data.get("success") is True and not failed and target[0]["status"] == "passed", "Published candidate did not pass")
     require(all(test["status"] in {"passed", "failed", "pending", "skipped", "todo"} for test in tests), "Unknown test status")
@@ -211,7 +229,8 @@ def main():
     output.mkdir(parents=True)
     assets = Path(__file__).resolve().parent
     proof_root = assets.parents[2]
-    report = {"schema": "openclaw-pr-135410-permanent-proof-v1", "status": "running", "variants": {}}
+    report = {"schema": "openclaw-pr-135410-permanent-proof-v1", "status": "running", "variants": {},
+              "passScope": "Exact permanent tests, source integrity and command-leader completion; Windows descendant closure is unavailable."}
     try:
         require(os.name == "nt" and os.environ.get("RUNNER_ENVIRONMENT") == "github-hosted", "Hosted Windows required")
         require(os.environ.get("GITHUB_REPOSITORY") == "steipete/openclaw", "Wrong proof repository")
@@ -293,14 +312,16 @@ def main():
             write_json(output / "run.json", report)
             result_path = case_output / "tests.json"
             receipt = run([str(node), "scripts/run-vitest.mjs", pins["target"], "--reporter=verbose", "--reporter=json", "--outputFile=" + str(result_path)], root, env, case_output / "tests", 480)
+            verify_source_guard(root, source_guard, case_output, "tested")
+            verify_asset_lock(proof_root, manifest_bytes, manifest)
+            verify_source_guard(proof_root, proof_guard, output, variant + "-tested")
             require(receipt["exitCode"] == (1 if variant == "before" else 0), variant + " unexpected test exit")
             console = (case_output / "tests.stdout").read_text(encoding="utf-8", errors="replace") + "\n" + (case_output / "tests.stderr").read_text(encoding="utf-8", errors="replace")
             require(not re.search(r"Vitest caught [1-9]\d* unhandled errors?|\[vitest\] UNHANDLED ERRORS \(", console), "Canonical Vitest reported unhandled errors")
             require("Some tests are still running when generating the JSON report" not in console, "Vitest report was incomplete")
-            inventory = read_tests(result_path, pins["regressionTitle"], variant == "before")
-            verify_source_guard(root, source_guard, case_output, "tested")
-            verify_asset_lock(proof_root, manifest_bytes, manifest)
-            verify_source_guard(proof_root, proof_guard, output, variant + "-tested")
+            inventory = read_tests(result_path, pins["regressionTitle"], variant == "before",
+                                   (case_output / "tests.stderr").read_text(encoding="utf-8", errors="replace"),
+                                   pins["expectedTestCount"])
             report["variants"][variant] = {"sha": pin["sha"], "tree": pin["tree"], "testSha256": pins["testOverlaySha256"], "exitCode": receipt["exitCode"], "tests": inventory, "psModulePath": next((v for k, v in env.items() if k.lower() == "psmodulepath"), None)}
             write_json(output / "run.json", report)
         original = sorted(report["variants"]["before"]["tests"], key=lambda test: test["name"])
@@ -318,12 +339,19 @@ def main():
         report["status"] = "fail"
         report["error"] = str(error)
     finally:
-        try:
-            shutil.rmtree(work)
-            report["workspaceCleanupComplete"] = not work.exists()
-        except Exception as error:
-            report["status"] = "fail"
-            report["cleanupError"] = str(error)
+        # Canonical Windows launches join leader exit/close, not pipe-independent descendants.
+        # Keep their namespaces and our containing profiles for hosted-runner disposal.
+        warnings = []
+        for variant in ("before", "after"):
+            stderr = output / variant / "tests.stderr"
+            if stderr.is_file():
+                warnings.extend(line for line in stderr.read_text(encoding="utf-8", errors="replace").splitlines()
+                                if "[vitest] retained temporary namespace " in line)
+        report["lifecycle"] = {"descendantClosureVerified": False,
+                               "verificationLimit": "Canonical Windows non-group launches do not verify pipe-independent descendants.",
+                               "canonicalWarnings": warnings,
+                               "workRetained": work.exists(), "retainedWorkPath": str(work),
+                               "disposalOwner": "GitHub-hosted runner", "providerDisposalObserved": False}
         write_json(output / "run.json", report)
     require(report["status"] == "pass", report.get("error", "Permanent test proof failed"))
 
