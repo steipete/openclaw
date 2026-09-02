@@ -18,6 +18,15 @@ NEW = '        Invoke-CommandFromWindowsSafeDirectory -CommandPath $tarCommand.S
 ENTRY = re.compile(r"\r?\n\$null = Main\r?\nComplete-Install\s*$", re.M)
 NODE_HASH = hashlib.sha256(b"node fixture bytes").hexdigest()
 OUTPUT_CAP = 2 * 1024 * 1024
+# Resolve only the current engine's required stock modules before module autoload can
+# search unrelated runner modules; this identical setup precedes every proof process.
+STOCK_MODULE_SETUP = (
+    "foreach ($proofModule in @('Microsoft.PowerShell.Utility', 'Microsoft.PowerShell.Management')) { "
+    "$proofModulePath = [IO.Path]::Combine($PSHOME, 'Modules', $proofModule, ($proofModule + '.psd1')); "
+    "[Console]::Error.WriteLine('stock-module-import=' + $proofModulePath); "
+    "Import-Module -Name $proofModulePath -ErrorAction Stop; "
+    "[Console]::Error.WriteLine('stock-module-loaded=' + $proofModule); }; "
+)
 
 
 def digest(data):
@@ -162,7 +171,8 @@ def main():
                 "[Console]::Error.WriteLine('probe-entered'); "
                 "[Console]::Error.WriteLine('probe-pshome=' + $PSHOME); "
                 "[Console]::Error.WriteLine('probe-modulepath=' + $env:PSModulePath); "
-                "@{version=$PSVersionTable.PSVersion.ToString();edition=$PSVersionTable.PSEdition;hostName=$Host.Name}|ConvertTo-Json -Compress; "
+                + STOCK_MODULE_SETUP
+                + "@{version=$PSVersionTable.PSVersion.ToString();edition=$PSVersionTable.PSEdition;hostName=$Host.Name}|ConvertTo-Json -Compress; "
                 "[Console]::Error.WriteLine('probe-serialized')"
             )
             probe = run_child(
@@ -198,7 +208,7 @@ def main():
                 })
                 row_env = dict(env, OPENCLAW_INSTALL_PROOF_CONFIG=str(config_path))
                 literal = "'" + str(script).replace("'", "''") + "'"
-                invocation = "$ErrorActionPreference = 'Stop'; & ([scriptblock]::Create((Get-Content -LiteralPath " + literal + " -Raw)))"
+                invocation = STOCK_MODULE_SETUP + "$ErrorActionPreference = 'Stop'; & ([scriptblock]::Create((Get-Content -LiteralPath " + literal + " -Raw)))"
                 command = [engines[engine_key], "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", invocation]
                 receipt = run_child(command, row_env, work, rows_dir / case_id)
                 write_json(rows_dir / (case_id + ".command.json"), receipt)
