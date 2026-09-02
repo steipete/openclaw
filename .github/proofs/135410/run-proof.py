@@ -117,7 +117,14 @@ def main():
         for relative, expected in manifest.items():
             path = (assets_root / relative).resolve()
             require(path.is_relative_to(assets_root), "Manifest path escaped proof assets")
-            require(digest(path.read_bytes()) == expected, "Proof asset hash mismatch: " + relative)
+            data = path.read_bytes()
+            actual = digest(data)
+            report.setdefault("assetVerification", []).append({
+                "path": relative, "expectedSha256": expected, "actualSha256": actual,
+                "bytes": len(data), "lfCount": data.count(b"\n"),
+                "crlfCount": data.count(b"\r\n"),
+            })
+            require(actual == expected, "Proof asset hash mismatch: " + relative)
         require(git_head(baseline) == BASE_SHA, "Baseline checkout SHA mismatch")
         original = subprocess.check_output(["git", "-C", str(baseline), "show", BASE_SHA + ":scripts/install.ps1"])
         require(digest(original) == BASE_HASH, "Baseline installer bytes mismatch")
