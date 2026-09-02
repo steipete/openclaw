@@ -230,7 +230,11 @@ def main():
         require(digest(node.read_bytes()) == pins["nodeWindowsX64ExeSha256"], "Node executable differs from official pinned distribution")
         corepack = node.parent / "node_modules/corepack/dist/corepack.js"
         require(corepack.is_file(), "Bundled Corepack missing")
-        require(digest(corepack.read_bytes()) == pins["corepackLauncherSha256"], "Corepack launcher differs from pinned Node source")
+        corepack_sha = digest(corepack.read_bytes())
+        write_json(output / "toolchain.json", {"nodeSha256": digest(node.read_bytes()),
+                   "corepackLauncherSha256": corepack_sha,
+                   "expectedCorepackLauncherSha256": pins["corepackLauncherSha256"]})
+        require(corepack_sha == pins["corepackLauncherSha256"], "Corepack launcher differs from pinned Windows Node distribution")
         require(json.loads((corepack.parent.parent / "package.json").read_text())["version"] == pins["corepackVersion"], "Bundled Corepack version mismatch")
         report.update(workflowSha=os.environ["GITHUB_SHA"], bindingsSha256=digest((assets / "bindings.json").read_bytes()),
                       runner={key: os.environ.get(key) for key in ["RUNNER_ENVIRONMENT", "RUNNER_OS", "ImageOS", "ImageVersion", "GITHUB_RUN_ID"]},
