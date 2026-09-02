@@ -1,0 +1,8 @@
+{
+  ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+  ".github/proofs/135410-permanent/bindings.json": "2e9d505c88a1d5764f20dd9f2f35129e1ad5973706df6c8fdfc47dda9b529309",
+  ".github/proofs/135410-permanent/install-ps1.test.ts": "2a31256c47e51ebbe8d50b5560498d01f2aa312cc9880c09f4115b2f54656ab1",
+  ".github/proofs/135410-permanent/run-proof.py": "79a5b60c848e92a28a469331884de651969a5a7758273500702df096eb165f93",
+  ".github/workflows/round10-windows-permanent-proof.yml": "40b7251f181dcc237dc51466ba4b987554e54f091ecbfcc68349c8286dc1c3d4",
+  "README.md": "1e5bab3945cfdd086a717678ec188d5f37e2ad1f732cb664a87f77b61a25018e"
+}

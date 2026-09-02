@@ -1,0 +1,63 @@
+{
+  "schema": "openclaw-pr-135410-permanent-test-bindings-v1",
+  "nodeVersion": "22.22.3",
+  "nodeWindowsX64ExeSha256": "780f44f2c53c108bae261ada21a525b4bfe733c020ac85e41bfe94479090ac9b",
+  "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+  "target": "test/scripts/install-ps1.test.ts",
+  "regressionTitle": "reaches portable Node ZIP fallback after redirected native tar stderr",
+  "source": {
+    "before": {
+      "sha": "af531525c46444521986002d64b888ee5ed097cb",
+      "tree": "117f79bc03b11cb436872695bac6210bb0127a57",
+      "files": {
+        "scripts/install.ps1": "b3203481f6a1dc9fbe73ced87c9ca3b76102a957fefce7c01e6c230db2545875",
+        "test/scripts/install-ps1.test.ts": "4646886a25a52bacc8404bc754bdc25816f680a18ee28b295248a2c820c0c155",
+        "test/scripts/test-helpers.ts": "ab6844590210dd05a09ed5f60c928aeb7b7c1a8421201c482f2ef558d115a25b",
+        "test/helpers/node-version-cases.ts": "6195ff91aceeaf21217a25d65f20f18c002b4b3b1e620117f3c9d5bdf917dc47",
+        "node-version.mjs": "8ca5102f3beaea724f23bab3f92527d772de1470b3af6f3edce18b296342c8da",
+        "package.json": "97ac89b068940894bccd937044c66b7d764157774b3bf89ef8a9b82ac36155b1",
+        "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443",
+        "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
+        ".npmrc": "f1d021e2abdf8817d83e35feb1f5d604e8c985aa0553bec3d417cf6f93e9c09c",
+        "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+        "scripts/run-vitest-child.mts": "27dee5ab6b593acf3f7e370f237b4b55a43acf8ca18ca0cd33a15f2756c7ebb0",
+        "scripts/run-vitest.mts": "5a9a97bf9e89ff2121f6cfd580ed29432b2b980ce288166666522209d6535b29",
+        "scripts/test-projects-run.mts": "c6653c6af379a8b9c31b226c0830efe95cdbeb66171c5239dd8be61002803b25",
+        "scripts/test-projects.test-support.mts": "f22c23a8aa1f3cb65b2667dddc822a3d051e021dc95869deedbf27b62146467b",
+        "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+        "scripts/lib/vitest-report-owner.mts": "ebd7212131ab3de152e02757fab052598a6a932fd5214f4b96d3e7d8b70a5b84",
+        "test/vitest/vitest.tooling.config.ts": "798c4d6373d19e8b3f15e18a07a672298b951258667b7f63f232bb30c692f5c3",
+        "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+        ".github/workflows/ci.yml": "b1bcb077b649ec21dd0a8d8ccba2a12645ddbdcbb3bd8f8eec8394b672ee1dea"
+      }
+    },
+    "after": {
+      "sha": "edb35c6c96346b573bb6389cba40dcdba273fe56",
+      "tree": "ab22096c800bf076a00745098d3a4a6910a25ceb",
+      "files": {
+        "scripts/install.ps1": "1d4ba1cafb90a8fd1472ad99687433774441909777728b5470918203117473e2",
+        "test/scripts/install-ps1.test.ts": "2a31256c47e51ebbe8d50b5560498d01f2aa312cc9880c09f4115b2f54656ab1",
+        "test/scripts/test-helpers.ts": "ab6844590210dd05a09ed5f60c928aeb7b7c1a8421201c482f2ef558d115a25b",
+        "test/helpers/node-version-cases.ts": "6195ff91aceeaf21217a25d65f20f18c002b4b3b1e620117f3c9d5bdf917dc47",
+        "node-version.mjs": "8ca5102f3beaea724f23bab3f92527d772de1470b3af6f3edce18b296342c8da",
+        "package.json": "97ac89b068940894bccd937044c66b7d764157774b3bf89ef8a9b82ac36155b1",
+        "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443",
+        "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
+        ".npmrc": "f1d021e2abdf8817d83e35feb1f5d604e8c985aa0553bec3d417cf6f93e9c09c",
+        "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+        "scripts/run-vitest-child.mts": "27dee5ab6b593acf3f7e370f237b4b55a43acf8ca18ca0cd33a15f2756c7ebb0",
+        "scripts/run-vitest.mts": "5a9a97bf9e89ff2121f6cfd580ed29432b2b980ce288166666522209d6535b29",
+        "scripts/test-projects-run.mts": "c6653c6af379a8b9c31b226c0830efe95cdbeb66171c5239dd8be61002803b25",
+        "scripts/test-projects.test-support.mts": "f22c23a8aa1f3cb65b2667dddc822a3d051e021dc95869deedbf27b62146467b",
+        "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+        "scripts/lib/vitest-report-owner.mts": "ebd7212131ab3de152e02757fab052598a6a932fd5214f4b96d3e7d8b70a5b84",
+        "test/vitest/vitest.tooling.config.ts": "798c4d6373d19e8b3f15e18a07a672298b951258667b7f63f232bb30c692f5c3",
+        "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+        ".github/workflows/ci.yml": "3ec760db123a4360c90107550142b6e8ef05791dd4f0e52ad6046238b13a3803"
+      }
+    }
+  },
+  "testOverlaySha256": "2a31256c47e51ebbe8d50b5560498d01f2aa312cc9880c09f4115b2f54656ab1",
+  "corepackVersion": "0.34.6",
+  "corepackLauncherSha256": "3655bc798f300951f2070fee411b337d626b0c3ae80c2d24c46ccac4595d4bf9"
+}
