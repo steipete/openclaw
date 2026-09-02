@@ -1,0 +1,10 @@
+{
+  "sha256": {
+    ".github/proofs/round10/131226/candidate-owner.diff": "4b6fc8f464043404ba66fd57e0a1710ea664a56f6201e6f9864e26aa139494dd",
+    ".github/proofs/round10/131226/candidate-owner.ts.txt": "525210523174c339d2930365ba52f76275c9fd406a30c624a9c16f193b46e282",
+    ".github/proofs/round10/131226/execution-binding.json": "aea429834d6dc4a207524f5744d897d19b9ad3b069c72f62ba52969ad174ce9c",
+    ".github/proofs/round10/131226/gateway-proof.mjs": "2c33a92e64071dffe78673fab59f0a31124f7bc739db04c03e1a82e2e985ebd6",
+    ".github/proofs/round10/131226/run-proof.py": "56904190abcb56e3ec80b3a196591c7d85aa239a47620c83ed8cfd80d864feaf",
+    ".github/workflows/round10-media-terminal-proof.yml": "954572089519ded03a5297b7df8e72fb10b7b6c809b4a3b8b9e312b05123be8c"
+  }
+}

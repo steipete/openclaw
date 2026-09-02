@@ -1,0 +1,30 @@
+--- a/src/agents/embedded-agent-runner/run/tool-media-payloads.ts
++++ b/src/agents/embedded-agent-runner/run/tool-media-payloads.ts
+@@ -15,7 +15,7 @@
+ 
+ /**
+  * Merges media emitted by tools into the channel payloads produced by the
+- * assistant turn. The first non-reasoning reply owns the media so text and
++ * assistant turn. The first successful non-reasoning reply owns the media so text and
+  * attachments stay together; metadata is preserved for delivery bookkeeping.
+  */
+ export function mergeAttemptToolMediaPayloads(params: {
+@@ -32,8 +32,8 @@
+     new Set(params.toolMediaUrls?.map((url) => url.trim()).filter(Boolean) ?? []),
+   );
+   const payloads = params.payloads?.length ? [...params.payloads] : [];
+-  const payloadIndex = payloads.findIndex((payload) => !payload.isReasoning);
+-  const visiblePayload = payloads.at(payloadIndex);
++  const payloadIndex = payloads.findIndex((payload) => !payload.isReasoning && !payload.isError);
++  const visiblePayload = payloads[payloadIndex];
+   const isSourceReplyTranscriptMirror =
+     params.sourceReplyDeliveryMode === "message_tool_only" &&
+     visiblePayload &&
+@@ -155,6 +155,6 @@
+ 
+   const mediaPayload = buildMediaPayload(mergeableMediaUrls, true);
+ 
+-  // Reasoning-only turns still need a concrete media payload so channel delivery sees the attachment.
++  // Error/reasoning-only turns still need a media payload so delivery sees the attachment.
+   return appendOwnedMedia([...payloads, mediaPayload]);
+ }
