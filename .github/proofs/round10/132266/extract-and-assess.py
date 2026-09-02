@@ -27,7 +27,7 @@ assert receipt['artifact'] == binding['remoteArchive']
 assert archive.stat().st_size == receipt['artifactBytes'] <= 65 * 1024 * 1024
 assert hashlib.sha256(archive.read_bytes()).hexdigest() == receipt['artifactSHA256']
 phases = ['build', 'unit-normalizer', 'unit-cache', 'unit-resolver', 'metadata', 'gateway']
-allowed = {'proof-verdict.json', 'requested-binding.json', 'source-binding.json', 'source-after.json', 'runtime-build.json', 'runtime-after.json', 'proof.test.ts', 'metadata-after.mjs', 'metadata-verdict.json', 'behavior/verdict.json', 'behavior/report.md'}
+allowed = {'proof-verdict.json', 'requested-binding.json', 'source-binding.json', 'source-after.json', 'runtime-build-inventory.json', 'runtime-build.json', 'runtime-after.json', 'proof.test.ts', 'metadata-after.mjs', 'metadata-verdict.json', 'behavior/verdict.json', 'behavior/report.md'}
 allowed.update(f'{phase}{suffix}' for phase in phases for suffix in ['.stdout', '.stderr', '.json', '-result.json'])
 allowed.update({'behavior/startup-timeline.jsonl', 'behavior/staged-before.json', 'behavior/staged-after.json', 'behavior/child-cleanup.json', 'behavior/gateway.stdout.log', 'behavior/gateway.stderr.log', 'behavior/README.txt'})
 out = G / 'extracted'
@@ -105,12 +105,15 @@ if proof['passed']:
     assert behavior['schema'] == 'openclaw-pr-132266-gateway-progress-proof-v2'
     assert behavior['runtime'] == 'built-child-gateway'
     build = json.loads((out / 'runtime-build.json').read_text())
+    inventory = json.loads((out / 'runtime-build-inventory.json').read_text())
+    for key in ['head', 'tree', 'profile', 'privateQa', 'roots', 'files']:
+        assert inventory[key] == build[key]
     runtime_after = json.loads((out / 'runtime-after.json').read_text())
     assert runtime_after == build
     assert build['head'] == binding['candidateHead'] and build['tree'] == binding['candidateTree']
     assert build['profile'] == 'qaRuntime' and build['privateQa'] is True
     assert all(row['head'] == binding['candidateHead'] for row in build['stamps'].values())
-    for name in ['dist/index.js', 'dist/extensions/qa-channel/index.js', 'dist/extensions/openai/index.js', 'dist/plugin-sdk/qa-channel-protocol.js']:
+    for name in ['dist/index.js', 'dist/extensions/qa-channel/index.js', 'dist/extensions/openai/index.js', 'dist/plugin-sdk/qa-runtime.js']:
         assert len(build['files'][name]['sha256']) == 64
     assert behavior['childRuntime']['buildOutputSHA256'] == hashlib.sha256((out / 'runtime-build.json').read_bytes()).hexdigest()
     candidate_root = gateway_command[3].removesuffix('/' + binding['proofTestRemotePath'])

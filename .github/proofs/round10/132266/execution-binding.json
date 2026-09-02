@@ -246,8 +246,8 @@
   "nodeVersion": "24.19.0",
   "proofRepository": "steipete/openclaw",
   "proofBranch": "codex/round10-secretless-proof",
-  "driverSHA256": "9d601d5b1eeb140733f26fc78eed5d7511ff26c592c0c6eada0ed452b3ecd5bb",
-  "extractorSHA256": "971244c985d34e833f8f954adc6d9de424290bf082ff5a0098f628aaba83d449",
+  "driverSHA256": "40e57b459fc2f9ffaffe6adaaf0db0e7ac3090fff0d1a61da087bce7f3ed9967",
+  "extractorSHA256": "96f4ae4e77b10899a473d0c99ff526fb290d338b37c470391a5d26255abe090f",
   "sourceRebinding": {
     "previousHead": "b587632772af9972c61378bb3196aecc6fdb8217",
     "selectedSourceInputs": 107,
@@ -360,5 +360,15 @@
     ],
     "scenarioAssertionsUnchanged": true
   },
-  "runtimeSymlinkContract": "Canonical metadata staging links isolated workspace host dependencies to this same repository root; equality and descendants are contained. Resolved relative link targets are recorded; outside targets remain rejected."
+  "runtimeSymlinkContract": "Canonical metadata staging links isolated workspace host dependencies to this same repository root; equality and descendants are contained. Resolved relative link targets are recorded; outside targets remain rejected.",
+  "builtOutputInventoryCorrection": {
+    "previousDriverSHA256": "9d601d5b1eeb140733f26fc78eed5d7511ff26c592c0c6eada0ed452b3ecd5bb",
+    "canonicalPrivateStandaloneEntry": "dist/plugin-sdk/qa-runtime.js",
+    "unsupportedRemovedRequirement": "dist/plugin-sdk/qa-channel-protocol.js",
+    "inventoryBeforeValidation": "runtime-build-inventory.json",
+    "rootEqualityContainmentUnchanged": true,
+    "sameFiveGatewayAndSixMetadataAssertions": true,
+    "productionUnchanged": true,
+    "sourceContract": "plugin-sdk-entrypoints.json is actual entry list; private-local-only-subpaths.json is classification; tsdown.config.ts611\u2013612 explicitly adds qa-lab/qa-runtime under privateQA flag"
+  }
 }

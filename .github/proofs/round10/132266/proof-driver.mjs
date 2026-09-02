@@ -36,20 +36,20 @@ function hashIndexEntries(directory) {
 }
 
 // Runtime outputs are generated only by the canonical build, then frozen for proof.
-function snapshotRuntimeArtifacts() {
+function snapshotRuntimeArtifacts(inventoryName) {
   const roots = ["dist"];
   if (fs.existsSync(path.join(root, "dist-runtime"))) roots.push("dist-runtime");
   for (const entry of fs.readdirSync(path.join(root, "packages"), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
     if (entry.isDirectory() && fs.existsSync(path.join(root, "packages", entry.name, "dist"))) roots.push(`packages/${entry.name}/dist`);
   }
   const files = {};
+  const symlinkTargets = [];
   function visit(name) {
     const absolute = path.join(root, name);
     const stat = fs.lstatSync(absolute);
     if (stat.isSymbolicLink()) {
       const target = fs.realpathSync(absolute);
-      // Workspace host-package links resolve to the repository itself.
-      assert.ok(target === root || target.startsWith(root + path.sep), `Runtime symlink escapes repository: ${name} -> ${target}`);
+      symlinkTargets.push({ name, target });
       files[name] = { symlink: fs.readlinkSync(absolute), resolvedRelativeTarget: path.relative(root, target) || "." };
     } else if (stat.isDirectory()) {
       for (const entry of fs.readdirSync(absolute).sort()) visit(`${name}/${entry}`);
@@ -59,7 +59,13 @@ function snapshotRuntimeArtifacts() {
     }
   }
   for (const name of roots) visit(name);
-  for (const name of ["dist/index.js", "dist/extensions/qa-channel/index.js", "dist/extensions/openai/index.js", "dist/plugin-sdk/qa-channel-protocol.js"]) assert.ok(files[name]?.sha256, `Missing required built entry: ${name}`);
+  // Retain generated outputs before checking their contracts.
+  if (inventoryName) writeJson(inventoryName, { head: expectedHead, tree: binding.candidateTree, profile: "qaRuntime", privateQa: true, roots, files });
+  for (const { name, target } of symlinkTargets) {
+    // Workspace host-package links resolve to the repository itself.
+    assert.ok(target === root || target.startsWith(root + path.sep), `Runtime symlink escapes repository: ${name} -> ${target}`);
+  }
+  for (const name of ["dist/index.js", "dist/extensions/qa-channel/index.js", "dist/extensions/openai/index.js", "dist/plugin-sdk/qa-runtime.js"]) assert.ok(files[name]?.sha256, `Missing required built entry: ${name}`);
   const stamps = {};
   for (const name of ["dist/.buildstamp", "dist/.runtime-postbuildstamp"]) {
     const value = JSON.parse(fs.readFileSync(path.join(root, name), "utf8"));
@@ -211,7 +217,7 @@ try {
     assert.equal(result.error?.code ?? null, null, command.name);
     assert.equal(result.status, 0, command.name);
     if (command.name === "build") {
-      runtimeBuild = snapshotRuntimeArtifacts();
+      runtimeBuild = snapshotRuntimeArtifacts("runtime-build-inventory.json");
       writeJson("runtime-build.json", runtimeBuild);
       verdict.buildCompleted = true;
     } else {
@@ -307,7 +313,7 @@ try {
   try {
     assert.ok(output, "No safe receipt directory created");
     writeJson("proof-verdict.json", { ...verdict, head: expectedHead });
-    const names = ["proof-verdict.json", "requested-binding.json", "source-binding.json", "source-after.json", "runtime-build.json", "runtime-after.json", "proof.test.ts", "metadata-after.mjs", "metadata-verdict.json", "behavior/verdict.json", "behavior/report.md", "behavior/startup-timeline.jsonl", "behavior/staged-before.json", "behavior/staged-after.json", "behavior/child-cleanup.json", "behavior/gateway.stdout.log", "behavior/gateway.stderr.log", "behavior/README.txt", ...phaseNames.flatMap((name) => [`${name}.stdout`, `${name}.stderr`, `${name}.json`, `${name}-result.json`])].filter((name) => fs.existsSync(path.join(output, name)));
+    const names = ["proof-verdict.json", "requested-binding.json", "source-binding.json", "source-after.json", "runtime-build-inventory.json", "runtime-build.json", "runtime-after.json", "proof.test.ts", "metadata-after.mjs", "metadata-verdict.json", "behavior/verdict.json", "behavior/report.md", "behavior/startup-timeline.jsonl", "behavior/staged-before.json", "behavior/staged-after.json", "behavior/child-cleanup.json", "behavior/gateway.stdout.log", "behavior/gateway.stderr.log", "behavior/README.txt", ...phaseNames.flatMap((name) => [`${name}.stdout`, `${name}.stderr`, `${name}.json`, `${name}-result.json`])].filter((name) => fs.existsSync(path.join(output, name)));
     const entries = names.map((name) => ({ name, stats: fs.lstatSync(path.join(output, name)) }));
     assert.ok(entries.every(({ stats }) => stats.isFile()));
     assert.ok(entries.every(({ name, stats }) => name !== "behavior/startup-timeline.jsonl" || stats.size <= 4 * 1024 * 1024), "Startup timeline exceeds 4 MiB");
