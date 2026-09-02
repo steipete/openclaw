@@ -30,6 +30,8 @@ assert binding['proofPath'] == 'extensions/qa-lab/src/nextcloud-commands.gateway
 test_path = checkout / binding['testPath']
 proof_path = checkout / binding['proofPath']
 MAX_LOG_BYTES = 16 * 1024 * 1024
+index_observations = []
+index_capture_bytes = {}
 
 
 def sha(data):
@@ -44,9 +46,56 @@ def save(file, value):
     file.write_text(json.dumps(value, indent=2) + '\n')
 
 
+def retain_index(file):
+    # Index files contain public tracked paths and stat metadata, never Git config.
+    assert not file.is_symlink() and file.is_file()
+    with file.open('rb') as source:
+        metadata = os.fstat(source.fileno())
+        assert metadata.st_size <= 8 * 1024 * 1024, 'Index diagnostic exceeds bound'
+        data = source.read(8 * 1024 * 1024 + 1)
+    assert len(data) == metadata.st_size and data[:4] == b'DIRC'
+    identity = sha(data)
+    directory = evidence / 'index-diagnostics'
+    directory.mkdir(exist_ok=True)
+    assert not directory.is_symlink()
+    if identity not in index_capture_bytes:
+        assert sum(index_capture_bytes.values()) + len(data) <= 24 * 1024 * 1024
+        (directory / (identity + '.index')).write_bytes(data)
+        index_capture_bytes[identity] = len(data)
+    return {'sha256': identity, 'bytes': len(data), 'mtimeNs': metadata.st_mtime_ns,
+            'ctimeNs': metadata.st_ctime_ns, 'inode': metadata.st_ino,
+            'observedAtUnixNs': time.time_ns()}
+
+
 def git(*args, cwd=checkout):
-    return subprocess.check_output(['/usr/bin/git', '-c', 'core.fsmonitor=false', *args], cwd=cwd,
-                                   env={**os.environ, 'GIT_OPTIONAL_LOCKS': '0'})
+    argv = ['/usr/bin/git', '-c', 'core.fsmonitor=false', *args]
+    env = {**os.environ, 'GIT_OPTIONAL_LOCKS': '0'}
+    if cwd != checkout:
+        return subprocess.check_output(argv, cwd=cwd, env=env)
+    index = checkout / '.git/index'
+    assert (checkout / '.git').is_dir() and not (checkout / '.git').is_symlink()
+    observation = {'argv': argv, 'before': retain_index(index)}
+    assert len(index_observations) < 512
+    try:
+        if args[0] == 'diff':
+            # Porcelain diff may refresh stat metadata despite optional-locks=0.
+            # Keep its content comparison intact while it owns only a disposable copy.
+            with tempfile.TemporaryDirectory(prefix='diff-index-', dir=evidence) as temporary:
+                comparison = Path(temporary) / 'index'
+                comparison.write_bytes((evidence / 'index-diagnostics' / (observation['before']['sha256'] + '.index')).read_bytes())
+                # Git uses index mtime for its racy-stat test; preserve that input too.
+                os.utime(comparison, ns=(observation['before']['mtimeNs'], observation['before']['mtimeNs']))
+                observation['comparisonBefore'] = retain_index(comparison)
+                try:
+                    return subprocess.check_output(argv, cwd=cwd, env={**env, 'GIT_INDEX_FILE': str(comparison)})
+                finally:
+                    observation['comparisonAfter'] = retain_index(comparison)
+        return subprocess.check_output(argv, cwd=cwd, env=env)
+    finally:
+        observation['after'] = retain_index(index)
+        index_observations.append(observation)
+        save(evidence / 'index-command-observations.json', index_observations)
+        assert observation['before']['sha256'] == observation['after']['sha256'], 'Read-only Git command changed real index'
 
 
 def git_text(*args, cwd=checkout):
@@ -126,6 +175,9 @@ def source_guard(label, overlay):
     credentials = subprocess.run(['/usr/bin/git', 'config', '--local', '--name-only', '--get-regexp', '(extraheader|credential)'], cwd=checkout, capture_output=True)
     assert credentials.returncode == 1 and not credentials.stdout, 'Checkout retains credentials'
     verify_assets()
+    observed['indexAfterComparisons'], _ = index_facts()
+    save(evidence / ('source-' + label + '.json'), observed)
+    assert observed['indexAfterComparisons'] == initial_guard['index'], 'Index changed during guard'
     return observed
 
 
@@ -283,6 +335,9 @@ try:
     verify_assets()
     assert digest(assets / 'gateway-proof.mjs') == binding['proofSHA256']
     assert digest(assets / 'inbound.behavior.test.ts') == binding['testSHA256']
+    save(evidence / 'git-toolchain.json', {'version': git_text('--version'),
+         'executableSHA256': digest('/usr/bin/git'), 'optionalLocks': '0',
+         'porcelainDiffIndex': 'exact disposable copy; real index remains guarded'})
     initial_guard = capture_source()
     assert not (checkout / 'node_modules').exists()
     assert not proof_path.exists() and not proof_path.is_symlink()
