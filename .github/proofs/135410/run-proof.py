@@ -149,19 +149,30 @@ def main():
                 "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_JOB",
             )},
         }
+        write_json(output / "source-binding.json", source_binding)
         env = child_environment(temp)
         ps51 = Path(os.environ["SystemRoot"]) / "System32/WindowsPowerShell/v1.0/powershell.exe"
         ps7 = shutil.which("pwsh")
         require(ps51.is_file() and ps7, "Both PowerShell engines are required")
         engines = {"ps51": str(ps51), "ps7": ps7}
         for key, engine in engines.items():
-            probe = subprocess.run(
-                [engine, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command",
-                 "@{version=$PSVersionTable.PSVersion.ToString();edition=$PSVersionTable.PSEdition;hostName=$Host.Name}|ConvertTo-Json -Compress"],
-                env=env, capture_output=True, timeout=30, check=False,
+            report["phase"] = "engine-probe:" + key
+            write_json(output / "run.json", report)
+            probe_command = (
+                "[Console]::Error.WriteLine('probe-entered'); "
+                "[Console]::Error.WriteLine('probe-pshome=' + $PSHOME); "
+                "[Console]::Error.WriteLine('probe-modulepath=' + $env:PSModulePath); "
+                "@{version=$PSVersionTable.PSVersion.ToString();edition=$PSVersionTable.PSEdition;hostName=$Host.Name}|ConvertTo-Json -Compress; "
+                "[Console]::Error.WriteLine('probe-serialized')"
             )
-            require(probe.returncode == 0, key + " probe failed")
-            identity = json.loads(probe.stdout.decode("utf-8-sig"))
+            probe = run_child(
+                [engine, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", probe_command],
+                env, work, rows_dir / ("probe-" + key),
+            )
+            write_json(rows_dir / ("probe-" + key + ".command.json"), probe)
+            require(probe["termination"] is None, key + " probe " + str(probe["termination"]))
+            require(probe["exitCode"] == 0, key + " probe failed")
+            identity = json.loads((rows_dir / ("probe-" + key + ".stdout")).read_bytes().decode("utf-8-sig"))
             required = ("5.1.", "Desktop") if key == "ps51" else ("7.", "Core")
             require(identity["version"].startswith(required[0]) and identity["edition"] == required[1], "Wrong engine version")
             source_binding[key] = identity
