@@ -27,7 +27,11 @@ const build = JSON.parse(buildBytes);
 assert.equal(build.head, binding.baseHead);
 assert.equal(build.sourceIdentity, binding.sourceIdentity);
 const save = (name, value) => fs.writeFile(path.join(output, name), JSON.stringify(value, null, 2) + "\n");
-const milestone = (phase) => process.stderr.write(`MEDIA_PROOF_PHASE ${phase}\n`);
+const diagnostics = {phase: "initializing", prerequisites: {}, toolObservations: []};
+const milestone = (phase) => {
+  diagnostics.phase = phase;
+  process.stderr.write(`MEDIA_PROOF_PHASE ${phase}\n`);
+};
 
 // The only injected behavior is a synthetic speech provider. Hooks record facts,
 // return nothing, and cannot manufacture pending media, history, or delivery.
@@ -50,7 +54,7 @@ module.exports = { id: ${JSON.stringify(PLUGIN)}, register(api) {
     respond(true, {...structuredClone(state), runtime: {pid: process.pid, executable: process.execPath, argv: [...process.argv]}});
   }, {scope: "operator.read"});
   api.on("after_tool_call", event => {
-    if (event.toolName === "tts") observe({kind: "tool", runId: event.runId, toolCallId: event.toolCallId, error: event.error, media: event.result?.details?.media});
+    observe({kind: "tool", toolName: event.toolName, runId: event.runId, toolCallId: event.toolCallId, error: event.error, media: event.result?.details?.media});
   });
   api.on("reply_payload_sending", event => {
     observe({kind: "reply", sessionKey: event.sessionKey, runId: event.runId, deliveryKind: event.kind, payload: event.payload});
@@ -211,6 +215,13 @@ try {
         payload.lastRunId === runId && payload.hasActiveRun === false);
     if (!terminal || !settled) await guard(new Promise(resolve => setTimeout(resolve, Math.min(50, Math.max(0, deadline - Date.now())))));
   }
+  diagnostics.phase = "terminal-and-settled";
+  diagnostics.prerequisites = {
+    admittedRunId: runId, terminalState: terminal?.state,
+    settled: settled && {sessionKey: settled.sessionKey, reason: settled.reason,
+      lastRunId: settled.lastRunId, hasActiveRun: settled.hasActiveRun},
+    eventOverflow,
+  };
   assert.ok(terminal, "No terminal chat event");
   assert.ok(settled, "No exact settled-session event before the shared 90-second deadline; proof incomplete");
   assert.equal(eventOverflow, false);
@@ -219,22 +230,44 @@ try {
   const response = await guard(fetch(harness.mock.baseUrl + "/debug/requests", {signal: AbortSignal.timeout(5_000)}));
   assert.equal(response.ok, true);
   const requests = await response.json();
+  diagnostics.phase = "planned-tts";
   const toolRequests = requests.filter(row => row.prompt.includes(PROMPT) && row.plannedToolName === "tts");
+  diagnostics.prerequisites.plannedTts = toolRequests.map(row => ({cursor: row.cursor,
+    toolName: row.plannedToolName, callId: row.plannedToolCallId,
+    textMatches: row.plannedToolArgs?.text === SPOKEN}));
   assert.equal(toolRequests.length, 1, "Require exactly one planned real TTS call");
   assert.equal(toolRequests[0].plannedToolArgs?.text, SPOKEN);
   const failedFollowup = requests.find(row => row.cursor > toolRequests[0].cursor && row.prompt.includes(PROMPT) && row.outcome === "error" && row.toolOutput.includes(SPOKEN));
+  diagnostics.phase = "failed-followup";
+  diagnostics.prerequisites.failedFollowup = failedFollowup && {cursor: failedFollowup.cursor,
+    toolOutputCallId: failedFollowup.toolOutputCallId, outcome: failedFollowup.outcome,
+    receivedSpokenText: failedFollowup.toolOutput.includes(SPOKEN)};
   assert.ok(failedFollowup, "503 must follow the real completed speech tool output");
   assert.equal(failedFollowup.toolOutputCallId, toolRequests[0].plannedToolCallId);
+  diagnostics.phase = "fixture-inspection";
   const fixture = await inspect();
-  assert.equal(fixture.overflow, false);
   const observations = fixture.observations;
+  diagnostics.prerequisites.fixtureOverflow = fixture.overflow;
+  diagnostics.prerequisites.synthesis = observations.filter(row => row.kind === "synthesis")
+    .map(row => ({textMatches: row.text === SPOKEN}));
+  diagnostics.toolObservations = observations.filter(row => row.kind === "tool")
+    .map(row => ({toolName: row.toolName, runId: row.runId, toolCallId: row.toolCallId,
+      error: row.error, media: row.media && {hasMediaUrl: typeof row.media.mediaUrl === "string",
+        trustedLocalMedia: row.media.trustedLocalMedia, audioAsVoice: row.media.audioAsVoice}}));
+  diagnostics.phase = "fixture-overflow-and-synthesis";
+  await save("gateway-diagnostics.json", diagnostics);
+  assert.equal(fixture.overflow, false);
   assert.deepEqual(observations.filter(row => row.kind === "synthesis"), [{kind: "synthesis", text: SPOKEN}]);
-  const completed = observations.filter(row => row.kind === "tool");
-  assert.equal(completed.length, 1);
+  const completed = observations.filter(row => row.kind === "tool" && row.toolName === "tts");
+  diagnostics.phase = "completed-tts-count";
+  await save("gateway-diagnostics.json", diagnostics);
+  assert.equal(completed.length, 1, "Require exactly one completed real TTS after_tool_call observation");
+  diagnostics.phase = "completed-tts-result";
   assert.equal(completed[0].error, undefined);
   assert.equal(completed[0].media?.trustedLocalMedia, true);
   assert.equal(typeof completed[0].media?.mediaUrl, "string");
   assert.equal(terminal.state, "error", "Media must preserve the authoritative terminal error");
+  diagnostics.phase = "history-and-media";
   const history = await guard(client.request("chat.history", {sessionKey: SESSION, limit: 50}));
   const audio = audioRecords(history);
   const mediaReplies = observations.filter(row => row.kind === "reply").map(row => row.payload)
@@ -274,6 +307,8 @@ try {
   milestone("observation-complete");
 } catch (error) {
   errors.push(String(error));
+  diagnostics.failure = {phase: diagnostics.phase, name: error?.name,
+    message: String(error).slice(0, 2048), stack: error?.stack?.slice(0, 8192)};
 } finally {
   milestone("cleanup-starting");
   client?.stop();
@@ -304,9 +339,10 @@ try {
   const completed = !interrupted && !errors.length && !cleanupErrors.length && observation?.prerequisitesPassed && Boolean(stagedAfter);
   const verdict = {schema: "openclaw-131226-media-proof-v1", binding, runtime: "built-child-gateway",
     completed: Boolean(completed), errors, cleanupErrors, childCleanup: cleanup, childRuntime,
-    stagedBefore, stagedAfter, observation, historySummary, downloaded,
+    stagedBefore, stagedAfter, observation, historySummary, downloaded, diagnostics,
     limitations: ["Synthetic TTS/WAV and HTTP 503; no image-generation, overload, real provider, browser rendering, or Codex runtime claim.",
       "Read-only fixture hooks observe actual tool and delivery events; all persisted media originates in the real turn."]};
+  await save("gateway-diagnostics.json", diagnostics);
   await save("gateway-verdict.json", verdict);
   process.removeListener("SIGTERM", onTerminate);
   milestone("cleanup-finished");
