@@ -22,6 +22,36 @@ import { buildMockFunctionCall } from "./providers/mock-openai/mock-openai-tooli
 import { waitForQaTransportAccountReady } from "./qa-transport.js";
 import { renderQaMarkdownReport } from "./report.js";
 
+// A lazy import factory observes the real bootstrap load without preloading it.
+vi.mock("../../../src/gateway/server-plugin-bootstrap.js", async (importOriginal) => {
+  const mark = (phase: string) => process.stderr.write(`METADATA_PROOF_POSTBIND ${phase}\n`);
+  mark("import-start");
+  let actual: typeof import("../../../src/gateway/server-plugin-bootstrap.js");
+  try {
+    actual =
+      await importOriginal<typeof import("../../../src/gateway/server-plugin-bootstrap.js")>();
+  } catch (error) {
+    mark("import-error");
+    throw error;
+  }
+  mark("import-ready");
+  const load = actual.loadGatewayStartupPlugins;
+  return {
+    ...actual,
+    loadGatewayStartupPlugins(...args: Parameters<typeof load>) {
+      mark("load-enter");
+      try {
+        const result = load(...args);
+        mark("load-return");
+        return result;
+      } catch (error) {
+        mark("load-error");
+        throw error;
+      }
+    },
+  };
+});
+
 const pluginId = "metadata-progress-proof";
 const fixtureSymbol = Symbol.for("openclaw.proof132266.fixture");
 const cases = [

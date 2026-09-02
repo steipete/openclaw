@@ -106,11 +106,23 @@
     "scripts/lib/vitest-profiler.mts": "2bdf6bd51bc11a5078c190443e0575166d9e4058f6806db29f751c66b6d57a08",
     "config/assertion-safety-baseline.txt": "ac8e7b57c25fbde81627d4c965fc167dbb51d41ac98be74417aa945284beac56",
     "src/config/sessions/session-accessor.conformance.test.ts": "43b72274b1c0b3134a91868b4cc73e87858e5940962fb3b39891165553a83f2b",
-    "ui/src/styles/corner-shape.browser.test.ts": "1e0cee1e510a4db43dafb18d8f7bb6c5dd0fad2d61ded1df5fccd519ba8fb71a"
+    "ui/src/styles/corner-shape.browser.test.ts": "1e0cee1e510a4db43dafb18d8f7bb6c5dd0fad2d61ded1df5fccd519ba8fb71a",
+    "src/gateway/server-startup-finish.ts": "4def0f04aa9199cdf4dc3cd220e4a4e1f2a6da13ba7a2b893f5ee45b74362e4e",
+    "src/gateway/server-startup-plugins.ts": "37df7093f39aa1ae1805e92f6d4c1eabc3ac7774e59d28a5d976ab6808e89957",
+    "src/gateway/server-plugin-bootstrap.ts": "8920c03c85a6798f1031725f849a85aee68671bc74f21acb8505f4be842cd50b",
+    "src/gateway/server-plugin-runtime-generation.ts": "7cc8f44c4c000f9eb6a60bfed405a415e2dcaa95b723da5b18b1dfff7680eb86",
+    "src/gateway/server-plugins.ts": "390037bb8bd82f1129b3d974d9e8f75c3319a63047314ed030c9a8f2af73e39d",
+    "src/plugins/loader.ts": "d7f55467f8a276221419926352553642d41d1633639430e04f3ad33d32fc5cb9",
+    "src/plugins/loader-runtime-load.ts": "b61042ed9f2af2d37b98d2670c4822f8562ded2c0c8fa80610a93d43fcdb7bbe",
+    "src/plugins/loader-runtime-candidate.ts": "dc32851544a98b396edc2e0323ce106587d87b1855eb5d1f23f4bc08d2f8c1c0",
+    "src/plugins/loader-module-runtime.ts": "8cb82c4b436875a7d744a9a795f4d65038d44215f344e51d5d55caa943ae9395",
+    "src/plugins/plugin-module-loader-cache.ts": "aaec49f303a2732f01c8867202a8b6407b5f1899eae2b1855ef5610eb6bfdacb",
+    "src/plugins/plugin-load-profile.ts": "bd944b8009a20d2fd2dc7c7e16128c14a383471d06aa366591b17db8ba16675e",
+    "src/plugins/loader-shared.ts": "4f48deccd0a1b93c69a9feb1f254ed1a8d5888ab92b0b837905e3a888f022394"
   },
-  "sourceFileCount": 107,
+  "sourceFileCount": 119,
   "proofTestRemotePath": "extensions/qa-lab/src/plugin-tool-progress.gateway-proof.test.ts",
-  "proofTestSHA256": "6584d66ca93c309650071911f9497d57895afa575882c66cad0dfb20e4a1d667",
+  "proofTestSHA256": "32eaea286f3cc6fdc0d5a7a315ae08a959f616caeb3d752c49ccbeb93e6953cb",
   "expectedScenarioIds": [
     "hidden-cold",
     "hidden-reused",
@@ -196,5 +208,24 @@
     "relativeArtifact": "behavior/startup-timeline.jsonl",
     "maxBytes": 4194304,
     "assertionsAndTimeoutsUnchanged": true
+  },
+  "postBindDiagnostic": {
+    "previousProofSHA256": "6584d66ca93c309650071911f9497d57895afa575882c66cad0dfb20e4a1d667",
+    "currentProofSHA256": "32eaea286f3cc6fdc0d5a7a315ae08a959f616caeb3d752c49ccbeb93e6953cb",
+    "module": "src/gateway/server-plugin-bootstrap.ts",
+    "function": "loadGatewayStartupPlugins",
+    "markerPrefix": "METADATA_PROOF_POSTBIND ",
+    "allowedMarkers": [
+      "import-start",
+      "import-ready",
+      "import-error",
+      "load-enter",
+      "load-return",
+      "load-error"
+    ],
+    "productionSourceUnchanged": true,
+    "originalHarnessBytesUnchangedExceptInsertedObserver": true,
+    "assertionsAndTimeoutsUnchanged": true,
+    "limitation": "Vitest hoists the registration, rewrites static imports, and importOriginal uses its original-module query identity. Interpret phase reachability; do not claim identical module-loader timing or cycle behavior."
   }
 }
