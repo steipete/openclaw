@@ -119,7 +119,7 @@ try:
     report = json.loads((output / 'vitest.json').read_text())
     assert len(report['testResults']) == 1 and Path(report['testResults'][0]['name']).resolve() == root / test_path
     cases = report['testResults'][0]['assertionResults']
-    grace = {"contains the " + kind + " grace callback's escaped rejection" for kind in ['error', 'timeout', 'cancellation']}
+    grace = {"contains the '" + kind + "' grace callback's escaped rejection" for kind in ['error', 'timeout', 'cancellation']}
     controls = {
         'propagates the same escaped error to an awaited caller',
         'retains the restart-retry diagnostic and retires the fired timer',
@@ -145,7 +145,13 @@ try:
         failed = before and case['title'] in grace
         assert case['status'] == ('failed' if failed else 'passed'), case['title']
         if failed:
-            assert 'failed to complete subagent run in background' in '\n'.join(case['failureMessages'])
+            failure = '\n'.join(case['failureMessages'])
+            assert 'AssertionError' in failure and test_path + ':100:20' in failure
+            block = re.search(r'^ FAIL [^\n]* > ' + re.escape(case['title']) +
+                              r'\n(.*?)(?=\n FAIL |\n[^\n]*Unhandled Errors|\Z)', console, re.M | re.S)
+            assert block and 'failed to complete subagent run in background' in block[1]
+            kind = case['title'].split("'")[1]
+            assert 'lifecycle-' + kind + '-grace' in block[1] and 'synthetic resume failure' in block[1]
     assert console.count('Unhandled Rejection') == (3 if before else 0)
     if before:
         assert 'synthetic resume failure' in console
