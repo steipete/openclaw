@@ -1,0 +1,22 @@
+{
+  "head": "bf898e2fce7ce4fb2998db27d16664ac90f2aa8b",
+  "files": {
+    "src/agents/subagents/registry/subagent-registry-completion-runtime.ts": "ba5c68c07f1a40255627db5f5c810dc7211f38386196c33187c67e9a3d4335e9",
+    "src/agents/subagents/registry/subagent-registry-pending-lifecycle.ts": "2cbcf34eb33df18fac684d9b848d6d7fbbd98ca4647a948ca7e5bfc040871354",
+    "src/agents/subagents/registry/subagent-lifecycle-events.ts": "fe558612bb4cb96bf99c4639d159be55ada1df63e3a19caa4f64892e95f4b386",
+    "src/agents/agent-run-terminal-outcome.ts": "efb92bc6083d1e93ee47a50d88cb74b6e9f37eb510de531f6d2a49c0a4ce0c67",
+    "src/process/gateway-work-admission.ts": "68aa7b7faeb099ea7070fe59db24e84eb0afd141c0d73d3c8a0edb45ba676d6a",
+    "src/infra/unhandled-rejections.ts": "85a15f3df1d56cfceeb84dd9b3f021511a137e960a092286bc6db0595ce26cb6",
+    "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+    "pnpm-lock.yaml": "60ec3478d55f958efd41f314b32e0975a5becb4e0a90216c3cf9f9c6365e1443",
+    "package.json": "97ac89b068940894bccd937044c66b7d764157774b3bf89ef8a9b82ac36155b1",
+    "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest-child.mts": "27dee5ab6b593acf3f7e370f237b4b55a43acf8ca18ca0cd33a15f2756c7ebb0",
+    "scripts/run-vitest.mts": "5a9a97bf9e89ff2121f6cfd580ed29432b2b980ce288166666522209d6535b29",
+    "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+    "scripts/lib/vitest-report-owner.mts": "ebd7212131ab3de152e02757fab052598a6a932fd5214f4b96d3e7d8b70a5b84",
+    "test/vitest/vitest.unit-fast-paths.mjs": "695619f070a089e8350ad3eaa71a13759f7a01bd6734d09878b6ae5782aafe52",
+    "src/agents/subagents/registry/subagent-registry.types.ts": "49cef0b747871149dc2fb1157f26d4ed78a63b18cb0d4c30b1eeabe3e0ce321b"
+  }
+}

@@ -1,0 +1,80 @@
+name: Proof 131735 detached completion before and after
+
+on:
+  push:
+    branches: [codex/round10-131735-after-proof]
+    paths:
+      - .github/workflows/round10-131735-after.yml
+      - .github/proof/131735-after/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: round10-131735-after-proof
+  cancel-in-progress: false
+
+jobs:
+  proof:
+    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-131735-after-proof'
+    name: Completion ${{ matrix.revision }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - revision: baseline
+            head: bf898e2fce7ce4fb2998db27d16664ac90f2aa8b
+          - revision: candidate
+            head: 85b65fb964d68d6f7c5c0414d7c4d280430eb66e
+    steps:
+      - name: Checkout reviewed proof packet
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-packet
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: ${{ matrix.head }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up canonical Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+
+      - name: Prove exact completion behavior
+        shell: bash
+        run: |
+          env -i \
+            PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            /usr/bin/python3 "$GITHUB_WORKSPACE/proof-packet/.github/proof/131735-after/run-hosted-proof.py" \
+            '${{ matrix.revision }}' "$GITHUB_WORKSPACE/source" \
+            "$RUNNER_TEMP/completion-${{ matrix.revision }}"
+
+      - name: Retain success or failure observations
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: completion-${{ matrix.revision }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/completion-${{ matrix.revision }}/**/*.json
+            ${{ runner.temp }}/completion-${{ matrix.revision }}/**/*.stdout
+            ${{ runner.temp }}/completion-${{ matrix.revision }}/**/*.stderr
+            ${{ runner.temp }}/completion-${{ matrix.revision }}/**/*.txt
+          if-no-files-found: warn
+          retention-days: 7
