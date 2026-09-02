@@ -1,7 +1,7 @@
 {
   "schema": "openclaw-pr-134368-permanent-hosted-assets-v1",
   "sha256": {
-    ".github/proofs/cron-recipient-permanent/binding.json": "40aecbf9a83323341f7a2f35999b217c9523116ef9e369822ffa6cbcac7b7ab2",
+    ".github/proofs/cron-recipient-permanent/binding.json": "67f07d6a016fb51db0a3430d769c59f59f00165a49d4a5c5374b7e32e047a5b5",
     ".github/proofs/cron-recipient-permanent/cron-page.test.ts": "48ff0647a62841566d75f4366c0f94dad67c23fe38b2ea3cfe1dbda66ab94f0b",
     ".github/proofs/cron-recipient-permanent/form-suggestions.ts": "4e1b18dcd4dcc841ab1285990bcd25b8d817d67ada8100e8ad01f951770d86c5",
     ".github/proofs/cron-recipient-permanent/run-proof.py": "521befff8d08e8190f42fc240134636730c7375215d3448b1091f6dd9416f2e6",

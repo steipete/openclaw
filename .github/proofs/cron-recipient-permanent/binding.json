@@ -79,9 +79,9 @@
   ],
   "regressionAncestor": "CronPage delivery suggestions",
   "regressionTitles": [
-    "keeps telegram announce recipients separate from account options",
-    "keeps last announce recipients separate from account options",
-    "keeps telegram webhook recipients separate from account options"
+    "keeps 'telegram' 'announce' recipients separate from account options",
+    "keeps 'last' 'announce' recipients separate from account options",
+    "keeps 'telegram' 'webhook' recipients separate from account options"
   ],
   "regressionAssertionLine": 265,
   "runtimeProofPending": true
