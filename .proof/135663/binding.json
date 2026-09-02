@@ -68,6 +68,14 @@
       "sha256": "d987401e1eb030df83803d3e20b28b1b1ddd8663c2e7d89ad32742ef07ebbcfc"
     },
     {
+      "path": "apps/shared/OpenClawKit/Package.swift",
+      "sha256": "8a25894b16af18d1d9fd1e587ee6ce5e0265a4e168c540c734d552040dc5f2bd"
+    },
+    {
+      "path": "apps/shared/OpenClawKit/Sources/OpenClawKit/GatewayNodeSession.swift",
+      "sha256": "c97547754db979f1d518dedbe95a04a50785242ee86bd0196f94fd2204821331"
+    },
+    {
       "path": "docs/platforms/mac/bundled-gateway.md",
       "sha256": "759f2d8402a72c30f456f13af3884d9938481edf10825f8c091b5331132833b3"
     },
@@ -187,7 +195,7 @@
   "permanentTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerTests.swift",
   "permanentTestSHA256": "48432e8e496119ef4dc6d3a331e8a1d60ec3a21570bf8b16345c37388d4280e3",
   "proofTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerProcessGroupProof.swift",
-  "proofTestSHA256": "096169bc41bafdc714984aa1db935274105c83c9f39da7fef421d24b3557714f",
+  "proofTestSHA256": "0fed070cd4a27d680dc39d66056a3e2b659a896c8c0bbe3e7964161953d58230",
   "requiredControlNames": [
     "changed worker command replaces the running process",
     "stop cancels a changed launch during worker cleanup",

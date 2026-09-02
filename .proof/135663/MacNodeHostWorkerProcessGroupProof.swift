@@ -1,6 +1,7 @@
 // Proof-only overlay. Run only in the reviewed disposable GitHub macOS job.
 import Darwin
 import Foundation
+import OpenClawKit
 import Testing
 @testable import OpenClaw
 

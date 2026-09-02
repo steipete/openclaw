@@ -49,5 +49,6 @@ jobs:
           path: |
             proof-results/*.json
             proof-results/*.log
+            proof-results/raw-index-*.bin
             proof-results/normal/observation.json
             proof-results/unresponsive/observation.json

@@ -72,6 +72,8 @@ def main():
     proof_test_created = configuration_created = False
     overlaid = False
     result_payload = None
+    raw_index_blobs = {}
+    raw_index_captures = []
 
     def run(name, command, allow_failure=False):
         started = time.monotonic()
@@ -102,8 +104,9 @@ def main():
             require(result.returncode == 0, name + " failed; inspect its preserved log")
         return result.returncode, log.read_text(errors="replace")
 
-    def git(*args):
-        return subprocess.check_output(["git", *args], cwd=product, env=env)
+    def git(*args, index_file=None):
+        command_env = env if index_file is None else {**env, "GIT_INDEX_FILE": str(index_file)}
+        return subprocess.check_output(["git", *args], cwd=product, env=command_env)
 
     def capture_sources(label, overlaid=False):
         errors = {}
@@ -116,13 +119,69 @@ def main():
         raw_index_path = observe("indexPath", lambda: Path(git("rev-parse", "--git-path", "index").decode().strip()))
         if raw_index_path is not None and not raw_index_path.is_absolute():
             raw_index_path = product / raw_index_path
+        raw_index_capture = {}
+        def capture_raw_index(path=None, suffix=None):
+            require(raw_index_path is not None, "Raw index path unavailable")
+            require(raw_index_path.resolve().is_relative_to(product), "Raw index is outside the isolated product checkout")
+            path = raw_index_path if path is None else path
+            require(not path.is_symlink() and path.is_file(), "Index capture must be a regular file")
+            with path.open("rb") as stream:
+                metadata = os.fstat(stream.fileno())
+                data = stream.read(8 * 1024 * 1024 + 1)
+            require(len(data) <= 8 * 1024 * 1024, "Raw index capture exceeds 8 MiB")
+            require(len(data) == metadata.st_size and data[:4] == b"DIRC", "Index capture is incomplete or invalid")
+            fingerprint = digest(data)
+            blob_name = "raw-index-" + fingerprint + ".bin"
+            if fingerprint not in raw_index_blobs:
+                require(sum(raw_index_blobs.values()) + len(data) <= 24 * 1024 * 1024,
+                        "Raw index captures exceed 24 MiB")
+                with (output / blob_name).open("xb") as stream:
+                    stream.write(data)
+                raw_index_blobs[fingerprint] = len(data)
+            require(len(raw_index_captures) < 32, "Raw index capture count exceeded")
+            record = {
+                "label": label if suffix is None else label + "/" + suffix,
+                "sequence": len(raw_index_captures), "blob": blob_name,
+                "bytes": len(data), "sha256": fingerprint, "monotonicSeconds": time.monotonic(),
+                "mtimeNs": metadata.st_mtime_ns, "ctimeNs": metadata.st_ctime_ns, "inode": metadata.st_ino,
+            }
+            if suffix is None:
+                raw_index_capture.update(record)
+            raw_index_captures.append(record)
+            write_json(output / "raw-index-captures.json", raw_index_captures)
+            return record
+        comparison_observation = {"command": ["git", "diff", "--name-only"]}
+        def capture_tracked_changes():
+            require(raw_index_capture, "Initial raw index capture unavailable")
+            try:
+                # Porcelain diff refreshes stat-only changes. Give it an exact private
+                # index copy so the comparison cannot refresh the guarded real index.
+                with tempfile.TemporaryDirectory(prefix="diff-index-", dir=work) as directory:
+                    comparison = Path(directory) / "index"
+                    comparison.write_bytes((output / raw_index_capture["blob"]).read_bytes())
+                    # Git uses the index mtime to identify racy stat entries.
+                    os.utime(comparison, ns=(raw_index_capture["mtimeNs"], raw_index_capture["mtimeNs"]))
+                    copied = capture_raw_index(comparison, "comparison-before")
+                    comparison_observation["before"] = copied
+                    require(copied["sha256"] == raw_index_capture["sha256"]
+                            and copied["mtimeNs"] == raw_index_capture["mtimeNs"], "Comparison index differs")
+                    try:
+                        return git("diff", "--name-only", index_file=comparison).decode().splitlines()
+                    finally:
+                        comparison_observation["after"] = capture_raw_index(comparison, "comparison-after")
+            finally:
+                real_after = capture_raw_index(suffix="real-after-comparison")
+                comparison_observation["realAfter"] = real_after
+                require(real_after["sha256"] == raw_index_capture["sha256"], "Git comparison changed real index")
         state = {
             "head": observe("head", lambda: git("rev-parse", "HEAD").decode().strip()),
             "tree": observe("tree", lambda: git("rev-parse", "HEAD^{tree}").decode().strip()),
             "rawIndexPath": str(raw_index_path) if raw_index_path is not None else None,
-            "rawIndexSHA256": observe("rawIndex", lambda: digest(raw_index_path.read_bytes())),
+            "rawIndexSHA256": observe("rawIndex", lambda: capture_raw_index()["sha256"]),
+            "rawIndexCapture": raw_index_capture,
             "stagedProjectionSHA256": observe("stagedProjection", lambda: digest(git("ls-files", "--stage", "-z"))),
-            "trackedChanges": observe("trackedChanges", lambda: git("diff", "--name-only").decode().splitlines()),
+            "trackedChanges": observe("trackedChanges", capture_tracked_changes),
+            "trackedChangesComparison": comparison_observation,
             "installedLockSHA256": observe("installedLock", lambda: digest((product / "node_modules/.pnpm/lock.yaml").read_bytes())),
             "expectedInstalledLockSHA256": installed_before,
             "overlaid": overlaid, "sourceFiles": [], "errors": errors,
@@ -147,6 +206,13 @@ def main():
         return state
 
     try:
+        git_launcher = shutil.which("git", path=env["PATH"])
+        require(git_launcher, "Git launcher unavailable")
+        write_json(output / "git-toolchain.json", {
+            "version": git("--version").decode().strip(), "launcher": git_launcher,
+            "launcherSHA256": digest(Path(git_launcher).read_bytes()),
+            "porcelainDiffIndex": "exact disposable copy with preserved mtime; real index remains guarded",
+        })
         before = verify_sources("source-before")
         index_before = before["rawIndexSHA256"]
         projection_before = before["stagedProjectionSHA256"]
@@ -265,6 +331,7 @@ def main():
             final_after["head"] == binding["baselineSHA"] and final_after["tree"] == binding["baselineTree"]
             and all(row["matches"] for row in final_after["sourceFiles"])
             and final_after["rawIndexSHA256"] == index_before
+            and final_after["trackedChanges"] == [binding["permanentTestPath"]]
             and final_after["stagedProjectionSHA256"] == projection_before
             and final_after["installedLockMatches"] is True
         ):

@@ -1,6 +1,6 @@
 {
-  "MacNodeHostWorkerProcessGroupProof.swift": "096169bc41bafdc714984aa1db935274105c83c9f39da7fef421d24b3557714f",
+  "MacNodeHostWorkerProcessGroupProof.swift": "0fed070cd4a27d680dc39d66056a3e2b659a896c8c0bbe3e7964161953d58230",
   "MacNodeHostWorkerTests.swift": "48432e8e496119ef4dc6d3a331e8a1d60ec3a21570bf8b16345c37388d4280e3",
-  "binding.json": "69fe1f5da7dd7261850298f444966f12603f4e49a39fab17c9cce7df872ef0a2",
-  "run-hosted-baseline.py": "9f3e21f981bc90f4005fef91a770b6ffae0ec9006329e67af0820f77a261a5a0"
+  "binding.json": "c9e54cd672561ad4d47492d786824c45cff849f4afe29b6c353cf18e4e40e3d0",
+  "run-hosted-baseline.py": "7905f939cfcad88b659029031d6f6b24ccf1d0baeade9f7a1b5823595853a507"
 }
