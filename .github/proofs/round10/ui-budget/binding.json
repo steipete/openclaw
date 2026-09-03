@@ -1,14 +1,16 @@
 {
   "schemaVersion": 1,
-  "mode": "baseline-only",
+  "mode": "candidate-only",
   "baseline": {
     "repository": "openclaw/openclaw",
     "head": "ddb4207d9211166eaae858a6f124481856808c26",
     "tree": "303cd4e7c1ba16c498e38b16c0af6eedc1ac1cb9"
   },
   "candidate": {
-    "enabled": false,
-    "head": null
+    "repository": "openclaw/openclaw",
+    "enabled": true,
+    "head": "13a54c1cca20c959ae63f55962df8ca5d4c4fa18",
+    "tree": "5ff13928ac879c09f7e39742cfb0bad78961aec3"
   },
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "expectedNode": "24.19.0",
@@ -31,17 +33,36 @@
     "scripts/preinstall-package-manager-warning.mjs": "e4216bfce089c40578d9fde499990960eb98722c2c8c5f7ab7619d340db6680a",
     "scripts/postinstall-bundled-plugins.mjs": "91b18605d3c3e7493099172fe8658c363235c2b68bc10642dd85b1f470c4e0fe",
     "scripts/prepare-git-hooks.mjs": "59b7c9dd9d1fb5f1edeebcdd3790099ea7b3efd37f6aa803d6c6e987e38904d4",
-    "ui/src/i18n/locales/en.ts": "763f8a9e53faf6d6f65c383d4a2ece4cfd989313c6236776bb3356c76ac3c191",
-    "ui/src/pages/config/memory.ts": "df8701e4db9a13aa68832e1f15fc5b2e625f699a87b73af7cca9e50a30846f0b",
-    "ui/src/pages/memory-import/view.ts": "cfe86a3c9577677fe9a1ccf1003c94328add3d4b51574593f70f7ec693a28b7e",
-    "scripts/lib/control-ui-i18n-catalog.ts": "6cc86e915a8a3d193fb5d6c3b15a7b9062681553e13e889f2be7e03f5fab6a85",
+    "ui/src/i18n/locales/en.ts": "39acaacbe5a22813b0be9afbb9247dc753545c57f9df8811c05b6534d8fc071a",
+    "ui/src/pages/config/memory.ts": "a3a811aa27435e38e6946783192e55bcd7fd04a105a59e850ed41f56a6982c9a",
+    "ui/src/pages/memory-import/view.ts": "698fbaede0657bab61b6cca2bc6bf5f1bef1ef548ae642379ebaea31172e8770",
+    "scripts/lib/control-ui-i18n-catalog.ts": "47544570bc88c69e0848b38c043d29a63fe18370388d5da750d5c3cea783d5d8",
     "ui/src/test-helpers/control-ui-e2e.ts": "e8020f1d9767d2a83484ace7a5caca4e22ca63cd97de5d4357d6f92647eba644",
     "ui/src/e2e/control-ui-e2e-suite.test-support.ts": "361686662e3574441b92d756e4f0845e4172cb9f769014a7bc425a8dbb534e9f",
     "ui/src/e2e/memory-settings-engine.e2e.test.ts": "11560699cf54ebd30d355794a2afa3bf300a5f0a0dec76be5154a524240aa435",
     "ui/config/control-ui-chunking.ts": "e4bb2d2eccca38811a723656e638a652226b59ead95bd249c90b80b4955ac158",
     "ui/src/pages/memory-import/memory-import-page.ts": "7c6912a8d3d6ff5675d47b0f84123ffd0bf4434a9a064b027db97055cd9095d2",
     "ui/src/pages/memory-import/route.ts": "f1585c4a955c75cc4b2fd6ec0c92f3194a34c0601f179c3c31610c8ff34521e1",
-    "ui/src/i18n/lib/translate.ts": "f11d7a6c6dd5e795fb043748705504c513c92db07c9bd0bc8f501799f14ba049"
+    "ui/src/i18n/lib/translate.ts": "f11d7a6c6dd5e795fb043748705504c513c92db07c9bd0bc8f501799f14ba049",
+    "ui/src/app/vite-config.node.test.ts": "d430cd0d3f21cf351e51713886d5326edc076c0f261957d220ec3d3c3d98e23a",
+    "ui/src/i18n/locales/en-memory-import.ts": "bd1d6cd75d14149f0a4dee0ed170a06e76d1d73bdf3ad657abbb42fee1ecb2f1",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest-child.mts": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+    "scripts/run-vitest.mts": "59c99a9a5df5e94fd905b7866e45cb70181b188a90ed03aebe41967f02fd430d",
+    "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+    "scripts/lib/vitest-build-prerequisites.mts": "15d7fb596dcee56e46a8f7250e1948e2d8ef75706cd50c602501037d3b9e7c5a",
+    "scripts/lib/vitest-process.mts": "ab9e0ce9cecbadf08e320c6fdf46e62cf0c66317341be0e359b77842d7390c09",
+    "scripts/vitest-process-group.mts": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
+    "scripts/control-ui-i18n-verify.ts": "1e5eaa63b5a5f832d39d4f576e8cb081bfae5d7df7b446054153edc988cdc11c",
+    "test/vitest/vitest.ui.config.ts": "7ad0ae8edc1bae139f2476a5636157fc7f58ad867b76124fe00c619c1757d775",
+    "test/vitest/vitest.scoped-config.ts": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+    "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+    "test/vitest/vitest.ui-isolated-paths.mjs": "6e9649e294d2871dcb14fe8c24113e3548bcb0c8ff1370f4fe9cec8aca90de04",
+    "test/vitest/vitest.pattern-file.ts": "a9a3a664de5673fb9b47ae1f173a5abd6559ba407736188bdf5e12921a4bcae5",
+    "test/vitest/vitest.ui-paths.mjs": "a08b95a6a7d1eb021b6672e6fba8848669db52d11513e487d997f1221d758616",
+    "test/test-home-policy.mts": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+    "ui/src/pages/config/memory.test.ts": "4f59b7ff36f5de50ca9190d7ae0c8f8cce0d9616a478557cb623ae25adc2ded9",
+    "ui/src/pages/memory-import/view.test.ts": "7feb0ecc209e60b2f57cdf468bc06a121e37d6bbfdfc5669e9b093e381cb872a"
   },
   "expectedStartupJsRequests": 8,
   "expectedEnforcementLimit": 349244,
@@ -51,5 +72,11 @@
     "job": 100493751379,
     "gzipBytes": 349560,
     "note": "Different merge identity; not an asserted byte total for this new baseline build."
+  },
+  "baselineObservation": {
+    "run": 33708919016,
+    "gzipBytes": 349524,
+    "limit": 349244,
+    "status": "Root reported sole budget RED; independent full asset/source validation pending"
   }
 }

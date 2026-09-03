@@ -1,0 +1,80 @@
+{
+  "base": "ddb4207d9211166eaae858a6f124481856808c26",
+  "files": [
+    {
+      "path": "scripts/lib/control-ui-i18n-catalog.ts",
+      "beforeGit": {
+        "mode": "100644",
+        "blob": "beecfa76c0983ca76e019a9cc7bfb0a399d0df3d"
+      },
+      "candidateGit": {
+        "mode": "100644",
+        "blob": "f93d143c8329dc68632d30c3aabc5ae993085d19"
+      },
+      "beforeSha256": "6cc86e915a8a3d193fb5d6c3b15a7b9062681553e13e889f2be7e03f5fab6a85",
+      "candidateSha256": "47544570bc88c69e0848b38c043d29a63fe18370388d5da750d5c3cea783d5d8"
+    },
+    {
+      "path": "ui/src/app/vite-config.node.test.ts",
+      "beforeGit": {
+        "mode": "100644",
+        "blob": "4c7e4d20a751f502dba381d1c8e67695ece666e5"
+      },
+      "candidateGit": {
+        "mode": "100644",
+        "blob": "e48464909c889e959cfd9177d7b9213039cc2439"
+      },
+      "beforeSha256": "2a0b1bd1a3082f99fef6939e7a4a68e1f27e0a5a3930d00b9e57b43cb06f9495",
+      "candidateSha256": "d430cd0d3f21cf351e51713886d5326edc076c0f261957d220ec3d3c3d98e23a"
+    },
+    {
+      "path": "ui/src/i18n/locales/en-memory-import.ts",
+      "beforeGit": null,
+      "candidateGit": {
+        "mode": "100644",
+        "blob": "d84ec9ebc09cfc970034327b8087af23b16aaaf5"
+      },
+      "beforeSha256": null,
+      "candidateSha256": "bd1d6cd75d14149f0a4dee0ed170a06e76d1d73bdf3ad657abbb42fee1ecb2f1"
+    },
+    {
+      "path": "ui/src/i18n/locales/en.ts",
+      "beforeGit": {
+        "mode": "100644",
+        "blob": "c08b1308c168361869b5b4109e6f6ac5e5660fb6"
+      },
+      "candidateGit": {
+        "mode": "100644",
+        "blob": "8d1ef86a0d4ac7408a0ba8d394cdbc226f7dc74d"
+      },
+      "beforeSha256": "763f8a9e53faf6d6f65c383d4a2ece4cfd989313c6236776bb3356c76ac3c191",
+      "candidateSha256": "39acaacbe5a22813b0be9afbb9247dc753545c57f9df8811c05b6534d8fc071a"
+    },
+    {
+      "path": "ui/src/pages/config/memory.ts",
+      "beforeGit": {
+        "mode": "100644",
+        "blob": "10fd560d1dcdbf76a675ef344988dd259ae1ef37"
+      },
+      "candidateGit": {
+        "mode": "100644",
+        "blob": "4810d2f3c036eaa2963e4810168e32339244f2cf"
+      },
+      "beforeSha256": "df8701e4db9a13aa68832e1f15fc5b2e625f699a87b73af7cca9e50a30846f0b",
+      "candidateSha256": "a3a811aa27435e38e6946783192e55bcd7fd04a105a59e850ed41f56a6982c9a"
+    },
+    {
+      "path": "ui/src/pages/memory-import/view.ts",
+      "beforeGit": {
+        "mode": "100644",
+        "blob": "277f604877d0f1f8c10891491b898b510c9e0ac1"
+      },
+      "candidateGit": {
+        "mode": "100644",
+        "blob": "36fe095bcc439a4c428d3b1e192c07fc4ad8c08c"
+      },
+      "beforeSha256": "cfe86a3c9577677fe9a1ccf1003c94328add3d4b51574593f70f7ec693a28b7e",
+      "candidateSha256": "698fbaede0657bab61b6cca2bc6bf5f1bef1ef548ae642379ebaea31172e8770"
+    }
+  ]
+}

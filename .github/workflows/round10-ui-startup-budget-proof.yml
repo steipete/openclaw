@@ -1,4 +1,4 @@
-name: Round 10 secretless UI startup baseline proof
+name: Round 10 secretless UI startup candidate proof
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  fixed-baseline:
+  fixed-candidate:
     if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-ui-startup-budget-proof'
     runs-on: ubuntu-24.04
     timeout-minutes: 50
@@ -21,7 +21,15 @@ jobs:
           path: proof-assets
           persist-credentials: false
           fetch-depth: 1
-      - name: Checkout immutable upstream baseline
+      - name: Checkout immutable reviewed candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 13a54c1cca20c959ae63f55962df8ca5d4c4fa18
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout immutable upstream baseline reference (never execute)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: openclaw/openclaw
@@ -34,7 +42,7 @@ jobs:
         with:
           node-version: 24.19.0
           package-manager-cache: false
-      - name: Measure the unchanged canonical build and retain its guard result
+      - name: Require canonical candidate build and focused checks
         shell: bash
         run: |
           env -i \
@@ -49,13 +57,13 @@ jobs:
             RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
             RUNNER_OS="$RUNNER_OS" \
             RUNNER_ARCH="$RUNNER_ARCH" \
-            /usr/bin/python3 proof-assets/.github/proofs/round10/ui-budget/run-baseline.py \
-            "$GITHUB_WORKSPACE/baseline" "$GITHUB_WORKSPACE/evidence-ui-budget"
+            /usr/bin/python3 proof-assets/.github/proofs/round10/ui-budget/run-candidate.py \
+            "$GITHUB_WORKSPACE/candidate" "$GITHUB_WORKSPACE/baseline" "$GITHUB_WORKSPACE/evidence-ui-budget"
       - name: Retain source bindings and actual production assets
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
         with:
-          name: ui-budget-baseline-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ui-budget-candidate-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence-ui-budget
           retention-days: 14
           if-no-files-found: error
