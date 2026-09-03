@@ -12,7 +12,7 @@
     "extensions/nextcloud-talk/src/config-schema.ts": "701f08d91f592a67e34a0ff20a5d2ce7bec66b4d27bc8149e1b5777d6a7e0adb",
     "extensions/nextcloud-talk/src/gateway.ts": "778cfdff4e291d4a69a3797762b8f27447f856c874057195aca653821b103304",
     "extensions/nextcloud-talk/src/inbound.authz.test.ts": "d238d96813702819df413f8a8b8dfc677da6eba7198716bec5cbf50321a4e20a",
-    "extensions/nextcloud-talk/src/inbound.behavior.test.ts": "30769c3d6b3875739adbd33ff02782ebd43f842019811dcb63491b63c00ec580",
+    "extensions/nextcloud-talk/src/inbound.behavior.test.ts": "2d44528bab63a6eff87fd9bc98cecee0cb284eb405445b312e682b705233715f",
     "extensions/nextcloud-talk/src/inbound.ts": "79dfb2def430a5795e344e4f1beed4a79a8106d6fa6b326493f7131f389de8d6",
     "extensions/nextcloud-talk/src/monitor-runtime.ts": "d819624ad60f4dff923a45ee30582786aabaa233484a28a1c3c6ebb18095584d",
     "extensions/nextcloud-talk/src/monitor.test-fixtures.ts": "2c8d1d65a8cb2f13df52c48f82617109a21ae20962bfc586d91c36debf458f2c",
@@ -125,7 +125,7 @@
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "nodeVersion": "24.19.0",
   "testPath": "extensions/nextcloud-talk/src/inbound.behavior.test.ts",
-  "testSHA256": "30769c3d6b3875739adbd33ff02782ebd43f842019811dcb63491b63c00ec580",
+  "testSHA256": "2d44528bab63a6eff87fd9bc98cecee0cb284eb405445b312e682b705233715f",
   "proofPath": "extensions/qa-lab/src/nextcloud-commands.gateway-proof.mjs",
   "proofSHA256": "4f010c3f470a95111e21732e0928fde5bec6e185bae6b9744883644797106558",
   "expectedTestTitles": [
@@ -239,8 +239,8 @@
     "promptMatch": "Canonical current-user prompt must end with two newlines and the complete raw payload; allInputText is never used",
     "newHelperImports": false
   },
-  "candidateHead": "580cc41bc4d0027fc3f6eb7bef0d8be54e6894c1",
-  "candidateTree": "a4691cb616144f3f6c885dd9234c34723f6852ab",
+  "candidateHead": "2a542813a6dacd33d2a1325f1c7cc6acb7a9b4d3",
+  "candidateTree": "a899ea08a0b0623bba048f138ef3cd8e043c1500",
   "requiredSourcePaths": [
     "docs/channels/nextcloud-talk.md",
     "extensions/nextcloud-talk/api.ts",
@@ -555,5 +555,10 @@
       "candidateLine": 387,
       "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);"
     }
-  ]
+  ],
+  "testContractCorrection": {
+    "previousHead": "580cc41bc4d0027fc3f6eb7bef0d8be54e6894c1",
+    "previousTestSHA256": "30769c3d6b3875739adbd33ff02782ebd43f842019811dcb63491b63c00ec580",
+    "reason": "Two test mocks now accept optional command text and return false for missing text, matching the runtime contract. All21 case inputs and assertions unchanged."
+  }
 }

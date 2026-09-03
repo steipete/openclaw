@@ -2,11 +2,11 @@
   "schema": "openclaw-134817-candidate-assets-v1",
   "runnable": true,
   "sha256": {
-    ".github/proofs/round10/134817/execution-binding.json": "dc06bb00f0527f129ab0ca9c6d0dcddc94e71792443db89e4a99c33669269818",
+    ".github/proofs/round10/134817/execution-binding.json": "192089f2f54f1c712514af3ebfcb056c065bfdf57a9e6b470164ef503ae87150",
     ".github/proofs/round10/134817/gateway-proof.mjs": "4f010c3f470a95111e21732e0928fde5bec6e185bae6b9744883644797106558",
-    ".github/proofs/round10/134817/inbound.behavior.test.ts": "30769c3d6b3875739adbd33ff02782ebd43f842019811dcb63491b63c00ec580",
-    ".github/proofs/round10/134817/run-proof.py": "11b8587a21b817790ea56cc08708975f1f4bbf6d031b49197177eca5461ccea1",
-    ".github/workflows/round10-nextcloud-candidate-proof.yml": "e8e21a4ef7fb21b58856424951a5f241f4c29739272afa9011158265818cfcde",
-    "README.md": "c8280a289e395dc3ee9080bc324f214324939c16708a879a88b1b8188458d148"
+    ".github/proofs/round10/134817/inbound.behavior.test.ts": "2d44528bab63a6eff87fd9bc98cecee0cb284eb405445b312e682b705233715f",
+    ".github/proofs/round10/134817/run-proof.py": "9271ffa178907f95a76a510e765f1099998ea4f0206f8ab0fd96e5bd51d096ca",
+    ".github/workflows/round10-nextcloud-candidate-proof.yml": "6375a6ae332f31b1132956cd4e335995a7960a7b4b56295cf21444a1ad64afa6",
+    "README.md": "a50c9cf3d3a89493d6034dc5f05aa60f50e195612d692983148b1f913baf30a8"
   }
 }

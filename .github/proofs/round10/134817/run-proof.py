@@ -430,7 +430,7 @@ finally:
     try:
         assert not receipt['unconfirmedCommandGroups'], 'Command closure unconfirmed; retain private runtime'
         if gateway_started:
-            cleanup = json.loads((evidence / 'baseline/child-cleanup.json').read_text())
+            cleanup = json.loads((phase_dir / 'child-cleanup.json').read_text())
             assert cleanup['confirmed'] is True and not cleanup['errors'], 'Gateway closure unconfirmed; retain runtime'
         if proof_created:
             assert not proof_path.is_symlink() and digest(proof_path) == binding['proofSHA256']

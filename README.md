@@ -1,6 +1,6 @@
 # Nextcloud Talk structured command proof
 
-Candidate-only secretless GitHub-hosted validation of OpenClaw PR #134817 at 580cc41bc4d0027fc3f6eb7bef0d8be54e6894c1.
+Candidate-only secretless GitHub-hosted validation of OpenClaw PR #134817 at 2a542813a6dacd33d2a1325f1c7cc6acb7a9b4d3.
 
 The prior baseline completed 21 tests (16 controls pass, 5 intended failures) and all 11 signed built-Gateway scenarios in https://github.com/steipete/openclaw/actions/runs/33702904753. Its publication remains on codex/round10-nextcloud-baseline-proof.
 
