@@ -263,6 +263,10 @@ def runtime_env(label):
     return env
 
 
+def strip_ansi(text):
+    return re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text)
+
+
 def parse_test_report(name, test_path_name):
     file = evidence / (name + '.json')
     assert file.is_file() and not file.is_symlink() and file.stat().st_size <= MAX_LOG_BYTES
@@ -275,7 +279,7 @@ def parse_test_report(name, test_path_name):
     assert data.get('numPendingTests') == data.get('numTodoTests') == 0
     assert data.get('numRuntimeErrorTestSuites', 0) == 0
     console = '\n'.join((evidence / (name + suffix)).read_text(errors='replace') for suffix in ['.stdout', '.stderr'])
-    clean = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', console)
+    clean = strip_ansi(console)
     assert not re.search(r'Vitest caught [1-9]\d* unhandled errors?|\[vitest\] UNHANDLED ERRORS \(', clean)
     for forbidden in ['Some tests are still running when generating the JSON report',
                       '[vitest] retained temporary namespace ', '[vitest-workers] retaining ',
@@ -363,7 +367,7 @@ def replace_test(expected_bytes, replacement, identity=None):
 def verify_lifecycle_ledger():
     contract = binding['ledgerContract']
     assert contract['reviewed'] is True
-    console = (evidence / 'baseline-lifecycle.stdout').read_text(errors='replace')
+    console = strip_ansi((evidence / 'baseline-lifecycle.stdout').read_text(errors='replace'))
     marker = contract['stdoutPrefix']
     assert marker == 'PROOF_126547_LEDGER:'
     rows = [line[len(marker):] for line in console.splitlines() if line.startswith(marker)]
