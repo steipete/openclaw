@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: openclaw/openclaw
-          ref: e740e49b65a13dd45fe0e36f4de08f518e704e8e
+          ref: 1dd2887cb5ad9a2297598065dcccdc63c73f863c
           path: product
           persist-credentials: false
       - name: Setup repository-compatible Node with bundled Corepack

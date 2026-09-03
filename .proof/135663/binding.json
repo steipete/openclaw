@@ -1,7 +1,7 @@
 {
   "publicationReady": true,
-  "candidateSHA": "e740e49b65a13dd45fe0e36f4de08f518e704e8e",
-  "candidateTree": "8b9c7145b4bd5e6f378d335cb24ff883db5f3823",
+  "candidateSHA": "1dd2887cb5ad9a2297598065dcccdc63c73f863c",
+  "candidateTree": "b4eb41c93ac95d855457cf3ae83aa1a74e5c5338",
   "setupNodeVersion": "24.19.0",
   "bundledNodeVersion": "24.19.0",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
@@ -124,7 +124,7 @@
     },
     {
       "path": "scripts/run-node.mts",
-      "sha256": "1bbee9c5e628bccbcda0429e423e96e3b85710d25ef9c12b6dccd0ba45c45760"
+      "sha256": "22db557bad2b68379ec8f3ab64bc110443b0fece5f6d1e188f0d8b605c85d1f0"
     },
     {
       "path": "scripts/stage-mac-node-worker.sh",
@@ -213,6 +213,14 @@
     {
       "path": "apps/macos/Sources/OpenClaw/PeekabooBridgeHostCoordinator.swift",
       "sha256": "5746477aba77b1456e9a49559aa4b974d959620cb4e67865e1e255b01a84d877"
+    },
+    {
+      "path": "config/control-ui-startup-budget-baseline.json",
+      "sha256": "2c177f222efa5ffce3d213043a4a7c92b6f6ee784a8ae897cc084b626d37b3fc"
+    },
+    {
+      "path": "scripts/check-control-ui-performance.mts",
+      "sha256": "8b06e1bf29cf19d977576890614d611b1a630cdb94cc95960a038272d511c757"
     }
   ],
   "proofTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerProcessGroupProof.swift",
