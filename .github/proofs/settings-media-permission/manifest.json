@@ -1,10 +1,10 @@
 {
   "schema": "openclaw-settings-media-permission-baseline-manifest-v1",
   "sha256": {
-    ".github/proofs/settings-media-permission/binding.json": "e280df32a217ef8e321b3c68d6d9eb0193759ceeb10a52038e697913278c9f20",
+    ".github/proofs/settings-media-permission/binding.json": "c5af56a8d112825ecf1bc66f1c9f28f488eb947746dedbfa15ad336d4de05d89",
     ".github/proofs/settings-media-permission/lifecycle-reporter.mjs": "0c117083cb8e8ba0f744e34802fc44f3268efca5d423c598d55db049f0e229f9",
-    ".github/proofs/settings-media-permission/proof.e2e.test.ts": "a6c933294951b7176721dc597c95978a218f31c046f0771472ec65cc063d3ce4",
-    ".github/proofs/settings-media-permission/run-proof.py": "6503086c147e8c71345914508bbc2f644e51cfa1092a69731fc6d50f0a4eda1d",
+    ".github/proofs/settings-media-permission/proof.e2e.test.ts": "0db68030a4e2a61c84e5d62b4f2f8f424f8662eb7525d175f79277276db4de1c",
+    ".github/proofs/settings-media-permission/run-proof.py": "2d835ffe79d0a6c5b5a4a75e3f7b19172a58ac4fd7bbb7fb4f74ea6e9c933f58",
     ".github/proofs/settings-media-permission/tests/ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486",
     ".github/proofs/settings-media-permission/tests/ui/src/pages/config/config-page.test.ts": "973e3638f526122d48e84d134f4a2c1c7db2f10d5480a6c75f54ea9014c10985",
     ".github/proofs/settings-media-permission/vitest.ui-e2e.config.ts": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",

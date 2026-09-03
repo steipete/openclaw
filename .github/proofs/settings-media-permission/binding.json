@@ -1,6 +1,6 @@
 {
   "schema": "openclaw-settings-media-permission-baseline-hosted-v1",
-  "status": "Reviewed baseline-only correction; exact rendered-retirement prerequisite required",
+  "status": "Reviewed baseline-only proof of rendered Settings title retirement",
   "baselineHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2",
   "baselineTree": "813680ce5da3bd6a1d96d95648d9f4480e938400",
   "originalPrHead": "f8b2e1ca54e2286c6f45804e9c76b6fbb73a20aa",
@@ -73,7 +73,8 @@
     "scripts/lib/vitest-worker-run.mts": "63733d0070c7981336ba5359d8cf846cb78e1d6165ec0b586f5af9ce669b74ff",
     "scripts/lib/vitest-resource-ownership.mts": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
     "scripts/vitest-process-group.mts": "96c6450fbda87a153ee1ad187af7cfd0e23702bba41475ab4e245b1b8712a0f8",
-    "scripts/lib/vitest-unhandled-errors.mts": "58f9cbab55800b151803b11c7c12e5eb0db14bc81b64858beab41d42656c1b77"
+    "scripts/lib/vitest-unhandled-errors.mts": "58f9cbab55800b151803b11c7c12e5eb0db14bc81b64858beab41d42656c1b77",
+    "ui/src/components/settings-ui.ts": "aae33b86e6b58163232c15dda248bdd0ec19ca694991ebf02c574fab516fab7d"
   },
   "productionPaths": [
     "ui/src/pages/config/config-page.ts",
@@ -114,7 +115,7 @@
     "media permission lifetime: composer remain open during pending discovery": "passed"
   },
   "proofPath": "ui/src/e2e/settings-media-permission.e2e.test.ts",
-  "proofSHA256": "a6c933294951b7176721dc597c95978a218f31c046f0771472ec65cc063d3ce4",
+  "proofSHA256": "0db68030a4e2a61c84e5d62b4f2f8f424f8662eb7525d175f79277276db4de1c",
   "classificationPath": "test/vitest/vitest.ui-e2e.config.ts",
   "classificationBeforeSHA256": "d7a7760466a60c3395bc26ff3c1d42fd825a477fd41a5b31050bc2822c5946ec",
   "classificationAfterSHA256": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",
@@ -144,7 +145,7 @@
     "ui/src/pages/config/config-page.test.ts": "973e3638f526122d48e84d134f4a2c1c7db2f10d5480a6c75f54ea9014c10985",
     "ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486"
   },
-  "permanentBrowserTestSHA256Unexecuted": "0451894ea9b6915b195052aa6aa54fac6bf717f34b05ae3312cc0eda480ca28d",
+  "permanentBrowserTestSHA256Unexecuted": "4d9453801c2f88c22e35ebae1d38fb360d7c29873b3762a6fe6f849a5125c87f",
   "proofRef": "refs/heads/codex/settings-media-permission-baseline-proof",
   "runtimePackages": {
     "node_modules/playwright/package.json": "1.62.1",
@@ -169,8 +170,8 @@
   },
   "uiFailureLocation": {
     "path": "ui/src/e2e/settings-media-permission.e2e.test.ts",
-    "line": 285
+    "line": 286
   },
   "executionAllowed": true,
-  "retirementPremise": "Visible Advanced heading, no Appearance media pickers, and atomic owner pageId/connected/heading/picker snapshot before releasing held enumeration"
+  "retirementPremise": "Visible exact Advanced page title from settings-ui.ts, no Appearance pickers, atomic current owner pageId/connected/pageTitle/picker snapshot before releasing held enumeration"
 }

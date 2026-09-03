@@ -234,7 +234,7 @@ def assess_ui(exit_code, stage_dir):
             assert row['ownerConnectedAfterExit'] is True
             assert surface['route'] == '/settings/advanced'
             assert surface['ownerConnected'] is True and surface['ownerPageId'] == 'advanced'
-            assert surface['appearancePickerCount'] == 0 and 'Advanced' in surface['headings']
+            assert surface['appearancePickerCount'] == 0 and surface['pageTitle'] == 'Advanced'
         stays = row['transition'] == 'stay'
         assert row['status'] == ('pass' if stays else 'fail')
         assert row['probesAfterSettlement'] == 1

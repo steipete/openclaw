@@ -135,9 +135,8 @@ async function settle(page: Page, enumerationId: number, rejectEnumeration = fal
         route: location.pathname,
         ownerConnected: owner?.isConnected ?? false,
         ownerPageId: typeof pageId === "string" ? pageId : null,
-        headings: Array.from(owner?.querySelectorAll("h1, h2") ?? [], (heading) =>
-          heading.textContent?.trim(),
-        ),
+        pageTitle:
+          owner?.querySelector(".content-header--settings .page-title")?.textContent?.trim() ?? null,
         appearancePickerCount: document.querySelectorAll(".settings-select--media-device").length,
       };
       // Record the rendered owner in the same browser task that releases the held API.
@@ -227,9 +226,11 @@ suite.define(() => {
             await expect.poll(() => new URL(page.url()).pathname).toBe("/settings/advanced");
             // History moves before the route module and Lit view commit. Retire the
             // actual Appearance surface before releasing its pending enumeration.
-            await page.getByRole("heading", { name: "Advanced", exact: true }).waitFor({
-              state: "visible",
-            });
+            const pageTitle = page.locator(
+              "openclaw-config-page .content-header--settings .page-title",
+            );
+            await pageTitle.waitFor({ state: "visible" });
+            await expect.poll(() => pageTitle.textContent()).toBe("Advanced");
             await expect
               .poll(() => page.locator(".settings-select--media-device").count())
               .toBe(0);
@@ -248,9 +249,9 @@ suite.define(() => {
               route: "/settings/advanced",
               ownerConnected: true,
               ownerPageId: "advanced",
+              pageTitle: "Advanced",
               appearancePickerCount: 0,
             });
-            expect(settlementSurface.headings).toContain("Advanced");
           }
           await renderedAfterMediaSettlement(page);
           record.eventsAfterSettlement = await events(page);
