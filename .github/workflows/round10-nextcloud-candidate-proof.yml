@@ -1,0 +1,61 @@
+name: Round 10 secretless Nextcloud candidate proof
+
+on:
+  push:
+    branches: [codex/round10-nextcloud-candidate-proof]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nextcloud-structured-command-candidate:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout reviewed proof assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout exact published candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 580cc41bc4d0027fc3f6eb7bef0d8be54e6894c1
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Set up pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Prove repaired permanent tests and real candidate behavior
+        shell: bash
+        run: |
+          env -i \
+            PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" \
+            GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" \
+            RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" \
+            RUNNER_ARCH="$RUNNER_ARCH" \
+            /usr/bin/python3 proof-assets/.github/proofs/round10/134817/run-proof.py \
+            "$GITHUB_WORKSPACE/candidate" "$GITHUB_WORKSPACE/evidence-134817"
+      - name: Retain bounded synthetic candidate evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: 134817-nextcloud-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-134817
+          retention-days: 14
+          if-no-files-found: error

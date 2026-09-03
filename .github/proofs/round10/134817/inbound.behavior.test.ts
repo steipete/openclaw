@@ -251,70 +251,103 @@ describe("nextcloud-talk inbound behavior", () => {
   it.each([
     ["plain", "/help"],
     ["structured", JSON.stringify({ message: "/help", parameters: {} })],
-  ])("blocks %s group commands when room access allows chat but command access does not", async (_label, text) => {
-    const buildMentionRegexes = vi.fn(() => [/@openclaw/i]);
-    const coreRuntime = createPluginRuntimeMock({
-      channel: {
-        text: { hasControlCommand: vi.fn((body: string) => body === "/help") },
-        commands: { shouldHandleTextCommands: vi.fn(() => true) },
-        mentions: { buildMentionRegexes },
-      },
-    });
-    setNextcloudTalkRuntime(coreRuntime);
-    createChannelPairingControllerMock.mockReturnValue({
-      readStoreForDmPolicy: vi.fn(),
-      issueChallenge: vi.fn(),
-    });
-    resolveNextcloudTalkRoomKindMock.mockResolvedValue("group");
-    const runtime = createRuntimeEnv();
+  ])(
+    "blocks %s group commands when room access allows chat but command access does not",
+    async (_label, text) => {
+      const buildMentionRegexes = vi.fn(() => [/@openclaw/i]);
+      const coreRuntime = createPluginRuntimeMock({
+        channel: {
+          text: { hasControlCommand: vi.fn((body: string) => body === "/help") },
+          commands: { shouldHandleTextCommands: vi.fn(() => true) },
+          mentions: { buildMentionRegexes },
+        },
+      });
+      setNextcloudTalkRuntime(coreRuntime);
+      createChannelPairingControllerMock.mockReturnValue({
+        readStoreForDmPolicy: vi.fn(),
+        issueChallenge: vi.fn(),
+      });
+      resolveNextcloudTalkRoomKindMock.mockResolvedValue("group");
+      const runtime = createRuntimeEnv();
 
-    await handleNextcloudTalkInbound({
-      message: createMessage({
-        roomToken: "room-group",
-        roomName: "Ops",
-        isGroupChat: true,
-        text,
-      }),
-      account: createAccount({
-        config: {
-          dmPolicy: "pairing",
-          allowFrom: [],
-          groupPolicy: "allowlist",
-          groupAllowFrom: [],
-          rooms: {
-            "room-group": {
-              allowFrom: ["user-1"],
-              requireMention: false,
+      await handleNextcloudTalkInbound({
+        message: createMessage({
+          roomToken: "room-group",
+          roomName: "Ops",
+          isGroupChat: true,
+          text,
+        }),
+        account: createAccount({
+          config: {
+            dmPolicy: "pairing",
+            allowFrom: [],
+            groupPolicy: "allowlist",
+            groupAllowFrom: [],
+            rooms: {
+              "room-group": {
+                allowFrom: ["user-1"],
+                requireMention: false,
+              },
             },
           },
-        },
-      }),
-      config: { channels: { "nextcloud-talk": {} } } as CoreConfig,
-      runtime,
-    });
+        }),
+        config: { channels: { "nextcloud-talk": {} } } as CoreConfig,
+        runtime,
+      });
 
-    expect(coreRuntime.channel.inbound.dispatchReply).not.toHaveBeenCalled();
-    expect(buildMentionRegexes).not.toHaveBeenCalled();
-    expect(runtime.log).toHaveBeenCalledWith(
-      "nextcloud-talk: drop control command (unauthorized) target=user-1",
-    );
-  });
+      expect(coreRuntime.channel.inbound.dispatchReply).not.toHaveBeenCalled();
+      expect(buildMentionRegexes).not.toHaveBeenCalled();
+      expect(runtime.log).toHaveBeenCalledWith(
+        "nextcloud-talk: drop control command (unauthorized) target=user-1",
+      );
+    },
+  );
 
   it.each([
     { label: "ordinary text", text: "hello", command: "hello" },
     { label: "plain help", text: "/help", command: "/help" },
     { label: "array parameters", text: '{"message":"/help","parameters":[]}', command: "/help" },
-    { label: "object parameters", text: '{"message":"/status","parameters":{}}', command: "/status" },
-    { label: "outer and message whitespace", text: '  {"message":" /help ","parameters":{}}  ', command: "/help" },
+    {
+      label: "object parameters",
+      text: '{"message":"/status","parameters":{}}',
+      command: "/status",
+    },
+    {
+      label: "outer and message whitespace",
+      text: '  {"message":" /help ","parameters":{}}  ',
+      command: "/help",
+    },
     { label: "malformed JSON", text: '{"message":"/help",', command: '{"message":"/help",' },
     { label: "missing parameters", text: '{"message":"/help"}', command: '{"message":"/help"}' },
-    { label: "non-string message", text: '{"message":1,"parameters":{}}', command: '{"message":1,"parameters":{}}' },
-    { label: "blank message", text: '{"message":"  ","parameters":{}}', command: '{"message":"  ","parameters":{}}' },
-    { label: "JSON array", text: '[{"message":"/help","parameters":{}}]', command: '[{"message":"/help","parameters":{}}]' },
+    {
+      label: "non-string message",
+      text: '{"message":1,"parameters":{}}',
+      command: '{"message":1,"parameters":{}}',
+    },
+    {
+      label: "blank message",
+      text: '{"message":"  ","parameters":{}}',
+      command: '{"message":"  ","parameters":{}}',
+    },
+    {
+      label: "JSON array",
+      text: '[{"message":"/help","parameters":{}}]',
+      command: '[{"message":"/help","parameters":{}}]',
+    },
     { label: "JSON null", text: "null", command: "null" },
-    { label: "ordinary rich message", text: '{"message":"Hi {user1}","parameters":{"user1":{"type":"user","id":"alice","name":"Alice"}}}', command: '{"message":"Hi {user1}","parameters":{"user1":{"type":"user","id":"alice","name":"Alice"}}}' },
+    {
+      label: "ordinary rich message",
+      text: '{"message":"Hi {user1}","parameters":{"user1":{"type":"user","id":"alice","name":"Alice"}}}',
+      command:
+        '{"message":"Hi {user1}","parameters":{"user1":{"type":"user","id":"alice","name":"Alice"}}}',
+    },
     { label: "plain group command without mention", text: "/help", command: "/help", group: true },
-    { label: "structured group command without mention", text: '{"message":"/help","parameters":{}}', command: "/help", group: true },
+    {
+      label: "structured group command without mention",
+      text: '{"message":"/help","parameters":{}}',
+      command: "/help",
+      group: true,
+    },
   ])("keeps command and raw projections separate for $label", async ({ text, command, group }) => {
     const hasControlCommand = vi.fn((body: string) => body.startsWith("/"));
     const coreRuntime = createPluginRuntimeMock({
@@ -358,14 +391,16 @@ describe("nextcloud-talk inbound behavior", () => {
       "Nextcloud Talk assembled request",
     ) as { ctxPayload: Record<string, unknown>; replyPipeline?: unknown };
     expect(assembledRequest.replyPipeline).toEqual({});
-    expect(assembledRequest.ctxPayload).toEqual(expect.objectContaining({
-      CommandBody: command,
-      BodyForCommands: command,
-      RawBody: text.trim(),
-      BodyForAgent: text.trim(),
-      CommandAuthorized: true,
-      ...(group ? { WasMentioned: false } : {}),
-    }));
+    expect(assembledRequest.ctxPayload).toEqual(
+      expect.objectContaining({
+        CommandBody: command,
+        BodyForCommands: command,
+        RawBody: text.trim(),
+        BodyForAgent: text.trim(),
+        CommandAuthorized: true,
+        ...(group ? { WasMentioned: false } : {}),
+      }),
+    );
   });
 
   it("binds durable ingress adoption into reply options", async () => {

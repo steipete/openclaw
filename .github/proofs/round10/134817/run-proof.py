@@ -1,4 +1,4 @@
-"""Baseline-only Nextcloud proof; run only on the reviewed secretless hosted workflow."""
+"""Candidate-only Nextcloud proof; run only on the reviewed secretless hosted workflow."""
 from pathlib import Path
 import hashlib
 import json
@@ -19,10 +19,10 @@ checkout, evidence = [Path(value).resolve() for value in sys.argv[1:]]
 evidence.mkdir(mode=0o700, parents=True, exist_ok=False)
 binding = json.loads((assets / 'execution-binding.json').read_text())
 proof_root = assets.parents[3]
-receipt = {'schema': 'openclaw-134817-baseline-hosted-v1', 'passed': False, 'phase': 'setup',
-           'baselineRed': False, 'gatewayBaselinePassed': False, 'candidateStarted': False,
+receipt = {'schema': 'openclaw-134817-candidate-hosted-v1', 'passed': False, 'phase': 'setup',
+           'testsGreen': False, 'gatewayCandidatePassed': False, 'candidateStarted': False,
            'commands': [], 'unconfirmedCommandGroups': [], 'cleanupErrors': []}
-scratch = node = installed_lock = initial_guard = original_test = None
+scratch = node = installed_lock = initial_guard = None
 gateway_started = False
 proof_created = False
 assert binding['testPath'] == 'extensions/nextcloud-talk/src/inbound.behavior.test.ts'
@@ -125,8 +125,8 @@ def index_facts():
 
 
 def capture_source():
-    assert git_text('rev-parse', 'HEAD') == binding['baseHead']
-    assert git_text('rev-parse', 'HEAD^{tree}') == binding['baseTree']
+    assert git_text('rev-parse', 'HEAD') == binding['candidateHead']
+    assert git_text('rev-parse', 'HEAD^{tree}') == binding['candidateTree']
     assert git_text('remote', 'get-url', 'origin') == 'https://github.com/openclaw/openclaw'
     assert not git('diff', '--cached', '--name-only', '-z', '--no-ext-diff', '--no-textconv', 'HEAD', '--')
     assert not git('diff', '--name-only', '-z', '--no-ext-diff', '--no-textconv', '--')
@@ -145,17 +145,15 @@ def capture_source():
     snapshot = tracked_snapshot(names)
     for name, expected in binding['sourceHashes'].items():
         assert snapshot[name] == {'kind': 'file', 'sha256': expected}, name
-    save(evidence / 'tracked-baseline.json', {'index': index, 'tracked': snapshot})
+    save(evidence / 'tracked-candidate.json', {'index': index, 'tracked': snapshot})
     return {'index': index, 'tracked': snapshot, 'names': names}
 
 
-def source_guard(label, overlay):
+def source_guard(label):
     index, _ = index_facts()
     expected = dict(initial_guard['tracked'])
-    if overlay:
-        expected[binding['testPath']] = {'kind': 'file', 'sha256': binding['testSHA256']}
     observed = {'head': git_text('rev-parse', 'HEAD'), 'tree': git_text('rev-parse', 'HEAD^{tree}'),
-                'index': index, 'testOverlay': overlay, 'trackedCount': len(expected)}
+                'index': index, 'testOverlay': False, 'trackedCount': len(expected)}
     save(evidence / ('source-' + label + '.json'), observed)
     snapshot = tracked_snapshot(initial_guard['names'])
     changes = [name for name in expected if snapshot[name] != expected[name]]
@@ -166,10 +164,10 @@ def source_guard(label, overlay):
     observed.update(changedBytes=changes, gitChangedPaths=git_changes, sourceIdentity=identity,
                     installedLockSHA256=current_lock, indexUnchanged=index == initial_guard['index'])
     save(evidence / ('source-' + label + '.json'), observed)
-    assert observed['head'] == binding['baseHead'] and observed['tree'] == binding['baseTree']
+    assert observed['head'] == binding['candidateHead'] and observed['tree'] == binding['candidateTree']
     assert observed['indexUnchanged'], 'Index changed'
     assert not changes, changes
-    assert git_changes == ([binding['testPath']] if overlay else []), git_changes
+    assert git_changes == [], git_changes
     if installed_lock is not None:
         assert current_lock == installed_lock, 'Installed frozen lock changed'
     credentials = subprocess.run(['/usr/bin/git', 'config', '--local', '--name-only', '--get-regexp', '(extraheader|credential)'], cwd=checkout, capture_output=True)
@@ -226,10 +224,10 @@ def run(name, argv, cwd, env, directory, timeout, exits=(0,)):
             except ProcessLookupError:
                 group_empty = True
         result['commandGroupEmpty'] = group_empty
-        result['processGroupClosure'] = 'gateway-owner-receipt-required' if name == 'baseline-gateway' else 'command-group-only'
+        result['processGroupClosure'] = 'gateway-owner-receipt-required' if name == 'candidate-gateway' else 'command-group-only'
         # Detached Gateway children belong to the canonical QA owner. Non-Gateway
         # failures or a still-live command group retain the private runtime.
-        if name != 'baseline-gateway' and (not completed or not group_empty):
+        if name != 'candidate-gateway' and (not completed or not group_empty):
             receipt['unconfirmedCommandGroups'].append(name)
         result['seconds'] = round(time.monotonic() - started, 3)
         receipt['commands'].append(result)
@@ -251,42 +249,24 @@ def runtime_env(label):
     return env
 
 
-def parse_expected_red(test_json, console):
+def parse_expected_green(test_json, console):
     assert test_json.is_file() and test_json.stat().st_size <= MAX_LOG_BYTES
     data = json.loads(test_json.read_text())
     files = data.get('testResults', [])
     assert len(files) == 1 and files[0]['name'].endswith('/' + binding['testPath'])
-    assert not files[0].get('message'), 'Module/hook error is not a regression'
+    assert not files[0].get('message'), 'Module/hook error is not a passing regression suite'
     tests = files[0].get('assertionResults', [])
     assert data.get('numTotalTests') == len(tests) == 21
-    assert data.get('numPassedTests') == 16 and data.get('numFailedTests') == 5
-    assert data.get('numPendingTests') == data.get('numTodoTests') == 0 and data.get('success') is False
+    assert data.get('numPassedTests') == 21 and data.get('numFailedTests') == 0
+    assert data.get('numPendingTests') == data.get('numTodoTests') == 0 and data.get('success') is True
     assert sorted(test['title'] for test in tests) == sorted(binding['expectedTestTitles'])
-    assert all(test['status'] in {'passed', 'failed'} for test in tests)
-    failed = [test for test in tests if test['status'] == 'failed']
-    assert {test['title'] for test in failed} == set(binding['expectedFailures'])
+    assert all(test['status'] == 'passed' and not test.get('failureMessages') for test in tests)
     clean = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', console)
     assert not re.search(r'Vitest caught [1-9]\d* unhandled errors?|\[vitest\] UNHANDLED ERRORS \(', clean)
     assert 'Some tests are still running when generating the JSON report' not in clean
     assert '[vitest] retained temporary namespace ' not in clean, 'Canonical test cleanup was not confirmed'
-    blocks = {}
-    lines = clean.splitlines()
-    for test in failed:
-        expected = binding['expectedFailures'][test['title']]
-        errors = '\n'.join(test.get('failureMessages', []))
-        assert 'AssertionError' in errors and re.search(re.escape(binding['testPath']) + ':' + str(expected['line']) + r':\d+', errors), test['title']
-        assert expected['assertion'] in test_path.read_text().splitlines()[expected['line'] - 1]
-        chain = ' > '.join([*test['ancestorTitles'], test['title']])
-        heading = re.compile(r'\s*FAIL\s+.*?' + re.escape(binding['testPath']) + r'\s+>\s+' + re.escape(chain) + r'\s*')
-        starts = [i for i, line in enumerate(lines) if heading.fullmatch(line)]
-        assert len(starts) == 1, 'Missing/duplicate named failure block: ' + test['title']
-        ends = [i for i in range(starts[0] + 1, len(lines)) if re.fullmatch(r'\s*⎯+\[\d+/5\]⎯+\s*', lines[i])]
-        assert ends, 'Missing five-failure block delimiter'
-        block = '\n'.join(lines[starts[0]:ends[0] + 1])
-        assert all(fragment in block for fragment in expected['failureBodyFragments']), 'Failure lacks its bound owner assertion or structured command mismatch'
-        blocks[test['title']] = block
-    save(evidence / 'expected-red-blocks.json', blocks)
-    save(evidence / 'baseline-red.json', {'testJSONSHA256': digest(test_json), 'tests': tests, 'failures': list(blocks), 'expectedFailureCount': 5})
+    save(evidence / 'candidate-green.json', {'testJSONSHA256': digest(test_json), 'tests': tests,
+                                          'expectedFailureCount': 0})
 
 
 def inventory(label, identity):
@@ -309,26 +289,29 @@ def inventory(label, identity):
             files[name] = {'sha256': digest(file), 'bytes': file.stat().st_size}
     for name in roots:
         visit(name)
-    data = {'head': binding['baseHead'], 'tree': binding['baseTree'], 'sourceIdentity': identity,
+    data = {'head': binding['candidateHead'], 'tree': binding['candidateTree'], 'sourceIdentity': identity,
             'profile': 'qaRuntime', 'privateQa': True, 'roots': roots, 'files': files}
-    save(evidence / 'baseline' / label, data)
+    save(evidence / 'candidate' / label, data)
     for name, resolved in links:
         assert resolved == checkout or checkout in resolved.parents, name
     for name in binding['requiredBuiltEntries']:
         assert files.get(name, {}).get('sha256'), 'Missing built entry: ' + name
     for name in ['dist/.buildstamp', 'dist/.runtime-postbuildstamp']:
-        assert json.loads((checkout / name).read_text())['head'] == binding['baseHead']
+        assert json.loads((checkout / name).read_text())['head'] == binding['candidateHead']
     return data
 
 
 try:
     assert platform.system() == 'Linux' and os.environ.get('RUNNER_ENVIRONMENT') == 'github-hosted'
     assert os.environ.get('GITHUB_REPOSITORY') == 'steipete/openclaw'
-    assert os.environ.get('GITHUB_REF') == 'refs/heads/codex/round10-nextcloud-baseline-proof'
+    assert os.environ.get('GITHUB_REF') == 'refs/heads/codex/round10-nextcloud-candidate-proof'
     assert os.environ.get('GITHUB_EVENT_NAME') in {'push', 'workflow_dispatch'}
-    assert checkout.name == 'baseline'
-    assert binding['runnable'] is True and binding['candidateMayRun'] is False
-    assert binding['baseHead'] == '50f02ecf4410c78269d7bbda7c47d891c9666d19'
+    assert checkout.name == 'candidate'
+    assert binding['runnable'] is True and binding['candidateMayRun'] is True, 'Candidate execution is not sealed'
+    assert isinstance(binding['candidateHead'], str) and re.fullmatch(r'[a-f0-9]{40}', binding['candidateHead'])
+    assert isinstance(binding['candidateTree'], str) and re.fullmatch(r'[a-f0-9]{40}', binding['candidateTree'])
+    assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
+    assert len(binding['sourceHashes']) >= 112
     assert git_text('rev-parse', 'HEAD', cwd=proof_root) == os.environ['GITHUB_SHA']
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
@@ -361,32 +344,32 @@ try:
     pnpm = str(scratch / 'bin/pnpm')
     run('pnpm-version', [pnpm, '--version'], scratch, bootstrap, evidence, 300)
     assert (evidence / 'pnpm-version.stdout').read_text().strip() == '12.1.0'
+    receipt['candidateStarted'] = True
     run('install', [pnpm, 'install', '--frozen-lockfile'], checkout, bootstrap, evidence, 1200)
     installed_lock = digest(checkout / 'node_modules/.pnpm/lock.yaml')
-    source_guard('installed', False)
-    original_test = test_path.read_bytes()
-    test_path.write_bytes((assets / 'inbound.behavior.test.ts').read_bytes())
-    before = source_guard('test-overlay', True)
+    source_guard('installed')
+    assert not test_path.is_symlink() and digest(test_path) == binding['testSHA256']
+    before = source_guard('before-tests')
     test_env = runtime_env('tests')
-    test_json = evidence / 'baseline-tests.json'
+    test_json = evidence / 'candidate-tests.json'
     try:
-        test_result = run('baseline-tests', [node, 'scripts/run-vitest.mjs', 'run', '--config',
+        test_result = run('candidate-tests', [node, 'scripts/run-vitest.mjs', 'run', '--config',
                           'test/vitest/vitest.extension-messaging.config.ts', binding['testPath'],
                           '--reporter=verbose', '--reporter=json', '--outputFile=' + str(test_json)],
-                          checkout, test_env, evidence, 600, exits=(0, 1))
+                          checkout, test_env, evidence, 600, exits=(0,))
     finally:
-        source_guard('tested-before-parser', True)
-    assert test_result['exitCode'] == 1, 'Original regression did not fail'
-    parse_expected_red(test_json, (evidence / 'baseline-tests.stdout').read_text(errors='replace') + '\n' + (evidence / 'baseline-tests.stderr').read_text(errors='replace'))
-    receipt['baselineRed'] = True
-    phase_dir = evidence / 'baseline'
+        source_guard('tested-before-parser')
+    assert test_result['exitCode'] == 0, 'Candidate regression suite failed'
+    parse_expected_green(test_json, (evidence / 'candidate-tests.stdout').read_text(errors='replace') + '\n' + (evidence / 'candidate-tests.stderr').read_text(errors='replace'))
+    receipt['testsGreen'] = True
+    phase_dir = evidence / 'candidate'
     phase_dir.mkdir(mode=0o700)
     build_env = runtime_env('build')
     build_env.update(OPENCLAW_BUILD_PRIVATE_QA='1', OPENCLAW_BUILD_CACHE='0')
     try:
-        run('baseline-build', [node, '--import', str(checkout / 'scripts/tsx.mjs'), 'scripts/build-all.mts', 'qaRuntime'], checkout, build_env, phase_dir, 1200)
+        run('candidate-build', [node, '--import', str(checkout / 'scripts/tsx.mjs'), 'scripts/build-all.mts', 'qaRuntime'], checkout, build_env, phase_dir, 1200)
     finally:
-        after_build = source_guard('built', True)
+        after_build = source_guard('built')
     assert after_build['sourceIdentity'] == before['sourceIdentity']
     built = inventory('runtime-build.json', before['sourceIdentity'])
     assert not proof_path.exists() and not proof_path.is_symlink()
@@ -396,26 +379,27 @@ try:
     proof_created = True
     env = runtime_env('gateway')
     env.update(OPENCLAW_BUILD_PRIVATE_QA='1', OPENCLAW_ENABLE_PRIVATE_QA_CLI='1', OPENCLAW_SKIP_CRON='1',
-               OPENCLAW_TALK_PROOF_MODE='baseline', OPENCLAW_TALK_PROOF_DIR=str(phase_dir),
+               OPENCLAW_TALK_PROOF_MODE='candidate', OPENCLAW_TALK_PROOF_DIR=str(phase_dir),
                OPENCLAW_TALK_PROOF_BINDING=str(phase_dir / 'execution-binding.json'))
     phase_binding = {**binding, 'sourceIdentity': before['sourceIdentity'], 'hostedProvenance': provenance,
                      'installedLockSHA256': installed_lock, 'nodeExecutable': node, 'envNames': sorted(env)}
     save(phase_dir / 'execution-binding.json', phase_binding)
     gateway_started = True
     try:
-        run('baseline-gateway', [node, '--import', str(checkout / 'scripts/tsx.mjs'), str(proof_path)], checkout, env, phase_dir, 780)
+        run('candidate-gateway', [node, '--import', str(checkout / 'scripts/tsx.mjs'), str(proof_path)], checkout, env, phase_dir, 780)
     finally:
-        source_guard('gateway', True)
+        source_guard('gateway')
         assert digest(proof_path) == binding['proofSHA256']
         assert inventory('runtime-after.json', before['sourceIdentity']) == built
     verdict = json.loads((phase_dir / 'gateway-verdict.json').read_text())
-    assert verdict['schema'] == 'openclaw-134817-command-proof-v1' and verdict['mode'] == 'baseline'
+    assert verdict['schema'] == 'openclaw-134817-command-proof-v1' and verdict['mode'] == 'candidate'
     assert verdict['binding'] == phase_binding and verdict['completed'] is True
     assert not verdict['errors'] and not verdict['cleanupErrors']
     assert verdict['childCleanup']['confirmed'] is True
     assert verdict['childCleanup']['result'] == {'process': 'confirmed-stopped', 'errors': []}
     assert len(verdict['cases']) == 11 and all(row['passed'] is True for row in verdict['cases'])
     assert [row['id'] for row in verdict['cases']] == binding['expectedGatewayCaseIds']
+    assert {row['id']: row['expected'] for row in verdict['cases'] if 'expected' in row} == binding['expectedCandidateOutcomes']
     assert set(verdict['webhookReadiness']) == {'default', 'roomonly'}
     assert all(row['ready'] is True and row['status'] == 200 and row['body'] == 'ok'
                for row in verdict['webhookReadiness'].values())
@@ -437,8 +421,8 @@ try:
     assert child_runtime['canonicalLaunchArgv'] == expected_launch_argv
     assert child_runtime['observedCmdline'] == expected_launch_argv
     assert verdict['duplicateBefore'] == verdict['duplicateAfter']
-    receipt.update(passed=True, phase='complete', gatewayBaselinePassed=True,
-                   baselineIdentity=before['sourceIdentity'], gatewayVerdictSHA256=digest(phase_dir / 'gateway-verdict.json'))
+    receipt.update(passed=True, phase='complete', gatewayCandidatePassed=True,
+                   candidateIdentity=before['sourceIdentity'], gatewayVerdictSHA256=digest(phase_dir / 'gateway-verdict.json'))
 except Exception as error:
     receipt['error'] = str(error)
     (evidence / 'failure.txt').write_text(traceback.format_exc())
@@ -451,10 +435,8 @@ finally:
         if proof_created:
             assert not proof_path.is_symlink() and digest(proof_path) == binding['proofSHA256']
             proof_path.unlink()
-        if original_test is not None:
-            assert digest(test_path) == binding['testSHA256']
-            test_path.write_bytes(original_test)
-            source_guard('restored', False)
+        if initial_guard is not None:
+            source_guard('final')
         if scratch is not None:
             shutil.rmtree(scratch)
         receipt['ownedScratchRemoved'] = True
@@ -472,5 +454,5 @@ finally:
         receipt['cleanupErrors'].append(str(error))
         receipt['passed'] = False
     save(evidence / 'hosted-proof-result.json', receipt)
-    print(json.dumps({key: receipt[key] for key in ['passed', 'phase', 'baselineRed', 'gatewayBaselinePassed', 'candidateStarted']}))
+    print(json.dumps({key: receipt[key] for key in ['passed', 'phase', 'testsGreen', 'gatewayCandidatePassed', 'candidateStarted']}))
 sys.exit(0 if receipt['passed'] else 1)

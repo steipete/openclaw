@@ -17,11 +17,12 @@ import { openExistingOpenClawStateDatabaseReadOnly } from "../../../src/state/op
 const root = await fs.realpath(process.cwd());
 const output = await fs.realpath(process.env.OPENCLAW_TALK_PROOF_DIR);
 const binding = JSON.parse(await fs.readFile(process.env.OPENCLAW_TALK_PROOF_BINDING, "utf8"));
-const mode = "baseline";
-assert.equal(process.env.OPENCLAW_TALK_PROOF_MODE, mode, "Only unchanged baseline is admitted");
+const mode = "candidate";
+assert.equal(process.env.OPENCLAW_TALK_PROOF_MODE, mode, "Only the sealed candidate is admitted");
 assert.equal(binding.runnable, true, "Root must seal an executable binding after review");
+assert.equal(binding.candidateMayRun, true, "Candidate execution is not sealed");
 assert.match(binding.sourceIdentity, /^[a-f0-9]{64}$/);
-const expectedHead = binding.baseHead;
+const expectedHead = binding.candidateHead;
 assert.match(expectedHead, /^[a-f0-9]{40}$/);
 const buildBytes = await fs.readFile(path.join(output, "runtime-build.json"));
 const build = JSON.parse(buildBytes);
@@ -306,7 +307,7 @@ try {
   assert.deepEqual(await modelRequests(), []);
   let helpReply;
   for (const scenario of scenarioRows) {
-    const expected = scenario.baselineKind ?? scenario.kind;
+    const expected = scenario.kind;
     const account = scenario.account ?? "default";
     const beforeRequests = await modelRequests();
     const beforeReplies = replies.length;
