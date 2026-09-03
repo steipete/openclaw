@@ -27,6 +27,7 @@ struct MacNodeHostWorkerProcessGroupProof {
         let startMicroseconds: UInt64
         let status: UInt32
         let executable: String
+        let executablePathErrno: Int32?
 
         func sameInstance(as other: Identity) -> Bool {
             self.pid == other.pid && self.uid == other.uid &&
@@ -42,7 +43,17 @@ struct MacNodeHostWorkerProcessGroupProof {
         let processes: [Identity]
     }
 
+    private struct ChildEnumeration: Encodable {
+        let parentPID: Int32
+        let count: Int32
+        let errorNumber: Int32
+    }
+
     private struct Observation: Encodable {
+        let observerPID: Int32
+        let expectedExecutable: String
+        let childEnumerations: [ChildEnumeration]
+        let observedDescendants: [Identity]
         let phase: String
         let sourceSHA: String
         let scenario: String
@@ -66,7 +77,9 @@ struct MacNodeHostWorkerProcessGroupProof {
         }
         try self.require(bytes == MemoryLayout.size(ofValue: info), "Incomplete BSD process identity")
         var buffer = [CChar](repeating: 0, count: Int(PATH_MAX))
+        errno = 0
         let length = proc_pidpath(pid, &buffer, UInt32(buffer.count))
+        let pathError: Int32? = length > 0 ? nil : errno
         let executable = length > 0
             ? String(decoding: buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }, as: UTF8.self)
             : ""
@@ -78,24 +91,36 @@ struct MacNodeHostWorkerProcessGroupProof {
             startSeconds: info.pbi_start_tvsec,
             startMicroseconds: info.pbi_start_tvusec,
             status: info.pbi_status,
-            executable: executable)
+            executable: executable,
+            executablePathErrno: pathError)
     }
 
-    private static func children(of pid: pid_t) throws -> [Identity] {
+    private static func children(
+        of pid: pid_t,
+        onRead: ((ChildEnumeration) -> Void)? = nil
+    ) throws -> [Identity] {
         var pids = [pid_t](repeating: 0, count: 128)
+        errno = 0
         let count = pids.withUnsafeMutableBytes {
             proc_listchildpids(pid, $0.baseAddress, Int32($0.count))
         }
-        try self.require(count >= 0 && count < pids.count, "Child enumeration failed or filled its buffer")
+        let errorNumber = errno
+        onRead?(ChildEnumeration(parentPID: pid, count: count, errorNumber: errorNumber))
+        // libproc projects syscall failure to zero; distinguish it from no children.
+        try self.require(count >= 0 && (count > 0 || errorNumber == 0) && count < pids.count,
+                         "Child enumeration failed or filled its buffer: count=\(count), errno=\(errorNumber)")
         return try pids.prefix(Int(count)).filter { $0 > 1 }.compactMap { try self.identity($0) }
     }
 
-    private static func descendants(of pid: pid_t) throws -> [Identity] {
+    private static func descendants(
+        of pid: pid_t,
+        onRead: ((ChildEnumeration) -> Void)? = nil
+    ) throws -> [Identity] {
         var queue = [pid]
         var visited = Set<pid_t>()
         var result: [Identity] = []
         while let parent = queue.popLast() {
-            for child in try self.children(of: parent) where visited.insert(child.pid).inserted {
+            for child in try self.children(of: parent, onRead: onRead) where visited.insert(child.pid).inserted {
                 try self.require(child.uid == getuid(), "Owned descendant UID changed")
                 try self.require(result.count < 256, "Owned process tree exceeded the proof bound")
                 result.append(child)
@@ -107,8 +132,11 @@ struct MacNodeHostWorkerProcessGroupProof {
 
     private static func privateNodeProcesses(at path: String) throws -> [Identity] {
         var pids = [pid_t](repeating: 0, count: 8192)
+        errno = 0
         let count = pids.withUnsafeMutableBytes { proc_listallpids($0.baseAddress, Int32($0.count)) }
-        try self.require(count >= 0 && count < pids.count, "Process enumeration failed or filled its buffer")
+        let errorNumber = errno
+        try self.require(count >= 0 && (count > 0 || errorNumber == 0) && count < pids.count,
+                         "Process enumeration failed or filled its buffer: count=\(count), errno=\(errorNumber)")
         var result: [Identity] = []
         for pid in pids.prefix(Int(count)) where pid > 1 {
             var buffer = [CChar](repeating: 0, count: Int(PATH_MAX))
@@ -179,6 +207,8 @@ struct MacNodeHostWorkerProcessGroupProof {
         let clock = ContinuousClock()
         let started = clock.now
         var events: [Event] = []
+        var childEnumerations: [ChildEnumeration] = []
+        var observedDescendants: [Identity] = []
         var tracked: [Identity] = []
         var survived: Bool?
         var failure: Error?
@@ -210,7 +240,9 @@ struct MacNodeHostWorkerProcessGroupProof {
                     "PATH": node.deletingLastPathComponent().path,
                 ]))
             try Self.require(manifest.commands.contains("system.run"), "Real worker did not return its capability manifest")
-            let all = try Self.descendants(of: getpid())
+            let all = try Self.descendants(of: getpid()) { childEnumerations.append($0) }
+            // Preserve the actual inventory before the exact executable filter can fail.
+            observedDescendants = all
             let nodes = all.filter { $0.executable == node.path }
             tracked = nodes
             let expectedCount = config.phase == "baseline" ? 2 : 1
@@ -295,6 +327,10 @@ struct MacNodeHostWorkerProcessGroupProof {
             record("cleanup-error", [])
         }
         let observation = Observation(
+            observerPID: getpid(),
+            expectedExecutable: node.path,
+            childEnumerations: childEnumerations,
+            observedDescendants: observedDescendants,
             phase: config.phase,
             sourceSHA: config.sourceSHA,
             scenario: scenario,

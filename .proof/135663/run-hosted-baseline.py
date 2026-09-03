@@ -25,6 +25,78 @@ def require(condition, message):
         raise RuntimeError(message)
 
 
+def parse_git_index_v2(data):
+    # Index layout is Git's SHA-1/v2 format, not a staged-file projection.
+    require(32 <= len(data) <= 8 * 1024 * 1024, "Git index size is invalid")
+    require(data[:8] == b"DIRC\x00\x00\x00\x02", "Expected Git index version 2")
+    end = len(data) - 20
+    require(hashlib.sha1(data[:end]).digest() == data[end:], "Git index checksum is invalid")
+    count = int.from_bytes(data[8:12], "big")
+    require(count <= (end - 12) // 64, "Git index entry count exceeds its bounds")
+    entries, extensions = [], []
+    cursor, previous = 12, None
+    for _ in range(count):
+        start = cursor
+        require(start + 62 < end, "Truncated Git index entry")
+        flags = int.from_bytes(data[start + 60:start + 62], "big")
+        require(not flags & 0x4000, "Extended entry flags are invalid in index version 2")
+        name_end = data.find(b"\x00", start + 62, end)
+        require(name_end >= 0, "Unterminated Git index pathname")
+        name = data[start + 62:name_end]
+        require(name and all(part not in (b"", b".", b"..", b".git") for part in name.split(b"/")),
+                "Invalid Git index pathname")
+        require((flags & 0xFFF) == min(len(name), 0xFFF), "Git index pathname length differs")
+        key = (name, (flags >> 12) & 3)
+        require(previous is None or previous < key, "Git index entries are not ordered")
+        previous = key
+        cursor = start + ((name_end - start + 1 + 7) // 8) * 8
+        require(cursor <= end and data[name_end:cursor] == bytes(cursor - name_end),
+                "Git index entry padding is invalid")
+        entries.append((start, cursor, name))
+    extension_start = cursor
+    while cursor < end:
+        require(cursor + 8 <= end, "Truncated Git index extension")
+        signature = data[cursor:cursor + 4]
+        # Required extensions such as split-index change entry interpretation.
+        require(65 <= signature[0] <= 90, "Unsupported required Git index extension")
+        size = int.from_bytes(data[cursor + 4:cursor + 8], "big")
+        next_cursor = cursor + 8 + size
+        require(next_cursor <= end, "Git index extension exceeds its bounds")
+        extensions.append((cursor, next_cursor, signature))
+        cursor = next_cursor
+    require(cursor == end, "Git index did not end at its checksum")
+    return entries, extension_start, extensions
+
+
+def compare_git_indexes(before, after):
+    before_entries, before_extensions, before_layout = parse_git_index_v2(before)
+    after_entries, after_extensions, after_layout = parse_git_index_v2(after)
+    require(len(before) == len(after) and before[:12] == after[:12], "Git index header or size changed")
+    require(before_entries == after_entries and before_extensions == after_extensions
+            and before_layout == after_layout, "Git index entry or extension layout changed")
+    changes = []
+    fields = ("ctimeSeconds", "ctimeNanoseconds", "mtimeSeconds", "mtimeNanoseconds")
+    for start, end, name in before_entries:
+        # Git status may refresh only these stat timestamps without staging content.
+        # Every other entry byte, including flags, pathname and padding, stays fixed.
+        require(before[start + 16:end] == after[start + 16:end],
+                "Git index changed outside ctime/mtime: " + name.decode("utf8", errors="backslashreplace"))
+        changed = {}
+        for offset, field in enumerate(fields):
+            position = start + offset * 4
+            old = int.from_bytes(before[position:position + 4], "big")
+            new = int.from_bytes(after[position:position + 4], "big")
+            if old != new:
+                changed[field] = {"before": old, "after": new}
+        if changed:
+            changes.append({"path": name.decode("utf8", errors="backslashreplace"), "changes": changed})
+    require(before[before_extensions:-20] == after[after_extensions:-20], "Git index extension bytes changed")
+    return {"format": "git-index-v2-sha1", "equivalent": True,
+            "beforeSHA256": digest(before), "afterSHA256": digest(after),
+            "rawBytesEqual": before == after, "entryCount": len(before_entries),
+            "allowedChangedFields": list(fields), "timestampChanges": changes}
+
+
 def snapshot(root):
     records = []
     for directory, dirs, files in os.walk(root, followlinks=False):
@@ -74,6 +146,7 @@ def main():
     result_payload = None
     raw_index_blobs = {}
     raw_index_captures = []
+    index_reference = None
 
     def run(name, command, allow_failure=False):
         started = time.monotonic()
@@ -186,6 +259,14 @@ def main():
             "expectedInstalledLockSHA256": installed_before,
             "overlaid": overlaid, "sourceFiles": [], "errors": errors,
         }
+        def compare_capture():
+            reference = index_reference or raw_index_capture
+            comparison = compare_git_indexes((output / reference["blob"]).read_bytes(),
+                                              (output / raw_index_capture["blob"]).read_bytes())
+            require(comparison["beforeSHA256"] == reference["sha256"]
+                    and comparison["afterSHA256"] == raw_index_capture["sha256"], "Captured index blob changed")
+            return comparison
+        state["rawIndexComparison"] = observe("rawIndexComparison", compare_capture)
         state["installedLockMatches"] = None if installed_before is None else state["installedLockSHA256"] == installed_before
         for row in binding["sourceBindings"]:
             expected = row["sha256"]
@@ -203,6 +284,8 @@ def main():
         require(all(row["matches"] for row in state["sourceFiles"]), "Frozen source mismatch; inspect " + label + ".json")
         expected_paths = [binding["permanentTestPath"]] if overlaid else []
         require(state["trackedChanges"] == expected_paths, "Unexpected tracked source changes")
+        require(state["rawIndexComparison"] is not None and state["rawIndexComparison"]["equivalent"],
+                "Git index changed outside permitted stat timestamps; inspect " + label + ".json")
         return state
 
     try:
@@ -214,6 +297,7 @@ def main():
             "porcelainDiffIndex": "exact disposable copy with preserved mtime; real index remains guarded",
         })
         before = verify_sources("source-before")
+        index_reference = before["rawIndexCapture"]
         index_before = before["rawIndexSHA256"]
         projection_before = before["stagedProjectionSHA256"]
         require(index_before and projection_before, "Could not bind raw index and staged projection")
@@ -289,7 +373,7 @@ def main():
         runtime_after = snapshot(runtime)
         write_json(output / "runtime-after.json", runtime_after)
         after = verify_sources("source-after", overlaid=True)
-        require(after["rawIndexSHA256"] == index_before, "Raw Git index bytes changed")
+        require(after["rawIndexComparison"]["equivalent"], "Git index changed outside permitted stat timestamps")
         require(after["stagedProjectionSHA256"] == projection_before, "Staged-file projection changed")
         require(after["installedLockMatches"] is True, "Installed dependency lock changed")
         require(runtime_before == runtime_after, "Packaged runtime bytes changed during proof")
@@ -317,6 +401,7 @@ def main():
         result_payload = {
             "baselineReproduced": True, "candidateTested": False, "baselineSHA": binding["baselineSHA"],
             "baselineTree": binding["baselineTree"], "rawGitIndexSHA256": index_before,
+            "rawGitIndexAfterSHA256": after["rawIndexSHA256"], "gitIndexComparison": after["rawIndexComparison"],
             "stagedProjectionSHA256": projection_before, "installedLockSHA256": installed_before,
             "runtimeManifestSHA256": digest(json.dumps(runtime_before, sort_keys=True).encode()),
             "bundledNodeVersion": bundled_version.strip(), "steps": steps,
@@ -330,7 +415,7 @@ def main():
         if result_payload is not None and not (
             final_after["head"] == binding["baselineSHA"] and final_after["tree"] == binding["baselineTree"]
             and all(row["matches"] for row in final_after["sourceFiles"])
-            and final_after["rawIndexSHA256"] == index_before
+            and final_after["rawIndexComparison"] is not None and final_after["rawIndexComparison"]["equivalent"]
             and final_after["trackedChanges"] == [binding["permanentTestPath"]]
             and final_after["stagedProjectionSHA256"] == projection_before
             and final_after["installedLockMatches"] is True
