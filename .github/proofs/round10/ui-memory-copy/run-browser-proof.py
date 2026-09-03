@@ -12,6 +12,7 @@ import struct
 import subprocess
 import sys
 import time
+import tempfile
 import traceback
 
 def digest(data):
@@ -224,7 +225,8 @@ def main():
     verdict = {"phase": phase, "completed": False, "errors": [], "fixtureCleanup": "not-installed"}
     steps, owned, reports = [], [], []
     before = None
-    state = output.parent / (output.name + "-synthetic-state")
+    # Chromium creates Unix sockets below TMPDIR; keep the owned root short.
+    state = Path(tempfile.mkdtemp(prefix="ocmc-", dir="/tmp"))
     exit_code = 1
     try:
         if binding["mode"] != "browser-preservation" or phase not in ("baseline", "candidate"):
@@ -260,7 +262,6 @@ def main():
                 raise ValueError(f"Baseline source path expected absent: {name}")
         if (repo / "node_modules").exists() or (repo / "dist").exists():
             raise ValueError("Proof requires a fresh checkout")
-        state.mkdir(exist_ok=False)
         for name in ("home", "tmp", "cache", "config", "data", "corepack", "bin"):
             (state / name).mkdir()
         env = {"PATH": str(state / "bin") + os.pathsep + os.environ["PATH"], "HOME": str(state / "home"),
