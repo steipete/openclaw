@@ -10,8 +10,7 @@ permissions:
 
 jobs:
   baseline:
-    # Root review must explicitly enable this job and seal execution-binding.json.
-    if: ${{ false && github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-baseline-proof' }}
+    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-baseline-proof' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
