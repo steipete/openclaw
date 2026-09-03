@@ -4,7 +4,7 @@
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "phases": {
     "baseline": {
-      "enabled": true,
+      "enabled": false,
       "repository": "openclaw/openclaw",
       "head": "ddb4207d9211166eaae858a6f124481856808c26",
       "tree": "303cd4e7c1ba16c498e38b16c0af6eedc1ac1cb9",
@@ -61,14 +61,14 @@
     "candidate": {
       "enabled": true,
       "repository": "openclaw/openclaw",
-      "head": "13a54c1cca20c959ae63f55962df8ca5d4c4fa18",
-      "tree": "5ff13928ac879c09f7e39742cfb0bad78961aec3",
+      "head": "537a92b8795edc44e4c5a605530a5631c47c620b",
+      "tree": "e9db544345ad1a8fb3cda046e7712225af9d935d",
       "sourceSha256": {
         "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
         "package.json": "9b0d1765810ff0686b0cb973ddd6bf9febda66f7c757e66c283eba4980627e45",
         "pnpm-lock.yaml": "ee7d26e5edc1db9b2fcb81a5c2ac2a3d459b601d183db92c4bf951b77a5803f8",
         "pnpm-workspace.yaml": "d38098803dfd77fb24fabb13c1f6bc4c5da8fdfa8cd08371d8fd563d78e05252",
-        "scripts/lib/control-ui-i18n-catalog.ts": "47544570bc88c69e0848b38c043d29a63fe18370388d5da750d5c3cea783d5d8",
+        "scripts/lib/control-ui-i18n-catalog.ts": "e357fdce17319b6b15a2afb922b2b4b5732edc539b6d76c8a90da675479d9cfe",
         "scripts/lib/tsx-cli-shim.mjs": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
         "scripts/lib/vitest-process.mts": "ab9e0ce9cecbadf08e320c6fdf46e62cf0c66317341be0e359b77842d7390c09",
         "scripts/lib/vitest-worker-run.mts": "63733d0070c7981336ba5359d8cf846cb78e1d6165ec0b586f5af9ce669b74ff",
@@ -78,7 +78,7 @@
         "scripts/vitest-process-group.mts": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
         "test/AGENTS.md": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
         "test/vitest/vitest.ui-e2e.bundled.global-setup.ts": "86b5377a3452f5e96cb1d74f58d52c49fa46b0ce186f0ca5ad60a21fe2cb7548",
-        "test/vitest/vitest.ui-e2e.config.ts": "c579216152206ade86dd672b49d245ab35ec2465e24581b622294747ba53f43c",
+        "test/vitest/vitest.ui-e2e.config.ts": "d5603490e94e6f5e49056784d90aa3b2b56733d06735adcd0c05388e610ee869",
         "test/vitest/vitest.ui-e2e.global-setup.ts": "ebf54ccf133124525405cfb48b5d5c76a3d6ee6a14ffa99198db746547513762",
         "test/vitest/vitest.ui-e2e.setup.ts": "55a168b23c2f5721300cc74e0f1ba53524231edd2e3a138e98ed8746f60188d6",
         "ui/AGENTS.md": "a0e1ba26ebc723e6ba0033bd2a400dcdf11b80ebe2321d3c5557a7bd24a71f69",
@@ -94,7 +94,7 @@
         "ui/src/i18n/lib/registry.ts": "4fba04353843645b150a26bf6aa84e229e5a9ea8bfd17432cc6039b04e63f66f",
         "ui/src/i18n/lib/translate.ts": "f11d7a6c6dd5e795fb043748705504c513c92db07c9bd0bc8f501799f14ba049",
         "ui/src/i18n/locales/de.ts": "f91abd86f69447f63db00f119438e69422720b6ee316380bde4935fa69694783",
-        "ui/src/i18n/locales/en.ts": "39acaacbe5a22813b0be9afbb9247dc753545c57f9df8811c05b6534d8fc071a",
+        "ui/src/i18n/locales/en.ts": "78bf17e3ee43545ed33dd645748f2833a156e4c84a37b5813f4574e3eb010f58",
         "ui/src/i18n/test/translate.test.ts": "37a695e85694fcf1c679f4cca96d05dce0bf3c9bb92b7b613169d0f777529d6a",
         "ui/src/pages/config/memory.test.ts": "4f59b7ff36f5de50ca9190d7ae0c8f8cce0d9616a478557cb623ae25adc2ded9",
         "ui/src/pages/config/memory.ts": "a3a811aa27435e38e6946783192e55bcd7fd04a105a59e850ed41f56a6982c9a",
@@ -108,7 +108,9 @@
         "ui/vite.config.ts": "3fc003d78fbc2584b8f4500f05c359b7f323959b357eede5a5edd4152dbbb364",
         "ui/vitest.config.ts": "364beaceac03b18db8fc1711212bd1f5134e8efdc0547dbe0910981e5f74176e",
         "ui/src/app/vite-config.node.test.ts": "d430cd0d3f21cf351e51713886d5326edc076c0f261957d220ec3d3c3d98e23a",
-        "ui/src/i18n/locales/en-memory-import.ts": "bd1d6cd75d14149f0a4dee0ed170a06e76d1d73bdf3ad657abbb42fee1ecb2f1"
+        "ui/src/i18n/locales/en-memory-import.ts": "bd1d6cd75d14149f0a4dee0ed170a06e76d1d73bdf3ad657abbb42fee1ecb2f1",
+        "ui/src/i18n/locales/en-debug.ts": "02aa6038529f281f591bee43933c8b6e3a1552db3bb7a47e148fabb7775020bb",
+        "ui/src/i18n/locales/en-new-session-setup.ts": "e8bae3655f5e7c0aa93879c90c172f595de0cecb38ab1064aafff7b465987b85"
       }
     }
   }
