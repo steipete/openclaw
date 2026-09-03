@@ -2,11 +2,11 @@
   "schema": "openclaw-134817-baseline-assets-v1",
   "runnable": true,
   "sha256": {
-    ".github/proofs/round10/134817/execution-binding.json": "1fe7ed4067f0ed584746e4fd58046a5a5f847c2cd80703e778073198d6dc1fe3",
-    ".github/proofs/round10/134817/gateway-proof.mjs": "792694ce8a55f231ec94161ec1be42897443503c67d070e26b0b766adb3f7d6b",
+    ".github/proofs/round10/134817/execution-binding.json": "8c6ba045f7c292cdd896f915afa8cc88e970a085177424f0dcef400c3e17cd4a",
+    ".github/proofs/round10/134817/gateway-proof.mjs": "a554ffd96902480f5f61794358b1e6af3456d2b427e7f7fd3492059ecdd2370d",
     ".github/proofs/round10/134817/inbound.behavior.test.ts": "eed4b9865a09f648c4e8a2d67766c2dc56af475f168049dc438126f945ec736b",
-    ".github/proofs/round10/134817/run-proof.py": "08f06de105339b50988c662fcd3cb45014d5d72be8a522b71806fbd67393f825",
+    ".github/proofs/round10/134817/run-proof.py": "569380abf1402c99a63a470384770990ebd8e6264c850043dd91a87142af137e",
     ".github/workflows/round10-nextcloud-baseline-proof.yml": "b4b5a73e97967d162b108524ebd0f1481c2646bc31a8780d68bc84d93e5eda2b",
-    "README.md": "5b8bf300d43a999cff546ceefeaec98ab62d4863267df70cbed0126821ddc9e8"
+    "README.md": "f5515d020fcccf118a0cc9d4ed2db87a55bcf3ba554a97ec033ac34c72fff1d0"
   }
 }

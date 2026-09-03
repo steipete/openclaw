@@ -142,6 +142,9 @@ async function post(id, room, content, sender = "users/alice", valid = true, acc
 }
 
 async function readStaging() {
+  const installedLockSHA256 = hash(await fs.readFile(path.join(root, "node_modules/.pnpm/lock.yaml")));
+  assert.equal(installedLockSHA256, binding.installedLockSHA256);
+  const linkObservations = [];
   const staged = harness.gateway.runtimeEnv.OPENCLAW_BUNDLED_PLUGINS_DIR;
   const stagingRoot = harness.gateway.runtimeEnv.OPENCLAW_QA_STAGED_RUNTIME_ROOT;
   assert.ok(stagingRoot?.startsWith(path.join(root, ".artifacts/qa-runtime") + path.sep));
@@ -158,7 +161,32 @@ async function readStaging() {
     async function visit(relative = "") {
       for (const entry of await fs.readdir(path.join(staged, id, relative), { withFileTypes: true })) {
         const name = path.join(relative, entry.name);
-        assert.equal(entry.isSymbolicLink(), false, `Unexpected staged symlink: ${id}/${name}`);
+        if (entry.isSymbolicLink()) {
+          const source = `dist/extensions/${id}/${name}`;
+          const expected = build.files[source];
+          const observed = { source, symlink: await fs.readlink(path.join(staged, id, name)), expected };
+          linkObservations.push(observed);
+          assert.ok(linkObservations.length <= 100, "Staged link observation bound exceeded");
+          await save("staged-links-progress.json", linkObservations);
+          assert.equal(typeof expected?.symlink, "string", `Unbound staged link: ${source}`);
+          assert.equal(typeof expected.resolvedRelativeTarget, "string");
+          assert.equal(await fs.readlink(path.join(root, source)), expected.symlink);
+          // Node's canonical fs.cp resolves relative link text against its source path.
+          assert.equal(observed.symlink, path.resolve(path.dirname(path.join(root, source)), expected.symlink));
+          const resolved = await fs.realpath(path.join(staged, id, name));
+          observed.resolvedRelativeTarget = path.relative(root, resolved) || ".";
+          await save("staged-links-progress.json", linkObservations);
+          assert.ok(resolved === root || resolved.startsWith(root + path.sep), `Link escaped frozen checkout: ${source}`);
+          assert.equal(observed.resolvedRelativeTarget, expected.resolvedRelativeTarget);
+          assert.equal(await fs.realpath(path.join(root, source)), resolved);
+          assert.ok(name.startsWith("node_modules/"), `Unexpected runtime asset link: ${source}`);
+          const dependency = name.slice("node_modules/".length);
+          assert.match(dependency, /^(?:\.bin|(?:@[a-z0-9._-]+\/)?[a-z0-9._-]+)$/i);
+          const dependencyOwner = `extensions/${id}/node_modules/${dependency}`;
+          assert.equal(await fs.realpath(path.join(root, dependencyOwner)), resolved);
+          entries[name] = { symlink: observed.symlink, resolvedRelativeTarget: observed.resolvedRelativeTarget, dependencyOwner };
+          continue;
+        }
         if (entry.isDirectory()) { await visit(name); continue; }
         assert.ok(entry.isFile());
         assert.ok(!/(?<!\.d)\.[cm]?tsx?$/.test(name), `Source fallback staged: ${id}/${name}`);
@@ -175,7 +203,7 @@ async function readStaging() {
     plugins[id] = entries;
   }
   assert.ok(plugins["nextcloud-talk"]["index.js"], "Actual Talk entry must be compiled index.js");
-  return { plugins };
+  return { plugins, installedLockSHA256 };
 }
 
 const scenarioRows = [

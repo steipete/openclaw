@@ -399,7 +399,7 @@ try:
                OPENCLAW_TALK_PROOF_MODE='baseline', OPENCLAW_TALK_PROOF_DIR=str(phase_dir),
                OPENCLAW_TALK_PROOF_BINDING=str(phase_dir / 'execution-binding.json'))
     phase_binding = {**binding, 'sourceIdentity': before['sourceIdentity'], 'hostedProvenance': provenance,
-                     'nodeExecutable': node, 'envNames': sorted(env)}
+                     'installedLockSHA256': installed_lock, 'nodeExecutable': node, 'envNames': sorted(env)}
     save(phase_dir / 'execution-binding.json', phase_binding)
     gateway_started = True
     try:

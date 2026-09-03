@@ -53,6 +53,7 @@
     "pnpm-workspace.yaml": "bc9786fbf3e819f676508912b37ce2b914d62e440fb3b7d5bafc38eeff461b87",
     "scripts/build-all.mts": "2aff5843ca798b1af3e4af6781501b16c43e41dcdc920b9df2395f191d322b39",
     "scripts/build-external-plugin-local-dist.mts": "24e6b118ef4af47c4b753a8d01580da6804c40e3e45e1127bb981e5a4f6c9487",
+    "scripts/copy-bundled-plugin-metadata.mts": "28d82469c19bd592ea7c09392d64c3e77a1a5eedc8a8a783c300cf459535c128",
     "scripts/e2e/lib/plugin-update/process-observer.mjs": "d428e0abc9f54f3d39bbf5915349c712b962ae35b11f20c5f4b4b5e7d0c93d7b",
     "scripts/lib/bundled-plugin-build-entries.mjs": "a705b61e04ffe31eb45c71e86e8205194a3662f520a2c47c36b62fcb26567ddc",
     "scripts/lib/plugin-npm-runtime-build.mts": "ce4ba227f3a198f1d6f510382094f6f51e1514df877bdc1dfbcf9e06b2b51503",
@@ -109,7 +110,7 @@
   "testPath": "extensions/nextcloud-talk/src/inbound.behavior.test.ts",
   "testSHA256": "eed4b9865a09f648c4e8a2d67766c2dc56af475f168049dc438126f945ec736b",
   "proofPath": "extensions/qa-lab/src/nextcloud-commands.gateway-proof.mjs",
-  "proofSHA256": "792694ce8a55f231ec94161ec1be42897443503c67d070e26b0b766adb3f7d6b",
+  "proofSHA256": "a554ffd96902480f5f61794358b1e6af3456d2b427e7f7fd3492059ecdd2370d",
   "expectedTestTitles": [
     "logs the drop when an inbound message has an empty body",
     "issues a DM pairing challenge and sends the challenge text",
@@ -225,5 +226,17 @@
     "expected": "Exact full launch argv from requested executable/prefix and frozen QA argument owner using its returned config/baseUrl port",
     "processTitleAlternativeAccepted": false,
     "sourceReason": "src/entry.ts skips main side effects when imported by src/index.ts; gateway run-loop renames only an existing openclaw title"
+  },
+  "stagedSymlinkContract": {
+    "buildOwner": "scripts/copy-bundled-plugin-metadata.mts::linkSourcePluginDependencies",
+    "copyOwner": "extensions/qa-lab/src/bundled-plugin-staging.ts::createQaBundledPluginsDir",
+    "nodeCopySource": "https://raw.githubusercontent.com/nodejs/node/v24.19.0/lib/internal/fs/cp/cp.js",
+    "nodeCopySourceSHA256": "1519e09b5129cc66f6eae0448e9e860c9cc9ae83dcde721efb7f818e4324a196",
+    "requirements": [
+      "exact canonical fs.cp link text from build inventory",
+      "same contained real target as immutable build and installed source-plugin node_modules owner",
+      "same frozen installed lock before and after Gateway",
+      "retained in staging inventory; never followed by the staged-file visitor"
+    ]
   }
 }
