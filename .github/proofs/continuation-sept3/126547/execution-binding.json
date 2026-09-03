@@ -1,57 +1,10 @@
 {
-  "schema": "openclaw-126547-baseline-binding-v1",
+  "schema": "openclaw-126547-candidate-binding-v1",
   "runnable": true,
-  "candidateMayRun": false,
-  "baseHead": "d2a616bdf373a5b3cac0add8e9b2f70cd0802f42",
-  "baseTree": "619713ff672cadc2bf7a62b0407bc4e4eb8535b2",
+  "candidateMayRun": true,
   "nodeVersion": "24.19.0",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "testPath": "src/gateway/server-plugins.lifecycle.test.ts",
-  "overlaySHA256": "847524697e23961b36e88d1b728c9d02082e23698d7909b139eb92e276f509aa",
-  "greenPaths": [
-    "src/shared/text/text-projection.test.ts",
-    "src/agents/embedded-agent-helpers.sanitizeuserfacingtext.duplicateblocks.test.ts",
-    "packages/markdown-core/src/code-spans.test.ts"
-  ],
-  "expectedTotalTests": 5,
-  "expectedPassedTests": 4,
-  "expectedFullNames": [
-    "gateway plugin instance bindings keeps unscoped plugin work bound to each real Gateway across reverse shutdown",
-    "gateway plugin instance bindings keeps startup metadata through hot reload and discovers manifest changes after Gateway restart",
-    "gateway plugin instance bindings restarts every channel holding a retired runtime after unrelated plugin config reload",
-    "gateway plugin instance bindings keeps the active Gateway runtime when real plugin replacement cleanup fails by rejection",
-    "gateway plugin instance bindings keeps the active Gateway runtime when real plugin replacement cleanup fails by timeout"
-  ],
-  "expectedFailures": {
-    "gateway plugin instance bindings restarts every channel holding a retired runtime after unrelated plugin config reload": {
-      "assertionMessage": "settled plugin replacement must renew every retained channel runtime",
-      "assertionLocations": [
-        {
-          "line": 665,
-          "source": "expect("
-        },
-        {
-          "line": 668,
-          "source": ").toEqual("
-        }
-      ],
-      "messageLocation": {
-        "line": 667,
-        "source": "\"settled plugin replacement must renew every retained channel runtime\","
-      },
-      "stackLineObserved": false,
-      "failureBodyFragments": [
-        "settled plugin replacement must renew every retained channel runtime",
-        "binding-first",
-        "binding-second",
-        "In-process gateway dispatch requires a gateway request scope or instance binding (method: instanceBinding.probe).",
-        "oldStopped",
-        "freshRuntime",
-        "stoppedBeforeRegistration",
-        "startedFromNewRegistration"
-      ]
-    }
-  },
   "ledgerContract": {
     "reviewed": true,
     "stdoutPrefix": "PROOF_126547_LEDGER:",
@@ -67,32 +20,6 @@
       "successor-handoff",
       "settled-channels"
     ],
-    "baselineChannels": [
-      {
-        "channelId": "binding-first",
-        "activeCount": 1,
-        "oldStopped": false,
-        "freshRuntime": false,
-        "stoppedBeforeRegistration": false,
-        "startedFromNewRegistration": false,
-        "response": {
-          "ok": false,
-          "error": "In-process gateway dispatch requires a gateway request scope or instance binding (method: instanceBinding.probe)."
-        }
-      },
-      {
-        "channelId": "binding-second",
-        "activeCount": 1,
-        "oldStopped": false,
-        "freshRuntime": false,
-        "stoppedBeforeRegistration": false,
-        "startedFromNewRegistration": false,
-        "response": {
-          "ok": false,
-          "error": "In-process gateway dispatch requires a gateway request scope or instance binding (method: instanceBinding.probe)."
-        }
-      }
-    ],
     "cleanup": {
       "serversClosed": true,
       "socketsClosed": true,
@@ -100,7 +27,8 @@
       "skipEnvRestored": true
     },
     "runtimeIdentityPolicy": "relationships from actual WeakMap IDs; no numeric ID prediction",
-    "cleanupLimit": "Ledger follows channel/server/socket closure and skip-env restoration; later canonical hook/temp cleanup belongs to run-vitest."
+    "cleanupLimit": "Ledger follows channel/server/socket closure and skip-env restoration; later canonical hook/temp cleanup belongs to run-vitest.",
+    "candidateRequirement": "Four completed monitors: two old and two replacement; old lifetimes stop before first replacement registration; replacement channel responses use new registry; same session/placement; retained old binding rejection; exact terminal cleanup."
   },
   "requiredSourcePaths": [
     "AGENTS.md",
@@ -241,7 +169,7 @@
     "src/gateway/plugin-channel-reload-targets.test.ts": "36ebb240202dcac044f103cbdaf7a289fb37e2bc0986115714c35274d1766f4a",
     "src/gateway/plugin-channel-reload-targets.ts": "b0193adcedf1e8d53af183d68ba05d25cd6e41ec4e8c55831d2f3f2921fec3cb",
     "src/gateway/server-channels.ts": "7d6af7b62752ea469a20a01a12e1a045d8dfbc553051fc9bf9c4c78802b3dcbc",
-    "src/gateway/server-core-runtime.ts": "86adb40870ada8920929f2ba214666fa4571a658867d37be28dd1f319adf1abf",
+    "src/gateway/server-core-runtime.ts": "7ac941a5fd72dc566619b0fb4565af1f5cd9fff05e808577d04d9c49e9e1988e",
     "src/gateway/server-kernel-request-runtime.ts": "679ed22cc2a8ed5024adfa14eba674c81c9b5552d43a342c76e1d3a4a930ca14",
     "src/gateway/server-methods/config-write-flow.ts": "d3fa8603cbabb847623ceede69687a8c1708bac0d4a7fc1bb52bcdbf60f9a201",
     "src/gateway/server-methods/config.ts": "4036a0ff9bcbde10018df26cd09bfc80374fcbd888da61d78870e7e0febdd16b",
@@ -251,7 +179,7 @@
     "src/gateway/server-plugin-runtime-generation.test.ts": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d",
     "src/gateway/server-plugin-runtime-generation.ts": "7cc8f44c4c000f9eb6a60bfed405a415e2dcaa95b723da5b18b1dfff7680eb86",
     "src/gateway/server-plugins-node-runtime.ts": "536913e742606534b8a1243421e28dbaaa1398ac9e3324bba080042fb3ff7ccb",
-    "src/gateway/server-plugins.lifecycle.test.ts": "81af75f698c3afdcc80154c6c89626733a3def5481ed5fb14fb20c4a5f16a758",
+    "src/gateway/server-plugins.lifecycle.test.ts": "847524697e23961b36e88d1b728c9d02082e23698d7909b139eb92e276f509aa",
     "src/gateway/server-plugins.test.ts": "6a8900d18304320e6907f3680f44347d29dcafe82d3353705a04374648db82f6",
     "src/gateway/server-plugins.ts": "df6379fca6a7ac586fa6ef7e4e1ce3a5d3b623137faa0887ff549b46feef9620",
     "src/gateway/server-reload-channel-restart.test.ts": "eb2aa9d99c783b1a98a8a2ff87efc04e90ff35ae491a4c0b09d94d042063c2b5",
@@ -295,5 +223,46 @@
     "test/vitest/vitest.scoped-config.ts": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
     "test/vitest/vitest.shared.config.ts": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
     "tsdown.config.ts": "51adc4903df8f49be540df73cefaec0fc4ca921adf6af8d73e7f878624ca96ee"
-  }
+  },
+  "candidateHead": "44e05b0e17ff48dddf4afadf152a7fabdce02cf6",
+  "candidateTree": "7a6318339507be55d4fe84f0fda07a96226de84f",
+  "candidateRepository": "steipete/openclaw",
+  "committedTestSHA256": "847524697e23961b36e88d1b728c9d02082e23698d7909b139eb92e276f509aa",
+  "testCases": [
+    {
+      "name": "candidate-lifecycle",
+      "path": "src/gateway/server-plugins.lifecycle.test.ts",
+      "count": 5,
+      "fullNames": [
+        "gateway plugin instance bindings keeps unscoped plugin work bound to each real Gateway across reverse shutdown",
+        "gateway plugin instance bindings keeps startup metadata through hot reload and discovers manifest changes after Gateway restart",
+        "gateway plugin instance bindings restarts every channel holding a retired runtime after unrelated plugin config reload",
+        "gateway plugin instance bindings keeps the active Gateway runtime when real plugin replacement cleanup fails by rejection",
+        "gateway plugin instance bindings keeps the active Gateway runtime when real plugin replacement cleanup fails by timeout"
+      ]
+    },
+    {
+      "name": "candidate-channel-restart",
+      "path": "src/gateway/server-reload-channel-restart.test.ts",
+      "count": 6,
+      "fullNames": [
+        "channel rollback preserves idle manual stops while explicit starts resume",
+        "channel rollback preserves stopped manual stops while explicit starts resume",
+        "channel rollback preserves racing manual stops while explicit starts resume",
+        "accounts rollback preserves idle manual stops while explicit starts resume",
+        "accounts rollback preserves stopped manual stops while explicit starts resume",
+        "accounts rollback preserves racing manual stops while explicit starts resume"
+      ]
+    },
+    {
+      "name": "candidate-runtime-generation",
+      "path": "src/gateway/server-plugin-runtime-generation.test.ts",
+      "count": 3,
+      "fullNames": [
+        "Gateway plugin runtime generation blocks stale publication during reservation, restores rejected claims, and commits winners",
+        "Gateway plugin runtime generation settles a pending successor that rejects before deciding discovery and service ownership",
+        "Gateway plugin runtime generation settles a pending successor that commits before deciding discovery and service ownership"
+      ]
+    }
+  ]
 }

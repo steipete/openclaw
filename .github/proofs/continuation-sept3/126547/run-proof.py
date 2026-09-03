@@ -1,4 +1,4 @@
-"""Reviewed baseline-only hosted proof. No candidate implementation is admitted."""
+"""Reviewed candidate-only hosted proof. Executes only an exact committed candidate."""
 from pathlib import Path
 import hashlib
 import json
@@ -19,21 +19,18 @@ checkout, evidence = [Path(value).resolve() for value in sys.argv[1:]]
 evidence.mkdir(mode=0o700, parents=True, exist_ok=False)
 binding = json.loads((assets / 'execution-binding.json').read_text())
 proof_root = assets.parents[3]
-receipt = {'schema': 'openclaw-126547-baseline-hosted-v1', 'passed': False, 'phase': 'setup',
-           'baselineRedVerified': False, 'preOverlayGreenVerified': False, 'lifecycleStarted': False,
+receipt = {'schema': 'openclaw-126547-candidate-hosted-v1', 'passed': False, 'phase': 'setup',
+           'candidateGreenVerified': False, 'lifecycleLedgerVerified': False, 'lifecycleStarted': False,
            'commands': [], 'unconfirmedCommandGroups': [], 'cleanupErrors': []}
 scratch = node = installed_lock = initial_guard = None
-overlay_identity = original_test = None
 manifest = manifest_bytes = None
 MAX_LOG_BYTES = 16 * 1024 * 1024
 index_observations = []
 index_capture_bytes = {}
 TEST_PATH = 'src/gateway/server-plugins.lifecycle.test.ts'
-GREEN_PATHS = [
-    'src/shared/text/text-projection.test.ts',
-    'src/agents/embedded-agent-helpers.sanitizeuserfacingtext.duplicateblocks.test.ts',
-    'packages/markdown-core/src/code-spans.test.ts',
-]
+RESTART_PATH = 'src/gateway/server-reload-channel-restart.test.ts'
+GENERATION_PATH = 'src/gateway/server-plugin-runtime-generation.test.ts'
+TEST_PATHS = [TEST_PATH, RESTART_PATH, GENERATION_PATH]
 test_path = checkout / TEST_PATH
 
 def sha(data):
@@ -141,9 +138,9 @@ def verify_no_checkout_credentials(root):
 
 
 def capture_source():
-    assert git_text('rev-parse', 'HEAD') == binding['baseHead']
-    assert git_text('rev-parse', 'HEAD^{tree}') == binding['baseTree']
-    assert git_text('remote', 'get-url', 'origin') == 'https://github.com/openclaw/openclaw'
+    assert git_text('rev-parse', 'HEAD') == binding['candidateHead']
+    assert git_text('rev-parse', 'HEAD^{tree}') == binding['candidateTree']
+    assert git_text('remote', 'get-url', 'origin') == 'https://github.com/' + binding['candidateRepository']
     assert not git('diff', '--cached', '--name-only', '-z', '--no-ext-diff', '--no-textconv', 'HEAD', '--')
     assert not git('diff', '--name-only', '-z', '--no-ext-diff', '--no-textconv', '--')
     index, stage = index_facts()
@@ -161,17 +158,15 @@ def capture_source():
     snapshot = tracked_snapshot(names)
     for name, expected in binding['sourceHashes'].items():
         assert snapshot[name] == {'kind': 'file', 'sha256': expected}, name
-    save(evidence / 'tracked-baseline.json', {'index': index, 'tracked': snapshot})
+    save(evidence / 'tracked-candidate.json', {'index': index, 'tracked': snapshot})
     return {'index': index, 'tracked': snapshot, 'names': names}
 
 
 def source_guard(label):
     index, _ = index_facts()
     expected = dict(initial_guard['tracked'])
-    if overlay_identity is not None:
-        expected[TEST_PATH] = {'kind': 'file', 'sha256': binding['overlaySHA256']}
     observed = {'head': git_text('rev-parse', 'HEAD'), 'tree': git_text('rev-parse', 'HEAD^{tree}'),
-                'index': index, 'testOverlay': overlay_identity is not None, 'trackedCount': len(expected)}
+                'index': index, 'testOverlay': False, 'trackedCount': len(expected)}
     save(evidence / ('source-' + label + '.json'), observed)
     snapshot = tracked_snapshot(initial_guard['names'])
     changes = [name for name in expected if snapshot[name] != expected[name]]
@@ -182,10 +177,10 @@ def source_guard(label):
     observed.update(changedBytes=changes, gitChangedPaths=git_changes, sourceIdentity=identity,
                     installedLockSHA256=current_lock, indexUnchanged=index == initial_guard['index'])
     save(evidence / ('source-' + label + '.json'), observed)
-    assert observed['head'] == binding['baseHead'] and observed['tree'] == binding['baseTree']
+    assert observed['head'] == binding['candidateHead'] and observed['tree'] == binding['candidateTree']
     assert observed['indexUnchanged'], 'Index changed'
     assert not changes, changes
-    assert git_changes == ([TEST_PATH] if overlay_identity is not None else []), git_changes
+    assert git_changes == [], git_changes
     if installed_lock is not None:
         assert current_lock == installed_lock, 'Installed frozen lock changed'
     verify_no_checkout_credentials(checkout)
@@ -304,70 +299,10 @@ def parse_green(name, target):
     return result
 
 
-def parse_red():
-    data, tests, clean = parse_test_report('baseline-lifecycle', TEST_PATH)
-    expected = binding['expectedFailures']
-    assert data.get('success') is False
-    assert len(tests) == binding['expectedTotalTests']
-    assert data.get('numPassedTests') == binding['expectedPassedTests']
-    assert data.get('numFailedTests') == len(expected)
-    assert sorted(t['fullName'] for t in tests) == sorted(binding['expectedFullNames'])
-    assert all(t['status'] in {'passed', 'failed'} for t in tests)
-    failed = [t for t in tests if t['status'] == 'failed']
-    assert {t['fullName'] for t in failed} == set(expected)
-    assert all(not t.get('failureMessages') for t in tests if t['status'] == 'passed')
-    blocks = {}
-    lines = clean.splitlines()
-    for test in failed:
-        spec = expected[test['fullName']]
-        messages = test.get('failureMessages', [])
-        assert len(messages) == 1, 'Additional assertion/hook failure attached to intended RED'
-        errors = messages[0]
-        assert 'AssertionError' in errors and spec['assertionMessage'] in errors
-        source_lines = test_path.read_text().splitlines()
-        locations = spec['assertionLocations']
-        assert len(locations) == 2 and len({x['line'] for x in locations}) == 2
-        assert {x['source'] for x in locations} == {'expect(', ').toEqual('}
-        for location in locations:
-            assert source_lines[location['line'] - 1].strip() == location['source']
-        message_location = spec['messageLocation']
-        assert source_lines[message_location['line'] - 1].strip() == message_location['source']
-        assert spec['assertionMessage'] in message_location['source']
-        assert any(re.search(re.escape(TEST_PATH) + ':' + str(x['line']) + r':\d+', errors) for x in locations)
-        chain = ' > '.join([*test['ancestorTitles'], test['title']])
-        heading = re.compile(r'\s*FAIL\s+.*?' + re.escape(TEST_PATH) + r'\s+>\s+' + re.escape(chain) + r'\s*')
-        starts = [i for i, line in enumerate(lines) if heading.fullmatch(line)]
-        assert len(starts) == 1, 'Missing/duplicate exact failure block'
-        ends = [i for i in range(starts[0] + 1, len(lines)) if re.fullmatch(r'\s*⎯+\[\d+/' + str(len(failed)) + r'\]⎯+\s*', lines[i])]
-        assert ends, 'Missing failure block delimiter'
-        block = '\n'.join(lines[starts[0]:ends[0] + 1])
-        assert spec['failureBodyFragments'] and all(v in block for v in spec['failureBodyFragments'])
-        blocks[test['fullName']] = block
-    save(evidence / 'expected-red-blocks.json', blocks)
-    save(evidence / 'baseline-red.json', {'tests': tests, 'jsonSHA256': digest(evidence / 'baseline-lifecycle.json'),
-                                        'expectedFailureCount': len(failed)})
-
-def replace_test(expected_bytes, replacement, identity=None):
-    assert test_path.parent.resolve() == checkout / 'src/gateway'
-    descriptor = os.open(test_path, os.O_RDWR | os.O_NOFOLLOW)
-    with os.fdopen(descriptor, 'r+b') as file:
-        metadata = os.fstat(file.fileno())
-        current_identity = (metadata.st_dev, metadata.st_ino)
-        if identity is not None:
-            assert current_identity == identity, 'Overlay inode was replaced'
-        assert file.read() == expected_bytes, 'Overlay content was replaced'
-        file.seek(0)
-        file.write(replacement)
-        file.truncate()
-        file.flush()
-        os.fsync(file.fileno())
-    return current_identity
-
-
 def verify_lifecycle_ledger():
     contract = binding['ledgerContract']
     assert contract['reviewed'] is True
-    console = strip_ansi((evidence / 'baseline-lifecycle.stdout').read_text(errors='replace'))
+    console = strip_ansi((evidence / 'candidate-lifecycle.stdout').read_text(errors='replace'))
     marker = contract['stdoutPrefix']
     assert marker == 'PROOF_126547_LEDGER:'
     rows = [line[len(marker):] for line in console.splitlines() if line.startswith(marker)]
@@ -381,15 +316,12 @@ def verify_lifecycle_ledger():
     }
     assert all(value is True for value in ledger['cleanup'].values())
     monitors = ledger['monitors']
-    assert len(monitors) == len(channels)
-    assert sorted(m['channelId'] for m in monitors) == channels
+    assert len(monitors) == 2 * len(channels)
+    assert sorted(m['channelId'] for m in monitors) == sorted(channels * 2)
     for monitor in monitors:
         assert set(monitor) == {'channelId', 'runtimeId', 'stopped', 'aborted'}
         assert type(monitor['runtimeId']) is int and monitor['runtimeId'] > 0
         assert monitor['stopped'] is True and monitor['aborted'] is True
-    old_ids = {m['channelId']: m['runtimeId'] for m in monitors}
-    # Both descriptors come from the same registration's actual api.runtime.
-    assert len(set(old_ids.values())) == 1
     observations = ledger['observations']
     assert [o['phase'] for o in observations] == contract['requiredPhases'] == [
         'initial', 'replacement', 'retired-binding-rejected', 'retired-binding-rejected',
@@ -410,16 +342,31 @@ def verify_lifecycle_ledger():
     assert sorted(o['channelId'] for o in rejected) == channels
     for observation in rejected:
         assert set(observation) == {'phase', 'channelId', 'runtimeId'}
-        assert observation['runtimeId'] == old_ids[observation['channelId']]
-    assert observations[4] == {'phase': 'successor-handoff', 'predecessorsStopped': False}
-    assert observations[4]['predecessorsStopped'] is False
+        assert type(observation['runtimeId']) is int and observation['runtimeId'] > 0
+    old_ids = {row['channelId']: row['runtimeId'] for row in rejected}
+    assert len(set(old_ids.values())) == 1
+    new_ids = {}
+    for channel in channels:
+        rows = [m for m in monitors if m['channelId'] == channel]
+        assert len([m for m in rows if m['runtimeId'] == old_ids[channel]]) == 1
+        successors = [m for m in rows if m['runtimeId'] != old_ids[channel]]
+        assert len(successors) == 1
+        new_ids[channel] = successors[0]['runtimeId']
+    assert len(set(new_ids.values())) == 1
+    assert observations[4] == {'phase': 'successor-handoff', 'predecessorsStopped': True}
+    assert observations[4]['predecessorsStopped'] is True
     assert set(observations[5]) == {'phase', 'channels'}
     actual_channels = observations[5]['channels']
-    assert sorted(actual_channels, key=lambda x: x['channelId']) == contract['baselineChannels']
+    expected_channels = [{
+        'channelId': channel, 'activeCount': 1, 'oldStopped': True, 'freshRuntime': True,
+        'stoppedBeforeRegistration': True, 'startedFromNewRegistration': True,
+        'response': {'ok': True, 'registryId': fresh['registryId']},
+    } for channel in channels]
+    assert sorted(actual_channels, key=lambda x: x['channelId']) == expected_channels
     for channel in actual_channels:
         assert type(channel['activeCount']) is int and channel['activeCount'] == 1
-        assert all(channel[k] is False for k in ['oldStopped', 'freshRuntime', 'stoppedBeforeRegistration', 'startedFromNewRegistration'])
-        assert channel['response']['ok'] is False
+        assert all(channel[k] is True for k in ['oldStopped', 'freshRuntime', 'stoppedBeforeRegistration', 'startedFromNewRegistration'])
+        assert channel['response']['ok'] is True
     events = ledger['events']
     phase_names = ['initial-requests-succeeded', 'reload-request', 'reload-settled', 'channels-observed', 'cleanup']
     phase_indexes = {}
@@ -437,29 +384,40 @@ def verify_lifecycle_ledger():
             assert set(event) == {'event', 'channelId', 'runtimeId'}
             assert event['channelId'] in channels
             assert type(event['runtimeId']) is int and event['runtimeId'] > 0
+    registrations_after_reload = [i for i, event in enumerate(events)
+        if event['event'] == 'register' and phase_indexes['reload-request'] < i]
+    assert registrations_after_reload
+    first_new_registration = min(registrations_after_reload)
+    assert first_new_registration < phase_indexes['reload-settled']
     for channel in channels:
         def indexes(name, runtime_id=None):
-            return [i for i, e in enumerate(events) if e['event'] == name and e.get('channelId') == channel
-                    and (runtime_id is None or e.get('runtimeId') == runtime_id)]
-        starts = indexes('start')
-        assert len(starts) == 1 and events[starts[0]]['runtimeId'] == old_ids[channel]
-        assert starts[0] < phase_indexes['initial-requests-succeeded']
-        registrations = indexes('register', old_ids[channel])
-        assert registrations and min(registrations) < starts[0]
-        replacement_registrations = [i for i in indexes('register')
-            if phase_indexes['reload-request'] < i < phase_indexes['reload-settled']
-            and events[i]['runtimeId'] != old_ids[channel]]
-        assert replacement_registrations, 'Channel descriptor was not recreated in replacement registry'
-        stops = indexes('stopped', old_ids[channel])
-        assert len(stops) == 1 and phase_indexes['channels-observed'] < stops[0] < phase_indexes['cleanup']
-        assert len(indexes('stopped')) == 1
-        stop_hooks = indexes('stop-aborted')
-        assert stop_hooks and all(phase_indexes['channels-observed'] < i < phase_indexes['cleanup'] for i in stop_hooks)
+            return [i for i, event in enumerate(events)
+                    if event['event'] == name and event.get('channelId') == channel
+                    and (runtime_id is None or event.get('runtimeId') == runtime_id)]
+        old_id, new_id = old_ids[channel], new_ids[channel]
+        starts, stops, stop_hooks = indexes('start'), indexes('stopped'), indexes('stop-aborted')
+        assert len(starts) == len(stops) == len(stop_hooks) == 2
+        old_start, new_start = indexes('start', old_id), indexes('start', new_id)
+        old_stop, new_stop = indexes('stopped', old_id), indexes('stopped', new_id)
+        assert len(old_start) == len(new_start) == len(old_stop) == len(new_stop) == 1
+        assert old_start[0] < phase_indexes['initial-requests-succeeded']
+        old_registrations = indexes('register', old_id)
+        assert old_registrations and min(old_registrations) < old_start[0]
+        assert phase_indexes['reload-request'] < old_stop[0] < first_new_registration
+        new_registrations = indexes('register', new_id)
+        assert len(new_registrations) == 1
+        assert first_new_registration <= new_registrations[0] < phase_indexes['reload-settled']
+        assert new_registrations[0] < new_start[0] < phase_indexes['channels-observed']
+        assert phase_indexes['channels-observed'] < new_stop[0] < phase_indexes['cleanup']
+        # stopAccount resolves the current descriptor, while each monitor finally owns its runtime ID.
+        assert len([i for i in stop_hooks if phase_indexes['reload-request'] < i < old_stop[0]]) == 1
+        assert len([i for i in stop_hooks if phase_indexes['channels-observed'] < i < new_stop[0]]) == 1
     save(evidence / 'lifecycle-ledger.json', ledger)
     save(evidence / 'lifecycle-ledger-verified.json', {
         'initialRegistryId': initial[0]['registryId'], 'replacementRegistryId': fresh['registryId'],
-        'sessionAndPlacementPreserved': True, 'oldRuntimeIds': old_ids,
-        'phaseIndexes': phase_indexes, 'baselineChannels': actual_channels,
+        'sessionAndPlacementPreserved': True, 'oldRuntimeIds': old_ids, 'newRuntimeIds': new_ids,
+        'phaseIndexes': phase_indexes, 'candidateChannels': actual_channels,
+        'firstNewRegistrationIndex': first_new_registration,
         'cleanup': ledger['cleanup'], 'runtimeIdsWereObservedNotPredicted': True,
     })
     return digest(evidence / 'lifecycle-ledger.json')
@@ -469,20 +427,21 @@ try:
     assert platform.system() == 'Linux' and os.environ.get('RUNNER_ENVIRONMENT') == 'github-hosted'
     assert os.environ.get('RUNNER_OS') == 'Linux'
     assert os.environ.get('GITHUB_REPOSITORY') == 'steipete/openclaw'
-    assert os.environ.get('GITHUB_REF') == 'refs/heads/codex/round10-plugin-reload-baseline-proof'
+    assert os.environ.get('GITHUB_REF') == 'refs/heads/codex/round10-plugin-reload-candidate-proof'
     assert os.environ.get('GITHUB_EVENT_NAME') in {'push', 'workflow_dispatch'}
-    assert checkout.name == 'baseline'
-    assert binding['runnable'] is True and binding['candidateMayRun'] is False, 'Baseline packet is not sealed'
-    assert binding['baseHead'] == 'd2a616bdf373a5b3cac0add8e9b2f70cd0802f42'
-    assert re.fullmatch(r'[a-f0-9]{40}', binding['baseTree'])
-    assert re.fullmatch(r'[a-f0-9]{64}', binding['overlaySHA256'])
+    assert checkout.name == 'candidate'
+    assert binding['runnable'] is True and binding['candidateMayRun'] is True, 'Candidate packet is not sealed'
+    assert re.fullmatch(r'[a-f0-9]{40}', binding['candidateHead'] or '')
+    assert re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', binding['candidateRepository'] or '')
+    assert re.fullmatch(r'[a-f0-9]{40}', binding['candidateTree'] or '')
+    assert binding['committedTestSHA256'] == '847524697e23961b36e88d1b728c9d02082e23698d7909b139eb92e276f509aa'
     assert binding['nodeVersion'] == '24.19.0'
-    assert binding['testPath'] == TEST_PATH and binding['greenPaths'] == GREEN_PATHS
-    assert binding['expectedTotalTests'] == len(binding['expectedFullNames'])
-    assert binding['expectedPassedTests'] > 0 and binding['expectedFailures']
-    assert binding['expectedTotalTests'] == binding['expectedPassedTests'] + len(binding['expectedFailures'])
+    assert binding['testPath'] == TEST_PATH
+    assert [case['path'] for case in binding['testCases']] == TEST_PATHS
+    assert [case['count'] for case in binding['testCases']] == [5, 6, 3]
+    assert all(case['count'] == len(case['fullNames']) for case in binding['testCases'])
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
-    assert set(GREEN_PATHS + [TEST_PATH, 'package.json', 'pnpm-lock.yaml', 'scripts/run-vitest.mjs']).issubset(binding['sourceHashes'])
+    assert set(TEST_PATHS + ['package.json', 'pnpm-lock.yaml', 'scripts/run-vitest.mjs']).issubset(binding['sourceHashes'])
     assert binding['ledgerContract']['reviewed'] is True
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
@@ -491,15 +450,15 @@ try:
     verify_no_checkout_credentials(proof_root)
     verify_no_checkout_credentials(checkout)
     verify_assets()
-    assert digest(assets / 'server-plugins.lifecycle.test.ts') == binding['overlaySHA256']
+    assert binding['sourceHashes'][TEST_PATH] == binding['committedTestSHA256']
+    assert all(re.fullmatch(r'[a-f0-9]{64}', value or '') for value in binding['sourceHashes'].values())
     save(evidence / 'git-toolchain.json', {'version': git_text('--version'),
          'executableSHA256': digest('/usr/bin/git'), 'optionalLocks': '0',
          'porcelainDiffIndex': 'exact disposable copy; real index remains guarded'})
     initial_guard = capture_source()
     assert not (checkout / 'node_modules').exists()
     assert not test_path.is_symlink()
-    original_test = test_path.read_bytes()
-    assert sha(original_test) == binding['sourceHashes'][TEST_PATH]
+    assert digest(test_path) == binding['committedTestSHA256']
     node = str(Path(shutil.which('node')).resolve())
     corepack = Path(node).parent / 'corepack'
     assert corepack.is_file() and corepack.resolve().is_relative_to(Path(node).parent.parent)
@@ -529,33 +488,30 @@ try:
         run('full-build', [pnpm, 'build'], runtime_env('build'), 1800)
     finally:
         source_guard('built')
-    green = []
-    for index, target in enumerate(GREEN_PATHS):
-        name = '135979-green-' + str(index + 1)
+    results = []
+    for case in binding['testCases']:
+        name, target = case['name'], case['path']
+        if target == TEST_PATH:
+            receipt['lifecycleStarted'] = True
+        argv = [node, 'scripts/run-vitest.mjs', 'run']
+        if target == TEST_PATH:
+            argv += ['--config', 'test/vitest/vitest.gateway-server.config.ts']
+        argv += [target, '--reporter=verbose', '--reporter=json',
+                 '--outputFile=' + str(evidence / (name + '.json'))]
         try:
-            run(name, [node, 'scripts/run-vitest.mjs', 'run', target, '--reporter=verbose',
-                       '--reporter=json', '--outputFile=' + str(evidence / (name + '.json'))],
-                runtime_env(name), 900)
+            run(name, argv, runtime_env(name), 1800 if target == TEST_PATH else 900)
         finally:
             source_guard(name)
-        green.append(parse_green(name, target))
-    save(evidence / '135979-green-phase.json', {'files': green, 'totalPassed': sum(x['passedCount'] for x in green)})
-    receipt['preOverlayGreenVerified'] = True
-    source_guard('before-overlay')
-    overlay_identity = replace_test(original_test, (assets / 'server-plugins.lifecycle.test.ts').read_bytes())
-    save(evidence / 'overlay.json', {'path': TEST_PATH, 'baselineSHA256': sha(original_test),
-         'overlaySHA256': binding['overlaySHA256'], 'device': overlay_identity[0], 'inode': overlay_identity[1]})
-    source_guard('overlay-installed')
-    receipt['lifecycleStarted'] = True
-    try:
-        run('baseline-lifecycle', [node, 'scripts/run-vitest.mjs', 'run', '--config',
-            'test/vitest/vitest.gateway-server.config.ts', TEST_PATH, '--reporter=verbose', '--reporter=json',
-            '--outputFile=' + str(evidence / 'baseline-lifecycle.json')], runtime_env('lifecycle'), 1800, exits=(1,))
-    finally:
-        source_guard('tested-before-parser')
-    parse_red()
-    receipt['lifecycleLedgerSHA256'] = verify_lifecycle_ledger()
-    receipt.update(passed=True, phase='complete', baselineRedVerified=True)
+        result = parse_green(name, target)
+        assert result['passedCount'] == case['count']
+        assert sorted(test['fullName'] for test in result['tests']) == sorted(case['fullNames'])
+        results.append(result)
+        if target == TEST_PATH:
+            receipt['lifecycleLedgerSHA256'] = verify_lifecycle_ledger()
+            receipt['lifecycleLedgerVerified'] = True
+    save(evidence / 'candidate-green-phase.json', {'files': results, 'totalPassed': sum(x['passedCount'] for x in results)})
+    receipt.update(passed=True, phase='complete', candidateGreenVerified=True)
+
 except Exception as error:
     receipt['error'] = str(error)
     (evidence / 'failure.txt').write_text(traceback.format_exc())
@@ -564,11 +520,7 @@ finally:
         if initial_guard is not None:
             source_guard('before-cleanup')
         assert not receipt['unconfirmedCommandGroups'], 'Command closure unconfirmed; retain private runtime'
-        assert not receipt['lifecycleStarted'] or receipt['baselineRedVerified'], 'Lifecycle or its cleanup ledger incomplete; retain overlay/runtime'
-        if overlay_identity is not None:
-            replace_test((assets / 'server-plugins.lifecycle.test.ts').read_bytes(), original_test, overlay_identity)
-            overlay_identity = None
-            receipt['overlayRestored'] = True
+        assert not receipt['lifecycleStarted'] or receipt['lifecycleLedgerVerified'], 'Lifecycle or its cleanup ledger incomplete; retain private runtime'
         if initial_guard is not None:
             source_guard('final')
         if scratch is not None:
@@ -588,5 +540,5 @@ finally:
         receipt['cleanupErrors'].append(str(error))
         receipt['passed'] = False
     save(evidence / 'hosted-proof-result.json', receipt)
-    print(json.dumps({key: receipt[key] for key in ['passed', 'phase', 'baselineRedVerified', 'preOverlayGreenVerified']}))
+    print(json.dumps({key: receipt[key] for key in ['passed', 'phase', 'candidateGreenVerified', 'lifecycleLedgerVerified']}))
 sys.exit(0 if receipt['passed'] else 1)
