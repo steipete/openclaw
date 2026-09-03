@@ -283,7 +283,7 @@ def parse_expected_red(test_json, console):
         ends = [i for i in range(starts[0] + 1, len(lines)) if re.fullmatch(r'\s*⎯+\[\d+/5\]⎯+\s*', lines[i])]
         assert ends, 'Missing five-failure block delimiter'
         block = '\n'.join(lines[starts[0]:ends[0] + 1])
-        assert 'parameters' in block and ('/help' in block or '/status' in block), 'Failure lacks actual structured command mismatch'
+        assert all(fragment in block for fragment in expected['failureBodyFragments']), 'Failure lacks its bound owner assertion or structured command mismatch'
         blocks[test['title']] = block
     save(evidence / 'expected-red-blocks.json', blocks)
     save(evidence / 'baseline-red.json', {'testJSONSHA256': digest(test_json), 'tests': tests, 'failures': list(blocks), 'expectedFailureCount': 5})

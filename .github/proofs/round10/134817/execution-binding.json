@@ -114,43 +114,64 @@
     "drops unmentioned group traffic before dispatch",
     "blocks plain group commands when room access allows chat but command access does not",
     "blocks structured group commands when room access allows chat but command access does not",
-    "keeps command and raw projections separate for ordinary text",
-    "keeps command and raw projections separate for plain help",
-    "keeps command and raw projections separate for array parameters",
-    "keeps command and raw projections separate for object parameters",
-    "keeps command and raw projections separate for outer and message whitespace",
-    "keeps command and raw projections separate for malformed JSON",
-    "keeps command and raw projections separate for missing parameters",
-    "keeps command and raw projections separate for non-string message",
-    "keeps command and raw projections separate for blank message",
-    "keeps command and raw projections separate for JSON array",
-    "keeps command and raw projections separate for JSON null",
-    "keeps command and raw projections separate for ordinary rich message",
-    "keeps command and raw projections separate for plain group command without mention",
-    "keeps command and raw projections separate for structured group command without mention",
+    "keeps command and raw projections separate for 'ordinary text'",
+    "keeps command and raw projections separate for 'plain help'",
+    "keeps command and raw projections separate for 'array parameters'",
+    "keeps command and raw projections separate for 'object parameters'",
+    "keeps command and raw projections separate for 'outer and message whitespace'",
+    "keeps command and raw projections separate for 'malformed JSON'",
+    "keeps command and raw projections separate for 'missing parameters'",
+    "keeps command and raw projections separate for 'non-string message'",
+    "keeps command and raw projections separate for 'blank message'",
+    "keeps command and raw projections separate for 'JSON array'",
+    "keeps command and raw projections separate for 'JSON null'",
+    "keeps command and raw projections separate for 'ordinary rich message'",
+    "keeps command and raw projections separate for 'plain group command without mention'",
+    "keeps command and raw projections separate for 'structured group command without ment\u2026'",
     "binds durable ingress adoption into reply options",
     "sanitizes inbound replies before local delivery while preserving transport fields"
   ],
   "expectedFailures": {
     "blocks structured group commands when room access allows chat but command access does not": {
-      "line": 296,
-      "assertion": "expect(coreRuntime.channel.inbound.dispatchReply).not.toHaveBeenCalled();"
+      "line": 297,
+      "assertion": "expect(buildMentionRegexes).not.toHaveBeenCalled();",
+      "failureBodyFragments": [
+        "expect(buildMentionRegexes).not.toHaveBeenCalled();",
+        "Number of calls: 1"
+      ],
+      "proves": "Structured command misses the early authorization return and reaches mention processing; no baseline dispatch bypass claim"
     },
-    "keeps command and raw projections separate for array parameters": {
+    "keeps command and raw projections separate for 'array parameters'": {
       "line": 354,
-      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);"
+      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);",
+      "failureBodyFragments": [
+        "\"/help\"",
+        "\"{\\\"message\\\":\\\"/help\\\",\\\"parameters\\\":[]}\""
+      ]
     },
-    "keeps command and raw projections separate for object parameters": {
+    "keeps command and raw projections separate for 'object parameters'": {
       "line": 354,
-      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);"
+      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);",
+      "failureBodyFragments": [
+        "\"/status\"",
+        "\"{\\\"message\\\":\\\"/status\\\",\\\"parameters\\\":{}}\""
+      ]
     },
-    "keeps command and raw projections separate for outer and message whitespace": {
+    "keeps command and raw projections separate for 'outer and message whitespace'": {
       "line": 354,
-      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);"
+      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);",
+      "failureBodyFragments": [
+        "\"/help\"",
+        "\"{\\\"message\\\":\\\" /help \\\",\\\"parameters\\\":{}}\""
+      ]
     },
-    "keeps command and raw projections separate for structured group command without mention": {
+    "keeps command and raw projections separate for 'structured group command without ment\u2026'": {
       "line": 354,
-      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);"
+      "assertion": "expect(hasControlCommand).toHaveBeenCalledWith(command, config);",
+      "failureBodyFragments": [
+        "\"/help\"",
+        "\"{\\\"message\\\":\\\"/help\\\",\\\"parameters\\\":{}}\""
+      ]
     }
   },
   "expectedGatewayCaseIds": [
@@ -190,5 +211,11 @@
     "inspectedLines": "3522-3625",
     "fileMessage": "Module/hook errors only; named test assertion errors populate assertionResults.failureMessages",
     "patchSHA256": "c21477c229514823498ab3a08311070cec46b1811e866bc1b3f6ff3f5720da2e"
+  },
+  "testTitleContract": {
+    "runnerVersion": "4.1.11",
+    "attributeFormat": "objDisplay(value) with default truncate40; strings quoted and their content truncated to38 including ellipsis",
+    "observedRunId": 33696484954,
+    "testBytesUnchanged": true
   }
 }
