@@ -87,6 +87,8 @@
     "src/cli/gateway-cli/run-loop.ts": "fde77b81fb9500fb20c7815b03e5b90444b3ad610b01e89209d60399546c74d9",
     "src/config/channel-account-config.ts": "225b5bc21130b649e1435aded0b38afece0e2fb36e84097936ffecf488273173",
     "src/entry.ts": "27a177b6c7f6543c51207ff4162cb699b229bf9fa691b8a2fecb2251bb31c001",
+    "src/index.ts": "a9b1dcfa4d8864850b315ab8464c9941194cabea418f1b0dd63a7faf3b4fca19",
+    "src/infra/is-main.ts": "3328bfc3e74f0510bf752ff58ac4f040725bc0a551310394ba243ddc99045b6d",
     "src/infra/kysely-sync.ts": "bfb4b1c5a644c37bb4ffac9cb63bbc876a0c8a43df1d47af9332ec580fefd931",
     "src/logging/diagnostic.ts": "4720390eba2d75c527cc45f6760fec3b731221d91e124b247b8eb4278ad85474",
     "src/logging/message-lifecycle.ts": "94b50b0b28a02ed0552ae76d7d8c8c00e2fdd66bb3ceee83fc234a2ac2f04102",
@@ -107,7 +109,7 @@
   "testPath": "extensions/nextcloud-talk/src/inbound.behavior.test.ts",
   "testSHA256": "eed4b9865a09f648c4e8a2d67766c2dc56af475f168049dc438126f945ec736b",
   "proofPath": "extensions/qa-lab/src/nextcloud-commands.gateway-proof.mjs",
-  "proofSHA256": "c0cf4d3e30a9ee7f02c2185e799b1ba730b3c8ba7552acd0eadac22981fe6cd6",
+  "proofSHA256": "792694ce8a55f231ec94161ec1be42897443503c67d070e26b0b766adb3f7d6b",
   "expectedTestTitles": [
     "logs the drop when an inbound message has an empty body",
     "issues a DM pairing challenge and sends the challenge text",
@@ -217,5 +219,11 @@
     "attributeFormat": "objDisplay(value) with default truncate40; strings quoted and their content truncated to38 including ellipsis",
     "observedRunId": 33696484954,
     "testBytesUnchanged": true
+  },
+  "gatewayProcessObservation": {
+    "entry": "dist/index.js",
+    "expected": "Exact full launch argv from requested executable/prefix and frozen QA argument owner using its returned config/baseUrl port",
+    "processTitleAlternativeAccepted": false,
+    "sourceReason": "src/entry.ts skips main side effects when imported by src/index.ts; gateway run-loop renames only an existing openclaw title"
   }
 }

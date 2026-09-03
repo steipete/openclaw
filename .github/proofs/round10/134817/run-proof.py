@@ -423,7 +423,16 @@ try:
     assert verdict['replies'] == [reply for row in verdict['cases'] for reply in row.get('replies', [])]
     assert verdict['childRuntime']['buildInventorySha256'] == digest(phase_dir / 'runtime-build.json')
     assert verdict['childRuntime']['requestedCommand']['argsPrefix'] == [str(checkout / 'dist/index.js')]
-    assert verdict['childRuntime']['observedCmdline'] == ['openclaw-gateway']
+    child_runtime = verdict['childRuntime']
+    port = child_runtime['gatewayPort']
+    assert type(port) is int and 0 < port <= 65535
+    assert type(child_runtime['pid']) is int and child_runtime['pid'] > 0
+    assert child_runtime['gatewayBaseUrl'] == 'http://127.0.0.1:' + str(port)
+    assert child_runtime['requestedCommand']['executablePath'] == node
+    expected_launch_argv = [node, str(checkout / 'dist/index.js'), 'gateway', 'run',
+                            '--port', str(port), '--bind', 'loopback', '--allow-unconfigured']
+    assert child_runtime['canonicalLaunchArgv'] == expected_launch_argv
+    assert child_runtime['observedCmdline'] == expected_launch_argv
     assert verdict['duplicateBefore'] == verdict['duplicateAfter']
     receipt.update(passed=True, phase='complete', gatewayBaselinePassed=True,
                    baselineIdentity=before['sourceIdentity'], gatewayVerdictSHA256=digest(phase_dir / 'gateway-verdict.json'))

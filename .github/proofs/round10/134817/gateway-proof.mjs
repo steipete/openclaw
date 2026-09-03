@@ -229,12 +229,20 @@ try {
       logging: { ...cfg.logging, level: "debug", consoleLevel: "debug" } }),
   }));
   assert.ok(harness.mock);
-  childRuntime = { pid: harness.gateway.pid, requestedCommand,
-    // Node process.title replaces proc cmdline; this is observed title, not original argv.
+  const gatewayPort = harness.gateway.cfg.gateway.port;
+  assert.ok(Number.isInteger(gatewayPort) && gatewayPort > 0 && gatewayPort <= 65535);
+  assert.equal(harness.gateway.baseUrl, `http://127.0.0.1:${gatewayPort}`);
+  assert.ok(Number.isInteger(harness.gateway.pid) && harness.gateway.pid > 0);
+  // The frozen QA owner appends these arguments using this returned config/URL port.
+  // Direct dist/index.js skips entry.ts title-setting side effects.
+  const canonicalLaunchArgv = [requestedCommand.executablePath, ...requestedCommand.argsPrefix,
+    "gateway", "run", "--port", String(gatewayPort), "--bind", "loopback", "--allow-unconfigured"];
+  childRuntime = { pid: harness.gateway.pid, requestedCommand, canonicalLaunchArgv,
+    gatewayPort, gatewayBaseUrl: harness.gateway.baseUrl,
     observedCmdline: (await fs.readFile(`/proc/${harness.gateway.pid}/cmdline`, "utf8")).split("\0").filter(Boolean),
     executable: await fs.readlink(`/proc/${harness.gateway.pid}/exe`), buildInventorySha256: hash(buildBytes) };
   assert.equal(await fs.realpath(childRuntime.executable), await fs.realpath(process.execPath));
-  assert.deepEqual(childRuntime.observedCmdline, ["openclaw-gateway"]);
+  assert.deepEqual(childRuntime.observedCmdline, canonicalLaunchArgv);
   stagedBefore = await readStaging();
   await save("staged-before.json", stagedBefore);
   const readyDeadline = Date.now() + 30_000;
