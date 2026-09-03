@@ -1,0 +1,54 @@
+name: macOS packaged worker containment candidate
+
+on:
+  push:
+    branches: [codex/round10-macos-worker-candidate-proof]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-macos-worker-candidate-proof'
+    runs-on: macos-26
+    timeout-minutes: 90
+    steps:
+      - name: Checkout reviewed proof publication
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-publication
+          persist-credentials: false
+      - name: Checkout fixed reviewed candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: e740e49b65a13dd45fe0e36f4de08f518e704e8e
+          path: product
+          persist-credentials: false
+      - name: Setup repository-compatible Node with bundled Corepack
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Build package and exercise the actual Swift owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I -S proof-publication/.proof/135663/run-hosted-candidate.py \
+            "$GITHUB_WORKSPACE/proof-publication/.proof/135663" \
+            "$GITHUB_WORKSPACE/product" \
+            "$GITHUB_WORKSPACE/proof-results"
+      - name: Preserve proof data and failure logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: macos-135663-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          path: |
+            proof-results/*.json
+            proof-results/*.log
+            proof-results/raw-index-*.bin
+            proof-results/normal/observation.json
+            proof-results/unresponsive/observation.json

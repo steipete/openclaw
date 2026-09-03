@@ -1,8 +1,7 @@
 {
   "publicationReady": true,
-  "baselineSHA": "50f02ecf4410c78269d7bbda7c47d891c9666d19",
-  "baselineTree": "ffdb218beec301f502379390f37319ac6ba52825",
-  "candidate": null,
+  "candidateSHA": "e740e49b65a13dd45fe0e36f4de08f518e704e8e",
+  "candidateTree": "8b9c7145b4bd5e6f378d335cb24ff883db5f3823",
   "setupNodeVersion": "24.19.0",
   "bundledNodeVersion": "24.19.0",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
@@ -13,7 +12,7 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "e1a161316f42fcd22d02103a3952b5e570ea923d803519983e8bd1e61a242cb3"
+      "sha256": "056de969cce12869224436e407f8b1ea5e792e16bbb67853e708836e7a0a74c1"
     },
     {
       "path": "AGENTS.md",
@@ -25,11 +24,11 @@
     },
     {
       "path": "apps/macos/Package.resolved",
-      "sha256": "851b0a3db53b8be5dbf70738697459152c181fed1cf9fee65b333010018ec9ab"
+      "sha256": "6041ee40156d8269b547d38c04bbee073b33b5aff3f62e05b7d29701042fd4e3"
     },
     {
       "path": "apps/macos/Package.swift",
-      "sha256": "f2127970860a36ea9e0d4a251d63c336e78ecba7ebe74e48f1290de8dc175bef"
+      "sha256": "4a5551634f350ce9d428f0ffc7c06e99ccda64320adc8e5889c9c11bb6a96a11"
     },
     {
       "path": "apps/macos/Sources/OpenClaw/CommandResolver.swift",
@@ -49,7 +48,7 @@
     },
     {
       "path": "apps/macos/Sources/OpenClaw/NodeMode/MacNodeHostWorker.swift",
-      "sha256": "40cf8502b5ebf2d970ea996274e3b092f22a31a2a4a504a52b5e805d857d5bed"
+      "sha256": "2f04ea5ac9ad5e32d9fa36c6e7fc4adb7cc30e31236ebddf95f1e6d7cb2c0b53"
     },
     {
       "path": "apps/macos/Sources/OpenClaw/NodeMode/MacNodeModeCoordinator.swift",
@@ -65,7 +64,7 @@
     },
     {
       "path": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerTests.swift",
-      "sha256": "d987401e1eb030df83803d3e20b28b1b1ddd8663c2e7d89ad32742ef07ebbcfc"
+      "sha256": "1c48fdd696f339988667037c94e0bbb7303f61056eadc24a50f0335cd689cb13"
     },
     {
       "path": "apps/shared/OpenClawKit/Package.swift",
@@ -89,11 +88,11 @@
     },
     {
       "path": "package.json",
-      "sha256": "3047c7bf619632486f6d1c8924294c83a53f372dd7ad922b46be1b4ca3419dc8"
+      "sha256": "9b0d1765810ff0686b0cb973ddd6bf9febda66f7c757e66c283eba4980627e45"
     },
     {
       "path": "pnpm-lock.yaml",
-      "sha256": "26438bb4ed67df2bd625b3375e0dae15425e02e19880f7ef1cc43a8e476e801d"
+      "sha256": "ee7d26e5edc1db9b2fcb81a5c2ac2a3d459b601d183db92c4bf951b77a5803f8"
     },
     {
       "path": "scripts/AGENTS.md",
@@ -113,7 +112,7 @@
     },
     {
       "path": "scripts/lib/managed-child-process.mts",
-      "sha256": "d7217f13b032eb5197e681b5584a033c330a0ae0b032efd938edbc36eba49133"
+      "sha256": "9db7a865a8907d898e6e5e1aa12876d14ba985efaf6df0a28707ca81d8873454"
     },
     {
       "path": "scripts/lib/tsx-cli-shim.mjs",
@@ -141,7 +140,7 @@
     },
     {
       "path": "scripts/verify-mac-node-worker.mjs",
-      "sha256": "4101125336cd8c1a9464a8c5b344933e03655c72b5e016978a27bb8973b7e151"
+      "sha256": "c3195f0fffce801b66596542837a6426ee099fbe38f412c76e0c7fa62cd70f18"
     },
     {
       "path": "scripts/write-build-info.ts",
@@ -165,11 +164,11 @@
     },
     {
       "path": "src/entry.compile-cache.test.ts",
-      "sha256": "53e18a846c3dc1ccf5180d0fea9c043c5c15665326c01d0d165018d3e2b5c368"
+      "sha256": "cec6bb915e9e1cab6b29179c9eae8ba947dc886fbec4488874093c40016fc040"
     },
     {
       "path": "src/entry.compile-cache.ts",
-      "sha256": "f11755eae5f851f3e60029a1deef48fadc2dea340151862a43d5ccd79cb9893b"
+      "sha256": "2de5b1f70bec456d30652f123f276c47c9f708280b9b6ed323484c7adb1972d4"
     },
     {
       "path": "src/entry.respawn.ts",
@@ -190,19 +189,43 @@
     {
       "path": "src/process/respawn-child-runner.ts",
       "sha256": "94609a2d5c9b3ed24a8047150df771ddb64fa7e0bc379730d75ce94eeb1006b4"
+    },
+    {
+      "path": "scripts/package-openclaw-for-docker.mts",
+      "sha256": "1645b6b9660e81d239755a929cda8d403df6230f4fc7d5911f4f9b22bb83ee08"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "d38098803dfd77fb24fabb13c1f6bc4c5da8fdfa8cd08371d8fd563d78e05252"
+    },
+    {
+      "path": "scripts/package-openclaw-for-docker.mjs",
+      "sha256": "5003f1184068eca72e5c9cc9fffd9e7354cf31c0e8aebe64a6ebec357721121e"
+    },
+    {
+      "path": "scripts/build-all.mts",
+      "sha256": "2aff5843ca798b1af3e4af6781501b16c43e41dcdc920b9df2395f191d322b39"
+    },
+    {
+      "path": "scripts/prepare-apple-mermaid.mjs",
+      "sha256": "0e914c41fec9dce2dfcffcf774a0c6f121b43044176e930c15b7cc7033f7384b"
+    },
+    {
+      "path": "apps/macos/Sources/OpenClaw/PeekabooBridgeHostCoordinator.swift",
+      "sha256": "5746477aba77b1456e9a49559aa4b974d959620cb4e67865e1e255b01a84d877"
     }
   ],
-  "permanentTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerTests.swift",
-  "permanentTestSHA256": "48432e8e496119ef4dc6d3a331e8a1d60ec3a21570bf8b16345c37388d4280e3",
   "proofTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerProcessGroupProof.swift",
   "proofTestSHA256": "b15d4fba4fd37c1ef110c3982dab6042c9a6151f772ec404f6f70b8eb135e021",
-  "requiredControlNames": [
+  "requiredPassingTestNames": [
+    "worker forces app exec host without fallback or startup respawn",
     "changed worker command replaces the running process",
     "stop cancels a changed launch during worker cleanup",
     "stop waits for the worker leader and reaps its descendants"
   ],
-  "cooperativeExitFix": {
-    "commit": "64bcb0cbd4b471a7a5241a4fe720f0f4a9796985",
-    "ancestorVerified": true
+  "baselineEvidence": {
+    "runId": 33703443197,
+    "proofSHA": "23c97c148a6ef4e7c84e9ab5bbaf79ffe98feaa9",
+    "baselineSHA": "50f02ecf4410c78269d7bbda7c47d891c9666d19"
   }
 }
