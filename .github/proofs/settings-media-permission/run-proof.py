@@ -222,6 +222,12 @@ def assess_ui(exit_code, stage_dir):
         assert row['ownerConnectedAtGesture'] is True
         if row['transition'] == 'disconnect':
             assert row['ownerConnectedAfterExit'] is False
+        surface = row['settlementSurface']
+        if row['transition'] in {'route leave', 'second await'}:
+            assert row['ownerConnectedAfterExit'] is True
+            assert surface['route'] == '/settings/advanced'
+            assert surface['ownerConnected'] is True and surface['ownerPageId'] == 'advanced'
+            assert surface['appearancePickerCount'] == 0 and surface['pageTitle'] == 'Advanced'
         stays = row['transition'] == 'stay'
         assert row['status'] == 'pass'
         assert row['probesAfterSettlement'] == (1 if stays else 0)
@@ -232,15 +238,16 @@ def assess_ui(exit_code, stage_dir):
         assert row['exitRoute'] == expected_exit
         events = row['finalEvents']
         probes = [event for event in events if event['type'] == 'probe']
-        pointers = [event for event in events if event['type'] == 'pointer']
+        pointer_indexes = [index for index, event in enumerate(events) if event['type'] == 'pointer']
+        pointers = [events[index] for index in pointer_indexes]
         assert len(probes) == len([event for event in events if event['type'] == 'stop']) == 1
         assert probes[0]['route'] == '/settings/appearance'
         released_id = 3 if row['transition'] == 'second await' else 1 if row['kind'] == 'microphone' else 2
         released = [event for event in events if event['type'] == 'resolve' and event['id'] == released_id]
         assert len(released) == 1 and released[0]['route'] == expected_exit
-        assert events.index(pointers[0]) < events.index(released[0]) < events.index(probes[0])
+        assert pointer_indexes[0] < events.index(released[0]) < events.index(probes[0])
         if not stays:
-            assert events.index(released[0]) < events.index(pointers[1]) < events.index(probes[0])
+            assert events.index(released[0]) < pointer_indexes[1] < events.index(probes[0])
         assert probes[0]['constraints'] == ({'audio': True} if row['kind'] == 'microphone' else {'video': True})
         assert len(pointers) == (1 if stays else 2) and all(event['trusted'] for event in pointers)
         assert events[0]['type'] == events[1]['type'] == 'enumerate'
@@ -261,7 +268,7 @@ def assess_ui(exit_code, stage_dir):
     return {'accepted': True, 'passedTests': expected_passed, 'failedTests': 8 - expected_passed,
             'cases': {key: row['status'] for key, row in observed.items()},
             'servedOwnerSHA256': {key: next(iter(values)) for key, values in hashes.items()},
-            'screenshots': 32, 'videos': 8}
+            'retirementSurfaceVerified': True, 'screenshots': 32, 'videos': 8}
 
 
 try:
@@ -278,7 +285,25 @@ try:
         assert not Path(name).is_absolute() and '..' not in Path(name).parts
         assert digest(proof_checkout / name) == expected_hash, name
     binding = json.loads((assets / 'binding.json').read_text())
+    assert binding['executionAllowed'] is True
     assert binding['mode'] == 'candidate-only' and binding['candidateExecutionAllowed'] is True
+    baseline_receipt_file = assets / 'corrected-baseline-result.json'
+    assert digest(baseline_receipt_file) == binding['baselineProofReceiptSHA256']
+    corrected_baseline = json.loads(baseline_receipt_file.read_text())
+    assert corrected_baseline['passed'] is True and corrected_baseline['phase'] == 'complete'
+    assert corrected_baseline['mode'] == 'baseline-only' and corrected_baseline['candidateExecuted'] is False
+    assert corrected_baseline['baselineHead'] == binding['requiredBaselineHead']
+    assert corrected_baseline['hostedProofSHA256'] == binding['proofSHA256']
+    assert corrected_baseline['permanentBrowserTestSHA256Unexecuted'] == binding['permanentBrowserTestSHA256Unexecuted']
+    assert corrected_baseline['executedUnitSHA256'] == {name: binding['candidateUnitSHA256'][name] for name in binding['regressionPaths']}
+    assert corrected_baseline['closureUncertain'] is False and corrected_baseline['cleanupErrors'] == []
+    assert all(corrected_baseline[name] is True for name in ['proofOverlayRemoved', 'trackedOverlaysRestored', 'privateScratchRemoved'])
+    baseline_units = corrected_baseline['stages']['before']['regressions']
+    baseline_ui = corrected_baseline['stages']['before']['ui']
+    assert baseline_units['accepted'] is True and (baseline_units['executed'], baseline_units['failed'], baseline_units['passed']) == (22, 13, 9)
+    assert baseline_ui['accepted'] is True and (baseline_ui['failedTests'], baseline_ui['passedTests']) == (6, 2)
+    assert baseline_ui['retirementSurfaceVerified'] is True
+    assert isinstance(binding['baselineActual']['runId'], int) and binding['baselineActual']['runId'] > 0
     assert isinstance(binding['candidateHead'], str) and len(binding['candidateHead']) == 40
     assert isinstance(binding['candidateTree'], str) and len(binding['candidateTree']) == 40
     assert isinstance(binding['candidateSourceSHA256'], dict)
@@ -331,6 +356,7 @@ try:
     assert_tree(pristine)
     installed_lock = source / 'node_modules/.pnpm/lock.yaml'
     dependency_lock_sha = digest(installed_lock)
+    receipt['installedLockSHA256'] = dependency_lock_sha
     runtime_packages = {}
     for name, expected_version in binding['runtimePackages'].items():
         package = source / name
@@ -428,7 +454,8 @@ try:
                    permanentBrowserTestSHA256Unexecuted=binding['permanentBrowserTestSHA256Unexecuted'],
                    installedLockSHA256=dependency_lock_sha,
                    baselineActual=binding['baselineActual'],
-                   sameInstalledLockAsBaseline=dependency_lock_sha == binding['baselineActual']['installedLockSHA256'])
+                   baselineProofReceiptSHA256=binding['baselineProofReceiptSHA256'],
+                   sameInstalledLockAsBaseline=dependency_lock_sha == corrected_baseline['installedLockSHA256'])
 
 except Exception as error:
     receipt['error'] = str(error)

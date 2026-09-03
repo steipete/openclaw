@@ -1,0 +1,226 @@
+{
+  "passed": true,
+  "mode": "baseline-only",
+  "candidateExecuted": false,
+  "phase": "complete",
+  "commands": [
+    {
+      "name": "corepack-enable",
+      "argv": [
+        "/opt/hostedtoolcache/node/24.19.0/x64/bin/corepack",
+        "enable",
+        "--install-directory",
+        "/tmp/oc-media-26cngnrk/bin"
+      ],
+      "exitCode": 0,
+      "leaderReaped": true,
+      "pid": 2616,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 0.064
+    },
+    {
+      "name": "corepack-prepare",
+      "argv": [
+        "/opt/hostedtoolcache/node/24.19.0/x64/bin/corepack",
+        "prepare",
+        "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+        "--activate"
+      ],
+      "exitCode": 0,
+      "leaderReaped": true,
+      "pid": 2627,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 0.467
+    },
+    {
+      "name": "pnpm-version",
+      "argv": [
+        "/tmp/oc-media-26cngnrk/bin/pnpm",
+        "--version"
+      ],
+      "exitCode": 0,
+      "leaderReaped": true,
+      "pid": 2639,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 0.823
+    },
+    {
+      "name": "install",
+      "argv": [
+        "/tmp/oc-media-26cngnrk/bin/pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exitCode": 0,
+      "leaderReaped": true,
+      "pid": 2654,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 13.203
+    },
+    {
+      "name": "chromium",
+      "argv": [
+        "/opt/hostedtoolcache/node/24.19.0/x64/bin/node",
+        "--import",
+        "tsx",
+        "scripts/ensure-playwright-chromium.mts"
+      ],
+      "exitCode": 0,
+      "leaderReaped": true,
+      "pid": 2832,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 2.74
+    },
+    {
+      "name": "before-regressions",
+      "argv": [
+        "/opt/hostedtoolcache/node/24.19.0/x64/bin/node",
+        "scripts/run-vitest.mjs",
+        "run",
+        "--config",
+        "test/vitest/vitest.ui.config.ts",
+        "--configLoader",
+        "runner",
+        "ui/src/pages/config/config-page.test.ts",
+        "ui/src/pages/chat/composer-microphone-picker.test.ts",
+        "--testNamePattern=media permission lifetime:",
+        "--reporter=default",
+        "--reporter=json",
+        "--reporter=/home/runner/work/openclaw/openclaw/proof-assets/.github/proofs/settings-media-permission/lifecycle-reporter.mjs",
+        "--outputFile.json=/home/runner/work/_temp/settings-media-permission-evidence/before/regressions.json"
+      ],
+      "exitCode": 1,
+      "leaderReaped": true,
+      "pid": 2922,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 6.803
+    },
+    {
+      "name": "before-ui",
+      "argv": [
+        "/opt/hostedtoolcache/node/24.19.0/x64/bin/node",
+        "scripts/run-vitest.mjs",
+        "run",
+        "--config",
+        "test/vitest/vitest.ui-e2e.config.ts",
+        "--configLoader",
+        "runner",
+        "ui/src/e2e/settings-media-permission.e2e.test.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--reporter=/home/runner/work/openclaw/openclaw/proof-assets/.github/proofs/settings-media-permission/lifecycle-reporter.mjs",
+        "--outputFile.json=/home/runner/work/_temp/settings-media-permission-evidence/before/vitest.json"
+      ],
+      "exitCode": 1,
+      "leaderReaped": true,
+      "pid": 2974,
+      "outerGroupGone": true,
+      "resourcesAfter": {
+        "namespaces": [],
+        "workerGenerations": []
+      },
+      "seconds": 66.171
+    }
+  ],
+  "stages": {
+    "before": {
+      "regressions": {
+        "accepted": true,
+        "executed": 22,
+        "passed": 9,
+        "failed": 13,
+        "intentionallyFiltered": 38,
+        "names": {
+          "media permission lifetime: composer close during pending discovery": "failed",
+          "media permission lifetime: composer dispose during pending discovery": "failed",
+          "media permission lifetime: composer replace during pending discovery": "failed",
+          "media permission lifetime: composer remain open during pending discovery": "passed",
+          "media permission lifetime: Settings microphone: queued gesture remains active": "passed",
+          "media permission lifetime: Settings microphone: queued gesture leaves Appearance": "failed",
+          "media permission lifetime: Settings microphone: queued gesture disconnects": "failed",
+          "media permission lifetime: Settings microphone: permission-bearing enumeration leaves Appearance": "failed",
+          "media permission lifetime: Settings microphone: reentry without a fresh gesture": "failed",
+          "media permission lifetime: Settings microphone: reentry with a fresh gesture": "passed",
+          "media permission lifetime: Settings microphone: failed passive enumeration keeps one upgrade": "passed",
+          "media permission lifetime: Settings microphone: second enumeration leaves Appearance": "failed",
+          "media permission lifetime: Settings microphone: permission-bearing enumeration fails once": "passed",
+          "media permission lifetime: Settings camera: queued gesture remains active": "passed",
+          "media permission lifetime: Settings camera: queued gesture leaves Appearance": "failed",
+          "media permission lifetime: Settings camera: queued gesture disconnects": "failed",
+          "media permission lifetime: Settings camera: permission-bearing enumeration leaves Appearance": "failed",
+          "media permission lifetime: Settings camera: reentry without a fresh gesture": "failed",
+          "media permission lifetime: Settings camera: reentry with a fresh gesture": "passed",
+          "media permission lifetime: Settings camera: failed passive enumeration keeps one upgrade": "passed",
+          "media permission lifetime: Settings camera: second enumeration leaves Appearance": "failed",
+          "media permission lifetime: Settings camera: permission-bearing enumeration fails once": "passed"
+        }
+      },
+      "ui": {
+        "accepted": true,
+        "passedTests": 2,
+        "failedTests": 6,
+        "cases": {
+          "microphone-second-await": "fail",
+          "microphone-route-leave": "fail",
+          "microphone-stay": "pass",
+          "camera-route-leave": "fail",
+          "camera-disconnect": "fail",
+          "camera-stay": "pass",
+          "microphone-disconnect": "fail",
+          "camera-second-await": "fail"
+        },
+        "servedOwnerSHA256": {
+          "/src/pages/chat/realtime-talk-input.ts": "c8ce61326b98eb3b2ecea336794aac1229b96b9f727296d454edbccb377477d1",
+          "/src/pages/config/config-page.ts": "77e5b1171b6b54ee75741035615217a4cdd6dcb436b1d89ff7e5fe7f5a9018b8"
+        },
+        "retirementSurfaceVerified": true,
+        "screenshots": 32,
+        "videos": 8
+      }
+    }
+  },
+  "cleanupErrors": [],
+  "closureUncertain": false,
+  "installedLockSHA256": "336e4b8e2d78b9f8d9b04783d275195951d187b616f000ee3ac462779db0175b",
+  "playwrightBrowserManifestSHA256": "f306eed529599b1eaf2f8a85db9de2b23e1a3fe36c2b66434b7c9434fb627a99",
+  "baselineHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2",
+  "executedProductionSHA256": {
+    "ui/src/pages/config/config-page.ts": "c7ba1de05c1a7bfce414123dad92ed8c5cc0f7c4a3d3c4906458998b555ff4ce",
+    "ui/src/pages/chat/realtime-talk-input.ts": "21d5395daeba9fde252521634315dfc002e43f48ae9099c190146fbd7693fa34",
+    "ui/src/pages/chat/composer-microphone-picker.ts": "5abe90baf7f09c59d8014969062218b870b7623ceff2c85918e9a5452f8b767a",
+    "ui/src/pages/chat/chat-realtime.ts": "ac7f790e3c65b726007c753d54c7c13252f8b569371fa69e8ed1081e94df9050"
+  },
+  "executedUnitSHA256": {
+    "ui/src/pages/config/config-page.test.ts": "973e3638f526122d48e84d134f4a2c1c7db2f10d5480a6c75f54ea9014c10985",
+    "ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486"
+  },
+  "hostedProofSHA256": "0db68030a4e2a61c84e5d62b4f2f8f424f8662eb7525d175f79277276db4de1c",
+  "permanentBrowserTestSHA256Unexecuted": "4d9453801c2f88c22e35ebae1d38fb360d7c29873b3762a6fe6f849a5125c87f",
+  "proofOverlayRemoved": true,
+  "trackedOverlaysRestored": true,
+  "privateScratchRemoved": true
+}

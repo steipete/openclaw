@@ -1,6 +1,6 @@
 {
   "schema": "openclaw-settings-media-permission-candidate-hosted-v1",
-  "status": "Bound reviewed candidate; publication review pending",
+  "status": "Reviewed exact published candidate after verified title-retirement baseline RED",
   "originalPrHead": "f8b2e1ca54e2286c6f45804e9c76b6fbb73a20aa",
   "productionPaths": [
     "ui/src/pages/config/config-page.ts",
@@ -19,7 +19,7 @@
     "ui/src/pages/chat/composer-microphone-picker.test.ts"
   ],
   "proofPath": "ui/src/e2e/settings-media-permission.e2e.test.ts",
-  "proofSHA256": "6025e546d57c1eaa31fc8628783d703da7d25eaf9ad2a110a1a30e46837e2b93",
+  "proofSHA256": "0db68030a4e2a61c84e5d62b4f2f8f424f8662eb7525d175f79277276db4de1c",
   "classificationPath": "test/vitest/vitest.ui-e2e.config.ts",
   "classificationBeforeSHA256": "d7a7760466a60c3395bc26ff3c1d42fd825a477fd41a5b31050bc2822c5946ec",
   "classificationAfterSHA256": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",
@@ -38,15 +38,17 @@
   "proofLimit": "Real SPA controls and navigation; synthetic MediaDevices boundary, no native Chrome permission UI claim.",
   "coverage": {
     "candidateOnly": true,
-    "baselineRerun": false,
+    "baselineRerun": true,
     "fullSiblingUnitRun": true,
     "browserFixtureUnchangedFromObservedBaseline": true,
     "nativeChromePermissionUiProven": false,
-    "synchronousPageIdBeforeWillUpdateInterleavingProven": false
+    "synchronousPageIdBeforeWillUpdateInterleavingProven": false,
+    "correctedBaselineMustRunFirst": true,
+    "sameFixtureRequiredAsCorrectedBaseline": true
   },
   "mode": "candidate-only",
   "candidateExecutionAllowed": true,
-  "permanentBrowserTestSHA256Unexecuted": "e4f4b03a6d86af2e2d4c80b032192e43ed46e08aa1764e65e8859a3ddb806cf4",
+  "permanentBrowserTestSHA256Unexecuted": "4d9453801c2f88c22e35ebae1d38fb360d7c29873b3762a6fe6f849a5125c87f",
   "proofRef": "refs/heads/codex/settings-media-permission-candidate-proof",
   "runtimePackages": {
     "node_modules/playwright/package.json": "1.62.1",
@@ -59,8 +61,8 @@
   },
   "lifecycleReporterSHA256": "0c117083cb8e8ba0f744e34802fc44f3268efca5d423c598d55db049f0e229f9",
   "closureMode": "canonical natural completion only; forced or uncertain termination retains scratch",
-  "candidateHead": "42c953b2596b0d55505d4366e992c03dd808b16c",
-  "candidateTree": "9a3b5d29a59f6c590ca316783fc42d43d6a9586d",
+  "candidateHead": "9928919c50b098fa2c03f47996f398de8cde3c58",
+  "candidateTree": "513c151f17d68082fe56cdd8497d2e33c2b9c67f",
   "candidateSourceSHA256": {
     ".github/CODEOWNERS": "2e8017189be04ef313231228e05e37a6d7442f8d708846e08aaaecfc2eec6935",
     "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
@@ -114,14 +116,14 @@
     "ui/src/components/sidebar-attention-store.ts": "c8a4ac50abb2e85d8138bf9308680c93f1456e1a267f1e81f4cc2f9eae739c50",
     "ui/src/components/sidebar-attention.ts": "a8b12a8c5f0e5d96d8b7e694bf62e3c0a11428075066e684ad117ed28eb365c5",
     "ui/src/e2e/control-ui-e2e-suite.test-support.ts": "59d282e8a5726588034fa4d3fd4d144dfd016ab760942fc195e867c64af1e9c2",
-    "ui/src/e2e/settings-media-permission.e2e.test.ts": "e4f4b03a6d86af2e2d4c80b032192e43ed46e08aa1764e65e8859a3ddb806cf4",
+    "ui/src/e2e/settings-media-permission.e2e.test.ts": "4d9453801c2f88c22e35ebae1d38fb360d7c29873b3762a6fe6f849a5125c87f",
     "ui/src/e2e/sidebar-customization.test-support.ts": "747b0768b30e0b74fd7b19f61cbd931c05ec50baaf4076788713ee1eabd4f04a",
     "ui/src/e2e/sidebar-settings.e2e.test.ts": "95564535be339db1e2d2735f55dba000ded6580c60177e65c7fcfaf6706f729f",
     "ui/src/lit/openclaw-element.ts": "bb054800868ac4f584ad9b3607e2591d0fe45fcf561372d7a01d7e3d580b2186",
     "ui/src/pages/chat/chat-composer.test.ts": "559e27729d42d3eee9198a925aeb404309129af63eaa36700327825328b4c599",
     "ui/src/pages/chat/chat-realtime.test.ts": "41ec6a74255793d1defa55d4abdcd080f860450d8f29f6167c4d31656a6ff4ec",
     "ui/src/pages/chat/chat-realtime.ts": "7b182fadd13d1edd2426feadff29d35e6d394bce55c59410da491d877a767790",
-    "ui/src/pages/chat/composer-microphone-picker.test.ts": "5800e709cb36bd929c989287465a5c2a01646ce254ebc7bae66aea8492725cc5",
+    "ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486",
     "ui/src/pages/chat/composer-microphone-picker.ts": "bb6d49f4c993631d85514589ea159b29e51c317ce919728218d1e3747e3f2e39",
     "ui/src/pages/chat/realtime-talk-input.test-support.ts": "c360e80cae6d9892a158e442153e8e7c38ce9dc382bfb9e2df98f1c70450d9c2",
     "ui/src/pages/chat/realtime-talk-input.test.ts": "31430de7136fe439323f4b2cd688c0cac2fa61066db8c3c8ba60fa5ae5c8654b",
@@ -138,7 +140,8 @@
     "ui/src/test-helpers/control-ui-session-fixtures.ts": "bebdc23f025c6702d88d420e08006ebe80975aec2a2f3f5f373327fe9b93ca13",
     "ui/src/test-helpers/lit-warnings.setup.ts": "8f22729ba1839b34de8a598bc8ead4eb4c517c8f5d305ef1aa785c3890a9b6a8",
     "ui/vite.config.ts": "3fc003d78fbc2584b8f4500f05c359b7f323959b357eede5a5edd4152dbbb364",
-    "ui/vitest.config.ts": "364beaceac03b18db8fc1711212bd1f5134e8efdc0547dbe0910981e5f74176e"
+    "ui/vitest.config.ts": "364beaceac03b18db8fc1711212bd1f5134e8efdc0547dbe0910981e5f74176e",
+    "ui/src/components/settings-ui.ts": "aae33b86e6b58163232c15dda248bdd0ec19ca694991ebf02c574fab516fab7d"
   },
   "permanentBrowserTestExpectedInHead": true,
   "siblingPaths": [
@@ -146,7 +149,7 @@
   ],
   "candidateUnitSHA256": {
     "ui/src/pages/config/config-page.test.ts": "973e3638f526122d48e84d134f4a2c1c7db2f10d5480a6c75f54ea9014c10985",
-    "ui/src/pages/chat/composer-microphone-picker.test.ts": "5800e709cb36bd929c989287465a5c2a01646ce254ebc7bae66aea8492725cc5",
+    "ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486",
     "ui/src/pages/chat/realtime-talk-input.test.ts": "31430de7136fe439323f4b2cd688c0cac2fa61066db8c3c8ba60fa5ae5c8654b",
     "ui/src/pages/chat/chat-composer.test.ts": "559e27729d42d3eee9198a925aeb404309129af63eaa36700327825328b4c599"
   },
@@ -155,65 +158,6 @@
     "ui/src/pages/chat/realtime-talk-input.ts": "fc2db08d840871efd373ab6cf6020ecb87cb657daac541b52b02289e12cbad56",
     "ui/src/pages/chat/composer-microphone-picker.ts": "bb6d49f4c993631d85514589ea159b29e51c317ce919728218d1e3747e3f2e39",
     "ui/src/pages/chat/chat-realtime.ts": "7b182fadd13d1edd2426feadff29d35e6d394bce55c59410da491d877a767790"
-  },
-  "baselineActual": {
-    "sourceHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2",
-    "proofHead": "725eda5b3b36aa0453c334ed5acd627f0959b91c",
-    "runId": 33696509288,
-    "artifactId": 9872017128,
-    "artifactZIP_SHA256": "0e508b3c6f00364194eb678fc3d984c77ec85704f1e60c7b40c0f011ec221a09",
-    "installedLockSHA256": "336e4b8e2d78b9f8d9b04783d275195951d187b616f000ee3ac462779db0175b",
-    "unitFailed": 13,
-    "unitPassed": 9,
-    "guiFailed": 6,
-    "guiPassed": 2,
-    "executedProductionSHA256": {
-      "ui/src/pages/config/config-page.ts": "c7ba1de05c1a7bfce414123dad92ed8c5cc0f7c4a3d3c4906458998b555ff4ce",
-      "ui/src/pages/chat/realtime-talk-input.ts": "21d5395daeba9fde252521634315dfc002e43f48ae9099c190146fbd7693fa34",
-      "ui/src/pages/chat/composer-microphone-picker.ts": "5abe90baf7f09c59d8014969062218b870b7623ceff2c85918e9a5452f8b767a",
-      "ui/src/pages/chat/chat-realtime.ts": "ac7f790e3c65b726007c753d54c7c13252f8b569371fa69e8ed1081e94df9050"
-    },
-    "servedOwnerSHA256": {
-      "/src/pages/chat/realtime-talk-input.ts": "c8ce61326b98eb3b2ecea336794aac1229b96b9f727296d454edbccb377477d1",
-      "/src/pages/config/config-page.ts": "e25e3a18f750312e0f3fbc36b42e6d96f64c8fb2c51aabbf4ab2b0147a8b7679"
-    },
-    "runtimePackages": {
-      "node_modules/playwright/package.json": {
-        "name": "playwright",
-        "version": "1.62.1",
-        "sha256": "ca170ec143a88ed3043ac953eb3b2377b2b97304104f4e1e23316684ce2c35af"
-      },
-      "node_modules/playwright-core/package.json": {
-        "name": "playwright-core",
-        "version": "1.62.1",
-        "sha256": "07c47543631fef9508760365dee9fbe958c562093ec8d122543949ed231f233f"
-      },
-      "node_modules/vitest/package.json": {
-        "name": "vitest",
-        "version": "4.1.11",
-        "sha256": "a28126d97bcaf567da5bed69443b7f3bcd9a7a8c38c8b66e554686b6bb2c10e0"
-      },
-      "node_modules/vite/package.json": {
-        "name": "vite",
-        "version": "8.2.2",
-        "sha256": "4e41dd20c7a12e7e70915b235c0bf5b5158ec6709c1390804128af0867d6d6d9"
-      },
-      "node_modules/jsdom/package.json": {
-        "name": "jsdom",
-        "version": "29.1.1",
-        "sha256": "def961b4c0a5fe3c37f68fb2b35fc80707975a1c0ff4f8d39ff5b7106c387e5c"
-      },
-      "ui/node_modules/lit/package.json": {
-        "name": "lit",
-        "version": "3.3.3",
-        "sha256": "b96d657d4a2e94394569b6a0f25881a4e4908a2682094d20d3b251ef7e1198a6"
-      },
-      "ui/node_modules/@openclaw/uirouter/package.json": {
-        "name": "@openclaw/uirouter",
-        "version": "0.1.1",
-        "sha256": "d08b0b869049c19d3f4a43f1d7fe8d8f2b362f79320996746215ad8a6225f71a"
-      }
-    }
   },
   "requiredSourceBindingPaths": [
     ".github/CODEOWNERS",
@@ -261,6 +205,7 @@
     "ui/src/app/router-outlet.ts",
     "ui/src/app/sidebar-attention-store.ts",
     "ui/src/components/settings-sidebar.ts",
+    "ui/src/components/settings-ui.ts",
     "ui/src/components/settings-workspace.ts",
     "ui/src/components/sidebar-attention-dismissals.ts",
     "ui/src/components/sidebar-attention-entries.ts",
@@ -319,7 +264,97 @@
     "media permission lifetime: composer remain open during pending discovery"
   ],
   "candidateParents": [
-    "f8b2e1ca54e2286c6f45804e9c76b6fbb73a20aa",
-    "d1bf55e3176cfd4afbac27f134996f1d5762c72e"
-  ]
+    "11c88082b7a6f01fe0684e1a728229cb1bbee3b6"
+  ],
+  "executionAllowed": true,
+  "retirementPremise": "Visible exact Advanced page title from settings-ui.ts, no Appearance pickers, atomic current owner pageId/connected/pageTitle/picker snapshot before releasing held enumeration",
+  "previousCandidateHead": "11c88082b7a6f01fe0684e1a728229cb1bbee3b6",
+  "historicalBaselineActual": {
+    "sourceHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2",
+    "proofHead": "725eda5b3b36aa0453c334ed5acd627f0959b91c",
+    "runId": 33696509288,
+    "artifactId": 9872017128,
+    "artifactZIP_SHA256": "0e508b3c6f00364194eb678fc3d984c77ec85704f1e60c7b40c0f011ec221a09",
+    "installedLockSHA256": "336e4b8e2d78b9f8d9b04783d275195951d187b616f000ee3ac462779db0175b",
+    "unitFailed": 13,
+    "unitPassed": 9,
+    "guiFailed": 6,
+    "guiPassed": 2,
+    "executedProductionSHA256": {
+      "ui/src/pages/config/config-page.ts": "c7ba1de05c1a7bfce414123dad92ed8c5cc0f7c4a3d3c4906458998b555ff4ce",
+      "ui/src/pages/chat/realtime-talk-input.ts": "21d5395daeba9fde252521634315dfc002e43f48ae9099c190146fbd7693fa34",
+      "ui/src/pages/chat/composer-microphone-picker.ts": "5abe90baf7f09c59d8014969062218b870b7623ceff2c85918e9a5452f8b767a",
+      "ui/src/pages/chat/chat-realtime.ts": "ac7f790e3c65b726007c753d54c7c13252f8b569371fa69e8ed1081e94df9050"
+    },
+    "servedOwnerSHA256": {
+      "/src/pages/chat/realtime-talk-input.ts": "c8ce61326b98eb3b2ecea336794aac1229b96b9f727296d454edbccb377477d1",
+      "/src/pages/config/config-page.ts": "e25e3a18f750312e0f3fbc36b42e6d96f64c8fb2c51aabbf4ab2b0147a8b7679"
+    },
+    "runtimePackages": {
+      "node_modules/playwright/package.json": {
+        "name": "playwright",
+        "version": "1.62.1",
+        "sha256": "ca170ec143a88ed3043ac953eb3b2377b2b97304104f4e1e23316684ce2c35af"
+      },
+      "node_modules/playwright-core/package.json": {
+        "name": "playwright-core",
+        "version": "1.62.1",
+        "sha256": "07c47543631fef9508760365dee9fbe958c562093ec8d122543949ed231f233f"
+      },
+      "node_modules/vitest/package.json": {
+        "name": "vitest",
+        "version": "4.1.11",
+        "sha256": "a28126d97bcaf567da5bed69443b7f3bcd9a7a8c38c8b66e554686b6bb2c10e0"
+      },
+      "node_modules/vite/package.json": {
+        "name": "vite",
+        "version": "8.2.2",
+        "sha256": "4e41dd20c7a12e7e70915b235c0bf5b5158ec6709c1390804128af0867d6d6d9"
+      },
+      "node_modules/jsdom/package.json": {
+        "name": "jsdom",
+        "version": "29.1.1",
+        "sha256": "def961b4c0a5fe3c37f68fb2b35fc80707975a1c0ff4f8d39ff5b7106c387e5c"
+      },
+      "ui/node_modules/lit/package.json": {
+        "name": "lit",
+        "version": "3.3.3",
+        "sha256": "b96d657d4a2e94394569b6a0f25881a4e4908a2682094d20d3b251ef7e1198a6"
+      },
+      "ui/node_modules/@openclaw/uirouter/package.json": {
+        "name": "@openclaw/uirouter",
+        "version": "0.1.1",
+        "sha256": "d08b0b869049c19d3f4a43f1d7fe8d8f2b362f79320996746215ad8a6225f71a"
+      }
+    }
+  },
+  "baselineActual": {
+    "runId": 33702352988,
+    "artifactId": 9874011884,
+    "artifactZIP_SHA256": "60f9845bf392680d65943f114da90cf132318bc0e698ec97a82087fb9802336f",
+    "proofHead": "a3511d73a98545f80b4a92ce0b6bd2d4dd688569",
+    "assessmentSHA256": "d7b62e5304ff9a76c05c99e964f575f6a9b2fcc00a2992bf35c6c3977bc3693f",
+    "sourceHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2",
+    "installedLockSHA256": "336e4b8e2d78b9f8d9b04783d275195951d187b616f000ee3ac462779db0175b",
+    "unitFailed": 13,
+    "unitPassed": 9,
+    "guiFailed": 6,
+    "guiPassed": 2,
+    "hostedProofSHA256": "0db68030a4e2a61c84e5d62b4f2f8f424f8662eb7525d175f79277276db4de1c",
+    "permanentBrowserTestSHA256Unexecuted": "4d9453801c2f88c22e35ebae1d38fb360d7c29873b3762a6fe6f849a5125c87f",
+    "executedProductionSHA256": {
+      "ui/src/pages/config/config-page.ts": "c7ba1de05c1a7bfce414123dad92ed8c5cc0f7c4a3d3c4906458998b555ff4ce",
+      "ui/src/pages/chat/realtime-talk-input.ts": "21d5395daeba9fde252521634315dfc002e43f48ae9099c190146fbd7693fa34",
+      "ui/src/pages/chat/composer-microphone-picker.ts": "5abe90baf7f09c59d8014969062218b870b7623ceff2c85918e9a5452f8b767a",
+      "ui/src/pages/chat/chat-realtime.ts": "ac7f790e3c65b726007c753d54c7c13252f8b569371fa69e8ed1081e94df9050"
+    },
+    "servedOwnerSHA256": {
+      "/src/pages/chat/realtime-talk-input.ts": "c8ce61326b98eb3b2ecea336794aac1229b96b9f727296d454edbccb377477d1",
+      "/src/pages/config/config-page.ts": "77e5b1171b6b54ee75741035615217a4cdd6dcb436b1d89ff7e5fe7f5a9018b8"
+    },
+    "retirementSurfaceVerified": true,
+    "sourceAndIndexRestored": true
+  },
+  "baselineProofReceiptSHA256": "f87dd57275f7c1b19a2a9f3b4cfc19fad5d065805c128c854541e2b4c48fad41",
+  "requiredBaselineHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2"
 }
