@@ -1,0 +1,11 @@
+{
+  "schema": "openclaw-settings-media-permission-candidate-manifest-v1",
+  "sha256": {
+    ".github/proofs/settings-media-permission/binding.json": "b2af614e99256bb665aa599a7640221c05eb69cff18f90de67067b45f5a210cc",
+    ".github/proofs/settings-media-permission/lifecycle-reporter.mjs": "0c117083cb8e8ba0f744e34802fc44f3268efca5d423c598d55db049f0e229f9",
+    ".github/proofs/settings-media-permission/proof.e2e.test.ts": "6025e546d57c1eaa31fc8628783d703da7d25eaf9ad2a110a1a30e46837e2b93",
+    ".github/proofs/settings-media-permission/run-proof.py": "8b0c4a989a3254f847984f1763f6c561a8466ac5c2263c135ebc934fb53f564a",
+    ".github/proofs/settings-media-permission/vitest.ui-e2e.config.ts": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",
+    ".github/workflows/settings-media-permission-proof.yml": "89d967c57f818fedde27ee29ab94a7349c95624cd1fbdb45671433de5a0f8498"
+  }
+}

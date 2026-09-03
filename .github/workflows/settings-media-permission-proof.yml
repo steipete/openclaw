@@ -1,0 +1,56 @@
+name: Settings media permission candidate proof
+
+on:
+  push:
+    branches: [codex/settings-media-permission-candidate-proof]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/settings-media-permission-candidate-proof'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Checkout reviewed proof assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout reviewed published candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 42c953b2596b0d55505d4366e992c03dd808b16c
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Install canonical Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Require candidate regressions, full siblings and real SPA GREEN
+        shell: bash
+        run: |
+          env -i \
+            PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" RUNNER_ARCH="$RUNNER_ARCH" \
+            /usr/bin/python3 "$GITHUB_WORKSPACE/proof-assets/.github/proofs/settings-media-permission/run-proof.py" \
+            "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/settings-media-permission-evidence"
+      - name: Retain success or failure evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: settings-media-permission-ui-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/settings-media-permission-evidence/
+          if-no-files-found: warn
+          retention-days: 14
