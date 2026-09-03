@@ -51,6 +51,7 @@ struct MacNodeHostWorkerProcessGroupProof {
 
     private struct Observation: Encodable {
         let observerPID: Int32
+        let requestedExecutable: String
         let expectedExecutable: String
         let childEnumerations: [ChildEnumeration]
         let observedDescendants: [Identity]
@@ -203,6 +204,15 @@ struct MacNodeHostWorkerProcessGroupProof {
         try Self.require(!FileManager.default.fileExists(atPath: package.appendingPathComponent("src/entry.ts").path),
                          "Source checkout is not a packaged worker")
 
+        let requestedExecutable = node.path
+        // Foundation strips /private aliases; libproc reports the physical executable path.
+        // Keep launch spelling unchanged and resolve the process identity once with realpath.
+        guard let resolvedExecutable = requestedExecutable.withCString({ realpath($0, nil) }) else {
+            throw Failure(description: "Cannot resolve packaged Node executable: errno=\(errno)")
+        }
+        let expectedExecutable = String(cString: resolvedExecutable)
+        free(resolvedExecutable)
+
         let worker = MacNodeHostWorker(session: GatewayNodeSession())
         let clock = ContinuousClock()
         let started = clock.now
@@ -225,11 +235,11 @@ struct MacNodeHostWorkerProcessGroupProof {
 
         do {
             // This binary belongs to this job's freshly staged runtime, not a shared Node installation.
-            try Self.require(try Self.privateNodeProcesses(at: node.path).isEmpty, "A prior packaged worker is still alive")
+            try Self.require(try Self.privateNodeProcesses(at: expectedExecutable).isEmpty, "A prior packaged worker is still alive")
             record("before-launch", [])
             launchAttempted = true
             let manifest = try await worker.start(launch: MacNodeHostWorkerLaunch(
-                command: [node.path, entry.path, "node", "worker"],
+                command: [requestedExecutable, entry.path, "node", "worker"],
                 currentDirectoryURL: package,
                 environment: [
                     "HOME": home.path,
@@ -243,7 +253,7 @@ struct MacNodeHostWorkerProcessGroupProof {
             let all = try Self.descendants(of: getpid()) { childEnumerations.append($0) }
             // Preserve the actual inventory before the exact executable filter can fail.
             observedDescendants = all
-            let nodes = all.filter { $0.executable == node.path }
+            let nodes = all.filter { $0.executable == expectedExecutable }
             tracked = nodes
             let expectedCount = config.phase == "baseline" ? 2 : 1
             try Self.require(nodes.count == expectedCount, "Unexpected private-Node topology: \(nodes.count)")
@@ -299,7 +309,7 @@ struct MacNodeHostWorkerProcessGroupProof {
             if launchAttempted {
                 // A startup failure can retire the launcher before ready. The unique binary
                 // plus the pre-launch absence check still identifies this job's orphan.
-                for current in try Self.privateNodeProcesses(at: node.path) where
+                for current in try Self.privateNodeProcesses(at: expectedExecutable) where
                     !tracked.contains(where: { $0.sameInstance(as: current) })
                 {
                     tracked.append(current)
@@ -317,7 +327,7 @@ struct MacNodeHostWorkerProcessGroupProof {
             }
             cleanupComplete = try await Self.waitUntilGone(tracked)
             if cleanupComplete {
-                cleanupComplete = try Self.privateNodeProcesses(at: node.path).isEmpty
+                cleanupComplete = try Self.privateNodeProcesses(at: expectedExecutable).isEmpty
             }
             try Self.require(cleanupComplete, "Exact-instance cleanup did not complete")
             record("cleanup-complete", [])
@@ -328,7 +338,8 @@ struct MacNodeHostWorkerProcessGroupProof {
         }
         let observation = Observation(
             observerPID: getpid(),
-            expectedExecutable: node.path,
+            requestedExecutable: requestedExecutable,
+            expectedExecutable: expectedExecutable,
             childEnumerations: childEnumerations,
             observedDescendants: observedDescendants,
             phase: config.phase,

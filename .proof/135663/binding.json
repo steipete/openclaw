@@ -195,7 +195,7 @@
   "permanentTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerTests.swift",
   "permanentTestSHA256": "48432e8e496119ef4dc6d3a331e8a1d60ec3a21570bf8b16345c37388d4280e3",
   "proofTestPath": "apps/macos/Tests/OpenClawIPCTests/MacNodeHostWorkerProcessGroupProof.swift",
-  "proofTestSHA256": "5847ea79ec02eff8cd7055ff77830e519ad4f6e8593de00fc14b314bb1476870",
+  "proofTestSHA256": "b15d4fba4fd37c1ef110c3982dab6042c9a6151f772ec404f6f70b8eb135e021",
   "requiredControlNames": [
     "changed worker command replaces the running process",
     "stop cancels a changed launch during worker cleanup",
