@@ -1,0 +1,34 @@
+{
+  "en": {
+    "memoryImport.title": "Import assistant memory",
+    "memoryImport.subtitle": "Review Codex consolidated memory and Claude Code auto-memory before copying it into OpenClaw.",
+    "memoryImport.replaceExisting": "Replace existing imports",
+    "memoryImport.backfill.title": "From past sessions",
+    "memoryImport.backfill.from": "From",
+    "memoryImport.backfill.to": "To",
+    "memoryImport.selectedCount": "{count} selected",
+    "memoryImport.confirmTitle": "Import from {provider}?",
+    "memoryImport.confirmDescription": "Copy {count} selected memory files into this agent workspace.",
+    "memoryImport.confirmBackup": "OpenClaw creates a verified pre-import backup before copying memory.",
+    "memoryImport.confirmImport": "Import memory",
+    "memoryImport.adminRequired": "Memory import requires operator.admin access.",
+    "memoryImport.importSelected": "Import selected",
+    "common.cancel": "Cancel"
+  },
+  "de": {
+    "memoryImport.title": "Assistenten-Memory importieren",
+    "memoryImport.subtitle": "Prüfen Sie das konsolidierte Memory von Codex und das automatische Memory von Claude Code, bevor Sie es in OpenClaw kopieren.",
+    "memoryImport.replaceExisting": "Vorhandene Importe ersetzen",
+    "memoryImport.backfill.title": "Aus vergangenen Sitzungen",
+    "memoryImport.backfill.from": "Von",
+    "memoryImport.backfill.to": "Bis",
+    "memoryImport.selectedCount": "{count} ausgewählt",
+    "memoryImport.confirmTitle": "Aus {provider} importieren?",
+    "memoryImport.confirmDescription": "{count} ausgewählte Memory-Dateien in diesen Agenten-Arbeitsbereich kopieren.",
+    "memoryImport.confirmBackup": "OpenClaw erstellt vor dem Kopieren des Memory eine verifizierte Sicherung.",
+    "memoryImport.confirmImport": "Memory importieren",
+    "memoryImport.adminRequired": "Der Speicherimport erfordert operator.admin-Zugriff.",
+    "memoryImport.importSelected": "Ausgewählte importieren",
+    "common.cancel": "Abbrechen"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "run-browser-proof.py": "e9ffaff977255e75359365729ef39b4e7221373bd75cda0c5b5e64bb2d6dcf63",
+  "binding.json": "9a1480709b5c0b39bfe0a4e8054d9c318f3ca7f7ee2536e1650f50fde87605b0",
+  "install-manifest.json": "f4fbc18ad6b93d43a31a618588a51953bcb05f783ac48334060e7c58ff20fb42",
+  "fixtures/memory-import-cold-copy.e2e.test.ts": "a2fe171b85a100698c1259d63b6f1ebf34cf716e0c4053615c310722f221fab8",
+  "fixtures/memory-import-copy.proof.json": "48f4773f128f7cf531de967077354ea324fb60c8265d85500bc4851435285db3",
+  "fixtures/memory-import-cold-fallback.test.ts": "80d4cda6020e303db0afdddc0d3216ad213c0b40c97e823b39fef9559ee37457"
+}

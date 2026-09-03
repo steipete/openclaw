@@ -1,0 +1,110 @@
+name: Round 10 cold Memory Import browser proof
+
+on:
+  push:
+    branches: [codex/round10-ui-memory-copy-proof]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-ui-memory-copy-proof'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Checkout immutable reviewed proof assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout fixed baseline revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: ddb4207d9211166eaae858a6f124481856808c26
+          path: product
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Set up pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Run the fixed cold browser and isolated fallback contracts
+        shell: bash
+        run: |
+          env -i \
+            PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" \
+            RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" \
+            RUNNER_ARCH="$RUNNER_ARCH" \
+            /usr/bin/python3 proof-assets/.github/proofs/round10/ui-memory-copy/run-browser-proof.py \
+            baseline "$GITHUB_WORKSPACE/product" "$GITHUB_WORKSPACE/evidence-ui-memory-copy"
+      - name: Retain synthetic captures, exact test reports, source and cleanup receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: ui-memory-copy-baseline-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-ui-memory-copy
+          retention-days: 14
+          if-no-files-found: error
+
+  candidate:
+    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-ui-memory-copy-proof' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Checkout immutable reviewed proof assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout fixed candidate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 13a54c1cca20c959ae63f55962df8ca5d4c4fa18
+          path: product
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Set up pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Run the fixed cold browser and isolated fallback contracts
+        shell: bash
+        run: |
+          env -i \
+            PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" \
+            RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" \
+            RUNNER_ARCH="$RUNNER_ARCH" \
+            /usr/bin/python3 proof-assets/.github/proofs/round10/ui-memory-copy/run-browser-proof.py \
+            candidate "$GITHUB_WORKSPACE/product" "$GITHUB_WORKSPACE/evidence-ui-memory-copy"
+      - name: Retain synthetic captures, exact test reports, source and cleanup receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: ui-memory-copy-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-ui-memory-copy
+          retention-days: 14
+          if-no-files-found: error

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "fixtureSourceFreezeSha256": "f4f465086fc7f4a3b0f8dc5c73775f18e7c15da926eb6ba465fe02410d78e0dc",
+  "files": [
+    {
+      "source": "memory-import-cold-copy.e2e.test.ts",
+      "destination": "ui/src/e2e/memory-import-cold-copy.e2e.test.ts",
+      "sha256": "a2fe171b85a100698c1259d63b6f1ebf34cf716e0c4053615c310722f221fab8"
+    },
+    {
+      "source": "memory-import-copy.proof.json",
+      "destination": "ui/src/e2e/memory-import-copy.proof.json",
+      "sha256": "48f4773f128f7cf531de967077354ea324fb60c8265d85500bc4851435285db3"
+    },
+    {
+      "source": "memory-import-cold-fallback.test.ts",
+      "destination": "ui/src/i18n/test/memory-import-cold-fallback.test.ts",
+      "sha256": "80d4cda6020e303db0afdddc0d3216ad213c0b40c97e823b39fef9559ee37457"
+    }
+  ]
+}
