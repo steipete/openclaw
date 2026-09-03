@@ -246,12 +246,12 @@
       "path": "src/gateway/server-reload-channel-restart.test.ts",
       "count": 6,
       "fullNames": [
-        "channel rollback preserves idle manual stops while explicit starts resume",
-        "channel rollback preserves stopped manual stops while explicit starts resume",
-        "channel rollback preserves racing manual stops while explicit starts resume",
-        "accounts rollback preserves idle manual stops while explicit starts resume",
-        "accounts rollback preserves stopped manual stops while explicit starts resume",
-        "accounts rollback preserves racing manual stops while explicit starts resume"
+        "'channel' rollback preserves 'idle' manual stops while explicit starts resume",
+        "'channel' rollback preserves 'stopped' manual stops while explicit starts resume",
+        "'channel' rollback preserves 'racing' manual stops while explicit starts resume",
+        "'accounts' rollback preserves 'idle' manual stops while explicit starts resume",
+        "'accounts' rollback preserves 'stopped' manual stops while explicit starts resume",
+        "'accounts' rollback preserves 'racing' manual stops while explicit starts resume"
       ]
     },
     {
@@ -260,8 +260,8 @@
       "count": 3,
       "fullNames": [
         "Gateway plugin runtime generation blocks stale publication during reservation, restores rejected claims, and commits winners",
-        "Gateway plugin runtime generation settles a pending successor that rejects before deciding discovery and service ownership",
-        "Gateway plugin runtime generation settles a pending successor that commits before deciding discovery and service ownership"
+        "Gateway plugin runtime generation settles a pending successor that 'rejects' before deciding discovery and service ownership",
+        "Gateway plugin runtime generation settles a pending successor that 'commits' before deciding discovery and service ownership"
       ]
     }
   ]

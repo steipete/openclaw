@@ -3,6 +3,6 @@
   "sha256": {
     ".github/workflows/round10-126547-candidate-proof.yml": "bf85fc951b5f83921806d58969bf14b75f709f9649330936353853960b170264",
     ".github/proofs/continuation-sept3/126547/run-proof.py": "169f09be38efbb1692d6fd71175c56e64a0347b1bcb7f4ee1b1126d3df8e298d",
-    ".github/proofs/continuation-sept3/126547/execution-binding.json": "7d435638dce7559d2854760cf6559e1fb261b913589eded20448e0444d0df11d"
+    ".github/proofs/continuation-sept3/126547/execution-binding.json": "3cf3fe5ea02d31bb14ce313a2126828911551c560f2ec2a9ac1711b27fff7f70"
   }
 }
