@@ -416,6 +416,9 @@ try:
     assert verdict['childCleanup']['result'] == {'process': 'confirmed-stopped', 'errors': []}
     assert len(verdict['cases']) == 11 and all(row['passed'] is True for row in verdict['cases'])
     assert [row['id'] for row in verdict['cases']] == binding['expectedGatewayCaseIds']
+    assert set(verdict['webhookReadiness']) == {'default', 'roomonly'}
+    assert all(row['ready'] is True and row['status'] == 200 and row['body'] == 'ok'
+               for row in verdict['webhookReadiness'].values())
     assert verdict['stagedBefore'] == verdict['stagedAfter']
     assert verdict['childStoppedBeforeFinalCounters'] is True
     assert verdict['providerInflightFinal'] == []

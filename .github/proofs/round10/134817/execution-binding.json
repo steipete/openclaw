@@ -37,6 +37,7 @@
     "extensions/qa-lab/src/gateway-child-env.ts": "f7da8301e014fed5e541bc1f000912568b85cc3ba6318b49d810e85e54c45419",
     "extensions/qa-lab/src/gateway-child-lifecycle.ts": "b4e9c85832eb8fdd4ccf5da6f45a5188be78510f5afdd37e09f385be6a118db9",
     "extensions/qa-lab/src/gateway-child-process.ts": "48780eff68fec39a063ae3edef29366a517ffc18730f1c074c9206497c17f9b6",
+    "extensions/qa-lab/src/gateway-child-readiness.ts": "8d796d1f8deb7b630b2d547524364741f80020d0982573c98f9ab7986aa888d6",
     "extensions/qa-lab/src/gateway-child-setup.ts": "ad22aec4c781a6825a375c44eaa242571fe579eda52c2e28a709c89b5f134296",
     "extensions/qa-lab/src/gateway-child.ts": "80c8111b723c089e679f8813532821c198acacf3bb00c691be9be81aef7584ff",
     "extensions/qa-lab/src/gateway-port-reservation.ts": "66859a118d0686a2052282879f949c70ac33520edf2e05968717d6efc93aee23",
@@ -92,12 +93,14 @@
     "src/infra/is-main.ts": "3328bfc3e74f0510bf752ff58ac4f040725bc0a551310394ba243ddc99045b6d",
     "src/infra/kysely-sync.ts": "bfb4b1c5a644c37bb4ffac9cb63bbc876a0c8a43df1d47af9332ec580fefd931",
     "src/logging/diagnostic.ts": "4720390eba2d75c527cc45f6760fec3b731221d91e124b247b8eb4278ad85474",
+    "src/logging/logger.ts": "fd75a2689643800cc44f9ef7c6b3cfc4e8b1bc17d74c6004aa0f6234925be2f4",
     "src/logging/message-lifecycle.ts": "94b50b0b28a02ed0552ae76d7d8c8c00e2fdd66bb3ceee83fc234a2ac2f04102",
     "src/logging/subsystem.ts": "12d028244eef0d21df1c35df79eee5fea26518ff7afb6a535b17fe238ff194ee",
     "src/plugin-sdk/account-helpers.ts": "ce4bf54e42466bbad3ed60502cb15b6f111ce05fca6b14e4473b45deb835887b",
     "src/plugin-sdk/string-coerce-runtime.ts": "d7799be4f3e8cea59a5b28a4e53c9b48a516c731bfbf8b23e929a747725320dd",
     "src/plugin-sdk/test-helpers/plugin-runtime-mock.ts": "b7bbdb83864bcd9e94da8f1a03e56472207ead14e946304c765c7175df92dc1b",
     "src/plugin-sdk/text-utility-runtime.ts": "4cfa36e8e217b510bd82a3847d9f94ce8ff660dbdfb2e03e2d75c2de89fd56f4",
+    "src/plugins/runtime/runtime-logging.ts": "9c60d2c3c9bc2149a9a983cc107505ea69d6f7869ca294dafbb6c0410ef0a8ae",
     "src/state/openclaw-state-db.ts": "72b252c826052eeae60486d22eacb71298c464fd654b759c5d5e704417281be4",
     "src/status/status-text.ts": "08cc256924482cdbe538bcdf7658a5d72a765b791ea00700412df096aa64afef",
     "src/utils.ts": "22d670bf9d0915fd2a19e593565fed836e4b4a8fc32b2d14c2f960221200cbd0",
@@ -110,7 +113,7 @@
   "testPath": "extensions/nextcloud-talk/src/inbound.behavior.test.ts",
   "testSHA256": "eed4b9865a09f648c4e8a2d67766c2dc56af475f168049dc438126f945ec736b",
   "proofPath": "extensions/qa-lab/src/nextcloud-commands.gateway-proof.mjs",
-  "proofSHA256": "a554ffd96902480f5f61794358b1e6af3456d2b427e7f7fd3492059ecdd2370d",
+  "proofSHA256": "c07658f31999c09e12f71d2210f48a686f6323a7d282e7eafcfbd8eec5ba871f",
   "expectedTestTitles": [
     "logs the drop when an inbound message has an empty body",
     "issues a DM pairing challenge and sends the challenge text",
@@ -238,5 +241,19 @@
       "same frozen installed lock before and after Gateway",
       "retained in staging inventory; never followed by the staged-file visitor"
     ]
+  },
+  "webhookReadinessContract": {
+    "owner": "extensions/nextcloud-talk/src/monitor.ts:151-154",
+    "startupOrder": "extensions/nextcloud-talk/src/monitor-runtime.ts:135-136",
+    "request": "GET /healthz on each reserved account listener",
+    "response": {
+      "status": 200,
+      "body": "ok"
+    },
+    "deadlineMs": 30000,
+    "pollMs": 100,
+    "attemptTimeoutMs": 2000,
+    "meaning": "Webhook listener responds after canonical spool.ready completed; does not claim turn settlement",
+    "consoleReadinessLogRequired": false
   }
 }

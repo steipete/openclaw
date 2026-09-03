@@ -44,6 +44,7 @@ const rooms = new Map([
 let server, baseUrl, harness, debugDir;
 const webhookReservations = [];
 const webhookUrls = new Map();
+const webhookReadiness = {};
 let stagedBefore, stagedAfter, childRuntime, duplicateBefore, duplicateAfter, providerFinal;
 let childStoppedBeforeFinalCounters = false, providerInflightFinal;
 let interrupted = false, stopPromise, stopResult;
@@ -274,8 +275,34 @@ try {
   stagedBefore = await readStaging();
   await save("staged-before.json", stagedBefore);
   const readyDeadline = Date.now() + 30_000;
-  while (![...webhookUrls.values()].every(url => harness.gateway.logs().includes(`webhook listening on ${url}`)) && Date.now() < readyDeadline) await guard(new Promise(resolve => setTimeout(resolve, 100)));
-  for (const url of webhookUrls.values()) assert.ok(harness.gateway.logs().includes(`webhook listening on ${url}`));
+  while (Date.now() < readyDeadline) {
+    for (const [account, url] of webhookUrls) {
+      if (webhookReadiness[account]?.ready) continue;
+      const remaining = readyDeadline - Date.now();
+      if (remaining <= 0) break;
+      const healthUrl = new URL("/healthz", url).href;
+      let response;
+      try {
+        response = await guard(fetch(healthUrl, { method: "GET", redirect: "error",
+          headers: { connection: "close" }, signal: AbortSignal.timeout(Math.min(2_000, remaining)) }));
+      } catch (error) {
+        if (interrupted) throw error;
+        webhookReadiness[account] = { url: healthUrl, ready: false, error: String(error) };
+        continue;
+      }
+      const body = await guard(response.text());
+      webhookReadiness[account] = { url: healthUrl, status: response.status, body, ready: false };
+      await save("webhook-readiness.json", webhookReadiness);
+      assert.equal(response.status, 200, `Webhook health status for ${account}`);
+      assert.equal(body, "ok", `Webhook health body for ${account}`);
+      webhookReadiness[account].ready = true;
+    }
+    await save("webhook-readiness.json", webhookReadiness);
+    if ([...webhookUrls.keys()].every(account => webhookReadiness[account]?.ready)) break;
+    const remaining = readyDeadline - Date.now();
+    if (remaining > 0) await guard(new Promise(resolve => setTimeout(resolve, Math.min(100, remaining))));
+  }
+  for (const account of webhookUrls.keys()) assert.equal(webhookReadiness[account]?.ready, true, `Webhook listener readiness for ${account}`);
   assert.deepEqual(await modelRequests(), []);
   let helpReply;
   for (const scenario of scenarioRows) {
@@ -386,7 +413,7 @@ finally {
   const cleanup = { confirmed, phase: "finished", result: stopResult, errors: cleanupErrors };
   await save("child-cleanup.json", cleanup);
   await save("gateway-verdict.json", { schema: "openclaw-134817-command-proof-v1", mode, binding,
-    completed, errors, cleanupErrors, childCleanup: cleanup, childRuntime, cases, requests, replies,
+    completed, errors, cleanupErrors, childCleanup: cleanup, childRuntime, webhookReadiness, cases, requests, replies,
     providerFinal, providerInflightFinal, childStoppedBeforeFinalCounters, duplicateBefore, duplicateAfter, stagedBefore, stagedAfter,
     limitations: ["Synthetic Talk HTTP service and mock model; actual Gateway/plugin/command/transport code.",
       "A completed ingress row records adoption, not global turn closure. Dispatched rows also require the real processed diagnostic and accepted reply; final canonical group stop proves process closure.",
