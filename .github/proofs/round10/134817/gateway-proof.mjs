@@ -318,7 +318,7 @@ try {
       : expected === "room-denied" ? `drop room ${scenario.room} (not allowlisted)` : undefined;
     do {
       row = await queryIngress(scenario.id, account);
-      diagnostic = harness.gateway.logs().split("\n").find(line => drop ? line.includes(`nextcloud-talk: ${drop}`)
+      diagnostic = harness.gateway.logs().split("\n").find(line => drop ? line.endsWith(`[nextcloud-talk] ${drop}`)
         : line.includes("message processed: channel=nextcloud-talk ") && line.includes(`messageId=${scenario.id} `) && line.includes(" outcome=completed "));
       if (row?.status === "failed") throw new Error(`Ingress failed for ${scenario.id}: ${row.last_error}`);
       if (row?.status === "completed" && diagnostic && (drop || replies.length > beforeReplies)) break;
@@ -340,7 +340,7 @@ try {
       const text = actualReplies.map(reply => reply.message).join("\n");
       if (expected === "agent") {
         assert.equal(actualRequests.length, 1);
-        assert.ok(actualRequests[0].prompt.includes(scenario.content.trim()), "Model must receive original raw content");
+        assert.ok(actualRequests[0].prompt.endsWith(`\n\n${scenario.content.trim()}`), "Current user prompt must end with the exact original raw payload");
         assert.equal(actualRequests[0].outcome, "success");
         assert.equal(actualRequests[0].plannedToolName, undefined);
         assert.notEqual(text, helpReply);
