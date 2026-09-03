@@ -1,8 +1,8 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, describe, expect, it, vi } from "vitest";
 import { createDeferred } from "../../../../test/helpers/promise.js";
 import type { GatewayBrowserClient } from "../../api/gateway.ts";
-import * as realtimeTalkInput from "./realtime-talk-input.ts";
 import { ComposerMicrophonePicker } from "./composer-microphone-picker.ts";
+import * as realtimeTalkInput from "./realtime-talk-input.ts";
 
 function catalog(ready: boolean) {
   return {
@@ -73,7 +73,6 @@ describe("composer voice readiness", () => {
   });
 });
 
-
 describe("media permission lifetime: composer", () => {
   it.each(["close", "dispose", "replace", "remain open"] as const)(
     "%s during pending discovery",
@@ -107,11 +106,15 @@ describe("media permission lifetime: composer", () => {
         picker.handleOpen();
       }
       initial.resolve([]);
-      await discovery.mock.results[0].value;
+      const initialDiscovery = discovery.mock.results[0];
+      assert.isDefined(initialDiscovery);
+      await initialDiscovery.value;
       const staleProbes = getUserMedia.mock.calls.length;
       if (transition === "replace") {
         replacement.resolve([]);
-        await discovery.mock.results[1].value;
+        const replacementDiscovery = discovery.mock.results[1];
+        assert.isDefined(replacementDiscovery);
+        await replacementDiscovery.value;
       }
       expect(staleProbes).toBe(transition === "remain open" ? 1 : 0);
       const permits = transition === "remain open" || transition === "replace";

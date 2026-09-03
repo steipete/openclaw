@@ -1,12 +1,12 @@
 {
   "schema": "openclaw-settings-media-permission-baseline-manifest-v1",
   "sha256": {
-    ".github/proofs/settings-media-permission/binding.json": "c1d086a48dfd6a6319b795eb0648613605c8c80b6bb50e4eda7a36c782c0592c",
+    ".github/proofs/settings-media-permission/binding.json": "e280df32a217ef8e321b3c68d6d9eb0193759ceeb10a52038e697913278c9f20",
     ".github/proofs/settings-media-permission/lifecycle-reporter.mjs": "0c117083cb8e8ba0f744e34802fc44f3268efca5d423c598d55db049f0e229f9",
-    ".github/proofs/settings-media-permission/proof.e2e.test.ts": "6025e546d57c1eaa31fc8628783d703da7d25eaf9ad2a110a1a30e46837e2b93",
-    ".github/proofs/settings-media-permission/run-proof.py": "52072df5b2fefe3e8f726c804fbd1a7721b653915bd4d0aaeaf4962830b54da3",
-    ".github/proofs/settings-media-permission/tests/ui/src/pages/chat/composer-microphone-picker.test.ts": "33d6f0292eea159fdf7f9ed20c667884da1c218fbc22bec91399ca546a701b93",
-    ".github/proofs/settings-media-permission/tests/ui/src/pages/config/config-page.test.ts": "3fcf2496f3079fa4296627fcdb785d40a4c398f50ad21bea3c0402a0d652890f",
+    ".github/proofs/settings-media-permission/proof.e2e.test.ts": "a6c933294951b7176721dc597c95978a218f31c046f0771472ec65cc063d3ce4",
+    ".github/proofs/settings-media-permission/run-proof.py": "6503086c147e8c71345914508bbc2f644e51cfa1092a69731fc6d50f0a4eda1d",
+    ".github/proofs/settings-media-permission/tests/ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486",
+    ".github/proofs/settings-media-permission/tests/ui/src/pages/config/config-page.test.ts": "973e3638f526122d48e84d134f4a2c1c7db2f10d5480a6c75f54ea9014c10985",
     ".github/proofs/settings-media-permission/vitest.ui-e2e.config.ts": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",
     ".github/workflows/settings-media-permission-proof.yml": "4f0c29231ad16541fdb064dfc0ce59d26e5853a1c6c740d4133de14d323be926"
   }

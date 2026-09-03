@@ -229,6 +229,12 @@ def assess_ui(exit_code, stage_dir):
         assert row['ownerConnectedAtGesture'] is True
         if row['transition'] == 'disconnect':
             assert row['ownerConnectedAfterExit'] is False
+        surface = row['settlementSurface']
+        if row['transition'] in {'route leave', 'second await'}:
+            assert row['ownerConnectedAfterExit'] is True
+            assert surface['route'] == '/settings/advanced'
+            assert surface['ownerConnected'] is True and surface['ownerPageId'] == 'advanced'
+            assert surface['appearancePickerCount'] == 0 and 'Advanced' in surface['headings']
         stays = row['transition'] == 'stay'
         assert row['status'] == ('pass' if stays else 'fail')
         assert row['probesAfterSettlement'] == 1
@@ -239,13 +245,14 @@ def assess_ui(exit_code, stage_dir):
         assert row['exitRoute'] == expected_exit
         events = row['finalEvents']
         probes = [event for event in events if event['type'] == 'probe']
-        pointers = [event for event in events if event['type'] == 'pointer']
+        pointer_indexes = [index for index, event in enumerate(events) if event['type'] == 'pointer']
+        pointers = [events[index] for index in pointer_indexes]
         assert len(probes) == len([event for event in events if event['type'] == 'stop']) == 1
         assert probes[0]['route'] == ('/settings/appearance' if stays else expected_exit)
         released_id = 3 if row['transition'] == 'second await' else 1 if row['kind'] == 'microphone' else 2
         released = [event for event in events if event['type'] == 'resolve' and event['id'] == released_id]
         assert len(released) == 1 and released[0]['route'] == expected_exit
-        assert events.index(pointers[0]) < events.index(released[0]) < events.index(probes[0])
+        assert pointer_indexes[0] < events.index(released[0]) < events.index(probes[0])
         assert probes[0]['constraints'] == ({'audio': True} if row['kind'] == 'microphone' else {'video': True})
         assert len(pointers) == (1 if stays else 2) and all(event['trusted'] for event in pointers)
         assert events[0]['type'] == events[1]['type'] == 'enumerate'
@@ -266,7 +273,7 @@ def assess_ui(exit_code, stage_dir):
     return {'accepted': True, 'passedTests': expected_passed, 'failedTests': 8 - expected_passed,
             'cases': {key: row['status'] for key, row in observed.items()},
             'servedOwnerSHA256': {key: next(iter(values)) for key, values in hashes.items()},
-            'screenshots': 32, 'videos': 8}
+            'retirementSurfaceVerified': True, 'screenshots': 32, 'videos': 8}
 
 
 try:
@@ -283,6 +290,7 @@ try:
         assert not Path(name).is_absolute() and '..' not in Path(name).parts
         assert digest(proof_checkout / name) == expected_hash, name
     binding = json.loads((assets / 'binding.json').read_text())
+    assert binding['executionAllowed'] is True
     assert binding['mode'] == 'baseline-only' and binding['candidateExecutionAllowed'] is False
     assert not (assets / 'candidate').exists()
     assert set(binding['unitPaths']) == set(binding['regressionPaths'])
@@ -327,6 +335,7 @@ try:
     assert_tree(pristine)
     installed_lock = source / 'node_modules/.pnpm/lock.yaml'
     dependency_lock_sha = digest(installed_lock)
+    receipt['installedLockSHA256'] = dependency_lock_sha
     runtime_packages = {}
     for name, expected_version in binding['runtimePackages'].items():
         package = source / name

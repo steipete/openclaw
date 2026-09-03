@@ -1,6 +1,6 @@
 {
   "schema": "openclaw-settings-media-permission-baseline-hosted-v1",
-  "status": "Sealed after source review; automated publication review pending",
+  "status": "Reviewed baseline-only correction; exact rendered-retirement prerequisite required",
   "baselineHead": "afb6ee3af7984e0c05ea10bba15548c0b8e990d2",
   "baselineTree": "813680ce5da3bd6a1d96d95648d9f4480e938400",
   "originalPrHead": "f8b2e1ca54e2286c6f45804e9c76b6fbb73a20aa",
@@ -114,7 +114,7 @@
     "media permission lifetime: composer remain open during pending discovery": "passed"
   },
   "proofPath": "ui/src/e2e/settings-media-permission.e2e.test.ts",
-  "proofSHA256": "6025e546d57c1eaa31fc8628783d703da7d25eaf9ad2a110a1a30e46837e2b93",
+  "proofSHA256": "a6c933294951b7176721dc597c95978a218f31c046f0771472ec65cc063d3ce4",
   "classificationPath": "test/vitest/vitest.ui-e2e.config.ts",
   "classificationBeforeSHA256": "d7a7760466a60c3395bc26ff3c1d42fd825a477fd41a5b31050bc2822c5946ec",
   "classificationAfterSHA256": "19c8aa0c05d840dc11065c109e75b335255428cd895267165f4ddeaad98ec902",
@@ -141,10 +141,10 @@
   "mode": "baseline-only",
   "candidateExecutionAllowed": false,
   "testOverlaySHA256": {
-    "ui/src/pages/config/config-page.test.ts": "3fcf2496f3079fa4296627fcdb785d40a4c398f50ad21bea3c0402a0d652890f",
-    "ui/src/pages/chat/composer-microphone-picker.test.ts": "33d6f0292eea159fdf7f9ed20c667884da1c218fbc22bec91399ca546a701b93"
+    "ui/src/pages/config/config-page.test.ts": "973e3638f526122d48e84d134f4a2c1c7db2f10d5480a6c75f54ea9014c10985",
+    "ui/src/pages/chat/composer-microphone-picker.test.ts": "9ed15aa5598b0f6d0da639cfc52916561ce5ab5da32743c9d60324a70ab4e486"
   },
-  "permanentBrowserTestSHA256Unexecuted": "17266d6c06bd7bd191c65c1ad102a8be525235a03498cf4d7c99f3f9e15522c5",
+  "permanentBrowserTestSHA256Unexecuted": "0451894ea9b6915b195052aa6aa54fac6bf717f34b05ae3312cc0eda480ca28d",
   "proofRef": "refs/heads/codex/settings-media-permission-baseline-proof",
   "runtimePackages": {
     "node_modules/playwright/package.json": "1.62.1",
@@ -160,15 +160,17 @@
   "unitFailureLocations": {
     "Settings": {
       "path": "ui/src/pages/config/config-page.test.ts",
-      "line": 587
+      "line": 585
     },
     "composer": {
       "path": "ui/src/pages/chat/composer-microphone-picker.test.ts",
-      "line": 116
+      "line": 119
     }
   },
   "uiFailureLocation": {
     "path": "ui/src/e2e/settings-media-permission.e2e.test.ts",
-    "line": 224
-  }
+    "line": 285
+  },
+  "executionAllowed": true,
+  "retirementPremise": "Visible Advanced heading, no Appearance media pickers, and atomic owner pageId/connected/heading/picker snapshot before releasing held enumeration"
 }

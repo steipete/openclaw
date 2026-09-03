@@ -1,8 +1,8 @@
 /* @vitest-environment jsdom */
 
 import { render } from "lit";
-import { createDeferred as deferred } from "../../../../test/helpers/promise.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createDeferred as deferred } from "../../../../test/helpers/promise.js";
 import type { GatewayBrowserClient } from "../../api/gateway.ts";
 import type { ModelCatalogEntry, ModelCatalogResult } from "../../api/types.ts";
 import type {
@@ -490,8 +490,6 @@ describe("ConfigPage media discovery", () => {
       await first;
     }
   });
-
-
 });
 
 // The same matrix runs on the unchanged owner before applying the repair.
