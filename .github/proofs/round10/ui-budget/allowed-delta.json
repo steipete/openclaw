@@ -1,18 +1,18 @@
 {
-  "base": "ddb4207d9211166eaae858a6f124481856808c26",
+  "base": "05b9d34efe811b06100ec7ef8cda1fae7852dd9d",
   "files": [
     {
       "path": "scripts/lib/control-ui-i18n-catalog.ts",
       "beforeGit": {
         "mode": "100644",
-        "blob": "beecfa76c0983ca76e019a9cc7bfb0a399d0df3d"
+        "blob": "8eb16dd34a3929e24ad31d580cd901fd09c1a0e8"
       },
       "candidateGit": {
         "mode": "100644",
-        "blob": "f93d143c8329dc68632d30c3aabc5ae993085d19"
+        "blob": "93671c266b568c75e26f09569f87444b1663434c"
       },
-      "beforeSha256": "6cc86e915a8a3d193fb5d6c3b15a7b9062681553e13e889f2be7e03f5fab6a85",
-      "candidateSha256": "47544570bc88c69e0848b38c043d29a63fe18370388d5da750d5c3cea783d5d8"
+      "beforeSha256": "dcdbe792c8bd134e34625dba40c87f0ee71b080a870c98545288aad497493688",
+      "candidateSha256": "e357fdce17319b6b15a2afb922b2b4b5732edc539b6d76c8a90da675479d9cfe"
     },
     {
       "path": "ui/src/app/vite-config.node.test.ts",
@@ -41,14 +41,14 @@
       "path": "ui/src/i18n/locales/en.ts",
       "beforeGit": {
         "mode": "100644",
-        "blob": "c08b1308c168361869b5b4109e6f6ac5e5660fb6"
+        "blob": "49d7f2f677ccaa6076db4fc3dc8a8608427db7df"
       },
       "candidateGit": {
         "mode": "100644",
-        "blob": "8d1ef86a0d4ac7408a0ba8d394cdbc226f7dc74d"
+        "blob": "527aed6a9fbc8f33b3845467cd51e67d60e3b889"
       },
-      "beforeSha256": "763f8a9e53faf6d6f65c383d4a2ece4cfd989313c6236776bb3356c76ac3c191",
-      "candidateSha256": "39acaacbe5a22813b0be9afbb9247dc753545c57f9df8811c05b6534d8fc071a"
+      "beforeSha256": "a0dc809b0fece6517e974031ea79add96b62c8529ef1f06e3956585d95a09c8a",
+      "candidateSha256": "78bf17e3ee43545ed33dd645748f2833a156e4c84a37b5813f4574e3eb010f58"
     },
     {
       "path": "ui/src/pages/config/memory.ts",

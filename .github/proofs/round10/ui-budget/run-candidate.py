@@ -344,7 +344,7 @@ def main():
             raise ValueError("Finalized compression sidecar validation failed")
         baseline = measured["startupBudgetBaseline"]["startupJsGzipBytes"]
         limit = baseline + measured["startupJsTolerance"] + measured["startupJsBuildVariance"]
-        if baseline != 348668 or limit != 349244:
+        if baseline != 349565 or limit != 350141:
             raise ValueError("Committed startup budget changed")
         violations = measured["violations"]
         if measured["metrics"]["startup"]["js"]["requests"] != 8:

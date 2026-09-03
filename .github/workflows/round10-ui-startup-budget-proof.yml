@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   fixed-candidate:
-    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-ui-startup-budget-proof'
+    if: ${{  github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-ui-startup-budget-proof' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 50
     steps:
@@ -21,11 +21,11 @@ jobs:
           path: proof-assets
           persist-credentials: false
           fetch-depth: 1
-      - name: Checkout immutable reviewed candidate
+      - name: Checkout immutable reviewed integrated candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: openclaw/openclaw
-          ref: 13a54c1cca20c959ae63f55962df8ca5d4c4fa18
+          ref: 537a92b8795edc44e4c5a605530a5631c47c620b
           path: candidate
           persist-credentials: false
           fetch-depth: 1
@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: openclaw/openclaw
-          ref: ddb4207d9211166eaae858a6f124481856808c26
+          ref: 05b9d34efe811b06100ec7ef8cda1fae7852dd9d
           path: baseline
           persist-credentials: false
           fetch-depth: 1

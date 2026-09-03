@@ -3,14 +3,14 @@
   "mode": "candidate-only",
   "baseline": {
     "repository": "openclaw/openclaw",
-    "head": "ddb4207d9211166eaae858a6f124481856808c26",
-    "tree": "303cd4e7c1ba16c498e38b16c0af6eedc1ac1cb9"
+    "head": "05b9d34efe811b06100ec7ef8cda1fae7852dd9d",
+    "tree": "cd88b74f4d19a37db1b8e461b49e33792148dd33"
   },
   "candidate": {
     "repository": "openclaw/openclaw",
     "enabled": true,
-    "head": "13a54c1cca20c959ae63f55962df8ca5d4c4fa18",
-    "tree": "5ff13928ac879c09f7e39742cfb0bad78961aec3"
+    "head": "537a92b8795edc44e4c5a605530a5631c47c620b",
+    "tree": "e9db544345ad1a8fb3cda046e7712225af9d935d"
   },
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "expectedNode": "24.19.0",
@@ -28,15 +28,15 @@
     "scripts/lib/output-root-guard.mjs": "ffba5b8f9fba644a97636ac36226be01db9f214215b9f668250a9d157ad03470",
     "scripts/check-control-ui-precompressed-assets.mts": "7bd67106d5b83dfdc2c8ccdebdd30c0bcf442b336bee0a2d2943a3d190dc387c",
     "scripts/check-control-ui-performance.mts": "8b06e1bf29cf19d977576890614d611b1a630cdb94cc95960a038272d511c757",
-    "config/control-ui-startup-budget-baseline.json": "73268d421abdf28de6a59f30fa8819723a146e3a84d820dc40f972a353c2f7eb",
+    "config/control-ui-startup-budget-baseline.json": "2c177f222efa5ffce3d213043a4a7c92b6f6ee784a8ae897cc084b626d37b3fc",
     "src/gateway/control-ui-asset-manifest.ts": "3137885dbaa311a1f04af3357bbebab03544e4721cdddbd52d2242feadcbc7a3",
     "scripts/preinstall-package-manager-warning.mjs": "e4216bfce089c40578d9fde499990960eb98722c2c8c5f7ab7619d340db6680a",
     "scripts/postinstall-bundled-plugins.mjs": "91b18605d3c3e7493099172fe8658c363235c2b68bc10642dd85b1f470c4e0fe",
     "scripts/prepare-git-hooks.mjs": "59b7c9dd9d1fb5f1edeebcdd3790099ea7b3efd37f6aa803d6c6e987e38904d4",
-    "ui/src/i18n/locales/en.ts": "39acaacbe5a22813b0be9afbb9247dc753545c57f9df8811c05b6534d8fc071a",
+    "ui/src/i18n/locales/en.ts": "78bf17e3ee43545ed33dd645748f2833a156e4c84a37b5813f4574e3eb010f58",
     "ui/src/pages/config/memory.ts": "a3a811aa27435e38e6946783192e55bcd7fd04a105a59e850ed41f56a6982c9a",
     "ui/src/pages/memory-import/view.ts": "698fbaede0657bab61b6cca2bc6bf5f1bef1ef548ae642379ebaea31172e8770",
-    "scripts/lib/control-ui-i18n-catalog.ts": "47544570bc88c69e0848b38c043d29a63fe18370388d5da750d5c3cea783d5d8",
+    "scripts/lib/control-ui-i18n-catalog.ts": "e357fdce17319b6b15a2afb922b2b4b5732edc539b6d76c8a90da675479d9cfe",
     "ui/src/test-helpers/control-ui-e2e.ts": "e8020f1d9767d2a83484ace7a5caca4e22ca63cd97de5d4357d6f92647eba644",
     "ui/src/e2e/control-ui-e2e-suite.test-support.ts": "361686662e3574441b92d756e4f0845e4172cb9f769014a7bc425a8dbb534e9f",
     "ui/src/e2e/memory-settings-engine.e2e.test.ts": "11560699cf54ebd30d355794a2afa3bf300a5f0a0dec76be5154a524240aa435",
@@ -62,10 +62,12 @@
     "test/vitest/vitest.ui-paths.mjs": "a08b95a6a7d1eb021b6672e6fba8848669db52d11513e487d997f1221d758616",
     "test/test-home-policy.mts": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
     "ui/src/pages/config/memory.test.ts": "4f59b7ff36f5de50ca9190d7ae0c8f8cce0d9616a478557cb623ae25adc2ded9",
-    "ui/src/pages/memory-import/view.test.ts": "7feb0ecc209e60b2f57cdf468bc06a121e37d6bbfdfc5669e9b093e381cb872a"
+    "ui/src/pages/memory-import/view.test.ts": "7feb0ecc209e60b2f57cdf468bc06a121e37d6bbfdfc5669e9b093e381cb872a",
+    "ui/src/i18n/locales/en-debug.ts": "02aa6038529f281f591bee43933c8b6e3a1552db3bb7a47e148fabb7775020bb",
+    "ui/src/i18n/locales/en-new-session-setup.ts": "e8bae3655f5e7c0aa93879c90c172f595de0cecb38ab1064aafff7b465987b85"
   },
   "expectedStartupJsRequests": 8,
-  "expectedEnforcementLimit": 349244,
+  "expectedEnforcementLimit": 350141,
   "priorObservation": {
     "run": 33705202689,
     "attempt": 2,
@@ -75,8 +77,17 @@
   },
   "baselineObservation": {
     "run": 33708919016,
+    "head": "ddb4207d9211166eaae858a6f124481856808c26",
     "gzipBytes": 349524,
     "limit": 349244,
-    "status": "Root reported sole budget RED; independent full asset/source validation pending"
+    "status": "historical baseline RED; not current-main measurement"
+  },
+  "expectedStartupBudgetBaseline": 349565,
+  "stricterCandidateGzipUpperExclusive": 349244,
+  "priorCandidateObservation": {
+    "run": 33710985710,
+    "head": "13a54c1cca20c959ae63f55962df8ca5d4c4fa18",
+    "gzipBytes": 348577,
+    "status": "historical candidate GREEN; not integrated-head measurement"
   }
 }
