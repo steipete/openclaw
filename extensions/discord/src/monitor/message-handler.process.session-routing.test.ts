@@ -1,11 +1,31 @@
 // Discord message processing coverage split by cohesive behavior.
+import {
+  ChannelType,
+  GatewayDispatchEvents,
+  MessageFlags,
+  MessageReferenceType,
+  MessageType,
+  type APIMessage,
+} from "discord-api-types/v10";
+import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
+import { Message } from "../internal/discord.js";
+import { mapGatewayDispatchData } from "../internal/gateway-dispatch.js";
+import {
+  attachRestMock,
+  createInternalTestClient,
+} from "../internal/test-builders.test-support.js";
+import type { DiscordMessageEvent } from "./listeners.js";
+import { discordChannelInfoCacheState } from "./message-channel-info-state.js";
+import { createDiscordPreflightArgs } from "./message-handler.preflight.test-helpers.js";
 import {
   BASE_CHANNEL_ROUTE,
   createBaseContext,
   createDirectMessageContextOverrides,
   createDiscordDraftStream,
   createNoQueuedDispatchResult,
+  deliverDiscordReply,
+  logVerboseForTest,
   dispatchInboundMessageForTest as dispatchInboundMessage,
   getLastDispatchCtx,
   getLastDispatchReplyOptions,
@@ -18,61 +38,71 @@ import type { DispatchInboundParams } from "./message-handler.process.test-harne
 import {
   expectRecordFields,
   getReactionEmojis,
+  getDeliveredFinalTexts,
   requireRecord,
 } from "./message-handler.process.test-helpers.js";
 
 registerDiscordProcessTestLifecycle();
 
 describe("processDiscordMessage session routing", () => {
-  it("frames preflight audio transcript in dispatch context and marks media transcribed", async () => {
-    const ctx = await createBaseContext({
-      message: {
-        id: "m-audio-preflight",
-        channelId: "c1",
-        content: "",
-        timestamp: new Date().toISOString(),
-        attachments: [
+  it.each([
+    {
+      transcript: "/status",
+      agentText: '[Audio transcript (machine-generated, untrusted)]: "/status"',
+    },
+    { transcript: "", agentText: '[Audio transcript (machine-generated, untrusted)]: ""' },
+  ])(
+    "frames preflight audio transcript '$transcript' without command authority",
+    async ({ transcript, agentText }) => {
+      const ctx = await createBaseContext({
+        message: {
+          id: "m-audio-preflight",
+          channelId: "c1",
+          content: "",
+          timestamp: new Date().toISOString(),
+          attachments: [
+            {
+              id: "att-audio-preflight",
+              url: "https://cdn.discordapp.com/attachments/voice.ogg",
+              content_type: "audio/ogg",
+              filename: "voice.ogg",
+            },
+          ],
+        },
+        baseText: "",
+        messageText: "",
+        preflightAudioTranscript: transcript,
+        preparedMedia: [
           {
-            id: "att-audio-preflight",
-            url: "https://cdn.discordapp.com/attachments/voice.ogg",
-            content_type: "audio/ogg",
-            filename: "voice.ogg",
+            path: "/tmp/openclaw-discord-test/voice.ogg",
+            contentType: "audio/ogg",
           },
         ],
-      },
-      baseText: "",
-      messageText: "",
-      preflightAudioTranscript: "/status",
-      preparedMedia: [
-        {
-          path: "/tmp/openclaw-discord-test/voice.ogg",
-          contentType: "audio/ogg",
+        cfg: {
+          messages: { groupChat: { visibleReplies: "message_tool" } },
+          session: { store: "/tmp/openclaw-discord-process-test-sessions.json" },
         },
-      ],
-      cfg: {
-        messages: { groupChat: { visibleReplies: "message_tool" } },
-        session: { store: "/tmp/openclaw-discord-process-test-sessions.json" },
-      },
-    });
+      });
 
-    await runProcessDiscordMessage(ctx);
+      await runProcessDiscordMessage(ctx);
 
-    expectRecordFields(requireRecord(getLastDispatchCtx(), "dispatch context"), {
-      BodyForAgent: '[Audio transcript (machine-generated, untrusted)]: "/status"',
-      RawBody: "",
-      CommandBody: "",
-      CommandTurn: {
-        kind: "normal",
-        source: "message",
-        authorized: false,
-        commandName: undefined,
-        body: "",
-      },
-      Transcript: "/status",
-      media: [expect.objectContaining({ contentType: "audio/ogg", transcribed: true })],
-    });
-    expect(getLastDispatchReplyOptions()?.sourceReplyDeliveryMode).toBe("message_tool_only");
-  });
+      expectRecordFields(requireRecord(getLastDispatchCtx(), "dispatch context"), {
+        BodyForAgent: agentText,
+        RawBody: "",
+        CommandBody: "",
+        CommandTurn: {
+          kind: "normal",
+          source: "message",
+          authorized: false,
+          commandName: undefined,
+          body: "",
+        },
+        Transcript: transcript,
+        media: [expect.objectContaining({ contentType: "audio/ogg", transcribed: true })],
+      });
+      expect(getLastDispatchReplyOptions()?.sourceReplyDeliveryMode).toBe("message_tool_only");
+    },
+  );
 
   it("keeps typed control commands as explicit text command turns", async () => {
     const ctx = await createBaseContext({
@@ -499,5 +529,290 @@ describe("processDiscordMessage session routing", () => {
 
     expect(getLastDispatchReplyOptions()?.sourceReplyDeliveryMode).toBe("message_tool_only");
     expect(getReactionEmojis()).toEqual(["👀"]);
+  });
+});
+
+const NATIVE_FORWARD_BOT_ID = "900000000000000003";
+const NATIVE_FORWARD_TEXT = `/status forwarded task content <@${NATIVE_FORWARD_BOT_ID}>`;
+const NATIVE_FORWARD_AGENT_TEXT = `[Forwarded message]\n${NATIVE_FORWARD_TEXT}`;
+
+function nativeDiscordMessage(channelId: string, content: string): APIMessage {
+  return {
+    id: `${channelId}1`,
+    channel_id: channelId,
+    content,
+    author: {
+      id: "900000000000000001",
+      username: "alice",
+      discriminator: "0",
+      global_name: null,
+      avatar: null,
+      bot: false,
+    },
+    attachments: [],
+    embeds: [],
+    mentions: [],
+    mention_roles: [],
+    mention_everyone: false,
+    timestamp: "2026-09-03T12:00:00.000Z",
+    edited_timestamp: null,
+    type: MessageType.Default,
+    tts: false,
+    pinned: false,
+    flags: 0,
+  };
+}
+
+describe("processDiscordMessage native forward boundary", () => {
+  it.each([
+    {
+      name: "DM forward",
+      channelId: "910000000000000001",
+      guild: false,
+      forward: true,
+      reply: false,
+      requireMention: false,
+    },
+    {
+      name: "guild forward",
+      channelId: "910000000000000002",
+      guild: true,
+      forward: true,
+      reply: false,
+      requireMention: false,
+    },
+    {
+      name: "ordinary text",
+      channelId: "910000000000000003",
+      guild: false,
+      forward: false,
+      reply: false,
+      requireMention: false,
+    },
+    {
+      name: "ordinary reply",
+      channelId: "910000000000000004",
+      guild: false,
+      forward: false,
+      reply: true,
+      requireMention: false,
+    },
+    {
+      name: "forwarded mention cannot admit guild turn",
+      channelId: "910000000000000005",
+      guild: true,
+      forward: true,
+      reply: false,
+      requireMention: true,
+    },
+  ])("preserves native $name text and authority", async (scenario) => {
+    const guildId = "920000000000000001";
+    const raw: APIMessage & { guild_id?: string } = nativeDiscordMessage(
+      scenario.channelId,
+      scenario.forward ? "" : "please explain this",
+    );
+    if (scenario.guild) {
+      raw.guild_id = guildId;
+    }
+    if (scenario.forward) {
+      raw.flags = MessageFlags.HasSnapshot;
+      raw.message_reference = {
+        type: MessageReferenceType.Forward,
+        message_id: "930000000000000001",
+        channel_id: "940000000000000001",
+        guild_id: "950000000000000001",
+      };
+      // Native snapshots omit the original author; their mentions are not sender intent.
+      raw.message_snapshots = [
+        {
+          message: {
+            type: MessageType.Default,
+            content: NATIVE_FORWARD_TEXT,
+            attachments: [],
+            embeds: [],
+            mentions: [
+              { ...raw.author, id: NATIVE_FORWARD_BOT_ID, username: "openclaw", bot: true },
+            ],
+            mention_roles: [],
+            timestamp: "2026-09-03T11:00:00.000Z",
+            edited_timestamp: null,
+            flags: 0,
+          },
+        },
+      ];
+    } else if (scenario.reply) {
+      const quoted = nativeDiscordMessage(scenario.channelId, "quoted ordinary message");
+      quoted.id = "930000000000000002";
+      quoted.author = { ...quoted.author, id: "900000000000000002", username: "bob" };
+      raw.type = MessageType.Reply;
+      raw.message_reference = {
+        type: MessageReferenceType.Default,
+        message_id: quoted.id,
+        channel_id: scenario.channelId,
+      };
+      raw.referenced_message = quoted;
+    }
+    const client = createInternalTestClient();
+    const restGet = vi.fn(async (route: string) => {
+      if (route === `/channels/${scenario.channelId}`) {
+        return {
+          id: scenario.channelId,
+          type: scenario.guild ? ChannelType.GuildText : ChannelType.DM,
+          name: "native-proof",
+        };
+      }
+      if (route === `/channels/${scenario.channelId}/messages/${raw.id}`) {
+        return raw;
+      }
+      throw new Error(`unexpected native proof REST route: ${route}`);
+    });
+    attachRestMock(client, { get: restGet });
+    // This is the same native mapping used for MESSAGE_CREATE, before channel preflight.
+    const event = mapGatewayDispatchData(
+      client,
+      GatewayDispatchEvents.MessageCreate,
+      raw,
+    ) as DiscordMessageEvent;
+    const guilds = { [guildId]: { requireMention: scenario.requireMention } };
+    const discordConfig = {
+      dmPolicy: "open" as const,
+      allowFrom: ["*"],
+      guilds,
+      streaming: { mode: "off" as const },
+    };
+    const cfg: OpenClawConfig = {
+      channels: { discord: discordConfig },
+      messages: {
+        ackReaction: "",
+        statusReactions: { enabled: false },
+        groupChat: { visibleReplies: "automatic" },
+      },
+      session: {
+        store: "/tmp/openclaw-discord-process-test-sessions.json",
+        dmScope: "per-channel-peer",
+      },
+    };
+    const runtimeError = vi.fn();
+    const runtimeExit = vi.fn((code: number) => {
+      throw new Error(`unexpected native proof runtime exit: ${code}`);
+    });
+    let deliveryJoined = false;
+    let processReturned = false;
+    let observation: Record<string, unknown> = {};
+    try {
+      const { preflightDiscordMessage } = await import("./message-handler.preflight.js");
+      expect(event.message).toBeInstanceOf(Message);
+      expect(event.message.rawData).toBe(raw);
+      const preflight = await preflightDiscordMessage({
+        ...createDiscordPreflightArgs({
+          cfg,
+          discordConfig,
+          data: event,
+          client,
+          botUserId: NATIVE_FORWARD_BOT_ID,
+        }),
+        guildEntries: guilds,
+        allowFrom: discordConfig.allowFrom,
+        runtime: { log: vi.fn(), error: runtimeError, exit: runtimeExit },
+      });
+      if (scenario.requireMention) {
+        observation = {
+          admitted: preflight !== null,
+          dropLogged: logVerboseForTest.mock.calls.some(
+            ([line]) =>
+              line ===
+              `discord: drop guild message (mention required, botId=${NATIVE_FORWARD_BOT_ID})`,
+          ),
+        };
+        expect(preflight).toBeNull();
+        expect(observation.dropLogged).toBe(true);
+        expect(dispatchInboundMessage).not.toHaveBeenCalled();
+        expect(deliverDiscordReply).not.toHaveBeenCalled();
+      } else {
+        if (!preflight) {
+          throw new Error(`native ${scenario.name} unexpectedly rejected before context`);
+        }
+        expect(preflight.baseText).toBe(raw.content);
+        expect(preflight.messageText).toBe(
+          scenario.forward ? NATIVE_FORWARD_AGENT_TEXT : raw.content,
+        );
+        expect(preflight.hasControlCommand).toBe(false);
+        expect(preflight.wasMentioned).toBe(false);
+        expect(preflight.effectiveWasMentioned).toBe(false);
+        dispatchInboundMessage.mockImplementationOnce(async (params) => {
+          if (!params) {
+            throw new Error("native proof dispatcher params were missing");
+          }
+          const { dispatcher } = params;
+          await dispatcher.sendFinalReply({ text: "native boundary reply" });
+          await dispatcher.waitForIdle();
+          deliveryJoined = true;
+          return { queuedFinal: true, counts: { final: 1, tool: 0, block: 0 } };
+        });
+        await runProcessDiscordMessage(preflight);
+        processReturned = true;
+        const dispatched = requireRecord(getLastDispatchCtx(), "native dispatch context");
+        observation = {
+          admitted: true,
+          baseText: preflight.baseText,
+          messageText: preflight.messageText,
+          agentText: dispatched.agentText,
+          BodyForAgent: dispatched.BodyForAgent,
+          RawBody: dispatched.RawBody,
+          CommandBody: dispatched.CommandBody,
+          CommandTurn: dispatched.CommandTurn,
+          WasMentioned: dispatched.WasMentioned,
+          ReplyToBody: dispatched.ReplyToBody,
+        };
+        expect(dispatchInboundMessage).toHaveBeenCalledOnce();
+        expect(deliverDiscordReply).toHaveBeenCalledOnce();
+        expect(getDeliveredFinalTexts()).toEqual(["native boundary reply"]);
+        expect(deliveryJoined).toBe(true);
+        expect(dispatched.RawBody).toBe(raw.content);
+        expect(dispatched.CommandBody).toBe(raw.content);
+        expect(dispatched.CommandTurn).toEqual({
+          kind: "normal",
+          source: "message",
+          authorized: false,
+          commandName: undefined,
+          body: raw.content,
+        });
+        expect(dispatched.WasMentioned).toBe(false);
+        expect(dispatched.ReplyToBody).toBe(scenario.reply ? "quoted ordinary message" : undefined);
+      }
+      expect(runtimeError).not.toHaveBeenCalled();
+      expect(runtimeExit).not.toHaveBeenCalled();
+      expect(restGet.mock.calls.map(([route]) => route)).toEqual([
+        ...(scenario.forward ? [`/channels/${scenario.channelId}/messages/${raw.id}`] : []),
+        `/channels/${scenario.channelId}`,
+      ]);
+      if (!scenario.requireMention) {
+        const expectedAgentText = scenario.forward ? NATIVE_FORWARD_AGENT_TEXT : raw.content;
+        expect(
+          { agentText: observation.agentText, BodyForAgent: observation.BodyForAgent },
+          "native forwarded content must reach the finalized agent context without becoming sender intent",
+        ).toEqual({ agentText: expectedAgentText, BodyForAgent: expectedAgentText });
+      }
+    } finally {
+      discordChannelInfoCacheState.entries.delete(scenario.channelId);
+      console.log(
+        `PROOF_137313_NATIVE:${JSON.stringify({
+          scenario: scenario.name,
+          rawContent: raw.content,
+          snapshotContent: raw.message_snapshots?.[0]?.message.content,
+          topLevelMentionCount: raw.mentions.length,
+          observation,
+          dispatchCount: dispatchInboundMessage.mock.calls.length,
+          replyCount: deliverDiscordReply.mock.calls.length,
+          deliveryJoined,
+          processReturned,
+          channelCacheCleared: !discordChannelInfoCacheState.entries.has(scenario.channelId),
+          runtimeErrors: runtimeError.mock.calls,
+          runtimeExits: runtimeExit.mock.calls,
+          verboseCalls: logVerboseForTest.mock.calls,
+          restRoutes: restGet.mock.calls.map(([route]) => route),
+        })}`,
+      );
+    }
   });
 });

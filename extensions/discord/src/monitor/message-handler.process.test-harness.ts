@@ -613,7 +613,7 @@ export function registerDiscordProcessTestLifecycle() {
     editMessageDiscord.mockClear();
     deliverDiscordReply.mockClear();
     createDiscordDraftStream.mockClear();
-    dispatchInboundMessage.mockClear();
+    dispatchInboundMessage.mockReset();
     readAgentRunTerminalOutcome.mockReset().mockReturnValue(undefined);
     recordInboundSession.mockClear();
     readSessionUpdatedAt.mockClear();

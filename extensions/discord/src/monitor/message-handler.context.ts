@@ -180,12 +180,12 @@ export async function buildDiscordMessageProcessContext(params: {
         })
       : body;
   const bodyWithMediaNotice = appendMediaUnavailableNotice(text) ?? text;
-  // Agent-facing body prefers the framed transcript and falls back to typed
-  // text; machine transcriptions are always labeled untrusted for the model.
+  // Agent-facing text keeps framed transcripts or the composed message body;
+  // raw and command bodies below retain only the sender's own text.
   const agentFacingBody =
     preflightAudioTranscript !== undefined
       ? formatAudioTranscriptForAgent(preflightAudioTranscript)
-      : (baseText ?? text);
+      : text;
   let combinedBody = formatInboundEnvelope({
     channel: "Discord",
     from: fromLabel,
