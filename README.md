@@ -1,11 +1,7 @@
-# Gateway channel registry ownership check diagnostics
+# Gateway registry fixture ratchet diagnostic
 
-Candidate-only validation of OpenClaw PR #126547 at 14d16f96df4268fdec63c28bfc0f06bf7d15338f on GitHub-hosted Ubuntu 24.04.
+Run the four canonical baseline checks against source `9377ee1efef35ec983d3ea1b3334cfdb1de25a49` and its explicit integrated main base `05a236c7afbcf1956e40642d4f1777af4a378da3` on a fresh secretless GitHub-hosted Ubuntu24.04 runner. This is a controlled source diagnostic, not a reconstruction of the unknown original CI merge/prepared-base checkout.
 
-This source removes an unused import and a shadowed fixture parameter, and supplies the required attached-registry getter in the existing MCP replacement fixture. The preceding PR run failed production types, core test types and core lint; this diagnostic verifies the reviewed corrections and records any remaining errors. It does not reconstruct the original failed CI checkout.
+The unchanged check commands run in order: max-lines (including environment budget), assertion safety, configuration docs, plugin inventory. They retain the native successor failure barrier, a shared900-second group deadline, frozen install, source/tree/parents/175 bindings, full tracked/raw-index/installed-lock guards and canonical cleanup. A new base guard verifies full history, exact base/tree/parents, the three baseline hashes, merge-base identity and original fixture absence before installation and each source check.
 
-Run the unchanged production type command, test type stripes 1/5 then 2/5, and core lint stripe 1/5 then plugin lint stripe 1/6. Each pair preserves its native failure barrier and 900-second group cap. Independent workloads continue after ordinary findings only after source, index, lock and process closure checks pass. Timeout or incomplete cleanup stops the diagnostic.
-
-The complete five-job lint matrix establishes the selected hosted profile. Dependencies are installed from the frozen lock with no restored cache; this diagnostic makes no canonical-cache performance claim. Source/parent/tree and 150 file hashes, bounded output, secretless checkout and native cleanup remain mandatory. A separate full-build lifecycle proof and required PR CI own runtime and merge readiness.
-
-Final reviewed source 14d16f96df4268fdec63c28bfc0f06bf7d15338f changes four fresh-array sorts to toSorted in ownership tests after diagnostic33860865192 identified exactly those lint errors. Production types and both core test-type stripes passed there; this publication keeps the existing commands, controller and gates.
+The source predicts one newly classified production assertion in the extracted lifecycle fixture. That prediction is not an observed checker failure; the retained output determines the result. No baseline, exclusion, test, product or suppression is changed. Expected failures stay ordinary failed jobs. Separate full-build lifecycle proof and required PR CI own runtime and merge readiness.

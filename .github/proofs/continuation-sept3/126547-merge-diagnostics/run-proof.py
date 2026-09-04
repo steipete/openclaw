@@ -1,4 +1,4 @@
-"""Exact candidate core/plugin stripe-1 lint diagnostics. No original CI checkout attribution."""
+"""Exact head and integrated-base ratchet diagnostics. No original CI checkout attribution."""
 from pathlib import Path
 import hashlib
 import json
@@ -159,7 +159,31 @@ def capture_source():
     return {'index': index, 'tracked': snapshot, 'names': names}
 
 
+def verify_ratchet_base(label):
+    # This is an explicit ancestor diagnostic, never an invented original CI merge.
+    base = binding['ratchetBase']
+    assert base['head'] == '05a236c7afbcf1956e40642d4f1777af4a378da3'
+    assert git_text('rev-parse', '--is-shallow-repository') == 'false'
+    assert git_text('rev-parse', base['head'] + '^{commit}') == base['head']
+    header = git('cat-file', 'commit', base['head']).split(b'\n\n', 1)[0].decode()
+    trees = [line[5:] for line in header.splitlines() if line.startswith('tree ')]
+    parents = [line[7:] for line in header.splitlines() if line.startswith('parent ')]
+    assert trees == [base['tree']] and parents == base['parents']
+    merge_base = git_text('merge-base', 'HEAD', base['head'])
+    assert merge_base == base['head'], 'Explicit base is not the candidate merge base'
+    hashes = {name: sha(git('show', base['head'] + ':' + name)) for name in base['sourceHashes']}
+    assert hashes == base['sourceHashes']
+    for name in base['absentPaths']:
+        assert not git('ls-tree', '--name-only', base['head'], '--', name), name
+    save(evidence / ('ratchet-base-' + label + '.json'), {
+        'head': base['head'], 'tree': base['tree'], 'parents': parents,
+        'mergeBase': merge_base, 'sourceHashes': hashes, 'absentPaths': base['absentPaths'],
+        'originalFailedCiCheckoutProven': False,
+    })
+
+
 def source_guard(label):
+    verify_ratchet_base(label)
     index, _ = index_facts()
     expected = dict(initial_guard['tracked'])
     observed = {'head': git_text('rev-parse', 'HEAD'), 'tree': git_text('rev-parse', 'HEAD^{tree}'),
@@ -335,20 +359,22 @@ try:
     assert packet['comparison']['candidateTree'] == binding['candidateTree']
     assert packet['comparison']['parents'] == binding['parents']
     assert [group['order'] for group in binding['checkGroups']] == [
-        ['core-lint-1', 'extension-lint-1'],
+        ['max-lines-ratchet', 'assertion-safety', 'config-docs-check', 'plugins-inventory-check'],
     ]
     assert all(group['timeoutSeconds'] == 900 and group['shortCircuit'] is True for group in binding['checkGroups'])
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
     assert not binding['absentSourcePaths']
     assert [case['name'] for case in binding['commands']] == [
-        'core-lint-1', 'extension-lint-1',
+        'max-lines-ratchet', 'assertion-safety', 'config-docs-check', 'plugins-inventory-check',
     ]
     assert all(case['timeoutSeconds'] == 900 for case in binding['commands'])
     assert {'package.json', 'pnpm-lock.yaml', '.github/workflows/ci.yml',
-            'scripts/run-oxlint-shards.mts', 'scripts/run-oxlint.mts',
-            'scripts/lib/local-check-runtime.mts', 'scripts/lib/managed-child-process.mts',
-            'scripts/lib/dist-artifact-ownership.mts', 'config/tsconfig/oxlint.core.json',
-            'extensions/tsconfig.json', '.oxlintrc.json'}.issubset(binding['sourceHashes'])
+            'scripts/check-max-lines-ratchet.mts', 'scripts/check-assertion-safety-ratchet.mts',
+            'scripts/check-env-var-count.mts', 'scripts/lib/shrink-ratchet.mts',
+            'scripts/lib/type-assertion-guard-scope.mjs', 'config/max-lines-baseline.txt',
+            'config/assertion-safety-baseline.txt', 'config/env-var-count-budget.txt',
+            'scripts/generate-config-doc-baseline.ts', 'scripts/generate-plugin-inventory-doc.mts'
+            }.issubset(binding['sourceHashes'])
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
     assert manifest.get('incomplete') is False, 'Publication asset manifest is incomplete'
@@ -367,6 +393,7 @@ try:
     assert parents == binding['parents'], 'Exact commit parent provenance changed'
     save(evidence / 'commit-provenance.json', {'head': binding['candidateHead'],
          'tree': binding['candidateTree'], 'parents': parents, 'comparison': packet['comparison']})
+    verify_ratchet_base('before-install')
     assert not (checkout / 'node_modules').exists()
     node = str(Path(shutil.which('node')).resolve())
     corepack = Path(node).parent / 'corepack'
@@ -393,7 +420,7 @@ try:
     installed_lock = digest(checkout / 'node_modules/.pnpm/lock.yaml')
     save(evidence / 'install-lock.json', {'tracked': digest(checkout / 'pnpm-lock.yaml'), 'installed': installed_lock})
     source_guard('installed')
-    # Preserve the hosted job's core-to-plugin set -e barrier with separate receipts.
+    # Preserve the canonical four-check set -e barrier with separate receipts.
     commands = {case['name']: case for case in binding['commands']}
     for group in binding['checkGroups']:
         group_started = time.monotonic()

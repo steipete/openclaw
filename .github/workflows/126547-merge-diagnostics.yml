@@ -1,4 +1,4 @@
-name: Secretless Gateway reload core/plugin lint diagnostic
+name: Secretless Gateway reload baseline ratchet diagnostic
 on:
   push:
     branches: [codex/round10-plugin-reload-merge-diagnostics]
@@ -18,7 +18,7 @@ jobs:
         include:
           - lane: candidate
             repository: steipete/openclaw
-            head: ad6f0f262d966b1bd175fa1b171b7fa398038722
+            head: 9377ee1efef35ec983d3ea1b3334cfdb1de25a49
     steps:
       - name: Checkout reviewed diagnostic assets
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,7 +33,7 @@ jobs:
           repository: ${{ matrix.repository }}
           ref: ${{ matrix.head }}
           path: source
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: false
       - name: Setup pinned Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
