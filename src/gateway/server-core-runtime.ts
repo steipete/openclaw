@@ -1,8 +1,5 @@
 import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
-import {
-  getLoadedChannelPluginEntryById,
-  listLoadedChannelPlugins,
-} from "../channels/plugins/registry-loaded.js";
+import { listLoadedChannelPluginsForRegistry } from "../channels/plugins/registry-loaded.js";
 import type { ChannelId } from "../channels/plugins/types.public.js";
 import { getRuntimeConfig } from "../config/io.js";
 import type { createSubsystemLogger } from "../logging/subsystem.js";
@@ -42,14 +39,6 @@ type GatewayLogger = ReturnType<typeof createSubsystemLogger>;
 type GatewayEarlyRuntime = Awaited<
   ReturnType<typeof import("./server-startup-early.js").startGatewayEarlyRuntime>
 >;
-
-type GatewayStartupChannelPlugin = {
-  id: ChannelId;
-  meta: { aliases?: readonly string[] };
-};
-
-const listGatewayStartupChannelPlugins = (): GatewayStartupChannelPlugin[] =>
-  listLoadedChannelPlugins() as GatewayStartupChannelPlugin[];
 
 const MAX_MEDIA_TTL_HOURS = 24 * 7;
 
@@ -503,32 +492,20 @@ export async function startGatewayCoreRuntime(input: {
       { listAmbientOnlyConfiguredChannelIds },
       { prepareGatewayPluginLoad },
       { startPluginServices, PLUGIN_SERVICE_REPLACEMENT_STOP_TIMEOUT_MS },
-      { listChannelPluginConfigTargetIds, pluginConfigTargetsChanged },
     ] = await Promise.all([
       import("../plugins/plugin-lookup-table.js"),
       import("../plugins/channel-presence-policy.js"),
       loadGatewayPluginBootstrapModule(),
       import("../plugins/services.js"),
-      import("./plugin-channel-reload-targets.js"),
     ]);
     const cancelledReload = (activeChannels: Iterable<ChannelId>): GatewayPluginReloadResult => ({
       restartChannels: new Set(),
       activeChannels: new Set(activeChannels),
       cancelled: true,
     });
-    const listAttachedChannelConfigTargets = () =>
-      new Map(
-        listGatewayStartupChannelPlugins().map((plugin) => [
-          plugin.id,
-          listChannelPluginConfigTargetIds({
-            channelId: plugin.id,
-            pluginId: getLoadedChannelPluginEntryById(plugin.id)?.pluginId,
-            aliases: plugin.meta.aliases,
-          }),
-        ]),
-      );
-    const beforeChannelTargets = listAttachedChannelConfigTargets();
-    const beforeChannelIds = new Set(beforeChannelTargets.keys());
+    const listAttachedChannelIds = () =>
+      new Set(listLoadedChannelPluginsForRegistry(pluginRuntime.registry).map(({ id }) => id));
+    const beforeChannelIds = listAttachedChannelIds();
     const nextPluginActivationConfig = resolveGatewayStartupPluginActivationConfig({
       runtimeConfig: params.nextConfig,
       activationSourceConfig: params.sourceConfig,
@@ -559,27 +536,14 @@ export async function startGatewayCoreRuntime(input: {
             }),
           )
         : new Set<string>();
-    const nextStartupPluginIds = new Set(nextPluginLookUpTable.startup.pluginIds);
-    const nextStartupChannelIds = new Set<ChannelId>(
-      nextPluginLookUpTable.manifestRegistry.plugins.flatMap(({ id, channels }) =>
-        nextStartupPluginIds.has(id) ? (channels.length > 0 ? channels : [id]) : [],
-      ),
-    );
-    const channelsToStopBeforeReplace = new Set<ChannelId>();
-    for (const [channelId, targetIds] of beforeChannelTargets) {
-      if (
-        !nextStartupChannelIds.has(channelId) ||
-        pluginConfigTargetsChanged(targetIds, params.changedPaths)
-      ) {
-        channelsToStopBeforeReplace.add(channelId);
-      }
-    }
     const pluginRuntimeGeneration = kernel.pluginRuntimeGeneration;
     const replacement = pluginRuntimeGeneration.reserve();
     let recoverFromReplacementTeardown: ((error: unknown) => void) | undefined;
     try {
+      // Replacement retires every attached runtime binding, even for unchanged channels.
+      // Stop their monitors first so retained callbacks cannot outlive that generation.
       await params.beforeReplace(
-        channelsToStopBeforeReplace,
+        beforeChannelIds,
         channelManager.getPluginCommandCatalogAccounts(),
       );
       // A rejected reservation restores startup authority; a committed replacement never does.
@@ -633,11 +597,11 @@ export async function startGatewayCoreRuntime(input: {
         }) ||
         !loaded
       ) {
-        return cancelledReload(listAttachedChannelConfigTargets().keys());
+        return cancelledReload(listAttachedChannelIds());
       }
       await refreshAttachedGatewayDiscovery(loaded.pluginRegistry, replacement.claim);
       if (!(await replacement.claim.waitForUnblocked())) {
-        return cancelledReload(listAttachedChannelConfigTargets().keys());
+        return cancelledReload(listAttachedChannelIds());
       }
       const nextServices = await startPluginServices({
         registry: loaded.pluginRegistry,
@@ -660,20 +624,8 @@ export async function startGatewayCoreRuntime(input: {
       recoverFromReplacementTeardown?.(error);
       throw error;
     }
-    const afterChannelTargets = listAttachedChannelConfigTargets();
-    const restartChannels = new Set<ChannelId>();
-    for (const [channelId, targetIds] of afterChannelTargets) {
-      if (
-        !beforeChannelIds.has(channelId) ||
-        pluginConfigTargetsChanged(targetIds, params.changedPaths)
-      ) {
-        restartChannels.add(channelId);
-      }
-    }
-    return {
-      restartChannels,
-      activeChannels: new Set(afterChannelTargets.keys()),
-    };
+    const activeChannels = listAttachedChannelIds();
+    return { restartChannels: activeChannels, activeChannels };
   };
 
   return {
