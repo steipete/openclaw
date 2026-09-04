@@ -1,4 +1,4 @@
-name: Secretless Gateway reload current-merge diagnostics
+name: Secretless Gateway reload candidate check diagnostics
 on:
   push:
     branches: [codex/round10-plugin-reload-merge-diagnostics]
@@ -7,21 +7,18 @@ permissions:
   contents: read
 jobs:
   diagnose:
-    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-merge-diagnostics' }}
+    if: ${{ true && github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-merge-diagnostics' }}
     name: Diagnostic checks (${{ matrix.lane }})
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         include:
-          - lane: merge
-            repository: openclaw/openclaw
-            head: 3ba6a62a352ea58d5999a9ed4c04b9de9479377f
-          - lane: baseline
-            repository: openclaw/openclaw
-            head: 5aaafb76c427d383e5eefc8a6934f895dd82880e
+          - lane: candidate
+            repository: steipete/openclaw
+            head: 7179ebe50751ae4eeb93a23a43c2da907d83cd18
     steps:
       - name: Checkout reviewed diagnostic assets
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

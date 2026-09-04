@@ -1,4 +1,4 @@
-"""Fresh current-merge comparison. No original CI checkout attribution."""
+"""Fixed candidate type/lint diagnostics. No original CI checkout attribution."""
 from pathlib import Path
 import hashlib
 import json
@@ -17,7 +17,7 @@ os.umask(0o077)
 assets = Path(__file__).resolve().parent
 checkout, evidence = [Path(value).resolve() for value in sys.argv[1:3]]
 lane = sys.argv[3]
-assert lane in {'merge', 'baseline'}
+assert lane == 'candidate'
 evidence.mkdir(mode=0o700, parents=True, exist_ok=False)
 packet = json.loads((assets / 'execution-binding.json').read_text())
 binding = {**packet, **packet['lanes'][lane]}
@@ -328,22 +328,26 @@ try:
     assert re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', binding['candidateRepository'] or '')
     assert re.fullmatch(r'[a-f0-9]{40}', binding['candidateTree'] or '')
     assert binding['nodeVersion'] == '24.19.0'
-    assert binding['candidateRepository'] == 'openclaw/openclaw'
+    assert binding['candidateRepository'] == 'steipete/openclaw'
     assert packet['comparison']['originalFailedCiCheckoutProven'] is False
-    assert packet['comparison']['mergeHead'] == packet['lanes']['merge']['candidateHead']
-    assert packet['comparison']['mergeTree'] == packet['lanes']['merge']['candidateTree']
-    assert packet['comparison']['parents'] == packet['lanes']['merge']['parents']
-    assert packet['lanes']['merge']['parents'] == [packet['lanes']['baseline']['candidateHead'], packet['comparison']['parents'][1]]
-    assert packet['typeGroup']['order'] == ['type-stripe-3', 'type-stripe-4']
-    assert packet['typeGroup']['timeoutSeconds'] == 900 and packet['typeGroup']['shortCircuit'] is True
+    assert set(packet['lanes']) == {'candidate'}
+    assert packet['comparison']['candidateHead'] == binding['candidateHead']
+    assert packet['comparison']['candidateTree'] == binding['candidateTree']
+    assert packet['comparison']['parents'] == binding['parents']
+    assert [group['order'] for group in binding['checkGroups']] == [
+        ['type-stripe-1', 'type-stripe-2'], ['core-lint-1', 'extension-lint-1'],
+    ]
+    assert all(group['timeoutSeconds'] == 900 and group['shortCircuit'] is True for group in binding['checkGroups'])
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
     assert not binding['absentSourcePaths']
     assert [case['name'] for case in binding['commands']] == [
-        'production-dependency-audit', 'type-stripe-3', 'type-stripe-4',
+        'prod-types', 'type-stripe-1', 'type-stripe-2', 'core-lint-1', 'extension-lint-1',
     ]
+    assert all(case['timeoutSeconds'] == 900 for case in binding['commands'])
     assert {'package.json', 'pnpm-lock.yaml', '.github/workflows/ci.yml',
             'scripts/run-tsgo-core-test-shards.mjs', 'scripts/lib/tsgo-core-test-shards.mts',
-            'scripts/pre-commit/pnpm-audit-prod.mjs'}.issubset(binding['sourceHashes'])
+            'scripts/run-oxlint-shards.mts', 'scripts/run-tsgo.mjs',
+            'tsconfig.core.json', 'tsconfig.ui.json', 'tsconfig.extensions.json'}.issubset(binding['sourceHashes'])
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
     assert manifest.get('incomplete') is False, 'Publication asset manifest is incomplete'
@@ -389,28 +393,28 @@ try:
     save(evidence / 'install-lock.json', {'tracked': digest(checkout / 'pnpm-lock.yaml'), 'installed': installed_lock})
     source_guard('installed')
     diagnostic_check(binding['commands'][0])
-    # The current core-2 job runs 3/5 then 4/5 under set -e. Preserve that barrier.
-    type_started = time.monotonic()
-    type_deadline = type_started + binding['typeGroup']['timeoutSeconds']
-    diagnostic_check(binding['commands'][1], timeout=900)
-    if receipt['checks'][-1]['status'] != 'passed':
-        row = {'name': 'type-stripe-4', 'status': 'not-run',
-               'reason': 'not_run_due_to_stripe3_failure', 'prerequisite': 'type-stripe-3'}
-        receipt['checks'].append(row)
-        save(evidence / 'type-stripe-4-verdict.json', row)
-    else:
-        remaining = type_deadline - time.monotonic()
-        if remaining <= 0:
-            row = {'name': 'type-stripe-4', 'status': 'not-run',
-                   'reason': 'type_group_deadline_exhausted', 'prerequisite': 'type-stripe-3'}
-            receipt['checks'].append(row)
-            save(evidence / 'type-stripe-4-verdict.json', row)
-        else:
-            diagnostic_check(binding['commands'][2], timeout=remaining)
-    save(evidence / 'type-group-result.json', {'upstreamJob': binding['typeGroup']['upstreamJob'],
-         'order': binding['typeGroup']['order'], 'timeoutSeconds': 900,
-         'elapsedSeconds': round(time.monotonic() - type_started, 3),
-         'checks': receipt['checks'][1:]})
+    # Independent job workloads continue after findings; each job keeps its set -e barrier.
+    commands = {case['name']: case for case in binding['commands']}
+    for group in binding['checkGroups']:
+        group_started = time.monotonic()
+        group_deadline = group_started + group['timeoutSeconds']
+        first_result = len(receipt['checks'])
+        prerequisite = None
+        for name in group['order']:
+            remaining = group_deadline - time.monotonic()
+            blocked = prerequisite is not None and receipt['checks'][-1]['status'] != 'passed'
+            if blocked or remaining <= 0:
+                row = {'name': name, 'status': 'not-run', 'prerequisite': prerequisite,
+                       'reason': 'prior_stripe_failed' if blocked else 'check_group_deadline_exhausted'}
+                receipt['checks'].append(row)
+                save(evidence / (name + '-verdict.json'), row)
+            else:
+                diagnostic_check(commands[name], timeout=remaining)
+            prerequisite = name
+        save(evidence / (group['name'] + '-result.json'), {'upstreamJob': group['upstreamJob'],
+             'order': group['order'], 'timeoutSeconds': group['timeoutSeconds'],
+             'elapsedSeconds': round(time.monotonic() - group_started, 3),
+             'checks': receipt['checks'][first_result:]})
     receipt['allChecksExecuted'] = all(row['status'] in {'passed', 'failed'} for row in receipt['checks'])
     receipt.update(passed=all(row['status'] == 'passed' for row in receipt['checks']), phase='complete')
 
