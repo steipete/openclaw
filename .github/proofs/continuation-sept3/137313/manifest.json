@@ -1,11 +1,11 @@
 {
   "incomplete": false,
   "sha256": {
-    ".github/proofs/continuation-sept3/137313/execution-binding.json": "6bd03fb36cb0c35452722f4cec0c1a471ce3ab06e31a6f373d9d4e0f66f805fb",
+    ".github/proofs/continuation-sept3/137313/execution-binding.json": "551bf3430158747d2fe8f19a559f10ee58b25ad5c13e8a414dbf21d3b30eb531",
     ".github/proofs/continuation-sept3/137313/message-handler.context.test.ts": "0f3f5ca3cfb23ad37d0fa4e39b5703fb712cb4ae8b841d956841072f5b0ac12c",
     ".github/proofs/continuation-sept3/137313/message-handler.process.session-routing.test.ts": "8dc7dab4945493bad766017138d7929a3c937025906e8c0f98f4c2bd34a35b80",
     ".github/proofs/continuation-sept3/137313/message-handler.process.test-harness.ts": "dabc178f1698f7381a7cf703d7fb1639dac4418e025b035f72ac6e07d5c037c6",
-    ".github/proofs/continuation-sept3/137313/run-proof.py": "61c5dbcfeb850da5ca387d16b623b7a8e333284c62a6388ece97a3cbcce6bd8f",
-    ".github/workflows/round10-137313-baseline-proof.yml": "bdb9d242a7573d8e251564c1238339e623501106e00938413239d712cdd67a25"
+    ".github/proofs/continuation-sept3/137313/run-proof.py": "4e9dee9e7177e61fb5c2de0d1c6250ae2073e520a3cbe00b4769ef2f83392661",
+    ".github/workflows/round10-137313-candidate-proof.yml": "744dbc925b6c25e852f93fd1ff4adf69f8c94e0aa2cebb55a2b2e2993401c574"
   }
 }

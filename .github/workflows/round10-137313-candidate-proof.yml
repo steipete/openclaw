@@ -1,0 +1,61 @@
+name: Secretless Discord forward candidate proof
+
+on:
+  push:
+    branches: [codex/round10-discord-forward-candidate-proof]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-discord-forward-candidate-proof' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout reviewed proof publication
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout reviewed immutable candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: steipete/openclaw
+          ref: 7277f42f4260551626056ee69dc42c17b78b8606
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Set up pinned Node and bundled Corepack
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Prove candidate Discord projection and process siblings
+        shell: bash
+        run: |
+          env -i \
+            PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" \
+            GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" \
+            RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" \
+            RUNNER_ARCH="$RUNNER_ARCH" \
+            /usr/bin/python3 proof-assets/.github/proofs/continuation-sept3/137313/run-proof.py \
+            "$GITHUB_WORKSPACE/candidate" "$GITHUB_WORKSPACE/evidence-137313"
+      - name: Retain synthetic proof data and failure reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: 137313-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-137313
+          retention-days: 14
+          if-no-files-found: error

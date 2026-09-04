@@ -1,4 +1,4 @@
-"""Reviewed baseline-only hosted proof. No candidate implementation is admitted."""
+"""Hosted proof for the reviewed immutable Discord candidate."""
 from pathlib import Path
 import hashlib
 import json
@@ -19,27 +19,30 @@ checkout, evidence = [Path(value).resolve() for value in sys.argv[1:]]
 evidence.mkdir(mode=0o700, parents=True, exist_ok=False)
 binding = json.loads((assets / 'execution-binding.json').read_text())
 proof_root = assets.parents[3]
-receipt = {'schema': 'openclaw-137313-baseline-hosted-v1', 'passed': False, 'phase': 'setup',
-           'baselineRedVerified': False, 'nativeLedgerVerified': False, 'regressionStarted': False,
+receipt = {'schema': 'openclaw-137313-candidate-hosted-v1', 'passed': False, 'phase': 'setup',
+           'candidateGreenVerified': False, 'docsListVerified': False, 'nativeLedgerVerified': False, 'candidateStarted': False,
            'commands': [], 'unconfirmedCommandGroups': [], 'cleanupErrors': []}
 scratch = node = installed_lock = initial_guard = None
-overlay_identities = {}
-original_tests = {}
 manifest = manifest_bytes = None
 MAX_LOG_BYTES = 16 * 1024 * 1024
 index_observations = []
 index_capture_bytes = {}
-TEST_PATHS = [
+TARGET_TEST_PATHS = [
     'extensions/discord/src/monitor/message-handler.process.session-routing.test.ts',
     'extensions/discord/src/monitor/message-handler.context.test.ts',
 ]
-OVERLAY_PATHS = [
-    'extensions/discord/src/monitor/message-handler.process.session-routing.test.ts',
-    'extensions/discord/src/monitor/message-handler.process.test-harness.ts',
-    'extensions/discord/src/monitor/message-handler.context.test.ts',
+ADDITIONAL_TEST_PATHS = [
+    'extensions/discord/src/monitor/message-handler.process.abort-retry.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.abort-skip.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.ack.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.draft-final.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.draft-progress.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.draft-reasoning.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.draft-recovery.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.room-events.test.ts',
 ]
+TEST_PATHS = TARGET_TEST_PATHS + ADDITIONAL_TEST_PATHS
 TEST_CONFIG = 'test/vitest/vitest.extension-discord.config.ts'
-overlays = {entry['path']: entry for entry in binding['overlays']}
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
@@ -146,9 +149,9 @@ def verify_no_checkout_credentials(root):
 
 
 def capture_source():
-    assert git_text('rev-parse', 'HEAD') == binding['baseHead']
-    assert git_text('rev-parse', 'HEAD^{tree}') == binding['baseTree']
-    assert git_text('remote', 'get-url', 'origin') == 'https://github.com/openclaw/openclaw'
+    assert git_text('rev-parse', 'HEAD') == binding['candidateHead']
+    assert git_text('rev-parse', 'HEAD^{tree}') == binding['candidateTree']
+    assert git_text('remote', 'get-url', 'origin') == 'https://github.com/' + binding['candidateRepository']
     assert not git('diff', '--cached', '--name-only', '-z', '--no-ext-diff', '--no-textconv', 'HEAD', '--')
     assert not git('diff', '--name-only', '-z', '--no-ext-diff', '--no-textconv', '--')
     index, stage = index_facts()
@@ -166,17 +169,15 @@ def capture_source():
     snapshot = tracked_snapshot(names)
     for name, expected in binding['sourceHashes'].items():
         assert snapshot[name] == {'kind': 'file', 'sha256': expected}, name
-    save(evidence / 'tracked-baseline.json', {'index': index, 'tracked': snapshot})
+    save(evidence / 'tracked-candidate.json', {'index': index, 'tracked': snapshot})
     return {'index': index, 'tracked': snapshot, 'names': names}
 
 
 def source_guard(label):
     index, _ = index_facts()
     expected = dict(initial_guard['tracked'])
-    for name in overlay_identities:
-        expected[name] = {'kind': 'file', 'sha256': overlays[name]['overlaySha256']}
     observed = {'head': git_text('rev-parse', 'HEAD'), 'tree': git_text('rev-parse', 'HEAD^{tree}'),
-                'index': index, 'testOverlays': sorted(overlay_identities), 'trackedCount': len(expected)}
+                'index': index, 'trackedCount': len(expected)}
     save(evidence / ('source-' + label + '.json'), observed)
     snapshot = tracked_snapshot(initial_guard['names'])
     changes = [name for name in expected if snapshot[name] != expected[name]]
@@ -187,10 +188,10 @@ def source_guard(label):
     observed.update(changedBytes=changes, gitChangedPaths=git_changes, sourceIdentity=identity,
                     installedLockSHA256=current_lock, indexUnchanged=index == initial_guard['index'])
     save(evidence / ('source-' + label + '.json'), observed)
-    assert observed['head'] == binding['baseHead'] and observed['tree'] == binding['baseTree']
+    assert observed['head'] == binding['candidateHead'] and observed['tree'] == binding['candidateTree']
     assert observed['indexUnchanged'], 'Index changed'
     assert not changes, changes
-    assert git_changes == sorted(overlay_identities), git_changes
+    assert git_changes == [], git_changes
     if installed_lock is not None:
         assert current_lock == installed_lock, 'Installed frozen lock changed'
         verify_dependencies()
@@ -279,20 +280,32 @@ def parse_test_report(name):
     data = json.loads(file.read_text())
     files = data.get('testResults', [])
     expected_paths = {str(checkout / p): p for p in TEST_PATHS}
-    assert len(files) == 2 and {f['name'] for f in files} == set(expected_paths), 'Wrong collected files'
-    tests = []
+    assert len(files) == 10 and {f['name'] for f in files} == set(expected_paths), 'Wrong collected files'
+    tests, target_tests, additional_tests = [], [], []
+    verified_files = []
     for result in files:
         target = expected_paths[result['name']]
-        spec = binding['expectedFiles'][target]
-        assert not result.get('message'), 'Module/hook error is not a regression'
+        assert not result.get('message'), 'Module/hook error is not proof'
         rows = result.get('assertionResults', [])
-        assert len(rows) == spec['total']
-        assert sorted(t['fullName'] for t in rows) == sorted(spec['fullNames'])
-        assert sum(t['status'] == 'passed' for t in rows) == spec['passed']
-        assert result['status'] == ('failed' if spec['passed'] < spec['total'] else 'passed')
+        assert rows and all(t['status'] == 'passed' and not t.get('failureMessages') for t in rows)
+        assert result['status'] == 'passed'
+        if target in TARGET_TEST_PATHS:
+            spec = binding['expectedFiles'][target]
+            assert len(rows) == spec['total'] == spec['passed']
+            assert sorted(t['fullName'] for t in rows) == sorted(spec['fullNames'])
+            target_tests.extend(rows)
+        else:
+            assert target in ADDITIONAL_TEST_PATHS
+            additional_tests.extend(rows)
         tests.extend(rows)
-    assert tests and data.get('numTotalTests') == len(tests), 'Incomplete assertion collection'
-    assert data.get('numPendingTests') == data.get('numTodoTests') == 0
+        verified_files.append({'path': target, 'passed': len(rows), 'target': target in TARGET_TEST_PATHS})
+    assert len(target_tests) == binding['expectedTargetTests'] == 33
+    assert sorted(t['fullName'] for t in target_tests) == sorted(binding['expectedTargetFullNames'])
+    assert len(additional_tests) >= binding['expectedAdditionalMinimumTests'] == 8
+    assert data.get('success') is True
+    assert data.get('numTotalTests') == data.get('numPassedTests') == len(tests)
+    assert data.get('numFailedTests') == data.get('numFailedTestSuites') == 0
+    assert data.get('numPendingTests') == data.get('numTodoTests') == data.get('numPendingTestSuites') == 0
     assert data.get('numRuntimeErrorTestSuites', 0) == 0
     console = '\n'.join((evidence / (name + suffix)).read_text(errors='replace') for suffix in ['.stdout', '.stderr'])
     clean = strip_ansi(console)
@@ -306,80 +319,12 @@ def parse_test_report(name):
             receipt['unconfirmedCommandGroups'].append(name + '/canonical-cleanup')
             raise AssertionError('Incomplete canonical cleanup: ' + forbidden)
     assert not re.search(r'\n\s+at [^\n]*scripts/lib/(?:vitest-worker-run|vitest-worker-artifacts|vitest-process|managed-child-process)\.', clean), 'Canonical owner raised outside the test assertion'
+    save(evidence / 'candidate-tests-verified.json', {
+        'targetPassed': len(target_tests), 'additionalPassed': len(additional_tests),
+        'totalPassed': len(tests), 'files': verified_files,
+        'jsonSHA256': digest(file),
+    })
     return data, tests, clean
-
-
-def parse_red():
-    data, tests, clean = parse_test_report('baseline-discord')
-    expected = binding['expectedFailures']
-    assert data.get('success') is False
-    assert len(tests) == binding['expectedTotalTests']
-    assert data.get('numPassedTests') == binding['expectedPassedTests']
-    assert data.get('numFailedTests') == len(expected)
-    assert sorted(t['fullName'] for t in tests) == sorted(binding['expectedFullNames'])
-    assert all(t['status'] in {'passed', 'failed'} for t in tests)
-    failed = [t for t in tests if t['status'] == 'failed']
-    assert {t['fullName'] for t in failed} == set(expected)
-    assert all(not t.get('failureMessages') for t in tests if t['status'] == 'passed')
-    blocks = {}
-    lines = clean.splitlines()
-    for test in failed:
-        spec = expected[test['fullName']]
-        messages = test.get('failureMessages', [])
-        assert len(messages) == 1, 'Additional assertion/hook failure attached to intended RED'
-        errors = messages[0]
-        assert 'AssertionError' in errors and spec['assertionMessage'] in errors
-        target = spec['path']
-        assert target in TEST_PATHS
-        source_lines = (checkout / target).read_text().splitlines()
-        locations = spec['assertionLocations']
-        assert len(locations) == 2 and len({x['line'] for x in locations}) == 2
-        assert locations == [
-            {'line': 793, 'source': json.dumps(spec['assertionMessage']) + ','},
-            {'line': 794, 'source': ').toEqual({ agentText: expectedAgentText, BodyForAgent: expectedAgentText });'},
-        ]
-        for location in locations:
-            assert source_lines[location['line'] - 1].strip() == location['source']
-        message_location = spec['messageLocation']
-        assert source_lines[message_location['line'] - 1].strip() == message_location['source']
-        assert spec['assertionMessage'] in message_location['source']
-        assert any(re.search(re.escape(target) + ':' + str(x['line']) + r':\d+', errors) for x in locations)
-        chain = ' > '.join([*test['ancestorTitles'], test['title']])
-        heading = re.compile(r'\s*FAIL\s+.*?' + re.escape(target) + r'\s+>\s+' + re.escape(chain) + r'\s*')
-        starts = [i for i, line in enumerate(lines) if heading.fullmatch(line)]
-        assert len(starts) == 1, 'Missing/duplicate exact failure block'
-        ends = [i for i in range(starts[0] + 1, len(lines)) if re.fullmatch(r'\s*⎯+\[\d+/' + str(len(failed)) + r'\]⎯+\s*', lines[i])]
-        assert ends, 'Missing failure block delimiter'
-        block = '\n'.join(lines[starts[0]:ends[0] + 1])
-        assert spec['failureBodyFragments'] and all(v in block for v in spec['failureBodyFragments'])
-        # The stack and custom message identify the intended final equality.
-        # Signed diff lines distinguish an empty received projection from another mismatch.
-        for key in ['agentText', 'BodyForAgent']:
-            assert re.search(r'^\+\s+"' + key + r'": "",?\s*$', block, re.M), 'Received projection was not empty'
-        assert re.search(r'^-.*\[Forwarded message\]', block, re.M)
-        assert re.search(r'^-.*?/status forwarded task content <@900000000000000003>', block, re.M)
-        blocks[test['fullName']] = block
-    save(evidence / 'expected-red-blocks.json', blocks)
-    save(evidence / 'baseline-red.json', {'tests': tests, 'jsonSHA256': digest(evidence / 'baseline-discord.json'),
-                                        'expectedFailureCount': len(failed)})
-
-def replace_test(name, expected_bytes, replacement, identity=None):
-    assert name in OVERLAY_PATHS
-    test_path = checkout / name
-    assert test_path.parent.resolve() == checkout / 'extensions/discord/src/monitor'
-    descriptor = os.open(test_path, os.O_RDWR | os.O_NOFOLLOW)
-    with os.fdopen(descriptor, 'r+b') as file:
-        metadata = os.fstat(file.fileno())
-        current_identity = (metadata.st_dev, metadata.st_ino)
-        if identity is not None:
-            assert current_identity == identity, 'Overlay inode was replaced'
-        assert file.read() == expected_bytes, 'Overlay content was replaced'
-        file.seek(0)
-        file.write(replacement)
-        file.truncate()
-        file.flush()
-        os.fsync(file.fileno())
-    return current_identity
 
 
 def verify_dependencies():
@@ -409,7 +354,7 @@ def verify_dependencies():
 def verify_native_ledgers():
     contract = binding['ledgerContract']
     assert contract['reviewed'] is True
-    console = strip_ansi((evidence / 'baseline-discord.stdout').read_text(errors='replace'))
+    console = strip_ansi((evidence / 'candidate-discord.stdout').read_text(errors='replace'))
     marker = contract['stdoutPrefix']
     assert marker == 'PROOF_137313_NATIVE:'
     rows = [json.loads(line[len(marker):]) for line in console.splitlines() if line.startswith(marker)]
@@ -452,12 +397,13 @@ def verify_native_ledgers():
         if drop:
             assert row['observation'] == {'admitted': False, 'dropLogged': True}
         else:
-            # Baseline-only: the two forwarded projections must be empty, while
-            # messageText retains the exact snapshot and intent remains raw sender text.
+            # The repaired owner passes composed text to the agent, while
+            # command and mention authority remain the sender's raw input.
             observation = {
                 'admitted': True, 'baseText': content,
                 'messageText': contract['forwardAgentText'] if forward else content,
-                'agentText': '' if forward else content, 'BodyForAgent': '' if forward else content,
+                'agentText': contract['forwardAgentText'] if forward else content,
+                'BodyForAgent': contract['forwardAgentText'] if forward else content,
                 'RawBody': content, 'CommandBody': content,
                 'CommandTurn': {'kind': 'normal', 'source': 'message', 'authorized': False, 'body': content},
                 'WasMentioned': False,
@@ -468,7 +414,7 @@ def verify_native_ledgers():
     save(evidence / 'native-ledgers.json', rows)
     save(evidence / 'native-ledgers-verified.json', {
         'scenarios': [s['name'] for s in scenarios], 'admitted': 4, 'mentionDropped': 1,
-        'joinedReplies': 4, 'preciseEmptyForwardedProjections': 2,
+        'joinedReplies': 4, 'completeForwardedProjections': 2,
         'rawCommandAndMentionAuthorityPreserved': True, 'restRoutesVerified': True,
         'runtimeErrors': 0, 'runtimeExits': 0, 'channelCacheEntriesCleared': 5,
         'verboseCalls': {'counts': [len(row['verboseCalls']) for row in rows],
@@ -482,22 +428,23 @@ try:
     assert platform.system() == 'Linux' and os.environ.get('RUNNER_ENVIRONMENT') == 'github-hosted'
     assert os.environ.get('RUNNER_OS') == 'Linux'
     assert os.environ.get('GITHUB_REPOSITORY') == 'steipete/openclaw'
-    assert os.environ.get('GITHUB_REF') == 'refs/heads/codex/round10-discord-forward-baseline-proof'
+    assert os.environ.get('GITHUB_REF') == 'refs/heads/codex/round10-discord-forward-candidate-proof'
     assert os.environ.get('GITHUB_EVENT_NAME') in {'push', 'workflow_dispatch'}
-    assert checkout.name == 'baseline'
-    assert binding['runnable'] is True and binding['candidateMayRun'] is False, 'Baseline packet is not sealed'
-    assert binding['baseHead'] == 'd2a616bdf373a5b3cac0add8e9b2f70cd0802f42'
-    assert re.fullmatch(r'[a-f0-9]{40}', binding['baseTree'])
-    assert len(overlays) == len(binding['overlays']) == 3 and set(overlays) == set(OVERLAY_PATHS)
-    assert binding['overlayPaths'] == OVERLAY_PATHS and set(TEST_PATHS) < set(OVERLAY_PATHS)
-    assert all(re.fullmatch(r'[a-f0-9]{64}', e['overlaySha256']) for e in overlays.values())
+    assert checkout.name == 'candidate'
+    assert binding['runnable'] is True and binding['candidateMayRun'] is True, 'Candidate packet is not bound'
+    assert re.fullmatch(r'[a-f0-9]{40}', binding['candidateHead'])
+    assert re.fullmatch(r'[a-f0-9]{40}', binding['candidateTree'])
+    assert binding['candidateHead'] != '0' * 40 and binding['candidateTree'] != '0' * 40
+    assert binding['candidateRepository'] == 'steipete/openclaw'
+    assert binding['pendingSourcePaths'] == []
     assert binding['nodeVersion'] == '24.19.0'
     assert binding['testPaths'] == TEST_PATHS and binding['testConfig'] == TEST_CONFIG
-    assert binding['expectedTotalTests'] == len(binding['expectedFullNames'])
-    assert binding['expectedPassedTests'] > 0 and binding['expectedFailures']
-    assert binding['expectedTotalTests'] == binding['expectedPassedTests'] + len(binding['expectedFailures'])
+    assert binding['targetTestPaths'] == TARGET_TEST_PATHS and binding['additionalTestPaths'] == ADDITIONAL_TEST_PATHS
+    assert binding['expectedTargetTests'] == len(binding['expectedTargetFullNames']) == 33
+    assert len(binding['committedFixtures']) == 3
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
-    assert set(OVERLAY_PATHS + ['package.json', 'pnpm-lock.yaml', 'scripts/run-vitest.mjs']).issubset(binding['sourceHashes'])
+    assert set(TEST_PATHS + ['package.json', 'pnpm-lock.yaml', 'scripts/run-vitest.mjs']).issubset(binding['sourceHashes'])
+    assert all(re.fullmatch(r'[a-f0-9]{64}', value) for value in binding['sourceHashes'].values())
     assert binding['ledgerContract']['reviewed'] is True
     assert binding['ledgerContract']['verboseCalls'] == {
         'maxCalls': 64, 'maxArgumentsPerCall': 1, 'maxArgumentUTF8Bytes': 4096,
@@ -512,18 +459,14 @@ try:
     verify_no_checkout_credentials(proof_root)
     verify_no_checkout_credentials(checkout)
     verify_assets()
-    for entry in overlays.values():
-        assert digest(assets / entry['artifact']) == entry['overlaySha256']
+    for entry in binding['committedFixtures']:
+        assert digest(assets / entry['artifact']) == entry['sha256'] == binding['sourceHashes'][entry['path']]
     assert binding['buildPolicy']['separateFullBuild'] is False
     save(evidence / 'git-toolchain.json', {'version': git_text('--version'),
          'executableSHA256': digest('/usr/bin/git'), 'optionalLocks': '0',
          'porcelainDiffIndex': 'exact disposable copy; real index remains guarded'})
     initial_guard = capture_source()
     assert not (checkout / 'node_modules').exists()
-    for name in OVERLAY_PATHS:
-        assert not (checkout / name).is_symlink()
-        original_tests[name] = (checkout / name).read_bytes()
-        assert sha(original_tests[name]) == overlays[name]['baselineSha256'] == binding['sourceHashes'][name]
     node = str(Path(shutil.which('node')).resolve())
     corepack = Path(node).parent / 'corepack'
     assert corepack.is_file() and corepack.resolve().is_relative_to(Path(node).parent.parent)
@@ -552,28 +495,44 @@ try:
     verify_dependencies()
     save(evidence / 'dependency-contracts.json', binding['dependencyFiles'])
     save(evidence / 'build-prerequisite-decision.json', binding['buildPolicy'])
-    source_guard('before-overlay')
-    for name in OVERLAY_PATHS:
-        entry = overlays[name]
-        overlay_identities[name] = replace_test(name, original_tests[name], (assets / entry['artifact']).read_bytes())
-    save(evidence / 'overlays.json', [
-        {'path': name, 'baselineSHA256': sha(original_tests[name]),
-         'overlaySHA256': overlays[name]['overlaySha256'],
-         'device': identity[0], 'inode': identity[1]}
-        for name, identity in overlay_identities.items()
-    ])
-    source_guard('overlays-installed')
-    receipt['regressionStarted'] = True
+    source_guard('before-docs-list')
+    assert binding['documentationProof'] == {
+        'command': ['pnpm', 'docs:list'], 'packageScript': 'node scripts/docs-list.js',
+        'owner': 'scripts/docs-list.js', 'requiredDoc': 'docs/channels/discord.md',
+        'runtimeImports': ['node:fs', 'node:path', 'node:url'],
+        'scope': 'Canonical source-doc metadata listing, not a docs build or full markdown lint.',
+    }
+    assert json.loads((checkout / 'package.json').read_text())['scripts']['docs:list'] == 'node scripts/docs-list.js'
     try:
-        run('baseline-discord', [node, 'scripts/run-vitest.mjs', 'run', '--config', TEST_CONFIG,
+        run('docs-list', [pnpm, 'docs:list'], runtime_env('docs-list'), 300)
+    finally:
+        source_guard('docs-listed')
+    docs_output = strip_ansi((evidence / 'docs-list.stdout').read_text(errors='replace'))
+    assert 'Listing all markdown files in docs folder:' in docs_output
+    assert re.search(r'^channels/discord\.md - \S', docs_output, re.M), 'Discord docs metadata absent'
+    save(evidence / 'docs-list-verified.json', {
+        'command': binding['documentationProof']['command'],
+        'packageScript': binding['documentationProof']['packageScript'],
+        'sourceOwnerSHA256': digest(checkout / 'scripts/docs-list.js'),
+        'discordDocSHA256': digest(checkout / 'docs/channels/discord.md'),
+        'stdoutSHA256': digest(evidence / 'docs-list.stdout'),
+        'requiredDocListed': True, 'exitCode': 0,
+        'scope': binding['documentationProof']['scope'],
+    })
+    receipt['docsListVerified'] = True
+    source_guard('before-tests')
+    receipt['candidateStarted'] = True
+    try:
+        run('candidate-discord', [node, 'scripts/run-vitest.mjs', 'run', '--config', TEST_CONFIG,
             *TEST_PATHS, '--reporter=verbose', '--reporter=json',
-            '--outputFile=' + str(evidence / 'baseline-discord.json')], runtime_env('discord'), 1800, exits=(1,))
+            '--outputFile=' + str(evidence / 'candidate-discord.json')], runtime_env('discord'), 1800)
     finally:
         source_guard('tested-before-parser')
-    parse_red()
+    parse_test_report('candidate-discord')
     receipt['nativeLedgerSHA256'] = verify_native_ledgers()
     receipt['nativeLedgerVerified'] = True
-    receipt.update(passed=True, phase='complete', baselineRedVerified=True)
+    assert receipt['docsListVerified'] is True
+    receipt.update(passed=True, phase='complete', candidateGreenVerified=True)
 except Exception as error:
     receipt['error'] = str(error)
     (evidence / 'failure.txt').write_text(traceback.format_exc())
@@ -582,16 +541,12 @@ finally:
         if initial_guard is not None:
             source_guard('before-cleanup')
         assert not receipt['unconfirmedCommandGroups'], 'Command closure unconfirmed; retain private runtime'
-        assert not receipt['regressionStarted'] or (
-            receipt['baselineRedVerified'] and receipt['nativeLedgerVerified']
-        ), 'Regression or its native receipt incomplete; retain overlays/runtime'
-        for name in list(overlay_identities)[::-1]:
-            replace_test(name, (assets / overlays[name]['artifact']).read_bytes(),
-                         original_tests[name], overlay_identities[name])
-            del overlay_identities[name]
-        receipt['overlaysRestored'] = True
+        assert not receipt['candidateStarted'] or (
+            receipt['candidateGreenVerified'] and receipt['nativeLedgerVerified']
+        ), 'Candidate tests or native receipts incomplete; retain private runtime'
         if initial_guard is not None:
             source_guard('final')
+            receipt['committedSourceUnmodified'] = True
         if scratch is not None:
             shutil.rmtree(scratch)
         receipt['ownedScratchRemoved'] = True
@@ -609,5 +564,5 @@ finally:
         receipt['cleanupErrors'].append(str(error))
         receipt['passed'] = False
     save(evidence / 'hosted-proof-result.json', receipt)
-    print(json.dumps({key: receipt[key] for key in ['passed', 'phase', 'baselineRedVerified', 'nativeLedgerVerified']}))
+    print(json.dumps({key: receipt[key] for key in ['passed', 'phase', 'candidateGreenVerified', 'nativeLedgerVerified', 'docsListVerified']}))
 sys.exit(0 if receipt['passed'] else 1)
