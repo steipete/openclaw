@@ -1,0 +1,12 @@
+{
+  "schema": "openclaw-hosted-proof-manifest-v1",
+  "incomplete": false,
+  "sha256": {
+    "README.md": "390297da0bf5a741a09315e78a094a43d3b09dcd24122284b1ca6034168b67a4",
+    ".github/workflows/126547-latency-diagnostics.yml": "fd84c5abc0d313994a9112b1aea9f3f6eb3249336fc9890c05bd0043483c0bb3",
+    ".github/proofs/continuation-sept3/126547-latency-diagnostics/descriptor.json": "1b43f70eaad6e4241a855b2665328d12a3150cc03439eb3f3ade27dc1ec108f3",
+    ".github/proofs/continuation-sept3/126547-latency-diagnostics/execution-binding.json": "319a593e4068890e372207e66574b6c32b92b8e80d4075b05d984552c45e62b3",
+    ".github/proofs/continuation-sept3/126547-latency-diagnostics/run-proof.py": "2ae3b1d2c30cac1a3aa66db4e6675cf3157207f330479aa65c32eaa69280422d",
+    ".github/proofs/continuation-sept3/126547-latency-diagnostics/source-comparison.json": "855800d0beee0a1fca0948c2c108027130619d97ac5475972cd7b9ef4cfd876b"
+  }
+}

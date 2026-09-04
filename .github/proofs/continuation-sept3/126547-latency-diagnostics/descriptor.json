@@ -1,0 +1,107 @@
+{
+  "check_name": "checks-node-compact-small-8",
+  "runtime": "node",
+  "task": "test-shard",
+  "shard_name": "compact-small-8",
+  "groups": [
+    {
+      "configs": [
+        "test/vitest/vitest.gateway-server.config.ts"
+      ],
+      "includePatterns": [
+        "src/gateway/server.agent.gateway-server-agent-auth-refresh.test.ts",
+        "src/gateway/server.agent.rpc-contracts.test.ts",
+        "src/gateway/server.chat-abort-dispatch-rejection.test.ts",
+        "src/gateway/server.chat-first-turn-binding.test.ts",
+        "src/gateway/server.chat-history-cursor.test.ts",
+        "src/gateway/server.chat.acp-completion.test.ts",
+        "src/gateway/server.sessions.abort-authorization.test.ts",
+        "src/gateway/server.sessions.archive-lifecycle.test.ts",
+        "src/gateway/server.sessions.archive-terminal.test.ts",
+        "src/gateway/server.sessions.cleanup-partial.test.ts",
+        "src/gateway/server.sessions.create-worktree-spawn.test.ts",
+        "src/gateway/server.sessions.create.projects.test.ts",
+        "src/gateway/server.sessions.create.test.ts",
+        "src/gateway/server.sessions.delete-lifecycle.test.ts",
+        "src/gateway/server.sessions.delete-worktree-lifecycle.test.ts",
+        "src/gateway/server.sessions.exec-binding-rpc.test.ts",
+        "src/gateway/server.sessions.fixture-lifecycle.test.ts",
+        "src/gateway/server.sessions.list-connection-reuse.test.ts",
+        "src/gateway/server.sessions.list-store-materialization.test.ts",
+        "src/gateway/server.sessions.permission-root.test.ts",
+        "src/gateway/server.sessions.placement-projection.test.ts",
+        "src/gateway/server.sessions.preview-resolve.test.ts",
+        "src/gateway/server.sessions.reclamation.test.ts",
+        "src/gateway/server.sessions.recovery-order.test.ts",
+        "src/gateway/server.sessions.reset-concurrency.test.ts",
+        "src/gateway/server.sessions.reset-hooks.test.ts",
+        "src/gateway/server.sessions.store-paths.test.ts",
+        "src/gateway/server.sessions.thinking-e2e.test.ts",
+        "src/gateway/server.sessions.worker-placement-lifecycle.test.ts"
+      ],
+      "requiresDist": false,
+      "runner": "blacksmith-4vcpu-ubuntu-2404",
+      "shard_name": "agentic-control-plane-agent-chat-hosted-1",
+      "timing_key": "agentic-control-plane-agent-chat#selector-60-b76d0921523e#generation-4e7e222058ad#part-1-of-2#include-29-8e238635385e"
+    },
+    {
+      "configs": [
+        "test/vitest/vitest.gateway-server.config.ts"
+      ],
+      "includePatterns": [
+        "src/gateway/openresponses-http.server.file-only.test.ts",
+        "src/gateway/server-http.canvas.test.ts",
+        "src/gateway/server-http.control-ui.test.ts",
+        "src/gateway/server-http.hooks-delivery.test.ts",
+        "src/gateway/server-http.hooks-request-timeout.test.ts",
+        "src/gateway/server-http.mcp-app-admission.test.ts",
+        "src/gateway/server-http.openai-compat.test.ts",
+        "src/gateway/server-http.probe.clock-rollback.test.ts",
+        "src/gateway/server-http.probe.test.ts",
+        "src/gateway/server-http.rejection-transport.test.ts",
+        "src/gateway/server-http.request-trace.test.ts",
+        "src/gateway/server-http.security-headers.test.ts",
+        "src/gateway/server-http.upgrade-claim.test.ts",
+        "src/gateway/server-methods.plugin-gateway-dispatch.test.ts",
+        "src/gateway/server-plugin-bootstrap.browser-plugin.integration.test.ts",
+        "src/gateway/server-plugin-runtime-generation.test.ts",
+        "src/gateway/server-plugin-subagent-runtime.test.ts",
+        "src/gateway/server-plugins.lifecycle.test.ts",
+        "src/gateway/server-plugins.subagent-ended-hook.test.ts",
+        "src/gateway/server-plugins.test.ts",
+        "src/gateway/server-retained-plugin-cleanup.test.ts",
+        "src/gateway/server.hooks-admission.test.ts",
+        "src/gateway/server.hooks-lane.test.ts",
+        "src/gateway/server.hooks-session-mode.test.ts",
+        "src/gateway/server.hooks.test.ts",
+        "src/gateway/server.plugin-http-role-scopes.test.ts",
+        "src/gateway/server/ws-connection/request-start.server.test.ts"
+      ],
+      "requiresDist": false,
+      "runner": "blacksmith-4vcpu-ubuntu-2404",
+      "shard_name": "agentic-control-plane-http-plugin-ws"
+    },
+    {
+      "configs": [
+        "test/vitest/vitest.commands.config.ts"
+      ],
+      "includePatterns": [
+        "src/commands/doctor-gateway-auth-token.windows.test.ts",
+        "src/commands/doctor-gateway-daemon-flow.test.ts",
+        "src/commands/doctor-gateway-health.test.ts",
+        "src/commands/doctor-gateway-services.authority.test.ts",
+        "src/commands/doctor-gateway-services.test.ts"
+      ],
+      "requiresDist": false,
+      "runner": "blacksmith-4vcpu-ubuntu-2404",
+      "shard_name": "agentic-commands-doctor-gateway"
+    }
+  ],
+  "git_commits": [],
+  "requires_dist": false,
+  "runner": "blacksmith-4vcpu-ubuntu-2404",
+  "plan_concurrency": 1,
+  "predicted_seconds": 210,
+  "requires_go": false,
+  "requires_ripgrep": false
+}
