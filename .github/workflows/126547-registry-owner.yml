@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: steipete/openclaw
-          ref: 1d713a71b11f659c3c8ebdc26c387856ae991d6e
+          ref: cba4987b5e94aa380ac2da8b8a322839dea15e4f
           path: source
           fetch-depth: 2
           persist-credentials: false
@@ -45,7 +45,7 @@ jobs:
       - name: Run exact owner test through its native wrapper
         shell: bash
         env:
-          DIAGNOSTIC_LANE: baseline
+          DIAGNOSTIC_LANE: candidate
           CACHE_GENERATION: ${{ hashFiles('source/pnpm-lock.yaml', 'source/pnpm-workspace.yaml', 'source/**/package.json', 'source/**/tsconfig*.json', 'source/vitest.config.*', 'source/test/vitest/**', 'source/src/state/*.sql', '!source/**/node_modules/**') }}
         run: |
           set -euo pipefail

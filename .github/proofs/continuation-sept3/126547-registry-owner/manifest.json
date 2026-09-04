@@ -2,9 +2,9 @@
   "schema": "openclaw-hosted-proof-manifest-v1",
   "incomplete": false,
   "sha256": {
-    "README.md": "ffc427622d90e173737cb9e9a887918cf0fbfba7dcb3b841a4fae7ed0aa5ae58",
-    ".github/workflows/126547-registry-owner.yml": "f7c2d678ab0c259b96fd9b207724caf9b50817dd1be23a1f4b633209df69c5f0",
-    ".github/proofs/continuation-sept3/126547-registry-owner/execution-binding.json": "232b1d87606fd58a6b251497948d11a20e155d150032d93f9215d2f29e19b8ff",
+    "README.md": "231508a5697f272b80ff35c9a53761584683b68785a4c827e8dc39d5b67247b2",
+    ".github/workflows/126547-registry-owner.yml": "2b6051fdb6a75dc41fb85f03d42cf58a67404aed986fa27ffffc2acc178d6f42",
+    ".github/proofs/continuation-sept3/126547-registry-owner/execution-binding.json": "f1477192ca008c456aa9d739e4400973300416c1c79f811089c71173ea861a48",
     ".github/proofs/continuation-sept3/126547-registry-owner/run-proof.py": "99e3a13c7f52c7203bc6c2e1f58cafd5cc09120041b94766ebc45f531b0523a2"
   }
 }
