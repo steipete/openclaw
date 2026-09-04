@@ -335,19 +335,22 @@ try:
     assert packet['comparison']['candidateTree'] == binding['candidateTree']
     assert packet['comparison']['parents'] == binding['parents']
     assert [group['order'] for group in binding['checkGroups']] == [
-        ['type-stripe-1', 'type-stripe-2'], ['core-lint-1', 'extension-lint-1'],
+        ['core-lint-1', 'extension-lint-1'], ['extension-lint-6', 'scripts-lint', 'format-check'],
     ]
     assert all(group['timeoutSeconds'] == 900 and group['shortCircuit'] is True for group in binding['checkGroups'])
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
     assert not binding['absentSourcePaths']
     assert [case['name'] for case in binding['commands']] == [
-        'prod-types', 'type-stripe-1', 'type-stripe-2', 'core-lint-1', 'extension-lint-1',
+        'audit-prod', 'core-lint-1', 'extension-lint-1', 'extension-lint-6', 'scripts-lint', 'format-check',
     ]
     assert all(case['timeoutSeconds'] == 900 for case in binding['commands'])
     assert {'package.json', 'pnpm-lock.yaml', '.github/workflows/ci.yml',
-            'scripts/run-tsgo-core-test-shards.mjs', 'scripts/lib/tsgo-core-test-shards.mts',
-            'scripts/run-oxlint-shards.mts', 'scripts/run-tsgo.mjs',
-            'tsconfig.core.json', 'tsconfig.ui.json', 'tsconfig.extensions.json'}.issubset(binding['sourceHashes'])
+            'scripts/pre-commit/pnpm-audit-prod.mjs', 'scripts/lib/pnpm-lockfile-documents.mjs',
+            'packages/normalization-core/src/record-coerce.ts', 'scripts/lib/bounded-response.mjs',
+            'scripts/run-oxlint-shards.mts', 'scripts/run-oxlint.mts', '.oxfmtrc.jsonc',
+            '.oxlintrc.json', 'config/tsconfig/oxlint.scripts.json',
+            'src/gateway/server-reload-handlers.test.ts',
+            'extensions/memory-core/src/tools.recall-tracking.test.ts'}.issubset(binding['sourceHashes'])
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
     assert manifest.get('incomplete') is False, 'Publication asset manifest is incomplete'

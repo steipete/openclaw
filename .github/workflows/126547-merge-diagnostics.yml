@@ -1,4 +1,4 @@
-name: Secretless Gateway reload candidate check diagnostics
+name: Secretless Gateway reload audit and lint diagnostics
 on:
   push:
     branches: [codex/round10-plugin-reload-merge-diagnostics]
@@ -18,7 +18,7 @@ jobs:
         include:
           - lane: candidate
             repository: steipete/openclaw
-            head: 14d16f96df4268fdec63c28bfc0f06bf7d15338f
+            head: c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b
     steps:
       - name: Checkout reviewed diagnostic assets
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

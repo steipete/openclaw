@@ -6,15 +6,20 @@
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "lanes": {
     "candidate": {
-      "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
-      "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
+      "candidateHead": "c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b",
+      "candidateTree": "fea15fc697239a33fcdd90326924bc6fe0bb1af2",
       "candidateRepository": "steipete/openclaw",
       "parents": [
-        "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
+        "14d16f96df4268fdec63c28bfc0f06bf7d15338f"
       ],
       "requiredSourcePaths": [
+        ".gitattributes",
         ".github/actions/setup-node-env/action.yml",
         ".github/workflows/ci.yml",
+        ".gitignore",
+        ".npmrc",
+        ".oxfmtrc.jsonc",
+        ".oxlintrc.json",
         "AGENTS.md",
         "VISION.md",
         "config/assertion-safety-baseline.txt",
@@ -22,14 +27,17 @@
         "config/knip.config.ts",
         "config/knip.scripts-exports.config.ts",
         "config/tsconfig/oxlint.core.json",
+        "config/tsconfig/oxlint.scripts.json",
         "docs/AGENTS.md",
         "docs/gateway/configuration.md",
         "docs/plugins/architecture.md",
+        "extensions/memory-core/src/tools.recall-tracking.test.ts",
         "extensions/tsconfig.json",
         "node-version.mjs",
         "package.json",
         "packages/markdown-core/src/code-spans.test.ts",
         "packages/markdown-core/src/code-spans.ts",
+        "packages/normalization-core/src/record-coerce.ts",
         "packages/normalization-core/src/utf16-slice.ts",
         "patches/@novnc__novnc@1.7.0.patch",
         "patches/vitest@4.1.11.patch",
@@ -39,9 +47,11 @@
         "scripts/build-all.mts",
         "scripts/check-deadcode-exports.mts",
         "scripts/check-deadcode-unused-files.mts",
+        "scripts/ci-changed-scope.mjs",
         "scripts/deadcode-knip-runner.mts",
         "scripts/lib/bounded-response.mjs",
         "scripts/lib/build-artifact-cache.mts",
+        "scripts/lib/changed-path-facts.mjs",
         "scripts/lib/dist-artifact-ownership.mts",
         "scripts/lib/extension-boundary-inputs.mts",
         "scripts/lib/failed-trailer.mts",
@@ -64,6 +74,7 @@
         "scripts/pre-commit/pnpm-audit-prod.mjs",
         "scripts/prepare-extension-package-boundary-artifacts.mts",
         "scripts/run-oxlint-shards.mts",
+        "scripts/run-oxlint.mjs",
         "scripts/run-oxlint.mts",
         "scripts/run-tsgo-core-test-shards.mjs",
         "scripts/run-tsgo-core-test-shards.mts",
@@ -165,8 +176,13 @@
         "tsdown.config.ts"
       ],
       "sourceHashes": {
+        ".gitattributes": "62a9a855679f6b63a2725ec583521b12101b114fd22531c7b1cc9764c1b61b27",
         ".github/actions/setup-node-env/action.yml": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
         ".github/workflows/ci.yml": "a97d6cb7a6eb6f0e359281ff8fc8b4a59f44bd2a8110809bc511716aef80c8a5",
+        ".gitignore": "a6b1c9a36cbd6625c42a120b12584ccacaff5d3b4988177111aed5403c668bd7",
+        ".npmrc": "f1d021e2abdf8817d83e35feb1f5d604e8c985aa0553bec3d417cf6f93e9c09c",
+        ".oxfmtrc.jsonc": "7dc8cb7b98669acb4665b624eb16ab95d2f20d29b34baab133ca71855ece3691",
+        ".oxlintrc.json": "fd7bb3f8aad018585428c601c7080eb7bb1d47fa236751759fac5dc8c8251b15",
         "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
         "VISION.md": "46e253fa54a37082efa9d5df10cc77e6e156e92fe40bc3a9cf9215c68befc910",
         "config/assertion-safety-baseline.txt": "ec5df4b3ea751608bde5a7039fcdb604d9f2e350756fbd812948a3d26857aef7",
@@ -174,14 +190,17 @@
         "config/knip.config.ts": "2f0f1c17f35da64539079b5ece24ecfa7acf275e9367150591b1d5d9724b7109",
         "config/knip.scripts-exports.config.ts": "ccee1e548d43f7949f13a405f24514feda9d546e821bd0002dc77b57611c1db7",
         "config/tsconfig/oxlint.core.json": "a9d15702a6f78492285990e6cdfbd88ae2f7f5a386b4486f742734b3a1289253",
+        "config/tsconfig/oxlint.scripts.json": "60b58fed08f2fe2694b6bc15bbedf024e83cf315ed5a11bdcc0963a5ee3e3867",
         "docs/AGENTS.md": "f2a9f267d1fb06f7753d69ef1389136ab929f334a5d87bfde9cdaeaec929c16d",
         "docs/gateway/configuration.md": "4da1e4323c9cd16ffc9f6da8024769d20e757d4e8c5d748e5101e4818a673f91",
         "docs/plugins/architecture.md": "b5ceb3cd3f158c873c6afb971ec3e275a222bcd553552de8d2ae8ff3c46f46c8",
+        "extensions/memory-core/src/tools.recall-tracking.test.ts": "bf9a0f4f19cfe68744410d401c328ee99917ce3778c6b3c8ab92dc808fb542d8",
         "extensions/tsconfig.json": "76b3187c3beb694090ba48eabe55794f9247299b0ec64322ceaf04b1ccd4c494",
         "node-version.mjs": "8ca5102f3beaea724f23bab3f92527d772de1470b3af6f3edce18b296342c8da",
         "package.json": "1fcbfb22c59894314f929d711b69c6f08fd1f58e5cefcbfdb2ba1e6d0658abe9",
         "packages/markdown-core/src/code-spans.test.ts": "6526343695dd6b250b4529d2f971baf3876d99aa7908f92ca9b95ed2923c9b62",
         "packages/markdown-core/src/code-spans.ts": "6d4e5c5949b19421b8b8a7376d220ec5aeced387d9d2931533b81ff98c2c36eb",
+        "packages/normalization-core/src/record-coerce.ts": "a5f7df2bfb3218e403448d43491a79ad90a70ed496754e82cb2d424e770c4b28",
         "packages/normalization-core/src/utf16-slice.ts": "12fd3212b08522a1523263c92f654151ad01605ee48a0ff58a1256889fb7cb5f",
         "patches/@novnc__novnc@1.7.0.patch": "bfde0e1bda172da3525f9f5014d85ad28073325b74f09609084598a65d2f412d",
         "patches/vitest@4.1.11.patch": "c21477c229514823498ab3a08311070cec46b1811e866bc1b3f6ff3f5720da2e",
@@ -191,9 +210,11 @@
         "scripts/build-all.mts": "139eda5421c92098645b3a3d8bcd0b4cdb3f4a7c1d05237b28d69f3f1a48592e",
         "scripts/check-deadcode-exports.mts": "67598195462ae61a157efc0800f71343b571a4b18ece49b19373ca966f9b2205",
         "scripts/check-deadcode-unused-files.mts": "872e75e064251957084e2efb113ac805ec4ef26e6b05b829529ab4a64cd5a24d",
+        "scripts/ci-changed-scope.mjs": "de1868b865ac39dea6620b89b173c22ea0d9ca5ee41ef7c4df569a07787c3175",
         "scripts/deadcode-knip-runner.mts": "fdcb3297ba9a5bca39edd41a54c696eb535e28602bea27e62c8af64b396a5525",
         "scripts/lib/bounded-response.mjs": "a184e4db3490fdda4bf62f65702e970048798d8ab86c1a94a0f18f0ffb65e033",
         "scripts/lib/build-artifact-cache.mts": "3f35bd1920d732dabbd8d926ad16b3a474586d6b41e7f162dd107695656193d3",
+        "scripts/lib/changed-path-facts.mjs": "f3d437fc305d3691519ceec2bfef2ff071bff1202a81df4e754d051a953dac4c",
         "scripts/lib/dist-artifact-ownership.mts": "0c03cacc008a92053860aefff04a89e64cdb342a6d953b34ff650b982a444593",
         "scripts/lib/extension-boundary-inputs.mts": "032dee644b4e930b8e2fe8a2093722a68a76b292ee2e10d2fe56511202396d9d",
         "scripts/lib/failed-trailer.mts": "86ba752b93f3101839d2cac39cb4f0d13477807c8ed5ad569ba23dddaf986796",
@@ -216,6 +237,7 @@
         "scripts/pre-commit/pnpm-audit-prod.mjs": "20d60a593ccf470eb74a49d2e1da29c17709e148023569ae214a32fc9ddefe6e",
         "scripts/prepare-extension-package-boundary-artifacts.mts": "41bea5ecc54ece37ef0b703a1402c7aed47cb94e886f41bb6028754b8eef8177",
         "scripts/run-oxlint-shards.mts": "c88f58f906094f9e0d9a2ad35c91bcbef57305f1265cda2d0072450cd827dbd7",
+        "scripts/run-oxlint.mjs": "01d9d4c196c38962590420f090c1ed611bea8bafeffda7d2647ef3d0d49edf11",
         "scripts/run-oxlint.mts": "aa0c1abaf70ef3340aa8a75b49d8fdd84cfab37aeeb6a31d7796849f7b284459",
         "scripts/run-tsgo-core-test-shards.mjs": "a4ce824feb9bb0cf2254acb5378d396764a713f3b568957dc91a7f4118813452",
         "scripts/run-tsgo-core-test-shards.mts": "61a81f5ee04b6d7c7bde35220f9b2dc010acb62dc6627e9704c534601ef13035",
@@ -262,7 +284,7 @@
         "src/gateway/server-reload-channel-restart.ts": "784f69b49846dd4c4984420bb9a054e2934f93954083e84b2e7d3f311600a73d",
         "src/gateway/server-reload-contracts.ts": "4017d7f660f4cb90a1178bd2d0f0f3dd54b4e413c8521cc8792634bcfa58d2a0",
         "src/gateway/server-reload-handlers.hot-reload-status.test.ts": "dada40a96d65d3379cdb5072087d2766f60b33d3f08075a280e950b6dc9dc6e6",
-        "src/gateway/server-reload-handlers.test.ts": "635b803d6e584b7df10effe823247d71c27e9d174ffa97519bc9807925cdae5c",
+        "src/gateway/server-reload-handlers.test.ts": "9441a030f656765b2d5596ae91e70685550a762a000319f059a4a4580ecc491a",
         "src/gateway/server-reload-hot.ts": "cc43f700b54eeaa0420b93dbcd84664df042fef03066a1bf094baeaa07fb0063",
         "src/gateway/server-reload-managed.ts": "b494141beca0178be44d3af584b0dd7329d837838d1fe3db328ce6afe46d0342",
         "src/gateway/server-runtime-state-prepare.ts": "5e2b22e1c3209bcd9c01415b08fed744d5fabafb9b3ad1cea97b360ada7b1f85",
@@ -321,55 +343,18 @@
   },
   "commands": [
     {
-      "name": "prod-types",
-      "argv": [
-        "pnpm",
-        "tsgo:prod"
-      ],
-      "timeoutSeconds": 900,
-      "env": {
-        "OPENCLAW_LOCAL_CHECK": "0"
-      },
-      "source": [
-        ".github/workflows/ci.yml:3459",
-        ".github/workflows/ci.yml:3536",
-        "package.json:tsgo:prod"
-      ]
-    },
-    {
-      "name": "type-stripe-1",
+      "name": "audit-prod",
       "argv": [
         "node",
-        "scripts/run-tsgo-core-test-shards.mjs",
-        "--stripe",
-        "1/5",
-        "--concurrency",
-        "2"
+        "scripts/pre-commit/pnpm-audit-prod.mjs",
+        "--audit-level=high"
       ],
       "timeoutSeconds": 900,
       "env": {},
       "source": [
-        ".github/workflows/ci.yml:3830",
-        ".github/workflows/ci.yml:3831",
-        "scripts/lib/tsgo-core-test-shards.mts:101"
-      ]
-    },
-    {
-      "name": "type-stripe-2",
-      "argv": [
-        "node",
-        "scripts/run-tsgo-core-test-shards.mjs",
-        "--stripe",
-        "2/5",
-        "--concurrency",
-        "2"
-      ],
-      "timeoutSeconds": 900,
-      "env": {},
-      "source": [
-        ".github/workflows/ci.yml:3830",
-        ".github/workflows/ci.yml:3831",
-        "scripts/lib/tsgo-core-test-shards.mts:101"
+        ".github/workflows/ci.yml:1925",
+        "scripts/pre-commit/pnpm-audit-prod.mjs:runPnpmAuditProd",
+        "scripts/pre-commit/pnpm-audit-prod.mjs:parseArgs"
       ]
     },
     {
@@ -412,43 +397,90 @@
         ".github/workflows/ci.yml:3786",
         ".github/workflows/ci.yml:3788"
       ]
+    },
+    {
+      "name": "extension-lint-6",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-oxlint-shards.mts",
+        "--only=extensions",
+        "--extension-stripe=6/6",
+        "--threads=1"
+      ],
+      "timeoutSeconds": 900,
+      "env": {
+        "OPENCLAW_LOCAL_CHECK": "0"
+      },
+      "source": [
+        ".github/workflows/ci.yml:3556",
+        ".github/workflows/ci.yml:3575"
+      ]
+    },
+    {
+      "name": "scripts-lint",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-oxlint-shards.mts",
+        "--only=scripts",
+        "--threads=1"
+      ],
+      "timeoutSeconds": 900,
+      "env": {
+        "OPENCLAW_LOCAL_CHECK": "0"
+      },
+      "source": [
+        ".github/workflows/ci.yml:3557",
+        ".github/workflows/ci.yml:3582"
+      ]
+    },
+    {
+      "name": "format-check",
+      "argv": [
+        "pnpm",
+        "format:check"
+      ],
+      "timeoutSeconds": 900,
+      "env": {
+        "OPENCLAW_LOCAL_CHECK": "0"
+      },
+      "source": [
+        ".github/workflows/ci.yml:1331",
+        ".github/workflows/ci.yml:3586",
+        "package.json:format:check",
+        ".oxfmtrc.jsonc"
+      ]
     }
   ],
   "comparison": {
-    "kind": "fixed-candidate-check-diagnostics",
-    "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
-    "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
+    "kind": "fixed-candidate-audit-and-lint-diagnostics",
+    "candidateHead": "c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b",
+    "candidateTree": "fea15fc697239a33fcdd90326924bc6fe0bb1af2",
     "parents": [
-      "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
+      "14d16f96df4268fdec63c28bfc0f06bf7d15338f"
     ],
     "originalFailedCiCheckoutProven": false,
-    "upstreamRun": 33856860010,
+    "upstreamRun": 33867965245,
+    "attempt": 2,
     "workloadProfile": "github",
-    "profileBinding": "Inference from the retained complete five-job lint matrix and exact be7 PR workflow; current non-frozen hybrid would contain only three lint jobs.",
-    "scope": "Verify four source-confirmed test no-array-sort repairs after hosted diagnostic33860865192; prior production and two core type stripes passed."
+    "profileBinding": "Parent-retained complete five-job core-lint matrix plus unchanged current workflow; normal non-frozen hybrid PR has three paired core jobs. Physical GitHub runner labels alone do not establish logical profile.",
+    "scope": "Only audit, core1/plugin1, and aggregate plugin6/scripts/format; no type, test or full-build repetition."
   },
   "excluded": [
-    "Production dependency audit and Knip: not among the three newly failed jobs",
-    "Lifecycle/tests/build: separately owned proof; no repeat",
-    "Original failed CI test-merge source attribution: not established"
+    "Production and test type checks already passed on prior source; not repeated",
+    "Runtime tests and full build separately owned; not repeated",
+    "Original failed CI checkout/workflow source identity remains unproved"
   ],
   "fullBuild": {
     "run": false,
-    "reason": "Preserve native selected checks; tsgo:prod owns its core/UI/plugin chain and extension lint prepares its canonical package boundary artifacts."
+    "reason": "Selected native lint owner may prepare its canonical package boundary artifacts; no standalone build is added."
   },
   "checkGroups": [
     {
-      "name": "type-group",
-      "upstreamJob": "check-test-types-core-1",
-      "order": [
-        "type-stripe-1",
-        "type-stripe-2"
-      ],
-      "timeoutSeconds": 900,
-      "shortCircuit": true
-    },
-    {
-      "name": "lint-group",
+      "name": "core-lint-group",
       "upstreamJob": "check-lint-core-1",
       "order": [
         "core-lint-1",
@@ -456,6 +488,35 @@
       ],
       "timeoutSeconds": 900,
       "shortCircuit": true
+    },
+    {
+      "name": "aggregate-lint-group",
+      "upstreamJob": "check-lint",
+      "order": [
+        "extension-lint-6",
+        "scripts-lint",
+        "format-check"
+      ],
+      "timeoutSeconds": 900,
+      "shortCircuit": true
     }
-  ]
+  ],
+  "formatGate": {
+    "enabled": true,
+    "source": ".github/workflows/ci.yml:1331",
+    "reason": "Current non-frozen target: !frozenTarget is true, independently of changed path suffixes."
+  },
+  "uiLintGate": {
+    "runControlUiI18n": false,
+    "runUiTests": false,
+    "evidence": "Verified14d plan33863693175 has both false; c8 changes only memory recall-tracking test and Gateway reload-handler test, with unchanged scope/planner source.",
+    "source": "scripts/ci-changed-scope.mjs:112-125,287-294; the two incremental test paths match neither UI predicate"
+  },
+  "auditClassification": {
+    "0": "completed npm bulk check; not comprehensive vulnerability clearance",
+    "1": "findings or permanent/malformed error; inspect retained stderr",
+    "2": "unavailable/incomplete audit, never clearance",
+    "noParserChange": true,
+    "noTimeoutOrRegistryOverride": true
+  }
 }
