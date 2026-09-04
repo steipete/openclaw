@@ -1,0 +1,5195 @@
+{
+  "source": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+  "sameAtBaseline": "5aaafb76c427d383e5eefc8a6934f895dd82880e",
+  "trees": {
+    "extensions/qa-lab": "c279067ff799612e17881b2db854e94235eba02d",
+    "extensions/qa-channel": "acc73399bc79878201f8c871a6d0d9bb3b0e0f8d",
+    "test/vitest": "cf0bc88db2c6412cf3077de2b7928dc894c8d772"
+  },
+  "entries": [
+    {
+      "path": "extensions/qa-channel/api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fbcba2fc97994d649468a0ee1c009988d9ee89de"
+    },
+    {
+      "path": "extensions/qa-channel/assets/icon.png",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0b7a0063658dc317e146b3f08f1d45b59b2e30f4"
+    },
+    {
+      "path": "extensions/qa-channel/channel-plugin-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "74ab5fdfdc56ba7be5ac966c19880839302f9cf6"
+    },
+    {
+      "path": "extensions/qa-channel/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "45d4bbd2667b580ce51a4a035b23e3f71a7597e1"
+    },
+    {
+      "path": "extensions/qa-channel/openclaw.plugin.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ebd1d5fb0227778e511332491cc63e32c5d56b6b"
+    },
+    {
+      "path": "extensions/qa-channel/package.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7d0e723732869a2ab85ca674aad85d59912daff1"
+    },
+    {
+      "path": "extensions/qa-channel/runtime-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b4bcab232fe09d148a6d472b601d2eb415ab4d5e"
+    },
+    {
+      "path": "extensions/qa-channel/setup-entry.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "254fa705be0bab0861ab71443c528b8720befb8c"
+    },
+    {
+      "path": "extensions/qa-channel/setup-entry.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6baec4d71b5bad13cc3635255d559114374b7b97"
+    },
+    {
+      "path": "extensions/qa-channel/setup-plugin-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f6a17f83dd3b0bb4a5dce5c977d5892b45624b65"
+    },
+    {
+      "path": "extensions/qa-channel/src/accounts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a1a321654ce7c3203675a5e09410d834ec499218"
+    },
+    {
+      "path": "extensions/qa-channel/src/bus-client.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b3ee67c6dd9e1b3a67f63508af74c5a93a547946"
+    },
+    {
+      "path": "extensions/qa-channel/src/bus-client.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3eb6e49287de63063ec07a4b17772d72019eb284"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel-actions.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "615bdbd0590edfb00ef64b23c5abc60896cdb8cc"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel-actions.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "07c451ddc40bed422e7cb54579411badd7965ffd"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel-base.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4a73964f6abcb4a37f2aaab91d98bad7c2e7256b"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel.setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fabaf07891b8d2e864a4624c104f5d8c0a6071a4"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "584f5b05e95476cb98d84604beffcaac7cb30a76"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel.threading.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c56be3d5d48013e98f66afb1398ebd65c3280024"
+    },
+    {
+      "path": "extensions/qa-channel/src/channel.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "83b696f41c39d6a10b3a61fbf313c859ec4b027e"
+    },
+    {
+      "path": "extensions/qa-channel/src/config-schema.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6ab4166b3758764e9dfa46808ec6b0f77e5cb9c4"
+    },
+    {
+      "path": "extensions/qa-channel/src/gateway.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2740def0af85ac23272a7b9232cfd568c8259d55"
+    },
+    {
+      "path": "extensions/qa-channel/src/gateway.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "716af69af030a5519c9c71de262340c029295a65"
+    },
+    {
+      "path": "extensions/qa-channel/src/inbound-preview-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2fd0e389055940693d1cfd741c931bfc90c67ddf"
+    },
+    {
+      "path": "extensions/qa-channel/src/inbound.test-harness.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e25f1ddc901685d908cab2695c34b971756697a2"
+    },
+    {
+      "path": "extensions/qa-channel/src/inbound.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aaa541618486d385e558fcf2e7daa03fb1aaed00"
+    },
+    {
+      "path": "extensions/qa-channel/src/inbound.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c33f712ac2dde29dd6affcf10e73b8cd23b64859"
+    },
+    {
+      "path": "extensions/qa-channel/src/outbound.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "53cf2d55132ed348adf7f8d3df0fd49fd0a3fa47"
+    },
+    {
+      "path": "extensions/qa-channel/src/outbound.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d530611c39188607f4b596cb36dd902947f95a69"
+    },
+    {
+      "path": "extensions/qa-channel/src/protocol.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6ba87164c50876eee7a7703fc2c49691ef5cd161"
+    },
+    {
+      "path": "extensions/qa-channel/src/runtime-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4d7da1368ae13f1f8178cc5cc0ba40f346b917a8"
+    },
+    {
+      "path": "extensions/qa-channel/src/runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "88b139d78b247d5bfc72527fda721e65d969b711"
+    },
+    {
+      "path": "extensions/qa-channel/src/setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "52416e570ff89b8036706262d6a06d6d9a1eef74"
+    },
+    {
+      "path": "extensions/qa-channel/src/status.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f85d35458516ff010c87a57562e78814ee82abcc"
+    },
+    {
+      "path": "extensions/qa-channel/src/types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f670e13bfde8953519d792a768ab64a545c7c9ac"
+    },
+    {
+      "path": "extensions/qa-channel/test-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2ae97f46e9733c0e430a118c769dfeed0b686d9e"
+    },
+    {
+      "path": "extensions/qa-channel/tsconfig.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c40eba47b3b40147b894785f878e74abdfd36e4f"
+    },
+    {
+      "path": "extensions/qa-lab/api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0a43ba09a3c41fc326da7ae866ffc4b98cb17f76"
+    },
+    {
+      "path": "extensions/qa-lab/assets/icon.png",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0b7a0063658dc317e146b3f08f1d45b59b2e30f4"
+    },
+    {
+      "path": "extensions/qa-lab/bus-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0f83a981031ba75b456c2daad59c0f91ad1fb214"
+    },
+    {
+      "path": "extensions/qa-lab/cli-metadata.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "26456478d760fdbc705fea6e35d49d7428f3e27f"
+    },
+    {
+      "path": "extensions/qa-lab/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c8c600526324b646c73b5303f6f58c1cafbae42a"
+    },
+    {
+      "path": "extensions/qa-lab/confidence-profiles/codex-100.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "05053ad13e706d7e9f8818f60a649230329642bc"
+    },
+    {
+      "path": "extensions/qa-lab/index.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "db29fde22bf7bd3305832c18789fc29b93920902"
+    },
+    {
+      "path": "extensions/qa-lab/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ddec25feceab188c491be06288f0c3dd1c6802b3"
+    },
+    {
+      "path": "extensions/qa-lab/model-selection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f4f3f2b05c7b415fedc287caf52893645ce15c17"
+    },
+    {
+      "path": "extensions/qa-lab/openclaw.plugin.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "475eb0d8a0f59e43ffa7444e43fe01e0241173af"
+    },
+    {
+      "path": "extensions/qa-lab/package.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1dbfccf26d803045c54b6811f0e4aa479a765d00"
+    },
+    {
+      "path": "extensions/qa-lab/runner-contract.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cadce331dc430439feb41aaf6d614de1212b68dc"
+    },
+    {
+      "path": "extensions/qa-lab/runtime-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5955288b658c90cd6a7e3ef50346e9bcb761d072"
+    },
+    {
+      "path": "extensions/qa-lab/shared/evidence-gallery-types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bf7c36836b5cda74427c57983511347bfdbd9b4f"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-cache-usage.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "67cb8b45489c549a7d90ade039fac1d44d0f18d5"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-report-test-helpers.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3444af502009e42dc68e1f6a250f60dfd455083d"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-report.cache.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "428c349832631bac129d48f9b85dcaed4f839bf5"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-report.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7f189fbdc65ec1910c3cc3c87f03ae807c1b795b"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-report.timing.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a34420333229a2fc9a15c06eb3428713c0cd2f5f"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "947744f97b69da4ed48e3c32c3dd55f69e957202"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-runtime-markdown.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a0630c953e19b72256dd6e6d16e9c1964c179a27"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity-runtime-report-contract.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7e7b9b0227ddb348926b692b5513eb3cdd09d35c"
+    },
+    {
+      "path": "extensions/qa-lab/src/agentic-parity.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a86d9c5b8de4ce20fb5fb4b72edc6d6e1ee2f6d5"
+    },
+    {
+      "path": "extensions/qa-lab/src/artifact-assertion.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "930a73cd89ba298fd604aaadf5c956c6f4e908e9"
+    },
+    {
+      "path": "extensions/qa-lab/src/artifact-run-id.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "efe5783af210388a9137a401147ad91fd0dfdb0c"
+    },
+    {
+      "path": "extensions/qa-lab/src/auth-profile.fixture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "021992d0e145d34829cc04619bbcc7d634072760"
+    },
+    {
+      "path": "extensions/qa-lab/src/browser-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8a06b8d58f8f2fce97ce27ab25b4023e07d8e4bf"
+    },
+    {
+      "path": "extensions/qa-lab/src/browser-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "74cae2a2fea9a1f09b3741800af674be975a7245"
+    },
+    {
+      "path": "extensions/qa-lab/src/bundled-plugin-staging.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "648637e19ac669364c3bfc40346a49f1dc081661"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-queries.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "02110d3ae5c42104dd08f2e77c14bb733a9d7a6a"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-server.shutdown.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "62b1a569ffd2d46df7cd265294af5bcf083341a5"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-server.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "15993b268495b9430ba6f75322fc97dcfced7c09"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-server.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ef15894e6be8ca9ad49ba148a1461f7855a9e810"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-state.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "41694b491964f66bcdcb81c13b1643e9fbe892bf"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-state.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "947489445340e57446d282673981539b5a90747e"
+    },
+    {
+      "path": "extensions/qa-lab/src/bus-waiters.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3e5a20334c5565b7ac23164ab31c0f166da72d35"
+    },
+    {
+      "path": "extensions/qa-lab/src/channel-driver-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "36d95b10c1ec3503d745acb1ae94ac19225e66cc"
+    },
+    {
+      "path": "extensions/qa-lab/src/channel-driver-lifecycle.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "255d9dab203cce3a9a2b7dfa528857f6c81156e5"
+    },
+    {
+      "path": "extensions/qa-lab/src/character-eval.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "67adf5f3d881f505fd02fcad4c15707653b30727"
+    },
+    {
+      "path": "extensions/qa-lab/src/character-eval.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5ea4dc3eb66fd3ea3d1454931e3132ef5b4718fc"
+    },
+    {
+      "path": "extensions/qa-lab/src/child-output.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a8fad78513217505d3fb15e65a58b48a42e19a97"
+    },
+    {
+      "path": "extensions/qa-lab/src/child-output.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e9a64b5b5a090ff735356d56fc4cfaa0697ce36c"
+    },
+    {
+      "path": "extensions/qa-lab/src/ci-smoke-plan.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c6841d788ab199ae0217bb66c0cda1064160a976"
+    },
+    {
+      "path": "extensions/qa-lab/src/ci-smoke-plan.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "79104df8424251d673a1fde37af3a4db38cd19b9"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli-options.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "72e588a85453019d623235141c39508e44683132"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli-paths.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1e872dbbc634a21f05989c4486af352f0e19fec0"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli-scenario-selection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3246e576071979538bd22665b68d4235bfa5289c"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3c12b799ef556271fdfc750985de3abaee795f21"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7accafe8b69b8040eab4bbc7448ff74c3576099b"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "52c3a2b523ef40a6796447c094b375b606744f89"
+    },
+    {
+      "path": "extensions/qa-lab/src/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "baa669bf9de7f75cba485dfdd371ccbd227a420d"
+    },
+    {
+      "path": "extensions/qa-lab/src/code-mode-model-matrix.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9e01db9d7bf48bf9f7af900c5a50911e81c2273a"
+    },
+    {
+      "path": "extensions/qa-lab/src/codex-app-server-args.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d066f7f2b5fd8f772c67307c6b686ec20e70c62f"
+    },
+    {
+      "path": "extensions/qa-lab/src/codex-app-server-args.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c83f00080a18767d8f06aa81eaf796267d5c2491"
+    },
+    {
+      "path": "extensions/qa-lab/src/codex-authenticated-hook-context.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "83f2cd98bb4ac819797d31304094835f18ce3c07"
+    },
+    {
+      "path": "extensions/qa-lab/src/codex-plugin-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c32bb32460606c0b9ae8f183d92ff434d54d7e67"
+    },
+    {
+      "path": "extensions/qa-lab/src/codex-plugin.fixture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c090a67fe52df3784899f3c07ea3187c37dcc1c0"
+    },
+    {
+      "path": "extensions/qa-lab/src/confidence-report.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "94ec0653ea9e684fbc415e2007469c1664981ea5"
+    },
+    {
+      "path": "extensions/qa-lab/src/confidence-report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1b3eef7713633ba4557bb499a0335f58140cca99"
+    },
+    {
+      "path": "extensions/qa-lab/src/control-ui-media-transcript.real-gateway.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9665c7db83f82c8e15b294991fdcd610010c04a1"
+    },
+    {
+      "path": "extensions/qa-lab/src/control-ui-openclaw-delegation.real-gateway.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aeed37e75f0d7aecaf408a272ae37b748ee8ea8d"
+    },
+    {
+      "path": "extensions/qa-lab/src/coverage-id.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "215f0661f867b01887094d4fe05d32d7ff923b38"
+    },
+    {
+      "path": "extensions/qa-lab/src/coverage-report.commands.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4b4a8276b502255dc6b4f51a877ddef249ce6a7b"
+    },
+    {
+      "path": "extensions/qa-lab/src/coverage-report.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "81e42799587b486e23d86655a96271430ec631ec"
+    },
+    {
+      "path": "extensions/qa-lab/src/coverage-report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "620496a106244602b7f79b88ab502cd499f3ad1c"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-artifacts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3486338551d715b1e20bffa92b1bcdd65fbbfcc3"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-provider-targets.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e8e8f1779aa695f27da991b361f10728ffde3325"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-provider-targets.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "07ee0d00826e43a18863e8936abb7a190a807cb6"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-transport-message-id.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d03cd1e9013b4d091c601b4e9495bd02e2369f1c"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-transport-native-command.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d0d775075d3aeb0b12577b47f2dc45e8a7b45e34"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-transport-readiness.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "036e6f8d40d09148e78bf7c24577cb0a033f777e"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-transport-targets.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "046d4280ea852284a6f7685b970709ea5eeb3da5"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-transport.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4619a38e652ef09b27546b10e2af66c35017bf83"
+    },
+    {
+      "path": "extensions/qa-lab/src/crabline-transport.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ca666fa382314c3a460d451a5e8fb1e1aa5752cb"
+    },
+    {
+      "path": "extensions/qa-lab/src/cron-run-wait.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9bb0d31f9533ac9ae175e7eed79d88f16cfc0918"
+    },
+    {
+      "path": "extensions/qa-lab/src/cron-run-wait.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2fc38ce98c32a30c7c467062b5c4b2c7f9b138e7"
+    },
+    {
+      "path": "extensions/qa-lab/src/discovery-eval.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dddb39b24e8c9dbdf5ec0caf8d204597b93138bf"
+    },
+    {
+      "path": "extensions/qa-lab/src/discovery-eval.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7d437557d37f266b36c3280e647718adb16a50f7"
+    },
+    {
+      "path": "extensions/qa-lab/src/docker-harness.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "69b199dcaa0ea762678d47fdbdcbc124a7613a17"
+    },
+    {
+      "path": "extensions/qa-lab/src/docker-harness.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "46b99714328eb323b4f6a035a3f55f3e9a916c1f"
+    },
+    {
+      "path": "extensions/qa-lab/src/docker-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2c50d22c4b037f6ec7cfc4b3f3ac4dd38e7f27d4"
+    },
+    {
+      "path": "extensions/qa-lab/src/docker-up.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f56a3ef3304c08ab24289cc369a62e97aeeac8f0"
+    },
+    {
+      "path": "extensions/qa-lab/src/docker-up.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1e67caf7e161f3ac19f42f98f2a707657349a91b"
+    },
+    {
+      "path": "extensions/qa-lab/src/errors.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0144b3223d573e23cf21a9c8606d89ce15ea1e54"
+    },
+    {
+      "path": "extensions/qa-lab/src/evidence-environment.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "29f68a79717e1360950aaec74c749c9d73c7512f"
+    },
+    {
+      "path": "extensions/qa-lab/src/evidence-environment.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bbbca51bfa6ee9a21d5ae45907f7233bd1b4260a"
+    },
+    {
+      "path": "extensions/qa-lab/src/evidence-gallery.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "267bdc7b9e1938364a7ed6d8e0bc2c101023c0ab"
+    },
+    {
+      "path": "extensions/qa-lab/src/evidence-gallery.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "40a8a95438a500113ce11dd20af311dafc7295d8"
+    },
+    {
+      "path": "extensions/qa-lab/src/evidence-summary.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "579d585f210b4dce8256e3fc5aed3b2c5146eeb6"
+    },
+    {
+      "path": "extensions/qa-lab/src/evidence-summary.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1405ac9983204cd7f3799f22ad64ec12aed70c07"
+    },
+    {
+      "path": "extensions/qa-lab/src/execution-identity-storage-inspection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "905cf7b3264b4f95d2004497b7d005ab93a33672"
+    },
+    {
+      "path": "extensions/qa-lab/src/execution-identity-storage-inspection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c32ca11a59e8e631866a4481fe4898af2e066102"
+    },
+    {
+      "path": "extensions/qa-lab/src/extract-tool-payload.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "16d1c973b8f34616d08a7ebd4b6ad29bd95ee4fc"
+    },
+    {
+      "path": "extensions/qa-lab/src/fixture-utils.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "54bbd6dec8c5ee6fa7331ffc5e41aceb79c37afc"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-artifacts-child.test-support.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "34469946d04496a0d9331bb751cd34d4fa621fa5"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-artifacts-runtime.test-support.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "57cf82c2685f766ef2ec3b07b50a7be176cc3811"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-artifacts.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d1ffb20effd37b5c95e2137f1c90448016ca8626"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-artifacts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "835c5f74e967af87bc2c0648c3f8f2f487b4cc48"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-bootstrap.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "571dc96349922f485416f387866b9aa5b7b09394"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-command.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9d487cf3da53e96aa13f30a63ef5a9ccdd9c718b"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-env.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "681bf0b70b3f84d750d588dd2a664054a08680f0"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "44e0dd6f9870eabfff7764eab0d279f15fcf45b5"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-lifecycle.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cd87ef32d0f7ddb04404a2fbc5c8db4532ab3c55"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-process.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "36e6ef02635cf576f6d19cfddc5c714b73a71397"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-readiness.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9c4bf381387ca5d5adfd5c6e6fd4e7f13d5b111b"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child-setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c9e800cc1f2da43e6663cf01b485d31acca062c7"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d5568c5d3a9a3073ff8384cd524937ff3bc437a"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-child.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "303e383050368a2b990b08df9a39864545ab3be4"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-kill-restart-send.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f16a7ba7e74896a6354a7b9accb019e8390870af"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-log-redaction.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ebbb208f58fb17000d8f9b18b5d9b1c6da2c5e3b"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-log-redaction.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ec933ada67a95768f1140096e3837bc500e0e635"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-log-sentinel.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4ced1a35147ceaac1f027cda307c6a4424cb2f27"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-log-sentinel.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bc7678e31cc5448eabd0d1658d25037c0fb44e83"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-port-reservation.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "713ae25fda2341fec645684c7ebcd65b23201818"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-port-reservation.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e7ca544e75ad62086fa8d8359bdcf23c41749c92"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-process-boundary.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f13b2b49c79300cd54c39f44dcc6cb83475b2165"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-process-boundary.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f0ab15b09c641bd9d325a05ea1bbfe7305b8f576"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-rpc-client.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "004480dd69d5fc1ac02d5d7557ec1859a506b04b"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-rpc-client.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5763d7bfc5d9f893d86214a34eecdf269348fa8c"
+    },
+    {
+      "path": "extensions/qa-lab/src/gateway-startup-lease.integration.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "998c16380c312b1319ac6f44e602f5e68f618748"
+    },
+    {
+      "path": "extensions/qa-lab/src/harness-parity.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "86b825cef1179a8c9196d6d7acea0970e79fcbf1"
+    },
+    {
+      "path": "extensions/qa-lab/src/harness-parity.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2063800b49a88623c68ff533439039a3249da035"
+    },
+    {
+      "path": "extensions/qa-lab/src/harness-runtime.integration.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0e2ce96908699868c01173a8fb092617cc8bd6a7"
+    },
+    {
+      "path": "extensions/qa-lab/src/harness-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8a84dc177402e4dabf738e079d4c7ae17cd57ef2"
+    },
+    {
+      "path": "extensions/qa-lab/src/hook-agent-account-routing.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4c7a091e7480c96d31a207ef34fa483d4bc92cdc"
+    },
+    {
+      "path": "extensions/qa-lab/src/ignored-response-body.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9a0155b9f0eb5f4e40aed63a1ac031d6ddf0be96"
+    },
+    {
+      "path": "extensions/qa-lab/src/ignored-response-body.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cdbd8e498c8e4ac6bc784fb19ad58ccfdbb5a53c"
+    },
+    {
+      "path": "extensions/qa-lab/src/jsonl-replay.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "447230e8096dc5cec44024025ce05bf193803845"
+    },
+    {
+      "path": "extensions/qa-lab/src/jsonl-replay.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5de5092c4d53b42621e5d06e6ae0ce926f84a362"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server-capture.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b3a249c2ec61fcb51b0b53b8600910395992ac38"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server-capture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c439d77e418c0990a6fe2d16b8d7d4b34f3da1f9"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server-ui.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "866ade50f7d81ae3def2efcfed3dc7b47763dd80"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server-ui.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "991853c5424b3321a467a4983df50bab1726a731"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2b1c4db744ff755a8a3d4863efa11598187fb965"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b902ef96048670428645f4da0ca39bf9c628f35b"
+    },
+    {
+      "path": "extensions/qa-lab/src/lab-server.types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e2f308deaa719958762ab2d00799b6cbe44d60b5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-scenario-timeouts.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fc77368bdc99c1d50879bdc68e0d1af8ab001016"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-timeout.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3d8a25187a7cedc8f5faeaa3472fb1d0e24d5a5c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-timeout.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "412c2f8d8737ef47e728547d33f7603eb50db276"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/cli.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0fda2b0dc602e852d772c2af63f2be61b5af2194"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7336528151e5315cea9c3a608c10400ead35b7a2"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/adapter.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "82520cdba8da99a80c9b7dcbe8654617fad80559"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/adapter.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "de975959796c6c4c9a7078bca76474b64e7df4d0"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "87c98dd2d68bb0c11c2a4e33bb0c7c97c4ea2b86"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/discord-live.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ba372aaff08cf2aa13038ee38db36271c72dc350"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/discord-live.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "242d626421b0b05d512ca2287bd95eefdfae8101"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/discord-transcripts-authorization.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4ce70ff875f3ec8a2cc13fecc0991b2ce621c6dd"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/discord-transcripts-authorization.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "09633d7b6d4c5e5376c33a058d36025336c7f969"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/discord-transcripts-authorization.types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a86a8ba9f28b0ea129c0aa7057b9c804b606e0af"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/scenario-environment.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7fed8c32839be5d37b6aadf02ad0a6de6404b05d"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/scenario-environment.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8702e1fda902c7bbbb2daec6bc418ca7a9c38c79"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/scenario-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5b42f27d31138332cc7552ab42bd40c134ce62a3"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/discord/scenario-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "122fdc18fabbb1735f70df6b682c241a3f87166e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/live-transport-adapters.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "df8d7f611fb7856e83b5e626817669594847aab1"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/adapter.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a87cba9756f94af7c2503634af839425fb3892a6"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/adapter.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0855affa8ea37124e03609cfb1fb9b34a6ca2fe1"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/cli.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "35e22d952f612d3486d1a56aab64a9f9114de08d"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3d8cacdc554ef22db141ca533dcaf8f096645f33"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/matrix-scenario-flows.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "07ddfcf4f7b7bfbe739ca9a9b4f10f4a47111272"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-contract.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d7a0f7481c1c8ecdaece091cc0898c93169b831a"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-environment.observation.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0b4095b5c6e7ee205065a0cb89acd9ab7b6934c4"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-environment.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bce663d1054bece8b3b2a72b344e70ee1d91c76c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-environment.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cd9f307aa97821af8e4895224b6ed137bbf8ae18"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-media-fixtures.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "69a1ee150b61e61d3cda5e7fd02513e7d1465ad8"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-allowbots.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "40f79adcbdc95ad57057ef41727cdda55c4aead2"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-approval.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e6be2ed96b31cd54759f57bb63a69af73cdb569a"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-cli-process.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "daf2e7ea00a84712491688b3c3473ecfff484001"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-cli-stream-error.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c5d3d13eadb61834ce3bdb7b388abb734f1b7853"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-cli.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "96a7630d98a20f16ebf22b045c58c308ed80eb9f"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8535701e9e2ff9f79ed193fda62240d5edee2c9c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d0ce72aab7ddf2c53eae8f350c32937b956f4e05"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-dm.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9690099c8a93854983a4d75ceaa40b112dd0abc2"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-account.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "69648de0e51b3413e2c10d1cb8e306ac7340b72b"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-account.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "eb283ffa8b2889d82620aa43d1e8b3f6028a3c91"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6da423e0bc7f99e124de5348b1f58a524e2796f1"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-gateway.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "415b227f4c361cdb3e1c3b0768719120237ca31e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-recovery.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "13eb38c75f154a00277f77b9688506a9741d456f"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d923bcca241729ea870ece47c4c216ecea164bf8"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "be921434c4e759d966a71e5bfc2c20f67a7dcfdc"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-shared.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ffc386ffcc894d95b6e74729419acbc495ae1014"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-cli-verification.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "526204f072849d305e86d524f9e973fe615c4dbb"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-destructive-recovery.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "91a81236d03b61fae97f86405ea478d03c0cd0b6"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-destructive.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "144781143c598c6b24a2575bfd5598c8540635b4"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-destructive.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "17c93cbd5dd4f4814969a6e7be3e233e0a105e82"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-messages.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8a681bf3821ae1ab95b421304f6d549a05fb0fa8"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-messages.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b8d5fc5832415010411795d3715a53bd1e7dbbbb"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-recovery.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a062838af32f9d539a261c1af47b76afd15433ab"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-room.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "feb5b79c52317d749731cba883cbe91abcdc2ef1"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-room.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac7d2c6d08d5deafba40a7a25172e1fda8cdba5a"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-shared.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "109e9641f6a3f1941d21a6458f15d56d0fe78654"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-shared.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "05a6a0f2d1be52f82727e017924a9e33609041ae"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-state.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9b904b0154912b2cfb041479aea1474dfce7ae83"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee-verification.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4db07dc170e8b6530a95619150e81d497dc106d6"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-e2ee.test-helpers.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "211fee3a6ae4e2d26d538c3ee609800185a8f753"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-edit.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2efca4983fa43461850a553a678aa4ed6f8eeaab"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-media.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b602abd9b5e1098f03955b2c61b4eaa43c2b0487"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-media.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d5d7832c2a48da2941aa663ca9f59e7745bc95a"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-policy.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5520c91a30e0df7f227203616f35350190da2383"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-prompts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "36db29b30cce3ba7bcc54bb324b71b25c7558861"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-reaction.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5993f8b9439d5eba200ab478e89d6e39fbba5000"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-reaction.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "47a45351f6eca4fa8b78770ca28cdbf3c7e84215"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-restart.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f73cc42f81ba3304e8aee8d61f3f08f8102b2bc3"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-room.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bc9c7dcacc27dec81a87961090ead6c6576d7ad3"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-shared.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ab2330d22821d6d4c0952b0242cd899700497b58"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-shared.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e048e18d504500988c22bc9bdd013f53aeddb262"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-state-files.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a9ec5a4e07251dd31e910306fdddaaea36ece891"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-state-files.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a13c1e5fe20f3a0de2a6ed85743d6f036e9b1da7"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-streaming-preview.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a1a7f9c234bdb1ab9f31381378c8fc85f8568c05"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-thread.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cbfd21a80ae6be9afd974291708f40c025f4bd3d"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-tool-progress-diagnostics.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "614cdff426f9863baccbd6b678a7ca7cf00bbcc3"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-tool-progress-diagnostics.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6525e17b504c75d479e6c0a2d5ee2a2f237895ae"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-runtime-tool-progress.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a87e9a45484e3bf6d5fa62b767cf2eec4365c454"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/scenarios/scenario-types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "82dc48f3b8d779aea0bb921ae4886118cea1e83c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/client-message-content.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a8f85c01924df5e58d021200fac4896c4192d7a2"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/client.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e5a5ca87ba2ade66a4dbec3a00b7dde9198ca0d9"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/client.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c62cc15bbd1bf12aa4616f262611068d7c8e740a"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/config.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "032a2841ab4f5cf08098485e682f10dc0dc334f1"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "976591e54ab59675dccf952b62e7d9423433e0e7"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/e2ee-client-internals.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "667fc3b91f8b013c69ae305c3aa505ff978d3844"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/e2ee-client.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cf322fb5d3951483d14e811c7f8dac53d275bc8b"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/e2ee-client.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a0ee58b52097b3a6a4ddae402b8e9072e1c9c261"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/events.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d2e866996b26f3a2d683fb5d70121089fe4d5138"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/events.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "28302ddb9c93749bf2b84907eb1aa71d3704e9b9"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/fault-proxy.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "64696b37fe37aabfcf43e9f24d52627263974828"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/fault-proxy.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "31b6840817186d179db8c292482cc2e3d9c7b40e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/harness.runtime-internals.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f5f64d5e5737385eac5c6a497f4ec65b9d9504fc"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/harness.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c3e6d2c6b764f35e2a6745ce2ed88a174585e8ff"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/harness.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "478b304e15c45f9378a3330d2ec8a6fa974134e8"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/recording-proxy-internals.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "84bfe5a2b638bffb464fa7ad8ab4cd6f866d9bc5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/recording-proxy.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6c3e02e90fc80e6393b7d78b0bc2bf580e43f055"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/recording-proxy.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f52253c07061568ffb25ad5b5691daeb63399904"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/request.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "50174b0f833c95a3c7bf34712fb53f5306d70133"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/request.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "11f0da350142ce5f5d5d7775a12889a64b1cfc2f"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/sync.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "177991c9a66725074e129f15dc86334335b9b996"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/sync.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "760db3ac212e260e0b069d56834cee7821d0319e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/topology.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0398dd2865679b66a2bd07cf81cddf9b0fbd4b16"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/matrix/substrate/topology.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f9a5e265908dbaf27945b3e99dd1ed0bb55551e6"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/scenario-module-parity.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "58fdab90292ae68ade88b1092903d2c8a730ae5e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/credential-lease.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f5867808d26e2f76bc6c3b875099ff1952040e60"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/credential-lease.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b898d22be8339811c84ab7a769b671c45d64cf19"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-approval-result.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7507fc1824f255c749d5091253fe1c16684b210e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-artifacts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "311403861016a7359e1d96db178244fb1a7b799f"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-gateway-config.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d599c1c66c3eb470f741acc755860670326a4c48"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-gateway-config.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "70df11644b0e1a0c0e679c30cc889d3a9fc46a23"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-gateway.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "770381a9a39390b9eeb42ed3836586b86b84a6fb"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-gateway.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b15f1820771af1fdac437283174b1760f761e048"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-scenario-reply.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7847ae633873103182734f9d83a82193bb2db05c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-transport-cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b25b57cfde3bc64085e9981b2fc30e381a2c5e69"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-transport-rtt.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "55eb11522a9a1f7e0a1965c5504e8feb21940ef5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-transport-suite.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5c17104749c7cc90360ec1097dbea18aa2dbad05"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/live-transport-suite.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "71bb9246250c77ce3289001f695df9703b85350c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/scenario-selection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7cb31983f5bc0a8e27b4be4bec897464d214a7f5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/shared/scenario-selection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9003fbc16c1900ae5e2cb2fbcc8fb4f3e5ad9ba9"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/adapter.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7b7601ff2c2a2f0e1eb8baee967d58ba194f6463"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/adapter.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4c1b92d368f9da26e2aa7b93ae5b5584860755b0"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dec8261555601205175a88f9275e1b992aa2c0c9"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/scenario-environment.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "307de58c0f5bb52de30aff6ee61d7dbc63eb97a7"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/scenario-environment.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4ce9d44b49858a2f43aafa1971a189450436c1c4"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/scenario-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9e50a6c297a3605ad40f0597664a4a238c682f66"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/scenario-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9b1a7ddd1c071f4e648b8370c61c98ff421af16f"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-boundary.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5d645ed2cd6ac2540be34f3323a8247df34fa484"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.approval-checkpoint.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "360d81fe6e12b55ed86f4ae1aaca215e0a1de927"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.approvals.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fb67bf9a9e8bfa4021eb0da27f3124d04c975c1b"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.capture.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "88f63e438ad770757cb56d695e81f42ea0cbee31"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.capture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "51605b2613ad67868f39e4f28e9dd0688920e986"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.codex-approval-runner.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "14ba9471edab513e7a5f1a3ae9694feb639f1428"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.codex-approval.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3ad76754da54a9fad467b1e60044d4052d50783b"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5852678f1a16a973b89ee5d3086653e42a95e772"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.contracts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7e01f4be361b25a0af088980f619a2f98e9cb70c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.invalid-blocks.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "067085170ea1be5091e9953aee9c91e60e71d041"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.message-observations.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e073859e7118b23ab5385955a4a8403b062d8324"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.observations.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5ef79c85abfe8d21cb824939f360e251c73e79d5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c1c33b0ec998c4ba8d980f74d4dba74d3a6d03b5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.scenario-fixtures.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d0cdfcf01b73b474dda7d2d825518506589f9ddd"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-live.scenario-implementations.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9e4f3b34f0882dca7fc36b6febd4a7a0d372ae6f"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-plugin.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9fd1f58a52337778467c983057f517c5b3b9f750"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/slack/slack-plugin.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4c8f5cf666104ce8b2af86a84f1a4b8210612773"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/adapter.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c3bfc068e53f5f3ae9346e9c503a33e778e96978"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/adapter.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "43515b300f74b25bfac9f1ae33bf40be523571dc"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/cli.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7ea2e80916fb4cb9f88fbe801e90158c7cbb1c4a"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/cli.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d1460ca05e8d8a799644ca44996018fbeee14235"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a5ef969c68d08495c0ce9c496910c90569569272"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/profiles.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "664faf4926cbc9b15056b5418947f55ef1ce63d1"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/run-options.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0df80f6bb2301877a61ffecc9fb839b19505e040"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/run-options.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "af67f399dd6fb01fb36c47431627eada5a7c0118"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/scenario-selection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "09e810280df9986fe8c1b79784e9c1f09947432c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/telegram-api.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ee5bd4a68a8e80df80f938ed083812eb6f122428"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/telegram-api.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9d0e78c56d22eb75a265d9ac91fc202f4fed1ea7"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/userbot-driver.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8ca73f8624b42cf60b49a0b72fd3d2b076c26d2e"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/userbot-driver.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5f67b2401a0dad67e3739bb7937a6d7c822c6cd5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/telegram/userbot-skill.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "84e671431dd742bdb4e7f07f8051bee2f7476426"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/adapter.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2658d9256c0b65a9c90a570b9f562d1feebf09c8"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/adapter.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5ef85fe15d6a9f86fa07874baf578a5500ceeec5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ee3da31efbb6a4d17c9c5ffbe359ac2ea0d4f671"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/scenario-environment.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0ba9e3d7384293628022d86e93b59e57ac6c5e50"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/scenario-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7ce52ef66884652d1c1ff53db7cfdec5455626d7"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-boundary.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3757c7824c11a0f1ef41cb3b7bd3fc9bcce493c9"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.approvals.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f6147226cd8bcc1d587bed685ea0484328ee3015"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c1715b27032c9d35cb2347e54b47f6d5b112b0fb"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.contracts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "166d3b1edee70fea6948054b65fbd64622ed68da"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.driver.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7ae2ecd8036107fd5fbf4a93b618e341c68d03a0"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.gateway.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "338430da1294793aeb3fb0eabc1c17e9af1093ec"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.media.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2537d4537807cc41a357d244fa9687929a8d51e5"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.observations.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7ab3cc4fa861dd8ba55db0a6c5aa522429537001"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.operations.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3e162fb7bb756806f19d5e5752dc45fbadff87a3"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c4ce0e94b5b1ca127a8e4865d77bf930c0d9f36d"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.scenario-implementations.capabilities.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aaa45b5586ddfb6e5621c30659ae4ae053656860"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.scenario-implementations.conversation.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "decec09eccb9adf6a654130293966eb71c0340bf"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.scenario-implementations.delivery.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "50d390d52a19cbe6f63618c67ad7c05a1065448c"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.scenario-implementations.user-path.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "065bd6b9af6df8199dd656d52611368e98ab1d99"
+    },
+    {
+      "path": "extensions/qa-lab/src/live-transports/whatsapp/whatsapp-live.setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c454679d0c8245963ac609f9e79009afdcd8e047"
+    },
+    {
+      "path": "extensions/qa-lab/src/managed-gateway-service-lifecycle.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c27f0f962a1ef011fe67b305b84be3e1d582ada2"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis-options.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "85d87270c03a006f3b90c8f550de66fb701891b0"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis-phase-timer.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dd78fbbe148fc1a8b5e4238a1b112f237d3492c0"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/cli.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "857a24e57b6654c46106478bc680e87b7320ee64"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/cli.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3c7a05546276894d5aedde666e55d1f7a9fdb8bc"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/crabbox-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bbdc50cc4092e947af3b5d2ed551ca727cff794c"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/crabbox-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "893a3c93f3f2cae31ecc859953d4545f940b82b3"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/desktop-browser-smoke.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "922958e49ec71930e01ae24ea1c56f8ce7dbee81"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/desktop-browser-smoke.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a442ac68f9f4dff64bf01663dad647e37fe583d4"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/discord-smoke.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "56076279d65502ac2734452a7184fbe5301a8f31"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/discord-smoke.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "48ceaa71fa949fd12cd8127ec6977f461d774b49"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c88536f1dfc469e4de72e6f57decc071dfdc31b0"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/run.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9d0a41e99e1fe3e15a5317daa388facc4305cd76"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/run.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "22dcc16dd3f63d11237b3c005dea26261ba2d612"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/slack-desktop-smoke.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3e8dfbcf366579d882627955914e8aa8a8dc0941"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/slack-desktop-smoke.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "375430bbd07a2a6c1c443d35b00371c66d50eb64"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/visual-task.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "909580cb3d434d3494d5313bb5071a96a6663e7a"
+    },
+    {
+      "path": "extensions/qa-lab/src/mantis/visual-task.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c6bc9479717edac04837aa7ffb907f5df67a9f0f"
+    },
+    {
+      "path": "extensions/qa-lab/src/manual-lane.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "66e0576fee20fe195547099ba4afbc20648547ae"
+    },
+    {
+      "path": "extensions/qa-lab/src/manual-lane.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5320f6db2067ebf0fab4d4703d54fd227c8be8e6"
+    },
+    {
+      "path": "extensions/qa-lab/src/matrix-channel-driver.lifecycle.live.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c02949346238d21c5d11817d1452ae4497f41333"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-catalog.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c778a484edf4ddd50b81c8d382eb036cc74103b8"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-catalog.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "85a1ee855ba16ffe8e3b0916fcdfa8d460f536df"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-selection.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ed3b7acfb117768ccc6b0f5b358529ffd9e6bec7"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-selection.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c91708b10a905fc78eceb65e172fddd7def83249"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-selection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4d10f11709e7dda1b0e061eed7763c22e1d7774c"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-switch-eval.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "69460f62106f7a593e5c25c65702fe7b73252208"
+    },
+    {
+      "path": "extensions/qa-lab/src/model-switch-eval.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "eb94e1da17bd4686343c3652a3b0ff01c3eab182"
+    },
+    {
+      "path": "extensions/qa-lab/src/multipass.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1aeb1b77012a3a0b63cfcbb9befd2933432d71f5"
+    },
+    {
+      "path": "extensions/qa-lab/src/multipass.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "074893db9f2342445b0d22e8f95f0f5bd9141b34"
+    },
+    {
+      "path": "extensions/qa-lab/src/node-exec.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d20249db7d46485e47b23cfc4b4ee773257de2b"
+    },
+    {
+      "path": "extensions/qa-lab/src/node-exec.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "012d8d955287a17c77eb5095e8c52f9979845da4"
+    },
+    {
+      "path": "extensions/qa-lab/src/parity-shared.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8558bc46867e64014fe056a89236fec01bcab886"
+    },
+    {
+      "path": "extensions/qa-lab/src/plugin-subagent-current-requester.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac472e9a0b5ba70f3b8a058fb3dbb3b37f5f8681"
+    },
+    {
+      "path": "extensions/qa-lab/src/plugin-subagent-self-yield-followup.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9f680398ef65e44da00c72c1a1c2eaa08c176e63"
+    },
+    {
+      "path": "extensions/qa-lab/src/posix-command-settlement.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "81cf357d7d4a83c02728bbc7a69c3c0c4f0ea959"
+    },
+    {
+      "path": "extensions/qa-lab/src/posix-command-settlement.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "be62272d4f8ee5a9eb51dfdaf05da75501770c40"
+    },
+    {
+      "path": "extensions/qa-lab/src/posix-process-group.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2e7988202223da2313cc436085a9c878be117324"
+    },
+    {
+      "path": "extensions/qa-lab/src/posix-process-group.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "eb3cb35e1b40d67639f75e3d812f1ba97d81be0c"
+    },
+    {
+      "path": "extensions/qa-lab/src/posix-process-stat.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "283f05047f301468644376189c6ff93b25f27675"
+    },
+    {
+      "path": "extensions/qa-lab/src/process-tree-cpu.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "17edb09b1750ca01a2eb673ef64586c2cc5284fb"
+    },
+    {
+      "path": "extensions/qa-lab/src/process-tree-cpu.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8a2d7d75cb9530d6aa6b3818fa36d2c9210db47e"
+    },
+    {
+      "path": "extensions/qa-lab/src/process-tree-cpu.windows.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "26e035217467556ed80048a5567c51a7ef6bc508"
+    },
+    {
+      "path": "extensions/qa-lab/src/process-wait.test-helper.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f54f46f7e9b99aa871cb8316b7d47afd66c21ac1"
+    },
+    {
+      "path": "extensions/qa-lab/src/profile-evidence-plan.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b14ba4243bf70eee202a24f203f7d9f8f88a9c3d"
+    },
+    {
+      "path": "extensions/qa-lab/src/profile-evidence-plan.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "772a596ac87fc31751cae0ea69001dadf6236aa0"
+    },
+    {
+      "path": "extensions/qa-lab/src/profile-evidence-sharding.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ff0e480245dbd8d86cb279aedef9ef56f741a708"
+    },
+    {
+      "path": "extensions/qa-lab/src/profile-evidence-sharding.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f5296f1deb685eed861c383ebae686aa537adb95"
+    },
+    {
+      "path": "extensions/qa-lab/src/profile-planning.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c4bc7a4ade1e80ed83cacdd6d8e375f870b5a33d"
+    },
+    {
+      "path": "extensions/qa-lab/src/profile-selection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b1446cc0634ab5d161530e16c73a933b27a6176c"
+    },
+    {
+      "path": "extensions/qa-lab/src/progress-format.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2b14e450ee0e554e4b6f160896bd43e42da6c554"
+    },
+    {
+      "path": "extensions/qa-lab/src/protocol.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2ba0da6d1f573c77ee672a44de3ed4823e51657a"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f54629d2aadde44d2aa5e0ca1f472ea34800a3fb"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/aimock/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dc56a8e49524e30b95cf65ef8c441614557621cc"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/aimock/server.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8bf0ae5be693b22008c18c4bcb262270a040e0b3"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/aimock/server.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0cfae18982b972eda71e804cb23c33366f2522b6"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/env.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7c0a1e4a986e745ed1d3ff6a6eafaaebd451da62"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/image-generation.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "40b0bb1fde27f877e369bf1511861b3977bf3314"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/image-generation.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b8878a0a2ce4ee305b3f27b158fcd4afc143062f"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "89d34ade8e3434a5b64ba822f919b42c3aea5fc5"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "19438c66458f253ae589edfefdded1b3af9b7b55"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-frontier/auth.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1bdeeb1879cb53060fed55f88134d5e3c0b7b8d7"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-frontier/catalog.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a3f4f2ba40d0a945d1efbbb07223aa4c692c6a87"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-frontier/character-eval.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "81ba8614ff64a3c581c51dece77959b08391039f"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-frontier/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "57fb1abe251d296478d9a9863ae8ab9905f81141"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-frontier/model-selection.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d8adb7a0620ecdb1ee5a8e02f7cc781d7931ff4b"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/live-frontier/parity.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "26b2374c727f0943d03bdb56f1dfddf2fdf69d07"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/index.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9e11f2c827f5e35e559ef538dddac52fd44b7034"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-anthropic-messages.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "999452a3d1dffb6ef6721d5f373965d2adc91632"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-anthropic-wire.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c99ead1d4b7d7a8fcd700af3f7b0492e034327e7"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-assistant-text.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "18ba3012e456e3072062fea467a9f55f14ae8030"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-contracts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "150608161250312ac7e65636ce7adb94a10e187c"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-directives.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fa80db7cac82e6db10e9af2cc932af4ba4cf1024"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-events.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f2fe7566e6c21b9a08b99ce42ed0896356abd623"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-events.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "433af927a198aaa5c39c23a840140c4e6af561da"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-input.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e5987796ff7f5c1ae9edf8fabc3251a5eef825cc"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-responses-websocket.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "150b28e387c48e4f7258099125ec9cc441e6e8fa"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-responses-websocket.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f4f97ddfc179f4e9ce827c945eb9a7b1d910d50b"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-stream.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "340088c3ce23ce7efb118ca7e423ecc7c1b5a6c3"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/mock-openai-tooling.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e14f88ee3616f84820872bb09e7f3c61950aaf7d"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.anthropic-failure.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dad2e9a355c5c00f99d07f21667f114e6d33aa2a"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.http.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c6ee1d852130d35187c5b635e23eef24b7e30373"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.memory-ranking-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "05c556fcf23f7e02c9effe05547102964c287944"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.progress.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1acfbb2a1918e976725668ede16b5b77bcd3ecb7"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.responses-contract.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ab30b45d5f6e50bb4bc5cde2fc87887ee7f10f3b"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.responses-input.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c59e8c30093e8db66ba1bd2db703c5923a4d0c83"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.responses-stream.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d1452c45193706503354f20237ce8580390e12f6"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "00032012d1466b65be9f2ead46454134254a8d12"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/mock-openai/server.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "adcc2ca6e16c044558909a0c7099441473e9f433"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/server-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5dcf098acffafbfccd881f60f1995f8708947c43"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/server-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1f19fc72d631f4453dfaa503d96afd6189edfb3d"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/auth-store.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "758d201fac5300e30ce4cf91ce3d8886ee34f987"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/auth-store.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e1b46ac5d7fae084bbc20ae709c3bc98bd4fa002"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/debug-request-cursor.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f10bf5c71070aea1942eff58e33505046ecbc311"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/http-json.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "43d21d77fe39a442c759631f21bb2e13bea68526"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/mock-auth.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "71a564c9fb17282250dbc6504bac326fbbd025c4"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/mock-model-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e385f13f6b388502fd14e8b317ff113966e847bb"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/mock-provider-definition.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cbe99ffa98ebb7349ee1de1a72076dccb16c1101"
+    },
+    {
+      "path": "extensions/qa-lab/src/providers/shared/types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6772a8240b698c70e766fcce15e01acce08ccb6c"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-agent-bootstrap.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "39030175e27f4687fa95de624e5cdb419b371437"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-agent-workspace.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "602cfc9406399fd4bf71e9db7b3e21d9677a37c8"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-agent-workspace.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f225c8c5e8e595c5d357ac4f5481975cdf526bb2"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-bus-protocol.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c3e0b9ca99374ddc41e0c9d2335e4ebc35feb5c7"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-bus-protocol.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "311913dab98a4da14c101efaf7334c5cfbad2d94"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-channel-transport.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2fb7ed699edad3ace45ae8d775d5753fc7584aa2"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-channel-transport.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d6bb041a7cc7a3272ffae1ce9b5e93e87555027"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-cli-process.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c112f6157eab392d17a89f1dc34e368cf6180363"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-credentials-admin.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fa2fc2ec4b7d896fddab91fdae5391c61e99461c"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-credentials-admin.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8959f401d4561c40104b588d0607b9ffea9d1f31"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-credentials-common.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8f38f604857623f2d450be3afa942cba66193980"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-credentials-common.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "99b516962ae84a0849cfe7f80e5317596776b7e6"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-credentials-fingerprint.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bce1bd04a915d66c9d088c003a4f7ed537a763d9"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-gateway-config.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c88ae9e959aadba5d27ec9d6ca35c59f25f6fa00"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-gateway-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "27c193125e779c37d2f5af3afe290ac7fca91f9e"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-thinking.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8507f3f4e1114e5c292c8890c94a6632a7871d0c"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-transport-registry.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b5c489f94e095bb8eb3611f976a8b254be1ea890"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-transport-registry.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d50ed387d044269a962a3cad67e0551ce0250db4"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-transport.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ee58786237a131fa818fad6fe24d155bcef11147"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-transport.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3aba2e13995fdbcc87c7d6bc8e565d7173ddc40c"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-web-search-provider.shared.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5e4ce1951add559e3f36daa1983076abfacab9fc"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-web-search-provider.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "879bb559439cd364b55774cd0b7bb620d74c02f0"
+    },
+    {
+      "path": "extensions/qa-lab/src/qa-web-search-provider.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac10c5bb29498543766a2898c6a93b14eb9fa591"
+    },
+    {
+      "path": "extensions/qa-lab/src/reply-failure.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "850d5abb28c5ee90f34ee57528d4b9441bb65324"
+    },
+    {
+      "path": "extensions/qa-lab/src/reply-failure.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9fa6abeafb4293cdde07f74ee1b9759378ff04ff"
+    },
+    {
+      "path": "extensions/qa-lab/src/repo-path.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f4872ab02ddb198ef4c299af39e198d1dff5b951"
+    },
+    {
+      "path": "extensions/qa-lab/src/report.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3b1a1d876f51b1644c11cac0de44544c0a8d350d"
+    },
+    {
+      "path": "extensions/qa-lab/src/report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7e5c45a142204a59844875daf88a385f9afc8c37"
+    },
+    {
+      "path": "extensions/qa-lab/src/run-config.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dc05c91f238647bb1256bc610bc4221130bd2329"
+    },
+    {
+      "path": "extensions/qa-lab/src/run-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d07dd30e1f268ee3d341225e087218832bb9eaaa"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "08403502d0867e538061ba2dc1c13619fbcc1c80"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-pair-lane-selection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1340441ef829e03c5b7dc0a080888e4eb8cb033f"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-cache-diagnostics.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "97c72be0ff2dfeebece3701a361441fbd937a0a7"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-cache-diagnostics.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "38737550b7ceb962149841e905e48fb9454beaae"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-forced-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0a3f08310b107a6face1d1d0af4f3d14a52e8f57"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-outcomes.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "40a72794eed3fba959e0a41bd6f2999a5991e88c"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-session-selection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "92b6e85aaae1286e5a9cee8ea2f142305842a915"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-timing.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e4cca765f1d21bdedcb4abe7f0d21f3e5f27884c"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity-usage.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f4cbfcd41b35e1ffca01c7006edf78aa60b99c8f"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity.execution-order.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "66da34f4e16738a46d708dd8ae1d781b91aef6d4"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3ae9c198e1328ebbb846b3148975c441940707d5"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-parity.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "653c84262f13655484fcb8c2eac37b24e1ed0459"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-tool-fixture.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fc32e153569a9e7e5d9c5b3f9bdc8accc50bc509"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-tool-fixture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "96fa3b79c6c19e2e2994bfacbd1ab5510094762c"
+    },
+    {
+      "path": "extensions/qa-lab/src/runtime-tool-metadata.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "94efb05217febf03a015e094c785127aa5b3ff24"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-anthropic-live.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3f3fa6ec8c6d2ff29f752c7fd50d91a6e2efe668"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-browser-coverage.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "459e5a282b0935a932b0634998da37f0c2b41059"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-causality.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4b60445da6c839331bfd4deb739f35faa45e67fc"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-channel-routing-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4159a6c521444d8bdd5a67581f7b83ca4d68bdbd"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-channels.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aed5848cd736448a4e33bcac34ce876764b680a1"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-compaction.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1efb40af925ac0e6f40cffd5e9fba39df6ebc5f3"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-matrix-session-identity-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "91086ae6d4dab155edc53b047c89309b3b3ce3f8"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-memory-ranking-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4a39368c566d3a3b405fe971007ffbce8999bb66"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-memory-recall-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "74244b2967991497c9309c422515b6b1cc092b37"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-model-switch-follow-up-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6e16880a714b25f014556731841d2cf771461600"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog-model-switch-tool-continuity-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "26a26cfe743302272b646ff3e2ee16afe90da0e9"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.config-restart.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1227f45a638483ed3a799dd37673e55b8ecc3966"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.inference.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d6a461cce296519e88dc89cee31796a627f80101"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.no-meta.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9b27c573f14dd50e5175e42f3266d04524eacb36"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.openai-live.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b5509f5727cd1cd0b6afa14321ea988c5e801f65"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.runtime-pair.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7a2a24badbdabfa1e9d9dad8c3902601fa834cee"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.slack-blocked-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9f307b61607f0d2bcd357817c5ebee8381a698f4"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.test-utils.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7c3325dc06c2ff89bbd2b566298347b5ff2347a1"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a7d5c9bca0c03fb97cfd09ecf4c73bd626eba2ba"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-catalog.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f18bc25c1cbc300f36cb6652266fce85f01f2162"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner-character-safety.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "44ffce0d23a6b6300985e12c4d2b047fb8dc32be"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner-redaction-proof.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a2943b4d607e8d84baeac26b3fea896ff9fd5008"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner.deadline.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7cf8e7d8c966b7f0e6c0e220b14caf8f1c475e03"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner.test-support.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "05fd57264f2854f57a1ce6730b68315afcbb6464"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9261b375bfb8609503650d2b336c8867af4b1319"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "53f865fb0393b532567a9cc7ca7a13a738e4683e"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-flow-runner.voice-talkback.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2cc21569e00b75045b62f697c52379343cd12756"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-lane.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5f8f364138599651f9ebec53cac30ea8b87d2c96"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-lane.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "abe2b355d4001c00b74e23c53a883a8cc92ae1d7"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-module-flow.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4a1c6c4bf7b36bd4b2a593a5d1ef92a49d949534"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-module-flow.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac029ff31a9eed45ddcadc84f17ef64e2bcc600f"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-retained-final.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ed493fdc3c7c590a7542d7f2b9227ca53e5673d8"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-runtime-api.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4e45ec371214c54342ec03081b7697dbc1d1350e"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario-runtime-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ec3aa331c56e2e7dcc5feedd5baa76fb31aea6a5"
+    },
+    {
+      "path": "extensions/qa-lab/src/scenario.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d1ca639efba54e180ae2c954b504dcc145565fb9"
+    },
+    {
+      "path": "extensions/qa-lab/src/scorecard-evidence.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "27d9a45b23b0b7cfeed2f64ded31194851f24745"
+    },
+    {
+      "path": "extensions/qa-lab/src/scorecard-evidence.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cf9b7ea6382caa2a2f42de5b344da54d1c177d17"
+    },
+    {
+      "path": "extensions/qa-lab/src/scorecard-taxonomy.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2f143e655ac52c322aa57504c2db7d41298c038c"
+    },
+    {
+      "path": "extensions/qa-lab/src/self-check-runner.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "db0fdd71a5224e9e3cbd76f2cef64262973332c7"
+    },
+    {
+      "path": "extensions/qa-lab/src/self-check-scenario.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6b6f389c01785a61f1a36bd081f6c598b35c11b0"
+    },
+    {
+      "path": "extensions/qa-lab/src/self-check.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "71a59df161fb291adcc90e710a2509ec524119d4"
+    },
+    {
+      "path": "extensions/qa-lab/src/self-check.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cdf91f0da71380109014c6e36463e7b501d45de8"
+    },
+    {
+      "path": "extensions/qa-lab/src/session-host-command-state.real-gateway.e2e.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "15e0618cd121a4da8ed3b36f588fdb1cb04f993d"
+    },
+    {
+      "path": "extensions/qa-lab/src/shell-quote.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "55cb7a93b2075e08ab3fbfa04975c918d00ab712"
+    },
+    {
+      "path": "extensions/qa-lab/src/static-ssh-worker-provider.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "abf5b48b3b081ab466402548dc159914b80c4d43"
+    },
+    {
+      "path": "extensions/qa-lab/src/static-ssh-worker-provider.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "50174eee2d80626daf566356d6f292e970b5d4ff"
+    },
+    {
+      "path": "extensions/qa-lab/src/subagent-forked-context.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8edf6fdc52f9ae63c4cfae9e2554fdcdb43a41c6"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-artifacts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "49c2c655628c71fac625a83eff9bf8b2724bf812"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-launch.runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1f467d535c4cd086622ec0af98e18791a1fe8ced"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-launch.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "caf07af8daca614a04d5b5973c965fd5c34745c4"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-merge-patch.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5a68929474eb3e03d434b04ca22e4a4a9e5a9a94"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-merge-patch.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "370f43e8cc73d8eb8a0e3e887eaaa80c916fd93c"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-model-selection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cfa87f3604523129afd943f41e01d6809be14336"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-model-selection.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a2a0e1f9a2fd1a16de23344cc37eca8d799f3a7e"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-planning-module-flows.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a5476a3933dfdce789be3315acb64e9c26abaf5c"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-planning.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c6308f77ae27d27ae3786f80608f90c1405fc04c"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-planning.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "483b9bc785fb25080b3d392d06893bd26f342c69"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-process-lifecycle.test-support.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "425c0608f2243794c1c55dce4413514c77ff443f"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-process-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6cbbb81a295b335586d2508f389c6dc070894fc3"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-progress.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bcae3accb38e07451dfbcff38f81ef784738503f"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-provider-selection.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "088809ac28fcbcf3827b81816c943cb9d445f1c7"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-round-trip.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6ef37a871ef2ad22353b12964f2877706935c148"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-round-trip.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c43629c045c61869fa547a0ac1d938c7fb61e2c9"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-run-isolated.cleanup.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bd0e0aad90c61683572e689d6c5f1fbd6920a458"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-run-isolated.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8513ff27d7976b6d1eddc3bf94cf67baa6a44e7a"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-run-standard.parity-retry.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "308849536bcf8e82d56cc17a949868b86e75d7d1"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-run-standard.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7d201d6b1ddb50b81c4e2fb36fee0d11b149d8cc"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-run.runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "77b32f3cfa50c439bf3fd6f004c188b76c23f78d"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-common.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5aa3e14c67976c4e029d9fa69a83a5939a7c80f2"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-media.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5fb0ee980d14e8a97e56652cab017e232aa66aaf"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-media.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "038a8943c9818ff896d0c07729600fb1329ab046"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-process.integration.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cb03fce196a926254dde435bf4ac66b575ccaa31"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-process.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "97e6ca93adf644bb1c93a8bbee61f9d77d462537"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-process.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "76848f511db86c7ebf0f94181705c2da41185307"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-session.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "478d6c3fcf08f650e0b9d68434654bed3d64e3d9"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-session.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7044b378276f60eb96a01f253ba62de518f681db"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-tools.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b8d43f90a6aa0ef290fb94430284fc82a91a9e91"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent-tools.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5a38d89dd9f3ff97583e888af782f63ed743b613"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-agent.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4158f02d460a61b7187c114c37de992b2344b7f5"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-flow.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "803b336f8c39d64d1c41c7d6b4a52577267bfc5b"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-flow.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f280c4d0b1217097a5adc18c9738bb54545f8ad2"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-gateway.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a925a3c103006cb974072ce244535b564c3bc5f6"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-gateway.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d2a8fd9a7b70308d2030f394043fcea9d6417537"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-parity-result.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "62eeec18bafb0e225237e6fcde873fbd236a6d4e"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-parity-runner.cleanup.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d94293992be1e4fff5000074ab526d95a287ac1"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-parity-runner.control-ui.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6192b7030fc4b71411550eac7ee76ae32ca7bd26"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-parity-runner.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3e18aec7eb31b80717ce86538a4f8b7de9159169"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-parity-runner.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a5488d18c7864b93db081d1aef23f6cd4dbc1e5c"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-transport.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "15ed9ee8bd2d372fdf8eeb8ef3fb24cefb959fe2"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-transport.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "42a1ae5b0bd35b5d8017f23b045fb15b6dda2d6c"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-runtime-types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1339d731e9e67e9e8d1bde394dfbc95b0b828677"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-summary.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5d414276e0eb155abfb71a6c330f0f1ca747150f"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-summary.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f8226faeb1b7325fd86cc1b8c7ccefd71be352be"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-support.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "175c277f1a9da95b7489bff7a82773e462885a09"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-test-helpers.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c0ff1b9281bf0e093bdb992d0dcd19c1dc87f39e"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1e4265d7bf36f8fe40ecb3c125c1c0d65681b1e8"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite.summary-json.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9452ef0a757e6ce0f23d5478916d031962892429"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1d379c556443f9eed6153bfef71b6974c0a63be3"
+    },
+    {
+      "path": "extensions/qa-lab/src/suite.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4488b5fa16a23e3406fe651b6efe3a448e703dda"
+    },
+    {
+      "path": "extensions/qa-lab/src/temp-dir.test-helper.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aca56d3fc803f48f552569b0e6b748a9eeb2b397"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-command-lifecycle.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7e6cd3f4d360d5b0a1d06ac4c68a98ee07247924"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-command-lifecycle.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f2c8aa9bc9730ac73ed02cc159326ba92b2d318f"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-docker-batch.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ecbacee2c6ba5d30d2297b3d4e3a443f5e623b65"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.docker.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a57c5c11cb9d6aea7fe1921a8d1722e2ee54efc8"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.e2e-routing.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c492422a3375ee5b0c2a460ebe92f11f5d6ccc64"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.native.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "285949b4aa6f1fb79fa4a96f965d3e32f4cff608"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.process.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fcae0b89319e65c72274c555e99c0b0621639743"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.script-evidence.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9b6a2c0caac15733425eb2333b27739b82359425"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.test-support.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a9dee527cef542a7bc9b50288c6ddd80dfa2b302"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-runner.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5cb43f4096b7cd953381fc4a8fc3040440c7077f"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-script-evidence.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "15eed2fc92ab0c99ea31aab1c38a1684524858a7"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-file-scenario-vitest-report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a8d277294391587c95c5083b33104f59b4862373"
+    },
+    {
+      "path": "extensions/qa-lab/src/test-support/bus-server-shutdown.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7402a57e48dc7ac3abc62d282f9fe9ef1658175d"
+    },
+    {
+      "path": "extensions/qa-lab/src/timer-timeouts.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cc0cbf12d7d876b344a71479703f69bf5b113d89"
+    },
+    {
+      "path": "extensions/qa-lab/src/timer-timeouts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d3d688e45fcc30a46b8793e7340cf928986ed94d"
+    },
+    {
+      "path": "extensions/qa-lab/src/token-efficiency-report.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e2b9031655021f0c5964f8f1da3b31beb573d65f"
+    },
+    {
+      "path": "extensions/qa-lab/src/token-efficiency-report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b626ed80d10986fe9be609250d10212eca13301e"
+    },
+    {
+      "path": "extensions/qa-lab/src/tool-coverage-report.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "30d2e000fdf7506bb01dae2784dda265c3225b5e"
+    },
+    {
+      "path": "extensions/qa-lab/src/tool-coverage-report.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "abf0239e3d5665bd3d782cb48ded99152e4480ff"
+    },
+    {
+      "path": "extensions/qa-lab/src/tool-search-gateway.fixture.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fbd70d766f666c63612df1fb5bf4bd9afb126867"
+    },
+    {
+      "path": "extensions/qa-lab/src/tool-search-gateway.fixture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d93cab300b0c6e66dd2cb5ede858db4973de3f06"
+    },
+    {
+      "path": "extensions/qa-lab/src/voice-preflight.fixture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "55644c57813f1760406f54a0e7ea7464a72645a4"
+    },
+    {
+      "path": "extensions/qa-lab/src/web-runtime.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fd4ee5ce15282c30e0e489e7f583d55db8b121ab"
+    },
+    {
+      "path": "extensions/qa-lab/src/web-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "39ceadebe5f64bac9f5ed6a8e729a07a70f40de4"
+    },
+    {
+      "path": "extensions/qa-lab/src/windows-system-tools.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "88490a2b07d73e6852910fefe71ce9507449c1d6"
+    },
+    {
+      "path": "extensions/qa-lab/src/windows-system-tools.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5d97b7f98829b8a44ef72bcd2ac7c1581a156a22"
+    },
+    {
+      "path": "extensions/qa-lab/test-fixtures/codex-hook-context-proof-plugin/index.js",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "40ef64fe7382389c44535f14cf55aaae65a591db"
+    },
+    {
+      "path": "extensions/qa-lab/test-fixtures/codex-hook-context-proof-plugin/openclaw.plugin.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "80a682d71a790811d7693e9ec7b7dd330431d167"
+    },
+    {
+      "path": "extensions/qa-lab/test-fixtures/current-requester-subagent-plugin/index.js",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e9522e117d92810bff0a8a5c7c50700c2591c1b7"
+    },
+    {
+      "path": "extensions/qa-lab/test-fixtures/current-requester-subagent-plugin/openclaw.plugin.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e5f1b79077badcfff9cffdf8e81a5f91d090efc7"
+    },
+    {
+      "path": "extensions/qa-lab/test-fixtures/self-yield-followup-subagent-plugin/index.js",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "71fb0c1fd6d441a776b61eb85f8f8d58300f285e"
+    },
+    {
+      "path": "extensions/qa-lab/test-fixtures/self-yield-followup-subagent-plugin/openclaw.plugin.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a69482c5dc87fc3f6a226e97858171b100794600"
+    },
+    {
+      "path": "extensions/qa-lab/tsconfig.json",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c40eba47b3b40147b894785f878e74abdfd36e4f"
+    },
+    {
+      "path": "extensions/qa-lab/web-search-contract-api.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5116cbbc5f6d5eedccfd67e176760d4901b99388"
+    },
+    {
+      "path": "extensions/qa-lab/web/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "90670360f995bd4a171d9e8cf7cade0ba4f450f1"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/app.browser.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9467834cd53fa0227e8743a0e48a7756fd41722f"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/app.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "de56d98d1dab9a3afefc7ba6f1aa31cc91258649"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/assets.d.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "859b3b017726ddf8d8f009d7c0533b4db66000eb"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/capture-saved-view.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2b7ee25af4407893d6215e5ca3cf3a5f7e31ed94"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/capture-saved-view.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "313afd8c0a5b9dd98e74681c783f2145c81f7cbe"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/http.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b8b171e0c54b074ca68c5b07724666b102a3f2d0"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/http.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a0788f4c33e2db18382d5934f8b68db475916115"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/main.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b94d3392249c65562dc0a5ed8efaf677ca495145"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/styles.css",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d19da60cbbd0f7cd150a9be70b4f897029360140"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-conversation-key.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b0b094638df6029fc843e47e175d56bbd3c54225"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-conversation-key.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c7a46878de0190ac6c465f0e90567f3f68e2722f"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-controls.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e8ad21b9663142633c44c4b9690b54be7ed216e3"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-detail.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "10ef86990477748a95c1d71ba14dbc0850ce8ea6"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-events.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "64eb02125421f7cd7c59e99d5c5f5a1635fa5c6d"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-format.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "13d5f33682b2a1bafa3e2fe4a191a16ce60c23b7"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-model.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "59bcfac1cf20effee90a49a44bdeff5c01cc6199"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-redaction.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1770d353029beb522baf878debfa16ae5cf02819"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-summary.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "55796be078fb8a81ef5478d3cc4e06b509eb5664"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-timeline-model.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a7396dcf94fae7c0e3a40cf08baae999643f2fde"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-timeline.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5fa2def9ebbe32ac09fb6275c8a3e26eefde68da"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture-workspace.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "49b483847d0e4bb1637a3a24867d4db640a5a745"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-capture.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "67520565442647c0026d610e6e3f1454de974e9a"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-content.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3db5751c175e40594997e23203e9fcb6e83fd77d"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-evidence.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e54da73af9f64123756af9191be90f744764a334"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-main.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1902e1c1b2faf8994a3a2898fc50e1d62fd4484e"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-scenario.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9bbc65ac3f8f620333791c74581253fc067b17ca"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-shell.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1ff93ac76e8578610a625997e0d5074f829cd454"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render-utils.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e6be7a426f6360326eed265ca56a4ee5b9c4e4e7"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b5d0940c03000eeb15dbd0ec4e31ab6cf4d226f2"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-render.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "182ee0c3d6e9258a6ef9ce004bf4c8e16b03582e"
+    },
+    {
+      "path": "extensions/qa-lab/web/src/ui-types.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4b72a27ffe3fe8e397c8ee27426bfbcde657e2a6"
+    },
+    {
+      "path": "extensions/qa-lab/web/vite.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d59aa35e3837aff93a4124df20cb5a63a03bf134"
+    },
+    {
+      "path": "test/vitest/vitest.acp.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8de89e1654e021fcacf8ac1d6e529cff821a4a05"
+    },
+    {
+      "path": "test/vitest/vitest.agents-core-isolated.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4a89cb6e4aae8a3fc865bce44d00f57c604625c2"
+    },
+    {
+      "path": "test/vitest/vitest.agents-core.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e3b7a83cce9d2215ec77e5e0c7aed65f3eb329cc"
+    },
+    {
+      "path": "test/vitest/vitest.agents-embedded-agent-incomplete-turn.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4b1d4b9c8ce306c90102138d555a5563ffc4d425"
+    },
+    {
+      "path": "test/vitest/vitest.agents-embedded-agent-overflow-compaction.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "39f4d7a60b5e916dd6e7aa6a56d702927edb83fe"
+    },
+    {
+      "path": "test/vitest/vitest.agents-embedded-agent-run.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "929be49928dd7107363b3f4cdf3d1478738a91d2"
+    },
+    {
+      "path": "test/vitest/vitest.agents-embedded-agent.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a6881cd49d232c67fd60e77c510765fb72515429"
+    },
+    {
+      "path": "test/vitest/vitest.agents-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a4b933e809bb3a81741496ac37e97122a988aa7b"
+    },
+    {
+      "path": "test/vitest/vitest.agents-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5bc7486962d216bf0be332f8d4c725cb196bdb8d"
+    },
+    {
+      "path": "test/vitest/vitest.agents-support.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a79e95003e7b8a718d6c61ecc2754adbd6fc710f"
+    },
+    {
+      "path": "test/vitest/vitest.agents-tools.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f05aa793f55114683ab806a103d0ba41c9979827"
+    },
+    {
+      "path": "test/vitest/vitest.agents.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "77b4763d6614e537d3c22a932865e084b000293f"
+    },
+    {
+      "path": "test/vitest/vitest.auto-reply-core.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "47801f526874e9879f93c177a25475ea814f5d74"
+    },
+    {
+      "path": "test/vitest/vitest.auto-reply-reply.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d335e3daa829c0c7fddee65889ca24c02dc1042a"
+    },
+    {
+      "path": "test/vitest/vitest.auto-reply-top-level.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "913483bf8931340c22b6cbc422ec9b039d214e6f"
+    },
+    {
+      "path": "test/vitest/vitest.auto-reply.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "019641e50ccdd8d0140e7fc270b8a84f212fe2fd"
+    },
+    {
+      "path": "test/vitest/vitest.boundary.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "da6805a6f5b24a76db6812894cb895b054bca9e9"
+    },
+    {
+      "path": "test/vitest/vitest.bundled-plugin-paths.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "49f8e7ed238cc7e38fadff4b70482c1fe1181aeb"
+    },
+    {
+      "path": "test/vitest/vitest.bundled.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b4b1c4823076730b65401f3622dae30dbb05c1ce"
+    },
+    {
+      "path": "test/vitest/vitest.channel-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f0b08c9372754b9f62ba9e12e39eb23e09ed41af"
+    },
+    {
+      "path": "test/vitest/vitest.channel-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "275cdfc368168f8a545436cc725d816634c4e1d0"
+    },
+    {
+      "path": "test/vitest/vitest.channels.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "db63b1d5ce445a3556fc85788e68be07832fbcae"
+    },
+    {
+      "path": "test/vitest/vitest.cli-process-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3f6fdeca6b032c5199a07dab8e8a290fe896fbec"
+    },
+    {
+      "path": "test/vitest/vitest.cli-process-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3f85d2babe245a3159be93d96325fabe9d75be44"
+    },
+    {
+      "path": "test/vitest/vitest.cli-process.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "24405e2f22847b3d2c1d7f82e4094fadd14d990c"
+    },
+    {
+      "path": "test/vitest/vitest.cli.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b1a3114d0da9afe47ac4ee9748211d1ecfa47220"
+    },
+    {
+      "path": "test/vitest/vitest.commands-light-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4e243a45e60e8719232bb49a1058347a798e0d14"
+    },
+    {
+      "path": "test/vitest/vitest.commands-light-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ca7c1b2f45ed093822ea97f58c27bf0b0e138483"
+    },
+    {
+      "path": "test/vitest/vitest.commands-light.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6787d2ee752536a22638e044590ec92c44677c92"
+    },
+    {
+      "path": "test/vitest/vitest.commands.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b780fbbffd4f0faf84776cbd7ec2b3d38c217fb4"
+    },
+    {
+      "path": "test/vitest/vitest.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e3f950691432665c1b872e2bc6a2c7ace847da13"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-channel-config.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4c6fe2e3e860dd218ca0d9632eea7d61a83d78e3"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-channel-registry.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "53410150300f731bc1fba104c957414b52fcc866"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-channel-session.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9971495ebf7c9cf29a79b376b851360e594151de"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-channel-surface.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a524232d3c56fca657d4fbda90d64c63f0f7c33b"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bc7f4c331cafc66a91743022c63a9ecc9eaeef28"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6b224a2da64d84e3b9d6209a6fd5fc3a46369bcf"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-plugin.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "66ab3da6bb55f8cc6aee0b4ec4d4ab0327d7ec16"
+    },
+    {
+      "path": "test/vitest/vitest.contracts-shared.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bf555d7370594da71fa0e86ffd8e0ce0b55b5935"
+    },
+    {
+      "path": "test/vitest/vitest.cron.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6b93aa1ad7925701d868f6b8e3581388547b1cd5"
+    },
+    {
+      "path": "test/vitest/vitest.daemon.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "068f768da65844ad0441027c9d413a3a8f706cfd"
+    },
+    {
+      "path": "test/vitest/vitest.e2e.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e1a553beb70d82f71fc98fced9cbfe890168429e"
+    },
+    {
+      "path": "test/vitest/vitest.e2e.global-setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f66a4c4062d757720cbc0a63dc6ffe6a80e401ad"
+    },
+    {
+      "path": "test/vitest/vitest.e2e.sequencer.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6928815265a18efc7d288e7aed5d7a8b46d88dfe"
+    },
+    {
+      "path": "test/vitest/vitest.extension-acpx-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "111dddb64108eaa1085e1efce4f90ed99e462582"
+    },
+    {
+      "path": "test/vitest/vitest.extension-acpx-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "09ab2b8577fd9dfb920b84a39c929c62c4987558"
+    },
+    {
+      "path": "test/vitest/vitest.extension-acpx.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f984fedacb0ce97d6e4bef16ce75eea71fcae7a9"
+    },
+    {
+      "path": "test/vitest/vitest.extension-active-memory-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6d27ebab9b71468b03b0e493216f685319512b9e"
+    },
+    {
+      "path": "test/vitest/vitest.extension-active-memory-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1e209ceb76bb23efa090a3f5bfe94690c10ab95c"
+    },
+    {
+      "path": "test/vitest/vitest.extension-active-memory.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "32bcc525fa20014da505ae5797de389a7681d64b"
+    },
+    {
+      "path": "test/vitest/vitest.extension-browser-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f629c9eb811f0e0f59152fd4891139c37ec3eff1"
+    },
+    {
+      "path": "test/vitest/vitest.extension-browser-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ea2d4ee31bd37b30a3a81b46bc34af49b92dd124"
+    },
+    {
+      "path": "test/vitest/vitest.extension-browser.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "99cada7a2e3890bb0d5666ea9e5110effa6ca2db"
+    },
+    {
+      "path": "test/vitest/vitest.extension-channel-split-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8c6f7bff208f670109a96e9046236b7688fdcd9d"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-attempt-extra.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b75c0de35a91c04422f7a510c83d460841c7f296"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-attempt-light.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a34b8494a367dc62be268e23cb06e2e763347494"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-attempt-support.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "573c08e2c985d3a6b571cd026d4f380a6e914ebf"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-attempt.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "30757a2e9bd3eece32fe72c089ca52640970fea3"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-runtime.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0fcaca6253872b4faa1586d395dccb09479233d0"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-support.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a87e9318126b0bbbdb33a16c47eb180416ce224e"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-app-server-tools.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b6f1f706beef640c43973c9ba5ffd0836ebcc703"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d3c4deb337bd83b96b743966cbcf09ab23dd6205"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4ebe1d75e759a752664f14e6fb9966919432f8f4"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex-surface.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7a38191507c87c4ef34c780d3f27e51cb51e1b8c"
+    },
+    {
+      "path": "test/vitest/vitest.extension-codex.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a92b5152f0f3b52a77d8b6076299957fe2e34b36"
+    },
+    {
+      "path": "test/vitest/vitest.extension-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "71cc4e02f8899f157b0ecfb5f52adac4603b1c4d"
+    },
+    {
+      "path": "test/vitest/vitest.extension-diffs-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3c2c5b0c0c224aeb9eede0582fc933677dcc24ed"
+    },
+    {
+      "path": "test/vitest/vitest.extension-diffs-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "62440ac0b8824b43b3500aa18889936ff99d8374"
+    },
+    {
+      "path": "test/vitest/vitest.extension-diffs.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "eecb33bf1152e73a90b4bc630ba741701a9e6c08"
+    },
+    {
+      "path": "test/vitest/vitest.extension-discord.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bd0f5e90d45f7ed6332f7be4256a5358c55988ff"
+    },
+    {
+      "path": "test/vitest/vitest.extension-feishu-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2f3a733731546159a5d382d17e33975f45296b12"
+    },
+    {
+      "path": "test/vitest/vitest.extension-feishu-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "52d681417060184eb04220a5fbea674fb9ca178d"
+    },
+    {
+      "path": "test/vitest/vitest.extension-feishu.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "576ee6b14a1336c5664a30d8090436db5c7e41b2"
+    },
+    {
+      "path": "test/vitest/vitest.extension-imessage.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "97d60c31b7ce039841aeb4c5153308a25dc56bbe"
+    },
+    {
+      "path": "test/vitest/vitest.extension-irc-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5fc94ed2e48d132d430e7e20081ce0b61c83efe2"
+    },
+    {
+      "path": "test/vitest/vitest.extension-irc-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "744654d1e38beb49db0f15d2ec4d50a2a3605220"
+    },
+    {
+      "path": "test/vitest/vitest.extension-irc.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bbd9aaa9fa10acc02b7092976999a2be00beb004"
+    },
+    {
+      "path": "test/vitest/vitest.extension-line.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "80d5e738305d6561f9937eb8dc4c40f3fc23f3ac"
+    },
+    {
+      "path": "test/vitest/vitest.extension-matrix-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c2205bbf648ea651a00428be3da83f4d49fbf884"
+    },
+    {
+      "path": "test/vitest/vitest.extension-matrix-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a8caabe206ab43d8d7475ad6212a72b95199f402"
+    },
+    {
+      "path": "test/vitest/vitest.extension-matrix.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f1d9d5f514c1c6ffc8e45fb2a8f39c529fab2904"
+    },
+    {
+      "path": "test/vitest/vitest.extension-mattermost-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e0203a8f53c94be2d46cd411e557f70700435ab4"
+    },
+    {
+      "path": "test/vitest/vitest.extension-mattermost-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7806e4302c3cbb9e44b90ab5e32239bd46f4420d"
+    },
+    {
+      "path": "test/vitest/vitest.extension-mattermost.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cf6136975b2440adf9074018674f76a758ea8ce3"
+    },
+    {
+      "path": "test/vitest/vitest.extension-media-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d37b3e8c61660a81515aa400f89900c15ef4e4f"
+    },
+    {
+      "path": "test/vitest/vitest.extension-media-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6a59dcdfc8a54fbd35b963b583c142e5385d0964"
+    },
+    {
+      "path": "test/vitest/vitest.extension-media.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6c3824ccff25fd2f58ac568eeeda91ee8c5c09a1"
+    },
+    {
+      "path": "test/vitest/vitest.extension-memory-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a5dda84bca78dfc3d64144147a5094cae7b0667e"
+    },
+    {
+      "path": "test/vitest/vitest.extension-memory-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "694a85d83a83a5fd9e2f321fe41e7dc71006d160"
+    },
+    {
+      "path": "test/vitest/vitest.extension-memory.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c63df648cfab3ab0693ec6c25b5560511fe7cc46"
+    },
+    {
+      "path": "test/vitest/vitest.extension-messaging-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1ed2c96f1afb8e15a9ace60f341505f0fb3e17c5"
+    },
+    {
+      "path": "test/vitest/vitest.extension-messaging-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "251d85dd2ff35ea2824309c323c5aba8bb20d1ab"
+    },
+    {
+      "path": "test/vitest/vitest.extension-messaging.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7f9436e2c2db3eda758bb600dc5544f858c7f5be"
+    },
+    {
+      "path": "test/vitest/vitest.extension-misc-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6d1f4f23676fcfc05daa59fd162d9f334bf1ed83"
+    },
+    {
+      "path": "test/vitest/vitest.extension-misc-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2d237ed633294690283eb5ce0729756315c0db90"
+    },
+    {
+      "path": "test/vitest/vitest.extension-misc.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e69dbabb424d0bc732aac362a28f35d51311211e"
+    },
+    {
+      "path": "test/vitest/vitest.extension-msteams-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bbdd18c4e5f6e3318af9d08de12548c3eaf3e76f"
+    },
+    {
+      "path": "test/vitest/vitest.extension-msteams-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f0ec02b357e74ad2be056b674503ffad2803e4fd"
+    },
+    {
+      "path": "test/vitest/vitest.extension-msteams.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f10d94a468df2f4f30ffce1be6641fbf35f84c52"
+    },
+    {
+      "path": "test/vitest/vitest.extension-provider-openai.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "544e1f70090f913d6b692aa8cd3e7cd7e06e9686"
+    },
+    {
+      "path": "test/vitest/vitest.extension-provider-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7316da4f35e2b67b312fbfa37a845ef9ead5fbb4"
+    },
+    {
+      "path": "test/vitest/vitest.extension-provider-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac0b098195ca845973e7838ab8360cb42c3aa392"
+    },
+    {
+      "path": "test/vitest/vitest.extension-providers.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "eccaf8dc0b217df47fd79a117fe5928692b4fd31"
+    },
+    {
+      "path": "test/vitest/vitest.extension-qa-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fbc26f62f06fb1657ef39ad919174ae66c6e6c5b"
+    },
+    {
+      "path": "test/vitest/vitest.extension-qa-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "904d11fdd68a41008c1cfe0d40aca5a6014dd0fe"
+    },
+    {
+      "path": "test/vitest/vitest.extension-qa.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aa36152a96fbf6e874874abaa5d0e897b0cfe6c8"
+    },
+    {
+      "path": "test/vitest/vitest.extension-signal.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "41e654b66e900e2c67caefc8c0c72c66704396f6"
+    },
+    {
+      "path": "test/vitest/vitest.extension-slack.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8a078cb8a2069803d29735a215ce0a04cd84e9a4"
+    },
+    {
+      "path": "test/vitest/vitest.extension-telegram-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "886ce2b07bcac3c3c318244d9d46749847a3de11"
+    },
+    {
+      "path": "test/vitest/vitest.extension-telegram-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3209129d861f0b7f407fc653b26b69128ea7af35"
+    },
+    {
+      "path": "test/vitest/vitest.extension-telegram.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5aedb494369c9ad972d36a24b68ca168c8a3f5cf"
+    },
+    {
+      "path": "test/vitest/vitest.extension-voice-call-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "65e36c5431231d90ca87012d1e7436d7e668c8b4"
+    },
+    {
+      "path": "test/vitest/vitest.extension-voice-call-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7fb2f0675159888d6d887492c400a14cf2cf60ea"
+    },
+    {
+      "path": "test/vitest/vitest.extension-voice-call.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "31a64ae23c31fd49f4a45b0e71211501c958d5df"
+    },
+    {
+      "path": "test/vitest/vitest.extension-whatsapp-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3a6302248f5c27d5aab38114ee90293a8b8b3eda"
+    },
+    {
+      "path": "test/vitest/vitest.extension-whatsapp-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "721c7264c10dd8236be0276328bbb7159a4d4ccf"
+    },
+    {
+      "path": "test/vitest/vitest.extension-whatsapp.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "23c559ad8cb5914d24339472043f2ef1b1bc928a"
+    },
+    {
+      "path": "test/vitest/vitest.extension-zalo-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5c7096cfd5ee15aba24941440832e61aca882637"
+    },
+    {
+      "path": "test/vitest/vitest.extension-zalo-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "86174efeaa2d991bcc0b0aa50153cc94c26ebad9"
+    },
+    {
+      "path": "test/vitest/vitest.extension-zalo.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e648d96f69b8a936888c57b81adf5820c2f0bae8"
+    },
+    {
+      "path": "test/vitest/vitest.extensions.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cec6db51131aeaa930fca2e1ba5dc78acb8f49a9"
+    },
+    {
+      "path": "test/vitest/vitest.full-agentic.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ae3bb10356cf450df13ac55acd0e2e970e148cc1"
+    },
+    {
+      "path": "test/vitest/vitest.full-auto-reply.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fbf6cfd2f31eab04b55a8d9ece731929f716b6d3"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-bundled.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "24037ff83c87c31ff8af908a676b4a4007a91ecb"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-contracts.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f002e4fe1517923f431ae686e1a79ad67ace5f57"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-runtime.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9ee570e94c40938836732db2b2d6e5f73c324c8d"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-support-boundary.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "439600349fa7a414a6d52301580b01ad2d46a810"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-tooling.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "221e38c68aebf78c01239bfab0e50c771d37e93a"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-unit-fast.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "897128213e583629cff09a57ce492be4f53cb70a"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-unit-security.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7244f754a923dd28ae5c3e76f2fd68308bd03f58"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-unit-src.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8548853abe55dbecbf0be3e9e38c2b135983ac2b"
+    },
+    {
+      "path": "test/vitest/vitest.full-core-unit-support.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a2601ff47b5298a333651a8cb4b6959a6829e3a6"
+    },
+    {
+      "path": "test/vitest/vitest.full-extensions.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fa7b6c968f0e627b6122a03504cce98badc09ec0"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-client.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e8d871b44787d376e40e70ec3146935d410e0784"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-core.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5a31d28bb2387b39bac6c12108d150928b667cb8"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-methods-isolated.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b7ddfb8c7361df154c5e6a8332b802240de59961"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-methods.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "21ec49a98bc15a5af7fd15cf0df833655765fde9"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-server-isolated.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "06fccc5185cca4731f70a16f688b241362448868"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-server-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3c7cb21c9bf2bb6b8284ece0045b3d42d3e5508c"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-server-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a82aea1d744fa3adee97125618c04857a7c6376a"
+    },
+    {
+      "path": "test/vitest/vitest.gateway-server.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f98b606e563de666e64f3d6b10108746b34a1df7"
+    },
+    {
+      "path": "test/vitest/vitest.gateway.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "00acb4c76086aae1dfc16457b56559c11af4b88c"
+    },
+    {
+      "path": "test/vitest/vitest.hooks.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c35db9be26170cf37651cbda198a2782f6448c20"
+    },
+    {
+      "path": "test/vitest/vitest.infra.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "081f23c72c19968ab0d1a64b073ba9654555426e"
+    },
+    {
+      "path": "test/vitest/vitest.live.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2db9cd328e0f43b86fc73c97080462a302a5d984"
+    },
+    {
+      "path": "test/vitest/vitest.logging.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b1cb6c73880a3b12e4468341912dd1b145df8d0b"
+    },
+    {
+      "path": "test/vitest/vitest.media-understanding.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a2e87b9566798e528471c8ea526fae03cae49e37"
+    },
+    {
+      "path": "test/vitest/vitest.media.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "395d8abf345f6687f141a67fd23e54172e731bd9"
+    },
+    {
+      "path": "test/vitest/vitest.package-docker.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac8f46cb953cdcc201b27e16c7aa7617125b9f6c"
+    },
+    {
+      "path": "test/vitest/vitest.pattern-file.test.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8b8c91c0db9045dff858dec9e08db663661949d2"
+    },
+    {
+      "path": "test/vitest/vitest.pattern-file.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a4c43473e18155695eb6836a8bb98276be8c1a56"
+    },
+    {
+      "path": "test/vitest/vitest.performance-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4d67d42f447228a61c57c41ccc3215294d60d24a"
+    },
+    {
+      "path": "test/vitest/vitest.plugin-sdk-light.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d359204c269796525626e968cc256101947b904c"
+    },
+    {
+      "path": "test/vitest/vitest.plugin-sdk-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "573ae544b4504cb47e10891cd7d5ca4404eb517d"
+    },
+    {
+      "path": "test/vitest/vitest.plugin-sdk-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "070ca79f8931609058f0c1a6aa77a260fdc91134"
+    },
+    {
+      "path": "test/vitest/vitest.plugin-sdk.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "670b74fddd1a568fb0b2ae6f0a1be3b3833566b7"
+    },
+    {
+      "path": "test/vitest/vitest.plugins.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c3313756b6e6250ce873fcba5da2007633a918b8"
+    },
+    {
+      "path": "test/vitest/vitest.process.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b66651df1535e8cff910aae25b0dd02c87e1ba5f"
+    },
+    {
+      "path": "test/vitest/vitest.project-shard-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "743bd62ecd2fdc02e44edc8014d254f5d2b375a5"
+    },
+    {
+      "path": "test/vitest/vitest.runtime-config.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "afa23924274c701c3514430856cc56749c75a98a"
+    },
+    {
+      "path": "test/vitest/vitest.scoped-config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a09402d0e3c8229ad25bac9663b6dc4581efdfa2"
+    },
+    {
+      "path": "test/vitest/vitest.secrets.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e03439ac42aab3491dafaf37e0878a55bc15f249"
+    },
+    {
+      "path": "test/vitest/vitest.shared-core.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "636f4b8692e212f0b061c34dffec55c83e8ee90f"
+    },
+    {
+      "path": "test/vitest/vitest.shared.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e33982a00fc351d94dc3fcd626ca71dc65da7f49"
+    },
+    {
+      "path": "test/vitest/vitest.system-load.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "13e1ecba563bdf55669e8e3c6ee7db017d083813"
+    },
+    {
+      "path": "test/vitest/vitest.tasks.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d4ff7d6847316a8629de5544450d6653ddf921b1"
+    },
+    {
+      "path": "test/vitest/vitest.test-shards.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "13b35ecd4c67dc78d788c3d06c19c378d7166c90"
+    },
+    {
+      "path": "test/vitest/vitest.test-shards.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "015e53bb6d3db14679249263335a3382ce58909c"
+    },
+    {
+      "path": "test/vitest/vitest.timeouts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5816139df0ac52117d330775267298a08082017a"
+    },
+    {
+      "path": "test/vitest/vitest.tooling-docker.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c717147c548c92261e05dac584b942184ba88a5a"
+    },
+    {
+      "path": "test/vitest/vitest.tooling-isolated-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7e6aab8d6edde1d23b46aa2090428b6d2a0eb54e"
+    },
+    {
+      "path": "test/vitest/vitest.tooling-isolated-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0ab51c4ef6b8477a2df3cb3d7a9b67cf4a7bea3f"
+    },
+    {
+      "path": "test/vitest/vitest.tooling-isolated.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "274f9baf254cce5422c0f632fe99a44f6a500dd5"
+    },
+    {
+      "path": "test/vitest/vitest.tooling.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ca5e8c886ffe010d5585e759cca03dcb099b80f1"
+    },
+    {
+      "path": "test/vitest/vitest.tui-pty.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "64a9288936d5290861a1dfe15c917075c5451bda"
+    },
+    {
+      "path": "test/vitest/vitest.tui.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ba4f4c7592146a052583d35a2cb2dd68892bae8b"
+    },
+    {
+      "path": "test/vitest/vitest.ui-browser.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bfb0ed4d941f3ed54669124cede16afff02e01cc"
+    },
+    {
+      "path": "test/vitest/vitest.ui-e2e.bundled.global-setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cb97ee8f9ed186199c65c320a516d26ec7772a74"
+    },
+    {
+      "path": "test/vitest/vitest.ui-e2e.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f91f6fc65246c1b05446ef4647338d609a16b444"
+    },
+    {
+      "path": "test/vitest/vitest.ui-e2e.global-setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b8471c731f1a47dd670cd4d935b78996dc789c65"
+    },
+    {
+      "path": "test/vitest/vitest.ui-e2e.sequencer.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0ca10d5eb52c46a90f4811b3f265e926cc98b253"
+    },
+    {
+      "path": "test/vitest/vitest.ui-e2e.setup.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "79295d5732fc47c928e6f51954b392580f2dd4d0"
+    },
+    {
+      "path": "test/vitest/vitest.ui-isolated-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "33da174091c34609f5a3840279fe2a85eda2e2c8"
+    },
+    {
+      "path": "test/vitest/vitest.ui-isolated-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b70ae2cd3692974399541501cae4776057e74e7c"
+    },
+    {
+      "path": "test/vitest/vitest.ui-isolated.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "15acbeb1776ac70101e59deba072b49a528c207e"
+    },
+    {
+      "path": "test/vitest/vitest.ui-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ddbe9a41300650d0a26b6173ede9a9e04644bc44"
+    },
+    {
+      "path": "test/vitest/vitest.ui-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1d01924065d9da37758e054c2aefaadb3313f627"
+    },
+    {
+      "path": "test/vitest/vitest.ui.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "347f325aca69269219a25cef000de9603625167d"
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast-fake-timers.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0bfc6fdbec2adbba8bd99dc46d0f09e1c7530535"
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast-isolated.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2c6de2b1e5f72ad95b2e5235f46f3a586b46e84b"
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "db4281cf7cfc8845f4741faeb70109c5f1d5a0da"
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f13af4c7134363acbdbd7c6c17c871e957d3db46"
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast-root.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0b5bc7422dfb05299111b0cd22a40953906da644"
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0f4da7bcd501a02aee9c8b6cdb134966ff9a3f2c"
+    },
+    {
+      "path": "test/vitest/vitest.unit-paths.d.mts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d97115e09734c7b8af3772edb18e54ddbd3e7971"
+    },
+    {
+      "path": "test/vitest/vitest.unit-paths.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "fde35cbc45b23a4f5b67f50438b6e868dcad95af"
+    },
+    {
+      "path": "test/vitest/vitest.unit-security.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a1e08d2fc9b27b5fbe2e38f2e736146b5d6706cc"
+    },
+    {
+      "path": "test/vitest/vitest.unit-src.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d18c3fb1a9fc0c2bf76744fc93e5c8eeddc6b27e"
+    },
+    {
+      "path": "test/vitest/vitest.unit-support.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6ab1e346ea8ad005c27ebbe48c13e3ccbdafdf3f"
+    },
+    {
+      "path": "test/vitest/vitest.unit.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "67330932f9e9e5cba4fabe88840e045bc5e39fd8"
+    },
+    {
+      "path": "test/vitest/vitest.utils.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "5c2ba265c59bfda16542380b1985cf3db03d21e4"
+    },
+    {
+      "path": "test/vitest/vitest.weighted-sharding.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6c75ead9bfa92408d6b9e5965a31617cf0847f32"
+    },
+    {
+      "path": "test/vitest/vitest.wizard.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "cb7a53cdaf2c56466b5de143b4e5465c4dd901f6"
+    },
+    {
+      "path": "test/vitest/vitest.worker-artifacts.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "aa24fb18b2386bd8f60932c0a6f27d0379b1b2e3"
+    },
+    {
+      "path": "test/vitest/zod-runtime.ts",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4a354a0f8e5e12b9372b46bd0a7c830fe3706a19"
+    }
+  ]
+}

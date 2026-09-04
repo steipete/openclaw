@@ -1,0 +1,19 @@
+{
+  "check_name": "checks-node-changed-extensions-config-48",
+  "runtime": "node",
+  "task": "test-shard",
+  "shard_name": "changed-extensions-config-48",
+  "configs": [
+    "test/vitest/vitest.extension-qa.config.ts"
+  ],
+  "env": {
+    "OPENCLAW_NODE_TEST_VITEST_ARGS_JSON": "[\"--shard=1/3\"]"
+  },
+  "pretest_build_mode": "private-qa",
+  "git_commits": [],
+  "requires_dist": false,
+  "runner": "blacksmith-8vcpu-ubuntu-2404",
+  "plan_concurrency": 1,
+  "predicted_seconds": 215,
+  "requires_go": false
+}

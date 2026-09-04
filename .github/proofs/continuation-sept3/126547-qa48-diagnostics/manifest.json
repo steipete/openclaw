@@ -1,0 +1,14 @@
+{
+  "schema": "openclaw-hosted-proof-manifest-v1",
+  "incomplete": false,
+  "sha256": {
+    "README.md": "467eed19f0c14c7fb41950aabb71ab39cacf97c49190a7a6a8b7a6f66c3dfb85",
+    ".github/workflows/126547-qa48-diagnostics.yml": "2204688a8553adad9ef37dd73328a6e442e2eb1e527f93ca30b64655a7edc3ba",
+    ".github/proofs/continuation-sept3/126547-qa48-diagnostics/dependency-source-bindings.json": "acaff86f81189fd26a3aaef1c15f9cfb1ee4064ffaa259f46d0a5f4ce1a21fc7",
+    ".github/proofs/continuation-sept3/126547-qa48-diagnostics/descriptor.json": "62576ab7496108065ed64ed31997b1e143a473824b29d545b578ca8836997078",
+    ".github/proofs/continuation-sept3/126547-qa48-diagnostics/execution-binding.json": "e5886c3309968d89c23794fdbd5c29fa86810838f734bd49b00a2e8a103c0583",
+    ".github/proofs/continuation-sept3/126547-qa48-diagnostics/qa-tree-inventory.json": "ae915b5fb09e24c6202af015bf1036efc56abd4d6b930aa113f629893b9019e5",
+    ".github/proofs/continuation-sept3/126547-qa48-diagnostics/run-proof.py": "f3a2bd50ac1610f31fb95dfcbc88156aad19a60393cffa64bd9cacbb02a188c3",
+    ".github/proofs/continuation-sept3/126547-qa48-diagnostics/source-comparison.json": "92fa8073b595a6df4a58c1320fa21a864b6c916aa3158198bd55af1e66ce73db"
+  }
+}

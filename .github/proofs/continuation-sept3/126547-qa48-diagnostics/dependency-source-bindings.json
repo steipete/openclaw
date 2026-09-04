@@ -1,0 +1,50 @@
+[
+  {
+    "package": "vitest",
+    "version": "4.1.11",
+    "file": "package.json",
+    "sha256": "a28126d97bcaf567da5bed69443b7f3bcd9a7a8c38c8b66e554686b6bb2c10e0"
+  },
+  {
+    "package": "vitest",
+    "version": "4.1.11",
+    "file": "dist/chunks/coverage.DM_a_rWm.js",
+    "sha256": "e509f3cc1bd81ae6426265253fa926cbde02be5cebfe35b1df422017bffdca31"
+  },
+  {
+    "package": "p-map",
+    "version": "7.0.6",
+    "file": "package.json",
+    "sha256": "5ddf6d98f9bb38daaa77a0e73758dcf13974802d1453b1a3121ba2c1e5576f27"
+  },
+  {
+    "package": "p-map",
+    "version": "7.0.6",
+    "file": "index.js",
+    "sha256": "7ad50a54ad1a52c120590e00fa0b2f66eca365ca3e093f1d1c25b2b6334f52d5"
+  },
+  {
+    "package": "@openclaw/fs-safe",
+    "version": "0.7.0",
+    "file": "package.json",
+    "sha256": "b304e62fdb0002fcd59ef7a1e886b1fbf45c6510136361e3bb542f920b6dad0d"
+  },
+  {
+    "package": "@openclaw/fs-safe",
+    "version": "0.7.0",
+    "file": "dist/file-lock.js",
+    "sha256": "dfd2722ee7e4de3a2875d9a33b30f0da2e011c5cb8ef489863cb10be7e4fc96e"
+  },
+  {
+    "package": "@openclaw/fs-safe",
+    "version": "0.7.0",
+    "file": "dist/sidecar-lock.js",
+    "sha256": "a3814564c1125911b9ed7af6991e810832c608067a07ccf75438198de1aebb30"
+  },
+  {
+    "package": "@openclaw/fs-safe",
+    "version": "0.7.0",
+    "file": "dist/sidecar-lock-reclaim.js",
+    "sha256": "b7b2f8b0a7f23ce81cfb9f230ab0492024abb9e68c17781c11670b2630128eeb"
+  }
+]

@@ -1,0 +1,470 @@
+{
+  "merge": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+  "baseline": "5aaafb76c427d383e5eefc8a6934f895dd82880e",
+  "identities": {
+    "3ba6a62a352ea58d5999a9ed4c04b9de9479377f": {
+      "tree": "842c018ecd7e8141cbe6e27e238698539413899b",
+      "parents": [
+        "5aaafb76c427d383e5eefc8a6934f895dd82880e",
+        "876101775afc88f7df842795219177f1594baceb"
+      ]
+    },
+    "5aaafb76c427d383e5eefc8a6934f895dd82880e": {
+      "tree": "c834ca640c5a97a9e9166b13f34a5869e512c6c9",
+      "parents": [
+        "da7d113b90af21b5cc6d355a6f7706ea3912a8e1"
+      ]
+    }
+  },
+  "files": [
+    {
+      "path": ".github/actions/setup-node-env/action.yml",
+      "mergeSha256": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
+      "baseSha256": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
+      "equal": true,
+      "bytes": 22670
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "mergeSha256": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
+      "baseSha256": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
+      "equal": true,
+      "bytes": 298319
+    },
+    {
+      "path": "AGENTS.md",
+      "mergeSha256": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
+      "baseSha256": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
+      "equal": true,
+      "bytes": 66095
+    },
+    {
+      "path": "VISION.md",
+      "mergeSha256": "46e253fa54a37082efa9d5df10cc77e6e156e92fe40bc3a9cf9215c68befc910",
+      "baseSha256": "46e253fa54a37082efa9d5df10cc77e6e156e92fe40bc3a9cf9215c68befc910",
+      "equal": true,
+      "bytes": 7807
+    },
+    {
+      "path": "config/assertion-safety-baseline.txt",
+      "mergeSha256": "6c9e12db77f79075e1df5160fc6fe1f381145b7e506ab0fc01252229978c5290",
+      "baseSha256": "5ca1f49989b7b318323f1235708519e5893a40ecba34525941b4452ea3f9c14c",
+      "equal": false,
+      "bytes": 179677
+    },
+    {
+      "path": "config/knip.config.ts",
+      "mergeSha256": "2f0f1c17f35da64539079b5ece24ecfa7acf275e9367150591b1d5d9724b7109",
+      "baseSha256": "315666287ed8cf833a8eb9ad379050597d8d1710bba857de0a732ad2717c6723",
+      "equal": false,
+      "bytes": 39743
+    },
+    {
+      "path": "docs/ci.md",
+      "mergeSha256": "ef6de0313fd9b52c94b33887c6185a3f1ce4fe13f9d655da60a342bd5f436a3e",
+      "baseSha256": "ef6de0313fd9b52c94b33887c6185a3f1ce4fe13f9d655da60a342bd5f436a3e",
+      "equal": true,
+      "bytes": 229105
+    },
+    {
+      "path": "docs/reference/test.md",
+      "mergeSha256": "a47a93b956da993b65e4e13ca255922ffb3ed1ffece720a50d7cfed99a898509",
+      "baseSha256": "a47a93b956da993b65e4e13ca255922ffb3ed1ffece720a50d7cfed99a898509",
+      "equal": true,
+      "bytes": 76162
+    },
+    {
+      "path": "extensions/AGENTS.md",
+      "mergeSha256": "ba85d81f0649a3d5ba8fdab5b9a939ed624aa984a2bc0fb5e2f996a885d8fa73",
+      "baseSha256": "ba85d81f0649a3d5ba8fdab5b9a939ed624aa984a2bc0fb5e2f996a885d8fa73",
+      "equal": true,
+      "bytes": 4341
+    },
+    {
+      "path": "extensions/qa-channel/package.json",
+      "mergeSha256": "322d9c50c4148482da9d1a2a2d0157e58c3322dcb36d4951526a08fe6cf225af",
+      "baseSha256": "322d9c50c4148482da9d1a2a2d0157e58c3322dcb36d4951526a08fe6cf225af",
+      "equal": true,
+      "bytes": 1933
+    },
+    {
+      "path": "extensions/qa-lab/package.json",
+      "mergeSha256": "f8d010c441c892ca6f39e01cb5aa71f32faaee90d399f611d90d51b57276d7ad",
+      "baseSha256": "f8d010c441c892ca6f39e01cb5aa71f32faaee90d399f611d90d51b57276d7ad",
+      "equal": true,
+      "bytes": 980
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-process-lifecycle.test-support.ts",
+      "mergeSha256": "8c517866d245b94696c9e861db531e829807ae438ff86d976935b47d29b54388",
+      "baseSha256": "8c517866d245b94696c9e861db531e829807ae438ff86d976935b47d29b54388",
+      "equal": true,
+      "bytes": 979
+    },
+    {
+      "path": "extensions/qa-lab/src/suite-process-lifecycle.test.ts",
+      "mergeSha256": "65c52f4f3d77eee42f1dbe9726c848c6a6b13a6a378ef9b9c16d73e310dd8dce",
+      "baseSha256": "65c52f4f3d77eee42f1dbe9726c848c6a6b13a6a378ef9b9c16d73e310dd8dce",
+      "equal": true,
+      "bytes": 9402
+    },
+    {
+      "path": "package.json",
+      "mergeSha256": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+      "baseSha256": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+      "equal": true,
+      "bytes": 132448
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "mergeSha256": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+      "baseSha256": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+      "equal": true,
+      "bytes": 564033
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "mergeSha256": "922f9ca51900289b480f16eeaadc1a7298012cf4f677dd7a371c434500920abb",
+      "baseSha256": "922f9ca51900289b480f16eeaadc1a7298012cf4f677dd7a371c434500920abb",
+      "equal": true,
+      "bytes": 3684
+    },
+    {
+      "path": "scripts/AGENTS.md",
+      "mergeSha256": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
+      "baseSha256": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
+      "equal": true,
+      "bytes": 15237
+    },
+    {
+      "path": "scripts/build-all.mts",
+      "mergeSha256": "139eda5421c92098645b3a3d8bcd0b4cdb3f4a7c1d05237b28d69f3f1a48592e",
+      "baseSha256": "139eda5421c92098645b3a3d8bcd0b4cdb3f4a7c1d05237b28d69f3f1a48592e",
+      "equal": true,
+      "bytes": 21869
+    },
+    {
+      "path": "scripts/ci-run-node-test-shard.mts",
+      "mergeSha256": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
+      "baseSha256": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
+      "equal": true,
+      "bytes": 16424
+    },
+    {
+      "path": "scripts/lib/dist-artifact-ownership.mts",
+      "mergeSha256": "0c03cacc008a92053860aefff04a89e64cdb342a6d953b34ff650b982a444593",
+      "baseSha256": "0c03cacc008a92053860aefff04a89e64cdb342a6d953b34ff650b982a444593",
+      "equal": true,
+      "bytes": 5591
+    },
+    {
+      "path": "scripts/lib/local-check-runtime.mts",
+      "mergeSha256": "5596b9983910242f1076905e6afa68c709547abf98f8c8153a9c356a345ffa2f",
+      "baseSha256": "5596b9983910242f1076905e6afa68c709547abf98f8c8153a9c356a345ffa2f",
+      "equal": true,
+      "bytes": 10014
+    },
+    {
+      "path": "scripts/lib/numeric-options.mjs",
+      "mergeSha256": "2d472a315b3cbf0ecd1614ab7a941c6ced36f4b5cc21e9be1e8644ea4f5c4d9a",
+      "baseSha256": "2d472a315b3cbf0ecd1614ab7a941c6ced36f4b5cc21e9be1e8644ea4f5c4d9a",
+      "equal": true,
+      "bytes": 2576
+    },
+    {
+      "path": "scripts/lib/tsx-cli-shim.mjs",
+      "mergeSha256": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+      "baseSha256": "9d29cecd3721bb991102fdfd7dbfe1b3d3d0bf8baa2600eab168a9e4f43ff168",
+      "equal": true,
+      "bytes": 5866
+    },
+    {
+      "path": "scripts/lib/vitest-build-prerequisites.mts",
+      "mergeSha256": "15d7fb596dcee56e46a8f7250e1948e2d8ef75706cd50c602501037d3b9e7c5a",
+      "baseSha256": "15d7fb596dcee56e46a8f7250e1948e2d8ef75706cd50c602501037d3b9e7c5a",
+      "equal": true,
+      "bytes": 12631
+    },
+    {
+      "path": "scripts/lib/vitest-local-scheduling.mts",
+      "mergeSha256": "118bdbb2f0c64049bde7661d690b82278d622621c1eebac04fceef1b688c6df9",
+      "baseSha256": "118bdbb2f0c64049bde7661d690b82278d622621c1eebac04fceef1b688c6df9",
+      "equal": true,
+      "bytes": 5986
+    },
+    {
+      "path": "scripts/lib/vitest-process-env.mts",
+      "mergeSha256": "09ba3af947ea78e53545b42850ef2a5e32752ba7ba06e827e2776495702abfea",
+      "baseSha256": "09ba3af947ea78e53545b42850ef2a5e32752ba7ba06e827e2776495702abfea",
+      "equal": true,
+      "bytes": 9600
+    },
+    {
+      "path": "scripts/lib/vitest-process.mts",
+      "mergeSha256": "fcca9a8ec506446eb4e0cc53235be7659791f4aad1a878ba3561ffb3719a97bc",
+      "baseSha256": "fcca9a8ec506446eb4e0cc53235be7659791f4aad1a878ba3561ffb3719a97bc",
+      "equal": true,
+      "bytes": 6205
+    },
+    {
+      "path": "scripts/lib/vitest-report-owner.mts",
+      "mergeSha256": "5c52ca729b0babf9fdb83b3202b46e326f0644dcf2d47cb397d87a04dda34623",
+      "baseSha256": "5c52ca729b0babf9fdb83b3202b46e326f0644dcf2d47cb397d87a04dda34623",
+      "equal": true,
+      "bytes": 12600
+    },
+    {
+      "path": "scripts/lib/vitest-resource-ownership.mts",
+      "mergeSha256": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+      "baseSha256": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+      "equal": true,
+      "bytes": 3454
+    },
+    {
+      "path": "scripts/lib/vitest-unhandled-errors.mts",
+      "mergeSha256": "58f9cbab55800b151803b11c7c12e5eb0db14bc81b64858beab41d42656c1b77",
+      "baseSha256": "58f9cbab55800b151803b11c7c12e5eb0db14bc81b64858beab41d42656c1b77",
+      "equal": true,
+      "bytes": 3239
+    },
+    {
+      "path": "scripts/lib/vitest-worker-artifacts.mts",
+      "mergeSha256": "a3ac58e66766465d55717b6da3b1aca3dd84421a624b56d50a872acb8741ba94",
+      "baseSha256": "a3ac58e66766465d55717b6da3b1aca3dd84421a624b56d50a872acb8741ba94",
+      "equal": true,
+      "bytes": 6187
+    },
+    {
+      "path": "scripts/lib/vitest-worker-bootstrap.mts",
+      "mergeSha256": "546f83b552339421676f92d91f3b997753a60931057024a16b6c166aba5c9605",
+      "baseSha256": "546f83b552339421676f92d91f3b997753a60931057024a16b6c166aba5c9605",
+      "equal": true,
+      "bytes": 1268
+    },
+    {
+      "path": "scripts/lib/vitest-worker-compiler.mts",
+      "mergeSha256": "953db41722c99208bf7a8ba87067d03a5dcaff56ac82fbac4c2eeaf39bdd32e0",
+      "baseSha256": "953db41722c99208bf7a8ba87067d03a5dcaff56ac82fbac4c2eeaf39bdd32e0",
+      "equal": true,
+      "bytes": 5651
+    },
+    {
+      "path": "scripts/lib/vitest-worker-run.mts",
+      "mergeSha256": "63733d0070c7981336ba5359d8cf846cb78e1d6165ec0b586f5af9ce669b74ff",
+      "baseSha256": "63733d0070c7981336ba5359d8cf846cb78e1d6165ec0b586f5af9ce669b74ff",
+      "equal": true,
+      "bytes": 6313
+    },
+    {
+      "path": "scripts/run-node.mjs",
+      "mergeSha256": "0768844b54d785359d07a907c36acbc40f0251bddd0f3fa75e56eb80df0bff1e",
+      "baseSha256": "0768844b54d785359d07a907c36acbc40f0251bddd0f3fa75e56eb80df0bff1e",
+      "equal": true,
+      "bytes": 153
+    },
+    {
+      "path": "scripts/run-node.mts",
+      "mergeSha256": "22db557bad2b68379ec8f3ab64bc110443b0fece5f6d1e188f0d8b605c85d1f0",
+      "baseSha256": "22db557bad2b68379ec8f3ab64bc110443b0fece5f6d1e188f0d8b605c85d1f0",
+      "equal": true,
+      "bytes": 56138
+    },
+    {
+      "path": "scripts/run-vitest.mts",
+      "mergeSha256": "59c99a9a5df5e94fd905b7866e45cb70181b188a90ed03aebe41967f02fd430d",
+      "baseSha256": "59c99a9a5df5e94fd905b7866e45cb70181b188a90ed03aebe41967f02fd430d",
+      "equal": true,
+      "bytes": 33533
+    },
+    {
+      "path": "scripts/test-projects-child.mts",
+      "mergeSha256": "da336988cdba302c6cf0c99314437f1519168f2348cda9a124c7fc50d5796e0f",
+      "baseSha256": "da336988cdba302c6cf0c99314437f1519168f2348cda9a124c7fc50d5796e0f",
+      "equal": true,
+      "bytes": 243
+    },
+    {
+      "path": "scripts/test-projects-run.mts",
+      "mergeSha256": "d2fbce075ba8077ac2564e0a97d9b26bc2e945b7e5ff19dd006032980c9ae041",
+      "baseSha256": "d2fbce075ba8077ac2564e0a97d9b26bc2e945b7e5ff19dd006032980c9ae041",
+      "equal": true,
+      "bytes": 19408
+    },
+    {
+      "path": "scripts/test-projects.mts",
+      "mergeSha256": "41cedf3b12f00f562ca70c72b9d9a1fedfbd1ef129d3d2ed9dced9b4584ad898",
+      "baseSha256": "41cedf3b12f00f562ca70c72b9d9a1fedfbd1ef129d3d2ed9dced9b4584ad898",
+      "equal": true,
+      "bytes": 240
+    },
+    {
+      "path": "scripts/test-projects.test-support.mts",
+      "mergeSha256": "05e5f72e795e19115c2b58b0f65dbd4c38b5d79d973c8a9c12f87277c4d8080a",
+      "baseSha256": "05e5f72e795e19115c2b58b0f65dbd4c38b5d79d973c8a9c12f87277c4d8080a",
+      "equal": true,
+      "bytes": 169401
+    },
+    {
+      "path": "scripts/tsx.mjs",
+      "mergeSha256": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+      "baseSha256": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+      "equal": true,
+      "bytes": 566
+    },
+    {
+      "path": "scripts/vitest-process-group.mts",
+      "mergeSha256": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
+      "baseSha256": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
+      "equal": true,
+      "bytes": 21736
+    },
+    {
+      "path": "src/gateway/server-core-runtime.ts",
+      "mergeSha256": "7ac941a5fd72dc566619b0fb4565af1f5cd9fff05e808577d04d9c49e9e1988e",
+      "baseSha256": "86adb40870ada8920929f2ba214666fa4571a658867d37be28dd1f319adf1abf",
+      "equal": false,
+      "bytes": 26394
+    },
+    {
+      "path": "src/gateway/server-plugins.lifecycle.test.ts",
+      "mergeSha256": "e67dea0f9caceb73ac29bc26bf03c3637de885e17c752fafed314f0d3dfac0f3",
+      "baseSha256": "81af75f698c3afdcc80154c6c89626733a3def5481ed5fb14fb20c4a5f16a758",
+      "equal": false,
+      "bytes": 28951
+    },
+    {
+      "path": "test/AGENTS.md",
+      "mergeSha256": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
+      "baseSha256": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
+      "equal": true,
+      "bytes": 552
+    },
+    {
+      "path": "test/non-isolated-runner.ts",
+      "mergeSha256": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
+      "baseSha256": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
+      "equal": true,
+      "bytes": 21402
+    },
+    {
+      "path": "test/setup-openclaw-runtime.ts",
+      "mergeSha256": "7cafcbcc17dc5eb7912a79973a592464ae71aabbefd5b535877cb7d90e22770f",
+      "baseSha256": "7cafcbcc17dc5eb7912a79973a592464ae71aabbefd5b535877cb7d90e22770f",
+      "equal": true,
+      "bytes": 13794
+    },
+    {
+      "path": "test/setup.extensions.ts",
+      "mergeSha256": "f81c89d5119c9eef82a8e42f5a32945a7dcc10598bd1a59631be5e3fa7980889",
+      "baseSha256": "f81c89d5119c9eef82a8e42f5a32945a7dcc10598bd1a59631be5e3fa7980889",
+      "equal": true,
+      "bytes": 339
+    },
+    {
+      "path": "test/setup.shared.ts",
+      "mergeSha256": "cdee6b99f9ffb1bf1f966c6ee25b3e2b865091548505e8635a77ac79cf476917",
+      "baseSha256": "cdee6b99f9ffb1bf1f966c6ee25b3e2b865091548505e8635a77ac79cf476917",
+      "equal": true,
+      "bytes": 3088
+    },
+    {
+      "path": "test/setup.ts",
+      "mergeSha256": "461775c6a67ccf37d9af00fbff2469acd5c585be9f115883aa056812dd3d9efb",
+      "baseSha256": "461775c6a67ccf37d9af00fbff2469acd5c585be9f115883aa056812dd3d9efb",
+      "equal": true,
+      "bytes": 147
+    },
+    {
+      "path": "test/test-env.ts",
+      "mergeSha256": "bcf89a30672d03cb65d9c7b0086028c389b346d267c7d4eda19d4ee74373e37b",
+      "baseSha256": "bcf89a30672d03cb65d9c7b0086028c389b346d267c7d4eda19d4ee74373e37b",
+      "equal": true,
+      "bytes": 19645
+    },
+    {
+      "path": "test/test-home-policy.mts",
+      "mergeSha256": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+      "baseSha256": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+      "equal": true,
+      "bytes": 2025
+    },
+    {
+      "path": "test/vitest/vitest.extension-config.ts",
+      "mergeSha256": "e15826f1519eb359a184a1e3287c8e917e447ae6b0ac34822839fcc67a599646",
+      "baseSha256": "e15826f1519eb359a184a1e3287c8e917e447ae6b0ac34822839fcc67a599646",
+      "equal": true,
+      "bytes": 1193
+    },
+    {
+      "path": "test/vitest/vitest.extension-qa-paths.mjs",
+      "mergeSha256": "4ada8499523b04ba39c1994b0ff3feb1fc6aa057c5d27dcbc0f0bc4e00830f31",
+      "baseSha256": "4ada8499523b04ba39c1994b0ff3feb1fc6aa057c5d27dcbc0f0bc4e00830f31",
+      "equal": true,
+      "bytes": 233
+    },
+    {
+      "path": "test/vitest/vitest.extension-qa.config.ts",
+      "mergeSha256": "9f8e30c5f7c4861b6e5cac7e2ad4724b0bf9d8a5be90209ee57e11aa8c5f2292",
+      "baseSha256": "9f8e30c5f7c4861b6e5cac7e2ad4724b0bf9d8a5be90209ee57e11aa8c5f2292",
+      "equal": true,
+      "bytes": 444
+    },
+    {
+      "path": "test/vitest/vitest.pattern-file.ts",
+      "mergeSha256": "a9a3a664de5673fb9b47ae1f173a5abd6559ba407736188bdf5e12921a4bcae5",
+      "baseSha256": "a9a3a664de5673fb9b47ae1f173a5abd6559ba407736188bdf5e12921a4bcae5",
+      "equal": true,
+      "bytes": 11083
+    },
+    {
+      "path": "test/vitest/vitest.performance-config.ts",
+      "mergeSha256": "bda75268da4e8920890a32dfc836670a2874b4f9da3c2876f1d89be65e59fab3",
+      "baseSha256": "bda75268da4e8920890a32dfc836670a2874b4f9da3c2876f1d89be65e59fab3",
+      "equal": true,
+      "bytes": 2486
+    },
+    {
+      "path": "test/vitest/vitest.scoped-config.ts",
+      "mergeSha256": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+      "baseSha256": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+      "equal": true,
+      "bytes": 8689
+    },
+    {
+      "path": "test/vitest/vitest.shared.config.ts",
+      "mergeSha256": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+      "baseSha256": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+      "equal": true,
+      "bytes": 20892
+    },
+    {
+      "path": "test/vitest/vitest.timeouts.ts",
+      "mergeSha256": "82465558c77ce00d1e892a4ba06be6df5d4e449eecffb5383d1c45ce8ad7d073",
+      "baseSha256": "82465558c77ce00d1e892a4ba06be6df5d4e449eecffb5383d1c45ce8ad7d073",
+      "equal": true,
+      "bytes": 55
+    },
+    {
+      "path": "test/vitest/vitest.unit-fast-paths.mjs",
+      "mergeSha256": "695619f070a089e8350ad3eaa71a13759f7a01bd6734d09878b6ae5782aafe52",
+      "baseSha256": "695619f070a089e8350ad3eaa71a13759f7a01bd6734d09878b6ae5782aafe52",
+      "equal": true,
+      "bytes": 25265
+    },
+    {
+      "path": "test/vitest/vitest.worker-artifacts.ts",
+      "mergeSha256": "177aaffdbc955e3bb214ff6a2aec9917eba554284db42078f4de26385706d6fd",
+      "baseSha256": "177aaffdbc955e3bb214ff6a2aec9917eba554284db42078f4de26385706d6fd",
+      "equal": true,
+      "bytes": 5201
+    },
+    {
+      "path": "vitest.config.ts",
+      "mergeSha256": "e14e4163a39abb617507fcc8a4c498c0b791e9ccbe1407e4601422f42a92f967",
+      "baseSha256": "e14e4163a39abb617507fcc8a4c498c0b791e9ccbe1407e4601422f42a92f967",
+      "equal": true,
+      "bytes": 219
+    }
+  ],
+  "readScope": "Files are retained and hash-bound. Complete execution owners were inspected; the broad docs and 4,632-line routing support were inspected at cited applicable sections, not claimed fully audited."
+}
