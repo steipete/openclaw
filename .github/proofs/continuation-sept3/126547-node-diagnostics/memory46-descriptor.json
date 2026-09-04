@@ -1,0 +1,15 @@
+{
+  "check_name": "checks-node-changed-extensions-config-46",
+  "runtime": "node",
+  "task": "test-shard",
+  "shard_name": "changed-extensions-config-46",
+  "configs": [
+    "test/vitest/vitest.extension-memory.config.ts"
+  ],
+  "git_commits": [],
+  "requires_dist": false,
+  "runner": "blacksmith-8vcpu-ubuntu-2404",
+  "plan_concurrency": 1,
+  "predicted_seconds": 250,
+  "requires_go": false
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "openclaw-proof-asset-manifest-v1",
+  "incomplete": false,
+  "sha256": {
+    ".github/proofs/continuation-sept3/126547-node-diagnostics/config-source-inventory.json": "78dc21a1a5da61f3f9d7b7b06bdca404c702aeaa2a2af408d90918f7fdf64daa",
+    ".github/proofs/continuation-sept3/126547-node-diagnostics/execution-binding.json": "6f11c4659bae9011889719616ecd3c16c3b11c01639a9268ee69d1cea56fb3ae",
+    ".github/proofs/continuation-sept3/126547-node-diagnostics/memory46-descriptor.json": "a482afd42402fdf41cf7094b0e4e47cb16216ba1a48795d6bcf26a911d0d0e35",
+    ".github/proofs/continuation-sept3/126547-node-diagnostics/run-proof.py": "691c5ab6c56912f82ae27d3adcf00cbbd9ac9efeb2b982e238f3367529c72cce",
+    ".github/proofs/continuation-sept3/126547-node-diagnostics/small16-descriptor.json": "404cf66e7106bf37a93e13a4b855d06acddc880183419db67ed89499d88474a5",
+    ".github/workflows/126547-node-diagnostics.yml": "5d960d394b740c5ee8371a22451d7b01b3ad1a16db7e63c18418b10e42cb7aab"
+  }
+}
