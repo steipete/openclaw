@@ -2,23 +2,23 @@
   "schema": "openclaw-126547-current-merge-plan-proposal-v1",
   "runnable": true,
   "executionMayRun": true,
-  "status": "root activated for independent review before publication",
+  "status": "root reviewed; canonical plan report enabled",
   "originalFailedCiCheckoutProven": false,
   "originalFailedCiWorkflowRevisionProven": false,
   "comparisonRun": {
     "repository": "openclaw/openclaw",
-    "runId": 33825705923,
+    "runId": 33860151088,
     "attempt": 2,
+    "observedHead": "7179ebe50751ae4eeb93a23a43c2da907d83cd18",
     "testcaseMappingKnown": false
   },
-  "mergeRepository": "openclaw/openclaw",
-  "mergeHead": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
-  "mergeTree": "842c018ecd7e8141cbe6e27e238698539413899b",
+  "mergeRepository": "steipete/openclaw",
+  "mergeHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+  "mergeTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
   "parents": [
-    "5aaafb76c427d383e5eefc8a6934f895dd82880e",
-    "876101775afc88f7df842795219177f1594baceb"
+    "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
   ],
-  "capturedMergeTimestamp": "2026-09-04T01:25:21Z",
+  "capturedMergeTimestamp": "2026-09-04T03:13:17-07:00",
   "nodeVersion": "24.19.0",
   "canonicalNodePolicy": "24.x; concrete version is fresh report provenance, not original run attribution",
   "modeledEventEnv": {
@@ -27,19 +27,19 @@
     "GITHUB_REPOSITORY": "openclaw/openclaw",
     "GITHUB_EVENT_NAME": "pull_request",
     "GITHUB_RUN_ATTEMPT": "2",
-    "GITHUB_SHA": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
-    "GITHUB_REF": "refs/pull/126547/merge",
-    "HEAD_REPOSITORY": "NianJiuZst/openclaw",
-    "CONFIGURED_RUNNER_PROFILE": "hybrid",
+    "GITHUB_SHA": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+    "GITHUB_REF": "refs/pull/126547/head",
+    "HEAD_REPOSITORY": "steipete/openclaw",
+    "CONFIGURED_RUNNER_PROFILE": "github",
     "AUTHOR_ASSOCIATION": "",
     "OPENCLAW_ALLOW_RELEASE_GENERATED_MIX": "false"
   },
-  "authorAssociation": "not recovered; irrelevant to fork branch of selector; empty sentinel explicitly modeled",
+  "authorAssociation": "Empty sentinel in an explicit fork-PR model; current logical github profile is independently inferred from retained five-job lint matrix, not assumed from physical runners.",
   "logicalRunnerProfileExpected": "github",
   "actualRunnerRequired": "GitHub-hosted ubuntu-24.04; independently verified by outer controller",
   "manifestEnv": {
-    "OPENCLAW_CI_CHECKOUT_REVISION": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
-    "OPENCLAW_CI_WORKFLOW_REVISION": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+    "OPENCLAW_CI_CHECKOUT_REVISION": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+    "OPENCLAW_CI_WORKFLOW_REVISION": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
     "OPENCLAW_CI_REPOSITORY": "openclaw/openclaw",
     "OPENCLAW_CI_EVENT_NAME": "pull_request",
     "OPENCLAW_CI_HISTORICAL_TARGET": "false",
@@ -69,9 +69,8 @@
     "run_native_i18n"
   ],
   "requestedCheckNames": [
-    "checks-node-compact-large-10",
-    "checks-node-compact-small-8",
-    "checks-node-compact-large-2"
+    "checks-node-compact-small-16",
+    "checks-node-changed-extensions-config-46"
   ],
   "harnessFiles": [
     ".github/actions/git-owner/test-prerequisites.mjs",
@@ -115,30 +114,30 @@
     "no Git mutations in planner stage",
     "no network in planner stage"
   ],
-  "candidateHead": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
-  "candidateTree": "842c018ecd7e8141cbe6e27e238698539413899b",
-  "candidateRepository": "openclaw/openclaw",
+  "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+  "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
+  "candidateRepository": "steipete/openclaw",
   "sourceHashes": {
-    "package.json": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+    "package.json": "1fcbfb22c59894314f929d711b69c6f08fd1f58e5cefcbfdb2ba1e6d0658abe9",
     "config/ci-test-timings.json": "eda3d95c86c24eba8cebd9fa0205ff66c3cabe91fc59629cd43b317ad275c6e1",
     "scripts/ci-run-node-test-shard.mts": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
     "scripts/ci-changed-scope.mjs": "de1868b865ac39dea6620b89b173c22ea0d9ca5ee41ef7c4df569a07787c3175",
     "scripts/AGENTS.md": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
-    ".github/workflows/ci.yml": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
+    ".github/workflows/ci.yml": "a97d6cb7a6eb6f0e359281ff8fc8b4a59f44bd2a8110809bc511716aef80c8a5",
     ".github/actions/detect-docs-changes/action.yml": "a1991eb4c97f2960d3916cb7159fb8e0f3e6cef30b56a9fdb7cfe3fb198f436f",
     ".github/actions/git-owner/test-prerequisites.json": "6acabc261c8020a228c4b92cea9af52bf54e041f56f0155f8715cc6e881dcf4d",
     ".github/actions/git-owner/test-prerequisites.mjs": "6d846e753dd6746f66a54ff0a5da15dfeb5ca91af32636a74fe33a1719991fd8",
     "scripts/lib/extension-test-plan.mts": "aaba1ddd382da548a3afd70981b66fb766d92454b058293184f004f3113dbd49",
     "scripts/lib/merge-head-diff-base.mjs": "3789502fa71a64f3f427e8ecf23a43e7e0132886322037dd2174893f840d0e0b",
     "scripts/lib/list-test-files.mts": "7c1109668d34143f6599488dd554cc0a4bac6b084038f012472da8f81ed52674",
-    "scripts/lib/ci-changed-node-test-plan.mts": "6ff315fa5dcc68434c16ec3840a9436a09e2cf76d6aeaf2ef69624672c4d7afb",
+    "scripts/lib/ci-changed-node-test-plan.mts": "921cbb4a5a33eb9b31a0c62f9f3a1916ea265da04091048c66d5bdd495d410ac",
     "scripts/lib/release-context.mjs": "b5b5d2a8ed1d718d9ecea10a97da40a9c6e3798e3a62f49441a6f8c849b436a7",
     "scripts/lib/release-version.mjs": "c562590d6c17d7a8eaff32e9c46e20e8010be61f26ceeed875e32669631b74f7",
     "scripts/lib/ci-node-test-plan.mts": "d0654d640d672f425670674ff869a8a2ca9cd111047038268701706c321d6856",
     "scripts/lib/ci-test-timings.mts": "fae7d19a8ef2903e3087def8e8b1b6fdf0f3b7621a1f1cf0d0bf0e358d903397",
     "scripts/lib/changed-extensions.mts": "09ae6315fddadfca97d652e30d984fc9b3c379f944b94d58d23831d5de25f1f1",
-    ".agents/skills/openclaw-ci-limits/SKILL.md": "eb0b32fe32b184c42a5c3d82822f4dd433a3d1f3284cb2d0e2b3877e8d106d8a",
-    "pnpm-lock.yaml": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+    ".agents/skills/openclaw-ci-limits/SKILL.md": "4e82620044e72bf10c6f9f82f93d866315be346ee42ffadd9888160fd49518d0",
+    "pnpm-lock.yaml": "d3b3d8605819ed54c0c0b128ee6186d9a6a96d40f491dad3fb03d43009aa47d0",
     "pnpm-workspace.yaml": "922f9ca51900289b480f16eeaadc1a7298012cf4f677dd7a371c434500920abb"
   },
   "publisherRepository": "steipete/openclaw",
@@ -150,5 +149,12 @@
     "changed-scope",
     "canonical-plan"
   ],
-  "runtimeTestsExecuted": false
+  "runtimeTestsExecuted": false,
+  "sourceKind": "candidate-head-against-pinned-integrated-main; legacy mergeHead/mergeTree fields mirror candidate identity only",
+  "diffBase": "dd38399e11c3babf5ea11c92fee4cedb30676e69",
+  "diffBaseTree": "912dd739a0dae69207ab98162b0f291f75e7ab56",
+  "diffBaseParents": [
+    "9d2404a4538e94eaabe7e2d35176db1cfbf212cb"
+  ],
+  "modeledInputsDisclosure": "This models current candidate14d and workflow14d against pinned integrated main dd38399; it does not recover original7179 CI merge/base/workflow or the actual repository variable. The selected logical github profile matches retained job-matrix evidence."
 }

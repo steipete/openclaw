@@ -1,4 +1,4 @@
-name: Secretless current-merge Node plan report
+name: Secretless pinned-candidate Node plan report
 on:
   push:
     branches: [codex/round10-plugin-reload-current-merge-plan]
@@ -7,8 +7,8 @@ permissions:
   contents: read
 jobs:
   plan:
-    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-current-merge-plan' }}
-    name: Current merge Node plan (no tests)
+    if: ${{ true && github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-current-merge-plan' }}
+    name: Candidate Node plan (no tests)
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -19,13 +19,13 @@ jobs:
           path: proof-assets
           fetch-depth: 1
           persist-credentials: false
-      - name: Checkout exact current merge and parents
+      - name: Checkout exact candidate and integrated main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: openclaw/openclaw
-          ref: 3ba6a62a352ea58d5999a9ed4c04b9de9479377f
+          repository: steipete/openclaw
+          ref: 14d16f96df4268fdec63c28bfc0f06bf7d15338f
           path: source
-          fetch-depth: 2
+          fetch-depth: 4
           persist-credentials: false
       - name: Setup pinned Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0

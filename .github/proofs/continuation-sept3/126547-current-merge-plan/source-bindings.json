@@ -1,9 +1,9 @@
 {
-  "head": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
-  "tree": "842c018ecd7e8141cbe6e27e238698539413899b",
+  "head": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+  "tree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
   "sourceHashes": {
     "package.json": {
-      "sha256": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+      "sha256": "1fcbfb22c59894314f929d711b69c6f08fd1f58e5cefcbfdb2ba1e6d0658abe9",
       "bytes": 132448
     },
     "config/ci-test-timings.json": {
@@ -23,8 +23,8 @@
       "bytes": 15237
     },
     ".github/workflows/ci.yml": {
-      "sha256": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
-      "bytes": 298319
+      "sha256": "a97d6cb7a6eb6f0e359281ff8fc8b4a59f44bd2a8110809bc511716aef80c8a5",
+      "bytes": 300570
     },
     ".github/actions/detect-docs-changes/action.yml": {
       "sha256": "a1991eb4c97f2960d3916cb7159fb8e0f3e6cef30b56a9fdb7cfe3fb198f436f",
@@ -51,8 +51,8 @@
       "bytes": 1271
     },
     "scripts/lib/ci-changed-node-test-plan.mts": {
-      "sha256": "6ff315fa5dcc68434c16ec3840a9436a09e2cf76d6aeaf2ef69624672c4d7afb",
-      "bytes": 27032
+      "sha256": "921cbb4a5a33eb9b31a0c62f9f3a1916ea265da04091048c66d5bdd495d410ac",
+      "bytes": 27235
     },
     "scripts/lib/release-context.mjs": {
       "sha256": "b5b5d2a8ed1d718d9ecea10a97da40a9c6e3798e3a62f49441a6f8c849b436a7",
@@ -75,11 +75,11 @@
       "bytes": 5162
     },
     ".agents/skills/openclaw-ci-limits/SKILL.md": {
-      "sha256": "eb0b32fe32b184c42a5c3d82822f4dd433a3d1f3284cb2d0e2b3877e8d106d8a",
-      "bytes": 24322
+      "sha256": "4e82620044e72bf10c6f9f82f93d866315be346ee42ffadd9888160fd49518d0",
+      "bytes": 24334
     },
     "pnpm-lock.yaml": {
-      "sha256": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+      "sha256": "d3b3d8605819ed54c0c0b128ee6186d9a6a96d40f491dad3fb03d43009aa47d0",
       "bytes": 564033
     },
     "pnpm-workspace.yaml": {

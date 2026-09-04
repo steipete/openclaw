@@ -1,4 +1,4 @@
-"""Secretless current-merge plan report; never an original-CI replay."""
+"""Secretless pinned-candidate plan report; never an original-CI replay."""
 from pathlib import Path
 import hashlib
 import json
@@ -288,7 +288,7 @@ def run_plan_stage(*, checkout, evidence, assets, node, git, run, source_guard, 
     parents = [line[7:] for line in git("cat-file", "commit", "HEAD").decode().split("\n\n", 1)[0].splitlines() if line.startswith("parent ")]
     assert parents == binding["parents"]
     assert git("rev-parse", "--is-shallow-repository").decode().strip() in {"true", "false"}
-    # Fetch-depth 2 is setup-owned. Require visible two-parent traversal as well as headers.
+    # Checkout depth is setup-owned. Require visible parent traversal as well as raw headers.
     assert git("rev-list", "--parents", "-n", "1", "HEAD").decode().split() == [binding["mergeHead"], *parents]
     assert not git("ls-files", "--others", "-z"), "Source contains untracked/ignored inputs"
     assert not (checkout / "node_modules").exists()
@@ -336,18 +336,18 @@ def run_plan_stage(*, checkout, evidence, assets, node, git, run, source_guard, 
     profile = outputs("profile-output.txt")
     assert profile == {"hosted_runner_profile_contract": "true", "runner_profile": "github"}
     command("docs-scope", ["/bin/bash", "--noprofile", "--norc", "-c", (assets / "canonical-docs.sh.txt").read_text()],
-            {"BASE_SHA": binding["parents"][0], "GITHUB_OUTPUT": str(evidence / "docs-output.txt")})
+            {"BASE_SHA": binding["diffBase"], "GITHUB_OUTPUT": str(evidence / "docs-output.txt")})
     docs = outputs("docs-output.txt")
     assert set(docs) == {"docs_only", "docs_changed"}
     assert all(value in {"true", "false"} for value in docs.values())
     # Canonical CI skips changed_scope on docs-only PRs; do not invent a full plan.
     assert docs["docs_only"] == "false", "Docs-only candidate cannot match the requested Node rows"
-    command("changed-scope", [node, "scripts/ci-changed-scope.mjs", "--base", binding["parents"][0],
+    command("changed-scope", [node, "scripts/ci-changed-scope.mjs", "--base", binding["diffBase"],
             "--head", "HEAD", "--merge-head-first-parent"], {"GITHUB_OUTPUT": str(evidence / "scope-output.txt")})
     scope = outputs("scope-output.txt")
     changed_paths = json.loads(scope["changed_paths_json"])
     assert isinstance(changed_paths, list) and all(isinstance(path, str) for path in changed_paths)
-    exact_paths = [value.strip() for value in git("diff", "--no-renames", "--name-only", binding["parents"][0], "HEAD").decode().splitlines() if value.strip()]
+    exact_paths = [value.strip() for value in git("diff", "--no-renames", "--name-only", binding["diffBase"], "HEAD").decode().splitlines() if value.strip()]
     assert changed_paths == exact_paths, "Canonical scope fell back or changed-path inventory is incomplete"
     save("scope.json", {"docs": docs, "scope": scope, "logicalProfile": profile})
 
@@ -470,10 +470,12 @@ try:
     assert os.environ.get('GITHUB_REF') == 'refs/heads/' + binding['publisherBranch']
     assert os.environ.get('GITHUB_EVENT_NAME') in {'push', 'workflow_dispatch'}
     assert checkout.name == 'source'
-    assert binding['candidateHead'] == binding['mergeHead'] == '3ba6a62a352ea58d5999a9ed4c04b9de9479377f'
-    assert binding['candidateTree'] == binding['mergeTree'] == '842c018ecd7e8141cbe6e27e238698539413899b'
-    assert binding['candidateRepository'] == binding['mergeRepository'] == 'openclaw/openclaw'
-    assert binding['parents'] == ['5aaafb76c427d383e5eefc8a6934f895dd82880e', '876101775afc88f7df842795219177f1594baceb']
+    assert binding['candidateHead'] == binding['mergeHead'] == '14d16f96df4268fdec63c28bfc0f06bf7d15338f'
+    assert binding['candidateTree'] == binding['mergeTree'] == 'ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e'
+    assert binding['candidateRepository'] == binding['mergeRepository'] == 'steipete/openclaw'
+    assert binding['parents'] == ['7179ebe50751ae4eeb93a23a43c2da907d83cd18']
+    assert binding['diffBase'] == 'dd38399e11c3babf5ea11c92fee4cedb30676e69'
+    assert binding['diffBaseTree'] == '912dd739a0dae69207ab98162b0f291f75e7ab56'
     assert binding['originalFailedCiCheckoutProven'] is False
     assert binding['originalFailedCiWorkflowRevisionProven'] is False
     assert binding['nodeVersion'] == '24.19.0'
@@ -495,9 +497,13 @@ try:
     parents = [line[7:] for line in git('cat-file', 'commit', 'HEAD').split(b'\n\n', 1)[0].decode().splitlines() if line.startswith('parent ')]
     assert parents == binding['parents']
     assert git_text('rev-list', '--parents', '-n', '1', 'HEAD').split() == [binding['candidateHead'], *parents]
-    assert git_text('rev-parse', parents[0] + '^{commit}') == parents[0]
+    assert git_text('rev-parse', binding['diffBase'] + '^{commit}') == binding['diffBase']
+    assert git_text('rev-parse', binding['diffBase'] + '^{tree}') == binding['diffBaseTree']
+    base_header = git('cat-file', 'commit', binding['diffBase']).split(b'\n\n', 1)[0].decode()
+    assert [line[7:] for line in base_header.splitlines() if line.startswith('parent ')] == binding['diffBaseParents']
     save(evidence / 'commit-provenance.json', {'head': binding['candidateHead'], 'tree': binding['candidateTree'],
-         'parents': parents, 'capturedMergeTimestamp': binding['capturedMergeTimestamp'],
+         'parents': parents, 'sourceCommitTimestamp': binding['capturedMergeTimestamp'],
+         'diffBase': binding['diffBase'], 'diffBaseTree': binding['diffBaseTree'],
          'originalFailedCiCheckoutProven': False, 'originalFailedCiWorkflowRevisionProven': False})
     node = str(Path(shutil.which('node')).resolve())
     assert Path(node).is_file()
