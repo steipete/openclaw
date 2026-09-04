@@ -2,10 +2,10 @@
   "schema": "openclaw-proof-asset-manifest-v1",
   "incomplete": false,
   "sha256": {
-    ".github/proofs/continuation-sept3/126547-merge-diagnostics/README.md": "aa43782992611d3740d0b4cd33408df0b1b0cae63160694d73c62f30faa09225",
-    ".github/proofs/continuation-sept3/126547-merge-diagnostics/execution-binding.json": "5405f815bc49fa1cc653bf28f53710e93944a89a8fd50db7a7cbc863a0477e8a",
-    ".github/proofs/continuation-sept3/126547-merge-diagnostics/run-proof.py": "a3d299d2da7e0cb456c6d3334299e342ceb04000d423f5fa0a1529a893ff17ee",
-    ".github/workflows/126547-merge-diagnostics.yml": "18135a9a59dc22961b8720012676dd3344b5e13820e508989c99432a32995aac"
+    ".github/proofs/continuation-sept3/126547-merge-diagnostics/README.md": "a03e9102d4ffb3a2b31c8cd2c2931edee2deaa26c18fd46408257419fba4d564",
+    ".github/proofs/continuation-sept3/126547-merge-diagnostics/execution-binding.json": "e75376d3704a83b8bcae21d9c6accd4cf61068a12f74793c3cc9d474c774573e",
+    ".github/proofs/continuation-sept3/126547-merge-diagnostics/run-proof.py": "2e002a2b138c23d1aa403c62a37a6826f1de88e01559d2a83c32ed2d0da5265a",
+    ".github/workflows/126547-merge-diagnostics.yml": "16197e9158f40fb49efe67beffdb147d059e114d026849eeb995148712e96b21"
   },
   "proposalOnly": false
 }

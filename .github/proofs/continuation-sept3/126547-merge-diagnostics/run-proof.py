@@ -1,4 +1,4 @@
-"""Fixed candidate type/lint diagnostics. No original CI checkout attribution."""
+"""Exact candidate core/plugin stripe-1 lint diagnostics. No original CI checkout attribution."""
 from pathlib import Path
 import hashlib
 import json
@@ -335,22 +335,20 @@ try:
     assert packet['comparison']['candidateTree'] == binding['candidateTree']
     assert packet['comparison']['parents'] == binding['parents']
     assert [group['order'] for group in binding['checkGroups']] == [
-        ['core-lint-1', 'extension-lint-1'], ['extension-lint-6', 'scripts-lint', 'format-check'],
+        ['core-lint-1', 'extension-lint-1'],
     ]
     assert all(group['timeoutSeconds'] == 900 and group['shortCircuit'] is True for group in binding['checkGroups'])
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
     assert not binding['absentSourcePaths']
     assert [case['name'] for case in binding['commands']] == [
-        'audit-prod', 'core-lint-1', 'extension-lint-1', 'extension-lint-6', 'scripts-lint', 'format-check',
+        'core-lint-1', 'extension-lint-1',
     ]
     assert all(case['timeoutSeconds'] == 900 for case in binding['commands'])
     assert {'package.json', 'pnpm-lock.yaml', '.github/workflows/ci.yml',
-            'scripts/pre-commit/pnpm-audit-prod.mjs', 'scripts/lib/pnpm-lockfile-documents.mjs',
-            'packages/normalization-core/src/record-coerce.ts', 'scripts/lib/bounded-response.mjs',
-            'scripts/run-oxlint-shards.mts', 'scripts/run-oxlint.mts', '.oxfmtrc.jsonc',
-            '.oxlintrc.json', 'config/tsconfig/oxlint.scripts.json',
-            'src/gateway/server-reload-handlers.test.ts',
-            'extensions/memory-core/src/tools.recall-tracking.test.ts'}.issubset(binding['sourceHashes'])
+            'scripts/run-oxlint-shards.mts', 'scripts/run-oxlint.mts',
+            'scripts/lib/local-check-runtime.mts', 'scripts/lib/managed-child-process.mts',
+            'scripts/lib/dist-artifact-ownership.mts', 'config/tsconfig/oxlint.core.json',
+            'extensions/tsconfig.json', '.oxlintrc.json'}.issubset(binding['sourceHashes'])
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
     assert manifest.get('incomplete') is False, 'Publication asset manifest is incomplete'
@@ -395,8 +393,7 @@ try:
     installed_lock = digest(checkout / 'node_modules/.pnpm/lock.yaml')
     save(evidence / 'install-lock.json', {'tracked': digest(checkout / 'pnpm-lock.yaml'), 'installed': installed_lock})
     source_guard('installed')
-    diagnostic_check(binding['commands'][0])
-    # Independent job workloads continue after findings; each job keeps its set -e barrier.
+    # Preserve the hosted job's core-to-plugin set -e barrier with separate receipts.
     commands = {case['name']: case for case in binding['commands']}
     for group in binding['checkGroups']:
         group_started = time.monotonic()
