@@ -8,7 +8,7 @@ permissions:
 jobs:
   diagnose:
     if: ${{ true && github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-registry-lifecycle-proof' }}
-    name: Full-build registry lifecycle candidate
+    name: Full-build current-main registry lifecycle baseline
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: steipete/openclaw
-          ref: 14d16f96df4268fdec63c28bfc0f06bf7d15338f
+          ref: 9589ff05769ff3ce71039b6d8ed813d842f5ab08
           path: source
           fetch-depth: 2
           persist-credentials: false
@@ -42,10 +42,10 @@ jobs:
         with:
           node-version: 24.19.0
           package-manager-cache: false
-      - name: Full build and exact four candidate test files through native wrappers
+      - name: Full build and exact four current-main test files through native wrappers
         shell: bash
         env:
-          DIAGNOSTIC_LANE: candidate
+          DIAGNOSTIC_LANE: baseline
           CACHE_GENERATION: ${{ hashFiles('source/pnpm-lock.yaml', 'source/pnpm-workspace.yaml', 'source/**/package.json', 'source/**/tsconfig*.json', 'source/vitest.config.*', 'source/test/vitest/**', 'source/src/state/*.sql', '!source/**/node_modules/**') }}
         run: |
           set -euo pipefail

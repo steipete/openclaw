@@ -29,7 +29,8 @@ receipt = {'schema': 'openclaw-126547-registry-lifecycle-v1', 'passed': False,
 TEST_PATH = 'src/gateway/server-plugins.lifecycle.test.ts'
 RESTART_PATH = 'src/gateway/server-reload-channel-restart.test.ts'
 GENERATION_PATH = 'src/gateway/server-plugin-runtime-generation.test.ts'
-TEST_PATHS = [TEST_PATH, RESTART_PATH, GENERATION_PATH]
+MANAGER_PATH = 'src/gateway/server-channels.test.ts'
+TEST_PATHS = [TEST_PATH, RESTART_PATH, GENERATION_PATH, MANAGER_PATH]
 REQUEST_ENTRY_PATH = 'src/gateway/server-request-entry.test.ts'
 scratch = node = installed_lock = initial_guard = None
 manifest = manifest_bytes = None
@@ -296,7 +297,7 @@ def canonical_closure_snapshot(name):
     if scratch is not None:
         # Only canonical runtime TMP namespaces can contain these resource owners;
         # dependency/package caches are not resource-owner registries.
-        namespaces = [scratch / label / 'tmp' for label in ['bootstrap', 'build', 'lifecycle', 'channel-restart', 'runtime-generation', 'request-entry']]
+        namespaces = [scratch / label / 'tmp' for label in ['bootstrap', 'build', 'lifecycle', 'channel-restart', 'runtime-generation', 'channel-manager', 'request-entry']]
         directories = (entry for root in namespaces if root.exists()
                        for entry in os.walk(root, followlinks=False))
         for directory, children, _ in directories:
@@ -643,10 +644,10 @@ try:
     assert binding['parents'] and all(re.fullmatch(r'[a-f0-9]{40}', parent) for parent in binding['parents'])
     assert packet['testContractReviewed'] is True, 'Expanded test contract is unbound'
     cases = packet['testCases']
-    assert [case['name'] for case in cases] == ['lifecycle', 'channel-restart', 'runtime-generation']
+    assert [case['name'] for case in cases] == ['lifecycle', 'channel-restart', 'runtime-generation', 'channel-manager']
     assert [case['path'] for case in cases] == TEST_PATHS
-    assert [case['count'] for case in cases] == [6, 8, 3]
-    assert [len(case['baselineFailures']) for case in cases] == [1, 2, 0]
+    assert [case['count'] for case in cases] == [8, 4, 4, 124]
+    assert [len(case['baselineFailures']) for case in cases] == [1, 1, 0, 1]
     assert all(case['count'] == len(case['fullNames']) == len(set(case['fullNames'])) for case in cases)
     for case in cases:
         assert all(row['fullName'] in case['fullNames'] and row['requiredFailureFragments'] for row in case['baselineFailures'])
@@ -656,11 +657,11 @@ try:
     if lane == 'candidate':
         baseline = packet['baselineAcceptance']
         assert baseline['reviewed'] is True and baseline['normalFailedJob'] is True
-        assert baseline['failureCount'] == 3 and baseline['passedCount'] == 14
+        assert baseline['failureCount'] == 3 and baseline['passedCount'] == 137
         assert baseline['sourceHead'] == packet['lanes']['baseline']['candidateHead']
         assert re.fullmatch(r'[a-f0-9]{40}', baseline['sourceHead'] or '')
         assert re.fullmatch(r'[a-f0-9]{64}', baseline['artifactSHA256'] or '')
-        assert len(baseline['files']) == 3
+        assert len(baseline['files']) == 4
         for case, observed in zip(cases, baseline['files']):
             assert observed['path'] == case['path'] and observed['count'] == case['count']
             assert sorted(observed['fullNames']) == sorted(case['fullNames'])
@@ -764,6 +765,8 @@ try:
     installed_lock = digest(checkout / 'node_modules/.pnpm/lock.yaml')
     save(evidence / 'install-lock.json', {'tracked': digest(checkout / 'pnpm-lock.yaml'), 'installed': installed_lock})
     source_guard('installed')
+    budgeted_run('docs-list', [pnpm, 'docs:list'], bootstrap, 300)
+    source_guard('after-docs-list')
     build_env = runtime_env('build')
     build_env.update(cache_env)
     save(evidence / 'build-policy.json', {'argv': [pnpm, 'build'], 'parentEnv': build_env,
@@ -809,16 +812,16 @@ try:
             receipt['lifecycleLedgersSHA256'] = verify_lifecycle_ledgers()
             receipt['lifecycleLedgersVerified'] = True
         results.append(observed)
-    save(evidence / 'three-file-result.json', {'lane': lane, 'files': results[:3],
-         'totalPassed': sum(row['passedCount'] for row in results[:3]),
-         'totalFailed': sum(row['actualFailureCount'] for row in results[:3])})
+    save(evidence / 'baseline-compatible-result.json', {'lane': lane, 'files': results[:4],
+         'totalPassed': sum(row['passedCount'] for row in results[:4]),
+         'totalFailed': sum(row['actualFailureCount'] for row in results[:4])})
     if lane == 'candidate':
-        save(evidence / 'candidate-four-file-result.json', {'lane': lane, 'files': results,
+        save(evidence / 'candidate-five-file-result.json', {'lane': lane, 'files': results,
              'totalPassed': sum(row['passedCount'] for row in results),
              'totalFailed': sum(row['actualFailureCount'] for row in results)})
     receipt.update(diagnosticComplete=True, passed=lane == 'candidate', phase='complete',
                    expectedRedObserved=lane == 'baseline', candidateGreenObserved=lane == 'candidate')
-    # Baseline remains an ordinary failed job after all three expected-result files finish.
+    # Baseline remains an ordinary failed job after every expected-result file finishes.
 
 except Exception as error:
     receipt['error'] = str(error)
