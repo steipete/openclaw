@@ -1,0 +1,19 @@
+// Diagnostic observation only; inserted before canonical admission filtering.
+appendFileSync(process.env.PLAN_DESCRIPTOR_REPORT, JSON.stringify({
+  schema: "openclaw-current-merge-node-descriptors-v1",
+  originalFailedCiCheckoutProven: false,
+  checkoutRevision,
+  workflowRevision,
+  eventName,
+  runnerProfile,
+  compactPlanMode,
+  runNode,
+  runNodeFull,
+  changedPaths,
+  selection: changedNodeTestShards === null ? "full-fallback" : "changed-targets",
+  rawNodeTestShards,
+  nodeTestShards,
+  pluginContractShards,
+  channelContractShards,
+  changedExtensionFallbackShards,
+}, null, 2) + "\n", "utf8");

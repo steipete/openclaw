@@ -1,0 +1,21 @@
+// Diagnostic observation only; the manifest and its caps have already completed.
+const requestedNames = JSON.parse(process.env.PLAN_REQUESTED_NAMES);
+const requested = requestedNames.map((name) => {
+  const matches = nodeTestNonDistShards.filter((row) => row.check_name === name);
+  return { name, matchCount: matches.length, matches };
+});
+const unmatched = requested.filter((row) => row.matchCount !== 1);
+appendFileSync(process.env.PLAN_FINAL_REPORT, JSON.stringify({
+  schema: "openclaw-current-merge-node-plan-v1",
+  originalFailedCiCheckoutProven: false,
+  testsExecuted: false,
+  manifest,
+  nodeTestDistShards,
+  requested,
+  unmatched,
+  passed: unmatched.length === 0,
+}, null, 2) + "\n", "utf8");
+if (unmatched.length > 0) {
+  throw new Error("Requested current-merge Node names did not each match exactly one admitted row: " +
+    unmatched.map(({ name, matchCount }) => `${name} (${matchCount})`).join(", "));
+}

@@ -1,0 +1,38 @@
+BASE="$BASE_SHA"
+
+# Keep both rename paths without fetching parent blobs; a failed diff runs everything.
+CHANGED=$(git diff --no-renames --name-only "$BASE" HEAD 2>/dev/null || echo "UNKNOWN")
+if [ "$CHANGED" = "UNKNOWN" ] || [ -z "$CHANGED" ]; then
+  echo "docs_only=false" >> "$GITHUB_OUTPUT"
+  echo "docs_changed=false" >> "$GITHUB_OUTPUT"
+  exit 0
+fi
+
+docs_changed=false
+non_docs=false
+while IFS= read -r changed_path; do
+  case "$changed_path" in
+    test/fixtures/*)
+      non_docs=true
+      ;;
+    docs/* | *.md | *.mdx | config/markdownlint*.jsonc)
+      docs_changed=true
+      ;;
+    *)
+      non_docs=true
+      ;;
+  esac
+done <<< "$CHANGED"
+
+if [ "$docs_changed" = "true" ]; then
+  echo "docs_changed=true" >> "$GITHUB_OUTPUT"
+else
+  echo "docs_changed=false" >> "$GITHUB_OUTPUT"
+fi
+
+if [ "$non_docs" = "false" ]; then
+  echo "docs_only=true" >> "$GITHUB_OUTPUT"
+  echo "Docs-only change detected — skipping heavy jobs"
+else
+  echo "docs_only=false" >> "$GITHUB_OUTPUT"
+fi

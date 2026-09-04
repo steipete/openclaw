@@ -1,0 +1,154 @@
+{
+  "schema": "openclaw-126547-current-merge-plan-proposal-v1",
+  "runnable": true,
+  "executionMayRun": true,
+  "status": "root activated for independent review before publication",
+  "originalFailedCiCheckoutProven": false,
+  "originalFailedCiWorkflowRevisionProven": false,
+  "comparisonRun": {
+    "repository": "openclaw/openclaw",
+    "runId": 33825705923,
+    "attempt": 2,
+    "testcaseMappingKnown": false
+  },
+  "mergeRepository": "openclaw/openclaw",
+  "mergeHead": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+  "mergeTree": "842c018ecd7e8141cbe6e27e238698539413899b",
+  "parents": [
+    "5aaafb76c427d383e5eefc8a6934f895dd82880e",
+    "876101775afc88f7df842795219177f1594baceb"
+  ],
+  "capturedMergeTimestamp": "2026-09-04T01:25:21Z",
+  "nodeVersion": "24.19.0",
+  "canonicalNodePolicy": "24.x; concrete version is fresh report provenance, not original run attribution",
+  "modeledEventEnv": {
+    "GITHUB_ACTIONS": "true",
+    "CI": "true",
+    "GITHUB_REPOSITORY": "openclaw/openclaw",
+    "GITHUB_EVENT_NAME": "pull_request",
+    "GITHUB_RUN_ATTEMPT": "2",
+    "GITHUB_SHA": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+    "GITHUB_REF": "refs/pull/126547/merge",
+    "HEAD_REPOSITORY": "NianJiuZst/openclaw",
+    "CONFIGURED_RUNNER_PROFILE": "hybrid",
+    "AUTHOR_ASSOCIATION": "",
+    "OPENCLAW_ALLOW_RELEASE_GENERATED_MIX": "false"
+  },
+  "authorAssociation": "not recovered; irrelevant to fork branch of selector; empty sentinel explicitly modeled",
+  "logicalRunnerProfileExpected": "github",
+  "actualRunnerRequired": "GitHub-hosted ubuntu-24.04; independently verified by outer controller",
+  "manifestEnv": {
+    "OPENCLAW_CI_CHECKOUT_REVISION": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+    "OPENCLAW_CI_WORKFLOW_REVISION": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+    "OPENCLAW_CI_REPOSITORY": "openclaw/openclaw",
+    "OPENCLAW_CI_EVENT_NAME": "pull_request",
+    "OPENCLAW_CI_HISTORICAL_TARGET": "false",
+    "OPENCLAW_CI_RELEASE_GATE": "false",
+    "OPENCLAW_CI_RELEASE_SCOPE": "full",
+    "OPENCLAW_CI_RELEASE_CANDIDATE_TARGET": "false",
+    "OPENCLAW_CI_TARGET_CONTEXT_TARGET": "false",
+    "OPENCLAW_CI_CORRECTION_BASE_SHA": "",
+    "OPENCLAW_CI_PULL_REQUEST_NUMBER": "",
+    "OPENCLAW_CI_TARGET_REF": "",
+    "OPENCLAW_CI_TARGET_CONTEXT_REF": "",
+    "OPENCLAW_CI_HISTORICAL_TARGET_TAG": ""
+  },
+  "scopeToManifestKeys": [
+    "run_node",
+    "run_macos",
+    "run_macos_node",
+    "run_ios_build",
+    "run_android",
+    "run_windows",
+    "run_node_fast_only",
+    "run_node_fast_plugin_contracts",
+    "run_node_fast_ci_routing",
+    "run_skills_python",
+    "run_control_ui_i18n",
+    "run_ui_tests",
+    "run_native_i18n"
+  ],
+  "requestedCheckNames": [
+    "checks-node-compact-large-10",
+    "checks-node-compact-small-8",
+    "checks-node-compact-large-2"
+  ],
+  "harnessFiles": [
+    ".github/actions/git-owner/test-prerequisites.mjs",
+    ".github/actions/git-owner/test-prerequisites.json",
+    "scripts/lib/release-context.mjs",
+    "scripts/lib/release-version.mjs"
+  ],
+  "reuseController": {
+    "pathRelativeToRound10": "continuation-sept3/126547/merge-diagnostic-publication/.github/proofs/continuation-sept3/126547-merge-diagnostics/run-proof.py",
+    "sha256": "a8aee55702f26db0ecce9f5de62a9c9b6edeb073570fc4c7767e599bae20b379",
+    "publishedRevisionPrefix": "121f3db",
+    "functions": [
+      "git",
+      "retain_index",
+      "capture_source",
+      "source_guard",
+      "run",
+      "runtime_env",
+      "verify_assets",
+      "verify_no_checkout_credentials"
+    ],
+    "controllerAlreadyReviewed": true,
+    "integrationReviewed": true
+  },
+  "canonicalFragments": {
+    "canonical-manifest.mjs.txt": {
+      "sha256": "fa6aa3ea6e168d3dde12244f8b34dedc2e9014d7c74b033be195a012bb8c5f12"
+    },
+    "canonical-profile.sh.txt": {
+      "sha256": "59ef076abd5af059320ee919993a4d7c7b92455afd5ab9218a6256fe4005bcce"
+    },
+    "canonical-docs.sh.txt": {
+      "sha256": "470f27e7bc23fb1b6b71ec49cd4fefe700b34c6ba00b0ef3c54a8e8a647f31d8"
+    }
+  },
+  "noExecution": [
+    "no runtime test executors",
+    "no build",
+    "no dependency install",
+    "no checker gates",
+    "no Git mutations in planner stage",
+    "no network in planner stage"
+  ],
+  "candidateHead": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+  "candidateTree": "842c018ecd7e8141cbe6e27e238698539413899b",
+  "candidateRepository": "openclaw/openclaw",
+  "sourceHashes": {
+    "package.json": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+    "config/ci-test-timings.json": "eda3d95c86c24eba8cebd9fa0205ff66c3cabe91fc59629cd43b317ad275c6e1",
+    "scripts/ci-run-node-test-shard.mts": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
+    "scripts/ci-changed-scope.mjs": "de1868b865ac39dea6620b89b173c22ea0d9ca5ee41ef7c4df569a07787c3175",
+    "scripts/AGENTS.md": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
+    ".github/workflows/ci.yml": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
+    ".github/actions/detect-docs-changes/action.yml": "a1991eb4c97f2960d3916cb7159fb8e0f3e6cef30b56a9fdb7cfe3fb198f436f",
+    ".github/actions/git-owner/test-prerequisites.json": "6acabc261c8020a228c4b92cea9af52bf54e041f56f0155f8715cc6e881dcf4d",
+    ".github/actions/git-owner/test-prerequisites.mjs": "6d846e753dd6746f66a54ff0a5da15dfeb5ca91af32636a74fe33a1719991fd8",
+    "scripts/lib/extension-test-plan.mts": "aaba1ddd382da548a3afd70981b66fb766d92454b058293184f004f3113dbd49",
+    "scripts/lib/merge-head-diff-base.mjs": "3789502fa71a64f3f427e8ecf23a43e7e0132886322037dd2174893f840d0e0b",
+    "scripts/lib/list-test-files.mts": "7c1109668d34143f6599488dd554cc0a4bac6b084038f012472da8f81ed52674",
+    "scripts/lib/ci-changed-node-test-plan.mts": "6ff315fa5dcc68434c16ec3840a9436a09e2cf76d6aeaf2ef69624672c4d7afb",
+    "scripts/lib/release-context.mjs": "b5b5d2a8ed1d718d9ecea10a97da40a9c6e3798e3a62f49441a6f8c849b436a7",
+    "scripts/lib/release-version.mjs": "c562590d6c17d7a8eaff32e9c46e20e8010be61f26ceeed875e32669631b74f7",
+    "scripts/lib/ci-node-test-plan.mts": "d0654d640d672f425670674ff869a8a2ca9cd111047038268701706c321d6856",
+    "scripts/lib/ci-test-timings.mts": "fae7d19a8ef2903e3087def8e8b1b6fdf0f3b7621a1f1cf0d0bf0e358d903397",
+    "scripts/lib/changed-extensions.mts": "09ae6315fddadfca97d652e30d984fc9b3c379f944b94d58d23831d5de25f1f1",
+    ".agents/skills/openclaw-ci-limits/SKILL.md": "eb0b32fe32b184c42a5c3d82822f4dd433a3d1f3284cb2d0e2b3877e8d106d8a",
+    "pnpm-lock.yaml": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+    "pnpm-workspace.yaml": "922f9ca51900289b480f16eeaadc1a7298012cf4f677dd7a371c434500920abb"
+  },
+  "publisherRepository": "steipete/openclaw",
+  "publisherBranch": "codex/round10-plugin-reload-current-merge-plan",
+  "expectedCommandNames": [
+    "node-version",
+    "logical-profile",
+    "docs-scope",
+    "changed-scope",
+    "canonical-plan"
+  ],
+  "runtimeTestsExecuted": false
+}

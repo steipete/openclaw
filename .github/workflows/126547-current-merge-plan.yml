@@ -1,0 +1,51 @@
+name: Secretless current-merge Node plan report
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  plan:
+    name: Current merge Node plan (no tests)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout reviewed report assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Checkout exact current merge and parents
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 3ba6a62a352ea58d5999a9ed4c04b9de9479377f
+          path: source
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Setup pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Report canonical scope and Node descriptors
+        shell: bash
+        run: |
+          set -euo pipefail
+          env -i PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" RUNNER_ARCH="$RUNNER_ARCH" \
+            python3 proof-assets/.github/proofs/continuation-sept3/126547-current-merge-plan/run-proof.py \
+            "$GITHUB_WORKSPACE/source" "$GITHUB_WORKSPACE/evidence-126547-plan"
+      - name: Retain bounded plan report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: 126547-current-merge-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-126547-plan/
+          retention-days: 14
+          if-no-files-found: error

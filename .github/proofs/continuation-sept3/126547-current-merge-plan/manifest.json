@@ -1,0 +1,15 @@
+{
+  "schema": "openclaw-proof-asset-manifest-v1",
+  "incomplete": false,
+  "sha256": {
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/canonical-docs.sh.txt": "470f27e7bc23fb1b6b71ec49cd4fefe700b34c6ba00b0ef3c54a8e8a647f31d8",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/canonical-manifest.mjs.txt": "fa6aa3ea6e168d3dde12244f8b34dedc2e9014d7c74b033be195a012bb8c5f12",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/canonical-profile.sh.txt": "59ef076abd5af059320ee919993a4d7c7b92455afd5ab9218a6256fe4005bcce",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/plan-binding.json": "670f38cf6bcfc75fbe925912c81dcaebdb89c4a79765f8094b57b96f175f6147",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/report-after-manifest.mjs.txt": "df7bbcb8ed314422184a647f3b4d84b7a215cd58676650cba19cd64dfc98cceb",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/report-before-admission.mjs.txt": "248b230cf822bb92c01f4c6dfbfc51c435b9961f38985205ff448fe77c72c9e3",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/run-proof.py": "ef2b02b901f46e7eb020cb60f42f278a1aecfd5f916455dab6c9ff76b0e4a141",
+    ".github/proofs/continuation-sept3/126547-current-merge-plan/source-bindings.json": "0147fa13da3c82e256ba5a93ba74e6f61cb107df714b672bf8c3ca2d57454d41",
+    ".github/workflows/126547-current-merge-plan.yml": "bc328ceb66d2cd7b605c126d1f0c9fc50f1920202eaea41d189ed7eb59be5b67"
+  }
+}
