@@ -31,3 +31,5 @@ Full clean source, exact parent/tree, every tracked byte, raw real index, stage/
 No product/controller/test/build/dependency execution, Git mutation, public write or CI action occurred in this proposal lane. Root must review the exact metadata and controller diff, accept the retained baseline, enable the flags/job, regenerate the asset manifest and publish. Candidate GREEN, complete current-head CI and landing remain separate pending outcomes.
 
 Final-head repeat: source 7179ebe50751ae4eeb93a23a43c2da907d83cd18 incorporates only the reviewed unused-import removal, fixture parameter rename and existing MCP test registry-supplier adaptation since the passing be7 full-build30-case run33859549708. The same controller and30-case/native fullbuild/ledger/closure gates are retained to provide exact-head evidence requested by the latest review.
+
+Final reviewed source 14d16f96df4268fdec63c28bfc0f06bf7d15338f changes four fresh-array sorts to toSorted in ownership tests after diagnostic33860865192 identified exactly those lint errors. Production types and both core test-type stripes passed there; this publication keeps the existing commands, controller and gates.

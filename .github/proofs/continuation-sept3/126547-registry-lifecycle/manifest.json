@@ -3,9 +3,9 @@
   "incomplete": false,
   "proposalOnly": false,
   "sha256": {
-    "README.md": "024288539c7dc42d130238d820678d92098c082ba9a9b6bc19f3296c5fa8cdeb",
-    ".github/workflows/126547-registry-lifecycle.yml": "0b7d805e94c415e598528b4681ec12a5db58656cd0e93e94aba46cd40c32aac5",
-    ".github/proofs/continuation-sept3/126547-registry-lifecycle/execution-binding.json": "62d3c3636e7f337d7a8ab9eb9c516872aa59e287a133342d148599845dbc7564",
+    "README.md": "9f81d08cadc59628806379aa2b3cf9d6bb1a9ab2be97cacc52620db8a9a5c331",
+    ".github/workflows/126547-registry-lifecycle.yml": "c28eff9dbf02efbce99e6f3db4bc3f46312bfe80403ced90a5afe06688e1bae8",
+    ".github/proofs/continuation-sept3/126547-registry-lifecycle/execution-binding.json": "3c7d50179a4307810cd6e0e21930606a5b0a1ec9efc922f1bfa373d4e7faddb7",
     ".github/proofs/continuation-sept3/126547-registry-lifecycle/run-proof.py": "388258a9546773818704b3c1ed1966ddc85fb21b96c0d6a920003e8d8bc014cb"
   }
 }
