@@ -18,7 +18,7 @@ jobs:
         include:
           - lane: candidate
             repository: steipete/openclaw
-            head: 7179ebe50751ae4eeb93a23a43c2da907d83cd18
+            head: 14d16f96df4268fdec63c28bfc0f06bf7d15338f
     steps:
       - name: Checkout reviewed diagnostic assets
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

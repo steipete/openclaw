@@ -6,11 +6,11 @@
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "lanes": {
     "candidate": {
-      "candidateHead": "7179ebe50751ae4eeb93a23a43c2da907d83cd18",
-      "candidateTree": "2a5bca7218880249803eae4742905c4807f482ff",
+      "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+      "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
       "candidateRepository": "steipete/openclaw",
       "parents": [
-        "be7b7ca8bef843177c935f43e643c870878abb2b"
+        "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
       ],
       "requiredSourcePaths": [
         ".github/actions/setup-node-env/action.yml",
@@ -242,7 +242,7 @@
         "src/gateway/plugin-channel-reload-targets.test.ts": "36ebb240202dcac044f103cbdaf7a289fb37e2bc0986115714c35274d1766f4a",
         "src/gateway/plugin-channel-reload-targets.ts": "b0193adcedf1e8d53af183d68ba05d25cd6e41ec4e8c55831d2f3f2921fec3cb",
         "src/gateway/server-channels.approval-bootstrap.test.ts": "3d92fc0ecdea073788bde02315c01cd014bfca6e6f0526bb6b10366c8120251d",
-        "src/gateway/server-channels.test.ts": "0a7571d95da2b82b9d7260d78ca980e0449dbd35bd5ca75fa8abce7368e972ab",
+        "src/gateway/server-channels.test.ts": "51cba4fc63a76058a967abe6c9133b417bbf4186551cd4f2d8e28ade6c56ecc1",
         "src/gateway/server-channels.ts": "dc8ea07f695931088676065e2421cac71ce6f1e1d616bc1afeec51575faf50c9",
         "src/gateway/server-core-runtime.ts": "0bfa8b5fba7c740c3d9e8d44a04dad2e29d5c0ab34045accd71496b93e73a111",
         "src/gateway/server-kernel-request-runtime.ts": "544686e9e12a3d9c3a531429838928f02cf66989f3676b9d53b3602eeec8e655",
@@ -258,7 +258,7 @@
         "src/gateway/server-plugins.lifecycle.test.ts": "e37659ebb0b7bed855c588a267babca992e5e7837c5477f6571125f300b55f19",
         "src/gateway/server-plugins.test.ts": "6a8900d18304320e6907f3680f44347d29dcafe82d3353705a04374648db82f6",
         "src/gateway/server-plugins.ts": "df6379fca6a7ac586fa6ef7e4e1ce3a5d3b623137faa0887ff549b46feef9620",
-        "src/gateway/server-reload-channel-restart.test.ts": "73712242e56d3074cdc697040a06bb28b7c22ca820ee1f4901c09a5025cd92af",
+        "src/gateway/server-reload-channel-restart.test.ts": "7a52d9a8fedfafd1847137a67a2c51462cbad1533309b7a0971873ccd5996bf1",
         "src/gateway/server-reload-channel-restart.ts": "784f69b49846dd4c4984420bb9a054e2934f93954083e84b2e7d3f311600a73d",
         "src/gateway/server-reload-contracts.ts": "4017d7f660f4cb90a1178bd2d0f0f3dd54b4e413c8521cc8792634bcfa58d2a0",
         "src/gateway/server-reload-handlers.hot-reload-status.test.ts": "dada40a96d65d3379cdb5072087d2766f60b33d3f08075a280e950b6dc9dc6e6",
@@ -416,16 +416,16 @@
   ],
   "comparison": {
     "kind": "fixed-candidate-check-diagnostics",
-    "candidateHead": "7179ebe50751ae4eeb93a23a43c2da907d83cd18",
-    "candidateTree": "2a5bca7218880249803eae4742905c4807f482ff",
+    "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
+    "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
     "parents": [
-      "be7b7ca8bef843177c935f43e643c870878abb2b"
+      "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
     ],
     "originalFailedCiCheckoutProven": false,
     "upstreamRun": 33856860010,
     "workloadProfile": "github",
     "profileBinding": "Inference from the retained complete five-job lint matrix and exact be7 PR workflow; current non-frozen hybrid would contain only three lint jobs.",
-    "scope": "Verify reviewed unused import, shadowed fixture argument and required MCP fixture registry supplier corrections after upstream failed checks; not original failed test-merge attribution."
+    "scope": "Verify four source-confirmed test no-array-sort repairs after hosted diagnostic33860865192; prior production and two core type stripes passed."
   },
   "excluded": [
     "Production dependency audit and Knip: not among the three newly failed jobs",
