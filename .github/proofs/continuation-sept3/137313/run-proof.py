@@ -380,11 +380,25 @@ def replace_test(name, expected_bytes, replacement, identity=None):
 def verify_dependencies():
     modules = (checkout / 'node_modules').resolve()
     assert modules.is_relative_to(checkout)
+    observations = []
     for entry in binding['dependencyFiles']:
         target = checkout / entry['path']
         assert not Path(entry['path']).is_absolute() and '..' not in Path(entry['path']).parts
-        assert target.resolve().is_relative_to(modules)
-        assert target.is_file() and digest(target) == entry['sha256'], 'Dependency contract changed: ' + entry['name']
+        resolved = target.resolve()
+        contained = resolved.is_relative_to(modules)
+        is_file = target.is_file() if contained else None
+        observed = {
+            'name': entry['name'], 'path': entry['path'],
+            'resolvedPath': str(resolved.relative_to(checkout)) if resolved.is_relative_to(checkout) else None,
+            'withinModules': contained, 'isFile': is_file,
+            'sha256': digest(target) if is_file else None, 'expectedSHA256': entry['sha256'],
+        }
+        observations.append(observed)
+        save(evidence / 'dependency-contract-observations.json', {
+            'phase': receipt['phase'], 'entries': observations,
+        })
+        assert contained, 'Dependency escaped installed modules: ' + entry['name']
+        assert is_file and observed['sha256'] == entry['sha256'], 'Dependency contract changed: ' + entry['name']
 
 
 def verify_native_ledgers():

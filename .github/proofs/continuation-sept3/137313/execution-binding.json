@@ -418,7 +418,7 @@
     },
     {
       "name": "reporter",
-      "path": "node_modules/.pnpm/vitest@4.1.11_patch_hash=c21477c229514823498ab3a08311070cec46b1811e866bc1b3f6ff3f5720da_083f6f0a1e2a0158d88d0fab7c709515/node_modules/vitest/dist/chunks/index.UpGiHP7g.js",
+      "path": "node_modules/vitest/dist/chunks/index.UpGiHP7g.js",
       "sha256": "cdafaf8e508042dddba72f8c7bbae84e2836ddb6b06c7026520c35d91af4e798"
     },
     {
