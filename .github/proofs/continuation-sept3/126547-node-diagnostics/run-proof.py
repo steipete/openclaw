@@ -401,9 +401,9 @@ try:
     assert binding['nodeVersion'] == '24.19.0'
     assert binding['candidateRepository'] == 'steipete/openclaw'
     assert packet['comparison']['originalFailedCiCheckoutProven'] is False
-    assert binding['candidateHead'] == packet['comparison']['candidateHead'] == '14d16f96df4268fdec63c28bfc0f06bf7d15338f'
-    assert binding['candidateTree'] == packet['comparison']['candidateTree'] == 'ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e'
-    assert binding['parents'] == ['7179ebe50751ae4eeb93a23a43c2da907d83cd18']
+    assert binding['candidateHead'] == packet['comparison']['candidateHead'] == 'c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b'
+    assert binding['candidateTree'] == packet['comparison']['candidateTree'] == 'fea15fc697239a33fcdd90326924bc6fe0bb1af2'
+    assert binding['parents'] == ['14d16f96df4268fdec63c28bfc0f06bf7d15338f']
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
     assert all(re.fullmatch(r'[a-f0-9]{64}', v) for v in binding['sourceHashes'].values())
     assert not started_file.is_symlink() and started_file.stat().st_size <= 1024

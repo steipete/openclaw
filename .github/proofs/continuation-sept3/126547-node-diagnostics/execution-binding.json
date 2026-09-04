@@ -29,11 +29,11 @@
   "cacheConfiguredBeforeInstall": true,
   "lanes": {
     "small16": {
-      "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
-      "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
+      "candidateHead": "c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b",
+      "candidateTree": "fea15fc697239a33fcdd90326924bc6fe0bb1af2",
       "candidateRepository": "steipete/openclaw",
       "parents": [
-        "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
+        "14d16f96df4268fdec63c28bfc0f06bf7d15338f"
       ],
       "descriptorFile": "small16-descriptor.json",
       "descriptorSHA256": "404cf66e7106bf37a93e13a4b855d06acddc880183419db67ed89499d88474a5",
@@ -141,7 +141,7 @@
         "src/gateway/server-recovery-runtime-context.test.ts": "6b5038f89e7b868ac9fcda318d1da1a9eb73e5f45342de05dd9fa3c6f34e4301",
         "src/gateway/server-reload-channel-restart.test.ts": "7a52d9a8fedfafd1847137a67a2c51462cbad1533309b7a0971873ccd5996bf1",
         "src/gateway/server-reload-handlers.hot-reload-status.test.ts": "dada40a96d65d3379cdb5072087d2766f60b33d3f08075a280e950b6dc9dc6e6",
-        "src/gateway/server-reload-handlers.test.ts": "635b803d6e584b7df10effe823247d71c27e9d174ffa97519bc9807925cdae5c",
+        "src/gateway/server-reload-handlers.test.ts": "9441a030f656765b2d5596ae91e70685550a762a000319f059a4a4580ecc491a",
         "src/gateway/server-reload-handlers.ts": "e954e09e838d00221529a2244ff5576d5c9018810ee0566ec1609709668c3b3b",
         "src/gateway/server-reload-managed-secrets.test.ts": "b4711f13c548660f226e1b6b96a7a561ff9ccd95bef932d909fc9aa2b051331f",
         "src/gateway/server-reload-model-runtime-scope.test.ts": "c33f85de47326950fa8e6bf4ce4d2d902333374fa0fea8320e8ac7a8c50a5e45",
@@ -442,11 +442,11 @@
       ]
     },
     "memory46": {
-      "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
-      "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
+      "candidateHead": "c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b",
+      "candidateTree": "fea15fc697239a33fcdd90326924bc6fe0bb1af2",
       "candidateRepository": "steipete/openclaw",
       "parents": [
-        "7179ebe50751ae4eeb93a23a43c2da907d83cd18"
+        "14d16f96df4268fdec63c28bfc0f06bf7d15338f"
       ],
       "descriptorFile": "memory46-descriptor.json",
       "descriptorSHA256": "a482afd42402fdf41cf7094b0e4e47cb16216ba1a48795d6bcf26a911d0d0e35",
@@ -565,7 +565,7 @@
         "extensions/memory-core/src/tools.budget.test.ts": "7e932305ef7952856aebbe595a774a083fe6ed003382061d9b26880fcde3866b",
         "extensions/memory-core/src/tools.citations.test.ts": "da4896825bec58c87ba3923500009e96cc84c3ad88e9644457944a3bb9a7fa26",
         "extensions/memory-core/src/tools.real-manager.test.ts": "10429fd179f693e39441b331556b2994c0214fc1a790839ad45ccb017682ef49",
-        "extensions/memory-core/src/tools.recall-tracking.test.ts": "34deab54cfff2fc057489a9f220d19b162c45db3203e9ca7eadc6397b1215340",
+        "extensions/memory-core/src/tools.recall-tracking.test.ts": "bf9a0f4f19cfe68744410d401c328ee99917ce3778c6b3c8ab92dc808fb542d8",
         "extensions/memory-core/src/tools.test.ts": "ac279ce81e3c66cd5683f67f207db6757adf24f0ae2ca3e88a7094ae09b2a60d",
         "extensions/memory-lancedb/cli-output-mode.test.ts": "ce867a0e5d706166e4b722e415fd0273c26496feb5eef7f02c86460dc9469037",
         "extensions/memory-lancedb/config.test.ts": "0b50cedfde8dbb181a8881a9edcd2d83263ac4da793d44e2eeb0252532fac392",
@@ -949,8 +949,8 @@
   },
   "comparison": {
     "kind": "fresh-pinned-candidate-diagnostics",
-    "candidateHead": "14d16f96df4268fdec63c28bfc0f06bf7d15338f",
-    "candidateTree": "ad57ad57c83e6aaaa14994f112ac3dfc2e6a382e",
+    "candidateHead": "c8d2ff37d6232bfba59b1a8a2cceee9771d3bd6b",
+    "candidateTree": "fea15fc697239a33fcdd90326924bc6fe0bb1af2",
     "diffBase": "dd38399e11c3babf5ea11c92fee4cedb30676e69",
     "originalFailedCiCheckoutProven": false
   },
