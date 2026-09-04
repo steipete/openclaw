@@ -1,0 +1,70 @@
+name: Secretless registry lifecycle RED GREEN proof
+on:
+  push:
+    branches: [codex/round10-plugin-registry-lifecycle-proof]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-registry-lifecycle-proof' }}
+    name: Full-build registry lifecycle baseline
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Start total job budget
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, time
+          path = pathlib.Path(os.environ['GITHUB_WORKSPACE']) / 'diagnostic-start.json'
+          path.write_text(json.dumps({'monotonicNs': time.monotonic_ns(),
+              'runId': os.environ['GITHUB_RUN_ID'], 'attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'job': os.environ['GITHUB_JOB']}) + '\n')
+          PY
+      - name: Checkout reviewed diagnostic assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Checkout full exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: steipete/openclaw
+          ref: c8299437222ddd5f53aed94a1408bf259d686037
+          path: source
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Setup pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Full build and exact three test files through native wrappers
+        shell: bash
+        env:
+          DIAGNOSTIC_LANE: baseline
+          CACHE_GENERATION: ${{ hashFiles('source/pnpm-lock.yaml', 'source/pnpm-workspace.yaml', 'source/**/package.json', 'source/**/tsconfig*.json', 'source/vitest.config.*', 'source/test/vitest/**', 'source/src/state/*.sql', '!source/**/node_modules/**') }}
+        run: |
+          set -euo pipefail
+          env -i PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" RUNNER_ARCH="$RUNNER_ARCH" \
+            CACHE_GENERATION="$CACHE_GENERATION" \
+            python3 proof-assets/.github/proofs/continuation-sept3/126547-registry-lifecycle/run-proof.py \
+            "$GITHUB_WORKSPACE/source" "$GITHUB_WORKSPACE/evidence-126547" \
+            "$GITHUB_WORKSPACE/diagnostic-start.json" "$DIAGNOSTIC_LANE"
+      - name: Retain bounded native diagnostics
+        if: always()
+        timeout-minutes: 3
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: 126547-registry-lifecycle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-126547/
+          retention-days: 14
+          if-no-files-found: error
