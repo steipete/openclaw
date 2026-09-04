@@ -30,6 +30,7 @@ TEST_PATH = 'src/gateway/server-plugins.lifecycle.test.ts'
 RESTART_PATH = 'src/gateway/server-reload-channel-restart.test.ts'
 GENERATION_PATH = 'src/gateway/server-plugin-runtime-generation.test.ts'
 TEST_PATHS = [TEST_PATH, RESTART_PATH, GENERATION_PATH]
+REQUEST_ENTRY_PATH = 'src/gateway/server-request-entry.test.ts'
 scratch = node = installed_lock = initial_guard = None
 manifest = manifest_bytes = None
 MAX_LOG_BYTES = 16 * 1024 * 1024
@@ -295,7 +296,7 @@ def canonical_closure_snapshot(name):
     if scratch is not None:
         # Only canonical runtime TMP namespaces can contain these resource owners;
         # dependency/package caches are not resource-owner registries.
-        namespaces = [scratch / label / 'tmp' for label in ['bootstrap', 'build', 'lifecycle', 'channel-restart', 'runtime-generation']]
+        namespaces = [scratch / label / 'tmp' for label in ['bootstrap', 'build', 'lifecycle', 'channel-restart', 'runtime-generation', 'request-entry']]
         directories = (entry for root in namespaces if root.exists()
                        for entry in os.walk(root, followlinks=False))
         for directory, children, _ in directories:
@@ -664,6 +665,14 @@ try:
             assert observed['path'] == case['path'] and observed['count'] == case['count']
             assert sorted(observed['fullNames']) == sorted(case['fullNames'])
             assert re.fullmatch(r'[a-f0-9]{64}', observed['jsonSHA256'] or '')
+    if lane == 'candidate':
+        extra = packet['candidateOnlyTestCase']
+        assert extra['name'] == 'request-entry' and extra['path'] == REQUEST_ENTRY_PATH
+        assert extra['count'] == len(extra['fullNames']) == len(set(extra['fullNames'])) == 13
+        assert all(isinstance(name, str) and name for name in extra['fullNames'])
+        assert extra['baselineFailures'] == []
+        assert binding['sourceHashes'][REQUEST_ENTRY_PATH] == extra['testSHA256']['candidate']
+        cases = [*cases, extra]
     assert packet['fixtureEquivalenceReviewed'] is True
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
     assert binding['sourceHashes'] and all(re.fullmatch(r'[a-f0-9]{64}', v or '') for v in binding['sourceHashes'].values())
@@ -800,9 +809,13 @@ try:
             receipt['lifecycleLedgersSHA256'] = verify_lifecycle_ledgers()
             receipt['lifecycleLedgersVerified'] = True
         results.append(observed)
-    save(evidence / 'three-file-result.json', {'lane': lane, 'files': results,
-         'totalPassed': sum(row['passedCount'] for row in results),
-         'totalFailed': sum(row['actualFailureCount'] for row in results)})
+    save(evidence / 'three-file-result.json', {'lane': lane, 'files': results[:3],
+         'totalPassed': sum(row['passedCount'] for row in results[:3]),
+         'totalFailed': sum(row['actualFailureCount'] for row in results[:3])})
+    if lane == 'candidate':
+        save(evidence / 'candidate-four-file-result.json', {'lane': lane, 'files': results,
+             'totalPassed': sum(row['passedCount'] for row in results),
+             'totalFailed': sum(row['actualFailureCount'] for row in results)})
     receipt.update(diagnosticComplete=True, passed=lane == 'candidate', phase='complete',
                    expectedRedObserved=lane == 'baseline', candidateGreenObserved=lane == 'candidate')
     # Baseline remains an ordinary failed job after all three expected-result files finish.

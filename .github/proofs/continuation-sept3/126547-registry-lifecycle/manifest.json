@@ -1,11 +1,11 @@
 {
   "schema": "openclaw-hosted-proof-manifest-v1",
   "incomplete": false,
-  "proposalOnly": true,
+  "proposalOnly": false,
   "sha256": {
-    "README.md": "eb6c17cc444a15d6fda9599253f6f33e645e9b55fb9c76bafbf2ab8dd6c9a87d",
-    ".github/workflows/126547-registry-lifecycle.yml": "fa7055029563ae32079072e240fa2d08264a80b3afc2551f2da241090ab54d95",
-    ".github/proofs/continuation-sept3/126547-registry-lifecycle/execution-binding.json": "67f15ac5ecf64d45a7c7e71da4378312c6c85c97a106dc5e3b9f05c64e559206",
-    ".github/proofs/continuation-sept3/126547-registry-lifecycle/run-proof.py": "494a8e30d0956966491225ac07e8eca33b20068cddb0da94e95d7b20554e20d2"
+    "README.md": "d8dbb34dee8376d226b8767e6a4c9c6d699c119d67397e84ec142045d27051b4",
+    ".github/workflows/126547-registry-lifecycle.yml": "952c06e69087c7de40c93454a11a8210c95269ba8c794e90b71ba2ac5f0fb028",
+    ".github/proofs/continuation-sept3/126547-registry-lifecycle/execution-binding.json": "e0d8fbfd9c545a626b5e5c6a58fc61b1bc5597e91c7829a00805d360b1020e87",
+    ".github/proofs/continuation-sept3/126547-registry-lifecycle/run-proof.py": "388258a9546773818704b3c1ed1966ddc85fb21b96c0d6a920003e8d8bc014cb"
   }
 }

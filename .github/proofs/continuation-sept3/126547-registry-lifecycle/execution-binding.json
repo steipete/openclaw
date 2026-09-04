@@ -8,8 +8,11 @@
     "kind": "sequential-full-build-three-file-registry-owner-red-green",
     "originalFailedCiCheckoutProven": false,
     "baseline": "c8299437222ddd5f53aed94a1408bf259d686037: pre-owner1d713 plus RF and same close/rollback tests",
-    "candidate": "8271986ffbad1f0fedcdb865f115488238d43858: reviewed owner repair plus same fixtures",
-    "executionOrder": "Baseline full build+all3files normalRED, independent review, separate candidate publication fullGREEN"
+    "candidate": "be7b7ca8bef843177c935f43e643c870878abb2b: reviewed owner repair integrated with main dd38399; unchanged request-entry suite added as candidate-only coverage",
+    "executionOrder": "Retained baseline full build plus three files: 14 PASS and 3 exact RED. Candidate full build, same three files all GREEN, then one unchanged main request-entry file all GREEN.",
+    "candidateOnlyAdditionalCoverage": [
+      "src/gateway/server-request-entry.test.ts"
+    ]
   },
   "jobBudgetSeconds": 5400,
   "cleanupAndArtifactReserveSeconds": 240,
@@ -26,7 +29,7 @@
   ],
   "testContractReviewed": true,
   "fixtureEquivalenceReviewed": true,
-  "fixtureEquivalence": "Lifecycle and generation blobs identical. Rollback changes only old supplier spelling to getPluginRegistry and explicitly wires requireActivePluginChannelRegistry into the original six-case constructor; complete assertions and observations unchanged.",
+  "fixtureEquivalence": "The three original inventories and assertions are unchanged. Runtime-generation remains byte-identical; rollback changes only supplier spelling/required getter construction. Candidate lifecycle additionally releases the synthetic restart signal-admission lease in its recovery mock and before teardown, matching the integrated main close owner. Whole lifecycle bytes are therefore not identical; its two ledgers and all assertions remain unchanged.",
   "testCases": [
     {
       "name": "lifecycle",
@@ -42,7 +45,7 @@
       ],
       "testSHA256": {
         "baseline": "338d99a989132ccf6065aa8a8c60b4931377d31164f6742ca7231721990a77ec",
-        "candidate": "338d99a989132ccf6065aa8a8c60b4931377d31164f6742ca7231721990a77ec"
+        "candidate": "6dfd2adc6aec407f5a312fed356d35472bceebe76396e7560d85d70431afd8e9"
       },
       "baselineFailures": [
         {
@@ -130,13 +133,62 @@
     "runtimeFactoryObservation": "Exactly one runtime-module-loader observation per ledger with positive resolvedTargets and factoryCalls"
   },
   "baselineAcceptance": {
-    "reviewed": false,
-    "normalFailedJob": null,
-    "sourceHead": null,
-    "artifactSHA256": null,
-    "failureCount": null,
-    "passedCount": null,
-    "files": []
+    "reviewed": true,
+    "observerVerified": true,
+    "rootReviewPending": true,
+    "normalFailedJob": true,
+    "runId": 33854054236,
+    "attempt": 1,
+    "sourceHead": "c8299437222ddd5f53aed94a1408bf259d686037",
+    "artifactSHA256": "050e10e9bc7d5944fbcc30dbd4f9ec1d9a0ab6fb99731a7720c7cd14790be608",
+    "failureCount": 3,
+    "passedCount": 14,
+    "files": [
+      {
+        "name": "lifecycle",
+        "path": "src/gateway/server-plugins.lifecycle.test.ts",
+        "count": 6,
+        "fullNames": [
+          "gateway plugin instance bindings keeps unscoped plugin work bound to each real Gateway across reverse shutdown",
+          "gateway plugin instance bindings closes only its own channels while another real Gateway owns colliding channel IDs",
+          "gateway plugin instance bindings keeps startup metadata through hot reload and discovers manifest changes after Gateway restart",
+          "gateway plugin instance bindings restarts every channel holding a retired runtime after unrelated plugin config reload",
+          "gateway plugin instance bindings keeps the active Gateway runtime when real plugin replacement cleanup fails by rejection",
+          "gateway plugin instance bindings keeps the active Gateway runtime when real plugin replacement cleanup fails by timeout"
+        ],
+        "jsonSHA256": "41f2809c9bd32250f656ca6665a4988c0e26fb7149a621e363ed70d5a3ffea20",
+        "testSHA256": "338d99a989132ccf6065aa8a8c60b4931377d31164f6742ca7231721990a77ec"
+      },
+      {
+        "name": "channel-restart",
+        "path": "src/gateway/server-reload-channel-restart.test.ts",
+        "count": 8,
+        "fullNames": [
+          "'channel' rollback preserves 'idle' manual stops while explicit starts resume",
+          "'channel' rollback preserves 'stopped' manual stops while explicit starts resume",
+          "'channel' rollback preserves 'racing' manual stops while explicit starts resume",
+          "'accounts' rollback preserves 'idle' manual stops while explicit starts resume",
+          "'accounts' rollback preserves 'stopped' manual stops while explicit starts resume",
+          "'accounts' rollback preserves 'racing' manual stops while explicit starts resume",
+          "channel rollback uses the attached registry while another Gateway is active",
+          "accounts rollback uses the attached registry while another Gateway is active"
+        ],
+        "jsonSHA256": "f1d3ed903fed8bac6749e91458c515e8f7e67916d79d85074eabe3743cfade75",
+        "testSHA256": "b7abbb8a51d151494a2544a920b5ba4f3ac3e5cdc684a6526937d7a32aaab0e1"
+      },
+      {
+        "name": "runtime-generation",
+        "path": "src/gateway/server-plugin-runtime-generation.test.ts",
+        "count": 3,
+        "fullNames": [
+          "Gateway plugin runtime generation blocks stale publication during reservation, restores rejected claims, and commits winners",
+          "Gateway plugin runtime generation settles a pending successor that 'rejects' before deciding discovery and service ownership",
+          "Gateway plugin runtime generation settles a pending successor that 'commits' before deciding discovery and service ownership"
+        ],
+        "jsonSHA256": "2ad2749e5e93e02c4ce7277ab8e3432e99c3ae9c199b36f759ebb6cde07dcae5",
+        "testSHA256": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d"
+      }
+    ]
   },
   "lanes": {
     "baseline": {
@@ -410,10 +462,11 @@
       }
     },
     "candidate": {
-      "candidateHead": "8271986ffbad1f0fedcdb865f115488238d43858",
-      "candidateTree": "97c2ec0a804600ca03e7d676dac0e90ad7731672",
+      "candidateHead": "be7b7ca8bef843177c935f43e643c870878abb2b",
+      "candidateTree": "b37f1e1a541f8326fbde55ae61372ab75fc182dd",
       "parents": [
-        "cba4987b5e94aa380ac2da8b8a322839dea15e4f"
+        "8271986ffbad1f0fedcdb865f115488238d43858",
+        "dd38399e11c3babf5ea11c92fee4cedb30676e69"
       ],
       "candidateRepository": "steipete/openclaw",
       "requiredSourcePaths": [
@@ -471,18 +524,23 @@
         "src/channels/plugins/types.core.ts",
         "src/channels/plugins/types.plugin.ts",
         "src/gateway/AGENTS.md",
+        "src/gateway/agent-turn/internal-facade.ts",
         "src/gateway/config-reload-plan.ts",
         "src/gateway/config-reload.test.ts",
+        "src/gateway/node-registry.ts",
         "src/gateway/plugin-channel-reload-targets.test.ts",
         "src/gateway/plugin-channel-reload-targets.ts",
         "src/gateway/server-channels.test.ts",
         "src/gateway/server-channels.ts",
         "src/gateway/server-close.ts",
         "src/gateway/server-core-runtime.ts",
+        "src/gateway/server-in-process-dispatch.ts",
         "src/gateway/server-kernel-request-runtime.ts",
         "src/gateway/server-lifecycle.ts",
+        "src/gateway/server-methods.ts",
         "src/gateway/server-methods/config-write-flow.ts",
         "src/gateway/server-methods/config.ts",
+        "src/gateway/server-methods/lazy-core-handlers.ts",
         "src/gateway/server-methods/shared-types.ts",
         "src/gateway/server-plugin-bootstrap.ts",
         "src/gateway/server-plugin-in-process-dispatch.ts",
@@ -498,13 +556,17 @@
         "src/gateway/server-reload-handlers.test.ts",
         "src/gateway/server-reload-hot.ts",
         "src/gateway/server-reload-managed.ts",
+        "src/gateway/server-request-entry.test.ts",
+        "src/gateway/server-request-entry.ts",
         "src/gateway/server-runtime-state-prepare.ts",
         "src/gateway/server-start.ts",
         "src/gateway/server-startup-finish.ts",
         "src/gateway/server-startup-plugins.test.ts",
+        "src/gateway/server/ws-connection/authenticated-request-dispatch.ts",
         "src/gateway/test-helpers.mocks.ts",
         "src/gateway/test-helpers.server.ts",
         "src/infra/channel-runtime-context.ts",
+        "src/infra/restart.ts",
         "src/plugins/AGENTS.md",
         "src/plugins/channel-registry-state.types.ts",
         "src/plugins/channel-validation.ts",
@@ -523,11 +585,14 @@
         "src/plugins/runtime/index.ts",
         "src/plugins/runtime/runtime-channel.ts",
         "src/plugins/sdk-alias.ts",
+        "src/process/gateway-work-admission.ts",
+        "src/shared/deferred.ts",
         "src/shared/text/text-projection.test.ts",
         "src/shared/text/text-projection.ts",
         "src/test-utils/env.ts",
         "test/AGENTS.md",
         "test/helpers/AGENTS.md",
+        "test/helpers/gateway-websocket.ts",
         "test/helpers/temp-dir.ts",
         "test/non-isolated-runner.ts",
         "test/scripts/tsdown-runtime-config.test.ts",
@@ -549,7 +614,7 @@
       ],
       "sourceHashes": {
         ".github/actions/setup-node-env/action.yml": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
-        ".github/workflows/ci.yml": "cea6a43b592f1d9159761cc195fafb9e7c28324fd7dadad1afaa329a0a44b529",
+        ".github/workflows/ci.yml": "a97d6cb7a6eb6f0e359281ff8fc8b4a59f44bd2a8110809bc511716aef80c8a5",
         "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
         "VISION.md": "46e253fa54a37082efa9d5df10cc77e6e156e92fe40bc3a9cf9215c68befc910",
         "docs/AGENTS.md": "f2a9f267d1fb06f7753d69ef1389136ab929f334a5d87bfde9cdaeaec929c16d",
@@ -602,40 +667,49 @@
         "src/channels/plugins/types.core.ts": "1e8bcc936eba807e292db4901905e34b28ce0e0d76f71af83d0d1a25f49e3695",
         "src/channels/plugins/types.plugin.ts": "5c919e1b327762105afebf21107c7443f992f86d2aa074e9fa2ebb2c2a869f29",
         "src/gateway/AGENTS.md": "3da9eedcb04cebe1a77b40637591a54cee98934e7825d9ad456c095382fb47a7",
-        "src/gateway/config-reload-plan.ts": "e5d7ae0744a0d4e1b74c3192058a33bcbd96ff9077eaa2e384be549986e70805",
-        "src/gateway/config-reload.test.ts": "e04eadb22e04b71841fab8b6eb23b5ee39af81db0f196a413baba579da7013a3",
+        "src/gateway/agent-turn/internal-facade.ts": "c67dfe8aa1624b0b3a2a9b79e74f92b49dd94a562638bcb6a8445046c5df6f9a",
+        "src/gateway/config-reload-plan.ts": "123822c3b24e4b947ff1f750207e52e77651ea6ccaedabe7d2156da6f24a46c4",
+        "src/gateway/config-reload.test.ts": "8309aea175d16a13b36d13ddd84fddcc728e9792aa1e650ec24b837014467c5e",
+        "src/gateway/node-registry.ts": "889d09f974901a890b1d2eb9f46dfbd181e979da2eb8ee57aab4293dd2a2ca92",
         "src/gateway/plugin-channel-reload-targets.test.ts": "36ebb240202dcac044f103cbdaf7a289fb37e2bc0986115714c35274d1766f4a",
         "src/gateway/plugin-channel-reload-targets.ts": "b0193adcedf1e8d53af183d68ba05d25cd6e41ec4e8c55831d2f3f2921fec3cb",
         "src/gateway/server-channels.test.ts": "0a7571d95da2b82b9d7260d78ca980e0449dbd35bd5ca75fa8abce7368e972ab",
         "src/gateway/server-channels.ts": "43074b508845add339bb3f8dfca0b38ab992bec06614b3b7f28347913be1b2b4",
-        "src/gateway/server-close.ts": "3de225e078081122a97b053c293ad006ee1b4c54c214cb49182c86ef99e5db59",
+        "src/gateway/server-close.ts": "a7143a83e3bbbe16519495018db1ca7f33341102de4ad5079f77ec03ba2cc51d",
         "src/gateway/server-core-runtime.ts": "0bfa8b5fba7c740c3d9e8d44a04dad2e29d5c0ab34045accd71496b93e73a111",
-        "src/gateway/server-kernel-request-runtime.ts": "583d56542d7c184b883faba03031180995e1582be20790e01e65c982132cf4bc",
-        "src/gateway/server-lifecycle.ts": "bea329f7e733c54348ffcacd9a52e7268be3371ebcb148ca69c0bf2c0495add8",
+        "src/gateway/server-in-process-dispatch.ts": "e952c7d4408a605ca8219bee939234029f1a39e20af6b495da979cd70bad51c2",
+        "src/gateway/server-kernel-request-runtime.ts": "544686e9e12a3d9c3a531429838928f02cf66989f3676b9d53b3602eeec8e655",
+        "src/gateway/server-lifecycle.ts": "f62b18ba020f4db61caf78c30338e4263732ea4b614d46e8c05da7608724e975",
+        "src/gateway/server-methods.ts": "2f84235b85e1502c9cb8c5910d44328b292ba0ac7d4754ad82603cd4dfb6b44a",
         "src/gateway/server-methods/config-write-flow.ts": "d3fa8603cbabb847623ceede69687a8c1708bac0d4a7fc1bb52bcdbf60f9a201",
         "src/gateway/server-methods/config.ts": "4036a0ff9bcbde10018df26cd09bfc80374fcbd888da61d78870e7e0febdd16b",
-        "src/gateway/server-methods/shared-types.ts": "ca1bdf288e2eb339b5ab9521c8cd27fc15346786561102fc603fd21e7386be91",
+        "src/gateway/server-methods/lazy-core-handlers.ts": "cd2307fd3d328cf236d7a2bf46374d32d30228e865c3afa2f5eabe2303751682",
+        "src/gateway/server-methods/shared-types.ts": "5a711e549378c3f881d3e17bc54bc4588e521f26a65153ecff7545ff98f35016",
         "src/gateway/server-plugin-bootstrap.ts": "8920c03c85a6798f1031725f849a85aee68671bc74f21acb8505f4be842cd50b",
         "src/gateway/server-plugin-in-process-dispatch.ts": "45c13601970759be635101a19a1352cc2b0f64e4ff24d9c89a104790e5b4347f",
         "src/gateway/server-plugin-runtime-generation.test.ts": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d",
         "src/gateway/server-plugin-runtime-generation.ts": "7cc8f44c4c000f9eb6a60bfed405a415e2dcaa95b723da5b18b1dfff7680eb86",
         "src/gateway/server-plugins-node-runtime.ts": "536913e742606534b8a1243421e28dbaaa1398ac9e3324bba080042fb3ff7ccb",
-        "src/gateway/server-plugins.lifecycle.test.ts": "338d99a989132ccf6065aa8a8c60b4931377d31164f6742ca7231721990a77ec",
+        "src/gateway/server-plugins.lifecycle.test.ts": "6dfd2adc6aec407f5a312fed356d35472bceebe76396e7560d85d70431afd8e9",
         "src/gateway/server-plugins.test.ts": "6a8900d18304320e6907f3680f44347d29dcafe82d3353705a04374648db82f6",
         "src/gateway/server-plugins.ts": "df6379fca6a7ac586fa6ef7e4e1ce3a5d3b623137faa0887ff549b46feef9620",
         "src/gateway/server-reload-channel-restart.test.ts": "73712242e56d3074cdc697040a06bb28b7c22ca820ee1f4901c09a5025cd92af",
         "src/gateway/server-reload-channel-restart.ts": "784f69b49846dd4c4984420bb9a054e2934f93954083e84b2e7d3f311600a73d",
         "src/gateway/server-reload-contracts.ts": "4017d7f660f4cb90a1178bd2d0f0f3dd54b4e413c8521cc8792634bcfa58d2a0",
-        "src/gateway/server-reload-handlers.test.ts": "fcbcb8dc55e539068f62fb7acfb47930a402c0d5540ea6e7777dfd850abf1c03",
-        "src/gateway/server-reload-hot.ts": "e8e3b7394614e2ee38af1f914b380bbb7b653ed65896f5241dc3d9f540d15128",
+        "src/gateway/server-reload-handlers.test.ts": "635b803d6e584b7df10effe823247d71c27e9d174ffa97519bc9807925cdae5c",
+        "src/gateway/server-reload-hot.ts": "cc43f700b54eeaa0420b93dbcd84664df042fef03066a1bf094baeaa07fb0063",
         "src/gateway/server-reload-managed.ts": "b494141beca0178be44d3af584b0dd7329d837838d1fe3db328ce6afe46d0342",
+        "src/gateway/server-request-entry.test.ts": "2ee700aec36b9b94bac1821e619add1d672ddc9e7bd648afdde8b5cb2e413681",
+        "src/gateway/server-request-entry.ts": "3ce143a655bcfcb8932cd88b8661947ef2b3207b163935e58a702501d4671b11",
         "src/gateway/server-runtime-state-prepare.ts": "5e2b22e1c3209bcd9c01415b08fed744d5fabafb9b3ad1cea97b360ada7b1f85",
         "src/gateway/server-start.ts": "ed3aa841ac8a0e1bee1aacc3529da761b74f54e4f2e10d7a3b4500e745d09ae4",
         "src/gateway/server-startup-finish.ts": "440175921efcf1d814b6079f10c0c1d76ff9578492e3facecb1d6c52ef032511",
         "src/gateway/server-startup-plugins.test.ts": "c012b1e7583cfc287b539ea623503469842b2d1726f6d03e0ef69d56e51e2436",
+        "src/gateway/server/ws-connection/authenticated-request-dispatch.ts": "4985fdac8e30aa001becf79e9224b49450ddb86b45c3378211501a379eb25fbd",
         "src/gateway/test-helpers.mocks.ts": "a2a01c9b82e0f070e8e176e8de4ed4a44acd8ac9a1943d4e21e752c0ec92668d",
-        "src/gateway/test-helpers.server.ts": "018e6d2a93c2a26b41e5333a1e491343f7b6aa4e023fc1c9cb3bc4a0d5cb4262",
+        "src/gateway/test-helpers.server.ts": "70496f4b0c9e3fd0314d00a865b67a6a3b95863db88ef33efe0c12febf99628f",
         "src/infra/channel-runtime-context.ts": "7ccc22552fe9bf814ef039fc8bc0a7ecc85d076b550ad843111ebb203a30d138",
+        "src/infra/restart.ts": "d47c010852c8141b9a929afb404f8c2d0cf1d0f992eddeb6e3348d942b58befa",
         "src/plugins/AGENTS.md": "e0e5cecf1cd30fe902441a606e6085800d048410cd267200d7db57e257b7ea67",
         "src/plugins/channel-registry-state.types.ts": "6d067ddf8123c971cde26f004066fe641fe70c360af22f337357216cc499f560",
         "src/plugins/channel-validation.ts": "0ff857b664f2c95baeb25b54e67f61b8b61611bbc4dedd2def4626d91f7ca1dc",
@@ -654,11 +728,14 @@
         "src/plugins/runtime/index.ts": "6da94a9b67d7c10c660c295bee27b9c69a1fece5bca4648b6696534f42b57969",
         "src/plugins/runtime/runtime-channel.ts": "803d3966f2cf5ec3043c775e94a9449a44e22ac712e5c7da104f85566e42dd59",
         "src/plugins/sdk-alias.ts": "bd6a568182982cc641a7846565bce3ed0b9d3a0c281bd08b4389eabf647dfbe0",
+        "src/process/gateway-work-admission.ts": "755bf6c1638cd7d9ddadc4a6cab16ce01a91303eb86731b5172f157402eb4f58",
+        "src/shared/deferred.ts": "2fd613018154ee1ab3e43d183d9f0c770d286dfef05562f1493cd9674545b884",
         "src/shared/text/text-projection.test.ts": "8c1d76c0a3f4bb5a65a7b2ddc5c49a236f45b118fe2eb97f2f867c3fd065305b",
         "src/shared/text/text-projection.ts": "e7023bc75e14138ffd28650d17fe016caeb723a0e1bcb87c383daba0b1a3e34b",
         "src/test-utils/env.ts": "e80c2dc59a772c7279e0d5577ce00eacb1a02dda0b4c19636776e2aab151504d",
         "test/AGENTS.md": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
         "test/helpers/AGENTS.md": "85e07e370c45acfe0dc08951155bc8787f24371e95cb51fccc82cda0eb9ba702",
+        "test/helpers/gateway-websocket.ts": "4ec3cca2adbc9638a9d20382ea7f4c9d88b5ada10874896fdee920e35798737e",
         "test/helpers/temp-dir.ts": "961f374121a024d2ffb6b762b2b0bac91296a017cab42f8958f17f9f8361931c",
         "test/non-isolated-runner.ts": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
         "test/scripts/tsdown-runtime-config.test.ts": "aed36ef057311c83b0613a6c4d25a262d7c05259b404ea13659aaa4314e80e0a",
@@ -679,5 +756,31 @@
         "tsdown.config.ts": "51adc4903df8f49be540df73cefaec0fc4ca921adf6af8d73e7f878624ca96ee"
       }
     }
+  },
+  "candidateOnlyTestCase": {
+    "name": "request-entry",
+    "path": "src/gateway/server-request-entry.test.ts",
+    "count": 13,
+    "fullNames": [
+      "Gateway request entry lifetime joins router preparation and rejects handler entry before close returns",
+      "Gateway request entry lifetime joins start preparation and rejects handler entry before close returns",
+      "Gateway request entry lifetime joins profile preparation and rejects handler entry before close returns",
+      "Gateway request entry lifetime joins family preparation and rejects handler entry before close returns",
+      "Gateway request entry lifetime joins family rejection preparation and rejects handler entry before close returns",
+      "Gateway request entry lifetime joins nested family preparation and rejects handler entry before close returns",
+      "Gateway request entry lifetime refuses credential-barrier waiter test.entry before joining close without draining its predecessor",
+      "Gateway request entry lifetime refuses credential-barrier waiter device.token.rotate before joining close without draining its predecessor",
+      "Gateway request entry lifetime permits ordinary entry after disconnect while its Gateway is live",
+      "Gateway request entry lifetime hands execution off before a handler initiates close",
+      "Gateway request entry lifetime admits exact pending node cleanup replies while close drains",
+      "Gateway request entry lifetime keeps a retired context closed when a replacement Gateway starts",
+      "Gateway request entry lifetime joins typed authorization before allowing its service to start"
+    ],
+    "testSHA256": {
+      "candidate": "2ee700aec36b9b94bac1821e619add1d672ddc9e7bd648afdde8b5cb2e413681"
+    },
+    "baselineFailures": [],
+    "inventoryOrigin": "Static complete committed main test source plus directly inspected locked Vitest 4.1.11 %s title formatting; candidate collection not yet observed",
+    "sourceUnchangedFromIntegratedMain": true
   }
 }
