@@ -1,10 +1,11 @@
 {
   "incomplete": false,
   "sha256": {
-    ".github/proofs/continuation-sept3/137313/execution-binding.json": "bbc5a45ef9675e006ed6855f18548178d619cf7c30c384db149bef155825a1e1",
+    ".github/proofs/continuation-sept3/137313/execution-binding.json": "6bd03fb36cb0c35452722f4cec0c1a471ce3ab06e31a6f373d9d4e0f66f805fb",
     ".github/proofs/continuation-sept3/137313/message-handler.context.test.ts": "0f3f5ca3cfb23ad37d0fa4e39b5703fb712cb4ae8b841d956841072f5b0ac12c",
-    ".github/proofs/continuation-sept3/137313/message-handler.process.session-routing.test.ts": "1f6058c3b04218d77ae796717bd7c23bf49f0a8c65a08c9c9ca2ee568b983dba",
-    ".github/proofs/continuation-sept3/137313/run-proof.py": "3a2ff2c9aecb388012d0aeea8d949bc8386cc22291a28b4ea88aa0ae6ab86d9e",
+    ".github/proofs/continuation-sept3/137313/message-handler.process.session-routing.test.ts": "8dc7dab4945493bad766017138d7929a3c937025906e8c0f98f4c2bd34a35b80",
+    ".github/proofs/continuation-sept3/137313/message-handler.process.test-harness.ts": "dabc178f1698f7381a7cf703d7fb1639dac4418e025b035f72ac6e07d5c037c6",
+    ".github/proofs/continuation-sept3/137313/run-proof.py": "61c5dbcfeb850da5ca387d16b623b7a8e333284c62a6388ece97a3cbcce6bd8f",
     ".github/workflows/round10-137313-baseline-proof.yml": "bdb9d242a7573d8e251564c1238339e623501106e00938413239d712cdd67a25"
   }
 }

@@ -33,6 +33,11 @@ TEST_PATHS = [
     'extensions/discord/src/monitor/message-handler.process.session-routing.test.ts',
     'extensions/discord/src/monitor/message-handler.context.test.ts',
 ]
+OVERLAY_PATHS = [
+    'extensions/discord/src/monitor/message-handler.process.session-routing.test.ts',
+    'extensions/discord/src/monitor/message-handler.process.test-harness.ts',
+    'extensions/discord/src/monitor/message-handler.context.test.ts',
+]
 TEST_CONFIG = 'test/vitest/vitest.extension-discord.config.ts'
 overlays = {entry['path']: entry for entry in binding['overlays']}
 
@@ -330,8 +335,8 @@ def parse_red():
         locations = spec['assertionLocations']
         assert len(locations) == 2 and len({x['line'] for x in locations}) == 2
         assert locations == [
-            {'line': 790, 'source': 'expect('},
-            {'line': 793, 'source': ').toEqual({ agentText: expectedAgentText, BodyForAgent: expectedAgentText });'},
+            {'line': 793, 'source': json.dumps(spec['assertionMessage']) + ','},
+            {'line': 794, 'source': ').toEqual({ agentText: expectedAgentText, BodyForAgent: expectedAgentText });'},
         ]
         for location in locations:
             assert source_lines[location['line'] - 1].strip() == location['source']
@@ -359,7 +364,7 @@ def parse_red():
                                         'expectedFailureCount': len(failed)})
 
 def replace_test(name, expected_bytes, replacement, identity=None):
-    assert name in TEST_PATHS
+    assert name in OVERLAY_PATHS
     test_path = checkout / name
     assert test_path.parent.resolve() == checkout / 'extensions/discord/src/monitor'
     descriptor = os.open(test_path, os.O_RDWR | os.O_NOFOLLOW)
@@ -417,7 +422,7 @@ def verify_native_ledgers():
         channel_id = scenario['channelId']
         expected_keys = {'scenario', 'rawContent', 'topLevelMentionCount', 'observation',
                          'dispatchCount', 'replyCount', 'deliveryJoined', 'processReturned',
-                         'channelCacheCleared', 'runtimeErrors', 'runtimeExits', 'restRoutes'}
+                         'channelCacheCleared', 'runtimeErrors', 'runtimeExits', 'verboseCalls', 'restRoutes'}
         if forward:
             expected_keys.add('snapshotContent')
             assert row['snapshotContent'] == contract['forwardText']
@@ -425,6 +430,17 @@ def verify_native_ledgers():
         assert row['rawContent'] == content
         assert type(row['topLevelMentionCount']) is int and row['topLevelMentionCount'] == 0
         assert row['runtimeErrors'] == row['runtimeExits'] == []
+        verbose = row['verboseCalls']
+        limits = contract['verboseCalls']
+        assert isinstance(verbose, list) and len(verbose) <= limits['maxCalls']
+        assert len(json.dumps(verbose, ensure_ascii=False).encode()) <= limits['maxEncodedUTF8Bytes']
+        for call in verbose:
+            assert isinstance(call, list) and len(call) == limits['maxArgumentsPerCall'] == 1
+            assert isinstance(call[0], str) and len(call[0].encode()) <= limits['maxArgumentUTF8Bytes']
+        # Require the actual logger observation as well as the existing negative
+        # outcome assertion. Admission cannot be inferred from a null result alone.
+        mention_drop_observed = [limits['mentionDropMessage']] in verbose
+        assert mention_drop_observed is drop, 'Observed mention-drop log disagrees with admission'
         assert row['channelCacheCleared'] is True
         expected_routes = ([f'/channels/{channel_id}/messages/{channel_id}1'] if forward else [])
         expected_routes.append(f'/channels/{channel_id}')
@@ -455,6 +471,8 @@ def verify_native_ledgers():
         'joinedReplies': 4, 'preciseEmptyForwardedProjections': 2,
         'rawCommandAndMentionAuthorityPreserved': True, 'restRoutesVerified': True,
         'runtimeErrors': 0, 'runtimeExits': 0, 'channelCacheEntriesCleared': 5,
+        'verboseCalls': {'counts': [len(row['verboseCalls']) for row in rows],
+                         'bounded': True, 'negativeMentionDropObserved': True},
         'cleanupLimit': contract['cleanupLimit'],
     })
     return digest(evidence / 'native-ledgers.json')
@@ -470,7 +488,8 @@ try:
     assert binding['runnable'] is True and binding['candidateMayRun'] is False, 'Baseline packet is not sealed'
     assert binding['baseHead'] == 'd2a616bdf373a5b3cac0add8e9b2f70cd0802f42'
     assert re.fullmatch(r'[a-f0-9]{40}', binding['baseTree'])
-    assert len(overlays) == len(binding['overlays']) == 2 and set(overlays) == set(TEST_PATHS)
+    assert len(overlays) == len(binding['overlays']) == 3 and set(overlays) == set(OVERLAY_PATHS)
+    assert binding['overlayPaths'] == OVERLAY_PATHS and set(TEST_PATHS) < set(OVERLAY_PATHS)
     assert all(re.fullmatch(r'[a-f0-9]{64}', e['overlaySha256']) for e in overlays.values())
     assert binding['nodeVersion'] == '24.19.0'
     assert binding['testPaths'] == TEST_PATHS and binding['testConfig'] == TEST_CONFIG
@@ -478,8 +497,14 @@ try:
     assert binding['expectedPassedTests'] > 0 and binding['expectedFailures']
     assert binding['expectedTotalTests'] == binding['expectedPassedTests'] + len(binding['expectedFailures'])
     assert set(binding['sourceHashes']) == set(binding['requiredSourcePaths'])
-    assert set(TEST_PATHS + ['package.json', 'pnpm-lock.yaml', 'scripts/run-vitest.mjs']).issubset(binding['sourceHashes'])
+    assert set(OVERLAY_PATHS + ['package.json', 'pnpm-lock.yaml', 'scripts/run-vitest.mjs']).issubset(binding['sourceHashes'])
     assert binding['ledgerContract']['reviewed'] is True
+    assert binding['ledgerContract']['verboseCalls'] == {
+        'maxCalls': 64, 'maxArgumentsPerCall': 1, 'maxArgumentUTF8Bytes': 4096,
+        'maxEncodedUTF8Bytes': 65536,
+        'mentionDropMessage': 'discord: drop guild message (mention required, botId=900000000000000003)',
+        'source': 'Observed logVerboseForTest.mock.calls, reset by the existing per-test lifecycle; no synthetic success markers or substituted logger behavior.',
+    }
     manifest_bytes = (assets / 'manifest.json').read_bytes()
     manifest = json.loads(manifest_bytes)
     assert manifest.get('incomplete') is False, 'Publication asset manifest is incomplete'
@@ -495,7 +520,7 @@ try:
          'porcelainDiffIndex': 'exact disposable copy; real index remains guarded'})
     initial_guard = capture_source()
     assert not (checkout / 'node_modules').exists()
-    for name in TEST_PATHS:
+    for name in OVERLAY_PATHS:
         assert not (checkout / name).is_symlink()
         original_tests[name] = (checkout / name).read_bytes()
         assert sha(original_tests[name]) == overlays[name]['baselineSha256'] == binding['sourceHashes'][name]
@@ -528,7 +553,7 @@ try:
     save(evidence / 'dependency-contracts.json', binding['dependencyFiles'])
     save(evidence / 'build-prerequisite-decision.json', binding['buildPolicy'])
     source_guard('before-overlay')
-    for name in TEST_PATHS:
+    for name in OVERLAY_PATHS:
         entry = overlays[name]
         overlay_identities[name] = replace_test(name, original_tests[name], (assets / entry['artifact']).read_bytes())
     save(evidence / 'overlays.json', [

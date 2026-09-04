@@ -16,20 +16,26 @@
     {
       "path": "extensions/discord/src/monitor/message-handler.process.session-routing.test.ts",
       "artifact": "message-handler.process.session-routing.test.ts",
+      "kind": "test",
       "baselineSha256": "7d91bf40e700a051cf69518c8b00991b5d2ec5bf0cf84d00cc3fc8758f708ce5",
-      "overlaySha256": "1f6058c3b04218d77ae796717bd7c23bf49f0a8c65a08c9c9ca2ee568b983dba",
-      "added": 359,
-      "deleted": 46,
-      "net": 313
+      "overlaySha256": "8dc7dab4945493bad766017138d7929a3c937025906e8c0f98f4c2bd34a35b80",
+      "priorPublishedOverlaySha256": "1f6058c3b04218d77ae796717bd7c23bf49f0a8c65a08c9c9ca2ee568b983dba"
+    },
+    {
+      "path": "extensions/discord/src/monitor/message-handler.process.test-harness.ts",
+      "artifact": "message-handler.process.test-harness.ts",
+      "kind": "test-support",
+      "baselineSha256": "e8b3b8b396f588d94d59212f4cb8714fc9e433f3dc34f853d6a81ded85694d8f",
+      "overlaySha256": "dabc178f1698f7381a7cf703d7fb1639dac4418e025b035f72ac6e07d5c037c6",
+      "priorPublishedOverlaySha256": null
     },
     {
       "path": "extensions/discord/src/monitor/message-handler.context.test.ts",
       "artifact": "message-handler.context.test.ts",
+      "kind": "test",
       "baselineSha256": "1a6a7db7618cf13e65d5f26473de1b588123e6dc5c3d1a3b5d9a2606ed9153ef",
       "overlaySha256": "0f3f5ca3cfb23ad37d0fa4e39b5703fb712cb4ae8b841d956841072f5b0ac12c",
-      "added": 5,
-      "deleted": 3,
-      "net": 2
+      "priorPublishedOverlaySha256": "0f3f5ca3cfb23ad37d0fa4e39b5703fb712cb4ae8b841d956841072f5b0ac12c"
     }
   ],
   "expectedTotalTests": 33,
@@ -122,16 +128,16 @@
       "assertionMessage": "native forwarded content must reach the finalized agent context without becoming sender intent",
       "assertionLocations": [
         {
-          "line": 790,
-          "source": "expect("
+          "line": 793,
+          "source": "\"native forwarded content must reach the finalized agent context without becoming sender intent\","
         },
         {
-          "line": 793,
+          "line": 794,
           "source": ").toEqual({ agentText: expectedAgentText, BodyForAgent: expectedAgentText });"
         }
       ],
       "messageLocation": {
-        "line": 792,
+        "line": 793,
         "source": "\"native forwarded content must reach the finalized agent context without becoming sender intent\","
       },
       "stackLineObserved": false,
@@ -148,16 +154,16 @@
       "assertionMessage": "native forwarded content must reach the finalized agent context without becoming sender intent",
       "assertionLocations": [
         {
-          "line": 790,
-          "source": "expect("
+          "line": 793,
+          "source": "\"native forwarded content must reach the finalized agent context without becoming sender intent\","
         },
         {
-          "line": 793,
+          "line": 794,
           "source": ").toEqual({ agentText: expectedAgentText, BodyForAgent: expectedAgentText });"
         }
       ],
       "messageLocation": {
-        "line": 792,
+        "line": 793,
         "source": "\"native forwarded content must reach the finalized agent context without becoming sender intent\","
       },
       "stackLineObserved": false,
@@ -219,7 +225,15 @@
     "forwardAgentText": "[Forwarded message]\n/status forwarded task content <@900000000000000003>",
     "ordinaryText": "please explain this",
     "ordinaryReplyText": "quoted ordinary message",
-    "cleanupLimit": "Five receipts prove process-return/delivery-join and owned channel-cache removal only. Existing context helper temp directories have no individual cleanup receipt. Private HOME/TMPDIR deletion is controller-owned only after canonical command closure; no host-global filesystem census."
+    "cleanupLimit": "Five receipts prove process-return/delivery-join and owned channel-cache removal only. Existing context helper temp directories have no individual cleanup receipt. Private HOME/TMPDIR deletion is controller-owned only after canonical command closure; no host-global filesystem census.",
+    "verboseCalls": {
+      "maxCalls": 64,
+      "maxArgumentsPerCall": 1,
+      "maxArgumentUTF8Bytes": 4096,
+      "maxEncodedUTF8Bytes": 65536,
+      "mentionDropMessage": "discord: drop guild message (mention required, botId=900000000000000003)",
+      "source": "Observed logVerboseForTest.mock.calls, reset by the existing per-test lifecycle; no synthetic success markers or substituted logger behavior."
+    }
   },
   "buildPolicy": {
     "separateFullBuild": false,
@@ -426,5 +440,19 @@
       "path": "node_modules/.pnpm/discord-api-types@0.38.53/node_modules/discord-api-types/payloads/v10/message.d.ts",
       "sha256": "1c43f8253e2bfef75d9f4ceb2bd82976f99ff036fdb96c856651fed36e2fccac"
     }
-  ]
+  ],
+  "overlayPaths": [
+    "extensions/discord/src/monitor/message-handler.process.session-routing.test.ts",
+    "extensions/discord/src/monitor/message-handler.process.test-harness.ts",
+    "extensions/discord/src/monitor/message-handler.context.test.ts"
+  ],
+  "fixtureRepair": {
+    "previousPublicationHead": "37e06fbbdaeafced8b6faf4b6852f9022a944c1c",
+    "failedRunId": 33823417124,
+    "failedRunAcceptedAsExpectedRed": false,
+    "fixtureProposalSHA256": "9aad605ac6c7263e3be05c4eb8aa3baeb68067b71be76e9b99cc8b9dcff64c00",
+    "fixtureFreezeSHA256": "c7569f0e4c1a4ee00deb4ac547edd96bbcfe7eb5159c2317fa4679028274fea2",
+    "executedTestPathsUnchanged": true,
+    "trackedOverlayCount": 3
+  }
 }

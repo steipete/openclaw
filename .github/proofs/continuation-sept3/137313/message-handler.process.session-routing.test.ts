@@ -17,7 +17,6 @@ import {
 } from "../internal/test-builders.test-support.js";
 import type { DiscordMessageEvent } from "./listeners.js";
 import { discordChannelInfoCacheState } from "./message-channel-info-state.js";
-import { preflightDiscordMessage } from "./message-handler.preflight.js";
 import { createDiscordPreflightArgs } from "./message-handler.preflight.test-helpers.js";
 import {
   BASE_CHANNEL_ROUTE,
@@ -700,17 +699,8 @@ describe("processDiscordMessage native forward boundary", () => {
     let deliveryJoined = false;
     let processReturned = false;
     let observation: Record<string, unknown> = {};
-    dispatchInboundMessage.mockImplementationOnce(async (params) => {
-      if (!params) {
-        throw new Error("native proof dispatcher params were missing");
-      }
-      const { dispatcher } = params;
-      await dispatcher.sendFinalReply({ text: "native boundary reply" });
-      await dispatcher.waitForIdle();
-      deliveryJoined = true;
-      return { queuedFinal: true, counts: { final: 1, tool: 0, block: 0 } };
-    });
     try {
+      const { preflightDiscordMessage } = await import("./message-handler.preflight.js");
       expect(event.message).toBeInstanceOf(Message);
       expect(event.message.rawData).toBe(raw);
       const preflight = await preflightDiscordMessage({
@@ -722,6 +712,7 @@ describe("processDiscordMessage native forward boundary", () => {
           botUserId: NATIVE_FORWARD_BOT_ID,
         }),
         guildEntries: guilds,
+        allowFrom: discordConfig.allowFrom,
         runtime: { log: vi.fn(), error: runtimeError, exit: runtimeExit },
       });
       if (scenario.requireMention) {
@@ -748,6 +739,16 @@ describe("processDiscordMessage native forward boundary", () => {
         expect(preflight.hasControlCommand).toBe(false);
         expect(preflight.wasMentioned).toBe(false);
         expect(preflight.effectiveWasMentioned).toBe(false);
+        dispatchInboundMessage.mockImplementationOnce(async (params) => {
+          if (!params) {
+            throw new Error("native proof dispatcher params were missing");
+          }
+          const { dispatcher } = params;
+          await dispatcher.sendFinalReply({ text: "native boundary reply" });
+          await dispatcher.waitForIdle();
+          deliveryJoined = true;
+          return { queuedFinal: true, counts: { final: 1, tool: 0, block: 0 } };
+        });
         await runProcessDiscordMessage(preflight);
         processReturned = true;
         const dispatched = requireRecord(getLastDispatchCtx(), "native dispatch context");
@@ -808,6 +809,7 @@ describe("processDiscordMessage native forward boundary", () => {
           channelCacheCleared: !discordChannelInfoCacheState.entries.has(scenario.channelId),
           runtimeErrors: runtimeError.mock.calls,
           runtimeExits: runtimeExit.mock.calls,
+          verboseCalls: logVerboseForTest.mock.calls,
           restRoutes: restGet.mock.calls.map(([route]) => route),
         })}`,
       );
