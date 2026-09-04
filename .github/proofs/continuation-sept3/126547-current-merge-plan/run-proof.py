@@ -468,7 +468,7 @@ try:
     assert os_release.get('VERSION_ID', '').strip(chr(34)) == '24.04'
     assert os.environ.get('GITHUB_REPOSITORY') == binding['publisherRepository'] == 'steipete/openclaw'
     assert os.environ.get('GITHUB_REF') == 'refs/heads/' + binding['publisherBranch']
-    assert os.environ.get('GITHUB_EVENT_NAME') == 'workflow_dispatch'
+    assert os.environ.get('GITHUB_EVENT_NAME') in {'push', 'workflow_dispatch'}
     assert checkout.name == 'source'
     assert binding['candidateHead'] == binding['mergeHead'] == '3ba6a62a352ea58d5999a9ed4c04b9de9479377f'
     assert binding['candidateTree'] == binding['mergeTree'] == '842c018ecd7e8141cbe6e27e238698539413899b'

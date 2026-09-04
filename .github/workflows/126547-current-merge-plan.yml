@@ -1,10 +1,13 @@
 name: Secretless current-merge Node plan report
 on:
+  push:
+    branches: [codex/round10-plugin-reload-current-merge-plan]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   plan:
+    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-current-merge-plan' }}
     name: Current merge Node plan (no tests)
     runs-on: ubuntu-24.04
     timeout-minutes: 20
