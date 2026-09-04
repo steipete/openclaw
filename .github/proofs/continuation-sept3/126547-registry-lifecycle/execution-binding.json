@@ -5,12 +5,12 @@
   "nodeVersion": "24.19.0",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "comparison": {
-    "kind": "current-main-attached-registry-red-green",
-    "main": "05a236c7afbcf1956e40642d4f1777af4a378da3",
+    "kind": "shutdown-integration-candidate-with-retained-owning-baseline",
+    "main": "2387285d3e0beb6a89350fd0192bb618d725e512",
     "baseline": "9589ff05769ff3ce71039b6d8ed813d842f5ab08",
-    "candidate": "9377ee1efef35ec983d3ea1b3334cfdb1de25a49",
+    "candidate": "2a34af50ea38ae6602f2db8212c1624cfb9b13d4",
     "originalFailedCiCheckoutProven": false,
-    "scope": "Identical four regression/support files after old getter spelling and pinned formatting; baseline production is unchanged current main. Real lifecycle full-generation drain and webhook fencing are green controls."
+    "scope": "Retain accepted baseline9589 three owning-regression failures. Fresh integrated candidate must pass docs:list, full build and all153 cases. No baseline/candidate byte-equivalence claim after newer shutdown cleanup and synchronization changes."
   },
   "jobBudgetSeconds": 5400,
   "cleanupAndArtifactReserveSeconds": 240,
@@ -27,7 +27,7 @@
   ],
   "testContractReviewed": true,
   "fixtureEquivalenceReviewed": true,
-  "fixtureEquivalence": "The four baseline regression/support files equal the candidate after replacing the old internal getPluginHttpRouteRegistry getter spelling with getPluginRegistry and applying the same pinned formatter. Lifecycle, its extracted fixture support, and runtime-generation are byte-identical. Channel-manager and rollback differ only in getter spelling and resulting line wrapping. All assertions, generated plugin templates, cleanup ordering and both ledgers are identical. Baseline production is unchanged main 05a236c7; current main full-generation drain and webhook admission fencing remain green controls.",
+  "fixtureEquivalence": "Not byte-identical to accepted baseline9589 or prior candidate9377. New main separates shutdown preparation from final completion; the fixture timeout promise becomes a finite serviceStopCompletion deferred, resolved after resetting synthetic signal admission and before final Gateway teardown. Manager tests use three explicit existing condition waits; request-entry tests retain and join dispatcher promises. Runtime-generation and rollback test bodies are unchanged; all 153 names/assertions and both ledger verdicts remain unchanged. Final committed bytes are bound to 2a34af50 and the five-file delta preserves all 153 names. Fresh actual collection remains required.",
   "testCases": [
     {
       "name": "lifecycle",
@@ -45,7 +45,7 @@
       ],
       "testSHA256": {
         "baseline": "b72f44144413b68db6a68d34b937926f8cf15f62d4adbc66cef92ae9f1993c16",
-        "candidate": "b72f44144413b68db6a68d34b937926f8cf15f62d4adbc66cef92ae9f1993c16"
+        "candidate": "87d2b2732c3e22d141f88f6db6ebfba110b2fa3d7df0b15f39f4d75387184f5d"
       },
       "baselineFailures": [
         {
@@ -227,7 +227,7 @@
       ],
       "testSHA256": {
         "baseline": "1b8024eda105ccc19e138038310bb329beac3c8b6fa82bf88f690847429e9ee8",
-        "candidate": "180389c13646bb78160677f49caf59e8b31240b32611d8c69fec22035c582004"
+        "candidate": "b83319f19180bfcd89da2a2e9f593f4f3f956e86d81b27f7a09fc88271569476"
       },
       "baselineFailures": [
         {
@@ -759,10 +759,11 @@
       }
     },
     "candidate": {
-      "candidateHead": "9377ee1efef35ec983d3ea1b3334cfdb1de25a49",
-      "candidateTree": "f86e7339a69f5eedc94229097af6f9995b91252f",
+      "candidateHead": "2a34af50ea38ae6602f2db8212c1624cfb9b13d4",
+      "candidateTree": "eda878edf5516d81d14417911b6c2f7b4bc43b7b",
       "parents": [
-        "ad6f0f262d966b1bd175fa1b171b7fa398038722"
+        "46f234ebe7efd946280aa6f43866882487218a21",
+        "2387285d3e0beb6a89350fd0192bb618d725e512"
       ],
       "candidateRepository": "steipete/openclaw",
       "requiredSourcePaths": [
@@ -829,6 +830,7 @@
         "src/gateway/plugin-channel-reload-targets.ts",
         "src/gateway/server-channels.test.ts",
         "src/gateway/server-channels.ts",
+        "src/gateway/server-close.runtime.ts",
         "src/gateway/server-close.ts",
         "src/gateway/server-core-runtime.ts",
         "src/gateway/server-in-process-dispatch.ts",
@@ -844,7 +846,7 @@
         "src/gateway/server-plugin-runtime-generation.test.ts",
         "src/gateway/server-plugin-runtime-generation.ts",
         "src/gateway/server-plugins-node-runtime.ts",
-        "src/gateway/server-plugins.lifecycle.fixtures.ts",
+        "src/gateway/server-plugins.lifecycle.test-fixtures.ts",
         "src/gateway/server-plugins.lifecycle.test.ts",
         "src/gateway/server-plugins.test.ts",
         "src/gateway/server-plugins.ts",
@@ -857,7 +859,11 @@
         "src/gateway/server-reload-managed.ts",
         "src/gateway/server-request-entry.test.ts",
         "src/gateway/server-request-entry.ts",
+        "src/gateway/server-run-shutdown.ts",
         "src/gateway/server-runtime-state-prepare.ts",
+        "src/gateway/server-shutdown.runtime.ts",
+        "src/gateway/server-shutdown.ts",
+        "src/gateway/server-sidecar-owners.ts",
         "src/gateway/server-start.ts",
         "src/gateway/server-startup-finish.ts",
         "src/gateway/server-startup-plugins.test.ts",
@@ -892,6 +898,7 @@
         "test/AGENTS.md",
         "test/helpers/AGENTS.md",
         "test/helpers/gateway-websocket.ts",
+        "test/helpers/promise.ts",
         "test/helpers/temp-dir.ts",
         "test/non-isolated-runner.ts",
         "test/scripts/tsdown-runtime-config.test.ts",
@@ -913,21 +920,21 @@
       ],
       "sourceHashes": {
         ".github/actions/setup-node-env/action.yml": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
-        ".github/workflows/ci.yml": "76c57018a4815b8f19dc310bedba755013f57d9dbfce05bf2e1207e6ba3a88dd",
+        ".github/workflows/ci.yml": "c3203083bf067e211cad7bb23f8e2141ed4ad8d8b5fbd16019b53195b70bd162",
         "AGENTS.md": "88007b897ac6ee6aa85fe7ba5f61ed266e3753c04c237a8e5375807523d9aac9",
         "VISION.md": "46e253fa54a37082efa9d5df10cc77e6e156e92fe40bc3a9cf9215c68befc910",
         "docs/AGENTS.md": "9e68d2bfffb0f320b3e0b88f712df77f1b030d26348208183bfa386b5a02c851",
         "docs/gateway/configuration.md": "64a99a3c588debb4fe4c032b2f35d8a80d1c82e66c1e6eccbf3d530ae139a4b5",
-        "docs/plugins/architecture.md": "e0201eb8073ab8911815e4e7d26c4ccae09effe627296e81a9fac252efdabd03",
+        "docs/plugins/architecture.md": "659aec15c0a0983cf8590b1c067f08962e740db70bbc49a59aab9966822fb4eb",
         "node-version.mjs": "8ca5102f3beaea724f23bab3f92527d772de1470b3af6f3edce18b296342c8da",
-        "package.json": "9aaf74821dddaab3565cd628b6fc8c303c12e94354e471698a2a311b6b52b37a",
+        "package.json": "2d6ed210a2f55e4cae48bea7a07049b14e6f8cc9d5b64debe7445f2d2bc09aad",
         "packages/markdown-core/src/code-spans.test.ts": "6526343695dd6b250b4529d2f971baf3876d99aa7908f92ca9b95ed2923c9b62",
         "packages/markdown-core/src/code-spans.ts": "6d4e5c5949b19421b8b8a7376d220ec5aeced387d9d2931533b81ff98c2c36eb",
         "patches/vitest@4.1.11.patch": "c21477c229514823498ab3a08311070cec46b1811e866bc1b3f6ff3f5720da2e",
         "pnpm-lock.yaml": "f21f820bba80e804c60aa9367a2124d82dde44639a66ae4bd75943ab29088274",
         "pnpm-workspace.yaml": "ba79a15090796cb267b0ea90089ad212b244f1021303fd5476310ad4b374e005",
         "scripts/AGENTS.md": "f1ef64abdec9ec131805b9e69646b5ee8ca0721898396853f73fc066b5e29f8f",
-        "scripts/build-all.mts": "139eda5421c92098645b3a3d8bcd0b4cdb3f4a7c1d05237b28d69f3f1a48592e",
+        "scripts/build-all.mts": "b248f108d31de96f3f124e2c7e3354701d6c99267bd0f3d99ab417bc4ad370b6",
         "scripts/ci-run-node-test-shard.mts": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
         "scripts/docs-list.js": "0ca8fb6ea9afc294b084ffe5aaa340ad4a2a58455dfff0b125f95a31d120d6b4",
         "scripts/lib/dist-artifact-ownership.mts": "0c03cacc008a92053860aefff04a89e64cdb342a6d953b34ff650b982a444593",
@@ -935,7 +942,7 @@
         "scripts/lib/managed-child-process.mts": "12dd7a896f16498815bc32bc2b3afa8d12cbace166a8db9fc150feb6f012f13d",
         "scripts/lib/test-projects-delegation.mts": "f56e8b5be0cb8edeb97769d5040aa6fba34e74803bad2b9369685904fe586dc4",
         "scripts/lib/tsx-cli-shim.mjs": "a6660e6d6828b1887e182a24381b1550d9cc8272dc80f1929f475ba325e5491c",
-        "scripts/lib/vitest-build-prerequisites.mts": "67d37a912926272ba7cce739babc279dd4622798a5bc9f92e52f66a6199cca72",
+        "scripts/lib/vitest-build-prerequisites.mts": "0d297dc5d227c9c77ed4eb7171266bbae186fea42bb4a1f3425abb7c208b92dc",
         "scripts/lib/vitest-cli-mode.mts": "35c4306ca45ad02dff6095b81e4cdafb8f2091ad79bd2bb158aeaa840294ebfe",
         "scripts/lib/vitest-cli.mts": "e1c00bc34b0a85ed013260b894fd118726ec2fdada770a0069a27f90567c9103",
         "scripts/lib/vitest-home-selection.mts": "b60c13518500b7dd32d95c8ce4c2f273b412a5977431efb1abc2576fa3eb38ee",
@@ -955,7 +962,7 @@
         "scripts/run-vitest.mts": "c20c5a2b67f51749577ba1917f01f3fb8a32291634108d452fea98fcdfd8f209",
         "scripts/test-projects-run.mts": "9c3454cbc047c7ef259c591ace14b2689f2978ae44f47bcc711791393cd61b1f",
         "scripts/test-projects.mts": "41cedf3b12f00f562ca70c72b9d9a1fedfbd1ef129d3d2ed9dced9b4584ad898",
-        "scripts/test-projects.test-support.mts": "a4ddbe6753263b5f5cba7b719c7dc572bbe93df77c3c295d1999e16d13ff5870",
+        "scripts/test-projects.test-support.mts": "76077981d7187bf6034961f4b7c56919a628c597495d000f5c258c5a16736963",
         "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
         "scripts/vitest-process-group.mts": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
         "src/agents/embedded-agent-helpers.sanitizeuserfacingtext.duplicateblocks.test.ts": "8359a6d2061a39de28c2e772dc291279f41f1a14a6bca9120aa4f2fa999726e8",
@@ -967,32 +974,33 @@
         "src/channels/plugins/types.core.ts": "1e8bcc936eba807e292db4901905e34b28ce0e0d76f71af83d0d1a25f49e3695",
         "src/channels/plugins/types.plugin.ts": "5c919e1b327762105afebf21107c7443f992f86d2aa074e9fa2ebb2c2a869f29",
         "src/gateway/AGENTS.md": "3da9eedcb04cebe1a77b40637591a54cee98934e7825d9ad456c095382fb47a7",
-        "src/gateway/agent-turn/internal-facade.ts": "c67dfe8aa1624b0b3a2a9b79e74f92b49dd94a562638bcb6a8445046c5df6f9a",
+        "src/gateway/agent-turn/internal-facade.ts": "30959333df49c780c208a9cbce49c12545a5237463afba0a6bc4687331b2277c",
         "src/gateway/config-reload-plan.ts": "9f1b0558c8ba787ba9d42786866e5ab280e8498872cddf66005c2e36e0eb0406",
         "src/gateway/config-reload.test.ts": "580672144dae6976c459b62239bc5425799e8d4e391aefb09cfceef4077b5b05",
         "src/gateway/node-registry.ts": "889d09f974901a890b1d2eb9f46dfbd181e979da2eb8ee57aab4293dd2a2ca92",
         "src/gateway/plugin-channel-reload-targets.test.ts": "36ebb240202dcac044f103cbdaf7a289fb37e2bc0986115714c35274d1766f4a",
         "src/gateway/plugin-channel-reload-targets.ts": "a80f6329978b6dad4a4631feab7d8dc3748ce1e542c2982c94fbeee75159f821",
-        "src/gateway/server-channels.test.ts": "180389c13646bb78160677f49caf59e8b31240b32611d8c69fec22035c582004",
+        "src/gateway/server-channels.test.ts": "b83319f19180bfcd89da2a2e9f593f4f3f956e86d81b27f7a09fc88271569476",
         "src/gateway/server-channels.ts": "62d36f52fb5d0fc098e3d060fe101ca15e2b6767da47ec6a53c9eb6149d42c0b",
-        "src/gateway/server-close.ts": "ee96630d1c564b95bdef3027cf0cad6a2e3d27ab4c9c8fc581b8c9621ebbddc9",
-        "src/gateway/server-core-runtime.ts": "de71bbb16a9cca8acb56d84122a293db5caf7631478ac8b17bcc23243303552c",
-        "src/gateway/server-in-process-dispatch.ts": "e952c7d4408a605ca8219bee939234029f1a39e20af6b495da979cd70bad51c2",
-        "src/gateway/server-kernel-request-runtime.ts": "8d91dc86c95bc48179b6a9a4aed89a84b9bca4a7cc9ebd3155b4b91eff6db610",
-        "src/gateway/server-lifecycle.ts": "d76a1ca39f77f8b3d65178d6e7a81f4355f3a0d2475528b5cfc5a637aa5d4ae9",
-        "src/gateway/server-methods.ts": "864f02fbd5806e2852cf22ae29f0bf4b1c4184063ed41ece0a84e4f21726c989",
+        "src/gateway/server-close.runtime.ts": "0ee36aaa193609b822cd348262ed5d376aa2896a04d10c143f32c63a6f71770d",
+        "src/gateway/server-close.ts": "9bb80354a6581f90f3a413be165c18450039fc483e276998edbe90d97adda9ed",
+        "src/gateway/server-core-runtime.ts": "2bc9502aa810f02a9835bf472840e5d450793e131ac24d09e76ee37c2b7431f7",
+        "src/gateway/server-in-process-dispatch.ts": "41fab4693d35d8b79ff9c4349041bbd2ce4a7513a0824bafc45a594390aee547",
+        "src/gateway/server-kernel-request-runtime.ts": "a7113cbe1221d4393e4a79d274b0ec917867a8936482f4dcb899d1f3daa65eac",
+        "src/gateway/server-lifecycle.ts": "99e1e0e4e802bb1750ad6fe6a8efb8d17c30295282cc266563a402200f4aa1a5",
+        "src/gateway/server-methods.ts": "93f2846cf579e9a7f1cb28fad84f2f8fe9dc17575709e12b837dce1946fe37bf",
         "src/gateway/server-methods/config-write-flow.ts": "d3fa8603cbabb847623ceede69687a8c1708bac0d4a7fc1bb52bcdbf60f9a201",
         "src/gateway/server-methods/config.ts": "4036a0ff9bcbde10018df26cd09bfc80374fcbd888da61d78870e7e0febdd16b",
         "src/gateway/server-methods/lazy-core-handlers.ts": "cd2307fd3d328cf236d7a2bf46374d32d30228e865c3afa2f5eabe2303751682",
-        "src/gateway/server-methods/shared-types.ts": "5a711e549378c3f881d3e17bc54bc4588e521f26a65153ecff7545ff98f35016",
+        "src/gateway/server-methods/shared-types.ts": "54284e5c3ed93508102151d5ca166e00425e40fa644b3fc9e24d9b81e27c468e",
         "src/gateway/server-plugin-bootstrap.ts": "cfe021dad5d671518680b9d515e57bb5c52f52488b373e1d435beb846001e79f",
         "src/gateway/server-plugin-in-process-dispatch.ts": "45c13601970759be635101a19a1352cc2b0f64e4ff24d9c89a104790e5b4347f",
         "src/gateway/server-plugin-runtime-generation.test.ts": "53fb632b26601e89d1537ebb2f0e233d0f1245b9144a00fe0ceea63b9c3bf02e",
         "src/gateway/server-plugin-runtime-generation.ts": "a6cea99e3c9c5a6ccba47e1908cf5493d6fd5ba4e9bb3522d2e7a5151922ad83",
         "src/gateway/server-plugins-node-runtime.ts": "536913e742606534b8a1243421e28dbaaa1398ac9e3324bba080042fb3ff7ccb",
-        "src/gateway/server-plugins.lifecycle.fixtures.ts": "a68d314d1cd3d7eb868ba84bd540871f394f12050ca273a5996eaa6d5f4cd26a",
-        "src/gateway/server-plugins.lifecycle.test.ts": "b72f44144413b68db6a68d34b937926f8cf15f62d4adbc66cef92ae9f1993c16",
-        "src/gateway/server-plugins.test.ts": "6dbef683cd354234800ae2e600c5a9c753be7a7e45532c020b01aa18ee5ab682",
+        "src/gateway/server-plugins.lifecycle.test-fixtures.ts": "d7e789c952cb532e2673da51fe263b63d278e8d5e62b0cc172756c8798689c93",
+        "src/gateway/server-plugins.lifecycle.test.ts": "87d2b2732c3e22d141f88f6db6ebfba110b2fa3d7df0b15f39f4d75387184f5d",
+        "src/gateway/server-plugins.test.ts": "c18970a53763148bae280af2766d16baa66983dd76e7ab2e0e81f3631e13b271",
         "src/gateway/server-plugins.ts": "30eb83c20671f6440cfc872d9703db8eee8128fa5cc765a63d0faba632d2f352",
         "src/gateway/server-reload-channel-restart.test.ts": "cb0c30d5a5f090ff660df5fe9cf0c5f4b050d06a0386a2412d440986da1e4972",
         "src/gateway/server-reload-channel-restart.ts": "09b818990bf8ef2eabeb457d114f1039bb1c22410cd96c20213e957c8d1fa774",
@@ -1001,15 +1009,19 @@
         "src/gateway/server-reload-handlers.test.ts": "70d80d2cb2756b884f7774fe83778f7e8ef704f91c3b67078d2cbd441481a4f3",
         "src/gateway/server-reload-hot.ts": "09c65f4e68ca8da4ac34731ea009eff27c769c511df89faa74561ef0ca86abb7",
         "src/gateway/server-reload-managed.ts": "5feda4939419ec5ee3d981f4f91a4cb720f133b0880908be2e5b8bcaabb55a9a",
-        "src/gateway/server-request-entry.test.ts": "c1a40d974b77b6d5bcb5c504a24b70db2363f4fa77ec7fc17786ff1f95469bda",
+        "src/gateway/server-request-entry.test.ts": "99b7d34bad491ad08c94c095390b885d10ae3ee9d2eb0858bdb7fe316e1a9d33",
         "src/gateway/server-request-entry.ts": "3ce143a655bcfcb8932cd88b8661947ef2b3207b163935e58a702501d4671b11",
-        "src/gateway/server-runtime-state-prepare.ts": "f994e86acc6aa50757aebc7486d8edcb72027e93ffb315bee6722229ec12ec39",
-        "src/gateway/server-start.ts": "ed3aa841ac8a0e1bee1aacc3529da761b74f54e4f2e10d7a3b4500e745d09ae4",
-        "src/gateway/server-startup-finish.ts": "186d6cd93af1d3f0306d3504a091c205ba3d3223dc5fe418f8c130d557218e0d",
+        "src/gateway/server-run-shutdown.ts": "0d38d3a369371773ffbf3d77ac866c10f63cc4dcad6b179bd0012ce4cb736c74",
+        "src/gateway/server-runtime-state-prepare.ts": "487e8acbaa85715de1778eee3fac5666aab205e23d3cb04794cb0dd554fc8c30",
+        "src/gateway/server-shutdown.runtime.ts": "27a852f712959aab471a03b2305854cd4f4c8a1098aef4cf7a55073202bd2627",
+        "src/gateway/server-shutdown.ts": "99dec7ef1f440aa9bfe1ca8603b065170f6141e677dd59ceba49738e8f9927ae",
+        "src/gateway/server-sidecar-owners.ts": "a082d332e827e3bdf342e6176178d23bb3f9b87622e09556b2c8fcbbde7d48fb",
+        "src/gateway/server-start.ts": "feb8559fd62d5fdebe429330053a9479261968032dc7d3bb06e03060f49aac95",
+        "src/gateway/server-startup-finish.ts": "6cae9285d99f90ce85ac87419890e7654cfbfb6615b36601b53be13f4d4a67e6",
         "src/gateway/server-startup-plugins.test.ts": "aea506f7063e53e3036dda3d8fdc7eb9322e225ef4c2b1e1e7a4781b30c3f5c1",
-        "src/gateway/server/ws-connection/authenticated-request-dispatch.ts": "16b1b226577d5a4997d071976246882af09d11370b8ce7c539dc815de8dd82b3",
+        "src/gateway/server/ws-connection/authenticated-request-dispatch.ts": "1de13b5045db4a4833b8c0f2d16f57ebd581aba3cc3ef5a66b1dcfcc77ddd91c",
         "src/gateway/test-helpers.mocks.ts": "a2a01c9b82e0f070e8e176e8de4ed4a44acd8ac9a1943d4e21e752c0ec92668d",
-        "src/gateway/test-helpers.server.ts": "3b97c4909839395433c06309dabba32c791ecb6007c9d0bf97522ff89458b1b6",
+        "src/gateway/test-helpers.server.ts": "480ff8c508c0c62d77790d04f7a4b5c9222e61cae8fb5c1dfc159f16aa66252e",
         "src/infra/channel-runtime-context.ts": "7ccc22552fe9bf814ef039fc8bc0a7ecc85d076b550ad843111ebb203a30d138",
         "src/infra/restart.ts": "349b240c5bd14e0c3d747699f9514270050baf2cf1feee88214aaa1225c5f695",
         "src/plugins/AGENTS.md": "e0e5cecf1cd30fe902441a606e6085800d048410cd267200d7db57e257b7ea67",
@@ -1030,7 +1042,7 @@
         "src/plugins/runtime/index.ts": "6da94a9b67d7c10c660c295bee27b9c69a1fece5bca4648b6696534f42b57969",
         "src/plugins/runtime/runtime-channel.ts": "803d3966f2cf5ec3043c775e94a9449a44e22ac712e5c7da104f85566e42dd59",
         "src/plugins/sdk-alias.ts": "bd6a568182982cc641a7846565bce3ed0b9d3a0c281bd08b4389eabf647dfbe0",
-        "src/process/gateway-work-admission.ts": "755bf6c1638cd7d9ddadc4a6cab16ce01a91303eb86731b5172f157402eb4f58",
+        "src/process/gateway-work-admission.ts": "31eb49d6ded14506579d2816989cc4b3e3e67305a11681468011b04f42a0ee4f",
         "src/shared/deferred.ts": "2fd613018154ee1ab3e43d183d9f0c770d286dfef05562f1493cd9674545b884",
         "src/shared/text/text-projection.test.ts": "8c1d76c0a3f4bb5a65a7b2ddc5c49a236f45b118fe2eb97f2f867c3fd065305b",
         "src/shared/text/text-projection.ts": "e7023bc75e14138ffd28650d17fe016caeb723a0e1bcb87c383daba0b1a3e34b",
@@ -1038,6 +1050,7 @@
         "test/AGENTS.md": "699ad4b332adc0ce4fb0c334257a4a2a0aa2f4318036c3368be228a667351345",
         "test/helpers/AGENTS.md": "85e07e370c45acfe0dc08951155bc8787f24371e95cb51fccc82cda0eb9ba702",
         "test/helpers/gateway-websocket.ts": "4ec3cca2adbc9638a9d20382ea7f4c9d88b5ada10874896fdee920e35798737e",
+        "test/helpers/promise.ts": "d75c9eccf22619f2967aa5ded98f4cf230effee63390bd8a2c4c52df37a162be",
         "test/helpers/temp-dir.ts": "961f374121a024d2ffb6b762b2b0bac91296a017cab42f8958f17f9f8361931c",
         "test/non-isolated-runner.ts": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
         "test/scripts/tsdown-runtime-config.test.ts": "355b181570e182c44ffc8a608b5c52f9bb2e7c2cb3c6722ee07d643b0ab8250e",
@@ -1055,7 +1068,7 @@
         "test/vitest/vitest.scoped-config.ts": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
         "test/vitest/vitest.shared.config.ts": "6fc9bed8dea669af8a30394741c98ba1060515efbc9ad62d278929385ee1c9e6",
         "test/vitest/vitest.unit-fast-paths.mjs": "695619f070a089e8350ad3eaa71a13759f7a01bd6734d09878b6ae5782aafe52",
-        "tsdown.config.ts": "06e5c38c7b94a775e912eda2da72fb468ebc6b293d863d07279b9fe0f164fdf2"
+        "tsdown.config.ts": "6a00075c26c4529617506fae0af8b055be9ec7dbf8fb94df4ded94ac683a0c6a"
       }
     }
   },
@@ -1079,10 +1092,26 @@
       "Gateway request entry lifetime joins typed authorization before allowing its service to start"
     ],
     "testSHA256": {
-      "candidate": "c1a40d974b77b6d5bcb5c504a24b70db2363f4fa77ec7fc17786ff1f95469bda"
+      "candidate": "99b7d34bad491ad08c94c095390b885d10ae3ee9d2eb0858bdb7fe316e1a9d33"
     },
     "baselineFailures": [],
-    "inventoryOrigin": "Static complete committed main test source plus directly inspected locked Vitest 4.1.11 %s title formatting; candidate collection not yet observed",
+    "inventoryOrigin": "13 names observed on prior9377 proof; new main adds joined dispatcher ownership without changing names. New committed candidate collection required.",
     "sourceUnchangedFromIntegratedMain": true
+  },
+  "baselineApplicability": {
+    "acceptedEvidenceUnmodified": true,
+    "baselineRun": 33926580944,
+    "rootDecision": "Retain accepted owning-regression evidence without a new baseline; same attached-registry invariant remains directly violated in current main. Require new exact-head full build/153 cases and required CI.",
+    "byteEquivalenceClaimed": false,
+    "newBaselineInvented": false,
+    "freshCandidateResultRequired": true
+  },
+  "previousSuccessfulCandidate": {
+    "head": "9377ee1efef35ec983d3ea1b3334cfdb1de25a49",
+    "tree": "f86e7339a69f5eedc94229097af6f9995b91252f",
+    "runId": 33927670954,
+    "artifactSHA256": "0b20b4e27af614fbf47cc3f65091887ba6bf7d2fd4b7e5eed65ab0d8c3c14d9e",
+    "passedCases": 153,
+    "coversNewIntegration": false
   }
 }

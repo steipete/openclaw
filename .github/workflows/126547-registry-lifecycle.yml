@@ -8,7 +8,7 @@ permissions:
 jobs:
   diagnose:
     if: ${{ true && github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-registry-lifecycle-proof' }}
-    name: Full-build attached registry lifecycle candidate
+    name: Disabled shutdown integration lifecycle candidate
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: steipete/openclaw
-          ref: 9377ee1efef35ec983d3ea1b3334cfdb1de25a49
+          ref: 2a34af50ea38ae6602f2db8212c1624cfb9b13d4
           path: source
           fetch-depth: 2
           persist-credentials: false
