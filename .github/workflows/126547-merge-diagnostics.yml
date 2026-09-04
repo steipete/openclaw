@@ -1,0 +1,67 @@
+name: Secretless Gateway reload current-merge diagnostics
+on:
+  push:
+    branches: [codex/round10-plugin-reload-merge-diagnostics]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: ${{ github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/round10-plugin-reload-merge-diagnostics' }}
+    name: Diagnostic checks (${{ matrix.lane }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - lane: merge
+            repository: openclaw/openclaw
+            head: 3ba6a62a352ea58d5999a9ed4c04b9de9479377f
+          - lane: baseline
+            repository: openclaw/openclaw
+            head: 5aaafb76c427d383e5eefc8a6934f895dd82880e
+    steps:
+      - name: Checkout reviewed diagnostic assets
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: proof-assets
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ matrix.repository }}
+          ref: ${{ matrix.head }}
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Setup pinned Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+      - name: Run canonical checks with separate diagnostics
+        shell: bash
+        env:
+          DIAGNOSTIC_LANE: ${{ matrix.lane }}
+        run: |
+          set -euo pipefail
+          env -i PATH="$PATH" \
+            GITHUB_REPOSITORY="$GITHUB_REPOSITORY" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_REF="$GITHUB_REF" GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \
+            GITHUB_JOB="$GITHUB_JOB" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_OS="$RUNNER_OS" RUNNER_ARCH="$RUNNER_ARCH" \
+            python3 proof-assets/.github/proofs/continuation-sept3/126547-merge-diagnostics/run-proof.py \
+            "$GITHUB_WORKSPACE/source" "$GITHUB_WORKSPACE/evidence-126547" "$DIAGNOSTIC_LANE"
+      - name: Retain bounded diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+        with:
+          name: 126547-merge-diagnostic-${{ matrix.lane }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-126547/
+          retention-days: 14
+          if-no-files-found: error

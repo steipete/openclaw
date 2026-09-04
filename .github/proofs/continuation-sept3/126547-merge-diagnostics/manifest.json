@@ -1,0 +1,10 @@
+{
+  "schema": "openclaw-proof-asset-manifest-v1",
+  "incomplete": false,
+  "sha256": {
+    ".github/proofs/continuation-sept3/126547-merge-diagnostics/README.md": "010a7e32ff4d57906d0ed5b814926c8849fc9fee5db535187d24a85e316c654c",
+    ".github/proofs/continuation-sept3/126547-merge-diagnostics/execution-binding.json": "ab8bf19acb0ceb9d9adc0c12e80078ef40d9a4bcde7465f10a1da9c178e39c85",
+    ".github/proofs/continuation-sept3/126547-merge-diagnostics/run-proof.py": "a8aee55702f26db0ecce9f5de62a9c9b6edeb073570fc4c7767e599bae20b379",
+    ".github/workflows/126547-merge-diagnostics.yml": "bfcf338ee9ee6eed1306309f63b038af8facd5768267d34255725d6299ac882f"
+  }
+}
