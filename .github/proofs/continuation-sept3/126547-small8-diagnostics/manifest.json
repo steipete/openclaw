@@ -1,0 +1,10 @@
+{
+  "incomplete": false,
+  "sha256": {
+    ".github/proofs/continuation-sept3/126547-small8-diagnostics/run-proof.py": "645f016c33e1893bfe25d9e851dd63f485e461896f2361a4460853936f743e60",
+    ".github/proofs/continuation-sept3/126547-small8-diagnostics/execution-binding.json": "bcb2ae1260713ba7d93c3f4e11e8b78cb58dd8fa79eb571bed915313c6c147fd",
+    ".github/proofs/continuation-sept3/126547-small8-diagnostics/descriptor.json": "1b43f70eaad6e4241a855b2665328d12a3150cc03439eb3f3ade27dc1ec108f3",
+    ".github/proofs/continuation-sept3/126547-small8-diagnostics/source-comparison.json": "713b611778f2bcb332563a866716d4dacbd6a2ccc3435b2d330a9d247275cee2",
+    ".github/workflows/126547-small8-diagnostics.yml": "a74e17cbc9c46cba65c474303c809586a6d7eed4ffb73aecddfd4bd49108d470"
+  }
+}

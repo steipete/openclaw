@@ -1,0 +1,533 @@
+{
+  "commits": {
+    "merge": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+    "baseline": "5aaafb76c427d383e5eefc8a6934f895dd82880e"
+  },
+  "paths": {
+    ".github/workflows/ci.yml": {
+      "merge": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
+      "baseline": "4c126129576ec67f34d0a077c5b57e36f6006d4656a4e8c97c84d77d53cc3129",
+      "equal": true
+    },
+    "package.json": {
+      "merge": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+      "baseline": "2843ed286a4189404f75669960dafe141018f8cc4bc5a1fca2ddf7774f54fbfb",
+      "equal": true
+    },
+    "pnpm-lock.yaml": {
+      "merge": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+      "baseline": "d29a29594c25603bd08d4fb833e86310abe43cf9bf356642ba248e51c3570220",
+      "equal": true
+    },
+    "pnpm-workspace.yaml": {
+      "merge": "922f9ca51900289b480f16eeaadc1a7298012cf4f677dd7a371c434500920abb",
+      "baseline": "922f9ca51900289b480f16eeaadc1a7298012cf4f677dd7a371c434500920abb",
+      "equal": true
+    },
+    "scripts/ci-run-node-test-shard.mts": {
+      "merge": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
+      "baseline": "9dfd468d4d50f5546a0ba5d8e6f1b43a83bae551e3cd1efe4172c2a596529e86",
+      "equal": true
+    },
+    "scripts/lib/failed-trailer.mts": {
+      "merge": "86ba752b93f3101839d2cac39cb4f0d13477807c8ed5ad569ba23dddaf986796",
+      "baseline": "86ba752b93f3101839d2cac39cb4f0d13477807c8ed5ad569ba23dddaf986796",
+      "equal": true
+    },
+    "scripts/lib/managed-child-process.mts": {
+      "merge": "9db7a865a8907d898e6e5e1aa12876d14ba985efaf6df0a28707ca81d8873454",
+      "baseline": "9db7a865a8907d898e6e5e1aa12876d14ba985efaf6df0a28707ca81d8873454",
+      "equal": true
+    },
+    "scripts/lib/test-projects-delegation.mts": {
+      "merge": "f56e8b5be0cb8edeb97769d5040aa6fba34e74803bad2b9369685904fe586dc4",
+      "baseline": "f56e8b5be0cb8edeb97769d5040aa6fba34e74803bad2b9369685904fe586dc4",
+      "equal": true
+    },
+    "scripts/lib/vitest-build-prerequisites.mts": {
+      "merge": "15d7fb596dcee56e46a8f7250e1948e2d8ef75706cd50c602501037d3b9e7c5a",
+      "baseline": "15d7fb596dcee56e46a8f7250e1948e2d8ef75706cd50c602501037d3b9e7c5a",
+      "equal": true
+    },
+    "scripts/lib/vitest-cli-mode.mts": {
+      "merge": "35c4306ca45ad02dff6095b81e4cdafb8f2091ad79bd2bb158aeaa840294ebfe",
+      "baseline": "35c4306ca45ad02dff6095b81e4cdafb8f2091ad79bd2bb158aeaa840294ebfe",
+      "equal": true
+    },
+    "scripts/lib/vitest-cli.mts": {
+      "merge": "e1c00bc34b0a85ed013260b894fd118726ec2fdada770a0069a27f90567c9103",
+      "baseline": "e1c00bc34b0a85ed013260b894fd118726ec2fdada770a0069a27f90567c9103",
+      "equal": true
+    },
+    "scripts/lib/vitest-home-selection.mts": {
+      "merge": "b60c13518500b7dd32d95c8ce4c2f273b412a5977431efb1abc2576fa3eb38ee",
+      "baseline": "b60c13518500b7dd32d95c8ce4c2f273b412a5977431efb1abc2576fa3eb38ee",
+      "equal": true
+    },
+    "scripts/lib/vitest-local-scheduling.mts": {
+      "merge": "118bdbb2f0c64049bde7661d690b82278d622621c1eebac04fceef1b688c6df9",
+      "baseline": "118bdbb2f0c64049bde7661d690b82278d622621c1eebac04fceef1b688c6df9",
+      "equal": true
+    },
+    "scripts/lib/vitest-process-env.mts": {
+      "merge": "09ba3af947ea78e53545b42850ef2a5e32752ba7ba06e827e2776495702abfea",
+      "baseline": "09ba3af947ea78e53545b42850ef2a5e32752ba7ba06e827e2776495702abfea",
+      "equal": true
+    },
+    "scripts/lib/vitest-process.mts": {
+      "merge": "fcca9a8ec506446eb4e0cc53235be7659791f4aad1a878ba3561ffb3719a97bc",
+      "baseline": "fcca9a8ec506446eb4e0cc53235be7659791f4aad1a878ba3561ffb3719a97bc",
+      "equal": true
+    },
+    "scripts/lib/vitest-report-owner.mts": {
+      "merge": "5c52ca729b0babf9fdb83b3202b46e326f0644dcf2d47cb397d87a04dda34623",
+      "baseline": "5c52ca729b0babf9fdb83b3202b46e326f0644dcf2d47cb397d87a04dda34623",
+      "equal": true
+    },
+    "scripts/lib/vitest-resource-ownership.mts": {
+      "merge": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+      "baseline": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+      "equal": true
+    },
+    "scripts/lib/vitest-resource-reporter.mts": {
+      "merge": "1f493f123177eb0d8457334026fb1e42f4311695da9fe400838f227ae2b8eee0",
+      "baseline": "1f493f123177eb0d8457334026fb1e42f4311695da9fe400838f227ae2b8eee0",
+      "equal": true
+    },
+    "scripts/lib/vitest-unhandled-errors.mts": {
+      "merge": "58f9cbab55800b151803b11c7c12e5eb0db14bc81b64858beab41d42656c1b77",
+      "baseline": "58f9cbab55800b151803b11c7c12e5eb0db14bc81b64858beab41d42656c1b77",
+      "equal": true
+    },
+    "scripts/lib/vitest-worker-artifacts.mts": {
+      "merge": "a3ac58e66766465d55717b6da3b1aca3dd84421a624b56d50a872acb8741ba94",
+      "baseline": "a3ac58e66766465d55717b6da3b1aca3dd84421a624b56d50a872acb8741ba94",
+      "equal": true
+    },
+    "scripts/lib/vitest-worker-bootstrap.mts": {
+      "merge": "546f83b552339421676f92d91f3b997753a60931057024a16b6c166aba5c9605",
+      "baseline": "546f83b552339421676f92d91f3b997753a60931057024a16b6c166aba5c9605",
+      "equal": true
+    },
+    "scripts/lib/vitest-worker-compiler.mts": {
+      "merge": "953db41722c99208bf7a8ba87067d03a5dcaff56ac82fbac4c2eeaf39bdd32e0",
+      "baseline": "953db41722c99208bf7a8ba87067d03a5dcaff56ac82fbac4c2eeaf39bdd32e0",
+      "equal": true
+    },
+    "scripts/lib/vitest-worker-run.mts": {
+      "merge": "63733d0070c7981336ba5359d8cf846cb78e1d6165ec0b586f5af9ce669b74ff",
+      "baseline": "63733d0070c7981336ba5359d8cf846cb78e1d6165ec0b586f5af9ce669b74ff",
+      "equal": true
+    },
+    "scripts/run-vitest-child.mts": {
+      "merge": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+      "baseline": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+      "equal": true
+    },
+    "scripts/run-vitest.mjs": {
+      "merge": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+      "baseline": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+      "equal": true
+    },
+    "scripts/run-vitest.mts": {
+      "merge": "59c99a9a5df5e94fd905b7866e45cb70181b188a90ed03aebe41967f02fd430d",
+      "baseline": "59c99a9a5df5e94fd905b7866e45cb70181b188a90ed03aebe41967f02fd430d",
+      "equal": true
+    },
+    "scripts/test-projects-run.mts": {
+      "merge": "d2fbce075ba8077ac2564e0a97d9b26bc2e945b7e5ff19dd006032980c9ae041",
+      "baseline": "d2fbce075ba8077ac2564e0a97d9b26bc2e945b7e5ff19dd006032980c9ae041",
+      "equal": true
+    },
+    "scripts/test-projects.mts": {
+      "merge": "41cedf3b12f00f562ca70c72b9d9a1fedfbd1ef129d3d2ed9dced9b4584ad898",
+      "baseline": "41cedf3b12f00f562ca70c72b9d9a1fedfbd1ef129d3d2ed9dced9b4584ad898",
+      "equal": true
+    },
+    "scripts/test-projects.test-support.mts": {
+      "merge": "05e5f72e795e19115c2b58b0f65dbd4c38b5d79d973c8a9c12f87277c4d8080a",
+      "baseline": "05e5f72e795e19115c2b58b0f65dbd4c38b5d79d973c8a9c12f87277c4d8080a",
+      "equal": true
+    },
+    "scripts/vitest-process-group.mts": {
+      "merge": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
+      "baseline": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
+      "equal": true
+    },
+    "src/commands/doctor-gateway-auth-token.windows.test.ts": {
+      "merge": "6d2733ca1f66053f62c52f46b02752d261210648b67d01c605feb7526ee4929e",
+      "baseline": "6d2733ca1f66053f62c52f46b02752d261210648b67d01c605feb7526ee4929e",
+      "equal": true
+    },
+    "src/commands/doctor-gateway-daemon-flow.test.ts": {
+      "merge": "72aed0e65299f69e46cf649c5dd5a090c2ba8a9bce07edba323531e33de6f320",
+      "baseline": "72aed0e65299f69e46cf649c5dd5a090c2ba8a9bce07edba323531e33de6f320",
+      "equal": true
+    },
+    "src/commands/doctor-gateway-health.test.ts": {
+      "merge": "83da1337fa10253895fb3454c0e1d5a16a5007e4a43ccb0ace02656bc75b296d",
+      "baseline": "83da1337fa10253895fb3454c0e1d5a16a5007e4a43ccb0ace02656bc75b296d",
+      "equal": true
+    },
+    "src/commands/doctor-gateway-services.authority.test.ts": {
+      "merge": "7e9d9b9c9fa87820d317b73e948aacfcfe907b9cc4b00d267372b77bc41fc330",
+      "baseline": "7e9d9b9c9fa87820d317b73e948aacfcfe907b9cc4b00d267372b77bc41fc330",
+      "equal": true
+    },
+    "src/commands/doctor-gateway-services.test.ts": {
+      "merge": "11510f88aa4827c240e34543954d88cdc49a36655c314bc25ceda0d48b727d1b",
+      "baseline": "11510f88aa4827c240e34543954d88cdc49a36655c314bc25ceda0d48b727d1b",
+      "equal": true
+    },
+    "src/gateway/openresponses-http.server.file-only.test.ts": {
+      "merge": "22cde9b9d51ce0794a10e703e0bf2cd89373515ea32d5014886c963c789acbe5",
+      "baseline": "22cde9b9d51ce0794a10e703e0bf2cd89373515ea32d5014886c963c789acbe5",
+      "equal": true
+    },
+    "src/gateway/server-core-runtime.ts": {
+      "merge": "7ac941a5fd72dc566619b0fb4565af1f5cd9fff05e808577d04d9c49e9e1988e",
+      "baseline": "86adb40870ada8920929f2ba214666fa4571a658867d37be28dd1f319adf1abf",
+      "equal": false
+    },
+    "src/gateway/server-http.canvas.test.ts": {
+      "merge": "609a661c60e14fcf9c9b06c3761fdb35b1e627b31ac5200fa78ada9cc63e9fd6",
+      "baseline": "609a661c60e14fcf9c9b06c3761fdb35b1e627b31ac5200fa78ada9cc63e9fd6",
+      "equal": true
+    },
+    "src/gateway/server-http.control-ui.test.ts": {
+      "merge": "cf6e7fdc855411740621e0730eaf619ba51df3c6c35f0b6688875ece4a1ea66d",
+      "baseline": "cf6e7fdc855411740621e0730eaf619ba51df3c6c35f0b6688875ece4a1ea66d",
+      "equal": true
+    },
+    "src/gateway/server-http.hooks-delivery.test.ts": {
+      "merge": "5c081bee4392792209dbb54bdd86ad755d2adf10af3b40f3eb5e6e7e73826490",
+      "baseline": "5c081bee4392792209dbb54bdd86ad755d2adf10af3b40f3eb5e6e7e73826490",
+      "equal": true
+    },
+    "src/gateway/server-http.hooks-request-timeout.test.ts": {
+      "merge": "18b9e069d4a63b2287259f25954353c095d0674f4383181cfa7caa918a14bb6b",
+      "baseline": "18b9e069d4a63b2287259f25954353c095d0674f4383181cfa7caa918a14bb6b",
+      "equal": true
+    },
+    "src/gateway/server-http.mcp-app-admission.test.ts": {
+      "merge": "73b61db46194138ade5ad074009cbddc8c492187583d6c513719d78d351066f4",
+      "baseline": "73b61db46194138ade5ad074009cbddc8c492187583d6c513719d78d351066f4",
+      "equal": true
+    },
+    "src/gateway/server-http.openai-compat.test.ts": {
+      "merge": "621c6b00529ee7a963fdcf727c0a604d791a4d4753829859e8f7df2fb65e6b1e",
+      "baseline": "621c6b00529ee7a963fdcf727c0a604d791a4d4753829859e8f7df2fb65e6b1e",
+      "equal": true
+    },
+    "src/gateway/server-http.probe.clock-rollback.test.ts": {
+      "merge": "94aacff02faa0558c5b9db647014cb0d27f6944370d97eb41c3f408cd08486f9",
+      "baseline": "94aacff02faa0558c5b9db647014cb0d27f6944370d97eb41c3f408cd08486f9",
+      "equal": true
+    },
+    "src/gateway/server-http.probe.test.ts": {
+      "merge": "e6b3bcebb6a858a983e412678cb92c2cc25429484b10ea0e141d46860e7d2bed",
+      "baseline": "e6b3bcebb6a858a983e412678cb92c2cc25429484b10ea0e141d46860e7d2bed",
+      "equal": true
+    },
+    "src/gateway/server-http.rejection-transport.test.ts": {
+      "merge": "2b83523c0a0c6516cabb9c4eae47ff9e78b0e111fdfa0157514feae05178a6f2",
+      "baseline": "2b83523c0a0c6516cabb9c4eae47ff9e78b0e111fdfa0157514feae05178a6f2",
+      "equal": true
+    },
+    "src/gateway/server-http.request-trace.test.ts": {
+      "merge": "88776b79d27ddb2d6952c049992f35a98fbc3878dc572da297fe224e16bb5c9a",
+      "baseline": "88776b79d27ddb2d6952c049992f35a98fbc3878dc572da297fe224e16bb5c9a",
+      "equal": true
+    },
+    "src/gateway/server-http.security-headers.test.ts": {
+      "merge": "4a3449a3d901330dc390c6caed5fbec620cce30c2bc5caff6734548515d6c5a0",
+      "baseline": "4a3449a3d901330dc390c6caed5fbec620cce30c2bc5caff6734548515d6c5a0",
+      "equal": true
+    },
+    "src/gateway/server-http.upgrade-claim.test.ts": {
+      "merge": "193296114d8c812d68936b2606c6cad4cb45f49bc413011ff27b9d01d95831e8",
+      "baseline": "193296114d8c812d68936b2606c6cad4cb45f49bc413011ff27b9d01d95831e8",
+      "equal": true
+    },
+    "src/gateway/server-methods.plugin-gateway-dispatch.test.ts": {
+      "merge": "ddab7f9db494e0e5c6ad778adb2743124085c83b017faad513aea7f3deb3faa8",
+      "baseline": "ddab7f9db494e0e5c6ad778adb2743124085c83b017faad513aea7f3deb3faa8",
+      "equal": true
+    },
+    "src/gateway/server-plugin-bootstrap.browser-plugin.integration.test.ts": {
+      "merge": "c2a85109dd350506250b39c3f6c080fe2c4fdf35089cc88e723b6dd6a6b368e6",
+      "baseline": "c2a85109dd350506250b39c3f6c080fe2c4fdf35089cc88e723b6dd6a6b368e6",
+      "equal": true
+    },
+    "src/gateway/server-plugin-runtime-generation.test.ts": {
+      "merge": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d",
+      "baseline": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d",
+      "equal": true
+    },
+    "src/gateway/server-plugin-subagent-runtime.test.ts": {
+      "merge": "7971b543f0ab6e81213c0425632868b9bf6faac6325cd1a7e13a3184aac15417",
+      "baseline": "7971b543f0ab6e81213c0425632868b9bf6faac6325cd1a7e13a3184aac15417",
+      "equal": true
+    },
+    "src/gateway/server-plugins.lifecycle.test.ts": {
+      "merge": "e67dea0f9caceb73ac29bc26bf03c3637de885e17c752fafed314f0d3dfac0f3",
+      "baseline": "81af75f698c3afdcc80154c6c89626733a3def5481ed5fb14fb20c4a5f16a758",
+      "equal": false
+    },
+    "src/gateway/server-plugins.subagent-ended-hook.test.ts": {
+      "merge": "ce4426d0baa92617f69703ad3e1d4ae8617372648a21488eb3f98887f0f76562",
+      "baseline": "ce4426d0baa92617f69703ad3e1d4ae8617372648a21488eb3f98887f0f76562",
+      "equal": true
+    },
+    "src/gateway/server-plugins.test.ts": {
+      "merge": "6a8900d18304320e6907f3680f44347d29dcafe82d3353705a04374648db82f6",
+      "baseline": "6a8900d18304320e6907f3680f44347d29dcafe82d3353705a04374648db82f6",
+      "equal": true
+    },
+    "src/gateway/server-retained-plugin-cleanup.test.ts": {
+      "merge": "ee10dca98b602a20780fbdf5512cba090b9e8a1ce46986f03f8e0cb8d3423725",
+      "baseline": "ee10dca98b602a20780fbdf5512cba090b9e8a1ce46986f03f8e0cb8d3423725",
+      "equal": true
+    },
+    "src/gateway/server.agent.gateway-server-agent-auth-refresh.test.ts": {
+      "merge": "55a1d70210e1d15ddd0703e293337fa9043ad75d3729db9d67fcf145b84045d2",
+      "baseline": "55a1d70210e1d15ddd0703e293337fa9043ad75d3729db9d67fcf145b84045d2",
+      "equal": true
+    },
+    "src/gateway/server.agent.rpc-contracts.test.ts": {
+      "merge": "4f14129b6fec061004ceb0aa09c5959c092b68e301913f44e256248f0e71d210",
+      "baseline": "4f14129b6fec061004ceb0aa09c5959c092b68e301913f44e256248f0e71d210",
+      "equal": true
+    },
+    "src/gateway/server.chat-abort-dispatch-rejection.test.ts": {
+      "merge": "d4ac56307be8050fc4c5b9a11f6e4d46e50c87358726a9f6f2e0e95cb342e172",
+      "baseline": "d4ac56307be8050fc4c5b9a11f6e4d46e50c87358726a9f6f2e0e95cb342e172",
+      "equal": true
+    },
+    "src/gateway/server.chat-first-turn-binding.test.ts": {
+      "merge": "a1685be4359a0f9258acc55e05abf28dfa9dc229aecbd5bf7bc3866009e71f3c",
+      "baseline": "a1685be4359a0f9258acc55e05abf28dfa9dc229aecbd5bf7bc3866009e71f3c",
+      "equal": true
+    },
+    "src/gateway/server.chat-history-cursor.test.ts": {
+      "merge": "5b162d20a62143c51e4120b1bd05b42aa03c94f03c9b99b858b92b271e6ba364",
+      "baseline": "5b162d20a62143c51e4120b1bd05b42aa03c94f03c9b99b858b92b271e6ba364",
+      "equal": true
+    },
+    "src/gateway/server.chat.acp-completion.test.ts": {
+      "merge": "8bcef72fa9686ff7e1c49f8dc00fffbf13d85e32d6321b9a8eb7357b3188ea5e",
+      "baseline": "8bcef72fa9686ff7e1c49f8dc00fffbf13d85e32d6321b9a8eb7357b3188ea5e",
+      "equal": true
+    },
+    "src/gateway/server.hooks-admission.test.ts": {
+      "merge": "eb8537bdd7e0b2e877f24fcb5e420b9a6e5a593b8cbc9d2c5fe16d765eed1ac0",
+      "baseline": "eb8537bdd7e0b2e877f24fcb5e420b9a6e5a593b8cbc9d2c5fe16d765eed1ac0",
+      "equal": true
+    },
+    "src/gateway/server.hooks-lane.test.ts": {
+      "merge": "357c7893e3dc0d853a9dcd18af7bb1a30a7bf0ebff1e886a444da4b9e5c3d302",
+      "baseline": "357c7893e3dc0d853a9dcd18af7bb1a30a7bf0ebff1e886a444da4b9e5c3d302",
+      "equal": true
+    },
+    "src/gateway/server.hooks-session-mode.test.ts": {
+      "merge": "9d259e184ba8cabffd761caebd689a5333d3f7220dd0fd0a91bd690236bbafd4",
+      "baseline": "9d259e184ba8cabffd761caebd689a5333d3f7220dd0fd0a91bd690236bbafd4",
+      "equal": true
+    },
+    "src/gateway/server.hooks.test.ts": {
+      "merge": "108e650d0600ddc49dfe67f320345d1336fc74ab5dc800d7f1cc3886802c1959",
+      "baseline": "108e650d0600ddc49dfe67f320345d1336fc74ab5dc800d7f1cc3886802c1959",
+      "equal": true
+    },
+    "src/gateway/server.plugin-http-role-scopes.test.ts": {
+      "merge": "8e2f613becdadf12018f843d1fdee016fd6cc88949c1ce94e7a2d292b90eade6",
+      "baseline": "8e2f613becdadf12018f843d1fdee016fd6cc88949c1ce94e7a2d292b90eade6",
+      "equal": true
+    },
+    "src/gateway/server.sessions.abort-authorization.test.ts": {
+      "merge": "8e29a9353e0f75b339453fce05cab2deb0d0e27ceacd804d95d750d8ff3fc2db",
+      "baseline": "8e29a9353e0f75b339453fce05cab2deb0d0e27ceacd804d95d750d8ff3fc2db",
+      "equal": true
+    },
+    "src/gateway/server.sessions.archive-lifecycle.test.ts": {
+      "merge": "d2bc4e0f7f0db38fa474d094632bd7c446c7cb65183b95dbe4761f6fa67145af",
+      "baseline": "d2bc4e0f7f0db38fa474d094632bd7c446c7cb65183b95dbe4761f6fa67145af",
+      "equal": true
+    },
+    "src/gateway/server.sessions.archive-terminal.test.ts": {
+      "merge": "7d799904d0fe5c34d3e3fa02ae59d4c2844300ddbcc9496b5947ca2c066321e5",
+      "baseline": "7d799904d0fe5c34d3e3fa02ae59d4c2844300ddbcc9496b5947ca2c066321e5",
+      "equal": true
+    },
+    "src/gateway/server.sessions.cleanup-partial.test.ts": {
+      "merge": "98faa85780d35e7c0e81b394cd070e0d06aba4718c423d61420818f9087f73e4",
+      "baseline": "98faa85780d35e7c0e81b394cd070e0d06aba4718c423d61420818f9087f73e4",
+      "equal": true
+    },
+    "src/gateway/server.sessions.create-worktree-spawn.test.ts": {
+      "merge": "8d47104ba2d7d56c9151df49a35e8bfef7ac6456c815b88569aaa038d9c07fae",
+      "baseline": "8d47104ba2d7d56c9151df49a35e8bfef7ac6456c815b88569aaa038d9c07fae",
+      "equal": true
+    },
+    "src/gateway/server.sessions.create.projects.test.ts": {
+      "merge": "d58db6ac6afb93c2b38663d9f1560999626284ad1fa0d0e53670bbd9908e1c8d",
+      "baseline": "d58db6ac6afb93c2b38663d9f1560999626284ad1fa0d0e53670bbd9908e1c8d",
+      "equal": true
+    },
+    "src/gateway/server.sessions.create.test.ts": {
+      "merge": "571fb238794ac3b6bc31e4e0b40abc150437813694d2e92d4e448c44dc245cfc",
+      "baseline": "571fb238794ac3b6bc31e4e0b40abc150437813694d2e92d4e448c44dc245cfc",
+      "equal": true
+    },
+    "src/gateway/server.sessions.delete-lifecycle.test.ts": {
+      "merge": "320202317657edb028d105b46ff2495a37ec49ff449eda32f3adb3e6c5913a1d",
+      "baseline": "320202317657edb028d105b46ff2495a37ec49ff449eda32f3adb3e6c5913a1d",
+      "equal": true
+    },
+    "src/gateway/server.sessions.delete-worktree-lifecycle.test.ts": {
+      "merge": "affe64c5d1ef9ed28d1ceafae926398829335839135a1315ec9507fc94801a33",
+      "baseline": "affe64c5d1ef9ed28d1ceafae926398829335839135a1315ec9507fc94801a33",
+      "equal": true
+    },
+    "src/gateway/server.sessions.exec-binding-rpc.test.ts": {
+      "merge": "4dd2c5269641d8b31270f054732177434cdec468b072aa96eec463faa872c277",
+      "baseline": "4dd2c5269641d8b31270f054732177434cdec468b072aa96eec463faa872c277",
+      "equal": true
+    },
+    "src/gateway/server.sessions.fixture-lifecycle.test.ts": {
+      "merge": "c0e99808b6954ec8a6b46d412120da3fa62ea0f0e5c11609c4ec1ddf9d126fc6",
+      "baseline": "c0e99808b6954ec8a6b46d412120da3fa62ea0f0e5c11609c4ec1ddf9d126fc6",
+      "equal": true
+    },
+    "src/gateway/server.sessions.list-connection-reuse.test.ts": {
+      "merge": "57f7b017668a9a879ba054f55fb21cfc1fe67fed384725a6960a2b769f108cfa",
+      "baseline": "57f7b017668a9a879ba054f55fb21cfc1fe67fed384725a6960a2b769f108cfa",
+      "equal": true
+    },
+    "src/gateway/server.sessions.list-store-materialization.test.ts": {
+      "merge": "ce10cc5ba0288755a2eec3f5e644f86313fdd52a5e12412f193cbf6459c79727",
+      "baseline": "ce10cc5ba0288755a2eec3f5e644f86313fdd52a5e12412f193cbf6459c79727",
+      "equal": true
+    },
+    "src/gateway/server.sessions.permission-root.test.ts": {
+      "merge": "47aece569917bdb35702c1238dce166f1d87e5465bd39b0dde0e655a3d6c6ab2",
+      "baseline": "47aece569917bdb35702c1238dce166f1d87e5465bd39b0dde0e655a3d6c6ab2",
+      "equal": true
+    },
+    "src/gateway/server.sessions.placement-projection.test.ts": {
+      "merge": "890720009e0ab00b4a2c22501453b03db4974868b0802daa83debcea3e7c4feb",
+      "baseline": "890720009e0ab00b4a2c22501453b03db4974868b0802daa83debcea3e7c4feb",
+      "equal": true
+    },
+    "src/gateway/server.sessions.preview-resolve.test.ts": {
+      "merge": "a1b6f550cf05e701a6f2ac6bf52a57dfc9528428043eecd53c389e432deb44ec",
+      "baseline": "a1b6f550cf05e701a6f2ac6bf52a57dfc9528428043eecd53c389e432deb44ec",
+      "equal": true
+    },
+    "src/gateway/server.sessions.reclamation.test.ts": {
+      "merge": "1c95b6e078422910404bafdde8a5c7ca72aaef01f647e26a2391187f97f3ffbd",
+      "baseline": "1c95b6e078422910404bafdde8a5c7ca72aaef01f647e26a2391187f97f3ffbd",
+      "equal": true
+    },
+    "src/gateway/server.sessions.recovery-order.test.ts": {
+      "merge": "d7558ccdacb552f232f72ed909432c3b6d3942ed2d2938ac9e69211fbf197328",
+      "baseline": "d7558ccdacb552f232f72ed909432c3b6d3942ed2d2938ac9e69211fbf197328",
+      "equal": true
+    },
+    "src/gateway/server.sessions.reset-concurrency.test.ts": {
+      "merge": "bd88e2f89466fe48a8afe4c0a2f62b2fbeb457254f074a2350f4e6f805599267",
+      "baseline": "bd88e2f89466fe48a8afe4c0a2f62b2fbeb457254f074a2350f4e6f805599267",
+      "equal": true
+    },
+    "src/gateway/server.sessions.reset-hooks.test.ts": {
+      "merge": "b203f5cc90bd4ca078c87788a7ae4fb28c9c858a152cf7728de4c4596f49ed08",
+      "baseline": "b203f5cc90bd4ca078c87788a7ae4fb28c9c858a152cf7728de4c4596f49ed08",
+      "equal": true
+    },
+    "src/gateway/server.sessions.store-paths.test.ts": {
+      "merge": "574efd6e63ee8659df547af74c1685d7652cd0281b6fd52cdd834f1c1a437174",
+      "baseline": "574efd6e63ee8659df547af74c1685d7652cd0281b6fd52cdd834f1c1a437174",
+      "equal": true
+    },
+    "src/gateway/server.sessions.thinking-e2e.test.ts": {
+      "merge": "a15383deea454b24ecda965fa9006a4a8873b4347fba0ed2e65ecfaf86dd54d8",
+      "baseline": "a15383deea454b24ecda965fa9006a4a8873b4347fba0ed2e65ecfaf86dd54d8",
+      "equal": true
+    },
+    "src/gateway/server.sessions.worker-placement-lifecycle.test.ts": {
+      "merge": "eb44cc680285006097eebf5cd116fa20d9259f1e1ae43fd6cb71ce5c92801879",
+      "baseline": "eb44cc680285006097eebf5cd116fa20d9259f1e1ae43fd6cb71ce5c92801879",
+      "equal": true
+    },
+    "src/gateway/server/ws-connection/request-start.server.test.ts": {
+      "merge": "80653ce33cff489d1aadd1dc707c4a8312fd6d5bcf5d520fcb1a7489059a5124",
+      "baseline": "80653ce33cff489d1aadd1dc707c4a8312fd6d5bcf5d520fcb1a7489059a5124",
+      "equal": true
+    },
+    "test/helpers/temp-dir.ts": {
+      "merge": "961f374121a024d2ffb6b762b2b0bac91296a017cab42f8958f17f9f8361931c",
+      "baseline": "961f374121a024d2ffb6b762b2b0bac91296a017cab42f8958f17f9f8361931c",
+      "equal": true
+    },
+    "test/non-isolated-runner.ts": {
+      "merge": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
+      "baseline": "788d18e876b2d9309d3e4015b673a05679f99b41185a18384a443f8eae99e36b",
+      "equal": true
+    },
+    "test/setup-openclaw-runtime.ts": {
+      "merge": "7cafcbcc17dc5eb7912a79973a592464ae71aabbefd5b535877cb7d90e22770f",
+      "baseline": "7cafcbcc17dc5eb7912a79973a592464ae71aabbefd5b535877cb7d90e22770f",
+      "equal": true
+    },
+    "test/setup.shared.ts": {
+      "merge": "cdee6b99f9ffb1bf1f966c6ee25b3e2b865091548505e8635a77ac79cf476917",
+      "baseline": "cdee6b99f9ffb1bf1f966c6ee25b3e2b865091548505e8635a77ac79cf476917",
+      "equal": true
+    },
+    "test/setup.ts": {
+      "merge": "461775c6a67ccf37d9af00fbff2469acd5c585be9f115883aa056812dd3d9efb",
+      "baseline": "461775c6a67ccf37d9af00fbff2469acd5c585be9f115883aa056812dd3d9efb",
+      "equal": true
+    },
+    "test/test-home-context.mts": {
+      "merge": "ab02ed0c3e96d2adbaae760779ae6d930e0d8325b125203c943cc647cafae329",
+      "baseline": "ab02ed0c3e96d2adbaae760779ae6d930e0d8325b125203c943cc647cafae329",
+      "equal": true
+    },
+    "test/test-home-policy.mts": {
+      "merge": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+      "baseline": "09d6a515889850eb8c6589c14f8b3d37c117370dd376809fea7cbae1b9a456ce",
+      "equal": true
+    },
+    "test/vitest/vitest.commands.config.ts": {
+      "merge": "05fdf968d452d8a961277e5c0f87ad768fc44fb431acad82acdd96b3534348ff",
+      "baseline": "05fdf968d452d8a961277e5c0f87ad768fc44fb431acad82acdd96b3534348ff",
+      "equal": true
+    },
+    "test/vitest/vitest.gateway-server.config.ts": {
+      "merge": "5daf708d2a5f7b76da5a559f9cb01658db65bd5905d3dae15fe0803483251ced",
+      "baseline": "5daf708d2a5f7b76da5a559f9cb01658db65bd5905d3dae15fe0803483251ced",
+      "equal": true
+    },
+    "test/vitest/vitest.pattern-file.ts": {
+      "merge": "a9a3a664de5673fb9b47ae1f173a5abd6559ba407736188bdf5e12921a4bcae5",
+      "baseline": "a9a3a664de5673fb9b47ae1f173a5abd6559ba407736188bdf5e12921a4bcae5",
+      "equal": true
+    },
+    "test/vitest/vitest.scoped-config.ts": {
+      "merge": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+      "baseline": "47d6596724a576317495559fe744339bd510df97ec8a05543617974ea03da1a1",
+      "equal": true
+    },
+    "test/vitest/vitest.shared.config.ts": {
+      "merge": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+      "baseline": "b1da34f4c2fc144514249451f4a817d75e3a7dd77073649f4270efb783ade549",
+      "equal": true
+    },
+    ".github/actions/setup-node-env/action.yml": {
+      "merge": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
+      "baseline": "61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397",
+      "equal": true
+    }
+  }
+}
