@@ -24,6 +24,7 @@ const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 const INSTANCE_BINDING_PROBE_KEY = Symbol.for("openclaw.test.gatewayInstanceBindingProbe");
 const INSTANCE_BINDING_PROBE_METHOD = "instanceBinding.probe";
+let restoreChannelRuntimeLoader: (() => void) | undefined;
 
 type InstanceBindingProbeResult = {
   registryId: number;
@@ -285,6 +286,46 @@ async function prepareInstanceBindingTest(options?: {
     "instance-binding-probe",
   );
   await fs.writeFile(configPath, `${JSON.stringify(config)}\n`);
+  if (coordinator.channelProof) {
+    // Keep the real host factory in Vitest's module graph; fixture plugins still
+    // load normally, with their original registry and instance runtime options.
+    const [loaderModule, sdkAlias, fullRuntime] = await Promise.all([
+      import("../plugins/loader-module-runtime.js"),
+      import("../plugins/sdk-alias.js"),
+      import("../plugins/runtime/index.js"),
+    ]);
+    const observation = {
+      phase: "runtime-module-loader",
+      resolvedTargets: [] as string[],
+      factoryCalls: 0,
+    };
+    coordinator.channelProof.observations.push(observation);
+    const resolveRuntime = vi.spyOn(sdkAlias, "resolvePluginRuntimeModulePathWithDiagnostics");
+    const createLoader = loaderModule.createPluginModuleLoader;
+    const loaderSpy = vi
+      .spyOn(loaderModule, "createPluginModuleLoader")
+      .mockImplementation((options) => {
+        const load = createLoader(options);
+        return (modulePath) => {
+          if (modulePath === resolveRuntime.mock.results.at(-1)?.value?.resolvedPath) {
+            observation.resolvedTargets.push(modulePath);
+            return {
+              createPluginRuntime: (
+                ...args: Parameters<typeof fullRuntime.createPluginRuntime>
+              ) => {
+                observation.factoryCalls += 1;
+                return fullRuntime.createPluginRuntime(...args);
+              },
+            };
+          }
+          return load(modulePath);
+        };
+      });
+    restoreChannelRuntimeLoader = () => {
+      loaderSpy.mockRestore();
+      resolveRuntime.mockRestore();
+    };
+  }
   return { coordinator, bundledRoot: plugin.bundledRoot };
 }
 
@@ -341,6 +382,8 @@ describe("gateway plugin instance bindings", () => {
       await Promise.all(socketClosures);
       recordChannelBindingTiming(channelProof, "socket-close-join-after");
     } finally {
+      restoreChannelRuntimeLoader?.();
+      restoreChannelRuntimeLoader = undefined;
       channelEnv?.restore();
       channelEnv = undefined;
       delete (globalThis as Record<PropertyKey, unknown>)[INSTANCE_BINDING_PROBE_KEY];
