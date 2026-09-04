@@ -46,6 +46,14 @@ type ChannelBindingProof = {
   observations: unknown[];
 };
 
+function recordChannelBindingTiming(
+  proof: ChannelBindingProof | undefined,
+  step: string,
+  monotonicMs = performance.now(),
+) {
+  proof?.observations.push({ phase: "timing", step, monotonicMs });
+}
+
 type InstanceBindingProbeCoordinator = {
   identify: (value: object) => number;
   nextRegistryId: number;
@@ -307,6 +315,7 @@ describe("gateway plugin instance bindings", () => {
   let skippedBefore: { channels?: string; providers?: string } | undefined;
 
   afterEach(async () => {
+    recordChannelBindingTiming(channelProof, "after-each-entered");
     const closingSockets = sockets.splice(0);
     const socketClosures = closingSockets.map((socket) =>
       socket.readyState === socket.CLOSED
@@ -317,14 +326,20 @@ describe("gateway plugin instance bindings", () => {
     );
     let serversClosed = false;
     try {
+      recordChannelBindingTiming(channelProof, "socket-close-request-before");
       for (const socket of closingSockets) {
         socket.close();
       }
-      for (const server of started.splice(0).toReversed()) {
+      recordChannelBindingTiming(channelProof, "socket-close-request-after");
+      for (const [index, server] of started.splice(0).toReversed().entries()) {
+        recordChannelBindingTiming(channelProof, `server-${index}-close-before`);
         await server.close({ reason: "instance binding cleanup" });
+        recordChannelBindingTiming(channelProof, `server-${index}-close-after`);
       }
       serversClosed = true;
+      recordChannelBindingTiming(channelProof, "socket-close-join-before");
       await Promise.all(socketClosures);
+      recordChannelBindingTiming(channelProof, "socket-close-join-after");
     } finally {
       channelEnv?.restore();
       channelEnv = undefined;
@@ -344,6 +359,7 @@ describe("gateway plugin instance bindings", () => {
             process.env.OPENCLAW_SKIP_PROVIDERS === skippedBefore?.providers,
         };
         proof.events.push({ event: "cleanup" });
+        recordChannelBindingTiming(proof, "cleanup-ledger-ready");
         console.info(
           "PROOF_126547_LEDGER:" +
             JSON.stringify({
@@ -527,12 +543,15 @@ describe("gateway plugin instance bindings", () => {
     "restarts every channel holding a retired runtime after unrelated plugin config reload",
     { timeout: 600_000 },
     async () => {
+      const preparationStartedAt = performance.now();
       const { coordinator } = await prepareInstanceBindingTest({ channels: true });
       const proof = coordinator.channelProof;
       if (!proof) {
         throw new Error("channel binding fixture was not installed");
       }
       channelProof = proof;
+      recordChannelBindingTiming(proof, "fixture-preparation-before", preparationStartedAt);
+      recordChannelBindingTiming(proof, "fixture-preparation-after");
       skippedBefore = {
         channels: process.env.OPENCLAW_SKIP_CHANNELS,
         providers: process.env.OPENCLAW_SKIP_PROVIDERS,
@@ -540,8 +559,11 @@ describe("gateway plugin instance bindings", () => {
       channelEnv = captureEnv(["OPENCLAW_SKIP_CHANNELS", "OPENCLAW_SKIP_PROVIDERS"]);
       delete process.env.OPENCLAW_SKIP_CHANNELS;
       delete process.env.OPENCLAW_SKIP_PROVIDERS;
+      recordChannelBindingTiming(proof, "free-port-before");
       const port = await getFreePort();
+      recordChannelBindingTiming(proof, "free-port-after");
       const hotReloadRecovery = vi.fn(() => ({ status: "emitted" as const }));
+      recordChannelBindingTiming(proof, "gateway-start-before");
       const server = await startTestGatewayServer(port, {
         auth: { mode: "none" },
         controlUiEnabled: false,
@@ -549,49 +571,74 @@ describe("gateway plugin instance bindings", () => {
         sidecarStartup: "start",
       });
       started.push(server);
+      recordChannelBindingTiming(proof, "gateway-start-after");
+      recordChannelBindingTiming(proof, "startup-settled-before");
       await server.startupSettled;
+      recordChannelBindingTiming(proof, "startup-settled-after");
+      recordChannelBindingTiming(proof, "initial-monitors-before");
       await expect.poll(() => proof.monitors.length, { timeout: 30_000 }).toBe(2);
+      recordChannelBindingTiming(proof, "initial-monitors-after");
       const initialMonitors = [...proof.monitors];
       expect(initialMonitors.map((monitor) => monitor.channelId).toSorted()).toEqual([
         ...CHANNEL_BINDING_IDS,
       ]);
+      recordChannelBindingTiming(proof, "initial-probes-before");
       const initialProbes = await Promise.all(
         initialMonitors.map((monitor) => requestInstanceBindingProbe(monitor.runtime)),
       );
+      recordChannelBindingTiming(proof, "initial-probes-after");
       expect(initialProbes[0]).toEqual(initialProbes[1]);
-      expect(initialProbes[0].reloadSettled).toBe(true);
+      for (const probe of initialProbes) {
+        expect(probe.reloadSettled).toBe(true);
+      }
       proof.observations.push({ phase: "initial", probes: initialProbes });
       proof.events.push({ event: "initial-requests-succeeded" });
       const registrationsBeforeReload = coordinator.runtimes.length;
       const reloadEventIndex = proof.events.length;
       proof.events.push({ event: "reload-request" });
+      recordChannelBindingTiming(proof, "socket-connect-before");
       const socket = await connectWebchatClient({ port, scopes: ["operator.admin"] });
       sockets.push(socket);
+      recordChannelBindingTiming(proof, "socket-connect-after");
+      recordChannelBindingTiming(proof, "config-patch-before");
       const reload = await patchInstanceBindingTestConfig(socket);
+      recordChannelBindingTiming(proof, "config-patch-after");
       expect(reload.ok, reload.error?.message).toBe(true);
+      recordChannelBindingTiming(proof, "replacement-registration-before");
       await expect
         .poll(() => coordinator.runtimes.length, { timeout: 300_000 })
         .toBeGreaterThan(registrationsBeforeReload);
+      recordChannelBindingTiming(proof, "replacement-registration-after");
+      recordChannelBindingTiming(proof, "bound-runtime-before");
       const { runtime: freshRuntime } = await requireBoundRuntime(
         coordinator.runtimes.slice(registrationsBeforeReload),
         "reloaded",
       );
+      recordChannelBindingTiming(proof, "bound-runtime-after");
+      recordChannelBindingTiming(proof, "reload-settled-before");
       await expect
         .poll(async () => (await requestInstanceBindingProbe(freshRuntime)).reloadSettled, {
           timeout: 30_000,
         })
         .toBe(true);
+      recordChannelBindingTiming(proof, "reload-settled-after");
+      recordChannelBindingTiming(proof, "fresh-probe-before");
       const freshProbe = await requestInstanceBindingProbe(freshRuntime);
-      expect(freshProbe.registryId).not.toBe(initialProbes[0].registryId);
-      expect(freshProbe.sessionsId).toBe(initialProbes[0].sessionsId);
-      expect(freshProbe.placementId).toBe(initialProbes[0].placementId);
+      recordChannelBindingTiming(proof, "fresh-probe-after");
+      for (const initialProbe of initialProbes) {
+        expect(freshProbe.registryId).not.toBe(initialProbe.registryId);
+        expect(freshProbe.sessionsId).toBe(initialProbe.sessionsId);
+        expect(freshProbe.placementId).toBe(initialProbe.placementId);
+      }
       expect(hotReloadRecovery).not.toHaveBeenCalled();
       proof.observations.push({ phase: "replacement", probe: freshProbe });
       proof.events.push({ event: "reload-settled" });
       for (const monitor of initialMonitors) {
+        recordChannelBindingTiming(proof, `${monitor.channelId}-retired-check-before`);
         await expect(requestInstanceBindingProbe(monitor.runtime)).rejects.toThrow(
           "In-process gateway dispatch requires a gateway request scope or instance binding",
         );
+        recordChannelBindingTiming(proof, `${monitor.channelId}-retired-check-after`);
         proof.observations.push({
           phase: "retired-binding-rejected",
           channelId: monitor.channelId,
@@ -605,6 +652,7 @@ describe("gateway plugin instance bindings", () => {
       // Starts hand off before their setImmediate callback; a retired live predecessor is
       // already a failure, while a completed predecessor permits waiting for its successor.
       if (predecessorsStopped) {
+        recordChannelBindingTiming(proof, "successor-monitor-wait-before");
         await expect
           .poll(
             () =>
@@ -615,7 +663,9 @@ describe("gateway plugin instance bindings", () => {
             { timeout: 30_000 },
           )
           .toEqual([...CHANNEL_BINDING_IDS]);
+        recordChannelBindingTiming(proof, "successor-monitor-wait-after");
       }
+      recordChannelBindingTiming(proof, "successor-probes-before");
       const observations = await Promise.all(
         initialMonitors.map(async (initial) => {
           const active = proof.monitors.filter(
@@ -662,6 +712,7 @@ describe("gateway plugin instance bindings", () => {
           };
         }),
       );
+      recordChannelBindingTiming(proof, "successor-probes-after");
       proof.observations.push({ phase: "settled-channels", channels: observations });
       proof.events.push({ event: "channels-observed" });
       expect(
@@ -678,6 +729,7 @@ describe("gateway plugin instance bindings", () => {
           response: { ok: true, registryId: freshProbe.registryId },
         })),
       );
+      recordChannelBindingTiming(proof, "test-body-finished");
     },
   );
 
