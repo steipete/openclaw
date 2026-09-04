@@ -4,25 +4,37 @@
   "nodeVersion": "24.19.0",
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
   "comparison": {
-    "kind": "single-source-small8-latency-diagnostic",
-    "sourceHead": "dc314aacd5498e4addf6a65fc709aba3023b76e6",
-    "sourceTree": "e2c3a3ad984944419da7e719d23196a3c29510e0",
-    "frozenParent": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+    "kind": "single-source-small8-runtime-loader-counterfactual",
+    "sourceHead": "79c4ae39ee80d7f8e401ed53ac3fc087fea35705",
+    "sourceTree": "a01f925f037d8e3f7b9fbab6a12df27dbc87564d",
+    "frozenParent": "dc314aacd5498e4addf6a65fc709aba3023b76e6",
     "originalFailedCiCheckoutProven": false,
     "priorBaselineRepeated": false,
     "productionDiffAgainstFrozenParent": 0,
     "testDiffAgainstFrozenParent": {
-      "added": 57,
-      "deleted": 5
+      "added": 43,
+      "deleted": 0
     },
-    "sourceChanges": "Reviewed final-ledger-only monotonic observations plus the previously reviewed type-only correction; no runtime overlay"
+    "sourceChanges": "Reviewed test-only runtime module loader interception calls the real createPluginRuntime with original arguments; final ledger records resolved targets and factory calls; no runtime overlay",
+    "priorControl": {
+      "runId": 33847495962,
+      "observation": "Root reports repeated native exit 143 in the unchanged control; original control evidence retained separately",
+      "evidenceSource": "Root-supplied retained control result; no refetch performed"
+    },
+    "manualAcceptance": {
+      "expectedCompletedCases": 927,
+      "requireAllThreeGroups": true,
+      "requirePositiveActualTargetInterceptionAndFactoryCalls": true,
+      "requireBehaviorAndTimingLedger": true,
+      "controllerDoesNotEnforceTheseAdditionalManualChecks": true
+    }
   },
   "lanes": {
     "latency": {
-      "candidateHead": "dc314aacd5498e4addf6a65fc709aba3023b76e6",
-      "candidateTree": "e2c3a3ad984944419da7e719d23196a3c29510e0",
+      "candidateHead": "79c4ae39ee80d7f8e401ed53ac3fc087fea35705",
+      "candidateTree": "a01f925f037d8e3f7b9fbab6a12df27dbc87564d",
       "parents": [
-        "3ba6a62a352ea58d5999a9ed4c04b9de9479377f"
+        "dc314aacd5498e4addf6a65fc709aba3023b76e6"
       ],
       "candidateRepository": "steipete/openclaw",
       "sourceHashes": {
@@ -79,7 +91,7 @@
         "src/gateway/server-plugin-bootstrap.browser-plugin.integration.test.ts": "c2a85109dd350506250b39c3f6c080fe2c4fdf35089cc88e723b6dd6a6b368e6",
         "src/gateway/server-plugin-runtime-generation.test.ts": "b5e3c4cac6c5b7f94c799e23882cfc8f26ddebfe6bb6e79f9e710af35be92b3d",
         "src/gateway/server-plugin-subagent-runtime.test.ts": "7971b543f0ab6e81213c0425632868b9bf6faac6325cd1a7e13a3184aac15417",
-        "src/gateway/server-plugins.lifecycle.test.ts": "51ea15e53efe7de7e5f59f7cc64859855605b233e7aef7c69aed5e53968d961c",
+        "src/gateway/server-plugins.lifecycle.test.ts": "91d3f94cf1069e4133cca757328ef05cd5ac5be4c622086b80dc5efe65f09daa",
         "src/gateway/server-plugins.subagent-ended-hook.test.ts": "ce4426d0baa92617f69703ad3e1d4ae8617372648a21488eb3f98887f0f76562",
         "src/gateway/server-plugins.test.ts": "6a8900d18304320e6907f3680f44347d29dcafe82d3353705a04374648db82f6",
         "src/gateway/server-retained-plugin-cleanup.test.ts": "ee10dca98b602a20780fbdf5512cba090b9e8a1ce46986f03f8e0cb8d3423725",

@@ -1,13 +1,13 @@
 {
-  "sourceHead": "dc314aacd5498e4addf6a65fc709aba3023b76e6",
-  "sourceTree": "e2c3a3ad984944419da7e719d23196a3c29510e0",
-  "frozenParent": "3ba6a62a352ea58d5999a9ed4c04b9de9479377f",
+  "sourceHead": "79c4ae39ee80d7f8e401ed53ac3fc087fea35705",
+  "sourceTree": "a01f925f037d8e3f7b9fbab6a12df27dbc87564d",
+  "frozenParent": "dc314aacd5498e4addf6a65fc709aba3023b76e6",
   "allProductionUnchanged": true,
   "changedFiles": [
     {
       "path": "src/gateway/server-plugins.lifecycle.test.ts",
-      "added": 57,
-      "deleted": 5
+      "added": 43,
+      "deleted": 0
     }
   ],
   "files": [
@@ -337,8 +337,8 @@
     },
     {
       "path": "src/gateway/server-plugins.lifecycle.test.ts",
-      "parentSHA256": "e67dea0f9caceb73ac29bc26bf03c3637de885e17c752fafed314f0d3dfac0f3",
-      "sourceSHA256": "51ea15e53efe7de7e5f59f7cc64859855605b233e7aef7c69aed5e53968d961c",
+      "parentSHA256": "51ea15e53efe7de7e5f59f7cc64859855605b233e7aef7c69aed5e53968d961c",
+      "sourceSHA256": "91d3f94cf1069e4133cca757328ef05cd5ac5be4c622086b80dc5efe65f09daa",
       "equal": false
     },
     {

@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: steipete/openclaw
-          ref: dc314aacd5498e4addf6a65fc709aba3023b76e6
+          ref: 79c4ae39ee80d7f8e401ed53ac3fc087fea35705
           path: source
           fetch-depth: 2
           persist-credentials: false
