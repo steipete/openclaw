@@ -1,0 +1,10 @@
+{
+  "schema": "openclaw-proof-asset-manifest-v1",
+  "incomplete": false,
+  "sha256": {
+    ".github/proofs/continuation-sept3/126547-ci-diagnostics/README.md": "c11d4dcbf98449f807c162ecb5e5bab8b985a1b98e9ea58bd46d55fc608bc793",
+    ".github/proofs/continuation-sept3/126547-ci-diagnostics/execution-binding.json": "f3b92e1b1d8a80f6e3341e28b26909a52258eff7c82409ebec883f090b4d7dcf",
+    ".github/proofs/continuation-sept3/126547-ci-diagnostics/run-proof.py": "4d16ca4242bc364da5775ec70042d78d2f6c516745159d6ead1496aa9c226c56",
+    ".github/workflows/126547-ci-diagnostics.yml": "a7d87033e5f11ff34e42ba1831f7c6b2d2ec2c5510920b6f5c0cafa72c8c14f8"
+  }
+}
