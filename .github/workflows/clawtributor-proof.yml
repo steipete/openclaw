@@ -14,7 +14,19 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        lane: [canvas, collector]
+        include:
+          - lane: buzz
+            source: 8637d26b73b3a8af65ecebd309d401c979a16813
+            node: "24"
+            pnpm: "12.3.4"
+          - lane: feishu
+            source: 8637d26b73b3a8af65ecebd309d401c979a16813
+            node: "24"
+            pnpm: "12.3.4"
+          - lane: broker-diagnostic
+            source: e71a547002e1a8dfb604857a81fa2c08390efb66
+            node: "24.19.0"
+            pnpm: "12.1.0"
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -28,27 +40,30 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: openclaw/openclaw
-          ref: 8637d26b73b3a8af65ecebd309d401c979a16813
+          ref: ${{ matrix.source }}
           path: target
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: "24"
+          node-version: ${{ matrix.node }}
       - name: Install pinned dependencies
         working-directory: target
+        env:
+          PNPM_VERSION: ${{ matrix.pnpm }}
         run: |
-          npm install --global pnpm@12.3.4
+          npm install --global "pnpm@$PNPM_VERSION"
           pnpm install --frozen-lockfile
       - name: Compare baseline and repaired owner
         working-directory: target
         env:
           LANE: ${{ matrix.lane }}
+          SOURCE_SHA: ${{ matrix.source }}
         run: |
           evidence="$GITHUB_WORKSPACE/evidence/$LANE"
           proof_dir="$GITHUB_WORKSPACE/proof/scripts/clawtributor-proof"
           case "$LANE" in
-            canvas) bash "$proof_dir/run-canvas.sh" "$proof_dir" "$evidence" ;;
-            collector) bash "$proof_dir/collector/run-collector-wait-proof.sh" "$PWD" 8637d26b73b3a8af65ecebd309d401c979a16813 "$evidence" ;;
+            buzz|feishu) bash "$proof_dir/run-channels.sh" "$LANE" "$proof_dir" "$evidence" ;;
+            broker-diagnostic) bash "$proof_dir/diagnostic/run-broker-timer-diagnostic.sh" "$PWD" "$SOURCE_SHA" "$evidence" ;;
           esac
       - name: Retain proof
         if: always()
