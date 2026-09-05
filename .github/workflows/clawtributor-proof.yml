@@ -15,7 +15,11 @@ jobs:
       max-parallel: 2
       matrix:
         include:
-          - lane: buzz
+          - lane: backup-unicode
+            source: 8637d26b73b3a8af65ecebd309d401c979a16813
+            node: "24"
+            pnpm: "12.3.4"
+          - lane: backup-diagnostic
             source: 8637d26b73b3a8af65ecebd309d401c979a16813
             node: "24"
             pnpm: "12.3.4"
@@ -58,6 +62,7 @@ jobs:
           evidence="$GITHUB_WORKSPACE/evidence/$LANE"
           proof_dir="$GITHUB_WORKSPACE/proof/scripts/clawtributor-proof"
           case "$LANE" in
+            backup-unicode|backup-diagnostic) bash "$proof_dir/run-backup.sh" "$LANE" "$proof_dir" "$evidence" ;;
             buzz|feishu) bash "$proof_dir/run-channels.sh" "$LANE" "$proof_dir" "$evidence" ;;
             broker-diagnostic) bash "$proof_dir/diagnostic/run-broker-timer-diagnostic.sh" "$PWD" "$SOURCE_SHA" "$evidence" ;;
           esac

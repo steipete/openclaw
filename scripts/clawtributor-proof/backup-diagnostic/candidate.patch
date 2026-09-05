@@ -1,0 +1,174 @@
+--- a/src/config/io.write.ts
++++ b/src/config/io.write.ts
+@@ -1,5 +1,6 @@
+ import type fs from "node:fs";
+ import path from "node:path";
++import { err, ok } from "@openclaw/normalization-core/result";
+ import { resolveCronJobsStorePathFromConfig } from "../cron/store.js";
+ import { isVerbose } from "../global-state.js";
+ import { isVitestRuntimeEnv } from "../infra/env.js";
+@@ -377,13 +378,17 @@
+   const blockingReasons = resolveConfigWriteBlockingReasons(suspiciousReasons, options);
+   if (blockingReasons.length > 0 && options.allowDestructiveWrite !== true) {
+     const rejectedPath = `${configPath}.rejected.${formatConfigArtifactTimestamp(new Date().toISOString())}`;
+-    await deps.fs.promises
++    // Only the completed exclusive create proves this payload is available for inspection.
++    const rejectedSave = await deps.fs.promises
+       .writeFile(rejectedPath, json, { encoding: "utf-8", mode: 0o600, flag: "wx" })
+-      .catch(() => {});
+-    const message = `Config write rejected: ${configPath} (${blockingReasons.join(", ")}). Rejected payload saved to ${rejectedPath}.`;
++      .then(ok, err);
++    const saveDetail = rejectedSave.ok
++      ? `Rejected payload saved to ${rejectedPath}.`
++      : `Rejected payload could not be saved to ${rejectedPath}: ${formatErrorMessage(rejectedSave.error)}.`;
++    const message = `Config write rejected: ${configPath} (${blockingReasons.join(", ")}). ${saveDetail}`;
+     const error = Object.assign(new Error(message), {
+       code: "CONFIG_WRITE_REJECTED",
+-      rejectedPath,
++      ...(rejectedSave.ok ? { rejectedPath } : {}),
+       reasons: blockingReasons,
+     });
+     deps.logger.warn(message);
+--- a/src/config/io.write-config.test.ts
++++ b/src/config/io.write-config.test.ts
+@@ -799,47 +799,84 @@
+     },
+   );
+ 
+-  itWithHome("rejects destructive internal writes before replacing the config", async (home) => {
+-    const configPath = configPathForHome(home);
+-    await fs.mkdir(path.dirname(configPath), { recursive: true });
+-    const original = {
+-      gateway: { mode: "local" },
+-      channels: { telegram: { enabled: true, dmPolicy: "pairing" } },
+-      agents: { entries: { main: { default: true, workspace: "/tmp/openclaw-main" } } },
+-      tools: { profile: "messaging" },
+-      commands: { restart: false },
+-    } satisfies ConfigFileSnapshot["config"];
+-    const originalRaw = formatConfig(original);
+-    await fs.writeFile(configPath, originalRaw, "utf-8");
+-    const warn = vi.fn();
+-    const io = createHomeConfigIO(home, {
+-      env: { VITEST: "true" } as NodeJS.ProcessEnv,
+-      logger: { warn, error: vi.fn() },
+-    });
+-    const baseSnapshot = createExistingConfigSnapshot(configPath, original, originalRaw);
+-
+-    await expectConfigWriteRejected(
+-      io.writeConfigFile(
+-        { update: { channel: "beta" } },
+-        {
+-          baseSnapshot,
+-        },
+-      ),
+-    );
+-
+-    await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(originalRaw);
+-    const entries = await fs.readdir(path.dirname(configPath));
+-    const rejectedEntries = entries.filter((entry) => entry.includes(".rejected."));
+-    expect(rejectedEntries).toHaveLength(1);
+-    expect(warn.mock.calls).toEqual([
+-      [
+-        `Config write rejected: ${configPath} (gateway-mode-removed). Rejected payload saved to ${path.join(
+-          path.dirname(configPath),
+-          rejectedEntries[0] ?? "",
+-        )}.`,
+-      ],
+-    ]);
+-  });
++  it.each(["success", "EACCES", "EEXIST"] as const)(
++    "reports the rejected payload save outcome accurately: %s",
++    async (outcome) => {
++      await withSuiteHome(async (home) => {
++        const original = { gateway: { mode: "local" } } satisfies OpenClawConfig;
++        const { configPath, raw: originalRaw } = await writeConfigFixture(home, original);
++        const previousPayload = "previous rejected payload\n";
++        const warn = vi.fn();
++        const io = createHomeConfigIO(home, {
++          env: { VITEST: "true" } as NodeJS.ProcessEnv,
++          logger: { warn, error: vi.fn() },
++          fs: {
++            ...fsNode,
++            promises: {
++              ...fsNode.promises,
++              writeFile: async (target, data, options) => {
++                if (typeof target === "string" && target.includes(".rejected.")) {
++                  if (outcome === "EACCES") {
++                    throw Object.assign(new Error("EACCES: permission denied"), { code: outcome });
++                  }
++                  if (outcome === "EEXIST") {
++                    await fs.writeFile(target, previousPayload);
++                  }
++                }
++                return fsNode.promises.writeFile(target, data, options);
++              },
++            },
++          },
++        });
++        const baseSnapshot = createExistingConfigSnapshot(configPath, original, originalRaw);
++        let rejection: Record<string, unknown> | undefined;
++        try {
++          await io.writeConfigFile({ update: { channel: "beta" } }, { baseSnapshot });
++        } catch (error) {
++          rejection = requireRecord(error, "config write rejection");
++        }
++        expect(rejection).toMatchObject({
++          code: "CONFIG_WRITE_REJECTED",
++          reasons: ["gateway-mode-removed"],
++        });
++        expect(warnMessages(warn)).toEqual([rejection?.message]);
++        const audit = listConfigAuditRecordsForTests({ env: io.env, homedir: () => home }).find(
++          (record) => record.event === "config.write" && record.configPath === configPath,
++        );
++        expect(audit).toMatchObject({
++          result: "rejected",
++          errorCode: "CONFIG_WRITE_REJECTED",
++          errorMessage: rejection?.message,
++          nextHash: null,
++          nextBytes: null,
++        });
++        await expect(fs.readFile(configPath, "utf8")).resolves.toBe(originalRaw);
++        const artifacts = (await fs.readdir(path.dirname(configPath))).filter((entry) =>
++          entry.includes(".rejected."),
++        );
++        if (outcome === "success") {
++          expect(artifacts).toHaveLength(1);
++          const savedPath = path.join(path.dirname(configPath), artifacts[0]!);
++          expect(rejection).toHaveProperty("rejectedPath", savedPath);
++          expect(rejection?.message).toContain(`Rejected payload saved to ${savedPath}.`);
++          expect(JSON.parse(await fs.readFile(savedPath, "utf8"))).toMatchObject({
++            update: { channel: "beta" },
++          });
++        } else {
++          expect(rejection).not.toHaveProperty("rejectedPath");
++          expect(rejection?.message).toContain("Rejected payload could not be saved to");
++          expect(rejection?.message).toContain(outcome);
++          expect(rejection?.message).not.toContain("Rejected payload saved to");
++          expect(artifacts).toHaveLength(outcome === "EEXIST" ? 1 : 0);
++          if (outcome === "EEXIST") {
++            await expect(
++              fs.readFile(path.join(path.dirname(configPath), artifacts[0]!), "utf8"),
++            ).resolves.toBe(previousPayload);
++          }
++        }
++      });
++    },
++  );
+ 
+   itWithHome(
+     "does not preflight runtime secrets before rejecting blocked root writes",
+--- a/docs/gateway/configuration.md
++++ b/docs/gateway/configuration.md
+@@ -107,8 +107,10 @@
+ but startup and hot reload do not restore it automatically - only `openclaw doctor --fix`
+ does. If `openclaw.json` remains invalid after eligible startup migrations (including
+ plugin-local validation), Gateway startup fails. An invalid hot reload is skipped and
+-the current runtime keeps the last accepted config. A rejected write is also saved as
+-`<path>.rejected.<timestamp>` for inspection.
++the current runtime keeps the last accepted config. When a write is blocked as an
++accidental clobber, OpenClaw attempts to save the rejected payload as
++`<path>.rejected.<timestamp>` for inspection. The warning reports whether that save
++succeeded; if it failed, the active config still stays unchanged.
+ The Gateway blocks writes that look like accidental clobbers - dropping the effective
+ `gateway.mode` or shrinking the file by more than half - unless the write explicitly
+ allows destructive changes. Mode checks resolve `$include` and environment references

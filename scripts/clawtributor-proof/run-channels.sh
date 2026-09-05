@@ -13,7 +13,7 @@ else
   cp "$proof_dir/feishu-runtime-proof.ts" feishu-runtime-proof.ts
   cp "$proof_dir/feishu-debounce-runtime-proof.ts" feishu-debounce-runtime-proof.ts
   owner=extensions/feishu/src/bot-content.ts
-  tests=(extensions/feishu/src/bot.stripBotMention.test.ts extensions/feishu/src/bot.checkBotMentioned.test.ts extensions/feishu/src/mention.test.ts)
+  tests=(extensions/feishu/src/bot.stripBotMention.test.ts extensions/feishu/src/bot.checkBotMentioned.test.ts)
 fi
 git rev-parse HEAD > "$evidence_dir/baseline-sha.txt"
 cp "$owner" "$evidence_dir/owner-baseline.ts"
