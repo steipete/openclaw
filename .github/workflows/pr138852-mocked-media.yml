@@ -1,0 +1,180 @@
+name: PR 138852 mocked alias media
+run-name: PR 138852 mocked alias media at 9f199fa
+
+on:
+  push:
+    branches: [codex/pr-138852-mocked-media-v1]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-138852-mocked-media-v1
+  cancel-in-progress: false
+
+jobs:
+  mocked-alias-media:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      CI: "true"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    steps:
+      - name: Checkout the exact reviewed public source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 9f199fa0446075086fe5acbee5019d8bcf2833ca
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Bind source and synthetic fixture inputs
+        timeout-minutes: 2
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 9f199fa0446075086fe5acbee5019d8bcf2833ca
+          test "$(git rev-parse HEAD^{tree})" = 13f822b6a307272b3d03b19c3f985133e409b7ef
+          if git config --get-regexp '^http\..*\.extraheader$' >/dev/null; then
+            echo "Checkout retained an HTTP credential header." >&2
+            exit 1
+          fi
+          python3 -I - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          expected = {'ui/src/e2e/device-alias-rename.e2e.test.ts': 'fe0ee12e2899f270ad52505395213eb88da77f821eecd69424c9351fc0e23a27', 'ui/src/test-helpers/control-ui-e2e.ts': '78faa9001755704f6a5d5eb5faf0e2385b4b3450b1c2389ef395109eb0987ddb', 'ui/src/test-helpers/control-ui-e2e-artifacts.ts': '4af05388e96f811f689051f803c27a015f01a50d6f83b512f02c8d2d9b1e3a14', 'ui/src/e2e/control-ui-e2e-suite.test-support.ts': '8354ca589b2eab06f76750ccc97583d32a610432cbb1152175d555997dbe68ac', 'package.json': '8fb31bfe17195c9e036c5925cece5a4a5151e1fcd8e8253c24f6e68554e0d3d9', 'pnpm-lock.yaml': 'f774aba43551e277ce53215eed45081f9ddaced986e6267b7bcb7411685b1817', '.github/actions/setup-node-env/action.yml': '61a333351e9c73f479513cef628359edcd6c346061a08a41eca9c53cc7426397', '.github/actions/setup-pnpm-store-cache/action.yml': 'cc8939395c7f475a6b92bcf783915e29a51825777b69c4b36b5037b4be117afc', '.github/actions/setup-pnpm-store-cache/ensure-node.sh': 'd59b999fa77c8a5b0db2ab1f3da233883fd524defccd8c6b0c7f58626bf39465'}
+          for name, digest in expected.items():
+              assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == digest, name
+          forbidden = [name for name in (
+              'GITHUB_TOKEN', 'GH_TOKEN', 'OPENAI_API_KEY', 'ANTHROPIC_API_KEY',
+              'XAI_API_KEY', 'GEMINI_API_KEY', 'AWS_ACCESS_KEY_ID',
+              'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN',
+              'OPENCLAW_GATEWAY_TOKEN', 'OPENCLAW_QA_CONVEX_SECRET_CI'
+          ) if os.environ.get(name)]
+          assert not forbidden, 'Unexpected credential names: ' + ', '.join(forbidden)
+          fixture = Path('ui/src/e2e/device-alias-rename.e2e.test.ts').read_text()
+          for literal in (
+              'installMockGateway(page,', 'synthetic-office-workstation',
+              'office-workstation.example.test', '"system-presence": []',
+              '"node.list": { nodes: [] }', '"environments.list": { environments: [] }'
+          ):
+              assert literal in fixture, literal
+          assert 'webSocketPassthroughPrefixes' not in fixture
+          assert 'recordVideo' not in fixture
+          assert json.loads(Path('package.json').read_text())['packageManager'].startswith('pnpm@12.3.4+')
+          root = Path('.artifacts/pr138852-mocked-control')
+          root.mkdir(parents=True, exist_ok=False)
+          (root / 'source-hashes.json').write_text(json.dumps(expected, sort_keys=True) + '\n')
+          PY
+
+      - name: Install the source-owned Node and pnpm environment
+        timeout-minutes: 10
+        uses: ./.github/actions/setup-node-env
+        with:
+          node-version: "24.19.0"
+          install-bun: "false"
+          cache-mode: "off"
+          dependency-cache: "false"
+          frozen-lockfile: "true"
+
+      - name: Install Chromium with its system dependencies
+        timeout-minutes: 5
+        shell: bash
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Capture only the existing mocked alias scenario
+        timeout-minutes: 6
+        shell: bash
+        env:
+          OPENCLAW_CAPTURE_UI_PROOF: "1"
+          OPENCLAW_UI_E2E_ARTIFACT_DIR: .artifacts/pr138852-mocked-images
+        run: |
+          set -euo pipefail
+          test "$(node --version)" = v24.19.0
+          test "$(pnpm --version)" = 12.3.4
+          node scripts/run-vitest.mjs run \
+            --config test/vitest/vitest.ui-e2e.config.ts \
+            --configLoader runner \
+            ui/src/e2e/device-alias-rename.e2e.test.ts \
+            --reporter=default --reporter=json \
+            --outputFile=.artifacts/pr138852-mocked-control/report.json
+
+      - name: Verify the passing scenario and the exact six synthetic images
+        id: verify
+        timeout-minutes: 2
+        shell: bash
+        env:
+          PROOF_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          PROOF_RUN_ID: ${{ github.run_id }}
+          PROOF_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          git diff --exit-code --no-ext-diff --no-textconv HEAD --
+          python3 -I - <<'PY'
+          import hashlib, json, os, shutil, stat, struct, subprocess
+          from pathlib import Path
+          control = Path('.artifacts/pr138852-mocked-control')
+          expected = json.loads((control / 'source-hashes.json').read_text())
+          for name, digest in expected.items():
+              assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == digest, name
+          report = json.loads((control / 'report.json').read_text())
+          assert report['success'] is True
+          assert report['numTotalTests'] == report['numPassedTests'] == 1
+          assert report.get('numFailedTests', 0) == report.get('numPendingTests', 0) == report.get('numTodoTests', 0) == 0
+          results = report['testResults']
+          assert len(results) == 1
+          assert results[0]['name'].endswith('/ui/src/e2e/device-alias-rename.e2e.test.ts')
+          assertions = results[0]['assertionResults']
+          assert len(assertions) == 1 and assertions[0]['status'] == 'passed'
+          assert assertions[0]['title'] == 'retries a rejected alias rename and dismisses unsaved edits on reconnect'
+          images = Path('.artifacts/pr138852-mocked-images')
+          owned = list(images.iterdir())
+          assert len(owned) == 1 and owned[0].name.startswith('device-alias-rename-')
+          assert owned[0].is_dir() and not owned[0].is_symlink()
+          names = {
+              '01-devices-inventory.png', '02-alias-dialog-open.png',
+              '03-alias-dialog-filled.png', '03b-alias-rejected-retryable.png',
+              '04-alias-applied.png', '05-alias-after-reconnect.png'
+          }
+          assert {p.name for p in owned[0].iterdir()} == names
+          publish = Path('.artifacts/pr138852-mocked-publish')
+          publish.mkdir(exist_ok=False)
+          files = []
+          for name in sorted(names):
+              path = owned[0] / name
+              assert stat.S_ISREG(path.lstat().st_mode)
+              data = path.read_bytes()
+              assert 0 < len(data) < 5_000_000
+              assert data[:8] == b'\x89PNG\r\n\x1a\n' and data[12:16] == b'IHDR'
+              assert struct.unpack('>II', data[16:24]) == (1280, 900)
+              shutil.copyfile(path, publish / name)
+              files.append({'name': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+          provenance = {
+              'sourceHead': '9f199fa0446075086fe5acbee5019d8bcf2833ca',
+              'sourceTree': '13f822b6a307272b3d03b19c3f985133e409b7ef',
+              'workflowSha': os.environ['PROOF_WORKFLOW_SHA'],
+              'runId': os.environ['PROOF_RUN_ID'],
+              'runAttempt': os.environ['PROOF_RUN_ATTEMPT'],
+              'node': subprocess.check_output(['node', '--version'], text=True).strip(),
+              'pnpm': subprocess.check_output(['pnpm', '--version'], text=True).strip(),
+              'scenario': assertions[0]['fullName'],
+              'result': 'passed',
+              'fixture': 'Existing mocked Gateway with reserved example.test hostname and synthetic device ID; empty live node, environment and system-presence inventories.',
+              'scope': 'Only mocked alias images for openclaw/openclaw PR138852. No real-Gateway capture or video. Human full-image inspection remains required before PR attachment.',
+              'sourceHashes': expected,
+              'files': files,
+          }
+          (publish / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('media-ready=true\n')
+          PY
+
+      - name: Retain only the verified mocked image directory for PR inspection
+        if: success() && steps.verify.outputs.media-ready == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: pr138852-mocked-alias-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .artifacts/pr138852-mocked-publish
+          if-no-files-found: error
+          retention-days: 7
