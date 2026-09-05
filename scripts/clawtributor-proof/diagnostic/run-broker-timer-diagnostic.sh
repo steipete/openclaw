@@ -46,9 +46,18 @@ writeFileSync(join(output, 'identity.json'), JSON.stringify({
 }, null, 2) + '\n');
 JS
 cp "$proof_dir/agentic-gateway-core-3.original-plan.json" "$evidence_dir/plan.json"
-git apply --check "$proof_dir/broker-timer-diagnostic.patch"
-git apply "$proof_dir/broker-timer-diagnostic.patch"
+git apply --check --unidiff-zero "$proof_dir/broker-timer-diagnostic.patch"
+git apply --unidiff-zero "$proof_dir/broker-timer-diagnostic.patch"
+cp "$proof_dir/broker-timer-probe.ts" src/gateway/desktop/broker-timer-probe.ts
 git diff --check
+node --input-type=module <<'JS'
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+const file = 'src/gateway/desktop/node-stream-broker.test.ts';
+assert.equal(readFileSync(file).length, execFileSync('git', ['show', `HEAD:${file}`]).length,
+  'Preserve Vitest uncached file-size ordering');
+JS
 git diff -- src/gateway/desktop/node-stream-broker.test.ts >"$evidence_dir/instrumentation.patch"
 export CI=true
 export NODE_OPTIONS=--max-old-space-size=8192

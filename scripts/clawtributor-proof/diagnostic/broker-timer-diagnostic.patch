@@ -1,22 +1,15 @@
 --- a/src/gateway/desktop/node-stream-broker.test.ts
 +++ b/src/gateway/desktop/node-stream-broker.test.ts
-@@ -165,6 +165,19 @@
-       expect(serialized).not.toContain("resumed stream bytes");
-       vi.advanceTimersByTime(25_000);
-       expect(pings).toHaveLength(3);
-+      if (vi.getTimerCount() !== 0) {
-+        const clock = (globalThis.setInterval as unknown as {
-+          clock: { timers: Record<string, { id: number; type: string; interval?: number; func: Function }>; jobs?: unknown[] };
-+        }).clock;
-+        console.error("BROKER_TIMER_DIAGNOSTIC", JSON.stringify({
-+          kind, closeMode, count: vi.getTimerCount(),
-+          timers: Object.values(clock.timers).map((timer) => ({
-+            id: timer.id, type: timer.type, interval: timer.interval,
-+            callback: String(timer.func).slice(0, 2000),
-+          })),
-+          jobs: clock.jobs?.length ?? 0,
-+        }));
-+      }
-       expect(vi.getTimerCount()).toBe(0);
-     },
-   );
+@@ -8,0 +9 @@
++import { countPendingTimers } from "./broker-timer-probe.js";
+@@ -125 +125,0 @@
+-      // A paused remote peer cannot process pings or send automatic pongs.
+@@ -166,3 +166,3 @@
+-      vi.advanceTimersByTime(25_000);
+-      expect(pings).toHaveLength(3);
+-      expect(vi.getTimerCount()).toBe(0);
++vi.advanceTimersByTime(25_000);
++expect(pings).toHaveLength(3);
++      expect(countPendingTimers(vi)).toBe(0);
+@@ -438,0 +439 @@
++//keep original order
