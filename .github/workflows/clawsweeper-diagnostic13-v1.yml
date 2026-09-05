@@ -1,0 +1,93 @@
+name: ClawSweeper bounded classifier diagnostic
+run-name: ClawSweeper f003 classifier AFTER9 and BEFORE4
+
+on:
+  push:
+    branches: [codex/clawsweeper-diagnostic13-fallback-v1]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clawsweeper-diagnostic13-fallback-v1
+  cancel-in-progress: false
+
+jobs:
+  classifier-diagnostic:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    steps:
+      - name: Checkout this exact proof-control commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: controls
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Checkout the public ClawSweeper baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/clawsweeper
+          ref: 3d77465b6b6efa3bc111b069b06b3bfdf05630cf
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Verify the baseline and install the exact reviewed source postimages
+        timeout-minutes: 2
+        shell: bash
+        env:
+          PROOF_CONTROL_SHA: ${{ github.sha }}
+          PROOF_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          PROOF_RUN_ID: ${{ github.run_id }}
+          PROOF_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          test "$(git -C controls rev-parse HEAD)" = "$PROOF_CONTROL_SHA"
+          if git -C controls config --get-regexp '^http\..*\.extraheader$' >/dev/null; then
+            echo 'Controls checkout retained an HTTP credential header.' >&2
+            exit 1
+          fi
+          python3 -I controls/.github/proof/clawsweeper-diagnostic13-v1/run.py \
+            prepare "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/clawsweeper-diagnostic13/results"
+
+      - name: Install the exact Node runtime without dependency caching
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        timeout-minutes: 3
+        with:
+          node-version: "24.19.0"
+          architecture: x64
+          check-latest: false
+          package-manager-cache: false
+
+      - name: Frozen install, compile once, and observe AFTER9 then BEFORE4
+        timeout-minutes: 12
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I controls/.github/proof/clawsweeper-diagnostic13-v1/run.py \
+            execute "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/clawsweeper-diagnostic13/results"
+
+      - name: Retain only bounded diagnostic observations and provenance
+        if: always()
+        id: collect
+        timeout-minutes: 1
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I controls/.github/proof/clawsweeper-diagnostic13-v1/run.py \
+            collect "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/clawsweeper-diagnostic13/results"
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+
+      - name: Upload this diagnostic's explicit artifact directory
+        if: always() && steps.collect.outputs.ready == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: clawsweeper-diagnostic13-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/clawsweeper-diagnostic13/publish
+          if-no-files-found: error
+          retention-days: 7

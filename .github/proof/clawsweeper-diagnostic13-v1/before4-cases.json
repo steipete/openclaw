@@ -1,0 +1,52 @@
+[
+  {
+    "name": "review-v7-exported-container-column-mutation",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/columns.ts",
+        "status": "modified",
+        "patch": "@@ -1,3 +1,3 @@\n import { integer } from \"drizzle-orm/pg-core\";\n export const columns = { revision: integer(\"revision\") };\n-columns.revision.default(0);\n+columns.revision.default(1);\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "unknown-data-model-change: src/runtime/columns.ts"
+    ]
+  },
+  {
+    "name": "review-v7-fluent-default-export-column-mutation",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/columns.ts",
+        "status": "modified",
+        "patch": "@@ -1,3 +1,3 @@\n import { integer } from \"drizzle-orm/pg-core\";\n const column = integer(\"revision\");\n-export default column.default(1);\n+export default column.default(2);\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "unknown-data-model-change: src/runtime/columns.ts"
+    ]
+  },
+  {
+    "name": "review-v7-prior-regexp-intrinsic-call-control",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/response.ts",
+        "status": "modified",
+        "patch": "@@ -1,5 +1,5 @@\n const matcher = /payload/;\n matcher.test(\"payload\");\n matcher.exec(\"SELECT payload FROM records\");\n const value = { label: \"value\" };\n-export const payload = JSON.stringify(value);\n+export const payload = JSON.stringify({ value });\n"
+      }
+    ],
+    "expectedSurfaces": []
+  },
+  {
+    "name": "review-v7-helper-returned-ddl-column-map",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/controller.ts",
+        "status": "modified",
+        "patch": "@@ -1,9 +1,9 @@\n declare const db: { exec(sql: string): void };\n const TEXT = \"TEXT\";\n function makeDDL(fields: Record<string, string>) {\n   return `CREATE TABLE records (${Object.entries(fields).map(([name, type]) => `${name} ${type}`).join(\", \")})`;\n }\n const columns = {\n-  oldKey: TEXT,\n+  newKey: TEXT,\n };\n db.exec(makeDDL(columns));\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "database schema: src/runtime/controller.ts"
+    ]
+  }
+]

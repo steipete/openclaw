@@ -1,0 +1,112 @@
+[
+  {
+    "name": "review-v6-bound-regexp-transient-json",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/response.ts",
+        "status": "modified",
+        "patch": "@@ -1,4 +1,4 @@\n const matcher = /payload/;\n matcher.exec(\"SELECT payload FROM records\");\n const value = { label: \"value\" };\n-export const payload = JSON.stringify(value);\n+export const payload = JSON.stringify({ value });\n"
+      }
+    ],
+    "expectedSurfaces": []
+  },
+  {
+    "name": "review-v6-constructed-regexp-transient-json",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/response.ts",
+        "status": "modified",
+        "patch": "@@ -1,4 +1,4 @@\n const matcher = new RegExp(\"payload\");\n matcher.exec(\"SELECT payload FROM records\");\n const value = { label: \"value\" };\n-export const payload = JSON.stringify(value);\n+export const payload = JSON.stringify({ value });\n"
+      }
+    ],
+    "expectedSurfaces": []
+  },
+  {
+    "name": "review-v6-mixed-regexp-database-owner-control",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/response.ts",
+        "status": "modified",
+        "patch": "@@ -1,6 +1,6 @@\n import { DatabaseSync } from \"node:sqlite\";\n export function save(db: DatabaseSync, useRegex: boolean) {\n   const value = { label: \"value\" };\n   const receiver = useRegex ? /payload/ : db;\n-  receiver.exec(`INSERT INTO records (payload) VALUES ('${JSON.stringify(value)}')`);\n+  receiver.exec(`INSERT INTO records (payload) VALUES ('${JSON.stringify({ value })}')`);\n }\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "serialized state: src/runtime/response.ts"
+    ]
+  },
+  {
+    "name": "review-v6-regexp-instance-exec-replacement-control",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/response.js",
+        "status": "modified",
+        "patch": "@@ -1,7 +1,7 @@\n import { DatabaseSync } from \"node:sqlite\";\n export function save(db) {\n   const value = { label: \"value\" };\n   const matcher = /payload/;\n   matcher.exec = db.exec.bind(db);\n-  matcher.exec(`INSERT INTO records (payload) VALUES ('${JSON.stringify(value)}')`);\n+  matcher.exec(`INSERT INTO records (payload) VALUES ('${JSON.stringify({ value })}')`);\n }\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "serialized state: src/runtime/response.js"
+    ]
+  },
+  {
+    "name": "exported-column-local-alias-default-mutation",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/columns.ts",
+        "status": "modified",
+        "patch": "@@ -1,5 +1,5 @@\n import { integer } from \"drizzle-orm/pg-core\";\n const revision = integer(\"revision\");\n const publicRevision = revision;\n export { publicRevision };\n-revision.default(1);\n+revision.default(2);\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "unknown-data-model-change: src/runtime/columns.ts"
+    ]
+  },
+  {
+    "name": "exported-column-default-assignment-mutation",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/columns.ts",
+        "status": "modified",
+        "patch": "@@ -1,4 +1,4 @@\n import { integer } from \"drizzle-orm/pg-core\";\n const revision = integer(\"revision\");\n export default revision;\n-revision.default(0);\n+revision.default(1);\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "unknown-data-model-change: src/runtime/columns.ts"
+    ]
+  },
+  {
+    "name": "exported-column-fluent-default-control",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/columns.ts",
+        "status": "modified",
+        "patch": "@@ -1,2 +1,2 @@\n import { integer } from \"drizzle-orm/pg-core\";\n-export const revision = integer(\"revision\").default(0);\n+export const revision = integer(\"revision\").default(1);\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "database schema: src/runtime/columns.ts"
+    ]
+  },
+  {
+    "name": "review-v6-main-same-hunk-runtime-TEXT",
+    "pullFiles": [
+      {
+        "filename": "src/runtime/controller.ts",
+        "patch": "@@\n db.exec(\"CREATE TABLE sessions (id TEXT)\");\n const diagnostic = {\n-  suffix: \"none\",\n+  suffix: TEXT,\n };"
+      }
+    ],
+    "expectedSurfaces": []
+  },
+  {
+    "name": "bare-sql-type-map",
+    "pullFiles": [
+      {
+        "filename": "src/db/columns.ts",
+        "status": "modified",
+        "patch": "@@ -1,6 +1,6 @@\n declare const db: { exec(sql: string): void };\n const TEXT = \"TEXT\";\n const columns = {\n-  oldKey: TEXT,\n+  newKey: TEXT,\n };\n db.exec(`CREATE TABLE records (${Object.entries(columns).map(([name, type]) => `${name} ${type}`).join(\", \")})`);\n"
+      }
+    ],
+    "expectedSurfaces": [
+      "database schema: src/db/columns.ts"
+    ]
+  }
+]
