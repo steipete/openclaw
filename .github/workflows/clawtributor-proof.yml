@@ -1,0 +1,60 @@
+name: Clawtributor focused proof
+on:
+  push:
+    branches: [codex/clawtributor-proof-20260905]
+permissions:
+  contents: read
+concurrency:
+  group: clawtributor-focused-proof-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  proof:
+    if: github.repository == 'steipete/openclaw'
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        lane: [canvas, collector]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: proof
+          persist-credentials: false
+          sparse-checkout: scripts/clawtributor-proof
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: 8637d26b73b3a8af65ecebd309d401c979a16813
+          path: target
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+      - name: Install pinned dependencies
+        working-directory: target
+        run: |
+          npm install --global pnpm@12.3.4
+          pnpm install --frozen-lockfile
+      - name: Compare baseline and repaired owner
+        working-directory: target
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          evidence="$GITHUB_WORKSPACE/evidence/$LANE"
+          proof_dir="$GITHUB_WORKSPACE/proof/scripts/clawtributor-proof"
+          case "$LANE" in
+            canvas) bash "$proof_dir/run-canvas.sh" "$proof_dir" "$evidence" ;;
+            collector) bash "$proof_dir/collector/run-collector-wait-proof.sh" "$PWD" 8637d26b73b3a8af65ecebd309d401c979a16813 "$evidence" ;;
+          esac
+      - name: Retain proof
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: clawtributor-${{ matrix.lane }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 7
