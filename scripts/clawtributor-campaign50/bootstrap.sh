@@ -32,6 +32,8 @@ finish() {
   exit "$proof_exit"
 }
 trap finish EXIT
+sudo apt-get update > "$evidence_dir/apt-update.log" 2>&1
+sudo apt-get install --no-install-recommends -y ripgrep > "$evidence_dir/host-tools.log" 2>&1
 npm install --global "pnpm@$PNPM_VERSION" > "$evidence_dir/pnpm-install.log" 2>&1
 [[ "$(pnpm --version)" == "$PNPM_VERSION" ]]
 pnpm install --frozen-lockfile > "$evidence_dir/dependencies.log" 2>&1

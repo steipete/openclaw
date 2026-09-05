@@ -1,0 +1,173 @@
+diff --git a/extensions/slack/src/actions.reactions.test.ts b/extensions/slack/src/actions.reactions.test.ts
+index 076649dcfbc..e07ef26b8a1 100644
+--- a/extensions/slack/src/actions.reactions.test.ts
++++ b/extensions/slack/src/actions.reactions.test.ts
+@@ -1,5 +1,5 @@
+ // Slack tests cover actions.reactions plugin behavior.
+-import type { WebClient } from "@slack/web-api";
++import { WebClient } from "@slack/web-api";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import { reactSlackMessage, removeOwnSlackReactions, removeSlackReaction } from "./actions.js";
+ import { registerSlackInstallationState } from "./installation-identity-state.js";
+@@ -12,29 +12,21 @@ vi.mock("./client.js", async () => {
+ });
+ 
+ function createClient() {
+-  return {
++  const client = new WebClient("xoxb-test");
++  return Object.assign(client, {
+     auth: {
+-      test: vi.fn(async () => ({ user_id: "UBOT" })),
++      ...client.auth,
++      test: vi.fn<WebClient["auth"]["test"]>(async () => ({ user_id: "UBOT" })),
+     },
+     reactions: {
+-      add: vi.fn(async () => ({})),
+-      get: vi.fn(async () => ({
+-        message: {
+-          reactions: [],
+-        },
++      ...client.reactions,
++      add: vi.fn<WebClient["reactions"]["add"]>(async () => ({})),
++      get: vi.fn<WebClient["reactions"]["get"]>(async () => ({
++        message: { reactions: [] },
+       })),
+-      remove: vi.fn(async () => ({})),
++      remove: vi.fn<WebClient["reactions"]["remove"]>(async () => ({})),
+     },
+-  } as unknown as WebClient & {
+-    auth: {
+-      test: ReturnType<typeof vi.fn>;
+-    };
+-    reactions: {
+-      add: ReturnType<typeof vi.fn>;
+-      get: ReturnType<typeof vi.fn>;
+-      remove: ReturnType<typeof vi.fn>;
+-    };
+-  };
++  });
+ }
+ 
+ function slackPlatformError(error: string) {
+@@ -124,7 +116,10 @@ describe("reactSlackMessage", () => {
+   });
+ });
+ 
+-describe("reactSlackMessage emoji normalization", () => {
++describe.each([
++  { label: "add", send: reactSlackMessage, method: "add" as const },
++  { label: "remove", send: removeSlackReaction, method: "remove" as const },
++])("Slack reaction $label emoji normalization", ({ send, method }) => {
+   it.each([
+     { input: "✅", expected: "white_check_mark" },
+     { input: ":fire:", expected: "fire" },
+@@ -132,12 +127,15 @@ describe("reactSlackMessage emoji normalization", () => {
+     { input: "🦄", expected: "🦄" },
+     { input: "👍🏽", expected: "thumbsup::skin-tone-4" },
+     { input: "⚠️", expected: "warning" },
++    { input: ":constructor:", expected: "constructor" },
++    { input: "__proto__", expected: "__proto__" },
++    { input: ":toString:", expected: "toString" },
+   ])("normalizes $input to $expected", async ({ input, expected }) => {
+     const client = createClient();
+ 
+-    await reactSlackMessage("C1", "123.456", input, { client, token: "xoxb-test" });
++    await send("C1", "123.456", input, { client, token: "xoxb-test" });
+ 
+-    expect(client.reactions.add).toHaveBeenCalledWith({
++    expect(client.reactions[method]).toHaveBeenCalledWith({
+       channel: "C1",
+       timestamp: "123.456",
+       name: expected,
+diff --git a/extensions/slack/src/actions.ts b/extensions/slack/src/actions.ts
+index 9a2cfe3b118..d6fafb98986 100644
+--- a/extensions/slack/src/actions.ts
++++ b/extensions/slack/src/actions.ts
+@@ -116,43 +116,41 @@ const SLACK_EMOJI_SKIN_TONE_BY_MODIFIER = new Map([
+   ["🏿", 6],
+ ]);
+ 
+-// Slack's reactions.add/remove accept only shortcode names, never a raw
+-// Unicode glyph. Models keep passing the glyph because the `emoji` param
+-// reads as "an emoji"; map the common ones so the reaction is not silently
+-// dropped. Unknown glyphs still pass through unchanged (no regression).
+-const SLACK_EMOJI_SHORTNAME_BY_GLYPH: Record<string, string> = {
+-  "✅": "white_check_mark",
+-  "❌": "x",
+-  "👍": "thumbsup",
+-  "👎": "thumbsdown",
+-  "🎉": "tada",
+-  "❤": "heart",
+-  "😄": "smile",
+-  "😂": "joy",
+-  "🚀": "rocket",
+-  "👀": "eyes",
+-  "🙏": "pray",
+-  "🔥": "fire",
+-  "💯": "100",
+-  "⚠": "warning",
+-  "➕": "heavy_plus_sign",
+-  "➖": "heavy_minus_sign",
+-  "🤔": "thinking_face",
+-  "👨‍💻": "male-technologist",
+-  "👨💻": "male-technologist",
+-  "👩‍💻": "female-technologist",
+-  "⚡": "zap",
+-  "🌐": "globe_with_meridians",
+-  "😱": "scream",
+-  "🥱": "yawning_face",
+-  "😨": "fearful",
+-  "⏳": "hourglass_flowing_sand",
+-  "✍": "writing_hand",
+-  "🗜": "compression",
+-  "🧠": "brain",
+-  "🛠": "hammer_and_wrench",
+-  "💻": "computer",
+-};
++// Slack reactions use shortcode names. Preserve custom names and translate
++// common glyphs before attaching any skin-tone modifier.
++const SLACK_EMOJI_SHORTNAME_BY_GLYPH = new Map([
++  ["✅", "white_check_mark"],
++  ["❌", "x"],
++  ["👍", "thumbsup"],
++  ["👎", "thumbsdown"],
++  ["🎉", "tada"],
++  ["❤", "heart"],
++  ["😄", "smile"],
++  ["😂", "joy"],
++  ["🚀", "rocket"],
++  ["👀", "eyes"],
++  ["🙏", "pray"],
++  ["🔥", "fire"],
++  ["💯", "100"],
++  ["⚠", "warning"],
++  ["➕", "heavy_plus_sign"],
++  ["➖", "heavy_minus_sign"],
++  ["🤔", "thinking_face"],
++  ["👨‍💻", "male-technologist"],
++  ["👨💻", "male-technologist"],
++  ["👩‍💻", "female-technologist"],
++  ["⚡", "zap"],
++  ["🌐", "globe_with_meridians"],
++  ["😱", "scream"],
++  ["🥱", "yawning_face"],
++  ["😨", "fearful"],
++  ["⏳", "hourglass_flowing_sand"],
++  ["✍", "writing_hand"],
++  ["🗜", "compression"],
++  ["🧠", "brain"],
++  ["🛠", "hammer_and_wrench"],
++  ["💻", "computer"],
++]);
+ 
+ function normalizeSlackEmojiName(raw: string): string {
+   const trimmed = raw.trim();
+@@ -164,7 +162,7 @@ function normalizeSlackEmojiName(raw: string): string {
+   const glyphKey = withoutColons
+     .replace(SLACK_EMOJI_SKIN_TONE_MODIFIER_RE, "")
+     .replace(SLACK_EMOJI_VARIATION_SELECTOR_RE, "");
+-  const shortname = SLACK_EMOJI_SHORTNAME_BY_GLYPH[glyphKey];
++  const shortname = SLACK_EMOJI_SHORTNAME_BY_GLYPH.get(glyphKey);
+   const skinTone = modifier ? SLACK_EMOJI_SKIN_TONE_BY_MODIFIER.get(modifier) : undefined;
+   if (!shortname || !skinTone) {
+     return shortname ?? withoutColons;
