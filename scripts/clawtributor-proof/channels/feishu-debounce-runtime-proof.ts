@@ -98,6 +98,7 @@ assert.ok(apiAddress && typeof apiAddress !== "string");
 const workspace = path.join(stateDir, "workspace");
 await mkdir(workspace, { recursive: true });
 const cfg = {
+  messages: { inbound: { byChannel: { feishu: 1_000 } } },
   agents: { entries: { main: { default: true, workspace } } },
   session: { dmScope: "per-channel-peer" },
   channels: {
@@ -177,92 +178,80 @@ const handler = createFeishuMessageReceiveHandler({
   getBotName: () => "Synthetic Bot",
   resolveSequentialKey: getFeishuSequentialKey,
 });
+const receivedEventIds: string[] = [];
 const dispatcher = new EventDispatcher({ verificationToken: "synthetic-webhook-token" }).register({
-  "im.message.receive_v1": handler,
+  "im.message.receive_v1": (event: { message: { message_id: string } }) => {
+    receivedEventIds.push(event.message.message_id);
+    return handler(event);
+  },
 });
 const ingress = createHttpServer(adaptDefault("/event", dispatcher));
 await new Promise<void>((resolve) => ingress.listen(0, "127.0.0.1", resolve));
 const ingressAddress = ingress.address();
 assert.ok(ingressAddress && typeof ingressAddress !== "string");
-const cases = [
-  {
-    name: "prefixes-dm",
-    chatType: "p2p",
-    text: "@_user_1 @_user_10 @_user_11thanks",
-    mentions: [
-      { key: "@_user_1", name: "Bot", id: { open_id: "ou_bot" } },
-      { key: "@_user_10", name: "Alice", id: { open_id: "ou_alice" } },
-      { key: "@_user_11", name: "Bob", id: { open_id: "ou_bob" } },
-    ],
-    expected: '<at user_id="ou_alice">Alice</at> <at user_id="ou_bob">Bob</at>thanks',
-    expectedMentionElements: [
-      { tag: "at", user_id: "ou_alice", user_name: "Alice" },
-      { tag: "at", user_id: "ou_bob", user_name: "Bob" },
-    ],
-    expectedMentionPrefix: "@Alice@Bob",
-  },
-  {
-    name: "literal-name-group",
-    chatType: "group",
-    text: "@_bot @_user_10 @_user_1",
-    mentions: [
-      { key: "@_bot", name: "Bot", id: { open_id: "ou_bot" } },
-      { key: "@_user_10", name: "Alice @_user_1", id: { open_id: "ou_alice" } },
-      { key: "@_user_1", name: "Bob", id: { open_id: "ou_bob" } },
-    ],
-    expected: '<at user_id="ou_alice">Alice @_user_1</at> <at user_id="ou_bob">Bob</at>',
-    expectedMentionElements: [
-      { tag: "at", user_id: "ou_alice", user_name: "Alice @_user_1" },
-      { tag: "at", user_id: "ou_bob", user_name: "Bob" },
-    ],
-    expectedMentionPrefix: "@Alice @\\_user\\_1@Bob",
-  },
-  {
-    name: "plain-control",
-    chatType: "p2p",
-    text: "hello without mentions",
-    mentions: [],
-    expected: "hello without mentions",
-    expectedMentionElements: [],
-    expectedMentionPrefix: "",
-  },
-];
+const cases = ["p2p", "group"];
 const observations: unknown[] = [];
 try {
-  for (const scenario of cases) {
-    const id = `om_${scenario.name}`;
+  for (const chatType of cases) {
+    const ids = [`om_${chatType}_first`, `om_${chatType}_last`];
     const beforeReceipts = receipts.length;
-    const envelope = {
-      schema: "2.0",
-      header: {
-        event_id: `ev_${scenario.name}`,
-        event_type: "im.message.receive_v1",
-        token: "synthetic-webhook-token",
-        app_id: "cli_synthetic_proof",
-        create_time: String(Date.now()),
+    const sourceMessages = [
+      {
+        text: "@_bot @_user_1 first",
+        mentions: [
+          { key: "@_bot", name: "Bot", id: { open_id: "ou_bot" } },
+          { key: "@_user_1", name: "Alice @_user_10", id: { open_id: "ou_alice" } },
+        ],
       },
-      event: {
-        sender: { sender_id: { open_id: "ou_sender" }, sender_type: "user" },
-        message: {
-          message_id: id,
-          chat_id: "oc_synthetic",
-          chat_type: scenario.chatType,
-          message_type: "text",
-          content: JSON.stringify({ text: scenario.text }),
-          mentions: scenario.mentions,
+      {
+        text: "@_bot @_user_1 @_user_10thanks",
+        mentions: [
+          { key: "@_bot", name: "Bot", id: { open_id: "ou_bot" } },
+          { key: "@_user_1", name: "Bob", id: { open_id: "ou_bob" } },
+          { key: "@_user_10", name: "Carol", id: { open_id: "ou_carol" } },
+        ],
+      },
+    ];
+    const requests: Array<Promise<Response>> = [];
+    for (const [index, source] of sourceMessages.entries()) {
+      const envelope = {
+        schema: "2.0",
+        header: {
+          event_id: `ev_${ids[index]}`,
+          event_type: "im.message.receive_v1",
+          token: "synthetic-webhook-token",
+          app_id: "cli_synthetic_proof",
           create_time: String(Date.now()),
         },
-      },
-    };
-    const response = await fetch(`http://127.0.0.1:${ingressAddress.port}/event`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(envelope),
-      signal: AbortSignal.timeout(60_000),
-    });
-    await response.text();
-    assert.equal(response.status, 200, `${scenario.name}: SDK ingress HTTP status`);
-    // The receive handler may acknowledge admission before the final send settles.
+        event: {
+          sender: { sender_id: { open_id: "ou_sender" }, sender_type: "user" },
+          message: {
+            message_id: ids[index],
+            chat_id: "oc_synthetic",
+            chat_type: chatType,
+            message_type: "text",
+            content: JSON.stringify({ text: source.text }),
+            mentions: source.mentions,
+            create_time: String(Date.now()),
+          },
+        },
+      };
+      requests.push(
+        fetch(`http://127.0.0.1:${ingressAddress.port}/event`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(envelope),
+          signal: AbortSignal.timeout(60_000),
+        }),
+      );
+      const ingressDeadline = Date.now() + 10_000;
+      while (!receivedEventIds.includes(ids[index]) && Date.now() < ingressDeadline) await delay(5);
+      assert.ok(receivedEventIds.includes(ids[index]), "ordered SDK ingress was not observed");
+    }
+    for (const response of await Promise.all(requests)) {
+      await response.text();
+      assert.equal(response.status, 200, `${chatType}: SDK ingress HTTP status`);
+    }
     const deadline = Date.now() + 30_000;
     while (
       receipts.length === beforeReceipts &&
@@ -272,39 +261,45 @@ try {
       await delay(25);
     }
     assert.equal(runtimeErrors.length, 0, runtimeErrors.join("\n"));
-    const input = modelInputs.find((item) => item.id === id);
-    assert.ok(input, `${scenario.name}: no model dispatch (setup/admission failure)`);
+    const inputs = modelInputs.filter((item) => ids.includes(item.id));
+    assert.equal(inputs.length, 1, `${chatType}: expected one debounced model turn`);
+    const input = inputs[0];
+    assert.equal(input.id, ids[1], `${chatType}: last transport event retains dispatch identity`);
     assert.equal(
       receipts.length,
       beforeReceipts + 1,
-      `${scenario.name}: missing or duplicate final HTTPS receipt`,
+      `${chatType}: missing or duplicate final HTTPS receipt`,
     );
-    // The final-reply owner prepends forwarded users as native at-elements (not model text).
-    // Check both exact serialized post bytes and the explicit rendered mention prefix.
+    // Only the last mention-forward request supplies notification targets after batching.
     const expectedContent = JSON.stringify({
       zh_cn: {
-        content: [[...scenario.expectedMentionElements, { tag: "md", text: input.output }]],
+        content: [
+          [
+            { tag: "at", user_id: "ou_bob", user_name: "Bob" },
+            { tag: "at", user_id: "ou_carol", user_name: "Carol" },
+            { tag: "md", text: input.output },
+          ],
+        ],
       },
     });
-    assert.equal(
-      receipts.at(-1)?.messageType,
-      "post",
-      `${scenario.name}: unexpected outbound format`,
-    );
+    assert.equal(receipts.at(-1)?.messageType, "post", `${chatType}: unexpected outbound format`);
     assert.equal(
       receipts.at(-1)?.content,
       expectedContent,
-      `${scenario.name}: serialized outbound content differs`,
+      `${chatType}: serialized outbound content differs`,
     );
     assert.equal(
       receipts.at(-1)?.text,
-      scenario.expectedMentionPrefix + input.output,
-      `${scenario.name}: rendered outbound content differs`,
+      "@Bob@Carol" + input.output,
+      `${chatType}: rendered outbound content differs`,
     );
+    const expected =
+      '<at user_id="ou_alice">Alice @_user_10</at> first\n<at user_id="ou_bob">Bob</at> <at user_id="ou_carol">Carol</at>thanks';
     observations.push({
-      scenario: scenario.name,
+      scenario: chatType,
+      order: ids,
       modelRawBody: input.rawBody,
-      expected: scenario.expected,
+      expected,
       modelBodyForAgent: input.bodyForAgent,
       receipt: receipts.at(-1),
     });
@@ -317,13 +312,20 @@ try {
       observations,
     }),
   );
-  for (const [index, scenario] of cases.entries()) {
-    const input = modelInputs[index];
-    if (input.rawBody !== scenario.expected || !input.bodyForAgent.includes(scenario.expected)) {
-      throw new Error(`FEISHU_MENTION_REGRESSION:${scenario.name}`);
+  for (const observation of observations as Array<{
+    scenario: string;
+    modelRawBody: string;
+    modelBodyForAgent: string;
+    expected: string;
+  }>) {
+    if (
+      observation.modelRawBody !== observation.expected ||
+      !observation.modelBodyForAgent.includes(observation.expected)
+    ) {
+      throw new Error(`FEISHU_DEBOUNCE_REGRESSION:${observation.scenario}`);
     }
   }
-  console.log("FEISHU_RUNTIME_PROOF_GREEN");
+  console.log("FEISHU_DEBOUNCE_PROOF_GREEN");
 } finally {
   setActivePluginRegistry(createTestRegistry([]));
   clearRuntimeConfigSnapshot();
