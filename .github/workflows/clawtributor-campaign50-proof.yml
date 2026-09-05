@@ -1,0 +1,80 @@
+name: Clawtributor campaign proof
+on:
+  push:
+    branches: [codex/clawtributor-campaign50-proof-20260905]
+permissions:
+  contents: read
+concurrency:
+  group: clawtributor-campaign50-proof
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/clawtributor-campaign50
+      - id: plan
+        name: Resolve pinned proof lanes
+        run: python3 scripts/clawtributor-campaign50/select-matrix.py
+  proof:
+    needs: plan
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: proof
+          persist-credentials: false
+          sparse-checkout: scripts/clawtributor-campaign50
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: ${{ matrix.source }}
+          path: target
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run isolated source-bound proof
+        env:
+          PROOF_LANE: ${{ matrix.id }}
+          PROOF_DIRECTORY: ${{ matrix.directory }}
+          PROOF_MODE: ${{ matrix.mode }}
+          PROOF_VARIANT: ${{ matrix.variant }}
+          SOURCE_SHA: ${{ matrix.source }}
+          NODE_VERSION: ${{ matrix.node }}
+          PNPM_VERSION: ${{ matrix.pnpm }}
+        run: |
+          set -euo pipefail
+          [[ "$RUNNER_ENVIRONMENT" == github-hosted ]]
+          evidence="$GITHUB_WORKSPACE/evidence/$PROOF_LANE"
+          mkdir -p "$evidence"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/campaign50-$PROOF_LANE-home" \
+            CI=1 LANG=C.UTF-8 TZ=UTC \
+            PROOF_LANE="$PROOF_LANE" PROOF_MODE="$PROOF_MODE" PROOF_VARIANT="$PROOF_VARIANT" \
+            SOURCE_SHA="$SOURCE_SHA" NODE_VERSION="$NODE_VERSION" PNPM_VERSION="$PNPM_VERSION" \
+            OPENCLAW_VITEST_MAX_WORKERS=2 \
+            bash "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/bootstrap.sh" \
+            "$GITHUB_WORKSPACE/target" \
+            "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/lanes/$PROOF_DIRECTORY" \
+            "$evidence"
+      - name: Retain proof artifacts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: campaign50-${{ matrix.id }}-${{ github.run_attempt }}
+          path: |
+            evidence/${{ matrix.id }}/
+            target/.artifacts/qa-e2e/campaign-memory-flush-*/
+          if-no-files-found: error
+          retention-days: 14
