@@ -1,0 +1,77 @@
+--- a/test/non-isolated-runner.ts
++++ b/test/non-isolated-runner.ts
+@@ -1,5 +1,6 @@
+ // Non-isolated runner helps execute tests without Vitest isolation.
+ import path from "node:path";
++import { threadId } from "node:worker_threads";
+ import type {
+   EvaluatedModuleNode as ViteEvaluatedModuleNode,
+   EvaluatedModules as ViteEvaluatedModules,
+@@ -57,6 +58,21 @@
+ const SESSION_SUSPENSION_TEST_API = Symbol.for("openclaw.sessionSuspensionTestApi");
+ // Shared-worker scoped: the registry lives on the worker global, not in the module graph.
+ const CUSTOM_ELEMENT_TRACKING = Symbol.for("openclaw.nonIsolatedCustomElementTracking");
++const TIMER_FAILURE_HISTORY = Symbol.for("openclaw.fakeTimerFailureHistory");
++// Runner instances can be replaced between files; retain only this worker's last 12 paths.
++const timerFailureFiles = ((globalThis as typeof globalThis & {
++  [TIMER_FAILURE_HISTORY]?: string[];
++})[TIMER_FAILURE_HISTORY] ??= []);
++type DiagnosticTimerClock = {
++  timers?: Record<string, {
++    type: string;
++    delay?: number;
++    interval?: number;
++    func: (...args: never[]) => unknown;
++  }>;
++  jobs?: unknown[];
++};
++
+ const nativeConsoleMethods = {
+   log: console.log,
+   info: console.info,
+@@ -462,6 +478,10 @@
+ export default class OpenClawNonIsolatedRunner extends TestRunner {
+   override onCollectStart(file: RunnerTestFile) {
+     super.onCollectStart(file);
++    timerFailureFiles.push(path.relative(this.config.root, file.filepath).slice(-256));
++    if (timerFailureFiles.length > 12) {
++      timerFailureFiles.shift();
++    }
+     if (!this.config.isolate) {
+       installCustomElementTracking();
+     }
+@@ -484,6 +504,34 @@
+     restoreRealTimers();
+     restoreNativeTimerGlobals();
+     super.onBeforeTryTask(test);
++  }
++
++  // Vitest 4.1.11 calls this after recording failure and before afterEach uninstalls timers.
++  onTaskFinished(test: RunnerTask) {
++    if (test.result?.state !== "fail" || !vi.isFakeTimers()) {
++      return;
++    }
++    const count = vi.getTimerCount();
++    if (count === 0) {
++      return;
++    }
++    const timerApi = [globalThis.setInterval, globalThis.setTimeout, globalThis.setImmediate]
++      .find((timer) => "clock" in timer);
++    const clock = (timerApi as unknown as { clock?: DiagnosticTimerClock } | undefined)?.clock;
++    nativeConsoleMethods.error("[vitest:failed-fake-timers]", JSON.stringify({
++      workerThreadId: threadId,
++      files: [...timerFailureFiles],
++      count,
++      clockPresent: Boolean(clock),
++      timers: Object.values(clock?.timers ?? {}).slice(0, 8).map((timer) => ({
++        type: timer.type,
++        delay: timer.delay,
++        interval: timer.interval,
++        // Static callback code only: never inspect timer arguments or captured values.
++        callback: Function.prototype.toString.call(timer.func).slice(0, 512),
++      })),
++      fakeJobCount: clock?.jobs?.length,
++    }));
+   }
+ 
+   // Cross-file cleanup lives in onAfterRunFiles, not onAfterRunSuite: vitest

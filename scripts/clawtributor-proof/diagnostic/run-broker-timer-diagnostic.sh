@@ -22,7 +22,7 @@ const [sha, output, proofDir] = process.argv.slice(2);
 const read = (file) => JSON.parse(readFileSync(file, 'utf8'));
 const manifest = read('package.json');
 const vitest = read('node_modules/vitest/package.json');
-assert.equal(process.versions.node, '24.19.0');
+assert.equal(process.versions.node, '24.20.0');
 assert.match(manifest.packageManager, /^pnpm@12\.1\.0\+/);
 assert.equal(manifest.devDependencies.vitest, '4.1.11');
 assert.equal(vitest.version, '4.1.11');
@@ -46,19 +46,18 @@ writeFileSync(join(output, 'identity.json'), JSON.stringify({
 }, null, 2) + '\n');
 JS
 cp "$proof_dir/agentic-gateway-core-3.original-plan.json" "$evidence_dir/plan.json"
-git apply --check --unidiff-zero "$proof_dir/broker-timer-diagnostic.patch"
-git apply --unidiff-zero "$proof_dir/broker-timer-diagnostic.patch"
-cp "$proof_dir/broker-timer-probe.ts" src/gateway/desktop/broker-timer-probe.ts
+git apply --check "$proof_dir/runner-failed-timers.patch"
+git apply "$proof_dir/runner-failed-timers.patch"
 git diff --check
 node --input-type=module <<'JS'
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const file = 'src/gateway/desktop/node-stream-broker.test.ts';
-assert.equal(readFileSync(file).length, execFileSync('git', ['show', `HEAD:${file}`]).length,
-  'Preserve Vitest uncached file-size ordering');
+assert.deepEqual(readFileSync(file), execFileSync('git', ['show', `HEAD:${file}`]),
+  'Preserve the complete original broker test, including Vitest file-size ordering');
 JS
-git diff -- src/gateway/desktop/node-stream-broker.test.ts >"$evidence_dir/instrumentation.patch"
+git diff -- test/non-isolated-runner.ts >"$evidence_dir/instrumentation.patch"
 export CI=true
 export NODE_OPTIONS=--max-old-space-size=8192
 export OPENCLAW_NODE_TEST_GROUPS_JSON="$(cat "$proof_dir/agentic-gateway-core-3.original-plan.json")"

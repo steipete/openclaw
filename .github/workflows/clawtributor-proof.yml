@@ -17,7 +17,7 @@ jobs:
         include:
           - lane: broker-diagnostic
             source: e71a547002e1a8dfb604857a81fa2c08390efb66
-            node: "24.19.0"
+            node: "24.20.0"
             pnpm: "12.1.0"
     runs-on: ubuntu-24.04
     timeout-minutes: 30
