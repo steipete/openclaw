@@ -1,41 +1,18 @@
 --- a/src/gateway/desktop/node-stream-broker.test.ts
 +++ b/src/gateway/desktop/node-stream-broker.test.ts
-@@ -29,6 +29,7 @@
-       capture.cleanup();
-     }
-     resetLogger();
-+    vi.restoreAllMocks();
-     vi.useRealTimers();
-   }
- });
-@@ -103,6 +104,13 @@
-       const logCapture = createDiagnosticLogRecordCapture();
-       logCaptures.push(logCapture);
-       vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
-+      const intervalAllocations: Array<{ timer: unknown; delay: unknown; stack: string }> = [];
-+      const originalSetInterval = globalThis.setInterval;
-+      vi.spyOn(globalThis, "setInterval").mockImplementation((callback, delay, ...args) => {
-+        const timer = originalSetInterval(callback, delay, ...args);
-+        intervalAllocations.push({ timer, delay, stack: new Error("interval allocation").stack ?? "" });
-+        return timer;
-+      });
-       const broker = createNodeDesktopStreamBroker();
-       const session = { connId: "conn-1", pairingGeneration: "generation-1" };
-       const baseUrl = await startBrokerServer({ broker, session });
-@@ -165,6 +173,20 @@
+@@ -165,6 +165,19 @@
        expect(serialized).not.toContain("resumed stream bytes");
        vi.advanceTimersByTime(25_000);
        expect(pings).toHaveLength(3);
 +      if (vi.getTimerCount() !== 0) {
-+        const clock = (originalSetInterval as unknown as {
++        const clock = (globalThis.setInterval as unknown as {
 +          clock: { timers: Record<string, { id: number; type: string; interval?: number; func: Function }>; jobs?: unknown[] };
 +        }).clock;
 +        console.error("BROKER_TIMER_DIAGNOSTIC", JSON.stringify({
 +          kind, closeMode, count: vi.getTimerCount(),
 +          timers: Object.values(clock.timers).map((timer) => ({
 +            id: timer.id, type: timer.type, interval: timer.interval,
-+            callback: String(timer.func).slice(0, 1000),
-+            allocation: intervalAllocations.find((entry) => Number(entry.timer) === timer.id)?.stack,
++            callback: String(timer.func).slice(0, 2000),
 +          })),
 +          jobs: clock.jobs?.length ?? 0,
 +        }));
