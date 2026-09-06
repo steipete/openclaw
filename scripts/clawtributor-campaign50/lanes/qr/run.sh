@@ -54,7 +54,7 @@ for (const [index, file] of process.argv.slice(2).entries()) {
   assert.equal(cases.length, index === 0 ? 30 : 2);
   for (const test of cases) {
     assert.equal(test.status, "passed");
-    if (index === 1) assert.match(test.title, /^keeps combined (?:qr|clawbot qr) output flags as one JSON document on stdout$/);
+    if (index === 1) assert.match(test.title, /^keeps combined '(?:qr|clawbot qr)' output flags as one JSON document on stdout$/);
   }
 }
 console.log("QR_COMMITTED_REGRESSIONS_GREEN: 30 owner cases and two built-CLI cases passed");

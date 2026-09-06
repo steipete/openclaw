@@ -2,9 +2,12 @@
 set -euo pipefail
 proof_dir="$1"
 evidence_dir="$2"
+mode="$3"
+case "$mode" in compare|green) ;; *) exit 64 ;; esac
 mkdir -p "$evidence_dir"
 git rev-parse HEAD > "$evidence_dir/baseline-sha.txt"
 git apply "$proof_dir/138411-tests.patch"
+if [[ "$mode" == compare ]]; then
 set +e
 node scripts/run-vitest.mjs extensions/file-transfer/src/tools/file-fetch-tool.test.ts -- --reporter=json --outputFile "$evidence_dir/baseline-tests.json" > "$evidence_dir/baseline-tests.log" 2>&1
 baseline_result=$?
@@ -16,9 +19,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 const report = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
 const names = [
-  "keeps the canonical basename through real staging and forwarding: Quarterly report.md",
-  "keeps the canonical basename through real staging and forwarding: train.py",
-  "keeps the canonical basename through real staging and forwarding: report.xlsx",
+  "keeps the canonical basename through real staging and forwarding: 'Quarterly report.md'",
+  "keeps the canonical basename through real staging and forwarding: 'train.py'",
+  "keeps the canonical basename through real staging and forwarding: 'report.xlsx'",
   "keeps Windows node basenames through real staging",
   "strips one leading UTF-8 BOM only from inline text",
 ];
@@ -45,6 +48,7 @@ for (const test of file.assertionResults) {
 }
 console.log("FILE_FETCH_BASELINE_RED: real saved/outbound basenames are missing");
 NODE
+fi
 git apply "$proof_dir/138411-production.patch"
 node scripts/run-vitest.mjs extensions/file-transfer/src/tools/file-fetch-tool.test.ts -- --reporter=json --outputFile "$evidence_dir/candidate-tests.json" 2>&1 | tee "$evidence_dir/candidate-tests.log"
 node --input-type=module - "$evidence_dir/candidate-tests.json" <<'NODE'

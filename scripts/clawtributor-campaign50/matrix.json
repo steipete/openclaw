@@ -1,22 +1,12 @@
 [
   {
-    "id": "ui-device-binding-green",
-    "directory": "ui",
+    "id": "file-fetch-green",
+    "directory": "file-fetch",
     "runner": "ubuntu-24.04",
-    "source": "2cfe54b5a223b62418525dda5d7a060a082cd38c",
+    "source": "2fc8eb0e7b1a97ebac5508dba6574498a9670670",
     "node": "24.20.0",
-    "pnpm": "12.3.4",
+    "pnpm": "12.1.0",
     "mode": "green",
-    "variant": "browser"
-  },
-  {
-    "id": "windows-anchor-diagnostic",
-    "directory": "windows",
-    "runner": "windows-2025",
-    "source": "c70504d917be818d111e074fb9e67354ebe2a04f",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "native-console"
+    "variant": "file-staging"
   }
 ]
