@@ -1,12 +1,12 @@
 [
   {
-    "id": "prepared-catalog-red",
-    "directory": "prepared-catalog",
-    "source": "3967d9b6df1f478c32b0c4127bbadf5c51f1878f",
+    "id": "ios-focus-resolution",
+    "directory": "ios-focus-resolution",
+    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
     "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "restart-boundaries",
-    "runner": "ubuntu-24.04",
+    "mode": "baseline",
+    "variant": "resolution-only",
+    "runner": "macos-26",
     "node": "24.20.0"
   }
 ]

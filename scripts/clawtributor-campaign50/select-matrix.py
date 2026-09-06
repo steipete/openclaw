@@ -18,8 +18,8 @@ for row in rows:
     if row["id"] in seen:
         raise ValueError("duplicate proof lane")
     seen.add(row["id"])
-    if row["runner"] not in {"ubuntu-22.04", "ubuntu-24.04", "windows-2025"}:
-        raise ValueError("proof requires an explicit GitHub-hosted Ubuntu or Windows image")
+    if row["runner"] not in {"ubuntu-22.04", "ubuntu-24.04", "windows-2025", "macos-26"}:
+        raise ValueError("proof requires an explicit GitHub-hosted Ubuntu, Windows or macOS image")
     if not re.fullmatch(r"[a-f0-9]{40}", row["source"]):
         raise ValueError("proof source must be an immutable full SHA")
     for key in ("node", "pnpm"):
@@ -31,6 +31,11 @@ for row in rows:
     runner = root / "lanes" / row["directory"] / entrypoint
     if not runner.is_file() or runner.is_symlink():
         raise ValueError("missing regular reviewed lane runner")
+    if row["runner"] == "macos-26":
+        for name in ("preflight-macos.py", "bootstrap-macos.sh"):
+            helper = root / name
+            if not helper.is_file() or helper.is_symlink():
+                raise ValueError("missing regular reviewed macOS bootstrap")
 matrix = json.dumps({"include": rows}, separators=(",", ":"))
 print(matrix)
 with open(os.environ["GITHUB_OUTPUT"], "a") as output:

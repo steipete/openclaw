@@ -42,11 +42,23 @@ jobs:
           ref: ${{ matrix.source }}
           path: target
           persist-credentials: false
+      - name: Verify exact macOS proof host
+        if: runner.os == 'macOS'
+        id: mac-preflight
+        env:
+          PROOF_LANE: ${{ matrix.id }}
+          SOURCE_SHA: ${{ matrix.source }}
+        run: |
+          set -euo pipefail
+          evidence="$GITHUB_WORKSPACE/evidence/$PROOF_LANE"
+          mkdir -p "$evidence"
+          python3 "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/preflight-macos.py" \
+            "$GITHUB_WORKSPACE/target" "$evidence"
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: ${{ matrix.node }}
       - name: Run isolated source-bound proof
-        if: runner.os != 'Windows'
+        if: runner.os == 'Linux'
         env:
           PROOF_LANE: ${{ matrix.id }}
           PROOF_DIRECTORY: ${{ matrix.directory }}
@@ -69,6 +81,42 @@ jobs:
             "$GITHUB_WORKSPACE/target" \
             "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/lanes/$PROOF_DIRECTORY" \
             "$evidence"
+      - name: Run isolated macOS source-bound proof
+        if: runner.os == 'macOS'
+        env:
+          PROOF_LANE: ${{ matrix.id }}
+          PROOF_DIRECTORY: ${{ matrix.directory }}
+          PROOF_MODE: ${{ matrix.mode }}
+          PROOF_VARIANT: ${{ matrix.variant }}
+          SOURCE_SHA: ${{ matrix.source }}
+          NODE_VERSION: ${{ matrix.node }}
+          PNPM_VERSION: ${{ matrix.pnpm }}
+          DEVELOPER_DIR: ${{ steps.mac-preflight.outputs.developer_dir }}
+        run: |
+          set -euo pipefail
+          [[ "$RUNNER_ENVIRONMENT" == github-hosted && "$RUNNER_OS" == macOS ]]
+          [[ "$CI" == true && "$GITHUB_ACTIONS" == true ]]
+          evidence="$GITHUB_WORKSPACE/evidence/$PROOF_LANE"
+          task_root="$(mktemp -d /tmp/oc-proof-XXXXXX)"
+          mkdir -m 700 "$task_root/home" "$task_root/tmp"
+          set +e
+          env -i PATH="$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH" \
+            HOME="$task_root/home" CFFIXED_USER_HOME="$task_root/home" \
+            TMPDIR="$task_root/tmp/" TMP="$task_root/tmp" TEMP="$task_root/tmp" \
+            CI="$CI" GITHUB_ACTIONS="$GITHUB_ACTIONS" RUNNER_OS="$RUNNER_OS" \
+            RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" RUNNER_TEMP="$RUNNER_TEMP" \
+            RUNNER_TRACKING_ID="$RUNNER_TRACKING_ID" DEVELOPER_DIR="$DEVELOPER_DIR" \
+            LANG=en_US.UTF-8 TZ=UTC \
+            PROOF_LANE="$PROOF_LANE" PROOF_MODE="$PROOF_MODE" PROOF_VARIANT="$PROOF_VARIANT" \
+            SOURCE_SHA="$SOURCE_SHA" NODE_VERSION="$NODE_VERSION" PNPM_VERSION="$PNPM_VERSION" \
+            bash "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/bootstrap-macos.sh" \
+            "$GITHUB_WORKSPACE/target" \
+            "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/lanes/$PROOF_DIRECTORY" \
+            "$evidence" "$task_root" > "$evidence/bootstrap.log" 2>&1
+          proof_exit=$?
+          set -e
+          printf 'macOS proof exited %s; retained artifacts: %s\n' "$proof_exit" "$evidence"
+          exit "$proof_exit"
       - name: Run isolated Windows source-bound proof
         if: runner.os == 'Windows'
         shell: pwsh

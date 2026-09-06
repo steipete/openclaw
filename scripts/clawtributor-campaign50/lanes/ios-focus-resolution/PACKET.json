@@ -1,0 +1,20 @@
+{
+  "pr": 136179,
+  "stage": "resolution-only",
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "mode": "baseline",
+  "variant": "resolution-only",
+  "status": "Artifact-only; independent packet and Mac-route review plus root dispatch required",
+  "acceptedHostPacketSha256": "c2cb5165548264cd2d8076d7f4a07f38e3f139e78daa09958ac0959fea76e0c5",
+  "artifactHashes": {
+    "HOST-PACKET.json": "c2cb5165548264cd2d8076d7f4a07f38e3f139e78daa09958ac0959fea76e0c5",
+    "Host/FocusHost.swift": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+    "README.md": "0d7160d5b144164d7e4b8c45dc83943ab5e6c9108c1fbc19dacddfea503f06fb",
+    "UITests/FocusUITests.swift": "bbf2fe54aba293f8112bc6b61701d47bcb2dd6dd1b82951238bf239496488038",
+    "project.template.yml": "f8b51eb78ee627acca9ea64ef593a31638c3bab441f9fe814000febcca7bc2bc",
+    "resolve.py": "f117422816f1e74217dafd97a9f969cfd9b25e5ba164f843cf5898af989f87ef",
+    "run.sh": "6a40bb56c5ed015eacedb08b44f3f0a5cea9b624dbc949737c0cb9eac08765f6"
+  },
+  "scope": "Generate accepted test project, capture SwiftPM immutable resolution only; no app build/signing/Simulator/UI execution. Successful output remains unadmitted.",
+  "followThrough": "Root and independent review of captured lock/source/toolchain receipt; separately reviewed locked baseline/candidate use exact admitted file/revisions with no unlocked resolution fallback."
+}
