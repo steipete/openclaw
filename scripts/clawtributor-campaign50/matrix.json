@@ -1,11 +1,11 @@
 [
   {
-    "id": "anthropic-context-limit-red",
-    "directory": "anthropic-context-limit",
-    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+    "id": "model-status-case-three-id-red",
+    "directory": "model-status-case-three-id",
+    "source": "55d979e5187e544230808cb7ab906828c3e3f603",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "native-http",
+    "variant": "three-id-once",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   }

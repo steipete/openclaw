@@ -1,0 +1,32 @@
+{
+  "pr": 140099,
+  "lane": "model-status-case-three-id-red",
+  "mode": "red",
+  "sourceSha": "55d979e5187e544230808cb7ab906828c3e3f603",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "productionOverlay": false,
+  "priorBaseline": {
+    "run": 34051769923,
+    "job": 101536569617,
+    "outcome": "NONREPRODUCTION",
+    "controlExit": 0,
+    "caseExit": 0,
+    "cleanupFailures": 0
+  },
+  "scope": "One distinct three-ID ordinary CLI baseline after independent acceptance. If also healthy, stop qualification; do not rerun or edit production.",
+  "control": "Reader Completions; Writer Responses; reader API absent",
+  "collision": "Reader Completions; rEaDeR Responses; reader API absent",
+  "entry": "run.sh TARGET LANE EVIDENCE red",
+  "reviewStatus": "independently accepted for one baseline only; actual red unobserved",
+  "files": {
+    "BASELINE-THREE-ID-DESIGN.md": "01e9811a7a3b9410fe2bcc727b7409d02e76c6621dc349f1fd1cda798e6963ad",
+    "run.sh": "5a3a06b8f7127b067303db8ba4629fccdbba26656d86c151beb6fd2b4607f5d2",
+    "status-case-baseline.mjs": "ca94b18f43f970ef7bce2a021af65e0c5e1b2ce351d5789e978ec05f9657db77",
+    "source-files.sha256": "b08c9ab7798835a136316767b33d6c12416af6c1e58163c2938411fbcbe3cffb"
+  },
+  "review": {
+    "path": "INDEPENDENT-THREE-ID-DRIVER.md",
+    "sha256": "31a9d6e10ce594e9b0b3a059514b6089fb77e0b287be2ce6e920b36cdebe189d"
+  }
+}
