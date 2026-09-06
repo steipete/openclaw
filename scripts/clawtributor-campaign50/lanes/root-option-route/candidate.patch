@@ -1,0 +1,80 @@
+diff --git a/src/infra/cli-root-options.ts b/src/infra/cli-root-options.ts
+index 34849cc95de1c05381666a959715cf530489a363..71c15675cdeaae80a3b12d194e839984ee335973 100644
+--- a/src/infra/cli-root-options.ts
++++ b/src/infra/cli-root-options.ts
+@@ -172,7 +172,7 @@
+         valueFlags,
+         options.mode,
+       );
+-      if (optionConsumed === 0) {
++      if (optionConsumed === 0 || commandIndex === 0) {
+         return null;
+       }
+       index += optionConsumed - 1;
+diff --git a/src/infra/cli-root-options.test.ts b/src/infra/cli-root-options.test.ts
+index 56e7a1ff7dc68b6d80591764ef87670fa6dfbd0b..27da1e085f5030496da17684dd438d7c7fa5bc1f 100644
+--- a/src/infra/cli-root-options.test.ts
++++ b/src/infra/cli-root-options.test.ts
+@@ -54,6 +54,27 @@
+ });
+ 
+ describe("literal command discovery", () => {
++  it.each(["route", "command-path"] as const)(
++    "requires the root command before command options in %s mode",
++    (mode) => {
++      const options = { commandPath: ["models"], booleanFlags: ["--json"], mode };
++      expect(
++        getCommandPositionalsWithRootOptions(
++          ["node", "openclaw", "--json", "models", "status"],
++          options,
++        ),
++      ).toBeNull();
++      for (const args of [
++        ["models", "--json", "status"],
++        ["--profile", "models", "models", "--json", "status"],
++      ]) {
++        expect(
++          getCommandPositionalsWithRootOptions(["node", "openclaw", ...args], options),
++        ).toEqual(["status"]);
++      }
++    },
++  );
++
+   it.each([
+     { args: ["--", "config", "get"], expected: ["config", "get"] },
+     { args: ["--profile", "work", "--", "config", "get"], expected: ["config", "get"] },
+diff --git a/src/cli/program/route-args.test.ts b/src/cli/program/route-args.test.ts
+index 03d3be06bd5168366375602e0d7e0d726099b35d..86d9ca855f60c2068683cca07e8365eece2c1e98 100644
+--- a/src/cli/program/route-args.test.ts
++++ b/src/cli/program/route-args.test.ts
+@@ -93,6 +93,17 @@
+     });
+   });
+ 
++  it("defers command options placed before status or health to Commander", () => {
++    expect(parseStatusRouteArgs(["node", "openclaw", "--json", "status"])).toBeNull();
++    expect(parseHealthRouteArgs(["node", "openclaw", "--json", "health"])).toBeNull();
++    expect(parseHealthRouteArgs(["node", "openclaw", "--verbose", "health"])).toBeNull();
++    expect(parseHealthRouteArgs(["node", "openclaw", "--timeout=5000", "health"])).toBeNull();
++    expect(parseHealthRouteArgs(["node", "openclaw", "--timeout", "5000", "health"])).toBeNull();
++    expect(
++      parseStatusRouteArgs(["node", "openclaw", "--profile", "work", "status", "--json"]),
++    ).toMatchObject({ json: true });
++  });
++
+   it.each([
+     {
+       name: "health unknown flag",
+diff --git a/docs/cli/index.md b/docs/cli/index.md
+index b8fe0efb8557fe990999fae5cdcd3b4cb7dd93f2..1e09eaae05f756087355d91fb27960d95100b85d 100644
+--- a/docs/cli/index.md
++++ b/docs/cli/index.md
+@@ -47,6 +47,8 @@
+ | `--no-color`            | Disable ANSI colors (`NO_COLOR=1` is also respected)                                                    |
+ | `--update`              | Shorthand for [`openclaw update`](/cli/update); works for both source checkouts and package installs    |
+ | `-V`, `--version`, `-v` | Print version and exit                                                                                  |
++
++Place command-specific options after their command name, for example `openclaw status --json`. Global options such as `--profile` can precede the command.
+ 
+ A named `--profile` replaces canonical state and config paths inherited from
+ another profile, including a running Gateway service. Explicitly customized

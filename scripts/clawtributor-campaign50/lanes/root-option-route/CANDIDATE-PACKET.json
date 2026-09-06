@@ -1,0 +1,47 @@
+{
+  "pr": 137114,
+  "base": "7475087fa97a73587e2b15ac514733ae3bbfa024",
+  "contributorHead": "d9873a3318ba04a3d18d4a36e730853b4e6b3360",
+  "status": "Accepted source adopted and staged in pending normal main merge; both composed reviews clean, candidate runtime and commit/push pending",
+  "files": {
+    "src/infra/cli-root-options.ts": "e993df98822479a1a611f3eb82962831df92e1fde746c611c975bbef4506b677",
+    "src/infra/cli-root-options.test.ts": "60afe63de58e7667bd6deb3813507ce0029d0e88d924a35f5e2b32ce9dd81d22",
+    "src/cli/program/route-args.test.ts": "1226b59d8a958740d71814af167d0cdef429d83074111279042fe048eea83729",
+    "docs/cli/index.md": "568f96eb0c7361eee30ad7e9afe04e804d29f0e417c2a839c4f741189e7bc6e9",
+    "src/cli/program/route-args.ts": "0d17d8b2824a59686fc90269467f46e78187d51bb5d54d752f89d355b87f5513"
+  },
+  "stats": {
+    "src/infra/cli-root-options.ts": {
+      "added": 1,
+      "deleted": 1
+    },
+    "src/infra/cli-root-options.test.ts": {
+      "added": 21,
+      "deleted": 0
+    },
+    "src/cli/program/route-args.test.ts": {
+      "added": 11,
+      "deleted": 0
+    },
+    "docs/cli/index.md": {
+      "added": 2,
+      "deleted": 0
+    }
+  },
+  "productionNet": 0,
+  "testsNet": 32,
+  "docsNet": 2,
+  "artifacts": {
+    "candidate.patch": "24bc2e5feef30cc2788ed02f0d04c8ce527356be061ba20c6bfee8d893c192b5",
+    "regression-tests.patch": "a6a3c7e5ee8af3de14e3c8924c0e3c94d2b4ca264018ee17e23a7017512b50c3"
+  },
+  "proofArtifacts": {
+    "candidate-cli.mjs": "112b29bce7b275632bb4a6f1294441a4ce6af0c97ae7461158d0e30ac112b99f",
+    "parser-candidate.mjs": "a5fd14913386b7822419a8b557fa53da331dbe3810d7212c9c898337b9f04629",
+    "parser-changed-boundaries.mjs": "f5c3e6347c13e39360c87243cd30045211e6c710f2ea898965028dfe3a5e0087",
+    "verify-unit.mjs": "63e6d80726ba8c0bd600df022c16a6e120cc96d55e63d8c3ce9cef452f0822ba",
+    "run.sh": "85e0ff8c14bea789674afa9f99197d682960ea6df4ded97d6cd7a4351571d5da"
+  },
+  "unchangedSourceRequirement": "src/cli/program/route-args.ts must equal baseline747 exactly, removing the incoming duplicate scanner",
+  "composedDiffSha256": "cc0e823235b7bde780cc484f80c6433149ac930b2161227be65e3eae801951c8"
+}

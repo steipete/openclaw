@@ -2,15 +2,14 @@
   "pr": 138345,
   "head": "48c2ae6392b0d6ab448357ddbd7b13cd572f55cf",
   "base": "eb08c36779e624193a3e92812a3dfde74979f5f5",
-  "mode": "red",
+  "mode": "green",
   "node": "24.20.0",
   "pnpm": "12.3.4",
   "vitest": "4.1.11",
   "artifacts": {
-    "run.sh": "b802f64d85bb4483b28a88b3aa894faf03112e139382fc8ad4570883c16d2074",
-    "regression-tests.patch": "bcf4cdb1f116566109ddb8d77d306d4d0d057923baf7a9f713ab034291df2fda",
-    "silent-reply-prompt-mode.e2e.test.ts": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d",
-    "verify-red.py": "aafee1c764592cf0fd4fdd4e40627389bd8f675c4398ba37190b04ce3b975004"
+    "run.sh": "f009bb4411594a19a907a9c15b09031027b25edaa88b97594f557d5862759f05",
+    "verify-green.py": "4ddc1112b7e1cf5b267edeffddf6fde9177f3fbe191b662e268b19b909347d59",
+    "candidate.patch": "776d0a992ff5c443db42a1b60b3ec097712e03d0d1297559a239a5acd4049feb"
   },
   "baselineFiles": {
     "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "91da0190edc80a0a8e6723d19e25e0d831e7930080f8b71bd94af39cab8835dc",
@@ -32,5 +31,11 @@
     "test/vitest/vitest.e2e.global-setup.ts": "7f876f55d8a12ef5f0b0d27a655eedfa223ef6b214c0180eadcd4591e13e4861",
     "extensions/qa-lab/src/gateway-child-command.ts": "4ac6b0900fd17fa9da9a2821afa171f881cbadf7bfc2813f300fed140c2e6fca",
     "extensions/qa-lab/src/gateway-child-env.ts": "823c6e723fa0f2c33d9b2e9f9e3310a5edd5e11e1db4525b227b5eca0a51f35c"
-  }
+  },
+  "candidateFiles": {
+    "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "5c433abfc206d3556a05301efbfc8136f5def1faee098ce7e22285e40885b427",
+    "test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d"
+  },
+  "baselineProofRun": 34030276700,
+  "baselineFlowHash": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d"
 }

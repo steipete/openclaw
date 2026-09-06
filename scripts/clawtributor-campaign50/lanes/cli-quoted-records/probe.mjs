@@ -6,8 +6,9 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 assert.equal(process.platform, "linux", "This proof is pinned to Linux");
-const [mode, evidencePath] = process.argv.slice(2);
+const [mode, evidencePath, subset = "all"] = process.argv.slice(2);
 assert.ok(mode === "red" || mode === "green");
+assert.ok(subset === "all" || (subset === "remaining" && mode === "red"));
 assert.ok(evidencePath);
 // The outer workflow verifies the host; these are its existing routing markers.
 assert.equal(process.env.CI, "1");
@@ -56,10 +57,11 @@ try {
   const realError = "CLI_QUOTED_RECORDS_REAL_ERROR";
   const init = JSON.stringify({ type: "init", session_id: "synthetic-cli-session" });
   const result = JSON.stringify({ type: "result", result: resultText });
+  const jsonlMessage = JSON.stringify({ item: { type: "message", text: resultText } });
   const quotedError = `banner "example {"type":"error","message":"${fakeError}"}"`;
   const quotedBrace = 'banner "use { to begin JSON"';
   const escapedBanner = String.raw`banner "example {\"type\":\"error\",\"message\":\"fake\"}"`;
-  const cases = [
+  const allCases = [
     { id: "whole-json", output: "json", raw: result, red: "result" },
     {
       id: "ordinary-banner",
@@ -83,13 +85,13 @@ try {
     {
       id: "jsonl-line-local",
       output: "jsonl",
-      raw: `banner "unterminated\n${init}\n${result}\n`,
+      raw: `banner "unterminated\n${init}\n${jsonlMessage}\n`,
       red: "result",
     },
     {
       id: "jsonl-quoted-brace",
       output: "jsonl",
-      raw: `${quotedBrace} ${init} ${result}\n`,
+      raw: `${quotedBrace} ${init} ${jsonlMessage}\n`,
       red: "raw",
     },
     {
@@ -105,6 +107,15 @@ try {
       red: "real-error",
     },
   ];
+  const remainingIds = new Set([
+    "jsonl-line-local",
+    "jsonl-quoted-brace",
+    "real-error",
+    "mixed-real-error",
+  ]);
+  const cases =
+    subset === "remaining" ? allCases.filter((entry) => remainingIds.has(entry.id)) : allCases;
+  assert.equal(cases.length, subset === "remaining" ? 4 : 9);
   const childPath = path.join(root, "child.cjs");
   const fixturePath = path.join(root, "cases.json");
   await writeFile(fixturePath, JSON.stringify(cases));
@@ -223,6 +234,7 @@ process.stdin.on("end", () => {
   const cleanupFailures = [];
   const evidence = {
     mode,
+    subset,
     completed,
     observations,
     scope: "stateless side-question reply decoding; session metadata is covered by parser tests",

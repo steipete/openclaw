@@ -1,0 +1,27 @@
+{
+  "status": "independent baseline proof review cleared; awaiting whole-infrastructure review/dispatch",
+  "pr": 139540,
+  "contributor_head": "8483ef461131beae79d80c689cb3060dab295948",
+  "source_base": "8964a4d8dc2f24979c773fbf96bc4a3ca79ed5f2",
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "vitest": "5.0.0",
+  "mode": "baseline",
+  "entrypoint": "run.sh",
+  "owner": {
+    "path": "src/agents/subagents/registry/subagent-list.ts",
+    "baseline_sha256": "5604c8dd868c4cd712fe6ad61fec0fb24486610e50b3bc0ef38fd5a13205c6aa",
+    "candidate_sha256": "9837dd7e7f75e2147fb278d5b61502ac30dcb11cd942cb462b75be1d965c91b0"
+  },
+  "files": {
+    "run.sh": "75028a3029152afbdd1947fd8f7a4fe61298a8da70a97547e5d00c9157b6ef21",
+    "subagent-list-metadata.proof.mts": "e844f5d4858b5eb86f0a508513f4c2ddfe0b04c82fbd79eaa14dba46879cb593"
+  },
+  "execution": "secretless hosted only; none performed locally",
+  "scope": "existing list projection selection only; production unchanged until baseline evidence",
+  "isolation": {
+    "reviewed_infra_commit": "3c7721011f200903af2b8dbf57422de0e6260637",
+    "workflow": ".github/workflows/clawtributor-campaign50-proof.yml:60-72",
+    "contract": "github-hosted only; env-i with task-owned temporary HOME; bootstrap creates HOME and pins clean source/Node/pnpm before target; child XDG/TMP namespaces are lane-state owned"
+  }
+}

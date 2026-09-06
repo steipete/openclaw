@@ -1,8 +1,8 @@
 diff --git a/src/agents/embedded-agent-subscribe.handlers.tools.test.ts b/src/agents/embedded-agent-subscribe.handlers.tools.test.ts
-index 20fc223eb0f7d66064479933d3e0e37598fa99c2..0a3c60b69c0078aee11acf4a8e60aad7e1be73da 100644
+index a781502b155..2ec51ddce46 100644
 --- a/src/agents/embedded-agent-subscribe.handlers.tools.test.ts
 +++ b/src/agents/embedded-agent-subscribe.handlers.tools.test.ts
-@@ -412,7 +412,7 @@ describe("handleToolExecutionStart read path checks", () => {
+@@ -486,7 +486,7 @@ describe("handleToolExecutionStart read path checks", () => {
                "- Staging (Recommended): Safer default",
                "- Production",
                "",
@@ -12,10 +12,10 @@ index 20fc223eb0f7d66064479933d3e0e37598fa99c2..0a3c60b69c0078aee11acf4a8e60aad7
            },
            {
 diff --git a/src/agents/harness/user-input-bridge.ts b/src/agents/harness/user-input-bridge.ts
-index 66464a8fa31db2ef032db32c6288a9ab67275ad2..7b271e5f2ac61de704393273414eb162eb8840bc 100644
+index c4f88240859..dbefd8f4511 100644
 --- a/src/agents/harness/user-input-bridge.ts
 +++ b/src/agents/harness/user-input-bridge.ts
-@@ -108,16 +108,14 @@ function buildAgentHarnessQuestionPresentation(params: {
+@@ -109,16 +109,14 @@ function buildAgentHarnessQuestionPresentation(params: {
      return undefined;
    }
    // The question stays in its own leading text block so reaction/native
@@ -36,7 +36,7 @@ index 66464a8fa31db2ef032db32c6288a9ab67275ad2..7b271e5f2ac61de704393273414eb162
      blocks: [
 diff --git a/test/contracts/ask-user-msteams-presentation.test.ts b/test/contracts/ask-user-msteams-presentation.test.ts
 new file mode 100644
-index 0000000000000000000000000000000000000000..8ea65109b6ee39b8cfc229a1bb79314380a754bf
+index 00000000000..8ea65109b6e
 --- /dev/null
 +++ b/test/contracts/ask-user-msteams-presentation.test.ts
 @@ -0,0 +1,54 @@

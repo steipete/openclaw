@@ -1,3 +1,3 @@
-e5e3237e1680c520f83fa6df171776701fb82570897064518e2dccb481d76f2a  src/agents/harness/user-input-bridge.ts
-4a73643300391f1b299737b2dc467cc86d58a4eff09943bf4d328ff2360c5747  src/agents/embedded-agent-subscribe.handlers.tools.test.ts
+f53b4d72bbd90a64e567ff0bf2f14940426023c9caccaaeed9ed1e1abded30c8  src/agents/harness/user-input-bridge.ts
+ff59f5389e24d32252024b7c1c09f0cb3fecb48d791b55b50d06ad4fc94583fb  src/agents/embedded-agent-subscribe.handlers.tools.test.ts
 f8bb08b8f946a1ab79c73a6185fdaa4cbd959587d572bc76e02916ebb1e3722a  test/contracts/ask-user-msteams-presentation.test.ts

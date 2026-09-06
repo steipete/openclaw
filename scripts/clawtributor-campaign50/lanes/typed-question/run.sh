@@ -3,96 +3,66 @@ set -euo pipefail
 proof_target=$1
 proof_lane=$2
 proof_evidence=$3
-case "$4" in compare) ;; *) exit 2 ;; esac
-mkdir -p "$proof_evidence/baseline" "$proof_evidence/candidate"
+case "$4" in green) ;; *) exit 2 ;; esac
+mkdir -p "$proof_evidence/candidate"
 cd "$proof_target"
 python3 - "$proof_lane" "$proof_evidence" <<'PY_SETUP'
 import hashlib,json,pathlib,subprocess,sys
 lane=pathlib.Path(sys.argv[1]); evidence=pathlib.Path(sys.argv[2])
-base='fae213cdba6ca364c2fd5f44a6eb3a6540b06048'
+base='0ebb320906da7e1727934b3cf816cedf98270357'
+patch='e63584e0ce8ea0df7a75c77c647a48bef6e8679f6143d83f54a105a0995dc494'
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==base
 assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],text=True).strip()
 assert subprocess.check_output(['node','--version'],text=True).strip()=='v24.20.0'
 package=json.loads(pathlib.Path('package.json').read_text())
-assert package['packageManager'].split('+',1)[0]=='pnpm@12.1.0'
-assert package['devDependencies']['vitest']=='4.1.11'
-for name,expected in {
- 'candidate.patch':'453189bed9fed6ae6e062b6147419ba3cac3a9d3ddb6ddae300f7eea1e76c5d8',
- 'tests.patch':'a3e258d55a7eaf43aca8443ec0fea1dcde149f5314f24084fd8bf220608c105a',
-}.items():
- assert hashlib.sha256((lane/name).read_bytes()).hexdigest()==expected,name
-(evidence/'question-source.json').write_text(json.dumps({'base':base,'node':'24.20.0','pnpm':'12.1.0','vitest':'4.1.11','candidatePatch':'453189bed9fed6ae6e062b6147419ba3cac3a9d3ddb6ddae300f7eea1e76c5d8'},indent=2)+'\n')
+assert package['packageManager'].split('+',1)[0]=='pnpm@12.3.4'
+assert package['devDependencies']['vitest']=='5.0.0'
+assert hashlib.sha256((lane/'candidate.patch').read_bytes()).hexdigest()==patch
+assert hashlib.sha256((lane/'candidate-files.sha256').read_bytes()).hexdigest()=='016d3dcb4d0424a336e1913b4d55e96a2cb09a1e87eb076b62b7834024f970ae'
+(evidence/'question-source.json').write_text(json.dumps({'base':base,'node':'24.20.0','pnpm':'12.3.4','vitest':'5.0.0','candidatePatch':patch,'historicalProofRun':34026143939,'mode':'green-only'},indent=2)+'\n')
 PY_SETUP
-validate_report() {
-  python3 - "$1" "$2" "$3" "$4" <<'PY_REPORT'
-import json,pathlib,re,sys
-report=pathlib.Path(sys.argv[1]); code=int(sys.argv[2]); mode=sys.argv[3]; source=sys.argv[4]
-data=json.loads(report.read_text()); log=re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]','',report.with_suffix('.log').read_text())
-assert all(re.search(r'(?m)^\s*'+label+r'\s',log) for label in ['Test Files','Tests','Start at','Duration']), 'Completed verbose run summary missing'
-assert not re.search(r'Vitest caught \d+ unhandled error|Unhandled Errors|Unhandled Rejection|Uncaught Exception|EnvironmentTeardownError|Failed Suites',log), 'Runtime/suite failure is not behavior proof'
-assert all(not suite.get('message') for suite in data['testResults']), 'Suite load/runtime error'
-checks=[a for suite in data['testResults'] for a in suite['assertionResults']]
-assert checks and all(a['status'] in ('passed','failed') for a in checks), 'No skipped or missing proof assertions'
-assert all(suite['name'].replace('\\','/').endswith(source) for suite in data['testResults'])
-if mode=='baseline':
- assert code==1 and data['numFailedTests']==2 and data['numPassedTests']==0 and len(checks)==2
- expected={
-  'remains actionable without question buttons (isOther=false)':'Reply with the number or option text.',
-  'remains actionable without question buttons (isOther=true)':'Reply with the number, the option text, or your own answer.',
- }
- assert {a['title'] for a in checks}==set(expected)
- headers=list(re.finditer(r'^ *FAIL [^\n]*$',log,re.M))
- for assertion in checks:
-  assert len(assertion.get('failureMessages',[]))==1, 'Extra test or hook failure alongside the card mismatch'
-  message='\n'.join(assertion['failureMessages'])
-  assert 'AssertionError' in message and 'ask-user-msteams-presentation.test.ts:41:' in message, 'Failure did not reach the actual card expectation'
-  title=' > '.join([*assertion['ancestorTitles'],assertion['title']])
-  blocks=[log[h.end():headers[i+1].start() if i+1<len(headers) else len(log)] for i,h in enumerate(headers) if source in h[0] and h[0].rstrip().endswith(' > '+title)]
-  assert len(blocks)==1, 'Expected one named renderer failure block'
-  block=blocks[0]
-  assert 'presentationCard' in block and 'AssertionError' in block
-  assert re.search(r'^-.*'+re.escape(expected[assertion['title']]),block,re.M), 'Typed guidance absent from expected card diff'
-  assert re.search(r'^\+.*Tap an option',block,re.M), 'Original tap instruction absent from received card diff'
- verdict='EXPECTED_CARD_FAILURE_CONFIRMED'
-else:
- assert mode=='candidate' and code==0 and data['success'] is True
- assert data['numFailedTests']==0 and data['numPassedTests']==len(checks)
- assert all(a['status']=='passed' for a in checks)
- if source=='test/contracts/ask-user-msteams-presentation.test.ts':
-  assert len(checks)==2 and {a['title'] for a in checks}=={
-   'remains actionable without question buttons (isOther=false)',
-   'remains actionable without question buttons (isOther=true)',
-  }
- if source=='src/agents/embedded-agent-subscribe.handlers.tools.test.ts':
-  assert sum(a['title']=='delivers a numbered ask_user prompt with question id association' for a in checks)==1
- verdict='PASS'
-result={'file':source,'mode':mode,'verdict':verdict,'passed':data['numPassedTests'],'failed':data['numFailedTests']}
-report.with_suffix('.verdict.json').write_text(json.dumps(result,indent=2)+'\n')
-print(json.dumps(result))
-PY_REPORT
-}
-run_file() {
-  local proof_phase=$1
-  local proof_file=$2
-  local proof_key=${proof_file//\//_}
-  set +e
-  node scripts/run-vitest.mjs "$proof_file" --reporter=verbose --reporter=json --outputFile="$proof_evidence/$proof_phase/$proof_key.json" >"$proof_evidence/$proof_phase/$proof_key.log" 2>&1
-  proof_exit=$?
-  set -e
-  validate_report "$proof_evidence/$proof_phase/$proof_key.json" "$proof_exit" "$proof_phase" "$proof_file"
-}
-git apply "$proof_lane/tests.patch"
-run_file baseline test/contracts/ask-user-msteams-presentation.test.ts
-git apply --reverse "$proof_lane/tests.patch"
 git apply "$proof_lane/candidate.patch"
 proof_files=(
   test/contracts/ask-user-msteams-presentation.test.ts
   test/extension-test-boundary.test.ts
   src/agents/embedded-agent-subscribe.handlers.tools.test.ts
   extensions/msteams/src/welcome-card.test.ts
+  src/infra/question-channel-runtime.generation.test.ts
 )
 for proof_file in "${proof_files[@]}"; do
-  run_file candidate "$proof_file"
+  proof_key=${proof_file//\//_}
+  set +e
+  node scripts/run-vitest.mjs "$proof_file" --reporter=verbose --reporter=json --outputFile="$proof_evidence/candidate/$proof_key.json" >"$proof_evidence/candidate/$proof_key.log" 2>&1
+  proof_exit=$?
+  set -e
+  python3 - "$proof_evidence/candidate/$proof_key.json" "$proof_exit" "$proof_file" <<'PY_REPORT'
+import json,pathlib,re,sys
+report=pathlib.Path(sys.argv[1]); code=int(sys.argv[2]); source=sys.argv[3]
+data=json.loads(report.read_text()); log=re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]','',report.with_suffix('.log').read_text())
+assert all(marker in log for marker in ('Test Files','Tests','Start at','Duration')), 'Incomplete verbose run summary'
+assert not re.search(r'Vitest caught \d+ unhandled error|Unhandled Errors|Unhandled Rejection|Uncaught Exception|EnvironmentTeardownError|Failed Suites',log), 'Global or suite failure'
+assert all(not suite.get('message') for suite in data['testResults']), 'Suite load/runtime error'
+checks=[a for suite in data['testResults'] for a in suite['assertionResults']]
+assert checks and all(a['status']=='passed' and not a.get('failureMessages') for a in checks), 'No failed, skipped, missing or extra-error assertions'
+assert code==0 and data['success'] is True and data['numFailedTests']==0
+assert data['numPassedTests']==len(checks)==data['numTotalTests']
+assert all(suite['name'].replace('\\','/').endswith(source) for suite in data['testResults'])
+if source=='test/contracts/ask-user-msteams-presentation.test.ts':
+ assert len(checks)==2 and {a['title'] for a in checks}=={
+  'remains actionable without question buttons (isOther=false)',
+  'remains actionable without question buttons (isOther=true)',
+ }
+if source=='src/agents/embedded-agent-subscribe.handlers.tools.test.ts':
+ assert sum(a['title']=='delivers a numbered ask_user prompt with question id association' for a in checks)==1
+if source=='src/infra/question-channel-runtime.generation.test.ts':
+ assert len(checks)==2 and {a['title'] for a in checks}=={
+  'keeps a queued tool prompt on its expired question after the id is reused',
+  'keeps a queued harness prompt on its expired question after the id is reused',
+ }
+result={'file':source,'verdict':'PASS','passed':len(checks),'failed':0,'skipped':0}
+report.with_suffix('.verdict.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result))
+PY_REPORT
 done
 python3 - "$proof_lane" "$proof_evidence" <<'PY_FINAL'
 import hashlib,json,pathlib,sys
@@ -104,6 +74,6 @@ for line in (lane/'candidate-files.sha256').read_text().splitlines():
 assert len(hashes)==3
 (evidence/'candidate-files-verified.json').write_text(json.dumps(hashes,indent=2)+'\n')
 reports=[json.loads(p.read_text()) for p in (evidence/'candidate').glob('*.verdict.json')]
-assert len(reports)==4 and all(r['verdict']=='PASS' for r in reports)
-(evidence/'verdict.json').write_text(json.dumps({'verdict':'PASS','kind':'shared-question-producer-real-Teams-renderer','baseline':'two actual-card assertion failures','candidate':reports,'liveService':False,'retainedTelegramProof':'separate contributor-provided evidence'},indent=2)+'\n')
+assert len(reports)==5 and all(r['verdict']=='PASS' for r in reports)
+(evidence/'verdict.json').write_text(json.dumps({'verdict':'PASS','kind':'composed-question-renderer-handler-delivery','base':'0ebb320906da7e1727934b3cf816cedf98270357','candidate':reports,'historicalRedAnd209ProofRun':34026143939,'liveService':False,'retainedTelegramProof':'separate historical contributor loopback evidence'},indent=2)+'\n')
 PY_FINAL

@@ -1,0 +1,23 @@
+{
+  "baseSha": "d613feea804f761d906c4e36b004018c33a634ec",
+  "authorHead": "59d39c9b6008bd751b5c3dcdacb0ac8557b0f38e",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "vitest": "5.0.0",
+  "productionHashes": {
+    "src/tui/embedded-backend.ts": "6ce82eade1815b35d7cef86ebc7a227ad1b8b4dd945bc5e1893f78fc6126e55c",
+    "src/gateway/session-utils-model.ts": "5bd9b2ed2de15162e535663e926e01865eb88625edf4e9f28072a38bff7696c6",
+    "src/tui/tui-command-handlers.ts": "a397b06b4465e51c515d88390fdf625e605a19c1ee169fb958cae07e6e1ae138",
+    "src/tui/tui-session-actions.ts": "8cc1b0bd0d904df320c5d23b839623e807e62f39970736c8c3725c312cf813e5"
+  },
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "testPath": "src/tui/tui-pty-local.e2e.test.ts",
+  "testBeforeSha256": "4f98211ff2f5b6cd15cf3348bc131ef0b655249cf16864b7c0e2b1a9bbf3534b",
+  "testAfterSha256": "5d83a74f5b609e2cb743f7a8b7889b31fcd4cb6e7b477d7718565c602cc22f0e",
+  "files": {
+    "run.sh": "f9efe6ab22b9fac7902567ad80b8bff431c4126a17ce97da2c44cd8eeb722cb4",
+    "validate.mjs": "84039d60557cae08c48d64043365d2c63d6234818c47685dbc9786a6ada9c887",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "regression.patch": "f424373a6e622350943b867f322d8a11060e982563f905d5f793fa5ea85bb537"
+  }
+}
