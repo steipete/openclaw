@@ -1,0 +1,35 @@
+{
+  "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
+  "mode": "green",
+  "lane": "prepared-catalog-green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "candidate": "1a42e4917dfda234bd3a4e32dfcd365a06baf4cf3271497fbda544fcc6f3704b",
+  "files": {
+    "run.sh": "f7b89813bcd38844e10e9f1eb501d05ff327f12720ae2e70a4e511d7cb0dac22",
+    "gateway-proof.mjs": "c85986715be9e247b8c7b431e6fb446d203e829c7bf443ea20fac6cb01bf9d84",
+    "provider.mjs": "b23554cf5f646b98f5dcf1c8556a156ee7f0f9f9637e58152e71cb999976d27f",
+    "provider-contract.test.mjs": "e57fd935ef8d3fb5f0ee117a97ecb74d9559b6ebe90e02eb284468e4d633cbfc",
+    "candidate.patch": "1a42e4917dfda234bd3a4e32dfcd365a06baf4cf3271497fbda544fcc6f3704b",
+    "candidate-source.sha256": "89038f051fafdfc1b39ef7dec74d2b33c3145ebbc23e0cfa25c05f418bd0b269",
+    "validate-tests.mjs": "ceb2ae424763843e37d51eb2fa57422a63739518047325536b227a82d0ff9d8c",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "PROOF-DESIGN.md": "58f266ad1af49768e01e61add9f0edfde7f769497277f9fec56f6a517e9578f0"
+  },
+  "beforeEvidence": [
+    34055326804,
+    34062271559
+  ],
+  "beforeScope": "two intended unit reds; observed wrong cold budget and maintenance dispatch; no healthy baseline completion",
+  "productionNet": -7,
+  "testNet": 125,
+  "candidateExecuted": false,
+  "privateWireSelfCheck": {
+    "node": "24.20.0",
+    "passed": 9,
+    "failed": 0,
+    "targetImports": false,
+    "logSha256": "d127737e118eec57f480ba9e1238cc69808fe6de590804dd6199ed91ce8f9b85"
+  },
+  "revision": 3
+}

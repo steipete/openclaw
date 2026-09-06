@@ -1,0 +1,71 @@
+{
+  "pr": 136179,
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "run": 34062762031,
+  "job": 101568643737,
+  "harness": "f045e3a5b26d03a9861eeff068988ded987ec57e",
+  "lockSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "lockFormatVersion": 3,
+  "originHash": "4805b7bdf0b862d3719df1e11ba9fb2c8231d1d5b75ecf4d6a7e4d322245d44c",
+  "pins": [
+    {
+      "identity": "elevenlabskit",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/steipete/ElevenLabsKit",
+      "state": {
+        "revision": "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b",
+        "version": "0.1.1"
+      }
+    },
+    {
+      "identity": "grdb.swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/groue/GRDB.swift.git",
+      "state": {
+        "revision": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+        "version": "7.11.1"
+      }
+    },
+    {
+      "identity": "swift-cmark",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/swiftlang/swift-cmark.git",
+      "state": {
+        "revision": "924936d0427cb25a61169739a7660230bffa6ea6",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "identity": "swift-markdown",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/swiftlang/swift-markdown",
+      "state": {
+        "revision": "3c6f9523da3a1ec2fd829673e472d95b8097a3b8",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "identity": "swiftmath",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/mgriebling/SwiftMath",
+      "state": {
+        "revision": "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7",
+        "version": "1.7.3"
+      }
+    }
+  ],
+  "sourcePackageSha256": "8a25894b16af18d1d9fd1e587ee6ce5e0265a4e168c540c734d552040dc5f2bd",
+  "hostPacketSha256": "c2cb5165548264cd2d8076d7f4a07f38e3f139e78daa09958ac0959fea76e0c5",
+  "hostSourceHashes": {
+    "Host/FocusHost.swift": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+    "UITests/FocusUITests.swift": "bbf2fe54aba293f8112bc6b61701d47bcb2dd6dd1b82951238bf239496488038",
+    "project.template.yml": "f8b51eb78ee627acca9ea64ef593a31638c3bab441f9fe814000febcca7bc2bc"
+  },
+  "trackedMacOSLockSha256": "6041ee40156d8269b547d38c04bbee073b33b5aff3f62e05b7d29701042fd4e3",
+  "independentReview": "verify-136179/RESOLUTION-VERIFIED-34062762031.md/.json",
+  "admitted": true,
+  "admittedBy": "root",
+  "scope": "Exact captured dependency graph for this synthetic iOS focus proof only. Reuse identical lock/revisions for baseline and candidate.",
+  "uiExecutionAuthorized": false,
+  "requiredNext": "Independently review a separate locked baseline runner, then obtain root controller dispatch grant. No unlocked resolution, dependency changes, app execution, signing bypass, or withdrawn watchdog work."
+}
