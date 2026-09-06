@@ -25,7 +25,6 @@ jobs:
       OPENCLAW_BUILD_PRIVATE_QA: "1"
       SOURCE_SHA: 76dc89a46c3f4e66c81e8fec0596c75247d02df3
       SOURCE_TREE: 334abf9441cf32e68a2c0505efaa45a77780be61
-      PROOF_DIR: ${{ runner.temp }}/pr-127231-proof
     steps:
       - name: Checkout reviewed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -48,6 +47,8 @@ jobs:
           test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
           test "$(git rev-parse HEAD^{tree})" = "$SOURCE_TREE"
           test -z "$(git status --porcelain --untracked-files=all)"
+          export PROOF_DIR="$RUNNER_TEMP/pr-127231-proof"
+          echo "PROOF_DIR=$PROOF_DIR" >> "$GITHUB_ENV"
           mkdir -p "$PROOF_DIR" "$RUNNER_TEMP/pr-127231-home"
           echo "HOME=$RUNNER_TEMP/pr-127231-home" >> "$GITHUB_ENV"
           npm install --global --prefix "$RUNNER_TEMP/pr-127231-pnpm" --ignore-scripts pnpm@12.3.4
