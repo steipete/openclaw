@@ -1,32 +1,22 @@
 [
   {
-    "id": "ui-device-binding",
-    "directory": "ui",
+    "id": "qr-output-green",
+    "directory": "qr",
     "runner": "ubuntu-24.04",
-    "source": "342b7fc95009cca85425a38ccbd360b859ac0f0e",
+    "source": "cf0f8f90a7b6317a5a618ac5d5a7e69e01c050d2",
     "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "browser"
+    "pnpm": "12.1.0",
+    "mode": "green",
+    "variant": "built-cli"
   },
   {
-    "id": "windows-anchor",
-    "directory": "windows",
-    "runner": "windows-2025",
-    "source": "c70504d917be818d111e074fb9e67354ebe2a04f",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "native-console"
-  },
-  {
-    "id": "runtime-memory-diagnostic",
-    "directory": "runtime",
+    "id": "file-fetch",
+    "directory": "file-fetch",
     "runner": "ubuntu-24.04",
-    "source": "342b7fc95009cca85425a38ccbd360b859ac0f0e",
+    "source": "2fc8eb0e7b1a97ebac5508dba6574498a9670670",
     "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "candidate",
-    "variant": "compaction-diagnostic"
+    "pnpm": "12.1.0",
+    "mode": "compare",
+    "variant": "file-staging"
   }
 ]

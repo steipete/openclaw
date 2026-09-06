@@ -7,6 +7,10 @@ mode=$4
 case "$mode" in red|green) ;; *) exit 64 ;; esac
 mkdir -p "$evidence_dir"
 cd "$target_dir"
+if [[ "$mode" == green ]]; then
+  git apply --check "$lane_dir/candidate.patch"
+  git apply "$lane_dir/candidate.patch"
+fi
 if [[ "$mode" == red ]]; then
   git apply --check "$lane_dir/unit-regression.patch"
   git apply "$lane_dir/unit-regression.patch"
@@ -33,3 +37,29 @@ console.log(`QR_OWNER_${mode.toUpperCase()}_CONFIRMED`);
 NODE
 pnpm build > "$evidence_dir/build.log" 2>&1
 node "$lane_dir/probe.mjs" "$target_dir" "$evidence_dir" "$mode" > "$evidence_dir/probe.log" 2>&1
+
+if [[ "$mode" == green ]]; then
+  node scripts/run-vitest.mjs src/cli/qr-cli.test.ts --reporter=json --outputFile="$evidence_dir/full-owner.json" > "$evidence_dir/owner-tests.log" 2>&1
+  OPENCLAW_E2E_SKIP_BUILD=1 node scripts/run-vitest.mjs run --config test/vitest/vitest.e2e.config.ts test/cli-json-stdout.e2e.test.ts -t 'keeps combined .* output flags as one JSON document on stdout' --reporter=json --outputFile="$evidence_dir/committed-e2e.json" > "$evidence_dir/committed-e2e.log" 2>&1
+  node --input-type=module - "$evidence_dir/full-owner.json" "$evidence_dir/committed-e2e.json" <<'VERIFY_GREEN'
+import assert from "node:assert/strict";
+import fs from "node:fs";
+for (const [index, file] of process.argv.slice(2).entries()) {
+  const report = JSON.parse(fs.readFileSync(file, "utf8"));
+  assert.equal(report.success, true);
+  assert.equal(report.numFailedTests, 0);
+  assert.equal(report.testResults.length, 1);
+  assert.equal(report.testResults[0].message, "");
+  const cases = report.testResults[0].assertionResults.filter(test => test.status !== "pending" && test.status !== "skipped");
+  assert.equal(cases.length, index === 0 ? 30 : 2);
+  for (const test of cases) {
+    assert.equal(test.status, "passed");
+    if (index === 1) assert.match(test.title, /^keeps combined (?:qr|clawbot qr) output flags as one JSON document on stdout$/);
+  }
+}
+console.log("QR_COMMITTED_REGRESSIONS_GREEN: 30 owner cases and two built-CLI cases passed");
+VERIFY_GREEN
+  git diff --check
+  sha256sum src/cli/qr-cli.ts src/cli/qr-cli.test.ts test/cli-json-stdout.e2e.test.ts docs/cli/qr.md > "$evidence_dir/candidate-files.sha256"
+  git diff > "$evidence_dir/candidate.patch"
+fi

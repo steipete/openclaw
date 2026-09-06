@@ -1,0 +1,144 @@
+diff --git a/docs/cli/qr.md b/docs/cli/qr.md
+index 2084569216a..9bc11a794d8 100644
+--- a/docs/cli/qr.md
++++ b/docs/cli/qr.md
+@@ -38,7 +38,7 @@ openclaw devices approve <requestId>
+ - `--password <password>`: override the gateway password the bootstrap flow authenticates against
+ - `--limited`: omit administrative Gateway access from the handed-off operator token
+ - `--voice-node`: issue node credentials plus only `operator.read` and `operator.talk`
+-- `--setup-code-only`: print only the setup code
++- `--setup-code-only`: print only the setup code; `--json` takes precedence and emits the JSON document instead
+ - `--no-ascii`: skip ASCII QR rendering
+ - `--json`: emit JSON (`setupCode`, `gatewayUrl`, optional `gatewayUrls`, `auth`, `access`, optional `accessDowngraded`, `urlSource`)
+ 
+diff --git a/src/cli/qr-cli.test.ts b/src/cli/qr-cli.test.ts
+index ef6b2cf7271..c4167ca16e7 100644
+--- a/src/cli/qr-cli.test.ts
++++ b/src/cli/qr-cli.test.ts
+@@ -197,7 +197,12 @@ describe("registerQrCli", () => {
+     vi.unstubAllEnvs();
+   });
+ 
+-  it("prints setup code only when requested", async () => {
++  it.each([
++    { args: ["--setup-code-only"], json: false },
++    { args: ["--json"], json: true },
++    { args: ["--setup-code-only", "--json"], json: true },
++    { args: ["--json", "--setup-code-only"], json: true },
++  ])("prints the requested output for $args", async ({ args, json }) => {
+     loadConfig.mockReturnValue({
+       gateway: {
+         bind: "custom",
+@@ -206,14 +211,22 @@ describe("registerQrCli", () => {
+       },
+     });
+ 
+-    await runQr(["--setup-code-only"]);
++    await runQr(args);
+ 
+     const expected = encodePairingSetupCode({
+       url: "ws://127.0.0.1:18789",
+       bootstrapToken: "bootstrap-123",
+       expiresAtMs: 123,
+     });
+-    expect(runtime.log).toHaveBeenCalledWith(expected);
++    if (json) {
++      expect(runtime.writeJson, "QR_JSON_WRITER_NOT_REACHED").toHaveBeenCalledExactlyOnceWith(
++        expect.objectContaining({ setupCode: expected, gatewayUrl: "ws://127.0.0.1:18789" }),
++      );
++      expect(runtime.log).not.toHaveBeenCalledWith(expected);
++    } else {
++      expect(runtime.log).toHaveBeenCalledWith(expected);
++      expect(runtime.writeJson).not.toHaveBeenCalled();
++    }
+     expect(renderTerminal).not.toHaveBeenCalled();
+     expect(resolveCommandSecretRefsViaGateway).not.toHaveBeenCalled();
+     expect(issueDevicePairSetupBootstrapToken).toHaveBeenCalledWith(
+diff --git a/src/cli/qr-cli.ts b/src/cli/qr-cli.ts
+index fa65a78b251..7a9f31f4b9e 100644
+--- a/src/cli/qr-cli.ts
++++ b/src/cli/qr-cli.ts
+@@ -236,14 +236,6 @@ export function registerQrCli(program: Command) {
+ 
+         const setupCode = encodePairingSetupCode(resolved.payload);
+ 
+-        if (opts.setupCodeOnly) {
+-          if (resolved.accessDowngraded) {
+-            defaultRuntime.error(theme.warn(LIMITED_TRANSPORT_WARNING));
+-          }
+-          defaultRuntime.log(setupCode);
+-          return;
+-        }
+-
+         if (opts.json) {
+           defaultRuntime.writeJson({
+             setupCode,
+@@ -257,6 +249,14 @@ export function registerQrCli(program: Command) {
+           return;
+         }
+ 
++        if (opts.setupCodeOnly) {
++          if (resolved.accessDowngraded) {
++            defaultRuntime.error(theme.warn(LIMITED_TRANSPORT_WARNING));
++          }
++          defaultRuntime.log(setupCode);
++          return;
++        }
++
+         const lines: string[] = [
+           theme.heading("Pairing QR"),
+           "Scan this with the OpenClaw mobile app (Onboarding -> Scan QR).",
+diff --git a/test/cli-json-stdout.e2e.test.ts b/test/cli-json-stdout.e2e.test.ts
+index a8424ac5b84..bdb4b007eea 100644
+--- a/test/cli-json-stdout.e2e.test.ts
++++ b/test/cli-json-stdout.e2e.test.ts
+@@ -428,6 +428,49 @@ describe("cli json stdout contract", () => {
+     );
+   });
+ 
++  it.each([
++    { name: "qr", command: ["qr"] },
++    { name: "clawbot qr", command: ["clawbot", "qr"] },
++  ])("keeps combined $name output flags as one JSON document on stdout", async ({ command }) => {
++    await withTempHome(
++      async (tempHome) => {
++        const configPath = path.join(tempHome, "openclaw.json");
++        await fs.writeFile(
++          configPath,
++          JSON.stringify({
++            gateway: {
++              bind: "custom",
++              customBindHost: "127.0.0.1",
++              auth: { mode: "token", token: "e2e-token" },
++            },
++          }),
++        );
++
++        for (const flags of [
++          ["--setup-code-only", "--json"],
++          ["--json", "--setup-code-only"],
++        ]) {
++          const result = runBuiltCli(
++            tempHome,
++            [...command, ...flags],
++            {
++              OPENCLAW_CONFIG_PATH: configPath,
++              OPENCLAW_STATE_DIR: path.join(tempHome, "isolated-state"),
++            },
++            { inheritEnvironment: false },
++          );
++
++          expect(result.status, result.stderr).toBe(0);
++          const payload = JSON.parse(result.stdout);
++          expect(typeof payload.setupCode).toBe("string");
++          expect(payload.gatewayUrl).toBe("ws://127.0.0.1:18789");
++          expect(result.stderr).not.toContain(payload.setupCode);
++        }
++      },
++      { prefix: "openclaw-qr-setup-code-json-e2e-" },
++    );
++  });
++
+   it("renders sandbox explain validation failures as one canonical JSON document", async () => {
+     await withTempHome(
+       async (tempHome) => {
