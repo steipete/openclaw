@@ -1,42 +1,22 @@
 [
   {
-    "id": "gateway-port",
-    "directory": "gateway-port",
+    "id": "noop-compaction",
+    "directory": "noop-compaction",
     "runner": "ubuntu-24.04",
-    "source": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
+    "source": "954d47a99a6b814da0bb31eb92adeb8603368f20",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "cli-peers"
+    "variant": "context-engine"
   },
   {
-    "id": "imessage-text",
-    "directory": "imessage-text",
+    "id": "worker-owner-green",
+    "directory": "worker-owner",
     "runner": "ubuntu-24.04",
-    "source": "a2014d63c1941d0d325e9415f1485c29e5088e65",
-    "node": "24.20.0",
-    "pnpm": "12.1.0",
-    "mode": "compare",
-    "variant": "text-preservation"
-  },
-  {
-    "id": "typed-question",
-    "directory": "typed-question",
-    "runner": "ubuntu-24.04",
-    "source": "fae213cdba6ca364c2fd5f44a6eb3a6540b06048",
-    "node": "24.20.0",
-    "pnpm": "12.1.0",
-    "mode": "compare",
-    "variant": "teams-renderer"
-  },
-  {
-    "id": "ui-placement-unicode",
-    "directory": "ui-placement-unicode",
-    "runner": "ubuntu-24.04",
-    "source": "1594ebfcb945d852b1745753e16862c0d5b786dc",
+    "source": "76fb700f1322bc5d8d03ec6f9a63d0d637668aa7",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "browser"
+    "mode": "green",
+    "variant": "paired-node"
   }
 ]

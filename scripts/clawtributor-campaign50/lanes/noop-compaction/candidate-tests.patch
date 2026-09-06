@@ -1,0 +1,73 @@
+--- a/src/agents/embedded-agent-runner/compact.hooks.test.ts
++++ b/src/agents/embedded-agent-runner/compact.hooks.test.ts
+@@ -4056,8 +4056,11 @@
+     ).rejects.toThrow("cannot override the active session agent");
+   });
+ 
+-  it("fires before_compaction with sentinel -1 and after_compaction on success", async () => {
++  it.each([true, false])("pairs successful engine hooks (compacted=%s)", async (compacted) => {
+     hookRunner.hasHooks.mockReturnValue(true);
++    if (!compacted) {
++      contextEngineCompactMock.mockResolvedValueOnce({ ok: true, compacted: false });
++    }
+ 
+     const result = await compactEmbeddedAgentSession(
+       wrappedCompactionArgs({
+@@ -4066,7 +4069,7 @@
+     );
+ 
+     expect(result.ok).toBe(true);
+-    expect(result.compacted).toBe(true);
++    expect(result.compacted).toBe(compacted);
+     expect(result.compactionKind).toBe("context-engine");
+ 
+     expect(mockCallArg(hookRunner.runBeforeCompaction)).toEqual({
+@@ -4077,10 +4080,11 @@
+       sessionKey: TEST_SESSION_KEY,
+       messageProvider: "telegram",
+     });
++    expect(hookRunner.runAfterCompaction).toHaveBeenCalledTimes(1);
+     expect(mockCallArg(hookRunner.runAfterCompaction)).toEqual({
+       messageCount: -1,
+-      compactedCount: -1,
+-      tokenCount: 50,
++      compactedCount: compacted ? -1 : 0,
++      tokenCount: compacted ? 50 : undefined,
+       sessionFile: TEST_SESSION_KEY,
+     });
+     expectRecordFields(mockCallArg(hookRunner.runAfterCompaction, 0, 1), {
+--- a/src/agents/embedded-agent-runner/run.compaction-runtime.test.ts
++++ b/src/agents/embedded-agent-runner/run.compaction-runtime.test.ts
+@@ -12,6 +12,32 @@
+ describe("embedded compaction recovery authority", () => {
+   afterEach(() => {
+     vi.restoreAllMocks();
++  });
++
++  it.each(
++    (["overflow", "timeout"] as const).flatMap((kind) => [true, false].map((ok) => ({ kind, ok }))),
++  )("settles no-op engine hooks for $kind recovery (ok=$ok)", async ({ kind, ok }) => {
++    await withRecoveryFixture({ oversized: false }, async (fixture) => {
++      const before = await fixture.snapshot();
++      const entry = fixture.loadEntry();
++      fixture.compact.mockResolvedValueOnce({ ok, compacted: false, reason: "proof no-op" });
++
++      await fixture.recover(kind);
++
++      expect(fixture.beforeHook).toHaveBeenCalledTimes(1);
++      expect(fixture.afterHook).toHaveBeenCalledTimes(ok ? 1 : 0);
++      if (ok) {
++        expect(fixture.afterHook).toHaveBeenCalledWith(
++          expect.objectContaining({ compactedCount: 0 }),
++          expect.objectContaining({ sessionKey: fixture.getSessionTarget()?.sessionKey }),
++        );
++      }
++      expect(fixture.maintain).not.toHaveBeenCalled();
++      expect(fixture.getCommittedSuccessor()).toBeUndefined();
++      expect(fixture.recoveryState.autoCompactionCount).toBe(0);
++      expect(fixture.loadEntry()).toEqual(entry);
++      expect(await fixture.snapshot()).toEqual(before);
++    });
+   });
+ 
+   it.each(["overflow", "timeout"] as const)(

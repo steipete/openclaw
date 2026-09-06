@@ -13,6 +13,7 @@ git apply "$lane_dir/unit-regression.patch"
 if [[ "$mode" == green ]]; then
   git apply --check "$lane_dir/candidate-production.patch"
   git apply "$lane_dir/candidate-production.patch"
+  sha256sum --check "$lane_dir/candidate-files.sha256" > "$evidence_dir/source-before.log"
 fi
 set +e
 node scripts/run-vitest.mjs src/gateway/worker-environments/transcript-commit.test.ts \
@@ -59,6 +60,9 @@ if [[ "$mode" == green ]]; then
     src/gateway/worker-environments/session-target.ts \
     src/gateway/worker-environments/inference-runtime.ts \
     src/gateway/worker-environments/transcript-commit.test.ts > "$evidence_dir/changed.log" 2>&1
+  sha256sum --check "$lane_dir/candidate-files.sha256" > "$evidence_dir/source-after.log"
+  cp "$lane_dir/candidate-files.sha256" "$evidence_dir/candidate-files.sha256"
+  git diff --check
   git diff --numstat > "$evidence_dir/numstat.txt"
   git diff > "$evidence_dir/candidate.patch"
 fi

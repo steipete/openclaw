@@ -1,0 +1,21 @@
+{
+  "base": "954d47a99a6b814da0bb31eb92adeb8603368f20",
+  "files": {
+    "src/agents/embedded-agent-runner/compact.queued-execution.ts": {
+      "baseline": "c76479642f93be0ac41b79b2cea103616430cc44b4837beb07eb4905aa04e32a",
+      "candidate": "4af2bcb97037a499a4101e4f1a7ef4d427bb61e1fe8320e8aeb5d6173f7e6069"
+    },
+    "src/agents/embedded-agent-runner/run/compaction-runtime.ts": {
+      "baseline": "8de9fa80330aa074dae32c28346a63ad0abcbcc359d149a81912dd29c765f960",
+      "candidate": "776c8fe5f2c6e807626b9cf6d78a35cd6630a405fa7c08058a1d296bc5220417"
+    },
+    "src/agents/embedded-agent-runner/compact.hooks.test.ts": {
+      "baseline": "fb38faf2de00bde48440453859e3217b6fdea809d93b7cb5b71d1ee74b4f853a",
+      "candidate": "9abc6382cc8a236daacc00a03c609da712d6b2aae6bde937fbf00737e14cbc3d"
+    },
+    "src/agents/embedded-agent-runner/run.compaction-runtime.test.ts": {
+      "baseline": "bde654bf1fc4d01985806f28ad5ed131207df830b5bbee0b48754dd3b5fa5f27",
+      "candidate": "c6b1c1d6fb66c941b52d2288cbb6066eb229826339cfd38a69ff80d1e89454db"
+    }
+  }
+}
