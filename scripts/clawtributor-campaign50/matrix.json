@@ -1,32 +1,22 @@
 [
   {
-    "id": "slack-reactions",
-    "directory": "slack",
+    "id": "doctor-prefix",
+    "directory": "doctor",
     "runner": "ubuntu-24.04",
-    "source": "b78612ac3ac0fb7ba630ff20d5eaadf357215aae",
+    "source": "f14b1027271c420bab985543cb42ac52b8016ea1",
     "node": "24.20.0",
     "pnpm": "12.1.0",
     "mode": "compare",
-    "variant": "sdk-http"
+    "variant": "filesystem"
   },
   {
-    "id": "ui-device-binding",
-    "directory": "ui",
+    "id": "qr-output",
+    "directory": "qr",
     "runner": "ubuntu-24.04",
-    "source": "342b7fc95009cca85425a38ccbd360b859ac0f0e",
+    "source": "cf0f8f90a7b6317a5a618ac5d5a7e69e01c050d2",
     "node": "24.20.0",
-    "pnpm": "12.3.4",
+    "pnpm": "12.1.0",
     "mode": "red",
-    "variant": "browser"
-  },
-  {
-    "id": "runtime-memory-flush",
-    "directory": "runtime",
-    "runner": "ubuntu-24.04",
-    "source": "342b7fc95009cca85425a38ccbd360b859ac0f0e",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "compaction"
+    "variant": "built-cli"
   }
 ]
