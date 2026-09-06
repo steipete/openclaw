@@ -1,0 +1,15 @@
+src/commands/sessions.ts: OK
+src/commands/sessions-table.ts: OK
+src/commands/sessions-display-model.ts: OK
+src/commands/session-store-targets.ts: OK
+src/commands/status.format.ts: OK
+src/tui/tui-formatters.ts: OK
+src/utils/token-format.ts: OK
+src/config/sessions/context-token-provenance.ts: OK
+src/config/sessions/types.ts: OK
+src/config/sessions/session-accessor.sqlite-entry.ts: OK
+src/cli/program/register.status-health-sessions.ts: OK
+packages/terminal-core/src/table.ts: OK
+package.json: OK
+pnpm-lock.yaml: OK
+openclaw.mjs: OK

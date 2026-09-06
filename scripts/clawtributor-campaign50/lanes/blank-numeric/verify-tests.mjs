@@ -113,19 +113,48 @@ for (const contract of expected) {
   if (!failed) continue;
   assert.equal(test.failureMessages.length, 1);
   const message = test.failureMessages[0];
-  assert.match(message, /AssertionError:/);
-  assert.ok(message.includes(expectedFile));
+  const firstLine = message.split("\n", 1)[0];
+  const frames = message
+    .split("\n")
+    .filter((line) => line.includes(`${expectedFile}:`))
+    .map((line) => {
+      const location = line.match(/:(\d+):(\d+)\)?$/);
+      assert.ok(location, line);
+      return `${location[1]}:${location[2]}`;
+    });
+  const requireRejectsFrame = () => {
+    assert.match(message, /at _Assertion\.__VITEST_REJECTS__ /);
+    assert.ok(message.includes("vitest/dist/chunks/index.OVGXnVRj.js:2453:33"));
+  };
   if (owner === "shared") {
-    assert.match(message, /expected .* to throw an error/);
+    assert.equal(firstLine, "AssertionError: expected [Function] to throw an error");
+    assert.deepEqual(frames, [contract.label === "Invalid --timeout" ? "30:47" : "26:19"]);
   } else if (owner === "models") {
-    assert.ok(message.includes(contract.label));
-    assert.ok(message.includes("Cannot apply metadata"));
-  } else if (/promise resolved .* instead of rejecting/s.test(message)) {
-    assert.match(message, /undefined/);
+    assert.ok(
+      firstLine.startsWith(
+        `Error: expected [Function] to throw error including '${contract.label}' but got 'Cannot apply metadata`,
+      ),
+    );
+    assert.deepEqual(frames, ["211:9"]);
+    requireRejectsFrame();
+  } else if (
+    contract.label === "Invalid --timeout" &&
+    [
+      "rejects image describe before provider dispatch",
+      "rejects image describe-many before provider dispatch",
+    ].includes(contract.title)
+  ) {
+    assert.equal(firstLine, 'Error: promise resolved "undefined" instead of rejecting');
+    assert.deepEqual(frames, ["3234:68"]);
+    requireRejectsFrame();
   } else {
-    assert.ok(message.includes(contract.label));
-    assert.match(message, /expected .* to (?:contain|include)/s);
-    assert.ok(message.includes("expectRuntimeErrorContains"));
+    assert.match(firstLine, /^AssertionError: expected .* to (?:contain|include)/);
+    assert.ok(firstLine.includes(contract.label));
+    assert.ok(message.includes("at expectRuntimeErrorContains ("));
+    assert.deepEqual(frames, [
+      "883:47",
+      contract.label === "Invalid --timeout" ? "3236:9" : "3218:9",
+    ]);
   }
 }
 console.log(

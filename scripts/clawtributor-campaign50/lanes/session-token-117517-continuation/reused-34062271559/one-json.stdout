@@ -1,0 +1,30 @@
+{
+  "path": "/home/runner/work/openclaw/openclaw/evidence/session-token-117517-red/state/agents/main/fixture-stores/one/openclaw-agent.sqlite",
+  "count": 1,
+  "totalCount": 1,
+  "limitApplied": 100,
+  "hasMore": false,
+  "activeMinutes": null,
+  "sessions": [
+    {
+      "key": "agent:main:proof-one",
+      "updatedAt": 1788731992298,
+      "ageMs": 62061,
+      "sessionId": "proof-one",
+      "visibility": "shared",
+      "totalTokens": 1,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-5.6-sol",
+      "modelProvider": "openai",
+      "contextTokens": 200000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "codex",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    }
+  ]
+}

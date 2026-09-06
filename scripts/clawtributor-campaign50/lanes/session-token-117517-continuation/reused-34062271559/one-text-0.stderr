@@ -1,0 +1,9 @@
+Config (/home/runner/work/openclaw/openclaw/evidence/session-token-117517-red/state/openclaw.json): Removed retired agents.entries.*.default markers.
+Session store: /home/runner/work/openclaw/openclaw/evidence/session-token-117517-red/state/agents/main/fixture-stores/one/openclaw-agent.sqlite
+Sessions listed: 1
+┌────────┬──────────────────────┬────────┬─────────────┬──────────────┬────────────────┬───────────────────────────────┐
+│ Kind   │ Key                  │ Age    │ Model       │ Runtime      │ Tokens (ctx %) │ Flags                         │
+├────────┼──────────────────────┼────────┼─────────────┼──────────────┼────────────────┼───────────────────────────────┤
+│ direct │ agent:main:proof-one │ 1m ago │ gpt-5.6-sol │ OpenAI Codex │ 0.0k/200k (0%) │ visibility:shared id:proof-   │
+│        │                      │        │             │              │                │ one                           │
+└────────┴──────────────────────┴────────┴─────────────┴──────────────┴────────────────┴───────────────────────────────┘

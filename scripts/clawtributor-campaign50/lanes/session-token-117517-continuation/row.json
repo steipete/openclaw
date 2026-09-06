@@ -1,0 +1,10 @@
+{
+  "id": "session-token-117517-red-continuation",
+  "directory": "session-token-117517-continuation",
+  "runner": "run.sh",
+  "source": "305606ca5ac53a92c66e4e031c12ae3d44230c26",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "red",
+  "variant": "sqlite-cli"
+}

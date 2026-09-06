@@ -1,0 +1,28 @@
+{
+  "run": 34062271559,
+  "source": "305606ca5ac53a92c66e4e031c12ae3d44230c26",
+  "node": "24.20.0",
+  "callIds": [
+    "zero-json",
+    "zero-text-0",
+    "one-json",
+    "one-text-0"
+  ],
+  "hashes": {
+    "source.json": "39e9ca9e75f4be065b3380d9de5055e00057519f152970db8b5ee2c8d13fef09",
+    "final-working-tree.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "zero-json.stdout": "bf9da7aee22b67989ce935eeaed6aff7b0cf82bd5e12c7d80dfdd10e1f1c555f",
+    "zero-json.stderr": "afeaeda34e99aa3976631d4c0969df5bf9d7d61f3ef3a944a6cc5ed5852a1c6d",
+    "zero-json.outcome.json": "3fa9af694401223e1c3d68816c46a55059800ec0f020f98b19cc046ee7dc331f",
+    "zero-text-0.stdout": "410a512765fd491d5347ee0c5097b84f9e4b0446c2576bdb1e7710afbfaa8400",
+    "zero-text-0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "zero-text-0.outcome.json": "3fa9af694401223e1c3d68816c46a55059800ec0f020f98b19cc046ee7dc331f",
+    "one-json.stdout": "51522fd7f0812aa923c19a12fe9ea77b4180d0cce4fd83a24528b224cac32303",
+    "one-json.stderr": "afeaeda34e99aa3976631d4c0969df5bf9d7d61f3ef3a944a6cc5ed5852a1c6d",
+    "one-json.outcome.json": "3fa9af694401223e1c3d68816c46a55059800ec0f020f98b19cc046ee7dc331f",
+    "one-text-0.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "one-text-0.stderr": "0115f4e0da300073d2dbbb9912d30b0e8657d2c468e18b002922fc8fa138ec24",
+    "one-text-0.outcome.json": "3fa9af694401223e1c3d68816c46a55059800ec0f020f98b19cc046ee7dc331f",
+    "source-check.log.txt": "9110b1ff5c36af7ad6bba294cfb5e4791682b493416ec7fd21b64bf6fa5124a7"
+  }
+}

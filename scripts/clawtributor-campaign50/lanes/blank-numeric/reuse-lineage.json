@@ -1,0 +1,19 @@
+{
+  "run": 34062271559,
+  "job": 101564798417,
+  "harness": "f10a5889462660d41740c776dcaef5e891e0636a",
+  "stage": "baseline capability tests only; original comparison stopped at reader",
+  "source_base": "07d5b2409af0bee1ceb30b785ad75711ee0cf63a",
+  "candidate_patch_sha256": "04669c097e77d5f47a748a1729d70099d4ff00e2997fbcd5adf6beeaf45d544a",
+  "files": {
+    "baseline-tests/capability.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-tests/capability.json": "668eb0d34c9e045977078b989ca64fc17f2091caf4a72e150c5a09f946480d37",
+    "final-working-tree.patch": "7398d08c16ff59b0c6786615e4718a633b009c77f2c2c9742d672ba39e5a2b57",
+    "manifest.json": "5808cff4d0da083eb8cddab39834b34c28b89e92fdee5d5b45860b88090cf7d2",
+    "run.json": "dd14c7451d65142877995c2b8ec90c88fc63d1b66f2852de04a7c53f8fe9d38e",
+    "source-baseline-before.json": "f826c30c0a085618eff1164e11a90da12f3fbb4b31b70b2bb8271416a0117649",
+    "source-clean.json": "f7684155b34060c8c12a61691b6aa5a68f6c08ae9a67ff013920c09d4576ff42",
+    "source.json": "a7eedec87471b601e7e7d74e960e7cb28257ca804fadb0c3d4838cb566f538d5",
+    "baseline-tests/capability.log.txt": "e3bd59967bbd10647e63bc9793591e83a311db3cc2ea8ec6d45d598ab98fdf24"
+  }
+}
