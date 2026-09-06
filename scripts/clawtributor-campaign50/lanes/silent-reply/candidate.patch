@@ -29,10 +29,10 @@ index 8eda04e643ca91a5a9ee275f08f4f26d2af6f2be..69c53b93dae038994adad05f0c2af366
      trustedInternalHandoff: params.trustedInternalHandoff,
 diff --git a/test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts b/test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts
 new file mode 100644
-index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01b3f45ac7
+index 0000000000000000000000000000000000000000..7a6d15ddbbfe0201f0d7e63cdfe3a7f885b3d55d
 --- /dev/null
 +++ b/test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts
-@@ -0,0 +1,191 @@
+@@ -0,0 +1,198 @@
 +import fs from "node:fs/promises";
 +import path from "node:path";
 +import { afterEach, describe, expect, it } from "vitest";
@@ -54,8 +54,12 @@ index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01
 +const CONVERSATION = { id: "silent-reply-proof", kind: "direct" as const };
 +
 +function textContent(value: unknown): string {
-+  if (typeof value === "string") return value;
-+  if (Array.isArray(value)) return value.map(textContent).join("\n");
++  if (typeof value === "string") {
++    return value;
++  }
++  if (Array.isArray(value)) {
++    return value.map(textContent).join("\n");
++  }
 +  if (value && typeof value === "object" && "text" in value) {
 +    return textContent(value.text);
 +  }
@@ -89,7 +93,9 @@ index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01
 +        errors.push(error);
 +      }
 +    }
-+    if (errors.length) throw new AggregateError(errors, "silent prompt proof cleanup failed");
++    if (errors.length) {
++      throw new AggregateError(errors, "silent prompt proof cleanup failed");
++    }
 +  });
 +
 +  it("omits generic silence guidance in the actual provider request while replying normally", async () => {
@@ -102,14 +108,12 @@ index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01
 +    const owner = createQaGatewayChild();
 +    cleanups.push(() => stopQaGatewayFixture(owner));
 +    const artifactDir = path.join(REPO_ROOT, ".artifacts/silent-reply-prompt-mode");
-+    let gateway: Awaited<ReturnType<typeof owner.start>> | undefined;
++    let readGatewayLogs = () =>
++      "Gateway did not finish startup; see flow.log for the startup error.";
 +    cleanups.push(async () => {
 +      // Diagnostics must run before the Gateway and provider cleanup owners.
 +      await fs.mkdir(artifactDir, { recursive: true });
-+      await fs.writeFile(
-+        path.join(artifactDir, "gateway.log"),
-+        gateway?.logs() ?? "Gateway did not finish startup; see flow.log for the startup error.",
-+      );
++      await fs.writeFile(path.join(artifactDir, "gateway.log"), readGatewayLogs());
 +      await fs.writeFile(
 +        path.join(artifactDir, "bus.json"),
 +        `${JSON.stringify(state.getSnapshot(), null, 2)}\n`,
@@ -130,7 +134,7 @@ index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01
 +        `${JSON.stringify(providerDiagnostics, null, 2)}\n`,
 +      );
 +    });
-+    gateway = await owner
++    const gateway = await owner
 +      .start({
 +        repoRoot: REPO_ROOT,
 +        command: {
@@ -156,6 +160,7 @@ index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01
 +        );
 +        throw error;
 +      });
++    readGatewayLogs = gateway.logs;
 +    await transport.waitReady({ gateway });
 +    const cursorResponse = await fetch(`${mock.baseUrl}/debug/request-cursor`);
 +    expect(cursorResponse.ok).toBe(true);
@@ -183,7 +188,9 @@ index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01
 +    const scenarioRequests = requests.filter((request) => request.allInputText.includes(MARKER));
 +    expect(scenarioRequests).toHaveLength(1);
 +    const request = scenarioRequests[0];
-+    if (!request) throw new Error("Provider request was not captured");
++    if (!request) {
++      throw new Error("Provider request was not captured");
++    }
 +    expect(request.model).toBe(MODEL_ID);
 +    expect(request.requestKind).toBe("agent-initial");
 +    expect(request.outcome).toBe("success");

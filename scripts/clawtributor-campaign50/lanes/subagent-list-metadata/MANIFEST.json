@@ -1,12 +1,12 @@
 {
-  "status": "fixture golden correction independently accepted; actual intended baseline still pending",
+  "status": "independent final candidate and green driver review accepted; actual candidate outcome pending",
   "pr": 139540,
   "contributor_head": "8483ef461131beae79d80c689cb3060dab295948",
   "source_base": "8964a4d8dc2f24979c773fbf96bc4a3ca79ed5f2",
   "node": "24.20.0",
   "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
   "vitest": "5.0.0",
-  "mode": "baseline",
+  "mode": "green",
   "entrypoint": "run.sh",
   "owner": {
     "path": "src/agents/subagents/registry/subagent-list.ts",
@@ -14,8 +14,19 @@
     "candidate_sha256": "9837dd7e7f75e2147fb278d5b61502ac30dcb11cd942cb462b75be1d965c91b0"
   },
   "files": {
-    "run.sh": "88e257cba32aa14b929abb2519203eaf73a470bbf43a4c1741cdde05911aa7f9",
-    "subagent-list-metadata.proof.mts": "1d6e8cbe18354966461d9e5960d931173d4c753eb7b9af7b02f53d4637254b04"
+    "baseline-lineage.json": "d1a81c4b45e9f6301b90bde5a59b519368ba38c66bbce79aa6e57876734dd3dd",
+    "baseline-verdict.json": "4b87dfc1e579bec2b1db686a5ced0391f01c43eb1613b0ba7f64433275004da0",
+    "candidate-files.sha256": "fa474cb070549f16835c0cabdd4c872b997fc62e828d32785f104c652ae85ffe",
+    "candidate.patch": "10fe5bc19e8d4135d40c336986c3220fc67e2dfe985f3a97c9a0f3ff2c9e11cc",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "production.patch": "f0bed73dcb5659ab5a7546e8d0ce8623a4b0666739d2a48397bb97eba4ffa149",
+    "run-real-flow.sh": "88e257cba32aa14b929abb2519203eaf73a470bbf43a4c1741cdde05911aa7f9",
+    "run.sh": "5a4475160d936be8c22200fa89c2c5f26bdee93a94c586ec6d4fb62760173562",
+    "subagent-list-metadata.proof.mts": "1d6e8cbe18354966461d9e5960d931173d4c753eb7b9af7b02f53d4637254b04",
+    "tests.patch": "9004d3c0d898d8c5ee26873bd85f1d7ac3ae3965d869f7792c66de4a92634a98",
+    "verify-binding.py": "c7f36c61be1315bd0b1aa49a91a02e131bbb5c903e4c9bfc0610e6b8f59f11b1",
+    "verify-tests.mjs": "22bf680ad7bda9202d2aba2ca0153b6d6105bdb1db7a393a90d1d4166a46f911",
+    "DESIGN.md": "08819898dcae248ec4573f365735c0e8dd273ecf0ed24051bd33127ebf9bcd1a"
   },
   "execution": "secretless hosted only; none performed locally",
   "scope": "existing list projection selection only; production unchanged until baseline evidence",
@@ -29,5 +40,7 @@
     "job": 101506476937,
     "verdict": "fixture output mismatch before decoding assertion",
     "correction": "Preserve terminal child without cleanupCompletedAt; expect pendingDescendants1 and active(waiting on1child) per exact8964 predicate."
-  }
+  },
+  "candidate_patch_sha256": "10fe5bc19e8d4135d40c336986c3220fc67e2dfe985f3a97c9a0f3ff2c9e11cc",
+  "prior_baseline_run": 34045851221
 }

@@ -3,90 +3,53 @@ set -euo pipefail
 proof_target=$1
 proof_lane=$2
 proof_evidence=$3
-proof_mode=$4
-case "$proof_mode" in baseline|green) ;; *) exit 2 ;; esac
-mkdir -p "$proof_evidence"
+test "$4" = green
+mkdir -p "$proof_evidence/unit-red" "$proof_evidence/focused"
 cd "$proof_target"
-python3 - "$proof_lane/MANIFEST.json" "$proof_mode" <<'PY_BIND'
-import hashlib,json,pathlib,subprocess,sys
-manifest=json.loads(pathlib.Path(sys.argv[1]).read_text()); mode=sys.argv[2]
-assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==manifest['source_base']
-assert subprocess.check_output(['node','--version'],text=True).strip()=='v'+manifest['node']
-assert subprocess.check_output(['pnpm','--version'],text=True).strip()=='12.3.4'
-assert json.loads(pathlib.Path('package.json').read_text())['packageManager']==manifest['packageManager']
-owner=manifest['owner']
-expected=owner['baseline_sha256' if mode=='baseline' else 'candidate_sha256']
-assert hashlib.sha256(pathlib.Path(owner['path']).read_bytes()).hexdigest()==expected
-changed=subprocess.check_output(['git','diff','--no-ext-diff','--name-only','HEAD','--'],text=True).splitlines()
-assert changed==([] if mode=='baseline' else [owner['path']]),changed
-print('Pinned source, owner bytes, Node and package manager verified before target execution')
-PY_BIND
-cp "$proof_lane/subagent-list-metadata.proof.mts" src/agents/tools/subagent-list-metadata.proof.mts
-proof_state=$(mktemp -d)
-trap 'rm -rf -- "$proof_state"' EXIT
-proof_driver=(node --import ./scripts/tsx.mjs src/agents/tools/subagent-list-metadata.proof.mts)
-for proof_operation in observe benchmark; do
-  proof_home="$proof_state/$proof_operation"
-  proof_output="$proof_evidence/$proof_operation"
-  mkdir -p "$proof_home/home" "$proof_home/xdg/config" "$proof_home/xdg/cache" "$proof_home/xdg/data" "$proof_home/tmp" "$proof_output"
-  printf '{}\n' > "$proof_home/openclaw.json"
-  env OPENCLAW_STATE_DIR="$proof_home" OPENCLAW_HOME="$proof_home/home" OPENCLAW_CONFIG_PATH="$proof_home/openclaw.json" \
-    XDG_CONFIG_HOME="$proof_home/xdg/config" XDG_CACHE_HOME="$proof_home/xdg/cache" XDG_DATA_HOME="$proof_home/xdg/data" TMPDIR="$proof_home/tmp" \
-    "${proof_driver[@]}" seed "$proof_home" "$proof_output" > "$proof_output/seed.log" 2>&1
-  set +e
-  env OPENCLAW_STATE_DIR="$proof_home" OPENCLAW_HOME="$proof_home/home" OPENCLAW_CONFIG_PATH="$proof_home/openclaw.json" \
-    XDG_CONFIG_HOME="$proof_home/xdg/config" XDG_CACHE_HOME="$proof_home/xdg/cache" XDG_DATA_HOME="$proof_home/xdg/data" TMPDIR="$proof_home/tmp" \
-    "${proof_driver[@]}" "$proof_operation" "$proof_home" "$proof_output" > "$proof_output/run.log" 2>&1
-  proof_exit=$?
-  set -e
-  printf '%s\n' "$proof_exit" > "$proof_output/exit-code.txt"
-  if [ "$proof_operation" = benchmark ]; then
-    test "$proof_exit" -eq 0
-  fi
+python3 "$proof_lane/verify-binding.py" "$proof_lane/MANIFEST.json" baseline
+cp "$proof_lane/baseline-lineage.json" "$proof_evidence/baseline-lineage.json"
+cp "$proof_lane/baseline-verdict.json" "$proof_evidence/baseline-verdict.json"
+cp "$proof_lane/candidate.patch" "$proof_evidence/candidate.patch"
+git apply "$proof_lane/tests.patch"
+proof_file=src/agents/subagents/registry/subagent-list.test.ts
+set +e
+node scripts/run-vitest.mjs "$proof_file" -t 'builds the subagent list without decoding unrelated saved prompts' --reporter=verbose --reporter=json --outputFile="$proof_evidence/unit-red/tests.json" > "$proof_evidence/unit-red/tests.log" 2>&1
+proof_exit=$?
+set -e
+node "$proof_lane/verify-tests.mjs" red "$proof_evidence/unit-red/tests.json" "$proof_evidence/unit-red/tests.log" "$proof_exit" "$proof_file"
+git apply --reverse "$proof_lane/tests.patch"
+git apply "$proof_lane/production.patch"
+bash "$proof_lane/run-real-flow.sh" "$proof_target" "$proof_lane" "$proof_evidence/real-flow" green
+git apply "$proof_lane/tests.patch"
+proof_files=(
+  src/agents/subagents/registry/subagent-list.test.ts
+  src/agents/subagents/registry/subagent-active-context.test.ts
+  src/agents/tools/subagents-tool.test.ts
+)
+for proof_file in "${proof_files[@]}"; do
+  proof_key=${proof_file//\//_}
+  node scripts/run-vitest.mjs "$proof_file" --reporter=verbose --reporter=json --outputFile="$proof_evidence/focused/$proof_key.json" > "$proof_evidence/focused/$proof_key.log" 2>&1
+  node "$proof_lane/verify-tests.mjs" green "$proof_evidence/focused/$proof_key.json" "$proof_evidence/focused/$proof_key.log" 0 "$proof_file"
 done
-python3 - "$proof_evidence" "$proof_mode" <<'PY'
-import json,math,pathlib,re,sys
-root=pathlib.Path(sys.argv[1]); mode=sys.argv[2]
-observed=json.loads((root/'observe/observations.json').read_text())
-measured=json.loads((root/'benchmark/measurements.json').read_text())
-code=int((root/'observe/exit-code.txt').read_text())
-log=(root/'observe/run.log').read_text()
-for path in root.glob('*/*.log'):
- text=path.read_text()
- assert not re.search(r'UnhandledPromiseRejection|unhandledRejection|Uncaught Exception|uncaughtException',text),path
-assert observed['proof']=='real-subagents-tool-sqlite-metadata' and observed['rowCount']==1000
-rows=observed['observations']
-assert [row['label'] for row in rows]==['first-list','warm-default-list','empty-controller','after-writer-update']
-assert rows[0]['output']==rows[1]['output']
-assert rows[0]['output']['status']=='ok' and rows[0]['output']['total']==2
-assert [entry['status'] for entry in rows[0]['output']['active']]==['queued','active (waiting on 1 child)']
-assert rows[0]['output']['active'][1]['pendingDescendants']==1
-assert rows[0]['output']['active'][0]['totalTokens']==197000
-assert rows[0]['output']['active'][1]['totalTokens']==220
-assert rows[2]['skills']==rows[2]['reports']==0
-assert rows[2]['output']['total']==0 and rows[2]['output']['active']==[]
-assert rows[3]['output']['active'][0]['model']=='demo-runtime/updated-model'
-assert rows[3]['output']['active'][0]['totalTokens']==198000
-assert observed['fullRead']['skills']>0 and observed['fullRead']['reports']>0
-nonempty=[row for row in rows if row['label']!='empty-controller']
-if mode=='baseline':
- assert code==1 and 'AssertionError' in log and 'SUBAGENT_LIST_DECODED_UNRELATED_PROMPTS' in log
- assert all(row['skills']>=1000 and row['reports']>=1000 for row in nonempty)
- verdict='EXPECTED_UNRELATED_PROMPT_DECODING_CONFIRMED'
-else:
- assert code==0
- assert all(row['skills']==row['reports']==0 for row in nonempty)
- verdict='PASS'
-assert measured['proof']=='uninstrumented-subagents-tool-sqlite-metadata'
-assert measured['rowCount']==1000 and measured['warm']['calls']==25
-assert measured['timingThreshold'] is None
-for value in [measured['firstSeconds'],measured['warm']['callSeconds'],measured['warm']['wallSeconds']]:
- assert isinstance(value,(int,float)) and math.isfinite(value) and value>=0
-for key in ('rssBefore','rssAfterFirst','rssAfterWarm','maxRssKiB'):
- assert isinstance(measured[key],int) and measured[key]>0
-result={'mode':mode,'verdict':verdict,'observations':observed,'measurements':measured}
-(root/'verdict.json').write_text(json.dumps(result,indent=2)+'\n')
-print(json.dumps({'mode':mode,'verdict':verdict,'decodes':[{key:row[key] for key in ('label','skills','reports')} for row in rows],'measurements':measured}))
+python3 - "$proof_lane" "$proof_evidence" <<'PY'
+import hashlib,json,pathlib,sys
+lane=pathlib.Path(sys.argv[1]); evidence=pathlib.Path(sys.argv[2])
+before=json.loads((lane/'baseline-verdict.json').read_text())
+after=json.loads((evidence/'real-flow/verdict.json').read_text())
+assert before['verdict']=='EXPECTED_UNRELATED_PROMPT_DECODING_CONFIRMED' and after['verdict']=='PASS'
+prior=before['observations']['observations']; current=after['observations']['observations']
+assert len(prior)==len(current)==4
+for left,right in zip(prior,current):
+ assert left['label']==right['label'] and left['output']==right['output']
+ assert right['skills']==right['reports']==0
+files=[]
+for row in (lane/'candidate-files.sha256').read_text().splitlines():
+ expected,name=row.split(None,1)
+ actual=hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest()
+ assert actual==expected,name
+ files.append({'path':name,'sha256':actual})
+assert len(files)==2
+result={'verdict':'PASS','prior_run':34045851221,'exact_public_outputs_unchanged':True,'candidate_file_hashes':files,'baseline_measurements':before['measurements'],'candidate_measurements':after['measurements'],'measurement_note':'Observed in separate hosted processes/runs; no timing or RSS threshold.'}
+(evidence/'completion.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result))
 PY
-sha256sum src/agents/subagents/registry/subagent-list.ts > "$proof_evidence/owner.sha256"
-git rev-parse HEAD > "$proof_evidence/source-head.txt"

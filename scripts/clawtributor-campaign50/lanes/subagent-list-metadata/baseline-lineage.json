@@ -1,0 +1,16 @@
+{
+  "run": 34045851221,
+  "job": 101520659148,
+  "harness": "b98c0bf46126ac49d9d6196a1eaae5406331f168",
+  "source": "8964a4d8dc2f24979c773fbf96bc4a3ca79ed5f2",
+  "reused": "Actual standalone original decoding/output/benchmark evidence; consolidated unit test receives its own new baseline red before candidate.",
+  "artifacts": {
+    "source.json": "4553c074e31be1e0a598d113eb07d0c2e569537e8819e0ea2fe19cae27bce02e",
+    "owner.sha256": "aae16c7b5fba9c3111e2201d69c98c2aecded5eb899cea150c3bad0bbec77a26",
+    "verdict.json": "4b87dfc1e579bec2b1db686a5ced0391f01c43eb1613b0ba7f64433275004da0",
+    "observe/observations.json": "c23a3a28539af879832d20e165bbb710eaeaadb092bed034b436e3b156eb7f34",
+    "observe/run.log": "ffff461c6102422008734cf67abcd380fdd54cbd8186c06847347d03a4913981",
+    "benchmark/measurements.json": "e48fb2245d938186c8f2d6eccebc19dedb63358f30eaba623df07e492cc9b00c",
+    "benchmark/run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

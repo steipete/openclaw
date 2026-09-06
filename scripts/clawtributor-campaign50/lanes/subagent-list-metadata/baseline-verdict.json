@@ -1,0 +1,191 @@
+{
+  "mode": "baseline",
+  "verdict": "EXPECTED_UNRELATED_PROMPT_DECODING_CONFIRMED",
+  "observations": {
+    "proof": "real-subagents-tool-sqlite-metadata",
+    "rowCount": 1000,
+    "observations": [
+      {
+        "label": "first-list",
+        "skills": 1000,
+        "reports": 1000,
+        "output": {
+          "status": "ok",
+          "action": "list",
+          "requesterSessionKey": "agent:main:metadata-controller",
+          "callerSessionKey": "agent:main:metadata-controller",
+          "callerIsSubagent": false,
+          "total": 2,
+          "taskTotal": 0,
+          "tasks": [],
+          "active": [
+            {
+              "index": 1,
+              "runId": "00000000-0000-4000-8000-00000000000b",
+              "sessionKey": "agent:main:subagent:00000000-0000-4000-8000-000000000001",
+              "label": "Primary",
+              "task": "inspect metadata",
+              "status": "queued",
+              "pendingDescendants": 0,
+              "runtime": "n/a",
+              "runtimeMs": 0,
+              "model": "demo-runtime/runtime-model",
+              "totalTokens": 197000
+            },
+            {
+              "index": 2,
+              "runId": "00000000-0000-4000-8000-00000000000c",
+              "sessionKey": "agent:main:subagent:00000000-0000-4000-8000-000000000002",
+              "label": "Secondary",
+              "task": "compare metadata",
+              "status": "active (waiting on 1 child)",
+              "pendingDescendants": 1,
+              "runtime": "1s",
+              "runtimeMs": 1000,
+              "childSessions": [
+                "agent:main:subagent:00000000-0000-4000-8000-000000000003"
+              ],
+              "model": "demo-override/override-model",
+              "totalTokens": 220
+            }
+          ],
+          "recent": [],
+          "text": "active subagents:\n1. Primary (runtime-model, n/a, tokens 1k (in 12 / out 1k), prompt/cache 197k) queued - inspect metadata\n2. Secondary (override-model, 1s, tokens 220 (in 200 / out 20)) active (waiting on 1 child) - compare metadata\n\nrecent (last 30m):\n(none)"
+        }
+      },
+      {
+        "label": "warm-default-list",
+        "skills": 1000,
+        "reports": 1000,
+        "output": {
+          "status": "ok",
+          "action": "list",
+          "requesterSessionKey": "agent:main:metadata-controller",
+          "callerSessionKey": "agent:main:metadata-controller",
+          "callerIsSubagent": false,
+          "total": 2,
+          "taskTotal": 0,
+          "tasks": [],
+          "active": [
+            {
+              "index": 1,
+              "runId": "00000000-0000-4000-8000-00000000000b",
+              "sessionKey": "agent:main:subagent:00000000-0000-4000-8000-000000000001",
+              "label": "Primary",
+              "task": "inspect metadata",
+              "status": "queued",
+              "pendingDescendants": 0,
+              "runtime": "n/a",
+              "runtimeMs": 0,
+              "model": "demo-runtime/runtime-model",
+              "totalTokens": 197000
+            },
+            {
+              "index": 2,
+              "runId": "00000000-0000-4000-8000-00000000000c",
+              "sessionKey": "agent:main:subagent:00000000-0000-4000-8000-000000000002",
+              "label": "Secondary",
+              "task": "compare metadata",
+              "status": "active (waiting on 1 child)",
+              "pendingDescendants": 1,
+              "runtime": "1s",
+              "runtimeMs": 1000,
+              "childSessions": [
+                "agent:main:subagent:00000000-0000-4000-8000-000000000003"
+              ],
+              "model": "demo-override/override-model",
+              "totalTokens": 220
+            }
+          ],
+          "recent": [],
+          "text": "active subagents:\n1. Primary (runtime-model, n/a, tokens 1k (in 12 / out 1k), prompt/cache 197k) queued - inspect metadata\n2. Secondary (override-model, 1s, tokens 220 (in 200 / out 20)) active (waiting on 1 child) - compare metadata\n\nrecent (last 30m):\n(none)"
+        }
+      },
+      {
+        "label": "empty-controller",
+        "skills": 0,
+        "reports": 0,
+        "output": {
+          "status": "ok",
+          "action": "list",
+          "requesterSessionKey": "agent:main:metadata-empty",
+          "callerSessionKey": "agent:main:metadata-empty",
+          "callerIsSubagent": false,
+          "total": 0,
+          "taskTotal": 0,
+          "tasks": [],
+          "active": [],
+          "recent": [],
+          "text": "active subagents:\n(none)\n\nrecent (last 30m):\n(none)"
+        }
+      },
+      {
+        "label": "after-writer-update",
+        "skills": 1000,
+        "reports": 1000,
+        "output": {
+          "status": "ok",
+          "action": "list",
+          "requesterSessionKey": "agent:main:metadata-controller",
+          "callerSessionKey": "agent:main:metadata-controller",
+          "callerIsSubagent": false,
+          "total": 2,
+          "taskTotal": 0,
+          "tasks": [],
+          "active": [
+            {
+              "index": 1,
+              "runId": "00000000-0000-4000-8000-00000000000b",
+              "sessionKey": "agent:main:subagent:00000000-0000-4000-8000-000000000001",
+              "label": "Primary",
+              "task": "inspect metadata",
+              "status": "queued",
+              "pendingDescendants": 0,
+              "runtime": "n/a",
+              "runtimeMs": 0,
+              "model": "demo-runtime/updated-model",
+              "totalTokens": 198000
+            },
+            {
+              "index": 2,
+              "runId": "00000000-0000-4000-8000-00000000000c",
+              "sessionKey": "agent:main:subagent:00000000-0000-4000-8000-000000000002",
+              "label": "Secondary",
+              "task": "compare metadata",
+              "status": "active (waiting on 1 child)",
+              "pendingDescendants": 1,
+              "runtime": "1s",
+              "runtimeMs": 1000,
+              "childSessions": [
+                "agent:main:subagent:00000000-0000-4000-8000-000000000003"
+              ],
+              "model": "demo-override/override-model",
+              "totalTokens": 220
+            }
+          ],
+          "recent": [],
+          "text": "active subagents:\n1. Primary (updated-model, n/a, tokens 1k (in 12 / out 1k), prompt/cache 198k) queued - inspect metadata\n2. Secondary (override-model, 1s, tokens 220 (in 200 / out 20)) active (waiting on 1 child) - compare metadata\n\nrecent (last 30m):\n(none)"
+        }
+      }
+    ],
+    "fullRead": {
+      "skills": 1,
+      "reports": 1
+    }
+  },
+  "measurements": {
+    "proof": "uninstrumented-subagents-tool-sqlite-metadata",
+    "rowCount": 1000,
+    "firstSeconds": 0.19040155600000072,
+    "warm": {
+      "calls": 25,
+      "callSeconds": 1.0167342629999985,
+      "wallSeconds": 1.0185307310000007
+    },
+    "rssBefore": 820379648,
+    "rssAfterFirst": 825622528,
+    "rssAfterWarm": 827850752,
+    "maxRssKiB": 808448,
+    "timingThreshold": null
+  }
+}
