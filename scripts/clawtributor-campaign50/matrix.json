@@ -1,22 +1,32 @@
 [
   {
-    "id": "windows-scheduler-diagnostic",
-    "directory": "windows",
-    "runner": "windows-2025",
-    "source": "883d4d65bad1791755c203a8dfd854e14b4f6e33",
+    "id": "worker-owner-red",
+    "directory": "worker-owner",
+    "runner": "ubuntu-24.04",
+    "source": "76fb700f1322bc5d8d03ec6f9a63d0d637668aa7",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "scheduler-diagnostic"
+    "mode": "red",
+    "variant": "paired-node"
   },
   {
-    "id": "pairing-accounts-completion",
-    "directory": "pairing-accounts",
+    "id": "gateway-port",
+    "directory": "gateway-port",
     "runner": "ubuntu-24.04",
-    "source": "1a13b42b6b75d5d15b47eb966b1c3f5ce5456136",
+    "source": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
     "node": "24.20.0",
-    "pnpm": "12.1.0",
+    "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "completion"
+    "variant": "cli-peers"
+  },
+  {
+    "id": "file-fetch-nfc",
+    "directory": "file-fetch-nfc",
+    "runner": "ubuntu-24.04",
+    "source": "7216075c2912dd331a4ba90df07efdc798069927",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "compare",
+    "variant": "unicode-staging"
   }
 ]

@@ -1,0 +1,139 @@
+diff --git a/docs/cli/logs.md b/docs/cli/logs.md
+index bd5fd042dbdb88572783347d41202420500a44db..d57f3f61de8384d5a4f54492354bdca370569fca 100644
+--- a/docs/cli/logs.md
++++ b/docs/cli/logs.md
+@@ -32,6 +32,8 @@ Tail Gateway file logs over RPC. Works in remote mode.
+ 
+ Passing `--url` skips auto-applied config credentials; include `--token` explicitly if the target Gateway requires auth.
+ 
++`--port` requires an integer from `1` to `65535`; empty or whitespace-only values are invalid. Omit the option to use the configured or environment target.
++
+ ## Examples
+ 
+ ```bash
+diff --git a/src/cli/gateway-port-option.test.ts b/src/cli/gateway-port-option.test.ts
+index dc32bf63f71a0f4eea9fa38fad757070ec6a370c..84d1ecba5d2412b5a9a967636fc2cf2686a79f15 100644
+--- a/src/cli/gateway-port-option.test.ts
++++ b/src/cli/gateway-port-option.test.ts
+@@ -3,19 +3,28 @@ import { describe, expect, it } from "vitest";
+ import { parseGatewayPortOption } from "./gateway-port-option.js";
+ 
+ describe("parseGatewayPortOption", () => {
+-  it("accepts TCP port values", () => {
+-    expect(parseGatewayPortOption("18789")).toBe(18789);
+-    expect(parseGatewayPortOption(65_535)).toBe(65_535);
++  it.each([
++    ["1", 1],
++    ["18789", 18_789],
++    [" \t18789 ", 18_789],
++    [1e4, 10_000],
++    [65_535, 65_535],
++    [18_789n, 18_789],
++  ])("accepts TCP port value %s", (value, expected) => {
++    expect(parseGatewayPortOption(value)).toBe(expected);
+   });
+ 
+   it("treats absent values as no override", () => {
+     expect(parseGatewayPortOption(undefined)).toBeUndefined();
+-    expect(parseGatewayPortOption("")).toBeUndefined();
++    expect(parseGatewayPortOption(null)).toBeUndefined();
+   });
+ 
+-  it.each(["0", "65536", "1e4", "18789ms"])("rejects invalid port value %s", (value) => {
+-    expect(() => parseGatewayPortOption(value)).toThrow(
+-      "--port must be an integer between 1 and 65535.",
+-    );
+-  });
++  it.each(["", " \t ", "0", "65536", "1e4", "18789ms", 1.5, 65_536n])(
++    "rejects invalid port value %s",
++    (value) => {
++      expect(() => parseGatewayPortOption(value)).toThrow(
++        "--port must be an integer between 1 and 65535.",
++      );
++    },
++  );
+ });
+diff --git a/src/cli/gateway-port-option.ts b/src/cli/gateway-port-option.ts
+index 0b6f31fcbd985cb56237e0fdca28394c42ed0e10..82e525a83a440ab70148fd1e59a52da803942cbb 100644
+--- a/src/cli/gateway-port-option.ts
++++ b/src/cli/gateway-port-option.ts
+@@ -9,17 +9,7 @@ export function parseGatewayPortOption(raw: unknown, flagName = "--port"): numbe
+     return undefined;
+   }
+ 
+-  const value =
+-    typeof raw === "string"
+-      ? raw.trim()
+-      : typeof raw === "number" || typeof raw === "bigint"
+-        ? String(raw)
+-        : "";
+-  if (!value) {
+-    return undefined;
+-  }
+-
+-  const parsed = parseStrictPositiveInteger(value);
++  const parsed = parseStrictPositiveInteger(typeof raw === "bigint" ? String(raw) : raw);
+   if (parsed === undefined || parsed > MAX_TCP_PORT) {
+     throw new Error(`${flagName} must be an integer between 1 and ${MAX_TCP_PORT}.`);
+   }
+diff --git a/src/cli/gateway-rpc.runtime.test.ts b/src/cli/gateway-rpc.runtime.test.ts
+index abfb18d0fd428120ba7b7882b031726c34254da9..7cb9e36d3ef2d7050134a36c5b1ba7c180a8a161 100644
+--- a/src/cli/gateway-rpc.runtime.test.ts
++++ b/src/cli/gateway-rpc.runtime.test.ts
+@@ -116,16 +116,21 @@ describe("callGatewayFromCliRuntime", () => {
+     );
+   });
+ 
+-  it("rejects combining --url and --port before opening a Gateway connection", async () => {
+-    await expect(
+-      callGatewayFromCliRuntime("cron.status", {
+-        url: "ws://127.0.0.1:19083",
+-        port: "19083",
+-      }),
+-    ).rejects.toThrow("Use either --url or --port, not both.");
++  it.each([
++    { opts: { port: "" }, error: "--port must be an integer between 1 and 65535." },
++    { opts: { port: " \t " }, error: "--port must be an integer between 1 and 65535." },
++    {
++      opts: { url: "ws://127.0.0.1:19083", port: "19083" },
++      error: "Use either --url or --port, not both.",
++    },
++  ])(
++    "rejects invalid target $opts before opening a Gateway connection",
++    async ({ opts, error }) => {
++      await expect(callGatewayFromCliRuntime("cron.status", opts)).rejects.toThrow(error);
+ 
+-    expect(callGatewayMock).not.toHaveBeenCalled();
+-  });
++      expect(callGatewayMock).not.toHaveBeenCalled();
++    },
++  );
+ 
+   it.each([
+     { name: "token", auth: { token: "test-gateway-token" } },
+diff --git a/src/cli/program/register.onboard.test.ts b/src/cli/program/register.onboard.test.ts
+index 86bf03a9776c6799e488522f5c0f1568bb892446..5ffe6962961acdcbb5f58cd1438c6c8d7d57a56c 100644
+--- a/src/cli/program/register.onboard.test.ts
++++ b/src/cli/program/register.onboard.test.ts
+@@ -210,7 +210,7 @@ describe("registerOnboardCommand", () => {
+     expect(setupWizardOptions().gatewayPort).toBe(18789);
+   });
+ 
+-  it.each(["not-a-port", "70000"])(
++  it.each(["", " \t ", "not-a-port", "70000"])(
+     "rejects invalid --gateway-port %s before onboarding dispatch",
+     async (gatewayPort) => {
+       await runCli(["onboard", "--gateway-port", gatewayPort]);
+diff --git a/src/cli/program/register.setup.test.ts b/src/cli/program/register.setup.test.ts
+index 091db199a2fc2f674862e4faeade71d5a711f206..fe9da6b8d8fb8055b653ba311baa53850c1bb5dd 100644
+--- a/src/cli/program/register.setup.test.ts
++++ b/src/cli/program/register.setup.test.ts
+@@ -484,7 +484,7 @@ describe("registerSetupCommand", () => {
+     },
+   );
+ 
+-  it.each(["not-a-port", "70000"])(
++  it.each(["", " \t ", "not-a-port", "70000"])(
+     "rejects invalid --gateway-port %s before onboarding dispatch",
+     async (gatewayPort) => {
+       await runCli(["setup", "--gateway-port", gatewayPort]);

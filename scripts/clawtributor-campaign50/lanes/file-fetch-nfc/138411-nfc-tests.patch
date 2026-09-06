@@ -1,0 +1,69 @@
+diff --git a/extensions/file-transfer/src/tools/file-fetch-tool.test.ts b/extensions/file-transfer/src/tools/file-fetch-tool.test.ts
+index e64a1d5b94d..855c4c17d04 100644
+--- a/extensions/file-transfer/src/tools/file-fetch-tool.test.ts
++++ b/extensions/file-transfer/src/tools/file-fetch-tool.test.ts
+@@ -190,6 +190,7 @@ describe("file_fetch tool", () => {
+     { fileName: "Quarterly report.md", expectedName: "Quarterly_report.md" },
+     { fileName: "train.py", expectedName: "train.txt" },
+     { fileName: "report.xlsx", expectedName: "report.xlsx" },
++    { fileName: "\u1100\u1161.txt", expectedName: "\uac00.txt" },
+   ])(
+     "keeps the canonical basename through real staging and forwarding: $fileName",
+     async (testCase) => {
+diff --git a/src/media/store.test.ts b/src/media/store.test.ts
+index 7823bd12f95..09a32e9b45d 100644
+--- a/src/media/store.test.ts
++++ b/src/media/store.test.ts
+@@ -428,17 +428,17 @@ describe("media store", () => {
+       },
+     },
+     {
+-      name: "uses original filename to detect generic stream content type",
++      name: "normalizes original filename while detecting generic stream content type",
+       run: async () => {
+         const saved = await store.saveMediaStream(
+           Readable.from([Buffer.from("name,value\none,1\n")]),
+           "application/octet-stream",
+           "stream-inbound",
+           1024,
+-          "report.csv",
++          "cafe\u0301.csv",
+         );
+ 
+-        expect(saved.id).toMatch(/^report---[a-f0-9-]{36}\.csv$/);
++        expect(saved.id).toMatch(/^caf\u00e9---[a-f0-9-]{36}\.csv$/);
+         expect(saved.contentType).toBe("text/csv");
+       },
+     },
+@@ -995,6 +995,31 @@ describe("media store", () => {
+         originalFilename: "my <file>:test!.txt",
+         expectedIdPattern: /^my_filetest---[a-f0-9-]{36}\.txt$/,
+       },
++      {
++        name: "normalizes decomposed Hangul in stored names",
++        originalFilename: "\u1100\u1161.txt",
++        expectedIdPattern: /^\uac00---[a-f0-9-]{36}\.txt$/,
++        expectedExtractedFilename: "\uac00.txt",
++      },
++      {
++        name: "normalizes letters joined by filename sanitization",
++        originalFilename: "\u1100?\u1161.txt",
++        expectedIdPattern: /^\uac00---[a-f0-9-]{36}\.txt$/,
++        expectedExtractedFilename: "\uac00.txt",
++      },
++      {
++        name: "preserves decomposed accents in stored names",
++        originalFilename: "cafe\u0301.txt",
++        expectedIdPattern: /^caf\u00e9---[a-f0-9-]{36}\.txt$/,
++        expectedExtractedFilename: "caf\u00e9.txt",
++      },
++      {
++        name: "composes Unicode before applying the filename cap",
++        originalFilename: `${"a".repeat(59)}\u1100\u1161.txt`,
++        expectedIdPattern: /^a{59}\uac00---[a-f0-9-]{36}\.txt$/,
++        expectedExtractedFilename: `${"a".repeat(59)}\uac00.txt`,
++        maxBaseNameLength: 60,
++      },
+       {
+         name: "truncates long original filenames",
+         originalFilename: `${"a".repeat(100)}.txt`,

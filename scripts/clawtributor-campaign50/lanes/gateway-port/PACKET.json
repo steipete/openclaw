@@ -1,0 +1,22 @@
+{
+  "pr": 139613,
+  "base": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
+  "contributorHead": "548815a6e4f38f821c7c8ccc85f03f816c8b5700",
+  "status": "frozen uncommitted; actual proof pending",
+  "productionNet": -10,
+  "testsNet": 14,
+  "docsNet": 2,
+  "files": {
+    "docs/cli/logs.md": "29e52f6b048c465932a598104d4fcb7ce6c5ed5db231ede389ae3eccc3846cf7",
+    "src/cli/gateway-port-option.test.ts": "83a2d130f3125c0a2bbeddce28e77c54a131699b4c23ff51095c773471af4e5f",
+    "src/cli/gateway-port-option.ts": "0ba3e24dc63bd87c393185ffe16ac5365fc4aa69e4b447f1ade23f629cc66f1e",
+    "src/cli/gateway-rpc.runtime.test.ts": "2a3c37ed7a1b0ff64fd3eabc1b01f58de0415ae5bc7106fe5f3e6e4b6c04221c",
+    "src/cli/program/register.onboard.test.ts": "7fa7aca0ec72cbda9156f4e30823d551706639e0d6ab02a3bf781910ed617762",
+    "src/cli/program/register.setup.test.ts": "d3c816b968d5a45ad9a50266e240c7726949dcdd2775ce8d628244e541e1d4d8"
+  },
+  "artifacts": {
+    "candidate.patch": "4cc2767e91c92b24532130eddfa2e0b88d3ae986bb1b508d5c1cfe012cbbf729",
+    "regression-tests.patch": "c56c410a669bffa6894809d6f256901be84b19171d5a12dea88e56c340cfb018",
+    "port-cli-proof.mjs": "7f2bf4502525164cfd6d49e8e3bf420959a17fe0d053c75a6eca3b8aa373698c"
+  }
+}
