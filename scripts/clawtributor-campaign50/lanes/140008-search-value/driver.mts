@@ -121,6 +121,30 @@ try {
     if (scenario.expected !== undefined) assert.equal(directText, scenario.expected);
     if (scenario.large) {
       assert.equal(actual.details.truncation.truncated, true);
+      if (mode === "green") {
+        const metadata = actual.details.truncation;
+        assert.equal(metadata.truncatedBy, "bytes");
+        assert.equal(metadata.maxBytes, 51200);
+        assert.equal(metadata.maxLines, Number.MAX_SAFE_INTEGER);
+        assert.equal(metadata.firstLineExceedsLimit, false);
+        assert.equal(metadata.lastLinePartial, false);
+        assert(directText.includes("50.0KB limit reached"));
+        if (scenario.tool === "find") {
+          assert.equal(metadata.totalLines, 300);
+          assert.equal(metadata.totalBytes, 59699);
+          assert.equal(metadata.outputLines, 257);
+          assert.equal(metadata.outputBytes, 51142);
+          assert.equal(actual.details.resultLimitReached, undefined);
+        } else {
+          assert.equal(metadata.totalLines, 100);
+          assert.equal(metadata.totalBytes, 57691);
+          assert.equal(metadata.outputLines, 88);
+          assert.equal(metadata.outputBytes, 50766);
+          assert.equal(actual.details.matchLimitReached, 100);
+          assert.equal(actual.details.linesTruncated, undefined);
+          assert(directText.includes("100 matches limit reached"));
+        }
+      }
       assert(
         Buffer.byteLength(directText) > 49000,
         `${scenario.id}: fixture did not reach byte truncation`,

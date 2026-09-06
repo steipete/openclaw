@@ -1,0 +1,5 @@
+{
+  "package.json": "c3f48e7b4a77952d7d75e006d70a932124e2a15132d24a2e8df2765507fb81cd",
+  "src/daemon/schtasks-runtime.ts": "4311e129131be3d0f8519ccbb23adf2c4a8e7a969ebc706e35a88a57e7b6eb41",
+  "src/daemon/schtasks.env-case.real.test.ts": "6a5f4f4f94a99f01fb20875cd27ac99730618a0597665e1c91ba0ce721595d13"
+}

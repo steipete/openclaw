@@ -1,0 +1,55 @@
+{
+  "base": "140d9e705ea30fc86a4865cf8e38eca31a74b9dd",
+  "node": "24.19.0",
+  "pnpm": "12.3.4",
+  "variants": {
+    "existing": {
+      "patch": "existing.patch",
+      "sha256": "1040a5ebeffbee4f975b564aa6c8691d8f4ab2dc2c1882ef5d635fcf9ba40c1f",
+      "files": {
+        "src/commands/doctor-session-transcripts.ts": {
+          "before": "ee8c8eaca18450aa896a05ee3e74bc7afa7b7b5218bfd7589c1ff230471f9653",
+          "after": "9e60ee1debd1d888caffe3133d4794dc3c22b730712ce6f019e7a9844268dd17"
+        },
+        "src/commands/doctor-session-sqlite.ts": {
+          "before": "e06eac6223d01679c403dbe09f1e57bfc7ff3eba7679300a8826b39584de61a0",
+          "after": "576f17c4129779d0e30c66377be1ae6917d48390858b7f04b54ee23282dc6108"
+        },
+        "src/commands/doctor-session-sqlite.memory.test-support.ts": {
+          "before": "890e4723d4845419ea9d9c22153d016a1fba624ffb5067d75a036e0ae47a49a3",
+          "after": "2f5c416485de6cf9b062a34e5a0c802a991cf66e8284abacb5dfd7943ad7ddbb"
+        },
+        "src/commands/doctor-session-sqlite.memory.test.ts": {
+          "before": "2a5eccd8961351dcb59ad890df94ca7429a98ebd8613e9ad1eafc6482c25cbbb",
+          "after": "8a4f062b553743da003b7adbb201b6ecba1dfb64bce9b2101b89f08f1778c0dd"
+        }
+      }
+    },
+    "splitting": {
+      "patch": "splitting.patch",
+      "sha256": "a565fd6e1584e39026daede18960b15369c5f1e12378dc959f1ff6f4b26c7f00",
+      "files": {
+        "src/commands/doctor-session-transcripts.ts": {
+          "before": "ee8c8eaca18450aa896a05ee3e74bc7afa7b7b5218bfd7589c1ff230471f9653",
+          "after": "9e60ee1debd1d888caffe3133d4794dc3c22b730712ce6f019e7a9844268dd17"
+        },
+        "src/commands/doctor-session-sqlite.ts": {
+          "before": "e06eac6223d01679c403dbe09f1e57bfc7ff3eba7679300a8826b39584de61a0",
+          "after": "576f17c4129779d0e30c66377be1ae6917d48390858b7f04b54ee23282dc6108"
+        },
+        "src/commands/doctor-session-sqlite.memory.test-support.ts": {
+          "before": "890e4723d4845419ea9d9c22153d016a1fba624ffb5067d75a036e0ae47a49a3",
+          "after": "2f5c416485de6cf9b062a34e5a0c802a991cf66e8284abacb5dfd7943ad7ddbb"
+        },
+        "src/commands/doctor-session-sqlite.memory.test.ts": {
+          "before": "2a5eccd8961351dcb59ad890df94ca7429a98ebd8613e9ad1eafc6482c25cbbb",
+          "after": "0ae2a258718712585e0400d0d949fb661f3d1cd49c267fb3070559329c644043"
+        }
+      }
+    }
+  },
+  "unchanged": {
+    "package.json": "435b6ea6b1e56c5ddd009747603a7c6a520cf10ca729654631cbce788692aed1",
+    "pnpm-lock.yaml": "6dde7b9ea11f7900400453f98933ce6638d99534e25cd0a2a39e8921141e23d0"
+  }
+}

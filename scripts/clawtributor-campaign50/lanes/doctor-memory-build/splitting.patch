@@ -1,0 +1,218 @@
+--- a/src/commands/doctor-session-transcripts.ts
++++ b/src/commands/doctor-session-transcripts.ts
+@@ -341,31 +341,41 @@
+     return postSessionPluginReceipt;
+   };
+   const runSessionSqlite = async (maintenanceAuthority?: DoctorSqliteMaintenanceAuthority) => {
++    recordDoctorMemoryPhase("public:import:before");
+     const report = await runDoctorSessionSqlite({
+       allAgents: true,
+       ...(params.cfg ? { cfg: params.cfg } : {}),
+       env: params.env,
+       mode: params.shouldRepair ? "import" : "dry-run",
+     });
++    recordDoctorMemoryPhase("public:import:after");
+     const { migrateLegacyMainSessionKeys } =
+       await import("../config/sessions/legacy-main-session-migration.js");
++    recordDoctorMemoryPhase("public:legacy-main:before");
+     legacyMainSessionResult = await migrateLegacyMainSessionKeys({
+       cfg: params.cfg ?? {},
+       env: params.env,
+       mode: params.shouldRepair ? "doctor-fix" : "detect",
+     });
++    recordDoctorMemoryPhase("public:legacy-main:after");
+     const repairParams = {
+       apply: params.shouldRepair,
+       cfg: params.cfg ?? {},
+       env: params.env,
+     };
++    recordDoctorMemoryPhase("public:canonical:before");
+     canonicalKeyReport = await repairCanonicalSessionKeys(repairParams);
+     // Canonical-key ties compare complete entry JSON, so select their winner before stripping it.
++    recordDoctorMemoryPhase("public:canonical:after");
+     resolvedSkillsReport = repairCanonicalSessionResolvedSkills(repairParams);
+     // Import may create the first durable SQLite row for a colliding legacy key.
++    recordDoctorMemoryPhase("public:skills:after");
+     reservedKeyReport = repairReservedIncognitoSessionKeys(repairParams);
++    recordDoctorMemoryPhase("public:reserved:after");
+     deliveryReport = repairCanonicalSessionDeliveryStates(repairParams);
++    recordDoctorMemoryPhase("public:delivery:after");
+     repairLegacySessionExecPolicy(repairParams);
++    recordDoctorMemoryPhase("public:exec-policy:after");
+     if (params.postSessionPluginMigrationPlanBound && !params.postSessionPluginMigration) {
+       return report;
+     }
+@@ -384,6 +394,7 @@
+       });
+       return report;
+     }
++    recordDoctorMemoryPhase("public:plugin:before");
+     let pluginRepair: MigrationMessages;
+     let receiptStep = params.postSessionPluginMigration?.step;
+     try {
+@@ -406,6 +417,7 @@
+       postSessionPluginReceipt = createLegacyStateMigrationStepReceipt(receiptStep, pluginRepair);
+       params.onStepReceipt?.(postSessionPluginReceipt);
+     }
++    recordDoctorMemoryPhase("public:plugin:after");
+     const pluginMessages = [...pluginRepair.changes, ...pluginRepair.warnings];
+     if (pluginMessages.length > 0) {
+       note(pluginMessages.join("\n"), "Plugin session repair");
+@@ -522,3 +534,8 @@
+   note(lines.join("\n"), "Session SQLite");
+   return postSessionPluginReceipt;
+ }
++
++function recordDoctorMemoryPhase(phase: string): void {
++  const { heapUsed, heapTotal, external, rss } = process.memoryUsage();
++  process.stderr.write(`${JSON.stringify({ doctorMemoryPhase: phase, heapUsed, heapTotal, external, rss, pid: process.pid, scenario: process.argv[3] })}\n`);
++}
+--- a/src/commands/doctor-session-sqlite.ts
++++ b/src/commands/doctor-session-sqlite.ts
+@@ -158,6 +158,7 @@
+   const reports: DoctorSessionSqliteTargetReport[] = [];
+   const archiveTargets: LegacyArchiveTarget[] = [];
+   for (const target of targets) {
++    recordDoctorMemoryPhase("import:target:before");
+     reports.push(
+       await inspectOrMigrateTarget({
+         activeRun,
+@@ -169,13 +170,16 @@
+       }),
+     );
+   }
++  recordDoctorMemoryPhase("import:targets:after");
+   if (activeRun && coverage) {
++    recordDoctorMemoryPhase("import:archive:before");
+     await archiveLegacyArtifacts(archiveTargets, coverage, activeRun);
+     for (const [index, target] of targets.entries()) {
+       const report = reports[index]!;
+       appendActiveSqliteTranscriptFileIssues(target, report);
+       updateMigrationManifestTarget(activeRun, createMigrationTargetInput(target), report.issues);
+     }
++    recordDoctorMemoryPhase("import:archive:after");
+     await archiveImportedLegacySessionStores(archiveTargets, activeRun, coverage);
+     const hasBlockingIssues = reports.some((report) => blockingIssueCount(report) > 0);
+     activeRun.manifest.completedAt = new Date().toISOString();
+@@ -188,6 +192,7 @@
+     }
+     writeSessionSqliteMigrationManifest(activeRun);
+   }
++  recordDoctorMemoryPhase("import:return");
+   return summarizeDoctorSessionSqliteReport(options.mode, reports, activeRun);
+ }
+ 
+@@ -1634,3 +1639,8 @@
+   };
+ }
+ /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */
++
++function recordDoctorMemoryPhase(phase: string): void {
++  const { heapUsed, heapTotal, external, rss } = process.memoryUsage();
++  process.stderr.write(`${JSON.stringify({ doctorMemoryPhase: phase, heapUsed, heapTotal, external, rss, pid: process.pid, scenario: process.argv[3] })}\n`);
++}
+--- a/src/commands/doctor-session-sqlite.memory.test-support.ts
++++ b/src/commands/doctor-session-sqlite.memory.test-support.ts
+@@ -16,6 +16,7 @@
+ async function main() {
+   const [stateDir, scenario] = process.argv.slice(2);
+   assert(stateDir && scenario);
++  recordDoctorMemoryPhase("fixture:start");
+   process.env.OPENCLAW_STATE_DIR = stateDir;
+   process.env.OPENCLAW_CONFIG_PATH = path.join(stateDir, "openclaw.json");
+   const sessionCount = scenario === "batch" ? 256 : 1;
+@@ -82,6 +83,7 @@
+   }
+   fs.writeFileSync(storePath, JSON.stringify(store));
+   process.stderr.write(`seeded ${sessionCount} sessions x ${eventCount} events; importing\n`);
++  recordDoctorMemoryPhase("fixture:seeded");
+   const started = performance.now();
+   if (scenario === "public") {
+     await withSuppressedNotes(() =>
+@@ -91,6 +93,7 @@
+         shouldRepair: true,
+       }),
+     );
++    recordDoctorMemoryPhase("fixture:public:after");
+     assert(!fs.readdirSync(sessionsDir).some((name) => name.includes(".pre-doctor-")));
+   }
+   const report = await runDoctorSessionSqlite({
+@@ -98,6 +101,7 @@
+     store: storePath,
+     env: process.env,
+   });
++  recordDoctorMemoryPhase("fixture:direct:after");
+   assert.equal(report.totals.issues, 0, JSON.stringify(report.targets.map((t) => t.issues)));
+   assert.equal(report.totals.importedEntries, scenario === "public" ? 0 : sessionCount);
+   assert.equal(
+@@ -136,12 +140,14 @@
+   } finally {
+     db.close();
+   }
++  recordDoctorMemoryPhase("fixture:verification:after");
+   const rerun = await runDoctorSessionSqlite({
+     mode: "import",
+     store: storePath,
+     env: process.env,
+   });
+   assert.equal(rerun.totals.importedEntries, 0);
++  recordDoctorMemoryPhase("fixture:rerun:after");
+   closeOpenClawAgentDatabasesForTest();
+   closeOpenClawStateDatabaseForTest();
+   process.stdout.write(
+@@ -162,3 +168,8 @@
+     process.exitCode = 1;
+   });
+ }
++
++function recordDoctorMemoryPhase(phase: string): void {
++  const { heapUsed, heapTotal, external, rss } = process.memoryUsage();
++  process.stderr.write(`${JSON.stringify({ doctorMemoryPhase: phase, heapUsed, heapTotal, external, rss, pid: process.pid, scenario: process.argv[3] })}\n`);
++}
+--- a/src/commands/doctor-session-sqlite.memory.test.ts
++++ b/src/commands/doctor-session-sqlite.memory.test.ts
+@@ -24,7 +24,9 @@
+   for (const schema of ["openclaw-agent-schema.sql", "openclaw-state-schema.sql"]) {
+     fs.copyFileSync(path.join(process.cwd(), "src/state", schema), path.join(outDir, schema));
+   }
+-  await esbuild({
++  const buildResult = await esbuild({
++    metafile: true,
++    splitting: true,
+     bundle: true,
+     entryPoints: {
+       child: fileURLToPath(sqliteImportMemorySupportUrl),
+@@ -42,6 +44,16 @@
+     platform: "node",
+     target: "node22",
+   });
++  fs.writeFileSync(
++    path.join(process.cwd(), ".artifacts/doctor-memory-build-diagnostic.json"),
++    JSON.stringify({
++      childPath,
++      metafile: buildResult.metafile,
++      outputSizes: Object.fromEntries(
++        Object.keys(buildResult.metafile?.outputs ?? {}).map((file) => [file, fs.statSync(file).size]),
++      ),
++    }),
++  );
+ });
+ afterAll(() => {
+   if (bundleDir) {
+@@ -53,7 +65,7 @@
+   "imports %s transcripts and completes branch projections under a 256 MiB heap",
+   async (scenario) => {
+     await withOpenClawTestState({ applyEnv: false, label: "import-memory" }, async (state) => {
+-      const { stdout } = await execFileAsync(
++      const { stdout, stderr } = await execFileAsync(
+         process.execPath,
+         ["--max-old-space-size=256", childPath, state.stateDir, scenario],
+         {
+@@ -64,6 +76,7 @@
+           timeout: 180_000,
+         },
+       );
++      console.info(stderr);
+       expect(JSON.parse(stdout)).toMatchObject({ scenario });
+       console.info(stdout.trim());
+     });

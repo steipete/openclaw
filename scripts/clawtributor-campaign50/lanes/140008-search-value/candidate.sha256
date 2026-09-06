@@ -1,0 +1,4 @@
+4a18eab07a05432cd0fb5a5f05494968fffc995bc2600999e4cc2330a053c18e  src/agents/sessions/tools/find.ts
+27944e2b0938af2b2f07541a9c5957cd63d0f922c66ae47f2d00191343f04eb6  src/agents/sessions/tools/grep.ts
+fbe011123cf7822f1fab2a2f3e17b985aeb89cf96a469e5d5153db427a30e08f  src/agents/sessions/tools/tool-contracts.ts
+737b7b5ee28a5030203d7d0414440fb9ad420b9ba0c1720174c86f4e905ad518  src/agents/filesystem-tools-output-contract.test.ts

@@ -1,0 +1,269 @@
+[
+  {
+    "stage": "baseline",
+    "name": "omitted",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "environment-port",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 0,
+        "methods": []
+      },
+      {
+        "label": "other",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "empty-environment-port",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "environment-url",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 0,
+        "methods": []
+      },
+      {
+        "label": "other",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "valid",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 0,
+        "methods": []
+      },
+      {
+        "label": "other",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "valid-over-environment",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "empty",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "whitespace",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "equals-empty",
+    "code": 0,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 1,
+        "methods": [
+          "connect",
+          "logs.tail"
+        ]
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": true,
+    "expectedMarker": true,
+    "invalidPort": false,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  },
+  {
+    "stage": "baseline",
+    "name": "invalid-numeric",
+    "code": 1,
+    "signal": null,
+    "connections": [
+      {
+        "label": "configured",
+        "count": 0,
+        "methods": []
+      },
+      {
+        "label": "other",
+        "count": 0,
+        "methods": []
+      }
+    ],
+    "validJson": false,
+    "expectedMarker": false,
+    "invalidPort": true,
+    "conflictingTarget": false,
+    "cliErrorEnvelope": false,
+    "diagnosticCodes": []
+  }
+]

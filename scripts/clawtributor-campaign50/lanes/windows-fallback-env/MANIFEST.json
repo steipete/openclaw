@@ -1,6 +1,11 @@
 {
-  "native-env-proof.mjs": "3da5344fa24f6b38036e93b31bb35fb07c00b7f03ac3cfb5b7b6524e85a4ccd6",
-  "run.ps1": "3c8b1b8507b18af7bf330290251f5f678cda0732f125779c233e06f6c71c74ac",
   "bootstrap-windows.ps1": "5a1b3c7c2619e73048f9c2b5caee0b9c123d732f857eadde334d6a972abe65c2",
-  "expected-source.json": "e14118706e1d57ad613ab6462a73cf88582b0a9206d65bd54a35fefc12942a9e"
+  "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+  "expected-files.json": "374a6c19817d3d222b3159cdfb0024b980c806a9fe83a1b66f549ac4c379bd76",
+  "expected-source.json": "e14118706e1d57ad613ab6462a73cf88582b0a9206d65bd54a35fefc12942a9e",
+  "native-env-proof.mjs": "3da5344fa24f6b38036e93b31bb35fb07c00b7f03ac3cfb5b7b6524e85a4ccd6",
+  "production.patch": "e4175bf2785aceefb33d89a5a56e0e15697bf3bac4f7baafa927d625deea5d40",
+  "regression.patch": "df85f40c332858fd796eb9689de040457109470e7da747a2dfa0b2b499ed6ae2",
+  "run.ps1": "8f5925c8163444f6f1f592ff957367fa8bc241613a858d26ef783356dc1971de",
+  "validate-focused.mjs": "edc4dbe71425d7d3a6c3edd93e7d531cde14673c214ff8d116c134e770aca7a5"
 }

@@ -1,0 +1,42 @@
+{
+  "runId": 34028447384,
+  "runUrl": "https://github.com/steipete/openclaw/actions/runs/34028447384",
+  "harness": "9d900dbe2b9c4191e3f372561509301d216d1601",
+  "source": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "testsPatchSha256": "c56c410a669bffa6894809d6f256901be84b19171d5a12dea88e56c340cfb018",
+  "owners": [
+    "src/cli/program/register.setup.test.ts"
+  ],
+  "qualifiedCliNames": [
+    "omitted",
+    "environment-port",
+    "empty-environment-port",
+    "environment-url",
+    "valid",
+    "valid-over-environment",
+    "empty",
+    "whitespace",
+    "equals-empty"
+  ],
+  "unqualifiedCliNames": [
+    "invalid-numeric"
+  ],
+  "artifacts": {
+    "baseline-register.setup.json": "9d2662863a2d747229be013e60e9356078dfbeaa99e41e390180ae369837eee7",
+    "baseline-register.setup.json.capture.json": "e88eb0034c2de6cdc398988f5e371f1a13062798c240de97223bed8b5c51326b",
+    "baseline-register.setup.log.txt": "50af6b5a7fd75a806e2072b959f36f05011da01846d5892b3ca50a47725bba4c",
+    "cli-baseline.json": "46f92147e15b79ed22c172368c8f779e82af9e2b5680a72d2af37a5d74a9adb4",
+    "baseline-build.log.txt": "2005221b3bd4f240df187f888915b90e3cc146282747299a60856e3ae6c199d4",
+    "source.json": "c9987b9187a5bc9d616ec6fa5a4de7b705263494d6fee506deaae7eab8dfca52",
+    "baseline-source.sha256": "cf24060f6223a854624dd533c4688f6ea36dabd8664caa59875268924a158965",
+    "final-working-tree.patch": "5927367f99e5cc94be172a3a998a1fdccf283e78e1c63c118500be0a24bc419a"
+  },
+  "transportRenames": {
+    "baseline-register.setup.log": "baseline-register.setup.log.txt",
+    "cli/baseline.json": "cli-baseline.json",
+    "baseline-build.log": "baseline-build.log.txt"
+  },
+  "meaning": "Setup baseline and9successful baselineCLI cases completed. Invalidnumeric rejection happened but outputformat was not established because rawstreams were not retained. Remaining4baselineCLI cases andallcandidate work need execution."
+}

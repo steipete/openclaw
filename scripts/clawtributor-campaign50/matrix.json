@@ -1,62 +1,52 @@
 [
   {
-    "id": "cron-timeout-observation-green",
-    "directory": "cron-timeout-observation",
-    "runner": "ubuntu-24.04",
-    "source": "b5412c2a40b200f7b11d235a4216e18d8e7ffd6f",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "process-observation"
-  },
-  {
-    "id": "doctor-public-memory-diagnostic",
-    "directory": "doctor-public-memory",
+    "id": "doctor-memory-existing",
+    "directory": "doctor-memory-build",
     "runner": "ubuntu-24.04",
     "source": "140d9e705ea30fc86a4865cf8e38eca31a74b9dd",
     "node": "24.19.0",
     "pnpm": "12.3.4",
     "mode": "baseline",
-    "variant": "heap-diagnostic"
+    "variant": "existing"
   },
   {
-    "id": "search-value-140008-red",
+    "id": "doctor-memory-splitting",
+    "directory": "doctor-memory-build",
+    "runner": "ubuntu-24.04",
+    "source": "140d9e705ea30fc86a4865cf8e38eca31a74b9dd",
+    "node": "24.19.0",
+    "pnpm": "12.3.4",
+    "mode": "baseline",
+    "variant": "splitting"
+  },
+  {
+    "id": "gateway-port-completion",
+    "directory": "gateway-port",
+    "runner": "ubuntu-24.04",
+    "source": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "compare",
+    "variant": "cli-peers"
+  },
+  {
+    "id": "windows-fallback-env-green",
+    "directory": "windows-fallback-env",
+    "runner": "windows-2025",
+    "source": "c5a7231000329eb43375b7befb5a3452632845ed",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "green",
+    "variant": "native-env"
+  },
+  {
+    "id": "search-value-140008-compare",
     "directory": "140008-search-value",
     "runner": "ubuntu-24.04",
     "source": "7475087fa97a73587e2b15ac514733ae3bbfa024",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "red",
+    "mode": "compare",
     "variant": "native-find-grep"
-  },
-  {
-    "id": "silent-reply-red",
-    "directory": "silent-reply",
-    "runner": "ubuntu-24.04",
-    "source": "eb08c36779e624193a3e92812a3dfde74979f5f5",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "direct-ingress"
-  },
-  {
-    "id": "root-option-route-red",
-    "directory": "root-option-route",
-    "runner": "ubuntu-24.04",
-    "source": "7475087fa97a73587e2b15ac514733ae3bbfa024",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "cli-peers"
-  },
-  {
-    "id": "cli-quoted-records-red",
-    "directory": "cli-quoted-records",
-    "runner": "ubuntu-24.04",
-    "source": "ed6e3aabf0ef6cd58a8ee9d9282a6dc6c06cc918",
-    "node": "24.20.0",
-    "pnpm": "12.1.0",
-    "mode": "red",
-    "variant": "real-child"
   }
 ]

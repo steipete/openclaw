@@ -1,0 +1,91 @@
+diff --git a/src/agents/sessions/tools/find.ts b/src/agents/sessions/tools/find.ts
+index d762a4b5167..44a8816dbf3 100644
+--- a/src/agents/sessions/tools/find.ts
++++ b/src/agents/sessions/tools/find.ts
+@@ -139,9 +139,8 @@ function buildFindResult(params: {
+         : relativePath;
+     })
+     .join("\n");
+-  const truncation = truncateHead(rawOutput, { maxLines: Number.MAX_SAFE_INTEGER });
+-  let resultOutput = truncation.content;
+-  const details: Omit<FindToolDetails, "content"> = {};
++  const { content, ...truncation } = truncateHead(rawOutput, { maxLines: Number.MAX_SAFE_INTEGER });
++  const details: FindToolDetails = { content };
+   const notices: string[] = [];
+   if (resultLimitReached) {
+     notices.push(params.limitNotice);
+@@ -152,11 +151,11 @@ function buildFindResult(params: {
+     details.truncation = truncation;
+   }
+   if (notices.length > 0) {
+-    resultOutput += `\n\n[${notices.join(". ")}]`;
++    details.content += `\n\n[${notices.join(". ")}]`;
+   }
+   return {
+-    content: [{ type: "text", text: resultOutput }],
+-    details: { ...details, content: resultOutput },
++    content: [{ type: "text", text: details.content }],
++    details,
+   };
+ }
+ 
+diff --git a/src/agents/sessions/tools/grep.ts b/src/agents/sessions/tools/grep.ts
+index c10ba2c6579..1b269dba440 100644
+--- a/src/agents/sessions/tools/grep.ts
++++ b/src/agents/sessions/tools/grep.ts
+@@ -510,10 +510,10 @@ export function createGrepToolDefinition(
+ 
+                 const rawOutput = outputLines.join("\n");
+                 // Apply byte truncation. There is no line limit here because the match limit already capped rows.
+-                const truncation = truncateHead(rawOutput, { maxLines: Number.MAX_SAFE_INTEGER });
+-                let output = truncation.content;
+-                const details: Omit<GrepToolDetails, "content"> = {};
+-                // Build actionable notices for truncation and match limits.
++                const { content, ...truncation } = truncateHead(rawOutput, {
++                  maxLines: Number.MAX_SAFE_INTEGER,
++                });
++                const details: GrepToolDetails = { content };
+                 const notices: string[] = [];
+                 if (matchLimitReached) {
+                   notices.push(
+@@ -530,12 +530,12 @@ export function createGrepToolDefinition(
+                   details.linesTruncated = true;
+                 }
+                 if (notices.length > 0) {
+-                  output += `\n\n[${notices.join(". ")}]`;
++                  details.content += `\n\n[${notices.join(". ")}]`;
+                 }
+                 settle(() =>
+                   resolve({
+-                    content: [{ type: "text", text: output }],
+-                    details: { ...details, content: output },
++                    content: [{ type: "text", text: details.content }],
++                    details,
+                   }),
+                 );
+               })().catch((err: unknown) => {
+diff --git a/src/agents/sessions/tools/tool-contracts.ts b/src/agents/sessions/tools/tool-contracts.ts
+index 849e3829400..629157c3664 100644
+--- a/src/agents/sessions/tools/tool-contracts.ts
++++ b/src/agents/sessions/tools/tool-contracts.ts
+@@ -46,9 +46,10 @@ export interface FindToolInput {
+   limit?: number;
+ }
+ 
++// Keep one text payload; duplicate truncation content can exceed Code Mode value bounds.
+ export interface FindToolDetails {
+   content: string;
+-  truncation?: TruncationResult;
++  truncation?: Omit<TruncationResult, "content">;
+   resultLimitReached?: number;
+ }
+ 
+@@ -64,7 +65,7 @@ export interface GrepToolInput {
+ 
+ export interface GrepToolDetails {
+   content: string;
+-  truncation?: TruncationResult;
++  truncation?: Omit<TruncationResult, "content">;
+   matchLimitReached?: number;
+   linesTruncated?: boolean;
+ }

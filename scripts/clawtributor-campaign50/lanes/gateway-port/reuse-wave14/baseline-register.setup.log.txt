@@ -1,0 +1,87 @@
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[vitest-workers] prepared 1da4aed78499 in 5637ms (8368 inputs, 4177 outputs)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps shared onboarding flags aligned while preserving command-specific help
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps routing precedence explicit
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mruns one-shot system-agent requests without probing config
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mresumes pending local onboarding instead of opening chat after inference commits
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mresumes onboarding when interrupted after selecting full access
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mresumes onboarding when interrupted after selecting guarded access
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps chat when other wizard settings prove the config is authored
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps interactive chat for authored model without an onboarding receipt
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps interactive chat for completed local onboarding
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps chat when a pending receipt belongs to a replaced config
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mdoes not let a stale local receipt reroute invalid config
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mdoes not let a stale local receipt reroute remote Gateway
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22muses system overview JSON on configured systems
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mkeeps onboarding JSON for unconfigured systems
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mregisters a hidden retired-name alias through direct registration
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mregisters a hidden retired-name alias through lazy registration
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mruns setup wizard command by default
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22maccepts retired --no-tailscale-reset-on-exit as a no-op
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22maccepts retired --tailscale-reset-on-exit as a no-op
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mruns baseline setup command when --baseline is set
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit onboarding mode options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit JSON onboarding mode options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit remote Gateway options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit remote Gateway password options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit reset options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit daemon options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects explicit auth options with --baseline
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --remote-token to the setup wizard
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --remote-password to the setup wizard
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --tui through the canonical onboarding path
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --skip-ui through the canonical onboarding path
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects conflicting custom model input capabilities (json: false)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects conflicting custom model input capabilities (json: true)
+ [31m×[39m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects invalid --gateway-port  before onboarding dispatch[32m 90[2mms[22m[39m
+[31m   → expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects invalid --gateway-port  	  before onboarding dispatch[32m 3[2mms[22m[39m
+[31m   → expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects invalid --gateway-port not-a-port before onboarding dispatch[32m 22[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects invalid --gateway-port 70000 before onboarding dispatch[32m 4[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mruns setup wizard command when wizard-only flags are passed explicitly
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards scripted onboarding controls
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards onboard auth flags through the setup alias
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --agent-name through guided setup
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --agent-name through classic setup
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mforwards --agent-name through non-interactive setup
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mruns setup wizard command for migration import flags
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mreports setup errors through runtime
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects invalid --gateway-port  before onboarding dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/program/register.setup.test.ts[2m > [22mregisterSetupCommand[2m > [22mrejects invalid --gateway-port  	  before onboarding dispatch
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m src/cli/program/register.setup.test.ts:[2m492:29[22m[39m
+    [90m490|[39m       await runCli(["setup", "--gateway-port", gatewayPort]);
+    [90m491|[39m
+    [90m492|[39m       expect(runtime.error).toHaveBeenCalledWith(
+    [90m   |[39m                             [31m^[39m
+    [90m493|[39m         "--gateway-port must be an integer between 1 and 65535.",
+    [90m494|[39m       );
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[2m | [22m[33m41 skipped[39m[90m (45)[39m
+[2m   Start at [22m 10:52:22
+[2m   Duration [22m 10.44s[2m (transform 84%, worker 7%, import 7%, tests 1%, setup 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/gateway-port-remainder/baseline-register.setup.json
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 12.72s
+[test] FAILED (exit 1)

@@ -1,0 +1,102 @@
+diff --git a/package.json b/package.json
+index 02976f63b23..9ac3b4eab52 100644
+--- a/package.json
++++ b/package.json
+@@ -2039,7 +2039,7 @@
+     "test:voicecall:closedloop": "node --import ./scripts/tsx.mjs scripts/test-voicecall-closedloop.mts",
+     "test:watch": "node --import ./scripts/tsx.mjs scripts/test-projects.mts --watch",
+     "test:windows:ci": "pnpm test:windows:ci:1 && pnpm test:windows:ci:2",
+-    "test:windows:ci:1": "node --import ./scripts/tsx.mjs scripts/test-projects.mts extensions/acpx/src/runtime-argv.process.test.ts src/state/openclaw-state-ownership.test.ts src/snapshot/local-repository.windows.test.ts src/state/openclaw-database-paths.windows.test.ts src/node-host/invoke-system-run-allowlist.test.ts src/node-host/node-worker-transfer-client.test.ts packages/terminal-core/src/display-string.test.ts src/config/sessions/session-accessor.sqlite-archive.worker.test.ts src/commands/doctor-gateway-auth-token.windows.test.ts src/infra/state-migrations.audit-logs.windows.test.ts src/commands/backup-verify.test.ts src/commands/agents.commands.list.test.ts src/gateway/gateway-cron-process-identity.windows.test.ts src/shared/runtime-import.test.ts src/shared/worker-bundle-archive.test.ts src/node-host/node-worker-bundle-installer.test.ts test/scripts/check-openclaw-package-tarball.test.ts test/scripts/direct-run-entrypoints.test.ts test/scripts/format-generated-module.test.ts test/scripts/openclaw-cross-os-installer.windows.test.ts test/scripts/openclaw-cross-os-release-workflow.test.ts test/scripts/pnpm-runner.test.ts extensions/canvas/scripts/pnpm-runner.test.ts test/scripts/run-with-env.test.ts test/scripts/ui.test.ts test/scripts/vitest-process-group.test.ts test/scripts/vitest-worker-artifacts.test.ts src/agents/tools/media-tool-file-url.windows.test.ts extensions/memory-core/src/memory-extra-file-path.windows.test.ts src/daemon/schtasks.startup-fallback.test.ts src/plugin-sdk/node-host.test.ts test/e2e/qa-lab/runtime/package-openclaw-for-docker.e2e.test.ts extensions/lobster/src/lobster-runner.test.ts src/gateway/worker-environments/workspace-quiescence.windows.test.ts",
++    "test:windows:ci:1": "node --import ./scripts/tsx.mjs scripts/test-projects.mts extensions/acpx/src/runtime-argv.process.test.ts src/state/openclaw-state-ownership.test.ts src/snapshot/local-repository.windows.test.ts src/state/openclaw-database-paths.windows.test.ts src/node-host/invoke-system-run-allowlist.test.ts src/node-host/node-worker-transfer-client.test.ts packages/terminal-core/src/display-string.test.ts src/config/sessions/session-accessor.sqlite-archive.worker.test.ts src/commands/doctor-gateway-auth-token.windows.test.ts src/infra/state-migrations.audit-logs.windows.test.ts src/commands/backup-verify.test.ts src/commands/agents.commands.list.test.ts src/gateway/gateway-cron-process-identity.windows.test.ts src/shared/runtime-import.test.ts src/shared/worker-bundle-archive.test.ts src/node-host/node-worker-bundle-installer.test.ts test/scripts/check-openclaw-package-tarball.test.ts test/scripts/direct-run-entrypoints.test.ts test/scripts/format-generated-module.test.ts test/scripts/openclaw-cross-os-installer.windows.test.ts test/scripts/openclaw-cross-os-release-workflow.test.ts test/scripts/pnpm-runner.test.ts extensions/canvas/scripts/pnpm-runner.test.ts test/scripts/run-with-env.test.ts test/scripts/ui.test.ts test/scripts/vitest-process-group.test.ts test/scripts/vitest-worker-artifacts.test.ts src/agents/tools/media-tool-file-url.windows.test.ts extensions/memory-core/src/memory-extra-file-path.windows.test.ts src/daemon/schtasks.startup-fallback.test.ts src/daemon/schtasks.env-case.real.test.ts src/plugin-sdk/node-host.test.ts test/e2e/qa-lab/runtime/package-openclaw-for-docker.e2e.test.ts extensions/lobster/src/lobster-runner.test.ts src/gateway/worker-environments/workspace-quiescence.windows.test.ts",
+     "test:windows:ci:2": "node --import ./scripts/tsx.mjs scripts/test-projects.mts src/skills/runtime/refresh.windows.test.ts src/skills/runtime/refresh-watch-path.test.ts src/skills/runtime/refresh.missing-root.integration.test.ts src/infra/sqlite-snapshot.test.ts src/infra/ports.test.ts src/infra/diagnostic-process-siblings.env.test.ts src/infra/windows-diagnostic-env.test.ts src/infra/windows-encoding.test.ts src/infra/windows-process-start.test.ts src/infra/windows-process-start.native.test.ts src/shared/pid-alive.env.test.ts src/infra/advertised-lan-host.windows.test.ts src/infra/update-managed-service-handoff-command.test.ts src/infra/update-managed-service-handoff-lifecycle.test.ts src/infra/executable-path.test.ts src/agents/cli-executable-identity.test.ts src/plugin-sdk/windows-spawn.test.ts src/infra/fs-safe-remove.test.ts src/infra/state-migrations.legacy-session-store.test.ts src/infra/windows-install-roots.test.ts src/infra/ssh-client.windows.test.ts src/infra/exec-allowlist-pattern.test.ts src/infra/process-env.test.ts src/infra/openclaw-cli-shim.windows.test.ts src/agents/sessions/windows-git-bash-path.test.ts test/scripts/npm-runner.test.ts test/scripts/ts-topology.test.ts test/scripts/vitest-worker-artifacts.transforms.test.ts test/scripts/ci-platform-checkout.test.ts test/scripts/install-ps1.test.ts test/scripts/write-plugin-sdk-entry-dts.test.ts test/scripts/write-unified-entry-dts.test.ts test/scripts/tsdown-declaration-resolution.test.ts src/test-utils/openclaw-test-state.test.ts test/helpers/openclaw-test-instance.test.ts src/utils.test.ts src/media/local-media-path.windows.test.ts src/media/web-media.file-url.windows.test.ts src/process/exec.windows.test.ts src/process/exec.windows.integration.test.ts src/agents/sessions/exec.real.test.ts src/process/windows-command.test.ts src/process/terminal-pty.test.ts src/process/supervisor/supervisor.anchored-shell.real.test.ts src/tui/tui.resolve-codex-bin.test.ts src/media-understanding/attachments.file-url.windows.test.ts src/cli/completion-runtime.windows.test.ts src/cli/daemon-cli/status.print.test.ts src/cli/mcp-cli.path-case.windows.test.ts src/auto-reply/usage-bar/template.windows.test.ts src/auto-reply/reply.triggers.trigger-handling.stages-inbound-media-into-sandbox-workspace.test.ts src/agents/provider-local-service.env-case.test.ts src/agents/bash-tools.exec.script-preflight.test.ts src/agents/agent-tools.read.windows.test.ts src/agents/agent-tools.read.host-operations.test.ts src/agents/sandbox/fs-paths.test.ts src/agents/sessions/tools/render-utils.test.ts src/agents/sessions/tools/path-utils.test.ts extensions/msteams/src/media-helpers.test.ts extensions/msteams/src/messenger.test.ts extensions/mxc/test/mxc-backend.test.ts extensions/mxc/test/path-comparison.test.ts extensions/mxc/test/sandbox-policy-loader.test.ts",
+     "test:windows:schtasks:integration": "node --import ./scripts/tsx.mjs scripts/run-with-env.mts CI_WINDOWS_SCHTASKS_INTEGRATION=1 OPENCLAW_E2E_SKIP_BUILD=1 OPENCLAW_E2E_VERBOSE=1 OPENCLAW_VITEST_MAX_WORKERS=1 -- node scripts/run-vitest.mjs src/daemon/schtasks.integration.e2e.test.ts",
+     "tool-display:check": "node --import ./scripts/tsx.mjs scripts/tool-display.ts --check",
+diff --git a/src/daemon/schtasks.env-case.real.test.ts b/src/daemon/schtasks.env-case.real.test.ts
+new file mode 100644
+index 00000000000..4e74a0c2d3c
+--- /dev/null
++++ b/src/daemon/schtasks.env-case.real.test.ts
+@@ -0,0 +1,83 @@
++import fs from "node:fs/promises";
++import os from "node:os";
++import path from "node:path";
++import { PassThrough } from "node:stream";
++import { describe, expect, it } from "vitest";
++import { waitForDead } from "../../test/helpers/process-wait.js";
++import { withEnvAsync } from "../test-utils/env.js";
++import { buildTaskScript, encodeWindowsLauncherScript } from "./schtasks-layout.js";
++import { startStartupEntry } from "./schtasks-runtime.js";
++
++type ChildEnvironment = { pid: number; value?: string; control?: string };
++
++async function waitForChildEnvironment(filePath: string): Promise<ChildEnvironment> {
++  const deadline = Date.now() + 10_000;
++  for (;;) {
++    try {
++      return JSON.parse(await fs.readFile(filePath, "utf8"));
++    } catch (error) {
++      if ((error as NodeJS.ErrnoException).code !== "ENOENT" || Date.now() >= deadline) {
++        throw error;
++      }
++    }
++    await new Promise((resolve) => setTimeout(resolve, 25));
++  }
++}
++
++describe.runIf(process.platform === "win32")("Windows Startup fallback environment", () => {
++  it.each([
++    { name: "different casing", key: "openclaw_test_fallback_case" },
++    { name: "matching casing", key: "OPENCLAW_TEST_FALLBACK_CASE" },
++  ])("preserves the saved override with $name", async ({ key }) => {
++    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw fallback env "));
++    const output = new PassThrough();
++    output.resume();
++    let childExited = false;
++    try {
++      const reportPath = path.join(dir, "child.json");
++      const childPath = path.join(dir, "report-env.cjs");
++      await fs.writeFile(
++        childPath,
++        `
++const fs = require("node:fs");
++const file = process.argv[2];
++fs.writeFileSync(file + ".tmp", JSON.stringify({
++  pid: process.pid,
++  value: process.env.OPENCLAW_TEST_FALLBACK_CASE,
++  control: process.env.OPENCLAW_TEST_FALLBACK_CONTROL,
++}));
++fs.renameSync(file + ".tmp", file);
++`,
++      );
++      const scriptPath = path.join(dir, "gateway.cmd");
++      await fs.writeFile(
++        scriptPath,
++        encodeWindowsLauncherScript({
++          format: "cmd",
++          content: buildTaskScript({
++            programArguments: [process.execPath, childPath, reportPath],
++            workingDirectory: dir,
++            environment: {
++              [key]: "configured",
++              OPENCLAW_TEST_FALLBACK_CONTROL: "control",
++            },
++          }),
++        }),
++      );
++      await withEnvAsync({ OPENCLAW_TEST_FALLBACK_CASE: "inherited" }, async () => {
++        await startStartupEntry({ OPENCLAW_TASK_SCRIPT: scriptPath }, output);
++        const observed = await waitForChildEnvironment(reportPath);
++        expect(Number.isSafeInteger(observed.pid) && observed.pid > 0).toBe(true);
++        await waitForDead(observed.pid, 10_000);
++        childExited = true;
++        expect(observed.control).toBe("control");
++        expect(observed.value, "PR122658_ENV_OVERRIDE_LOST").toBe("configured");
++      });
++    } finally {
++      output.end();
++      if (childExited) {
++        await fs.rm(dir, { recursive: true });
++      }
++    }
++  });
++});

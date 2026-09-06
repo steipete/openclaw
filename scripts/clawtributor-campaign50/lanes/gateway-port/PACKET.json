@@ -2,7 +2,7 @@
   "pr": 139613,
   "base": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
   "contributorHead": "548815a6e4f38f821c7c8ccc85f03f816c8b5700",
-  "status": "frozen uncommitted; actual proof pending",
+  "status": "Published unchanged source f86c674; four baseline unit owners and nine baseline CLI cases verified, four CLI controls and candidate remain pending",
   "productionNet": -10,
   "testsNet": 14,
   "docsNet": 2,
@@ -17,6 +17,6 @@
   "artifacts": {
     "candidate.patch": "4cc2767e91c92b24532130eddfa2e0b88d3ae986bb1b508d5c1cfe012cbbf729",
     "regression-tests.patch": "c56c410a669bffa6894809d6f256901be84b19171d5a12dea88e56c340cfb018",
-    "port-cli-proof.mjs": "7f2bf4502525164cfd6d49e8e3bf420959a17fe0d053c75a6eca3b8aa373698c"
+    "port-cli-proof.mjs": "c35e06dfb0685acac7ad7065e07ba3bf1a10e48410ba92d2d39eb940bd4a8de9"
   }
 }

@@ -8,8 +8,15 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const [target, evidence, stage] = process.argv.slice(2);
+const [target, evidence, stage, selection = "all"] = process.argv.slice(2);
 assert.ok(target && evidence && ["baseline", "candidate"].includes(stage));
+assert.ok(selection === "all" || (stage === "baseline" && selection === "remaining"));
+const remainingBaselineCases = new Set([
+  "invalid-numeric",
+  "target-conflict",
+  "empty-text",
+  "valid-text",
+]);
 const require = createRequire(path.join(target, "package.json"));
 const { WebSocketServer } = require("ws");
 const {
@@ -71,7 +78,24 @@ async function peer(label) {
   return result;
 }
 
+async function retainOutput(name, stream, text) {
+  const bytes = Buffer.from(text.replaceAll(token, "[SYNTHETIC_TOKEN]"));
+  const edgeBytes = 64 * 1024;
+  const truncated = bytes.length > 2 * edgeBytes;
+  const retained = truncated
+    ? Buffer.concat([
+        bytes.subarray(0, edgeBytes),
+        Buffer.from(`\n[${bytes.length - 2 * edgeBytes} bytes omitted]\n`),
+        bytes.subarray(-edgeBytes),
+      ])
+    : bytes;
+  const file = `${stage}-${name}.${stream}.txt`;
+  await fs.writeFile(path.join(evidence, file), retained);
+  return { file, sourceBytes: bytes.length, retainedBytes: retained.length, truncated };
+}
+
 async function invoke(name, extraArgs, extraEnv, expectedPeer, expectedError, json = true) {
+  if (selection === "remaining" && !remainingBaselineCases.has(name)) return;
   const directory = path.join(root, name);
   const stateDir = path.join(directory, "state");
   await fs.mkdir(stateDir, { recursive: true, mode: 0o700 });
@@ -149,6 +173,10 @@ async function invoke(name, extraArgs, extraEnv, expectedPeer, expectedError, js
   } finally {
     clearTimeout(deadline);
   }
+  const [stdoutCapture, stderrCapture] = await Promise.all([
+    retainOutput(name, "stdout", stdout),
+    retainOutput(name, "stderr", stderr),
+  ]);
   const connections = peers.map(({ label, observations }, index) => ({
     label,
     count: observations.tcp - before[index].tcp,
@@ -159,11 +187,13 @@ async function invoke(name, extraArgs, extraEnv, expectedPeer, expectedError, js
   let validJson = true;
   if (json) {
     try {
-      frames = stdout
-        .trim()
-        .split("\n")
-        .filter(Boolean)
-        .map((line) => JSON.parse(line));
+      frames = expectedError
+        ? [JSON.parse(stdout)]
+        : stdout
+            .trim()
+            .split("\n")
+            .filter(Boolean)
+            .map((line) => JSON.parse(line));
     } catch {
       validJson = false;
     }
@@ -173,6 +203,9 @@ async function invoke(name, extraArgs, extraEnv, expectedPeer, expectedError, js
     name,
     code,
     signal,
+    stdoutCapture,
+    stderrCapture,
+    outputFormat: json ? (expectedError ? "json-document" : "ndjson") : "text",
     connections,
     validJson,
     expectedMarker: expectedPeer
@@ -197,7 +230,17 @@ async function invoke(name, extraArgs, extraEnv, expectedPeer, expectedError, js
   if (expectedError) {
     assert.equal(code, 1, JSON.stringify(record));
     assert.ok(record[expectedError], JSON.stringify(record));
-    if (json) assert.equal(record.cliErrorEnvelope, true, JSON.stringify(record));
+    if (json) {
+      assert.equal(record.cliErrorEnvelope, true, JSON.stringify(record));
+      assert.equal(frames.length, 1, JSON.stringify(record));
+      assert.equal(
+        frames[0].error.message,
+        expectedError === "invalidPort"
+          ? "--port must be an integer between 1 and 65535."
+          : "Use either --url or --port, not both.",
+        JSON.stringify(record),
+      );
+    }
     assert.equal(
       connections.reduce((sum, item) => sum + item.count, 0),
       0,

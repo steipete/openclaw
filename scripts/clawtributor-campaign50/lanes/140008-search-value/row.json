@@ -1,10 +1,10 @@
 {
-  "id": "search-value-140008-red",
-  "directory": "140008-search-value",
+  "id": "search-value-140008-compare",
+  "directory": "140008-search-value-compare",
   "runner": "run.sh",
   "source": "7475087fa97a73587e2b15ac514733ae3bbfa024",
   "node": "24.20.0",
   "pnpm": "12.3.4",
-  "mode": "red",
+  "mode": "compare",
   "variant": "native-find-grep"
 }
