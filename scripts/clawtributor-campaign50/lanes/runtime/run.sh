@@ -5,7 +5,7 @@ target_dir=$1
 lane_dir=$2
 evidence_dir=$3
 mode=$4
-case "$mode" in baseline|compare|candidate) ;; *) echo 'mode must be baseline, compare or candidate' >&2; exit 2;; esac
+case "$mode" in baseline|compare|candidate|flow-compare) ;; *) echo 'mode must be baseline, compare, candidate or flow-compare' >&2; exit 2;; esac
 cd "$target_dir"
 mkdir -p "$evidence_dir"
 baseline_artifacts=.artifacts/qa-e2e/campaign-memory-flush-baseline
@@ -29,18 +29,23 @@ trap retain_diagnostics EXIT
 proof_source=$(mktemp -d "$target_dir/.proof-memory-flush.XXXXXX")
 cp "$lane_dir/memory-flush-proof.mts" "$lane_dir/memory-flush-provider.mts" "$proof_source/"
 git rev-parse HEAD > "$evidence_dir/source-sha.txt"
+if [[ "$mode" == candidate || "$mode" == flow-compare ]]; then
+  test "$(git rev-parse HEAD)" = 342b7fc95009cca85425a38ccbd360b859ac0f0e
+fi
 if [[ "$mode" != candidate ]]; then
   git apply --check "$lane_dir/candidate-tests.patch"
   git apply "$lane_dir/candidate-tests.patch"
-  if node scripts/run-vitest.mjs src/auto-reply/reply/agent-runner-memory.test.ts -t 'includes appended transcript growth before persisting fresh usage' > "$evidence_dir/baseline-regression.log" 2>&1; then
-    cat "$evidence_dir/baseline-regression.log"
-    echo 'Expected baseline regression failure' >&2
-    exit 2
-  else
-    test_exit=$?
-    cat "$evidence_dir/baseline-regression.log"
-    test "$test_exit" -eq 1
-    grep -Eq 'expected 40000 to be greater than 80000' "$evidence_dir/baseline-regression.log"
+  if [[ "$mode" != flow-compare ]]; then
+    if node scripts/run-vitest.mjs src/auto-reply/reply/agent-runner-memory.test.ts -t 'includes appended transcript growth before persisting fresh usage' > "$evidence_dir/baseline-regression.log" 2>&1; then
+      cat "$evidence_dir/baseline-regression.log"
+      echo 'Expected baseline regression failure' >&2
+      exit 2
+    else
+      test_exit=$?
+      cat "$evidence_dir/baseline-regression.log"
+      test "$test_exit" -eq 1
+      grep -Eq 'expected 40000 to be greater than 80000' "$evidence_dir/baseline-regression.log"
+    fi
   fi
   OPENCLAW_BUILD_PRIVATE_QA=1 pnpm build > "$evidence_dir/baseline-build.log" 2>&1
   if node --import ./scripts/tsx.mjs "$proof_source/memory-flush-proof.mts" --repo-root "$target_dir" --artifact-base "$baseline_artifacts" > "$evidence_dir/baseline.log" 2>&1; then
@@ -59,12 +64,13 @@ if [[ "$mode" != candidate ]]; then
   node_modules/.bin/oxfmt src/auto-reply/reply/agent-runner-memory.ts src/auto-reply/reply/agent-runner-memory.test.ts
 fi
 if [[ "$mode" == candidate ]]; then
-  test "$(git rev-parse HEAD)" = 342b7fc95009cca85425a38ccbd360b859ac0f0e
   git apply --check "$lane_dir/candidate-tests.patch"
   git apply "$lane_dir/candidate-tests.patch"
   git apply --check "$lane_dir/candidate-production.patch"
   git apply "$lane_dir/candidate-production.patch"
   node_modules/.bin/oxfmt src/auto-reply/reply/agent-runner-memory.ts src/auto-reply/reply/agent-runner-memory.test.ts
+fi
+if [[ "$mode" == candidate || "$mode" == flow-compare ]]; then
   python3 - <<'VERIFY_SOURCE'
 from pathlib import Path
 import hashlib

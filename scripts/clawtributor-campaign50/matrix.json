@@ -1,12 +1,12 @@
 [
   {
-    "id": "file-fetch-green",
-    "directory": "file-fetch",
+    "id": "runtime-memory-realistic",
+    "directory": "runtime",
     "runner": "ubuntu-24.04",
-    "source": "2fc8eb0e7b1a97ebac5508dba6574498a9670670",
+    "source": "342b7fc95009cca85425a38ccbd360b859ac0f0e",
     "node": "24.20.0",
-    "pnpm": "12.1.0",
-    "mode": "green",
-    "variant": "file-staging"
+    "pnpm": "12.3.4",
+    "mode": "flow-compare",
+    "variant": "compaction"
   }
 ]

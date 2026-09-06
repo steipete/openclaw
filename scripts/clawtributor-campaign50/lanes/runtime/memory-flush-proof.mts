@@ -9,6 +9,8 @@ import { parseArgs } from "node:util";
 import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   createCase,
+  HISTORICAL_ANSWER,
+  HISTORICAL_USER_BLOCK,
   MODEL_ID,
   MODEL_REF,
   startProvider,
@@ -212,6 +214,8 @@ async function runChild() {
     phase("transport-ready-complete");
     assert.equal(gateway.cfg.plugins?.slots?.memory, "memory-core");
     assert.equal(gateway.cfg.agents?.defaults?.compaction?.mode, "safeguard");
+    assert.equal(HISTORICAL_USER_BLOCK.length, 45_000);
+    assert.equal(HISTORICAL_ANSWER.length, 28);
     const cases = [
       {
         name: "stale-anchor-tail",
@@ -316,10 +320,10 @@ async function runChild() {
       if (item.tail) {
         for (let i = 0; i < 10; i++)
           messages.push(
-            { role: "user", content: "x".repeat(45_000) },
+            { role: "user", content: HISTORICAL_USER_BLOCK },
             {
               role: "assistant",
-              content: [{ type: "text", text: "Unmetered historical answer." }],
+              content: [{ type: "text", text: HISTORICAL_ANSWER }],
               api: "openai-responses",
               provider: "mock-openai",
               model: MODEL_ID,
@@ -507,7 +511,12 @@ async function runChild() {
     await fs.writeFile(
       path.join(artifactBase, "verdict.json"),
       JSON.stringify(
-        { status: baselineRed ? "baseline-red" : "candidate-green", results },
+        {
+          scenario: "realistic-orchard-history",
+          trailingUserChars: 450_000,
+          status: baselineRed ? "baseline-red" : "candidate-green",
+          results,
+        },
         null,
         2,
       ),

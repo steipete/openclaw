@@ -25,7 +25,7 @@ for row in rows:
     for key in ("node", "pnpm"):
         if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", row[key]):
             raise ValueError("toolchain versions must be exact")
-    if row["mode"] not in {"baseline", "compare", "candidate", "red", "green"}:
+    if row["mode"] not in {"baseline", "compare", "candidate", "flow-compare", "red", "green"}:
         raise ValueError("invalid proof mode")
     entrypoint = "run.ps1" if row["runner"] == "windows-2025" else "run.sh"
     runner = root / "lanes" / row["directory"] / entrypoint

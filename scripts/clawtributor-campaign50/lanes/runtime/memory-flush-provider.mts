@@ -4,6 +4,12 @@ import { createServer, type ServerResponse } from "node:http";
 
 export const MODEL_ID = "gpt-5.6-luna";
 export const MODEL_REF = `mock-openai/${MODEL_ID}`;
+export const HISTORICAL_ASK = "Review the amber orchard plan.";
+export const HISTORICAL_USER_BLOCK =
+  `${HISTORICAL_ASK}\n\n${"The amber orchard plan uses cedar planting rows and a weekly irrigation review. ".repeat(
+    1000,
+  )}`.slice(0, 45_000);
+export const HISTORICAL_ANSWER = "Reviewed amber orchard plan.";
 export function gate() {
   let resolve!: () => void;
   const promise = new Promise<void>((done) => {
@@ -106,6 +112,9 @@ export async function startProvider(
         !isSummary &&
         input.some((item) => item.role === "user" && textOf(item).includes(proof.recoveryMarker));
       const kind = isSummary ? "summary" : isContinuation ? "continuation" : "reply";
+      if (kind === "reply") {
+        assert.ok(textOf(input).includes(proof.finalMarker), "Reply input lost the current ask");
+      }
       if (isContinuation && proof.requests.some((request) => request.kind === "summary")) {
         assert.ok(
           textOf(input).includes(proof.summaryMarker),
@@ -137,7 +146,7 @@ export async function startProvider(
       assistant(
         response,
         isSummary
-          ? `## Decisions\n- Retain the historical marker amber-orchid.\n\n## Open TODOs\n- Continue the user's request.\n\n## Constraints/Rules\n- Historical work is complete.\n\n## Pending user asks\n- Reply with the latest requested marker.\n\n## Exact identifiers\n- amber-orchid\n- ${proof.summaryMarker}`
+          ? `## Decisions\n- Reviewed the amber orchard plan: cedar planting rows and a weekly irrigation review.\n\n## Open TODOs\n- Preserve the reviewed planning context for the next request.\n\n## Constraints/Rules\n- Historical review requests are complete; retain their conclusions.\n\n## Pending user asks\nNone.\n\n## Exact identifiers\n- amber-orchid\n- ${proof.summaryMarker}`
           : isContinuation
             ? proof.recoveryMarker
             : proof.finalMarker,
