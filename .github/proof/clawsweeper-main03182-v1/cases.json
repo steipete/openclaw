@@ -1,0 +1,62 @@
+[
+  {
+    "name": "original-pr-131624-full",
+    "fixture": "persistence-classifier-131624-json-schema.json",
+    "mode": "full",
+    "expected": {
+      "detection": {
+        "change": false,
+        "surfaces": []
+      },
+      "sqlite": {
+        "change": false,
+        "files": []
+      }
+    }
+  },
+  {
+    "name": "original-pr-131624-production-normalized",
+    "fixture": "persistence-classifier-131624-json-schema.json",
+    "mode": "production-normalized",
+    "expected": {
+      "detection": {
+        "change": false,
+        "surfaces": []
+      },
+      "sqlite": {
+        "change": false,
+        "files": []
+      }
+    }
+  },
+  {
+    "name": "original-pr-136282-full",
+    "fixture": "persistence-classifier-136282-cursor.json",
+    "mode": "full",
+    "expected": {
+      "detection": {
+        "change": false,
+        "surfaces": []
+      },
+      "sqlite": {
+        "change": false,
+        "files": []
+      }
+    }
+  },
+  {
+    "name": "original-pr-136282-production-normalized",
+    "fixture": "persistence-classifier-136282-cursor.json",
+    "mode": "production-normalized",
+    "expected": {
+      "detection": {
+        "change": false,
+        "surfaces": []
+      },
+      "sqlite": {
+        "change": false,
+        "files": []
+      }
+    }
+  }
+]
