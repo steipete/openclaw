@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { createServer } from "node:http";
 
 export const MODEL_ID = "deepseek-v4-flash";
@@ -66,8 +66,19 @@ export async function startProvider() {
       assert.equal(body.model, MODEL_ID);
       assert.equal(body.stream, true);
       assert.ok(Array.isArray(body.messages));
-      const user = body.messages.filter((message) => message.role === "user").at(-1);
-      const lastUser = textOf(user);
+      const messages = body.messages.map((message, index) => {
+        const text = textOf(message);
+        return {
+          index,
+          role: message.role,
+          text,
+          carrier:
+            text.startsWith("<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\n") &&
+            text.endsWith("\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>"),
+        };
+      });
+      const user = messages.filter((message) => message.role === "user" && !message.carrier).at(-1);
+      const lastUser = user?.text ?? "";
       const system = body.messages
         .filter((message) => message.role === "system" || message.role === "developer")
         .map(textOf)
@@ -81,15 +92,6 @@ export async function startProvider() {
           : lastUser.includes(active.seedMarker) && active.phase === "seed"
             ? "seed"
             : "reply";
-      if (active.phase === "seed")
-        assert.equal(kind, "seed", "Fresh seed unexpectedly ran maintenance");
-      if (kind === "seed")
-        assert.ok(
-          lastUser.length >= active.seedTurnChars,
-          "Seed transcript was truncated before provider dispatch",
-        );
-      if (kind === "reply")
-        assert.ok(lastUser.includes(active.replyMarker), "The requested user reply was lost");
       assert.ok(active.requests.length < 12, "Unexpected provider retry or maintenance loop");
       const containsSummary = textOf(body.messages).includes(active.summaryMarker);
       const inputTokens =
@@ -98,16 +100,58 @@ export async function startProvider() {
           : kind === "summary" || containsSummary
             ? 1000
             : active.inputTokens + (kind === "flush" ? 10 : 20);
-      active.requests.push({
+      const receipt = {
         kind,
         phase: active.phase,
         bytes,
         messageCount: body.messages.length,
         lastUserChars: lastUser.length,
+        selectedUserIndex: user?.index,
         containsSummary,
         atMs: Date.now(),
-        emittedInputTokens: inputTokens,
-      });
+        plannedInputTokens: inputTokens,
+        accepted: false,
+        messages: messages.slice(0, 64).map(({ index, role, text, carrier }) => ({
+          index,
+          role,
+          chars: text.length,
+          carrier,
+          sha256: createHash("sha256").update(text).digest("hex"),
+          currentSeedMarker: text.includes(active.seedMarker),
+          replyMarker: text.includes(active.replyMarker),
+          flushPrompt: text.startsWith("Pre-compaction memory flush."),
+        })),
+      };
+      active.requests.push(receipt);
+      assert.ok(messages.length <= 64, "Synthetic request exceeded the message bound");
+      if (!summary) {
+        assert.ok(user, "No ordinary user turn before runtime context");
+        assert.ok(
+          messages
+            .slice(user.index + 1)
+            .every((message) => message.role === "user" && message.carrier),
+          "Unexpected messages after the current user turn",
+        );
+      }
+      if (active.phase === "seed")
+        assert.equal(
+          kind,
+          "seed",
+          "Expected current seed request, received a different request kind",
+        );
+      if (kind === "seed" || kind === "reply") {
+        const marker = kind === "seed" ? active.seedMarker : active.replyMarker;
+        const matches = messages.filter(
+          (message) => message.role === "user" && !message.carrier && message.text.includes(marker),
+        );
+        assert.equal(matches.length, 1, "Current synthetic user marker missing or duplicated");
+        assert.equal(matches[0].index, user.index, "Current request marker is only stale history");
+      }
+      if (kind === "seed")
+        assert.ok(
+          lastUser.length >= active.seedTurnChars,
+          "Seed transcript was truncated before provider dispatch",
+        );
       if (kind === "summary") {
         const summarizedText = textOf(body.messages);
         const identifiers = active.seedMarkers.filter((marker) => summarizedText.includes(marker));
@@ -130,6 +174,8 @@ export async function startProvider() {
           assert.ok(containsSummary, "Reply did not consume the committed summary");
         reply(response, active.replyMarker, inputTokens);
       }
+      receipt.emittedInputTokens = inputTokens;
+      receipt.accepted = true;
     })().catch((error) => {
       errors.push(error instanceof Error ? error.message : String(error));
       if (!response.destroyed) {

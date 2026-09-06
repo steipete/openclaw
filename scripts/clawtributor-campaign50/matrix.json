@@ -1,12 +1,42 @@
 [
   {
-    "id": "ios-focus-resolution",
-    "directory": "ios-focus-resolution",
-    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+    "id": "model-status-case-green",
+    "directory": "model-status-case-green",
+    "source": "cb4c06ee78fb61891b87ff95b288efb24df55dee",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "resolution-only",
-    "runner": "macos-26",
+    "mode": "green",
+    "variant": "three-id-candidate",
+    "runner": "ubuntu-24.04",
+    "node": "24.20.0"
+  },
+  {
+    "id": "blank-numeric-compare",
+    "directory": "blank-numeric",
+    "source": "07d5b2409af0bee1ceb30b785ad75711ee0cf63a",
+    "pnpm": "12.3.4",
+    "mode": "compare",
+    "variant": "root-cli",
+    "runner": "ubuntu-24.04",
+    "node": "24.20.0"
+  },
+  {
+    "id": "session-token-117517-red",
+    "directory": "session-token-117517",
+    "source": "305606ca5ac53a92c66e4e031c12ae3d44230c26",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "sqlite-cli",
+    "runner": "ubuntu-24.04",
+    "node": "24.20.0"
+  },
+  {
+    "id": "prepared-catalog-red",
+    "directory": "prepared-catalog",
+    "source": "3967d9b6df1f478c32b0c4127bbadf5c51f1878f",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "corrected-flow",
+    "runner": "ubuntu-24.04",
     "node": "24.20.0"
   }
 ]

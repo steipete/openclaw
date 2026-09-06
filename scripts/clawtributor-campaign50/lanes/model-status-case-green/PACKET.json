@@ -1,0 +1,30 @@
+{
+  "pr": 140099,
+  "lane": "model-status-case-green",
+  "sourceSha": "cb4c06ee78fb61891b87ff95b288efb24df55dee",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "topLevelOverlay": false,
+  "phaseOrder": [
+    "tests-only-unit-red",
+    "production-candidate",
+    "full-scoped-unit-green",
+    "build",
+    "same-three-id-cli-green",
+    "check-changed"
+  ],
+  "files": {
+    "INDEPENDENT-PACKET-REVIEW.md": "07bdbb1695f4ad437e3c9606299011de347af338ee676253ad6f3a8abf39dd63",
+    "REVIEW-NOTES.md": "ef30586271c9e41f7ed18c4eb74631c2b0b25ba993e2dce04e3bdb4d66498411",
+    "baseline-files.sha256": "46aa0c9e56855c03787ab54e541346f9d2e98d44ef8ec7c16a6301dcb20d2146",
+    "candidate-files.sha256": "001d5495b60c7d4177d9877fd6186a483dc67902a5730300bcf06f3d6f984e1a",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "production.patch": "1d032792d1f16bd6cf7694b895b1a9062eb69c273b1bddfc4fe42782788e01a2",
+    "run.sh": "2c385e86e090948e61bc8adf54169772eb15a1c2929407d81d6f9196d501ec39",
+    "status-case-green.mjs": "eff289d51167684bf0ba1cd8fcc2fb7e7201cde6cb4571f9c308707b9aaa3c0e",
+    "tests.patch": "8a1a4fcef07a08712cc52cc6e3e5391600de305a614f7dd29ed2ecca7ec64ea6",
+    "unchanged-owner-files.sha256": "c5f6d904f8e607d2ad781e12689df89ce15cc6a5950854a5e4dfe0d71f36ad42",
+    "verify-tests.mjs": "01bf218f9485d67658d6be7caa9d1fe731b16eeb9d72b7d706f446d323d3f1e5"
+  }
+}

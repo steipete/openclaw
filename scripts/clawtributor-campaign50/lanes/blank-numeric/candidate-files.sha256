@@ -1,0 +1,7 @@
+429ccef91aface91eef645bb6f2f1580ea664355e4ceb55f22d342c6869bdff1  docs/cli/infer.md
+283899cd7cbc0f33e5392472f340623ae2cca4ef6f9eeac762895b5b0250c01e  docs/cli/models.md
+59f18642cfa92e07fb05204c6cc14a2c23e63cdce89f67449809cd2ff410cede  src/cli/capability-cli.test.ts
+ed45492a5aaf72b768bfcc2d7a117bf2fe2c2dd233ca28aa448c689b5a44457d  src/cli/capability-cli/shared.test.ts
+c3c48b88d3563fb7cbcfc99ded99da45a833c04080923d7e8e805c3b7f111f93  src/cli/capability-cli/shared.ts
+191177578a716965c3d015b26978eda56e24b8227657845856bfbd52a383eaa6  src/commands/models/scan.test.ts
+d6d73a47ab42cabf4a4ee6e827ca3fd916eca867e1215610bbd523c1b1b311c3  src/commands/models/scan.ts

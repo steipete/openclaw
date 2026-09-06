@@ -1,0 +1,62 @@
+diff --git a/src/cli/capability-cli/shared.ts b/src/cli/capability-cli/shared.ts
+index 4ffb6cdcdf4..4bd27e74699 100644
+--- a/src/cli/capability-cli/shared.ts
++++ b/src/cli/capability-cli/shared.ts
+@@ -205,7 +205,7 @@ export function parseOptionalFiniteNumber(
+   raw: string | number | undefined,
+   label: string,
+ ): number | undefined {
+-  if (raw === undefined || (typeof raw === "string" && raw.trim() === "")) {
++  if (raw === undefined) {
+     return undefined;
+   }
+   const value = parseStrictFiniteNumber(raw);
+@@ -216,7 +216,7 @@ export function parseOptionalFiniteNumber(
+ }
+ 
+ export function parseOptionalPositiveInteger(raw: unknown, label: string): number | undefined {
+-  if (raw === undefined || (typeof raw === "string" && raw.trim() === "")) {
++  if (raw === undefined) {
+     return undefined;
+   }
+   const value = parseStrictPositiveInteger(raw);
+@@ -227,7 +227,7 @@ export function parseOptionalPositiveInteger(raw: unknown, label: string): numbe
+ }
+ 
+ export function parseOptionalTimeoutMs(raw: string | number | undefined): number | undefined {
+-  if (raw === undefined || (typeof raw === "string" && raw.trim() === "")) {
++  if (raw === undefined) {
+     return undefined;
+   }
+   return parseTimeoutMsWithFallback(raw, 0, { invalidType: "error" });
+diff --git a/src/commands/models/scan.ts b/src/commands/models/scan.ts
+index 4aa4c35fd61..d007ed04172 100644
+--- a/src/commands/models/scan.ts
++++ b/src/commands/models/scan.ts
+@@ -151,7 +151,7 @@ function printScanTable(results: ModelScanResult[], runtime: RuntimeEnv) {
+ }
+ 
+ function parseOptionalNonNegativeFiniteOption(raw: unknown, label: string): number | undefined {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return undefined;
+   }
+   const parsed = parseStrictFiniteNumber(raw);
+@@ -162,7 +162,7 @@ function parseOptionalNonNegativeFiniteOption(raw: unknown, label: string): numb
+ }
+ 
+ function parseOptionalPositiveFiniteOption(raw: unknown, label: string): number | undefined {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return undefined;
+   }
+   const parsed = parseStrictFiniteNumber(raw);
+@@ -173,7 +173,7 @@ function parseOptionalPositiveFiniteOption(raw: unknown, label: string): number
+ }
+ 
+ function parsePositiveIntegerOption(raw: unknown, label: string, fallback: number): number {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return fallback;
+   }
+   const parsed = parseStrictPositiveInteger(raw);

@@ -5,16 +5,33 @@
   "node": "24.20.0",
   "pnpm": "12.3.4",
   "files": {
-    "run.sh": "de1e9228d29a75f6ac7d4c1f7ff79a774ceb379927c55afe8e648f69a17ea880",
+    "run.sh": "3308f073b1a60d0faefce60d0cf24c59974e520982b42ef2d919b305bf115236",
     "gateway-proof.mjs": "17a10797a95155a0c88cd36cf4c39c506a69c26e0d084339e8ea52327f014a80",
-    "provider.mjs": "aa2357a6363592d7cebdf681cc203e250dd4d1521434b15f99aa74de24e7db0a",
+    "provider.mjs": "b2b275d467ffe51d9e7f72cfc7d927e6583adbca7c42c025aa283171cf0f7e6e",
     "baseline-tests.patch": "d83794254578ab2a1c7b19292908de395107c093a028e42b85f603f569bc8494",
     "validate-tests.mjs": "07b619189a066f7a66a237da1ffb3ba07f8ce6ac42255d9039c2f952bef4f983",
     "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
-    "PROOF-DESIGN.md": "b697cf2824f561ba544c1c1d126202dd27dff9d61a03ef044417079e30a36002"
+    "PROOF-DESIGN.md": "ceef928986e35238b3fa2794ee34b8c077768e103174456977b0dc2871d47d33",
+    "provider-contract.test.mjs": "66c3ac748f172cdf1011fa80e622388808ac89c9e4acaff7b70466ed01c546dd"
   },
   "overlayTestSha256": "4369daf07aafb678989bf703bb50458ed2ec2fdd6d47631fb5cab39d7a0716cc",
-  "targetExecuted": false,
+  "targetExecuted": true,
   "productionEdited": false,
-  "revision": 2
+  "revision": 3,
+  "retainedBaseline": {
+    "run": 34055326804,
+    "job": 101546119573,
+    "harness": "761b8cfad17363b0a675999c52f371921921dbe7",
+    "unit": "exact two intended failures and two passing controls",
+    "build": "passed",
+    "gateway": "failed first warm seed; no cold restart reached"
+  },
+  "correctedAttempt": "flow only; same source; unit result reused; build repeated for executable artifacts",
+  "privateHarnessSelfCheck": {
+    "node": "24.20.0",
+    "passed": 6,
+    "failed": 0,
+    "targetImports": false,
+    "logSha256": "db47fd82f24fb62bae81504c0bbbda559e035bb1e345d6e2af5d851201590ec4"
+  }
 }

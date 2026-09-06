@@ -1,0 +1,1222 @@
+[
+  {
+    "id": "infer-web-limit-blank",
+    "argv": [
+      "infer",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json",
+      "--limit",
+      ""
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "--limit must be a positive integer"
+  },
+  {
+    "id": "infer-web-limit-whitespace",
+    "argv": [
+      "infer",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json",
+      "--limit",
+      "   "
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "--limit must be a positive integer"
+  },
+  {
+    "id": "infer-web-limit-legal",
+    "argv": [
+      "infer",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json",
+      "--limit",
+      "3"
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "web_search is disabled or no provider is available."
+  },
+  {
+    "id": "infer-web-limit-omitted",
+    "argv": [
+      "infer",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json"
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "web_search is disabled or no provider is available."
+  },
+  {
+    "id": "infer-image-generate-count-blank",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      ""
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-generate-count-whitespace",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "   "
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-generate-count-legal",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "1"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-generate-count-omitted",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-edit-count-blank",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      ""
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-edit-count-whitespace",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "   "
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-edit-count-legal",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "1"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-edit-count-omitted",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-video-duration-blank",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      ""
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "--duration must be a finite number"
+  },
+  {
+    "id": "infer-video-duration-whitespace",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "   "
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "--duration must be a finite number"
+  },
+  {
+    "id": "infer-video-duration-legal",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "1"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "infer-video-duration-omitted",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "infer-image-generate-timeout-blank",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      ""
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-generate-timeout-whitespace",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "   "
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-generate-timeout-legal",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "1000"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-generate-timeout-omitted",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-edit-timeout-blank",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      ""
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-edit-timeout-whitespace",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "   "
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-edit-timeout-legal",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "1000"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-edit-timeout-omitted",
+    "argv": [
+      "infer",
+      "image",
+      "edit",
+      "--file",
+      "{fixture}",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-image-describe-timeout-blank",
+    "argv": [
+      "infer",
+      "image",
+      "describe",
+      "--file",
+      "{fixture}",
+      "--json",
+      "--timeout-ms",
+      ""
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-describe-timeout-whitespace",
+    "argv": [
+      "infer",
+      "image",
+      "describe",
+      "--file",
+      "{fixture}",
+      "--json",
+      "--timeout-ms",
+      "   "
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-describe-timeout-legal",
+    "argv": [
+      "infer",
+      "image",
+      "describe",
+      "--file",
+      "{fixture}",
+      "--json",
+      "--timeout-ms",
+      "1000"
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "No image understanding provider is configured or ready."
+  },
+  {
+    "id": "infer-image-describe-timeout-omitted",
+    "argv": [
+      "infer",
+      "image",
+      "describe",
+      "--file",
+      "{fixture}",
+      "--json"
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "No image understanding provider is configured or ready."
+  },
+  {
+    "id": "infer-image-describe-many-timeout-blank",
+    "argv": [
+      "infer",
+      "image",
+      "describe-many",
+      "--file",
+      "{fixture}",
+      "--json",
+      "--timeout-ms",
+      ""
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-describe-many-timeout-whitespace",
+    "argv": [
+      "infer",
+      "image",
+      "describe-many",
+      "--file",
+      "{fixture}",
+      "--json",
+      "--timeout-ms",
+      "   "
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-describe-many-timeout-legal",
+    "argv": [
+      "infer",
+      "image",
+      "describe-many",
+      "--file",
+      "{fixture}",
+      "--json",
+      "--timeout-ms",
+      "1000"
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "No image understanding provider is configured or ready."
+  },
+  {
+    "id": "infer-image-describe-many-timeout-omitted",
+    "argv": [
+      "infer",
+      "image",
+      "describe-many",
+      "--file",
+      "{fixture}",
+      "--json"
+    ],
+    "baseline": "No image understanding provider is configured or ready.",
+    "candidate": "No image understanding provider is configured or ready."
+  },
+  {
+    "id": "infer-video-timeout-blank",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      ""
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-video-timeout-whitespace",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "   "
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-video-timeout-legal",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "1000"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "infer-video-timeout-omitted",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "capability-web-limit-blank",
+    "argv": [
+      "capability",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json",
+      "--limit",
+      ""
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "--limit must be a positive integer"
+  },
+  {
+    "id": "capability-web-limit-whitespace",
+    "argv": [
+      "capability",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json",
+      "--limit",
+      "   "
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "--limit must be a positive integer"
+  },
+  {
+    "id": "capability-web-limit-legal",
+    "argv": [
+      "capability",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json",
+      "--limit",
+      "3"
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "web_search is disabled or no provider is available."
+  },
+  {
+    "id": "capability-web-limit-omitted",
+    "argv": [
+      "capability",
+      "web",
+      "search",
+      "--query",
+      "proof",
+      "--json"
+    ],
+    "baseline": "web_search is disabled or no provider is available.",
+    "candidate": "web_search is disabled or no provider is available."
+  },
+  {
+    "id": "capability-video-duration-blank",
+    "argv": [
+      "capability",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      ""
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "--duration must be a finite number"
+  },
+  {
+    "id": "capability-video-duration-whitespace",
+    "argv": [
+      "capability",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "   "
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "--duration must be a finite number"
+  },
+  {
+    "id": "capability-video-duration-legal",
+    "argv": [
+      "capability",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "1"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "capability-video-duration-omitted",
+    "argv": [
+      "capability",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "capability-image-generate-timeout-blank",
+    "argv": [
+      "capability",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      ""
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "capability-image-generate-timeout-whitespace",
+    "argv": [
+      "capability",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "   "
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "capability-image-generate-timeout-legal",
+    "argv": [
+      "capability",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "1000"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "capability-image-generate-timeout-omitted",
+    "argv": [
+      "capability",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json"
+    ],
+    "baseline": "No image-generation model configured.",
+    "candidate": "No image-generation model configured."
+  },
+  {
+    "id": "infer-video-duration-grammar-0",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "0"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "infer-video-duration-grammar-1",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "-0.5"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "infer-video-duration-grammar-2",
+    "argv": [
+      "infer",
+      "video",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--duration",
+      "1e3"
+    ],
+    "baseline": "No video-generation model configured.",
+    "candidate": "No video-generation model configured."
+  },
+  {
+    "id": "infer-image-generate-count-grammar-0",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "0"
+    ],
+    "baseline": "--count must be a positive integer",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-generate-count-grammar-1",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "1.5"
+    ],
+    "baseline": "--count must be a positive integer",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-generate-count-grammar-2",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--count",
+      "1e3"
+    ],
+    "baseline": "--count must be a positive integer",
+    "candidate": "--count must be a positive integer"
+  },
+  {
+    "id": "infer-image-generate-timeout-grammar-0",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "0"
+    ],
+    "baseline": "Invalid --timeout. Use a positive millisecond value",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-generate-timeout-grammar-1",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "1.5"
+    ],
+    "baseline": "Invalid --timeout. Use a positive millisecond value",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "infer-image-generate-timeout-grammar-2",
+    "argv": [
+      "infer",
+      "image",
+      "generate",
+      "--prompt",
+      "proof",
+      "--json",
+      "--timeout-ms",
+      "1e3"
+    ],
+    "baseline": "Invalid --timeout. Use a positive millisecond value",
+    "candidate": "Invalid --timeout. Use a positive millisecond value"
+  },
+  {
+    "id": "models-min-params-blank",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--min-params",
+      ""
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "--min-params must be >= 0"
+  },
+  {
+    "id": "models-min-params-whitespace",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--min-params",
+      "   "
+    ],
+    "baseline": "--min-params must be >= 0",
+    "candidate": "--min-params must be >= 0"
+  },
+  {
+    "id": "models-min-params-legal",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--min-params",
+      "1"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-max-age-days-blank",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-age-days",
+      ""
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "--max-age-days must be >= 0"
+  },
+  {
+    "id": "models-max-age-days-whitespace",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-age-days",
+      "   "
+    ],
+    "baseline": "--max-age-days must be >= 0",
+    "candidate": "--max-age-days must be >= 0"
+  },
+  {
+    "id": "models-max-age-days-legal",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-age-days",
+      "1"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-max-candidates-blank",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-candidates",
+      ""
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "--max-candidates must be a positive integer"
+  },
+  {
+    "id": "models-max-candidates-whitespace",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-candidates",
+      "   "
+    ],
+    "baseline": "--max-candidates must be a positive integer",
+    "candidate": "--max-candidates must be a positive integer"
+  },
+  {
+    "id": "models-max-candidates-legal",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-candidates",
+      "1"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-timeout-blank",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--timeout",
+      ""
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "--timeout must be > 0"
+  },
+  {
+    "id": "models-timeout-whitespace",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--timeout",
+      "   "
+    ],
+    "baseline": "--timeout must be > 0",
+    "candidate": "--timeout must be > 0"
+  },
+  {
+    "id": "models-timeout-legal",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--timeout",
+      "1000"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-concurrency-blank",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--concurrency",
+      ""
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "--concurrency must be a positive integer"
+  },
+  {
+    "id": "models-concurrency-whitespace",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--concurrency",
+      "   "
+    ],
+    "baseline": "--concurrency must be a positive integer",
+    "candidate": "--concurrency must be a positive integer"
+  },
+  {
+    "id": "models-concurrency-legal",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--concurrency",
+      "1"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-omitted",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-min-params-grammar-0",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--min-params",
+      "0"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-min-params-grammar-1",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--min-params",
+      "-1"
+    ],
+    "baseline": "--min-params must be >= 0",
+    "candidate": "--min-params must be >= 0"
+  },
+  {
+    "id": "models-min-params-grammar-2",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--min-params",
+      "1e3"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  },
+  {
+    "id": "models-max-candidates-grammar-0",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-candidates",
+      "0"
+    ],
+    "baseline": "--max-candidates must be a positive integer",
+    "candidate": "--max-candidates must be a positive integer"
+  },
+  {
+    "id": "models-max-candidates-grammar-1",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-candidates",
+      "1.5"
+    ],
+    "baseline": "--max-candidates must be a positive integer",
+    "candidate": "--max-candidates must be a positive integer"
+  },
+  {
+    "id": "models-max-candidates-grammar-2",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--max-candidates",
+      "1e3"
+    ],
+    "baseline": "--max-candidates must be a positive integer",
+    "candidate": "--max-candidates must be a positive integer"
+  },
+  {
+    "id": "models-timeout-grammar-0",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--timeout",
+      "0"
+    ],
+    "baseline": "--timeout must be > 0",
+    "candidate": "--timeout must be > 0"
+  },
+  {
+    "id": "models-timeout-grammar-1",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--timeout",
+      "-1"
+    ],
+    "baseline": "--timeout must be > 0",
+    "candidate": "--timeout must be > 0"
+  },
+  {
+    "id": "models-timeout-grammar-2",
+    "argv": [
+      "models",
+      "scan",
+      "--no-probe",
+      "--set-default",
+      "--no-input",
+      "--json",
+      "--timeout",
+      "1e3"
+    ],
+    "baseline": "Cannot apply metadata-only OpenRouter scan results.",
+    "candidate": "Cannot apply metadata-only OpenRouter scan results."
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "base": "07d5b2409af0bee1ceb30b785ad75711ee0cf63a",
+  "primary": "b315b8d6cba8af704023d61c3140bc62f4687e06",
+  "secondary": "472e76d628118fdc0641bc7ac4c3430b8bb33846",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "baseline_files": {
+    "docs/cli/infer.md": "ee847e8e79b72c4ec3724b3af0c2b3255a6b840fa4e161266a0b9aec62d60352",
+    "docs/cli/models.md": "882031a81d8fbf37829b0d2a4b684e5d0b9eff0b05d45570aed95cdb09bc8f29",
+    "src/cli/capability-cli.test.ts": "59f18642cfa92e07fb05204c6cc14a2c23e63cdce89f67449809cd2ff410cede",
+    "src/cli/capability-cli/shared.test.ts": "ed45492a5aaf72b768bfcc2d7a117bf2fe2c2dd233ca28aa448c689b5a44457d",
+    "src/cli/capability-cli/shared.ts": "d4af9a539aa3211d045de034a00a596357780f218b84c5a6f1b8dbcf33b31ad2",
+    "src/commands/models/scan.test.ts": "191177578a716965c3d015b26978eda56e24b8227657845856bfbd52a383eaa6",
+    "src/commands/models/scan.ts": "2d3be172cd83678b2b3c2a1193f58f2a7a1e156c231bce0fa156846e6e2f3b7f"
+  },
+  "candidate_files": {
+    "docs/cli/infer.md": "429ccef91aface91eef645bb6f2f1580ea664355e4ceb55f22d342c6869bdff1",
+    "docs/cli/models.md": "283899cd7cbc0f33e5392472f340623ae2cca4ef6f9eeac762895b5b0250c01e",
+    "src/cli/capability-cli.test.ts": "59f18642cfa92e07fb05204c6cc14a2c23e63cdce89f67449809cd2ff410cede",
+    "src/cli/capability-cli/shared.test.ts": "ed45492a5aaf72b768bfcc2d7a117bf2fe2c2dd233ca28aa448c689b5a44457d",
+    "src/cli/capability-cli/shared.ts": "c3c48b88d3563fb7cbcfc99ded99da45a833c04080923d7e8e805c3b7f111f93",
+    "src/commands/models/scan.test.ts": "191177578a716965c3d015b26978eda56e24b8227657845856bfbd52a383eaa6",
+    "src/commands/models/scan.ts": "d6d73a47ab42cabf4a4ee6e827ca3fd916eca867e1215610bbd523c1b1b311c3"
+  },
+  "mode": "compare",
+  "status": "awaiting independent driver review; product source accepted",
+  "entry": "openclaw.mjs",
+  "entry_sha256": "4f4d29770da4f86dbd0e07cbd4d46deab785905dd89ac719033fcfd866fb5d17",
+  "root_cli_cases_per_phase": 82,
+  "build": "pnpm build once per phase; actual package bin via pinned Node",
+  "files": {
+    "DESIGN.md": "0fcd1ecec08b52f2e0f3d37dfcf41ddd2ca90a115f0f223c5b9db8c132be1e74",
+    "candidate-files.sha256": "6a7101a9c66ebd975cadf6141a44631fa418986bd625470f7788eed21123eef5",
+    "candidate.patch": "04669c097e77d5f47a748a1729d70099d4ff00e2997fbcd5adf6beeaf45d544a",
+    "cli-cases.json": "51d156e38dea0d5cee663a3cd49aaadb1fa962ed2422dfa62deeab233228aeab",
+    "cli-proof.py": "2545f5bc572b2c40e42321c39c92b01e752ad9149a4b5fef0c781a7eaa95bfba",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "docs.patch": "cfa43dccf3b7003075ba9dd5dba2a44c017ddd8f454896022da478ae379b7935",
+    "production.patch": "2d97fcb0e010e7e11dbfe81ee4a224455b1e9b14f37b6a19f912adda8d651c49",
+    "record-build.py": "957fb5af77bd2109c8336f6bf377fb24688c2e99db512f7cb54a84fca8a4e999",
+    "run.sh": "4d6f25628aed6354d1aa69dec47dbf3f4aa4bd04263694570918694433c8c925",
+    "tests.patch": "a06039fd787e37e8275a5320ee75e279f9d030abda57df6ff16fb5f373932084",
+    "verify-source.py": "b32a568b34af37d29af37564f38f07e60d7d5e68aae6a5dadeaac249eafe2e0e",
+    "verify-tests.mjs": "4b46a5e324f8896c5bf80662e10a9ef9eec221536aff34816ed3f4892c2ea4a4"
+  }
+}

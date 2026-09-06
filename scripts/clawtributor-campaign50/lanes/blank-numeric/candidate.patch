@@ -1,0 +1,276 @@
+diff --git a/docs/cli/infer.md b/docs/cli/infer.md
+index 91f064a1d70..cbb71c152b9 100644
+--- a/docs/cli/infer.md
++++ b/docs/cli/infer.md
+@@ -101,6 +101,7 @@ A good infer-based skill maps common user intents to the right subcommand, inclu
+ 
+ - Use `--json` when the output feeds another command or script; text output otherwise.
+ - Use `--provider` or `--model provider/model` to pin a specific backend.
++- Explicitly empty or whitespace-only values for `--limit`, `--count`, `--duration`, and `--timeout-ms` are errors. Omit the flag to retain its default behavior.
+ - `image edit` and `image describe-many` require at least one `--file`; `embedding create` requires at least one `--text`. Repeat the flag for multiple inputs. Omitting it is a usage error, not an empty successful result, and no inference request is sent.
+ - Use `model run --thinking <level>` for a one-shot thinking/reasoning override: `off`, `minimal`, `low`, `medium`, `high`, `adaptive`, `xhigh`, or `max`.
+ - For `image describe`, `audio transcribe`, and `video describe`, `--model` must use the form `<provider/model>`.
+diff --git a/docs/cli/models.md b/docs/cli/models.md
+index 72a5340f97d..17c6a2f3735 100644
+--- a/docs/cli/models.md
++++ b/docs/cli/models.md
+@@ -131,6 +131,8 @@ Options:
+ - `--set-image`
+ - `--json`
+ 
++Numeric scan options reject empty and whitespace-only values. Omit a flag to retain its default behavior.
++
+ `--set-default` and `--set-image` require live probes; metadata-only scan results are informational and are not applied to config.
+ 
+ ## Aliases
+diff --git a/src/cli/capability-cli.test.ts b/src/cli/capability-cli.test.ts
+index a681c29d5ad..36fcd5fefd0 100644
+--- a/src/cli/capability-cli.test.ts
++++ b/src/cli/capability-cli.test.ts
+@@ -3186,53 +3186,62 @@ describe("capability cli", () => {
+     expect(mocks.generateImage).not.toHaveBeenCalled();
+   });
+ 
+-  it("rejects partial image generate timeout before provider dispatch", async () => {
+-    await expect(
+-      runCapability("image", "generate", "--prompt", "portrait", "--timeout-ms", "1000ms"),
+-    ).rejects.toThrow("exit 1");
+-    expectRuntimeErrorContains("Invalid --timeout. Use a positive millisecond value");
+-    expect(mocks.generateImage).not.toHaveBeenCalled();
+-  });
++  describe.each(["infer", "capability"])("%s numeric options", (command) => {
++    describe.each(["", "   "])("blank value %j", (raw) => {
++      it.each([
++        [
++          "web search limit",
++          ["web", "search", "--query", "ping", "--limit"],
++          "--limit must be a positive integer",
++        ],
++        [
++          "image generate count",
++          ["image", "generate", "--prompt", "portrait", "--count"],
++          "--count must be a positive integer",
++        ],
++        [
++          "image edit count",
++          ["image", "edit", "--file", "photo.png", "--prompt", "crop it", "--count"],
++          "--count must be a positive integer",
++        ],
++        [
++          "video generate duration",
++          ["video", "generate", "--prompt", "clip", "--duration"],
++          "--duration must be a finite number",
++        ],
++      ] as const)("rejects %s before provider dispatch", async (_name, argv, message) => {
++        const webSearchRuntime = await import("../web-search/runtime.js");
++        vi.mocked(webSearchRuntime.runWebSearch).mockClear();
+ 
+-  it.each([
+-    [
+-      "image generate",
+-      ["capability", "image", "generate", "--prompt", "portrait", "--timeout-ms", "1000ms"],
+-    ],
+-    [
+-      "image edit",
+-      [
+-        "capability",
+-        "image",
+-        "edit",
+-        "--file",
+-        "photo.png",
+-        "--prompt",
+-        "crop it",
+-        "--timeout-ms",
+-        "1000ms",
+-      ],
+-    ],
+-    [
+-      "image describe",
+-      ["capability", "image", "describe", "--file", "photo.png", "--timeout-ms", "1000ms"],
+-    ],
+-    [
+-      "image describe-many",
+-      ["capability", "image", "describe-many", "--file", "photo.png", "--timeout-ms", "1000ms"],
+-    ],
+-    [
+-      "video generate",
+-      ["capability", "video", "generate", "--prompt", "clip", "--timeout-ms", "1000ms"],
+-    ],
+-  ])("rejects malformed %s timeout before provider dispatch", async (_name, argv) => {
+-    await expect(runCap(...argv)).rejects.toThrow("exit 1");
++        await expect(runCap(command, ...argv, raw)).rejects.toThrow("exit 1");
+ 
+-    expectRuntimeErrorContains("Invalid --timeout. Use a positive millisecond value");
+-    expect(mocks.generateImage).not.toHaveBeenCalled();
+-    expect(mocks.generateVideo).not.toHaveBeenCalled();
+-    expect(mocks.describeImageFile).not.toHaveBeenCalled();
+-    expect(mocks.describeImageFileWithModel).not.toHaveBeenCalled();
++        expectRuntimeErrorContains(message);
++        expect(mocks.resolveCommandConfigWithSecrets).not.toHaveBeenCalled();
++        expect(webSearchRuntime.runWebSearch).not.toHaveBeenCalled();
++        expect(mocks.generateImage).not.toHaveBeenCalled();
++        expect(mocks.generateVideo).not.toHaveBeenCalled();
++      });
++    });
++
++    describe.each(["", "   ", "1000ms"])("invalid timeout %j", (raw) => {
++      it.each([
++        ["image generate", ["image", "generate", "--prompt", "portrait"]],
++        ["image edit", ["image", "edit", "--file", "photo.png", "--prompt", "crop it"]],
++        ["image describe", ["image", "describe", "--file", "photo.png"]],
++        ["image describe-many", ["image", "describe-many", "--file", "photo.png"]],
++        ["video generate", ["video", "generate", "--prompt", "clip"]],
++      ] as const)("rejects %s before provider dispatch", async (_name, argv) => {
++        await expect(runCap(command, ...argv, "--timeout-ms", raw)).rejects.toThrow("exit 1");
++
++        expectRuntimeErrorContains("Invalid --timeout. Use a positive millisecond value");
++        expect(mocks.resolveCommandConfigWithSecrets).not.toHaveBeenCalled();
++        expect(mocks.generateImage).not.toHaveBeenCalled();
++        expect(mocks.generateVideo).not.toHaveBeenCalled();
++        expect(mocks.describeImageFile).not.toHaveBeenCalled();
++        expect(mocks.prepareImageDescriptionInput).not.toHaveBeenCalled();
++        expect(mocks.describePreparedImageWithModel).not.toHaveBeenCalled();
++      });
++    });
+   });
+ 
+   it("routes audio transcribe through transcription, not realtime", async () => {
+diff --git a/src/cli/capability-cli/shared.test.ts b/src/cli/capability-cli/shared.test.ts
+new file mode 100644
+index 00000000000..52fdd44575e
+--- /dev/null
++++ b/src/cli/capability-cli/shared.test.ts
+@@ -0,0 +1,32 @@
++import { describe, expect, it } from "vitest";
++import {
++  parseOptionalFiniteNumber,
++  parseOptionalPositiveInteger,
++  parseOptionalTimeoutMs,
++} from "./shared.js";
++
++describe("capability CLI numeric option parsing", () => {
++  it("keeps omitted optional values absent and parses valid values", () => {
++    expect(parseOptionalFiniteNumber(undefined, "--duration")).toBeUndefined();
++    expect(parseOptionalFiniteNumber("2.5", "--duration")).toBe(2.5);
++
++    expect(parseOptionalPositiveInteger(undefined, "--limit")).toBeUndefined();
++    expect(parseOptionalPositiveInteger("3", "--limit")).toBe(3);
++
++    expect(parseOptionalTimeoutMs(undefined)).toBeUndefined();
++    expect(parseOptionalTimeoutMs("1200")).toBe(1200);
++  });
++
++  it.each([
++    ["--duration", () => parseOptionalFiniteNumber("", "--duration")],
++    ["--duration", () => parseOptionalFiniteNumber("  ", "--duration")],
++    ["--limit", () => parseOptionalPositiveInteger("", "--limit")],
++    ["--limit", () => parseOptionalPositiveInteger("  ", "--limit")],
++  ])("rejects explicit blank %s values", (label, parse) => {
++    expect(parse).toThrow(`${label} must be`);
++  });
++
++  it.each(["", "  "])("rejects explicit blank --timeout-ms value %j", (raw) => {
++    expect(() => parseOptionalTimeoutMs(raw)).toThrow("Invalid --timeout");
++  });
++});
+diff --git a/src/cli/capability-cli/shared.ts b/src/cli/capability-cli/shared.ts
+index 4ffb6cdcdf4..4bd27e74699 100644
+--- a/src/cli/capability-cli/shared.ts
++++ b/src/cli/capability-cli/shared.ts
+@@ -205,7 +205,7 @@ export function parseOptionalFiniteNumber(
+   raw: string | number | undefined,
+   label: string,
+ ): number | undefined {
+-  if (raw === undefined || (typeof raw === "string" && raw.trim() === "")) {
++  if (raw === undefined) {
+     return undefined;
+   }
+   const value = parseStrictFiniteNumber(raw);
+@@ -216,7 +216,7 @@ export function parseOptionalFiniteNumber(
+ }
+ 
+ export function parseOptionalPositiveInteger(raw: unknown, label: string): number | undefined {
+-  if (raw === undefined || (typeof raw === "string" && raw.trim() === "")) {
++  if (raw === undefined) {
+     return undefined;
+   }
+   const value = parseStrictPositiveInteger(raw);
+@@ -227,7 +227,7 @@ export function parseOptionalPositiveInteger(raw: unknown, label: string): numbe
+ }
+ 
+ export function parseOptionalTimeoutMs(raw: string | number | undefined): number | undefined {
+-  if (raw === undefined || (typeof raw === "string" && raw.trim() === "")) {
++  if (raw === undefined) {
+     return undefined;
+   }
+   return parseTimeoutMsWithFallback(raw, 0, { invalidType: "error" });
+diff --git a/src/commands/models/scan.test.ts b/src/commands/models/scan.test.ts
+index da7a1452d52..9f546e26380 100644
+--- a/src/commands/models/scan.test.ts
++++ b/src/commands/models/scan.test.ts
+@@ -196,18 +196,24 @@ describe("models scan command", () => {
+     });
+   });
+ 
+-  it.each([
+-    [{ minParams: "7b" }, "--min-params"],
+-    [{ maxAgeDays: "30d" }, "--max-age-days"],
+-    [{ maxCandidates: "2.5" }, "--max-candidates"],
+-    [{ timeout: "1000ms" }, "--timeout"],
+-    [{ concurrency: "2x" }, "--concurrency"],
+-  ])("rejects partial numeric option %s", async (opts, label) => {
+-    const runtime = createRuntime();
++  describe.each([
++    ["minParams", "--min-params", "7b"],
++    ["maxAgeDays", "--max-age-days", "30d"],
++    ["maxCandidates", "--max-candidates", "2.5"],
++    ["timeout", "--timeout", "1000ms"],
++    ["concurrency", "--concurrency", "2x"],
++  ] as const)("%s numeric value", (key, label, partial) => {
++    it.each(["", "   ", partial])("rejects %j before scanning", async (raw) => {
++      const runtime = createRuntime();
+ 
+-    await expect(modelsScanCommand(opts, runtime)).rejects.toThrow(label);
++      await expect(
++        modelsScanCommand({ [key]: raw, probe: false, setDefault: true }, runtime),
++      ).rejects.toThrow(label);
+ 
+-    expect(mocks.scanOpenRouterModels).not.toHaveBeenCalled();
++      expect(mocks.loadModelsConfig).not.toHaveBeenCalled();
++      expect(mocks.resolveApiKeyForProviderCore).not.toHaveBeenCalled();
++      expect(mocks.scanOpenRouterModels).not.toHaveBeenCalled();
++    });
+   });
+ 
+   it("rejects applying auto-downgraded metadata-only scan results before scanning", async () => {
+diff --git a/src/commands/models/scan.ts b/src/commands/models/scan.ts
+index 4aa4c35fd61..d007ed04172 100644
+--- a/src/commands/models/scan.ts
++++ b/src/commands/models/scan.ts
+@@ -151,7 +151,7 @@ function printScanTable(results: ModelScanResult[], runtime: RuntimeEnv) {
+ }
+ 
+ function parseOptionalNonNegativeFiniteOption(raw: unknown, label: string): number | undefined {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return undefined;
+   }
+   const parsed = parseStrictFiniteNumber(raw);
+@@ -162,7 +162,7 @@ function parseOptionalNonNegativeFiniteOption(raw: unknown, label: string): numb
+ }
+ 
+ function parseOptionalPositiveFiniteOption(raw: unknown, label: string): number | undefined {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return undefined;
+   }
+   const parsed = parseStrictFiniteNumber(raw);
+@@ -173,7 +173,7 @@ function parseOptionalPositiveFiniteOption(raw: unknown, label: string): number
+ }
+ 
+ function parsePositiveIntegerOption(raw: unknown, label: string, fallback: number): number {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return fallback;
+   }
+   const parsed = parseStrictPositiveInteger(raw);
