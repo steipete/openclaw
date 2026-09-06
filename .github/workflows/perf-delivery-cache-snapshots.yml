@@ -24,6 +24,48 @@ jobs:
           test "$(git rev-parse HEAD)" = f74ea1aff7129a377fab8d9bbba3a86a626dca56
           npm install --global pnpm@12.3.4
           pnpm install --frozen-lockfile
+      - name: Build and verify public harness SDK compatibility
+        run: |
+          set -euo pipefail
+          proof_state=$(mktemp -d)
+          HOME="$proof_state" XDG_CONFIG_HOME="$proof_state/config" XDG_CACHE_HOME="$proof_state/cache" OPENCLAW_STATE_DIR="$proof_state/state" pnpm build qaRuntime
+          mkdir -p snapshot-proof
+          HOME="$proof_state" XDG_CONFIG_HOME="$proof_state/config" XDG_CACHE_HOME="$proof_state/cache" OPENCLAW_STATE_DIR="$proof_state/state" pnpm plugin-sdk:surface:check > snapshot-proof/sdk-surface.txt
+          cat snapshot-proof/sdk-surface.txt
+          HOME="$proof_state" XDG_CONFIG_HOME="$proof_state/config" XDG_CACHE_HOME="$proof_state/cache" OPENCLAW_STATE_DIR="$proof_state/state" node --input-type=module <<'EOF'
+          import assert from 'node:assert/strict';
+          import { createHash } from 'node:crypto';
+          import { readFileSync, writeFileSync } from 'node:fs';
+          import path from 'node:path';
+          import { fileURLToPath } from 'node:url';
+          import { buildHarnessVisibleReplyGuidance, buildUiPresentationPrompt } from 'openclaw/plugin-sdk/agent-harness-runtime';
+          const sourceHead = 'f74ea1aff7129a377fab8d9bbba3a86a626dca56';
+          const entry = 'dist/plugin-sdk/agent-harness-runtime.js';
+          assert.equal(fileURLToPath(import.meta.resolve('openclaw/plugin-sdk/agent-harness-runtime')), path.join(process.cwd(), entry));
+          for (const stamp of ['.buildstamp', '.runtime-postbuildstamp']) {
+            assert.equal(JSON.parse(readFileSync(path.join('dist', stamp), 'utf8')).head, sourceHead);
+          }
+          assert.equal(typeof buildHarnessVisibleReplyGuidance, 'function');
+          assert.equal(typeof buildUiPresentationPrompt, 'function');
+          const uiPresentation = { showWidgetToolName: 'show_widget', dashboardToolName: 'dashboard', portalToolName: 'portal' };
+          const ui = buildUiPresentationPrompt(uiPresentation);
+          assert.ok(ui.includes('## UI Presentation'));
+          for (const tool of Object.values(uiPresentation)) {
+            assert.ok(ui.includes('`' + tool + '`'));
+          }
+          const modes = ['automatic', 'message_tool_only'];
+          for (const sourceReplyDeliveryMode of modes) {
+            const legacyInput = { sourceReplyDeliveryMode, messageToolAvailable: true, uiPresentation };
+            const guidance = buildHarnessVisibleReplyGuidance(legacyInput);
+            assert.equal(guidance, buildHarnessVisibleReplyGuidance({ ...legacyInput, requireExplicitMessageTarget: undefined }));
+            assert.ok(guidance.endsWith('\n\n' + ui));
+            assert.ok(guidance.includes(sourceReplyDeliveryMode === 'automatic' ? 'delivers your final response automatically' : 'Visible source replies are not automatically delivered'));
+            assert.doesNotMatch(guidance, /target required this turn|current source is default target/);
+          }
+          const proof = { sourceHead, entry, modes, optionalTargetOmitted: true, explicitUndefinedEquivalent: true, uiGuidanceSha256: createHash('sha256').update(ui).digest('hex') };
+          writeFileSync('snapshot-proof/sdk-compatibility.json', JSON.stringify(proof, null, 2) + '\n');
+          console.log('[sdk-compatibility-proof]', JSON.stringify(proof));
+          EOF
       - name: Generate the required synthetic prompt snapshots
         run: |
           set -euo pipefail
