@@ -1,16 +1,52 @@
 {
   "pr": 138345,
-  "base": "eb08c36779e624193a3e92812a3dfde74979f5f5",
+  "head": "48c2ae6392b0d6ab448357ddbd7b13cd572f55cf",
+  "base": "96bf3652adabc25d86af15a950a72be63575acc5",
   "mode": "green",
   "node": "24.20.0",
   "pnpm": "12.3.4",
-  "retainedBehaviorProofRun": 34045851221,
+  "vitest": "5.0.0",
   "artifacts": {
-    "run.sh": "0dc7fd0c0a1da03a8e2b28fe0800b4e733d91c7215e9637d22f07b208e185646",
-    "candidate.patch": "18623d224fc61ae7ec99e66fc574ef55854be74c33df6f1a8205d2b1d19fcaae"
+    "run.sh": "483780a30f3352b6ab189ab0f6d4c4dfa2066a2e484ee9d2fd66ac373fadb274",
+    "verify-green.py": "ffed08a025801228849ac502f69334d8769b9a829eaf898daee51e14d7795afd",
+    "candidate.patch": "4e941498286e79d12c6d871cab01f861366650c4b9f2fc47cafc86b3f129c091"
+  },
+  "baselineFiles": {
+    "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "57e2d9abf581535b83574f87c299f2609d31f0d113fa1e33d73b8e11e00f4504",
+    "src/agents/tool-terminal-outcome.ts": "ed974a8d65cd8a969a116d9438c99a7e098705b27cce795a53dcda85fd72787e",
+    "src/agents/tool-error-state.ts": "9dc1c99d4cdd7686ad432b2857df022bd2ff6d218ac716fba7d3e2f5b725c665",
+    "src/auto-reply/reply/get-reply-run-context.ts": "497b799f5022f7831d54cfa367479acc045b0f70a77cdd2ea8f765ad471ed45a",
+    "src/auto-reply/reply/agent-runner-embedded-candidate.ts": "822c5773b302488494b38caa13c7b3e3e7c00c22634bacd99898058cfebdb987",
+    "src/agents/embedded-agent-runner/run/attempt-system-prompt-prepare.ts": "5b5aa9023625accd4df1e2eae3d71f2f26f1fbf720797ab478710bcdd61b6c0e",
+    "src/agents/embedded-agent-runner/run/attempt-system-prompt.ts": "8a89bb894eade262dad821444c76782cccf3413d5bb7cc0755315d8b1bc5c54c",
+    "src/agents/embedded-agent-runner/system-prompt.ts": "c73ea2a40f27b0e53216ea9932db33ec28a4e1441875cac610f650a2b2a144fb",
+    "src/agents/system-prompt-config.ts": "9ddcffece26c8ae894fda51031fff44abfc84f808ea60296961a33c992f306aa",
+    "src/agents/system-prompt.ts": "dd151100316cddb6b76edcfd753e92bce83fa7fbfc6ca1208ad5d6eba8696c7a",
+    "src/agents/cli-runner/helpers.ts": "7757fffc7fd30fd031a7e7f6ac196a74f943161afe83d420a7c5ec60b15a0587",
+    "extensions/qa-lab/src/qa-channel-transport.ts": "7ef1ee29d317550ce80b852c6540fdccc9461042f99fadff6c16b69d056c5c44",
+    "extensions/qa-lab/src/providers/mock-openai/mock-openai-contracts.ts": "21cb66166b3bea9ed4f4edb8565d4ff9a15904d02f3d97cd04d41b7f2bd912aa",
+    "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
+    "scripts/lib/vitest-build-prerequisites.mts": "80dacf8e133abee2b70e4109a7afb8271a4e225bccdce26d95acfb4ae15f8d21",
+    "test/vitest/vitest.e2e.config.ts": "d538c4405ac7b9766c104177c7d14e805096d3e6fe5138c76eee416ab3c5e495",
+    "test/vitest/vitest.e2e.global-setup.ts": "7f876f55d8a12ef5f0b0d27a655eedfa223ef6b214c0180eadcd4591e13e4861",
+    "extensions/qa-lab/src/gateway-child-command.ts": "4ac6b0900fd17fa9da9a2821afa171f881cbadf7bfc2813f300fed140c2e6fca",
+    "extensions/qa-lab/src/gateway-child-env.ts": "f80873ca73234707359d9a009047f8e4bfa9a1e28da5f29c6653c3003ce07c46"
   },
   "candidateFiles": {
-    "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "5c433abfc206d3556a05301efbfc8136f5def1faee098ce7e22285e40885b427",
+    "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "a54335917aebc9a29d0a46486d48be565f61be1868d0f8167458d96df11cd36e",
     "test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts": "83b6437049c582732465a4f8a76adb192adcf23b9592a5f321abc56baf088d60"
+  },
+  "baselineProofRun": 34030276700,
+  "flowLauncherCorrection": "Explicit already-built dist/index.js command with unchanged packaged-plugin flow; prevents intentional run-node dirty-source rebuild after canonical E2E preparation. All provider/bus/assertion/deadline inputs unchanged from baseline.",
+  "sourceHeadBeforeMerge": "42fbec2d1363b15359965e1b83c854ecee1b5aee",
+  "reason": "Actual dispatcher merge conflicts and material current-main owner refactor require fresh composed-source real Gateway proof.",
+  "priorProofScope": "Baseline eb08 proved original bug; earlier source/current test mechanics receipts retained. This run must independently prove96bf composition; no claim that old proof executed currentmain.",
+  "reporterContract": {
+    "version": "5.0.0",
+    "integrity": "sha512-gpsMNoRhMjMktVxPtstOH4/PJuPyovVaMDr4oDilXaGH1EcqM2OE96SoHT2VIQ6fTGtTjqmHDrEu2X9RQiXf8Q==",
+    "source": "package/dist/chunks/index.B89dZ0-N.js JsonReporter",
+    "directlyInspected": true,
+    "rejectUnfinished": true,
+    "globalErrors": "checked in verbose log because JSON has no global-error field"
   }
 }

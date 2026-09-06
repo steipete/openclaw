@@ -8,7 +8,7 @@ report = json.loads(pathlib.Path(report_path).read_text())
 log = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", pathlib.Path(log_path).read_text())
 assert int(exit_text) == 0 and report['success'] is True
 assert all(re.search(r"(?m)^\s*" + label + r"\s", log) for label in ["Test Files", "Tests", "Start at", "Duration"]), "No completed Vitest summary"
-assert not re.search(r"Vitest caught \d+ unhandled error|Unhandled Errors|Unhandled Rejection|Uncaught Exception|EnvironmentTeardownError|Failed Suites", log), "Runtime or hook failure"
+assert not re.search(r"Vitest caught \d+ unhandled error|Unhandled Errors|Unhandled Rejection|Uncaught Exception|EnvironmentTeardownError|Failed Suites|Some tests are still running when generating the JSON report", log), "Runtime or hook failure"
 suites = report['testResults']
 assert len(suites) == 1 and not suites[0].get('message')
 assert suites[0]['name'].replace('\\', '/').endswith(source)

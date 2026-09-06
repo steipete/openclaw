@@ -1,25 +1,25 @@
 diff --git a/src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts b/src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts
-index 8eda04e643ca91a5a9ee275f08f4f26d2af6f2be..69c53b93dae038994adad05f0c2af366ac5f67a0 100644
+index 8eda34225224e2bc95228c009025aa914ebd5582..f0a2487902a2fe2d13b5fa67ac13a258fa595980 100644
 --- a/src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts
 +++ b/src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts
-@@ -140,7 +140,6 @@ export async function dispatchEmbeddedRunAttempt(input: {
-   preparedAttempt: EmbeddedRunAttemptParams;
- }> {
-   const { params, runtime, control } = input;
+@@ -261,7 +261,6 @@ export async function prepareAndDispatchEmbeddedRunAttempt(input: {
+   const attemptContextEngine = nativeModelOwned ? undefined : contextEngine;
+   const authProfileIdSource =
+     runtime.lastProfileId && runtime.lastProfileId === lockedProfileId ? "user" : "auto";
 -  const observeToolTerminal = createToolTerminalObserver(params.runId);
    const attemptAbortController = new AbortController();
-   control.setPostCompactionAbortController(attemptAbortController);
+   input.setPostCompactionAbortController(attemptAbortController);
    const preparedExecApprovalContinuation = prepareExecApprovalContinuationForAttempt({
-@@ -394,7 +393,7 @@ export async function dispatchEmbeddedRunAttempt(input: {
+@@ -514,7 +513,7 @@ export async function prepareAndDispatchEmbeddedRunAttempt(input: {
          }
        : {}),
-     runtimePlan: runtime.runtimePlan,
+     runtimePlan,
 -    observeToolTerminal,
 +    observeToolTerminal: createToolTerminalObserver(params.runId),
      model: applyAuthHeaderOverride(
-       applyLocalNoAuthHeaderOverride(runtime.model, runtime.apiKeyInfo),
-       runtime.runtimeAuthActive ? null : runtime.apiKeyInfo,
-@@ -460,6 +459,7 @@ export async function dispatchEmbeddedRunAttempt(input: {
+       applyLocalNoAuthHeaderOverride(effectiveModel, runtime.apiKeyInfo),
+       runtime.runtimeAuthState !== null ? null : runtime.apiKeyInfo,
+@@ -580,6 +579,7 @@ export async function prepareAndDispatchEmbeddedRunAttempt(input: {
      onExecutionPhase: params.onExecutionPhase,
      extraSystemPrompt,
      sourceReplyDeliveryMode: params.sourceReplyDeliveryMode,

@@ -1,21 +1,21 @@
 [
   {
-    "id": "silent-reply-static",
-    "directory": "silent-reply",
-    "source": "eb08c36779e624193a3e92812a3dfde74979f5f5",
+    "id": "model-status-case-red",
+    "directory": "model-status-case",
+    "source": "55d979e5187e544230808cb7ab906828c3e3f603",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "lint-only",
+    "mode": "red",
+    "variant": "case-distinct",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
   {
-    "id": "subagent-list-metadata-green",
-    "directory": "subagent-list-metadata",
-    "source": "8964a4d8dc2f24979c773fbf96bc4a3ca79ed5f2",
+    "id": "silent-reply-composed-green",
+    "directory": "silent-reply",
+    "source": "96bf3652adabc25d86af15a950a72be63575acc5",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "sqlite-metadata",
+    "variant": "current-owner",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   }
