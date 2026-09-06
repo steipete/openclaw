@@ -1,22 +1,22 @@
 [
   {
-    "id": "windows-anchor-green",
+    "id": "windows-scheduler-diagnostic",
     "directory": "windows",
     "runner": "windows-2025",
     "source": "883d4d65bad1791755c203a8dfd854e14b4f6e33",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "native-lifecycle"
+    "variant": "scheduler-diagnostic"
   },
   {
-    "id": "pairing-accounts",
+    "id": "pairing-accounts-completion",
     "directory": "pairing-accounts",
     "runner": "ubuntu-24.04",
     "source": "1a13b42b6b75d5d15b47eb966b1c3f5ce5456136",
     "node": "24.20.0",
     "pnpm": "12.1.0",
     "mode": "compare",
-    "variant": "notifier-http"
+    "variant": "completion"
   }
 ]

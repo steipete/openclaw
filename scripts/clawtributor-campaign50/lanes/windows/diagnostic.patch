@@ -1,0 +1,31 @@
+diff --git a/src/daemon/schtasks.integration.e2e.test.ts b/src/daemon/schtasks.integration.e2e.test.ts
+--- a/src/daemon/schtasks.integration.e2e.test.ts
++++ b/src/daemon/schtasks.integration.e2e.test.ts
+@@ -12,7 +12,7 @@
+ import { execSchtasks } from "./schtasks-exec.js";
+ import { resolveStartupEntryPaths, resolveTaskLauncherScriptPath } from "./schtasks-layout.js";
+ import { readWindowsProcessSnapshot } from "./schtasks-process.js";
+-import { probeScheduledTaskExists } from "./schtasks-state-probe.js";
++import { probeScheduledTaskExists, probeScheduledTaskState } from "./schtasks-state-probe.js";
+ import {
+   assertInteractiveLeastPrivilegeTask,
+   DIAGNOSTIC_TEXT_LIMIT,
+@@ -174,11 +174,13 @@
+ }
+ 
+ async function readTaskDefinitionSnapshot(taskName: string): Promise<TaskDefinitionSnapshot> {
+-  const exists = probeScheduledTaskExists(taskName);
+-  if (exists === null) {
+-    throw new Error(`Could not determine whether Scheduled Task ${taskName} exists`);
+-  }
+-  if (!exists) {
++  const probe = probeScheduledTaskState(taskName);
++  if (probe.status === "unknown") {
++    throw new Error(
++      `Could not determine whether Scheduled Task ${taskName} exists: ${probe.detail.slice(0, 4096)}`,
++    );
++  }
++  if (probe.status === "missing") {
+     return { exists: false, taskXml: null };
+   }
+   const taskXml = await readTaskXml(taskName);

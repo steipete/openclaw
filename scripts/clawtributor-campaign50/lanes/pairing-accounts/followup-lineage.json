@@ -1,0 +1,110 @@
+{
+  "prior_run": "https://github.com/steipete/openclaw/actions/runs/34016153566",
+  "prior_harness": "40a89c6791608dbe50f1fd96f693ed8ade1320ab",
+  "source": "1a13b42b6b75d5d15b47eb966b1c3f5ce5456136",
+  "prior_candidate_patch_sha256": "b1999ecd82745023a75017c74370c9e5e1f29a4e0ee8c8e7e6a86ed24ce4d2fd",
+  "candidate_patch_sha256": "4875e95627a34666e42c1d375db67dc7847d2d229e3202177ba25092a576e408",
+  "change": "Only Zalo proxy test full expected text corrected to unchanged baseline/candidate canonical message; production unchanged.",
+  "reused_baseline_channels": [
+    "imessage",
+    "irc",
+    "line",
+    "signal",
+    "synology-chat",
+    "zalouser"
+  ],
+  "reused_http": "baseline and candidate exact core notifier / real Synology plugin / loopback HTTP effects",
+  "reused_candidate_full_suites": {
+    "extensions/imessage/src/channel.runtime.test.ts": 15,
+    "extensions/irc/src/channel.test.ts": 5,
+    "extensions/line/src/channel.sendPayload.test.ts": 32,
+    "extensions/zalouser/src/channel.test.ts": 26
+  },
+  "rerun_baseline": "Only four Zalo cases: three intended failures, one passing default control",
+  "rerun_candidate": [
+    "extensions/signal/src/core.test.ts",
+    "extensions/synology-chat/src/channel.pairing.test.ts",
+    "extensions/synology-chat/src/channel.test.ts",
+    "extensions/zalo/src/channel.pairing.test.ts",
+    "Gateway exact approval-preservation control",
+    "all16 candidate file hashes"
+  ],
+  "prior_artifacts": [
+    {
+      "path": "source.json",
+      "sha256": "0d01cdcb84cb2bcb094982959e31e047c04bd6786b6a589eff09389345323411"
+    },
+    {
+      "path": "final-working-tree.patch",
+      "sha256": "6a0a513069d4aba5dc6574e5b02c8ca27f2ab210bc905da49980a79931776bad"
+    },
+    {
+      "path": "baseline/verdict.json",
+      "sha256": "dee90013cd62eb49d38fb4ad6637e56a26102d59432660ab7ad7647e4a13b172"
+    },
+    {
+      "path": "baseline/http.log",
+      "sha256": "56a60dd0f9ea206a57ba87fb5a718cbd86fdf65f882d5ec1cdbff17bd1ecfe39"
+    },
+    {
+      "path": "candidate/verdict.json",
+      "sha256": "f5d9011a98050e0b013f1e389e961f719e925e02f28a1be6d6ccdc9c12163549"
+    },
+    {
+      "path": "candidate/http.log",
+      "sha256": "16c797a56d02873c4782026e1328a1ec1c56ecb3333a55fabc23e46acae57d7a"
+    },
+    {
+      "path": "candidate/focused.log",
+      "sha256": "28c28ff134931181573a3250a0d60cc6bd6610a0b3375b97ad19dd39860ff546"
+    },
+    {
+      "path": "baseline/extensions_imessage_src_channel.runtime.test.ts.json",
+      "sha256": "3411d69eed3f384fc8e046029de066d4d7156ab4dabaf0c02782f2231c39d909"
+    },
+    {
+      "path": "baseline/extensions_irc_src_channel.test.ts.json",
+      "sha256": "d32f66ea09ed3e7078a45756358ca31858efc073b168b8865ac0b99e11dddf5b"
+    },
+    {
+      "path": "baseline/extensions_line_src_channel.sendPayload.test.ts.json",
+      "sha256": "0db1abe3b36a5b5d9cc8d0c35330fa5272ab4354968e0072a8eb74a521511090"
+    },
+    {
+      "path": "baseline/extensions_signal_src_core.test.ts.json",
+      "sha256": "652da3bcb460da25d06844b6ab3b106460f7531077ab4ef0d42705725048d661"
+    },
+    {
+      "path": "baseline/extensions_synology-chat_src_channel.pairing.test.ts.json",
+      "sha256": "9dda19111622e6d859c900faff8cf311f59df2c90e1df66de95077266e96ed32"
+    },
+    {
+      "path": "baseline/extensions_zalouser_src_channel.test.ts.json",
+      "sha256": "77f8521df87b2989159e047d0d840ce75355e5a511c6be1954721ae4c09122c9"
+    },
+    {
+      "path": "baseline/extensions_imessage_src_channel.runtime.test.ts.log",
+      "sha256": "02d93e2054335a0c54f29b5703bd1825e01323a36f94141a8b5bbdb23c2953c6"
+    },
+    {
+      "path": "baseline/extensions_irc_src_channel.test.ts.log",
+      "sha256": "129cb2eec960dbca1c40b2bfd9c2937f6528b13bc588a9b496595369b194bfba"
+    },
+    {
+      "path": "baseline/extensions_line_src_channel.sendPayload.test.ts.log",
+      "sha256": "6dd459df1eb317eefc7150677b8db89f1c02260c8f8d45027a882dae38a7f458"
+    },
+    {
+      "path": "baseline/extensions_signal_src_core.test.ts.log",
+      "sha256": "d352b51d833a3d6eac6446fbb20b2b6b2a65c8d9143c63d2e9f3f1fdd0bb6f54"
+    },
+    {
+      "path": "baseline/extensions_synology-chat_src_channel.pairing.test.ts.log",
+      "sha256": "bc389634cbf5e758a909f1d7ad6f31b65c60fa7ee7337a6b79ef20d3e7b628d0"
+    },
+    {
+      "path": "baseline/extensions_zalouser_src_channel.test.ts.log",
+      "sha256": "5c5134c2821f778cfe7480596dc2497d9df4c338ae29b0f74454229e81492ed5"
+    }
+  ]
+}
