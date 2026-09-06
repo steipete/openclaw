@@ -1,0 +1,15 @@
+{
+  "currentMain": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "prHead": "ad2f1305f531b51cc94a2552d2eb9272541d2bdf",
+  "mergeBase": "107e116bfd988a7ec99bb85c986111ed2af8eab2",
+  "stable": "v2026.9.2",
+  "sourceHashes": {
+    "packages/ai/src/providers/anthropic-model-contract.ts": "ae8e2144c0dec73b01d913b2bf816d4fad7389e78267e64eb8a0282f27cea876",
+    "packages/ai/src/providers/anthropic.ts": "9fff53d37362562eb36e899bd7b14ed748e12062dcd021a336406565c08cdc5c",
+    "packages/ai/src/transports/anthropic-transport-stream.ts": "1139f81219910a1656deeab4f0c3d25a2d6d34f42e4a80086989126f80b995f7",
+    "packages/ai/src/providers/anthropic.live.test.ts": "7540a968a22cd13c31f5d645326f8e82a1c2fca2860eafaf265e9708ace97ac7",
+    "packages/ai/src/providers/anthropic.fetch-loopback.test.ts": "546f674a3d60bd24bad8f57a3b16b4113a16db171738083f55910f15c31594ea",
+    "extensions/amazon-bedrock/stream.runtime.ts": "b4d2b431f5f784cdfc3f79475e3b774ffe9ed889bc778382fb6b2cf10515f63c"
+  },
+  "status": "source-qualified; no target execution; live capture and red/green pending"
+}

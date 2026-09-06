@@ -1,0 +1,12 @@
+{
+  "phase": "secretless baseline-only; no production patch or live capture",
+  "baseline": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "nodeVersion": "24.20.0",
+  "files": {
+    "run.sh": "ead5b1ee1ee6586c457a7df2a3452443f64699dda2e7fe337fa9a39fdceab9f9",
+    "verify-baseline.mjs": "cfb2052a2b7eef9e580c1d3255a93ebcae94674ee29558a84fd7b383d62bb13a",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "anthropic-context-limit.integration.test.ts": "5042bae5674992b0de5ea80334842110e4176a5193ec6469c732479bd42b0b12",
+    "117748-source.json": "97243ba16cd3257060d16d27f42e744a539fa3218e55b72b0c298616db1fd9b0"
+  }
+}
