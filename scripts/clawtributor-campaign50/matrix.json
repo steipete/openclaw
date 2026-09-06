@@ -1,41 +1,11 @@
 [
   {
-    "id": "typed-question-composed-green",
-    "directory": "typed-question",
-    "source": "0ebb320906da7e1727934b3cf816cedf98270357",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "teams-renderer",
-    "runner": "ubuntu-24.04",
-    "node": "24.20.0"
-  },
-  {
-    "id": "search-value-140008-green",
-    "directory": "140008-search-value",
-    "source": "7475087fa97a73587e2b15ac514733ae3bbfa024",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "native-find-grep",
-    "runner": "ubuntu-24.04",
-    "node": "24.20.0"
-  },
-  {
-    "id": "cli-quoted-records-red",
-    "directory": "cli-quoted-records",
-    "source": "ed6e3aabf0ef6cd58a8ee9d9282a6dc6c06cc918",
+    "id": "update-summary-compare",
+    "directory": "update-summary",
+    "source": "8bda552f4e49cf505b849e086f7a974e573e2e3f",
     "pnpm": "12.1.0",
-    "mode": "red",
-    "variant": "remaining",
-    "runner": "ubuntu-24.04",
-    "node": "24.20.0"
-  },
-  {
-    "id": "root-option-route-candidate",
-    "directory": "root-option-route",
-    "source": "7475087fa97a73587e2b15ac514733ae3bbfa024",
-    "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "cli-peers",
+    "variant": "tool-boundary",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
@@ -50,12 +20,12 @@
     "node": "24.20.0"
   },
   {
-    "id": "update-summary-red",
-    "directory": "update-summary",
-    "source": "8bda552f4e49cf505b849e086f7a974e573e2e3f",
+    "id": "cli-quoted-records-green",
+    "directory": "cli-quoted-records",
+    "source": "ed6e3aabf0ef6cd58a8ee9d9282a6dc6c06cc918",
     "pnpm": "12.1.0",
-    "mode": "red",
-    "variant": "tool-boundary",
+    "mode": "green",
+    "variant": "all",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
@@ -70,11 +40,11 @@
     "node": "24.20.0"
   },
   {
-    "id": "tui-model-identity-red",
+    "id": "tui-model-identity-green",
     "directory": "tui-model-identity",
     "source": "d613feea804f761d906c4e36b004018c33a634ec",
     "pnpm": "12.3.4",
-    "mode": "red",
+    "mode": "green",
     "variant": "real-pty",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"

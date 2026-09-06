@@ -1,0 +1,133 @@
+diff --git a/src/agents/tools/gateway-tool.test.ts b/src/agents/tools/gateway-tool.test.ts
+index 8c2142977fb..6f39763f23c 100644
+--- a/src/agents/tools/gateway-tool.test.ts
++++ b/src/agents/tools/gateway-tool.test.ts
+@@ -1,3 +1,4 @@
++import { asRecord, readStringField } from "@openclaw/normalization-core/record-coerce";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import type { GatewayRequestContext } from "../../gateway/server-methods/types.js";
+ import { withGatewayToolCallerIdentity } from "./gateway-caller-context.js";
+@@ -266,4 +267,80 @@ describe("gateway update action", () => {
+     });
+     expect(result.details).toMatchObject({ handoff: { command: "x".repeat(4000) } });
+   });
++
++  it("preserves update diagnostic Unicode in tool results", async () => {
++    const reason = "r".repeat(239);
++    const name = "n".repeat(99);
++    const stderrTail = "s".repeat(499);
++    dispatchMock.mockResolvedValue({
++      ok: false,
++      result: {
++        status: "error",
++        reason: `${reason}🤖`,
++        before: { version: `${name}🤖` },
++        after: { version: `${name}🤖` },
++        steps: [{ name: `${name}🤖`, exitCode: 1, stderrTail: `🤖${stderrTail}` }],
++      },
++    });
++    const result = await createGatewayTool({ senderIsOwner: true }).execute("update", {
++      action: "update.run",
++    });
++    expect(dispatchMock).toHaveBeenCalledOnce();
++    expect(callGatewayToolMock).not.toHaveBeenCalled();
++    const reasonText = readStringField(asRecord(result.details), "reason");
++    expect(reasonText?.charCodeAt(reasonText.length - 1), "UPDATE_DIAGNOSTIC_UTF16_BOUNDARY").toBe(
++      reason.charCodeAt(reason.length - 1),
++    );
++    expect(result.details).toMatchObject({
++      reason,
++      before: { version: name },
++      after: { version: name },
++      failedSteps: [{ name, exitCode: 1, stderrTail }],
++    });
++    const text = result.content.find((block) => block.type === "text");
++    expect(text?.type === "text" && JSON.parse(text.text)).toEqual(result.details);
++  });
++
++  it.each(["ASCII", "🤖"])("preserves complete %s update diagnostics", async (text) => {
++    dispatchMock.mockResolvedValue({
++      ok: false,
++      result: {
++        status: "error",
++        reason: text,
++        steps: [{ name: text, exitCode: 1, stderrTail: text }],
++      },
++    });
++    const result = await createGatewayTool({ senderIsOwner: true }).execute("update", {
++      action: "update.run",
++    });
++    expect(result.details).toMatchObject({
++      reason: text,
++      failedSteps: [{ name: text, exitCode: 1, stderrTail: text }],
++    });
++  });
++
++  it.each(["error", "skipped"])("retains the selected %s update steps in order", async (status) => {
++    dispatchMock.mockResolvedValue({
++      ok: false,
++      result: {
++        status,
++        steps: [
++          { name: "passed", exitCode: 0 },
++          { name: "missing" },
++          { name: "pending", exitCode: null },
++          { name: "failed", exitCode: 1 },
++        ],
++      },
++    });
++    const result = await createGatewayTool({ senderIsOwner: true }).execute("update", {
++      action: "update.run",
++    });
++    expect(result.details).toMatchObject({
++      failedSteps: [
++        { name: "missing", exitCode: null, stderrTail: "" },
++        ...(status === "error" ? [{ name: "pending", exitCode: null, stderrTail: "" }] : []),
++        { name: "failed", exitCode: 1, stderrTail: "" },
++      ],
++    });
++  });
+ });
+diff --git a/src/gateway/update-run-summary.ts b/src/gateway/update-run-summary.ts
+index 5168dd0e690..e08550226d1 100644
+--- a/src/gateway/update-run-summary.ts
++++ b/src/gateway/update-run-summary.ts
+@@ -1,4 +1,5 @@
+ import { asRecord, readStringField } from "@openclaw/normalization-core/record-coerce";
++import { sliceUtf16Safe, truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+ 
+ export const DEFAULT_UPDATE_TIMEOUT_MS = 20 * 60 * 1000;
+ 
+@@ -9,24 +10,19 @@ export function summarizeUpdateRunResponse(response: unknown) {
+   const restart = asRecord(raw.restart);
+   const handoff = asRecord(raw.handoff);
+   const text = (value: unknown, limit: number) =>
+-    typeof value === "string" ? value.slice(0, limit) : undefined;
++    typeof value === "string" ? truncateUtf16Safe(value, limit) : undefined;
+   const status = text(result.status, 40) || "error";
+   const ok = raw.ok === true && (handoff.status === "started" || status === "ok");
+   const before = text(asRecord(result.before).version, 100);
+   const after = text(asRecord(result.after).version, 100);
+   const failedSteps = (Array.isArray(result.steps) ? result.steps : [])
+-    .flatMap((value) => {
+-      const step = asRecord(value);
+-      return step.exitCode === 0 || (step.exitCode === null && status !== "error")
+-        ? []
+-        : [
+-            {
+-              name: text(step.name, 100) || "update",
+-              exitCode: typeof step.exitCode === "number" ? step.exitCode : null,
+-              stderrTail: readStringField(step, "stderrTail")?.slice(-500) ?? "",
+-            },
+-          ];
+-    })
++    .map(asRecord)
++    .filter((step) => step.exitCode !== 0 && (step.exitCode !== null || status === "error"))
++    .map((step) => ({
++      name: text(step.name, 100) || "update",
++      exitCode: typeof step.exitCode === "number" ? step.exitCode : null,
++      stderrTail: sliceUtf16Safe(readStringField(step, "stderrTail") ?? "", -500),
++    }))
+     .slice(-3);
+   const summary = {
+     ok,

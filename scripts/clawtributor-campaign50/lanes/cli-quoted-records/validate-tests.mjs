@@ -42,6 +42,8 @@ if (scope === "focused") {
   assert.equal(Number(exitCode), 0);
   assert.equal(report.success, true);
   assert.equal(report.numFailedTests, 0);
+  assert.equal(report.numPendingTests, 0);
+  assert.equal(report.numTodoTests, 0);
   assert.ok(report.numPassedTests >= 199);
   const expectedFiles = [
     "packages/normalization-core/src/balanced-json.test.ts",
@@ -57,7 +59,11 @@ if (scope === "focused") {
     );
     assert.equal(suites.length, 1, file);
     assert.equal(suites[0].status, "passed");
-    assert.ok(suites[0].assertionResults.some((entry) => entry.status === "passed"));
+    assert.ok(suites[0].assertionResults.length > 0);
+    for (const assertion of suites[0].assertionResults) {
+      assert.equal(assertion.status, "passed");
+      assert.deepEqual(assertion.failureMessages, []);
+    }
   }
 }
 console.log(`CLI_QUOTED_RECORDS_${scope.toUpperCase()}_${mode.toUpperCase()}_CONFIRMED`);

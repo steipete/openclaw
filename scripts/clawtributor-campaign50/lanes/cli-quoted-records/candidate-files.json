@@ -1,0 +1,9 @@
+{
+  "docs/gateway/cli-backends.md": "02ca97b332850d6b3b590b2dddff4e597c91ba89d545d75b6911a5d5237ccb45",
+  "packages/ai/src/utils/provider-error.test.ts": "04ffff34d6a41e95b566c39e0038ab37df6e209ea98f205634b22953b6c7d72d",
+  "packages/normalization-core/src/balanced-json.test.ts": "a7d1ff7bf77555f9f055271b03a32ef44855c28dea9cf4119d436bfcda1ff1c9",
+  "packages/normalization-core/src/balanced-json.ts": "8146d5a69413b7d246127842446bc5dee6458524a49278b3400ffab818737ca7",
+  "src/agents/cli-output-jsonl.test.ts": "b074cde7fc141d8e9179425bf23fd0d796fc360a7ec1006f59de952e8217e1cd",
+  "src/agents/cli-output-records.test.ts": "a2e1047a951ee150bb5df26ecdd254e5be64d0b948aa20469f6e97409e28edc7",
+  "src/agents/cli-output-records.ts": "b07cace7d12fbec1d0626e4dbd9c2600e5f2873ed0b10157c51c0ccf629b6b1a"
+}

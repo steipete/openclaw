@@ -59,7 +59,8 @@ rows=observed['observations']
 assert [row['label'] for row in rows]==['first-list','warm-default-list','empty-controller','after-writer-update']
 assert rows[0]['output']==rows[1]['output']
 assert rows[0]['output']['status']=='ok' and rows[0]['output']['total']==2
-assert [entry['status'] for entry in rows[0]['output']['active']]==['queued','running']
+assert [entry['status'] for entry in rows[0]['output']['active']]==['queued','active (waiting on 1 child)']
+assert rows[0]['output']['active'][1]['pendingDescendants']==1
 assert rows[0]['output']['active'][0]['totalTokens']==197000
 assert rows[0]['output']['active'][1]['totalTokens']==220
 assert rows[2]['skills']==rows[2]['reports']==0

@@ -9,7 +9,7 @@
   "artifacts": {
     "run.sh": "f009bb4411594a19a907a9c15b09031027b25edaa88b97594f557d5862759f05",
     "verify-green.py": "4ddc1112b7e1cf5b267edeffddf6fde9177f3fbe191b662e268b19b909347d59",
-    "candidate.patch": "776d0a992ff5c443db42a1b60b3ec097712e03d0d1297559a239a5acd4049feb"
+    "candidate.patch": "b12103d911268ca6e7a7bd3cb779b9f83532eec1d1e48c20666fac7dc2cd3c37"
   },
   "baselineFiles": {
     "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "91da0190edc80a0a8e6723d19e25e0d831e7930080f8b71bd94af39cab8835dc",
@@ -34,8 +34,9 @@
   },
   "candidateFiles": {
     "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "5c433abfc206d3556a05301efbfc8136f5def1faee098ce7e22285e40885b427",
-    "test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d"
+    "test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts": "9f520755b9b7500989b3509bb0dcf6ceb7642e75be64ab8e12d5f5b4b7777c00"
   },
   "baselineProofRun": 34030276700,
-  "baselineFlowHash": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d"
+  "baselineFlowHash": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d",
+  "flowLauncherCorrection": "Explicit already-built dist/index.js command with unchanged packaged-plugin flow; prevents intentional run-node dirty-source rebuild after canonical E2E preparation. All provider/bus/assertion/deadline inputs unchanged from baseline."
 }

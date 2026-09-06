@@ -36,6 +36,24 @@ retain_diff() {
 trap retain_diff EXIT
 git apply --check "$patch_file"
 git apply "$patch_file"
+verify_candidate() {
+  node --input-type=module - "$lane_dir/candidate-files.json" "$evidence_dir/candidate-files-$1.json" <<'JS'
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync, writeFileSync } from "node:fs";
+const [manifest, output] = process.argv.slice(2);
+const expected = JSON.parse(readFileSync(manifest, "utf8"));
+const observed = {};
+for (const [file, hash] of Object.entries(expected)) {
+  observed[file] = createHash("sha256").update(readFileSync(file)).digest("hex");
+  assert.equal(observed[file], hash, `Candidate source mismatch: ${file}`);
+}
+writeFileSync(output, JSON.stringify(observed, null, 2) + "\n");
+JS
+}
+if [ "$mode" = green ]; then
+  verify_candidate before
+fi
 if [ "$subset" = all ]; then
   printf '%s\n' owner-tests > "$evidence_dir/phase.txt"
   set +e
@@ -64,5 +82,8 @@ pnpm build > "$evidence_dir/build.log" 2>&1
 printf '%s\n' real-child > "$evidence_dir/phase.txt"
 timeout 240s node --import tsx "$lane_dir/probe.mjs" "$mode" "$evidence_dir/real-child.json" "$subset" \
   > "$evidence_dir/real-child.log" 2>&1
+if [ "$mode" = green ]; then
+  verify_candidate after
+fi
 git diff --check
 printf '%s\n' complete > "$evidence_dir/phase.txt"

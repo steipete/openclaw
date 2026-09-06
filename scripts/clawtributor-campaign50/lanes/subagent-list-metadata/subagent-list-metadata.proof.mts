@@ -83,8 +83,8 @@ function expectedOutput(updated = false, caller = controller) {
             sessionKey: secondaryKey,
             label: "Secondary",
             task: "compare metadata",
-            status: "running",
-            pendingDescendants: 0,
+            status: "active (waiting on 1 child)",
+            pendingDescendants: 1,
             runtime: "1s",
             runtimeMs: 1000,
             childSessions: [nestedKey],
@@ -95,7 +95,7 @@ function expectedOutput(updated = false, caller = controller) {
     recent: [],
     text: empty
       ? "active subagents:\n(none)\n\nrecent (last 30m):\n(none)"
-      : `active subagents:\n1. Primary (${model}, n/a, tokens 1k (in 12 / out 1k), prompt/cache ${updated ? "198k" : "197k"}) queued - inspect metadata\n2. Secondary (override-model, 1s, tokens 220 (in 200 / out 20)) running - compare metadata\n\nrecent (last 30m):\n(none)`,
+      : `active subagents:\n1. Primary (${model}, n/a, tokens 1k (in 12 / out 1k), prompt/cache ${updated ? "198k" : "197k"}) queued - inspect metadata\n2. Secondary (override-model, 1s, tokens 220 (in 200 / out 20)) active (waiting on 1 child) - compare metadata\n\nrecent (last 30m):\n(none)`,
   };
 }
 

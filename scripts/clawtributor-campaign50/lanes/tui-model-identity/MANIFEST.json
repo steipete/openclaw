@@ -15,9 +15,20 @@
   "testBeforeSha256": "4f98211ff2f5b6cd15cf3348bc131ef0b655249cf16864b7c0e2b1a9bbf3534b",
   "testAfterSha256": "5d83a74f5b609e2cb743f7a8b7889b31fcd4cb6e7b477d7718565c602cc22f0e",
   "files": {
-    "run.sh": "f9efe6ab22b9fac7902567ad80b8bff431c4126a17ce97da2c44cd8eeb722cb4",
-    "validate.mjs": "84039d60557cae08c48d64043365d2c63d6234818c47685dbc9786a6ada9c887",
+    "run.sh": "6ef28e332c37df9311c9d48d73d097e395af5313d37dc1ca2a0e33ec171b76f7",
+    "validate.mjs": "98e0ffd2c711569261a1d49ddea9bcae6e59bf888ff05e3b2c731c3d4f6da070",
     "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
-    "regression.patch": "f424373a6e622350943b867f322d8a11060e982563f905d5f793fa5ea85bb537"
+    "candidate.patch": "0e72254a271362c026c9e23dab25ec7bc49a859976d18a35749868cb1aadb84e"
+  },
+  "candidateHashes": {
+    "src/tui/embedded-backend.test.ts": "d342da7df234b86a39b0d6ace5a9792a022dcf3e5705f8aca21f93132c17798a",
+    "src/tui/embedded-backend.ts": "b66e18aad16ba9e77c9008a7631f5ec988b1e40c7f8be357f0ae2c7b913d7f7e",
+    "src/tui/tui-pty-local.e2e.test.ts": "5d83a74f5b609e2cb743f7a8b7889b31fcd4cb6e7b477d7718565c602cc22f0e"
+  },
+  "candidateProductionHashes": {
+    "src/tui/embedded-backend.ts": "b66e18aad16ba9e77c9008a7631f5ec988b1e40c7f8be357f0ae2c7b913d7f7e",
+    "src/gateway/session-utils-model.ts": "5bd9b2ed2de15162e535663e926e01865eb88625edf4e9f28072a38bff7696c6",
+    "src/tui/tui-command-handlers.ts": "a397b06b4465e51c515d88390fdf625e605a19c1ee169fb958cae07e6e1ae138",
+    "src/tui/tui-session-actions.ts": "8cc1b0bd0d904df320c5d23b839623e807e62f39970736c8c3725c312cf813e5"
   }
 }

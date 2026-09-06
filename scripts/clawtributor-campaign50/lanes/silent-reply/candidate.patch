@@ -29,10 +29,10 @@ index 8eda04e643ca91a5a9ee275f08f4f26d2af6f2be..69c53b93dae038994adad05f0c2af366
      trustedInternalHandoff: params.trustedInternalHandoff,
 diff --git a/test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts b/test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts
 new file mode 100644
-index 0000000000000000000000000000000000000000..ad5176f5476d8f29981e6a18767cfc055b74e02d
+index 0000000000000000000000000000000000000000..9330ce16170d7d1bae69be3ca8f10e01b3f45ac7
 --- /dev/null
 +++ b/test/e2e/qa-lab/runtime/silent-reply-prompt-mode.e2e.test.ts
-@@ -0,0 +1,186 @@
+@@ -0,0 +1,191 @@
 +import fs from "node:fs/promises";
 +import path from "node:path";
 +import { afterEach, describe, expect, it } from "vitest";
@@ -133,7 +133,12 @@ index 0000000000000000000000000000000000000000..ad5176f5476d8f29981e6a18767cfc05
 +    gateway = await owner
 +      .start({
 +        repoRoot: REPO_ROOT,
-+        useRepoCli: true,
++        command: {
++          executablePath: process.execPath,
++          argsPrefix: [path.join(REPO_ROOT, "dist/index.js")],
++          cwd: REPO_ROOT,
++          usePackagedPlugins: true,
++        },
 +        transport,
 +        transportBaseUrl: bus.baseUrl,
 +        providerBaseUrl: `${mock.baseUrl}/v1`,
