@@ -1,0 +1,145 @@
+{
+  "script": "docs/proof/persisted-model-diagnostics/run-proof.mjs",
+  "sha256": "e99291818859932c5ca5fddba3a2ff15efc001361037c694b0920b2629a10166",
+  "mode": "candidate",
+  "scenarioCount": 24,
+  "scenarios": [
+    {
+      "name": "actual-owner-missing/src/boards/sqlite-board-store.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json/src/boards/sqlite-board-store.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json-fields/src/boards/sqlite-board-store.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-missing/src/boards/sqlite-board-codec.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json/src/boards/sqlite-board-codec.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json-fields/src/boards/sqlite-board-codec.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-missing/src/infra/sqlite-audit-record-store.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json/src/infra/sqlite-audit-record-store.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json-fields/src/infra/sqlite-audit-record-store.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-missing/src/infra/sqlite-index-schema.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json/src/infra/sqlite-index-schema.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json-fields/src/infra/sqlite-index-schema.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-missing/src/infra/sqlite-user-version.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json/src/infra/sqlite-user-version.ts",
+      "expected": true
+    },
+    {
+      "name": "actual-owner-json-fields/src/infra/sqlite-user-version.ts",
+      "expected": true
+    },
+    {
+      "name": "exact-pr-138520",
+      "expected": false
+    },
+    {
+      "name": "normalized-pr-138520",
+      "expected": false
+    },
+    {
+      "name": "sql-table-column",
+      "expected": true
+    },
+    {
+      "name": "persisted-json",
+      "expected": true
+    },
+    {
+      "name": "sqlite-store-missing-patch",
+      "expected": true
+    },
+    {
+      "name": "sqlite-diagnostics-missing-patch",
+      "expected": false
+    },
+    {
+      "name": "same-hunk-storage",
+      "expected": true
+    },
+    {
+      "name": "stdout-diagnostics",
+      "expected": false
+    },
+    {
+      "name": "mixed-stdout-and-sql",
+      "expected": true
+    }
+  ],
+  "sourceOwners": [
+    "src/clawsweeper-change-detection.ts",
+    "src/openclaw-file-role.ts",
+    "src/clawsweeper-context-hydration.ts",
+    "src/clawsweeper-text.ts",
+    "src/clawsweeper-item-policy.ts",
+    "src/clawsweeper.ts",
+    "src/clawsweeper-runtime.ts",
+    "src/clawsweeper-report-orchestration.ts",
+    "src/clawsweeper-orchestration-foundation.ts",
+    "src/clawsweeper-report-comment-helpers.ts",
+    "src/clawsweeper-report-comment-presentation.ts",
+    "src/clawsweeper-report-parser.ts"
+  ],
+  "compiledOwners": [
+    "dist/clawsweeper-change-detection.js",
+    "dist/openclaw-file-role.js",
+    "dist/clawsweeper-context-hydration.js",
+    "dist/clawsweeper-text.js",
+    "dist/clawsweeper-item-policy.js",
+    "dist/clawsweeper.js",
+    "dist/clawsweeper-runtime.js",
+    "dist/clawsweeper-report-orchestration.js",
+    "dist/clawsweeper-orchestration-foundation.js",
+    "dist/clawsweeper-report-comment-helpers.js",
+    "dist/clawsweeper-report-comment-presentation.js",
+    "dist/clawsweeper-report-parser.js"
+  ],
+  "fixture": {
+    "path": "test/fixtures/persistence-classifier-138520.json",
+    "mode": "100644",
+    "indexOid": "f0c89df6022612f98121002d837802f3b12a0b5e",
+    "kind": "file",
+    "bytes": 2970,
+    "sha256": "04d3049c5d34841f3dd0a94399828e175287bc23b90bcf4158f8f66f003329c6"
+  },
+  "recipeTimeoutSeconds": 120,
+  "originalTimeoutSeconds": 15,
+  "originalCount": 4,
+  "heapMiB": 512,
+  "enumeration": "Literal filenames and three flatMap rows from exact unmodified main recipe, followed by its nine literal rows; no recipe evaluation during preparation."
+}

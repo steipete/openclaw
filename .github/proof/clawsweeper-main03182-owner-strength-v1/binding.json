@@ -1,0 +1,57 @@
+{
+  "mainSha": "03182ae34303203557df136e147297ad5be25099",
+  "fixtures": [
+    {
+      "file": "persistence-classifier-131624-json-schema.json",
+      "bytes": 3556,
+      "sha256": "029baaa91c3b1cf9c49edb7cdc9eef56bd484baae741c169e69c549559254cc1",
+      "repository": "openclaw/openclaw",
+      "number": 131624,
+      "headSha": "d62425c1d58340973a4c8387fd8e13c8ecdf2b1d",
+      "baseSha": "b03e0ec8cf8effb19a4e8043a5a3c1dacd418812",
+      "pullFileCount": 1
+    },
+    {
+      "file": "persistence-classifier-136282-cursor.json",
+      "bytes": 32778,
+      "sha256": "bc84a750b3921aaf20ec16e7cdcd0af19862520c895637666c48fccd9eefc467",
+      "repository": "openclaw/openclaw",
+      "number": 136282,
+      "headSha": "fff68ad520ce60c45b1d824d29cdf50fe1e05f6c",
+      "baseSha": "0fafd993b4f93af51037dd9e29f69fcb94479a6e",
+      "pullFileCount": 12
+    }
+  ],
+  "sourceOwners": [
+    {
+      "path": "docs/proof/persisted-model-diagnostics/run-proof.mjs",
+      "bytes": 14632,
+      "sha256": "e99291818859932c5ca5fddba3a2ff15efc001361037c694b0920b2629a10166"
+    },
+    {
+      "path": "src/clawsweeper-context-hydration.ts",
+      "bytes": 36780,
+      "sha256": "e6021a37bd8315f783509b0f0a5b047bae9be63754ba72bda5f07beaa100eb12"
+    },
+    {
+      "path": "src/clawsweeper-text.ts",
+      "bytes": 964,
+      "sha256": "fa23270af2e1c53b2ffac74f63476ec3974dd26e4258b10427990d0841782a0c"
+    },
+    {
+      "path": "src/clawsweeper-item-policy.ts",
+      "bytes": 8503,
+      "sha256": "5cfbaf111b59a4f64d0e62d80736c10baa9e09bdaa21aeb4d5fcc893eec01109"
+    },
+    {
+      "path": "src/clawsweeper-change-detection.ts",
+      "bytes": 25440,
+      "sha256": "55cdd67483bcf83496408d0967c2b13de6d1b513a96d201e2947d29843993179"
+    }
+  ],
+  "mainRecipeScenarioCount": 24,
+  "mainRecipePositiveCount": 20,
+  "originalScenarioCount": 4,
+  "reportHelpersSource": "docs/proof/persisted-model-diagnostics/run-proof.mjs",
+  "reportHelpersExactSlice": true
+}

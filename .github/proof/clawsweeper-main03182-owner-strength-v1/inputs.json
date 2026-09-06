@@ -1,0 +1,42 @@
+{
+  "binding.json": {
+    "bytes": 1954,
+    "sha256": "5803efb619dcf7eda093ae90722492ddaa9c284e0dc3d5c6b75ba3b3d0327dac"
+  },
+  "candidate.patch": {
+    "bytes": 13396,
+    "sha256": "ba7c7594b7def750c2929a491bf68916f262f9ccb7c47137d137403f2667f0f6"
+  },
+  "cases.json": {
+    "bytes": 1285,
+    "sha256": "2f06f5833672bee8c1ea3fe57277b0d39076fa9c96027b302b03ef7d9bffc235"
+  },
+  "main-proof-report-helpers.mjs": {
+    "bytes": 1688,
+    "sha256": "711a7c5eeb8372fc090415897f81a205b63c628df0ab9cc7acc73babd52ee120"
+  },
+  "original-four.mjs": {
+    "bytes": 7628,
+    "sha256": "d04731542a95dd847db5b6ce7832ba76f2ffce4b96b88f4015b12962cee25793"
+  },
+  "persistence-classifier-131624-json-schema.json": {
+    "bytes": 3556,
+    "sha256": "029baaa91c3b1cf9c49edb7cdc9eef56bd484baae741c169e69c549559254cc1"
+  },
+  "persistence-classifier-136282-cursor.json": {
+    "bytes": 32778,
+    "sha256": "bc84a750b3921aaf20ec16e7cdcd0af19862520c895637666c48fccd9eefc467"
+  },
+  "recipe-contract.json": {
+    "bytes": 4117,
+    "sha256": "151491a3127ac4ba845333b4f663994188b6fa2213b0020fddba570786b29c4c"
+  },
+  "run.py": {
+    "bytes": 22983,
+    "sha256": "879fa78afa2207b48cfc2e32b85b7864821bdefe4c61880eafd76a1b1ef4bdcb"
+  },
+  "source.json": {
+    "bytes": 808094,
+    "sha256": "e1d22202004f446fbf9a12f8c2bbd0787760ac96a52d6899e629c18a8ead8530"
+  }
+}

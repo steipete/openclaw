@@ -1,0 +1,210 @@
+--- a/src/clawsweeper-change-detection.ts
++++ b/src/clawsweeper-change-detection.ts
+@@ -452,10 +452,12 @@
+ 
+   const surfaces = new Set<string>();
+   const add = (surface: string) => surfaces.add(dataModelSurfaceLabel(path, surface));
+-  const pathHint = dataModelPathHint(path);
++  const pathOwner = dataModelPathOwner(path);
++  const pathHint = pathOwner?.surface ?? "";
+   if (
+     pathHint &&
+-    (dataModelTextMatchesPathHint(text, pathHint) || dataModelTextHasJsonConversion(text))
++    (dataModelTextMatchesPathHint(text, pathHint) ||
++      (pathOwner?.strong && dataModelTextHasJsonConversion(text)))
+   )
+     add(pathHint);
+   if (pathHint && dataModelTextLooksLikePersistedShapeField(text, pathHint)) add(pathHint);
+@@ -465,7 +467,7 @@
+     const changedText = changedPatchLines(hunk)
+       .filter((line) => dataModelLineLooksSemantic(line, options))
+       .join("\n");
+-    for (const surface of dataModelStorageContext(hunk, Boolean(pathHint))) {
++    for (const surface of dataModelStorageContext(hunk, pathOwner?.strong ?? false)) {
+       if (
+         dataModelTextLooksLikePersistedShapeField(changedText, surface) ||
+         dataModelTextHasJsonConversion(changedText)
+@@ -544,7 +546,7 @@
+   if (/\b(?:DurableObject|state\.storage|storage\.(?:get|put|delete|list))\b/i.test(text)) {
+     surfaces.push("durable storage schema");
+   }
+-  if (/\b(?:CREATE|ALTER)\s+(?:VIRTUAL\s+)?TABLE\b|\bsqliteTable\s*\(/i.test(text)) {
++  if (/\b(?:CREATE|ALTER)\s+(?:VIRTUAL\s+)?TABLE\b|\b(?:sqliteTable|pgTable|mysqlTable)\s*(?:\?\.\s*)?(?:<[^;]*>\s*)?\(/i.test(text)) {
+     surfaces.push("database schema");
+   }
+   return surfaces;
+@@ -572,45 +574,49 @@
+ function isLikelyOpenClawDataModelPath(path: string): boolean {
+   if (!path || isDocsPath(path)) return false;
+   if (isMarkdownConfigSurfacePath(path)) return /(?:^|\/)HOOK\.md$/.test(path);
+-  return Boolean(dataModelPathHint(path)) || /\.(?:sql|sqlite|db|prisma)$/.test(path);
++  return Boolean(dataModelPathOwner(path)?.strong) || /\.(?:sql|sqlite|db|prisma)$/.test(path);
+ }
+ 
+ function isDataModelDocumentationPath(path: string): boolean {
+   return isDocsPath(path) || isMarkdownConfigSurfacePath(path);
+ }
+ 
+-function dataModelPathHint(path: string): string {
++function dataModelPathOwner(path: string): { surface: string; strong: boolean } | undefined {
+   const sqliteRole = sqlitePathOwnerRole(path);
+-  if (sqliteRole === "codec") return "serialized state";
+-  if (sqliteRole === "user-version") return "database schema";
++  if (sqliteRole === "codec") return { surface: "serialized state", strong: true };
++  if (sqliteRole === "user-version") return { surface: "database schema", strong: true };
+   if (/(^|\/)(?:durable-?objects?|storage)(?:\/|[-_.])|durable-?object|state-storage/i.test(path)) {
+-    return "durable storage schema";
++    return { surface: "durable storage schema", strong: true };
+   }
+   if (/(?:^|\/)caches?\/schema(?:\/|[-_.])|cache[-_.]schema/i.test(path)) {
+-    return "persistent cache schema";
++    return { surface: "persistent cache schema", strong: true };
+   }
+   if (/(^|\/)persistence(?:\/|[-_.])|(?:serialized|persisted?)[-_.]?(?:state|json)/i.test(path)) {
+-    return "serialized state";
++    return { surface: "serialized state", strong: true };
+   }
+   if (/vector|embedding|(?:^|\/)memory(?:\/|[-_.])/i.test(path)) {
+-    return "vector/embedding metadata";
++    return { surface: "vector/embedding metadata", strong: true };
+   }
+   if (
+     /(^|\/)(?:migrations?|backfill|doctor|repair|upgrade)(?:\/|[-_.])|(?:migration|backfill|doctor|repair|upgrade)\.(?:ts|js)$/i.test(
+       path,
+     )
+   ) {
+-    return "migration/backfill/repair";
++    return { surface: "migration/backfill/repair", strong: true };
+   }
+   if (
+     isLikelySqliteSchemaPath(path) ||
+-    /(^|\/)(?:migrations?|schema|database|db|sql)(?:\/|[-_.])|(?:schema|migration|ddl|prisma)\.(?:ts|js|sql|prisma)$/i.test(
++    /(^|\/)(?:migrations?|schema|database|db|sql)(?:\/|[-_.])|(?:migration|ddl|prisma)\.(?:ts|js|sql|prisma)$/i.test(
+       path,
+     )
+   ) {
+-    return "database schema";
+-  }
+-  return "";
++    return { surface: "database schema", strong: true };
++  }
++  // A schema suffix also names validators and wire formats. It is a domain
++  // hint, not an owner that can make missing input or JSON conversion persistent.
++  if (/schema\.(?:ts|js|sql|prisma)$/i.test(path))
++    return { surface: "database schema", strong: false };
++  return undefined;
+ }
+ 
+ function dataModelTextMatchesPathHint(text: string, pathHint: string): boolean {
+@@ -618,7 +624,7 @@
+     case "database schema":
+       return (
+         /\b(?:migration|migrate|schema[_-]?version|user_version|CREATE|ALTER|DROP)\b/i.test(text) ||
+-        /\b(?:sqliteTable|pgTable|mysqlTable|defineTable|createTable|createIndex|table|column|index|primaryKey|foreignKey|uniqueIndex)\b/i.test(
++        /\b(?:sqliteTable|pgTable|mysqlTable|defineTable|createTable|createIndex|primaryKey|foreignKey|uniqueIndex)\b|\b(?:table|column|index)\s*(?:\?\.\s*)?(?:<[^;]*>\s*)?\(/i.test(
+           text,
+         )
+       );
+--- a/test/pr-surface-policy.test.ts
++++ b/test/pr-surface-policy.test.ts
+@@ -272,6 +272,7 @@
+   ["worker input layout fields", "./fixtures/persistence-classifier-132839-workers.json", true],
+   ["hovercard promise cancellation", "./fixtures/persistence-classifier-136772.json", false],
+   ["SQLite worker diagnostic suffix", "./fixtures/persistence-classifier-138520.json", true],
++  ["JSON Schema value validation", "./fixtures/persistence-classifier-131624-json-schema.json", true],
+ ] as const) {
+   for (const normalized of [false, true]) {
+     test(`${name} creates no stored-data warning or migration gate (${normalized ? "production-normalized" : "full"} patch)`, () => {
+@@ -1245,6 +1246,49 @@
+     pullFilesTruncated: true,
+     surfaces: ["unknown-truncated-pull-files"],
+   },
++  ...[
++    ["missing", undefined],
++    ["truncated", "@@\n+  refresh();\n\n[truncated 99 chars]"],
++    ["bare index variable", "@@\n-const index = Number(key);\n+const index = Number(key) + 1;"],
++    [
++      "JSON conversion",
++      "@@\n-const raw = JSON.stringify(value);\n+const raw = JSON.stringify(value, null, 2);",
++    ],
++  ].map(([kind, patch]) => ({
++    name: `weak schema filename with ${kind} evidence`,
++    file: { filename: "src/runtime/users-schema.ts", patch },
++    surfaces: [],
++    sqliteSchemaChange: false,
++  })),
++  ...["pgTable", "mysqlTable"].flatMap((table) =>
++    ["src/runtime/users-schema.ts", "src/runtime/records.ts"].map((filename) => ({
++      name: `${table} same-hunk field change in ${filename}`,
++      file: {
++        filename,
++        patch: `@@\n const users = ${table}("users", {\n-  name: text("old_name"),\n+  name: text("new_name"),\n });`,
++      },
++      surfaces: [`database schema: ${filename}`],
++      sqliteSchemaChange: false,
++    })),
++  ),
++  {
++    name: "weak schema filename retains optional createTable calls",
++    file: {
++      filename: "src/runtime/users-schema.ts",
++      patch: '@@\n-schema.createTable?.("old");\n+schema.createTable?.("new");',
++    },
++    surfaces: ["database schema: src/runtime/users-schema.ts"],
++    sqliteSchemaChange: false,
++  },
++  {
++    name: "optional pgTable with multiline type arguments retains same-hunk fields",
++    file: {
++      filename: "src/runtime/records.ts",
++      patch: '@@\n const users = pgTable?.<\n   "users"\n >("users", {\n-  name: text("old_name"),\n+  name: text("new_name"),\n });',
++    },
++    surfaces: ["database schema: src/runtime/records.ts"],
++    sqliteSchemaChange: false,
++  },
+   {
+     name: "plain form-validation schema fields",
+     file: { filename: "ui/src/forms/schema.ts", patch: "@@\n+  fieldLabel: z.string()," },
+--- /dev/null
++++ b/test/fixtures/persistence-classifier-131624-json-schema.json
+@@ -0,0 +1,12 @@
++{
++  "repository": "openclaw/openclaw",
++  "number": 131624,
++  "headSha": "d62425c1d58340973a4c8387fd8e13c8ecdf2b1d",
++  "baseSha": "b03e0ec8cf8effb19a4e8043a5a3c1dacd418812",
++  "pullFiles": [
++    {
++      "filename": "packages/normalization-core/src/json-schema.ts",
++      "patch": "@@ -1,6 +1,6 @@\n // Browser-safe JSON Schema normalization and value checks shared by core and Control UI.\n-import { Guard } from \"typebox/guard\";\n import { Check } from \"typebox/schema\";\n+import { isJsonValue } from \"./json-value.js\";\n import { isRecord } from \"./record-coerce.js\";\n \n type JsonSchemaObject = Record<string, unknown>;\n@@ -185,96 +185,11 @@ function isStringArray(value: unknown): value is string[] {\n   return Array.isArray(value) && value.every((entry) => typeof entry === \"string\");\n }\n \n-function isJsonValue(\n-  value: unknown,\n-  active = new WeakSet<object>(),\n-  complete = new WeakSet<object>(),\n-): boolean {\n-  if (value === null || typeof value === \"string\" || typeof value === \"boolean\") {\n-    return true;\n-  }\n-  if (typeof value === \"number\") {\n-    return Number.isFinite(value);\n-  }\n-  if (typeof value !== \"object\") {\n-    return false;\n-  }\n-  let entries: unknown[];\n-  try {\n-    if (Array.isArray(value)) {\n-      const ownKeys = Reflect.ownKeys(value);\n-      if (\n-        ownKeys.length !== value.length + 1 ||\n-        ownKeys.some((key) => {\n-          if (key === \"length\") {\n-            return false;\n-          }\n-          if (typeof key !== \"string\") {\n-            return true;\n-          }\n-          const index = Number(key);\n-          return (\n-            !Number.isSafeInteger(index) ||\n-            index < 0 ||\n-            index >= value.length ||\n-            String(index) !== key\n-          );\n-        })\n-      ) {\n-        return false;\n-      }\n-      entries = value;\n-    } else {\n-      const prototype = Object.getPrototypeOf(value);\n-      if (prototype !== Object.prototype && prototype !== null) {\n-        return false;\n-      }\n-      const ownKeys = Reflect.ownKeys(value);\n-      if (\n-        ownKeys.some(\n-          (key) =>\n-            typeof key !== \"string\" || !Object.prototype.propertyIsEnumerable.call(value, key),\n-        )\n-      ) {\n-        return false;\n-      }\n-      entries = Object.values(value);\n-    }\n-  } catch {\n-    return false;\n-  }\n-  if (complete.has(value)) {\n-    return true;\n-  }\n-  if (active.has(value)) {\n-    return false;\n-  }\n-  active.add(value);\n-  const valid = entries.every((entry) => isJsonValue(entry, active, complete));\n-  active.delete(value);\n-  if (valid) {\n-    complete.add(value);\n-  }\n-  return valid;\n-}\n-\n /** Normalize JSON Schema constructs into the TypeBox runtime subset used by validators. */\n export function normalizeJsonSchemaForTypeBox(schema: JsonSchemaValue): JsonSchemaValue {\n   return normalizeJsonSchemaNode(schema) as JsonSchemaValue;\n }\n \n-/** Compare acyclic JSON values using the same equality semantics as TypeBox. */\n-export function jsonSchemaValuesEqual(left: unknown, right: unknown): boolean {\n-  if (!isJsonValue(left) || !isJsonValue(right)) {\n-    return false;\n-  }\n-  try {\n-    return Guard.IsDeepEqual(left, right);\n-  } catch {\n-    return false;\n-  }\n-}\n-\n /** Validate an acyclic JSON value against the canonical normalized schema. */\n export function isJsonSchemaValueValid(schema: JsonSchemaValue, value: unknown): boolean {\n   if (!isJsonValue(value)) {\n"
++    }
++  ]
++}
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -89,6 +89,7 @@
+ 
+ ### Fixed
+ 
++- Avoid stored-data warnings for validation-only schema helpers by separating ambiguous schema filenames from explicit storage owners, while preserving database operations and incomplete-patch warnings on storage paths.
+ - Stop transient JSON diagnostics and SQLite helper filenames from creating false stored-data and migration-proof blockers, while retaining compatibility gates for real persistence owners and stored-shape changes.
+ - Scoped unchanged SQLite table context to the changed column's diff hunk and stopped treating runtime property values as schema declarations.
+ - Align generated evidence commands with the parser's single-line contract so multiline proof commands remain in evidence detail instead of failing completed reviews.
+--- a/docs/pr-review-comments.md
++++ b/docs/pr-review-comments.md
+@@ -275,8 +275,13 @@
+ JSON-edit, and incomplete-patch warnings without implying table ownership.
+ Actual DDL remains evidence at any production filename, including diagnostic
+ helpers. Ordinary validation fields in a `schema` file alone do not establish
+-persisted database columns. The warning requests review; it does not prove a
+-persisted contract changed. This classification does not change the separate
++persisted database columns. A suffix such as `users-schema.ts` is only a domain
++hint: missing patches, JSON conversion, and local `table`, `column`, or `index`
++variables do not establish storage ownership. Explicit schema directories and
++storage owners keep their incomplete-patch warnings. Database API signals and
++column changes beside `sqliteTable`, `pgTable`, or `mysqlTable` calls in the same
++hunk remain evidence, including optional calls and typed calls. The warning
++requests review; it does not prove a persisted contract changed. This classification does not change the separate
+ `docs/` exemption for contributor behavior proof.
+ 
+ ## Evidence Repository Identity
