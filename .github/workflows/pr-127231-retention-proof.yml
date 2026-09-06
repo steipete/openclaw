@@ -23,14 +23,14 @@ jobs:
         working-directory: candidate
     env:
       OPENCLAW_BUILD_PRIVATE_QA: "1"
-      SOURCE_SHA: 428e780ef52e0c000d7774ae0a0c9951ce295916
-      SOURCE_TREE: e3bfccf9366de24c703d02e2572a63397ae292e2
+      SOURCE_SHA: 69c4054c7d9ea0c49876ed42dcd36622f8762c4c
+      SOURCE_TREE: 355312871d09de46632d62175ebce913c140badd
     steps:
       - name: Checkout reviewed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: openclaw/openclaw
-          ref: 428e780ef52e0c000d7774ae0a0c9951ce295916
+          ref: 69c4054c7d9ea0c49876ed42dcd36622f8762c4c
           path: candidate
           persist-credentials: false
           fetch-depth: 1
