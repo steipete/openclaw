@@ -1,0 +1,3 @@
+6bc1edd713abb227ccce4f9658393e6d70f20d1a125d7a231feb960bc463e0a9  ui/src/lib/sessions/session-placement-recovery.ts
+a089ab17bf9fac9c58d273b33d4791047298dfd744e917d73ec08ae604a50abc  ui/src/pages/new-session/session-placement-recovery.test.ts
+7533a7facf5f732dc53c55228afa9770407906cee08e136c81074973842a8bb0  ui/src/e2e/placement-error-unicode.e2e.test.ts

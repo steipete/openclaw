@@ -1,15 +1,5 @@
 [
   {
-    "id": "worker-owner-red",
-    "directory": "worker-owner",
-    "runner": "ubuntu-24.04",
-    "source": "76fb700f1322bc5d8d03ec6f9a63d0d637668aa7",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "paired-node"
-  },
-  {
     "id": "gateway-port",
     "directory": "gateway-port",
     "runner": "ubuntu-24.04",
@@ -20,13 +10,33 @@
     "variant": "cli-peers"
   },
   {
-    "id": "file-fetch-nfc",
-    "directory": "file-fetch-nfc",
+    "id": "imessage-text",
+    "directory": "imessage-text",
     "runner": "ubuntu-24.04",
-    "source": "7216075c2912dd331a4ba90df07efdc798069927",
+    "source": "a2014d63c1941d0d325e9415f1485c29e5088e65",
+    "node": "24.20.0",
+    "pnpm": "12.1.0",
+    "mode": "compare",
+    "variant": "text-preservation"
+  },
+  {
+    "id": "typed-question",
+    "directory": "typed-question",
+    "runner": "ubuntu-24.04",
+    "source": "fae213cdba6ca364c2fd5f44a6eb3a6540b06048",
+    "node": "24.20.0",
+    "pnpm": "12.1.0",
+    "mode": "compare",
+    "variant": "teams-renderer"
+  },
+  {
+    "id": "ui-placement-unicode",
+    "directory": "ui-placement-unicode",
+    "runner": "ubuntu-24.04",
+    "source": "1594ebfcb945d852b1745753e16862c0d5b786dc",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "unicode-staging"
+    "variant": "browser"
   }
 ]

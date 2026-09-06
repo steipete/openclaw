@@ -32,15 +32,20 @@ owner_tests=(
 )
 git apply --check "$lane_dir/regression-tests.patch"
 git apply "$lane_dir/regression-tests.patch"
-set +e
-node scripts/run-vitest.mjs "${owner_tests[@]}" \
-  -t 'rejects invalid port value|rejects invalid target|rejects invalid --gateway-port' \
-  --reporter=verbose --reporter=json --outputFile.json="$evidence_dir/baseline-unit.json" \
-  > "$evidence_dir/baseline-unit.log" 2>&1
-baseline_exit=$?
-set -e
-node "$lane_dir/verify-unit.mjs" "$evidence_dir/baseline-unit.json" \
-  "$evidence_dir/baseline-unit.log" baseline "$baseline_exit"
+for owner_test in "${owner_tests[@]}"; do
+  report="$evidence_dir/baseline-$(basename "$owner_test" .test.ts)"
+  set +e
+  node scripts/run-vitest.mjs "$owner_test" \
+    -t 'rejects invalid port value|rejects invalid target|rejects invalid --gateway-port' \
+    --reporter=verbose --reporter=json \
+    --reporter="$target_dir/scripts/lib/vitest-report-capture.mts" \
+    --outputFile.json="$report.json" > "$report.log" 2>&1
+  baseline_exit=$?
+  set -e
+  node "$lane_dir/verify-unit.mjs" "$report.json" "$report.log" baseline "$baseline_exit" \
+    "$owner_test"
+done
+echo 'GATEWAY_PORT_UNIT_BASELINE_RED: eight blank-input assertions failed; eleven invalid-input controls passed'
 pnpm build > "$evidence_dir/baseline-build.log" 2>&1
 node --import "$target_dir/scripts/tsx.mjs" "$lane_dir/port-cli-proof.mjs" \
   "$target_dir" "$evidence_dir/cli" baseline > "$evidence_dir/baseline-cli.log" 2>&1

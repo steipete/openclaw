@@ -1,0 +1,17 @@
+{
+  "base_head": "a2014d63c1941d0d325e9415f1485c29e5088e65",
+  "original_base": "1a13b42b6b75d5d15b47eb966b1c3f5ce5456136",
+  "node": "24.20.0",
+  "pnpm": "12.1.0",
+  "full_candidate_sha256": "28556a06fa0d15626fcf5df6231e29657a34ddb51ed3b79b35ba09c7d7ae2b48",
+  "tail_candidate_sha256": "abaccc8fc5f1a466f5df03679f8df76f67d5679659229e4da95ce5306421e9be",
+  "test_overlay_sha256": "687d226e0b36bc55818879ff714df06200cd1dec26986afe2d34bd6e9c45a37e",
+  "prior_runs": [
+    34016153566,
+    34019278826
+  ],
+  "reused": "Original seven account-mismatch baselines, Synology HTTP red/green, and all candidate tests outside iMessage. Fourteen candidate files unchanged. The prior weak iMessage text assertion is not preservation proof.",
+  "new_proof": "Published a201 with strengthened test overlay must fail both selected/default cases solely on exact canonical-vs-generic text; corrected full iMessage15 suite must pass and all16 hashes match.",
+  "prior_published_manifest_sha256": "d07f30b88873cf3db3848107ca485131e536a03c77ab35043f8a39c095763448",
+  "prior_completion_verification_sha256": "2958efe51cf0c4058216c059962607acf2b943c368c2ccf1cb623b5dd2b0c1b1"
+}

@@ -1,0 +1,16 @@
+diff --git a/extensions/imessage/src/channel.runtime.test.ts b/extensions/imessage/src/channel.runtime.test.ts
+index 3e9ebfedb11..cd7f07b3b66 100644
+--- a/extensions/imessage/src/channel.runtime.test.ts
++++ b/extensions/imessage/src/channel.runtime.test.ts
+@@ -466,7 +466,10 @@ describe("imessagePlugin pairing.notifyApproval", () => {
+     );
+     expect(request).toHaveBeenCalledExactlyOnceWith(
+       "send",
+-      expect.objectContaining({ to: "+15551234567", text: expect.any(String) }),
++      expect.objectContaining({
++        to: "+15551234567",
++        text: "✅ OpenClaw access approved. Send a message to start chatting.",
++      }),
+       expect.any(Object),
+     );
+   });
