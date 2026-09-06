@@ -96,11 +96,14 @@ jobs:
           set -euo pipefail
           [[ "$RUNNER_ENVIRONMENT" == github-hosted && "$RUNNER_OS" == macOS ]]
           [[ "$CI" == true && "$GITHUB_ACTIONS" == true ]]
+          macos_user="$(/usr/bin/id -un)"
+          [[ -n "$macos_user" ]]
           evidence="$GITHUB_WORKSPACE/evidence/$PROOF_LANE"
           task_root="$(mktemp -d /tmp/oc-proof-XXXXXX)"
           mkdir -m 700 "$task_root/home" "$task_root/tmp"
           set +e
           env -i PATH="$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH" \
+            USER="$macos_user" \
             HOME="$task_root/home" CFFIXED_USER_HOME="$task_root/home" \
             TMPDIR="$task_root/tmp/" TMP="$task_root/tmp" TEMP="$task_root/tmp" \
             CI="$CI" GITHUB_ACTIONS="$GITHUB_ACTIONS" RUNNER_OS="$RUNNER_OS" \
