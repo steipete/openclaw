@@ -1,12 +1,22 @@
 [
   {
-    "id": "runtime-memory-realistic",
-    "directory": "runtime",
-    "runner": "ubuntu-24.04",
-    "source": "342b7fc95009cca85425a38ccbd360b859ac0f0e",
+    "id": "windows-anchor-green",
+    "directory": "windows",
+    "runner": "windows-2025",
+    "source": "883d4d65bad1791755c203a8dfd854e14b4f6e33",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "flow-compare",
-    "variant": "compaction"
+    "mode": "green",
+    "variant": "native-lifecycle"
+  },
+  {
+    "id": "pairing-accounts",
+    "directory": "pairing-accounts",
+    "runner": "ubuntu-24.04",
+    "source": "1a13b42b6b75d5d15b47eb966b1c3f5ce5456136",
+    "node": "24.20.0",
+    "pnpm": "12.1.0",
+    "mode": "compare",
+    "variant": "notifier-http"
   }
 ]

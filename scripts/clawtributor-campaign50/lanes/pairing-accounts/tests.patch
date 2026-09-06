@@ -1,0 +1,561 @@
+diff --git a/extensions/imessage/src/channel.runtime.test.ts b/extensions/imessage/src/channel.runtime.test.ts
+index 97abf5777c0..3e9ebfedb11 100644
+--- a/extensions/imessage/src/channel.runtime.test.ts
++++ b/extensions/imessage/src/channel.runtime.test.ts
+@@ -8,14 +8,21 @@ import { IMessageRpcClient } from "./client.js";
+ import { sendMessageIMessage } from "./send.js";
+ 
+ const monitorMock = vi.hoisted(() => vi.fn(async () => undefined));
++const createRpcClientMock = vi.hoisted(() => vi.fn());
+ 
+ vi.mock("./monitor.js", async (importOriginal) => ({
+   ...(await importOriginal<typeof import("./monitor.js")>()),
+   monitorIMessageProvider: monitorMock,
+ }));
+ 
++vi.mock("./client.js", async (importOriginal) => ({
++  ...(await importOriginal<typeof import("./client.js")>()),
++  createIMessageRpcClient: createRpcClientMock,
++}));
++
+ const { sendIMessageOutbound, startIMessageGatewayAccount } = await import("./channel.runtime.js");
+ const { resolveIMessageAccount } = await import("./accounts.js");
++const { imessagePlugin } = await import("./channel.js");
+ 
+ function makeCtx(params: {
+   cfg: Parameters<typeof resolveIMessageAccount>[0]["cfg"];
+@@ -412,3 +419,55 @@ describe("iMessage account media limits", () => {
+     }
+   });
+ });
++
++describe("imessagePlugin pairing.notifyApproval", () => {
++  const pairingCfg = {
++    channels: {
++      imessage: {
++        defaultAccount: "alpha",
++        accounts: {
++          alpha: { cliPath: "/gateway/alpha-imsg", dbPath: "/gateway/alpha-chat.db" },
++          beta: { cliPath: "/gateway/beta-imsg", dbPath: "/gateway/beta-chat.db" },
++        },
++      },
++    },
++  };
++
++  it.each([
++    {
++      name: "the approved account",
++      accountId: "beta",
++      cliPath: "/gateway/beta-imsg",
++      dbPath: "/gateway/beta-chat.db",
++    },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      cliPath: "/gateway/alpha-imsg",
++      dbPath: "/gateway/alpha-chat.db",
++    },
++  ])("sends the approval from $name", async ({ accountId, cliPath, dbPath }) => {
++    const notifyApproval = imessagePlugin.pairing?.notifyApproval;
++    if (!notifyApproval) {
++      throw new Error("imessage pairing.notifyApproval unavailable");
++    }
++    const request = vi.fn(async () => ({ guid: "p:0/pairing-approval" }));
++    createRpcClientMock.mockReset();
++    createRpcClientMock.mockResolvedValue({ request, stop: vi.fn(async () => {}) });
++
++    await notifyApproval({
++      cfg: pairingCfg,
++      id: "+15551234567",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(createRpcClientMock).toHaveBeenCalledExactlyOnceWith(
++      expect.objectContaining({ cliPath, dbPath }),
++    );
++    expect(request).toHaveBeenCalledExactlyOnceWith(
++      "send",
++      expect.objectContaining({ to: "+15551234567", text: expect.any(String) }),
++      expect.any(Object),
++    );
++  });
++});
+diff --git a/extensions/irc/src/channel.test.ts b/extensions/irc/src/channel.test.ts
+index d80ea4f89b4..f062534f030 100644
+--- a/extensions/irc/src/channel.test.ts
++++ b/extensions/irc/src/channel.test.ts
+@@ -1,5 +1,16 @@
+ // Irc tests cover channel plugin behavior.
+-import { describe, expect, it } from "vitest";
++import { beforeEach, describe, expect, it, vi } from "vitest";
++
++const hoisted = vi.hoisted(() => ({
++  connectIrcClient: vi.fn(),
++  sendPrivmsg: vi.fn(),
++}));
++
++vi.mock("./client.js", () => ({
++  connectIrcClient: hoisted.connectIrcClient,
++}));
++
++import { PAIRING_APPROVED_MESSAGE } from "./channel-api.js";
+ import { ircPlugin } from "./channel.js";
+ import { ircOutboundBaseAdapter } from "./outbound-base.js";
+ import type { CoreConfig } from "./types.js";
+@@ -52,3 +63,61 @@ describe("irc target classification", () => {
+     expect(ircPlugin.messaging?.inferTargetChatType?.({ to: "#operators" })).toBe("group");
+   });
+ });
++
++describe("ircPlugin pairing.notifyApproval", () => {
++  const pairingCfg = {
++    channels: {
++      irc: {
++        defaultAccount: "alpha",
++        accounts: {
++          alpha: { host: "irc.alpha.test", nick: "alpha-bot", password: "password-alpha" },
++          beta: { host: "irc.beta.test", nick: "beta-bot", password: "password-beta" },
++        },
++      },
++    },
++  } as CoreConfig;
++
++  beforeEach(() => {
++    hoisted.sendPrivmsg.mockReset();
++    hoisted.connectIrcClient.mockReset();
++    hoisted.connectIrcClient.mockImplementation(async () => ({
++      nick: "openclaw",
++      isReady: () => true,
++      sendRaw: vi.fn(),
++      join: vi.fn(),
++      sendPrivmsg: hoisted.sendPrivmsg,
++      quit: vi.fn(),
++      close: vi.fn(),
++    }));
++  });
++
++  it.each([
++    {
++      name: "the approved account",
++      accountId: "beta",
++      host: "irc.beta.test",
++      nick: "beta-bot",
++      password: "password-beta",
++    },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      host: "irc.alpha.test",
++      nick: "alpha-bot",
++      password: "password-alpha",
++    },
++  ])("sends the approval from $name", async ({ accountId, host, nick, password }) => {
++    await ircPlugin.pairing!.notifyApproval!({
++      cfg: pairingCfg,
++      id: "paired-user",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(hoisted.connectIrcClient).toHaveBeenCalledTimes(1);
++    expect(hoisted.connectIrcClient.mock.calls[0]?.[0]).toMatchObject({ host, nick, password });
++    expect(hoisted.sendPrivmsg).toHaveBeenCalledExactlyOnceWith(
++      "paired-user",
++      PAIRING_APPROVED_MESSAGE,
++    );
++  });
++});
+diff --git a/extensions/line/src/channel.sendPayload.test.ts b/extensions/line/src/channel.sendPayload.test.ts
+index 16880671e61..4dbda159023 100644
+--- a/extensions/line/src/channel.sendPayload.test.ts
++++ b/extensions/line/src/channel.sendPayload.test.ts
+@@ -8,6 +8,7 @@ import {
+ import { chunkMarkdownText as chunkMarkdownTextForLine } from "openclaw/plugin-sdk/reply-runtime";
+ import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+ import type { OpenClawConfig } from "../api.js";
++import { resolveLineAccount } from "./accounts.js";
+ import { linePlugin } from "./channel.js";
+ import { createRuntime, lineResult } from "./channel.sendPayload.test-support.js";
+ import { lineConfigAdapter } from "./config-adapter.js";
+@@ -974,6 +975,48 @@ describe("line outbound sendPayload", () => {
+   });
+ });
+ 
++describe("linePlugin pairing.notifyApproval", () => {
++  const pairingCfg = {
++    channels: {
++      line: {
++        defaultAccount: "alpha",
++        accounts: {
++          alpha: { channelAccessToken: "token-alpha" },
++          beta: { channelAccessToken: "token-beta" },
++        },
++      },
++    },
++  } as OpenClawConfig;
++
++  it.each([
++    { name: "the approved account", accountId: "beta", channelAccessToken: "token-beta" },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      channelAccessToken: "token-alpha",
++    },
++  ])("pushes the approval from $name", async ({ accountId, channelAccessToken }) => {
++    const { runtime, mocks } = createRuntime();
++    mocks.resolveLineAccount.mockImplementation(resolveLineAccount);
++    setLineRuntime(runtime);
++
++    await linePlugin.pairing!.notifyApproval!({
++      cfg: pairingCfg,
++      id: "U-paired",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(mocks.pushMessageLine).toHaveBeenCalledExactlyOnceWith(
++      "U-paired",
++      expect.any(String),
++      expect.objectContaining({
++        accountId: accountId ?? "alpha",
++        channelAccessToken,
++      }),
++    );
++  });
++});
++
+ describe("linePlugin config.formatAllowFrom", () => {
+   it("strips line:user: prefixes without lowercasing", () => {
+     const formatted = lineConfigAdapter.formatAllowFrom!({
+diff --git a/extensions/signal/src/core.test.ts b/extensions/signal/src/core.test.ts
+index 1b9b71bf3af..6f65d6773c5 100644
+--- a/extensions/signal/src/core.test.ts
++++ b/extensions/signal/src/core.test.ts
+@@ -394,6 +394,55 @@ describe("probeSignal", () => {
+   });
+ });
+ 
++describe("signalPlugin pairing.notifyApproval", () => {
++  const pairingCfg = {
++    channels: {
++      signal: {
++        defaultAccount: "alpha",
++        accounts: {
++          alpha: {
++            account: "+15550000001",
++            transport: { kind: "external-native" as const, url: "http://alpha.test" },
++          },
++          beta: {
++            account: "+15550000002",
++            transport: { kind: "external-native" as const, url: "http://beta.test" },
++          },
++        },
++      },
++    },
++  } as OpenClawConfig;
++
++  it.each([
++    {
++      name: "the approved account",
++      accountId: "beta",
++      account: "+15550000002",
++      baseUrl: "http://beta.test",
++    },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      account: "+15550000001",
++      baseUrl: "http://alpha.test",
++    },
++  ])("sends the approval from $name", async ({ accountId, account, baseUrl }) => {
++    const signalRpcRequest = vi
++      .spyOn(clientModule, "signalRpcRequest")
++      .mockResolvedValue({ timestamp: 1_700_000_000_000 } as never);
++
++    await signalPlugin.pairing!.notifyApproval!({
++      cfg: pairingCfg,
++      id: "+15551234567",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(signalRpcRequest).toHaveBeenCalledTimes(1);
++    expect(signalRpcRequest.mock.calls[0]?.[1]).toMatchObject({ account });
++    expect(signalRpcRequest.mock.calls[0]?.[2]).toMatchObject({ baseUrl });
++  });
++});
++
+ describe("signal outbound", () => {
+   it("resolves aliases through the message target resolver", async () => {
+     const resolved = await signalPlugin.messaging?.targetResolver?.resolveTarget?.({
+diff --git a/extensions/synology-chat/src/channel.pairing.test.ts b/extensions/synology-chat/src/channel.pairing.test.ts
+new file mode 100644
+index 00000000000..65dc8be0d9a
+--- /dev/null
++++ b/extensions/synology-chat/src/channel.pairing.test.ts
+@@ -0,0 +1,91 @@
++// Synology Chat tests cover channel pairing plugin behavior.
++import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
++
++const clientModule = await import("./client.js");
++const mockSendMessage = vi.spyOn(clientModule, "sendMessage").mockResolvedValue(true);
++
++const { synologyChatPlugin } = await import("./channel.js");
++
++const PAIRING_CFG = {
++  channels: {
++    "synology-chat": {
++      token: "default-token",
++      incomingUrl: "https://nas-default/incoming",
++      webhookUrl: "https://gateway.example.com/w",
++      allowInsecureSsl: false,
++      accounts: {
++        beta: {
++          token: "beta-token",
++          incomingUrl: "https://nas-beta/incoming",
++          webhookUrl: "https://gateway.example.com/beta",
++          allowInsecureSsl: true,
++        },
++      },
++    },
++  },
++};
++
++describe("synologyChatPlugin pairing.notifyApproval", () => {
++  beforeEach(() => {
++    vi.stubEnv("SYNOLOGY_CHAT_TOKEN", "");
++    vi.stubEnv("SYNOLOGY_CHAT_INCOMING_URL", "");
++    mockSendMessage.mockClear();
++    mockSendMessage.mockResolvedValue(true);
++  });
++
++  afterEach(() => {
++    vi.unstubAllEnvs();
++  });
++
++  it("rejects a notification without a configured incoming URL", async () => {
++    await expect(
++      synologyChatPlugin.pairing.notifyApproval({
++        cfg: { channels: { "synology-chat": { accounts: { beta: { token: "beta-token" } } } } },
++        id: "42",
++        accountId: "beta",
++      }),
++    ).rejects.toThrow("incoming URL not configured");
++    expect(mockSendMessage).not.toHaveBeenCalled();
++  });
++
++  it("rejects a notification when the selected account's send fails", async () => {
++    mockSendMessage.mockResolvedValue(false);
++    await expect(
++      synologyChatPlugin.pairing.notifyApproval({ cfg: PAIRING_CFG, id: "42", accountId: "beta" }),
++    ).rejects.toThrow("Failed to send message to Synology Chat");
++    expect(mockSendMessage).toHaveBeenCalledOnce();
++  });
++
++  it.each([
++    {
++      name: "the approved account",
++      accountId: "beta",
++      incomingUrl: "https://nas-beta/incoming",
++      allowInsecureSsl: true,
++    },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      incomingUrl: "https://nas-default/incoming",
++      allowInsecureSsl: false,
++    },
++  ])("notifies through $name", async ({ accountId, incomingUrl, allowInsecureSsl }) => {
++    const notifyApproval = synologyChatPlugin.pairing.notifyApproval;
++    if (!notifyApproval) {
++      throw new Error("synology-chat pairing helpers unavailable");
++    }
++
++    await notifyApproval({
++      cfg: PAIRING_CFG,
++      id: "USER2",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(mockSendMessage).toHaveBeenCalledExactlyOnceWith(
++      incomingUrl,
++      expect.any(String),
++      "USER2",
++      allowInsecureSsl,
++    );
++  });
++});
+diff --git a/extensions/zalo/src/channel.pairing.test.ts b/extensions/zalo/src/channel.pairing.test.ts
+new file mode 100644
+index 00000000000..42248494159
+--- /dev/null
++++ b/extensions/zalo/src/channel.pairing.test.ts
+@@ -0,0 +1,99 @@
++// Zalo tests cover channel pairing plugin behavior.
++import { beforeEach, describe, expect, it, vi } from "vitest";
++
++const hoisted = vi.hoisted(() => ({
++  sendMessage: vi.fn(),
++  proxyFetch: vi.fn(),
++}));
++
++vi.mock("./api.js", async (importOriginal) => ({
++  ...(await importOriginal<typeof import("./api.js")>()),
++  sendMessage: hoisted.sendMessage,
++}));
++
++vi.mock("./proxy.js", () => ({ resolveZaloProxyFetch: hoisted.proxyFetch }));
++
++import { zaloPlugin } from "./channel.js";
++
++const PAIRING_CFG = {
++  channels: {
++    zalo: {
++      defaultAccount: "alpha",
++      accounts: {
++        alpha: { botToken: "token-alpha" },
++        beta: { botToken: "token-beta" },
++      },
++    },
++  },
++};
++
++describe("zaloPlugin pairing.notifyApproval", () => {
++  beforeEach(() => {
++    hoisted.sendMessage.mockReset();
++    hoisted.sendMessage.mockResolvedValue({ ok: true, result: { message_id: "z-1" } });
++    hoisted.proxyFetch.mockReset();
++  });
++
++  it("rejects an unsuccessful approval notification", async () => {
++    hoisted.sendMessage.mockResolvedValue({ ok: false });
++    await expect(
++      zaloPlugin.pairing!.notifyApproval!({
++        cfg: PAIRING_CFG,
++        id: "paired-user",
++        accountId: "beta",
++      }),
++    ).rejects.toThrow("Failed to send message");
++  });
++
++  it("uses the approved account's configured proxy", async () => {
++    const fetcher = vi.fn();
++    hoisted.proxyFetch.mockReturnValue(fetcher);
++    await zaloPlugin.pairing!.notifyApproval!({
++      cfg: {
++        channels: {
++          zalo: {
++            ...PAIRING_CFG.channels.zalo,
++            accounts: {
++              ...PAIRING_CFG.channels.zalo.accounts,
++              beta: { botToken: "token-beta", proxy: "http://proxy-beta.test:8080" },
++            },
++          },
++        },
++      },
++      id: "paired-user",
++      accountId: "beta",
++    });
++    expect(hoisted.proxyFetch).toHaveBeenCalledExactlyOnceWith("http://proxy-beta.test:8080");
++    expect(hoisted.sendMessage).toHaveBeenCalledExactlyOnceWith(
++      "token-beta",
++      { chat_id: "paired-user", text: "OpenClaw: your access has been approved." },
++      fetcher,
++    );
++  });
++
++  it.each([
++    { name: "the approved account", accountId: "beta", token: "token-beta" },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      token: "token-alpha",
++    },
++  ])("sends the approval from $name", async ({ accountId, token }) => {
++    const notifyApproval = zaloPlugin.pairing?.notifyApproval;
++    if (!notifyApproval) {
++      throw new Error("zalo pairing.notifyApproval unavailable");
++    }
++
++    await notifyApproval({
++      cfg: PAIRING_CFG,
++      id: "paired-user",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(hoisted.sendMessage).toHaveBeenCalledExactlyOnceWith(
++      token,
++      { chat_id: "paired-user", text: expect.any(String) },
++      undefined,
++    );
++  });
++});
+diff --git a/extensions/zalouser/src/channel.test.ts b/extensions/zalouser/src/channel.test.ts
+index 31ef304c54b..f208fc73536 100644
+--- a/extensions/zalouser/src/channel.test.ts
++++ b/extensions/zalouser/src/channel.test.ts
+@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
+ // Preserve module setup before modules that consume it.
+ // oxfmt-ignore
+ import {
++  checkZaloAuthenticatedMock,
+   listZaloFriendsMatchingMock,
+   startZaloQrLoginMock,
+   waitForZaloQrLoginMock,
+@@ -18,6 +19,7 @@ import {
+   zalouserResolverAdapter,
+   zalouserSecurityAdapter,
+ } from "./channel.adapters.js";
++import { zalouserPlugin } from "./channel.js";
+ 
+ describe("zalouser target classification", () => {
+   it("distinguishes users from groups", () => {
+@@ -570,3 +572,51 @@ describe("zalouser account resolution", () => {
+     });
+   });
+ });
++
++describe("zalouserPlugin pairing.notifyApproval", () => {
++  const pairingCfg = {
++    channels: {
++      zalouser: {
++        defaultAccount: "alpha",
++        accounts: {
++          alpha: { profile: "alpha-profile" },
++          beta: { profile: "beta-profile" },
++        },
++      },
++    },
++  };
++
++  beforeEach(() => {
++    checkZaloAuthenticatedMock.mockClear();
++    checkZaloAuthenticatedMock.mockResolvedValue(true);
++    mockSendMessage.mockClear();
++  });
++
++  it.each([
++    { name: "the approved account", accountId: "beta", profile: "beta-profile" },
++    {
++      name: "the default account when no account was approved",
++      accountId: undefined,
++      profile: "alpha-profile",
++    },
++  ])("sends the approval from $name", async ({ accountId, profile }) => {
++    const notifyApproval = zalouserPlugin.pairing?.notifyApproval;
++    if (!notifyApproval) {
++      throw new Error("zalouser pairing.notifyApproval unavailable");
++    }
++
++    await notifyApproval({
++      cfg: pairingCfg,
++      id: "paired-user",
++      ...(accountId ? { accountId } : {}),
++    });
++
++    expect(checkZaloAuthenticatedMock).toHaveBeenCalledTimes(1);
++    expect(checkZaloAuthenticatedMock.mock.calls[0]?.[0]).toBe(profile);
++    expect(mockSendMessage).toHaveBeenCalledExactlyOnceWith(
++      "paired-user",
++      expect.any(String),
++      expect.objectContaining({ profile }),
++    );
++  });
++});

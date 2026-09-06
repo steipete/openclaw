@@ -1,0 +1,18 @@
+{
+  "src/daemon/schtasks.integration.e2e.test.ts": {
+    "sha256": "2ebc8e6211aa5cd90905fb17b93b822ed72421e68903bdec535b8f178786367b",
+    "gitBlob": "c48cd3c6941e0704ecc5e8e66f70092a1de33077"
+  },
+  "src/daemon/schtasks.task-supervisor.native-test-support.ts": {
+    "sha256": "3ead3a9649ebf106e083c6531fd87e78a66c0a1ff2307aa2d709dc0961b35745",
+    "gitBlob": "b3799e638529d9bf519f73ee4dcd6c1e02d8e86d"
+  },
+  "src/process/supervisor/service-child-windows-job-anchor.ts": {
+    "sha256": "f6b6336b4e41044a54d9b6e4986250b3a91b74e366e9a6807bc42fcdb89ee60e",
+    "gitBlob": "6723f026c7675a06095355a000c8c46d2a50387a"
+  },
+  "src/process/supervisor/supervisor.anchored-shell.real.test.ts": {
+    "sha256": "0ff718bf6eeff05d2d5475b95fee852e436eda06a41e446a485f41ce42784c68",
+    "gitBlob": "2b68edf967f867700c8da6e53c3ea2135e657dd5"
+  }
+}

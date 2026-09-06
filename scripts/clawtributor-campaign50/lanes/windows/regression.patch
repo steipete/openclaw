@@ -1,52 +1,48 @@
-diff --git a/src/process/supervisor/supervisor.anchored-shell.real.test.ts b/src/process/supervisor/supervisor.anchored-shell.real.test.ts
---- a/src/process/supervisor/supervisor.anchored-shell.real.test.ts
-+++ b/src/process/supervisor/supervisor.anchored-shell.real.test.ts
-@@ -152,6 +152,41 @@
- }
- 
- describe("supervisor anchored shell real process ownership", () => {
-+  it.skipIf(process.platform !== "win32")("keeps anchored Windows commands console-free", async () => {
-+    const cwd = tempDirs.make("openclaw-anchored-shell-console-");
-+    const koffiPath = createRequire(import.meta.url).resolve("koffi");
-+    await writeFile(
-+      path.join(cwd, "console.cjs"),
-+      `
-+        const koffi = require(${JSON.stringify(koffiPath)});
-+        const kernel32 = koffi.load("kernel32.dll");
-+        const getConsoleWindow = kernel32.func("__stdcall", "GetConsoleWindow", "void *", []);
-+        process.stdout.write(JSON.stringify({ hasConsole: Boolean(getConsoleWindow()) }));
-+        process.stderr.write("owned-console-stderr");
-+        process.exitCode = 23;
-+      `,
-+      "utf8",
-+    );
-+    const supervisor = createProcessSupervisor();
-+    try {
-+      const run = await supervisor.spawn({
-+        mode: "anchored-shell",
-+        command: `"${process.execPath}" console.cjs`,
-+        sessionId: "console-free-command",
-+        backendId: "console-free-command",
-+        cwd,
-+      });
-+      const result = await run.wait();
-+      await run.waitForExtinction!();
-+      expect(result).toMatchObject({ reason: "exit", exitCode: 23, stderr: "owned-console-stderr" });
-+      expect(JSON.parse(result.stdout), "PR138751_UNEXPECTED_CONSOLE").toEqual({
-+        hasConsole: false,
-+      });
-+    } finally {
-+      await supervisor.shutdown();
-+    }
-+  });
-+
-   it.each(["inherited", "replacement", "empty"] as const)(
-     "completes an otherwise idle host with %s command environment",
-     async (environment) => {
+diff --git a/src/daemon/schtasks.integration.e2e.test.ts b/src/daemon/schtasks.integration.e2e.test.ts
+index 1a878c5e25d..c48cd3c6941 100644
+--- a/src/daemon/schtasks.integration.e2e.test.ts
++++ b/src/daemon/schtasks.integration.e2e.test.ts
+@@ -648,6 +648,9 @@ describe.runIf(nativeIntegrationEnabled)("schtasks Windows integration", () => {
+         });
+         expect(recoveryMutations).toEqual(["schtasks-start"]);
+         const recoveredRun = await proof.waitForExactProbeRun(eventsPath, 1);
++        expect(recoveredRun, "PR138751_UNEXPECTED_TASK_CONSOLE").toMatchObject({
++          hasConsole: false,
++        });
+         const recoveredPid = recoveredRun.pid;
+         const recoveredProcesses = await waitForGatewayTaskSupervisorProcesses({ probe });
+         expect(recoveredPid).not.toBe(failedProcesses.childPid);
+@@ -688,6 +691,7 @@ describe.runIf(nativeIntegrationEnabled)("schtasks Windows integration", () => {
+         });
+         expect(startMutations).toEqual(["schtasks-start"]);
+         const startedRun = await proof.waitForExactProbeRun(eventsPath, 2);
++        expect(startedRun, "PR138751_UNEXPECTED_TASK_CONSOLE").toMatchObject({ hasConsole: false });
+         const startedPid = startedRun.pid;
+         const startedProcesses = await waitForGatewayTaskSupervisorProcesses({ probe });
+         expect(startedPid).not.toBe(recoveredPid);
+@@ -716,6 +720,9 @@ describe.runIf(nativeIntegrationEnabled)("schtasks Windows integration", () => {
+         expect(restartResult).toEqual({ outcome: "completed" });
+         expect(restartMutations).toEqual(["schtasks-end", "schtasks-restart"]);
+         const restartedRun = await proof.waitForExactProbeRun(eventsPath, 3);
++        expect(restartedRun, "PR138751_UNEXPECTED_TASK_CONSOLE").toMatchObject({
++          hasConsole: false,
++        });
+         const restartedPid = restartedRun.pid;
+         const restartedProcesses = await waitForGatewayTaskSupervisorProcesses({ probe });
+         lifecyclePids = [recoveredPid, startedPid, restartedPid];
+@@ -887,6 +894,7 @@ describe.runIf(nativeIntegrationEnabled)("schtasks Windows integration", () => {
+                   ...failedProcesses,
+                 },
+                 pids: lifecyclePids,
++                consoleProbes: [recoveredRun, startedRun, restartedRun],
+                 gatewayPort,
+                 portReleaseRebind: true,
+                 startupFallback: false,
 diff --git a/src/daemon/schtasks.task-supervisor.native-test-support.ts b/src/daemon/schtasks.task-supervisor.native-test-support.ts
+index c0a857b92b4..b3799e63852 100644
 --- a/src/daemon/schtasks.task-supervisor.native-test-support.ts
 +++ b/src/daemon/schtasks.task-supervisor.native-test-support.ts
-@@ -82,6 +82,7 @@
+@@ -82,6 +82,7 @@ export async function writeGatewayTaskSupervisorProbe(params: {
      "./schtasks.hosted-stop.native-test-support.ts",
      import.meta.url,
    ).href;
@@ -54,7 +50,7 @@ diff --git a/src/daemon/schtasks.task-supervisor.native-test-support.ts b/src/da
    await fs.writeFile(
      params.probe.probePath,
      [
-@@ -119,7 +120,9 @@
+@@ -119,7 +120,9 @@ export async function writeGatewayTaskSupervisorProbe(params: {
        'const portIndex = process.argv.indexOf("--port");',
        "const port = Number.parseInt(process.argv[portIndex + 1] ?? '', 10);",
        "if (!Number.isInteger(port) || port < 1) throw new Error('Missing gateway --port');",
@@ -65,38 +61,56 @@ diff --git a/src/daemon/schtasks.task-supervisor.native-test-support.ts b/src/da
        `const { runHostedStopNativeProbe } = await import(${JSON.stringify(hostedProbeModuleUrl)});`,
        "await runHostedStopNativeProbe({ port, activePidPath, childPidPath, appendEvent });",
        "}",
-diff --git a/src/daemon/schtasks.integration.e2e.test.ts b/src/daemon/schtasks.integration.e2e.test.ts
---- a/src/daemon/schtasks.integration.e2e.test.ts
-+++ b/src/daemon/schtasks.integration.e2e.test.ts
-@@ -648,6 +648,7 @@
-         });
-         expect(recoveryMutations).toEqual(["schtasks-start"]);
-         const recoveredRun = await proof.waitForExactProbeRun(eventsPath, 1);
-+        expect(recoveredRun, "PR138751_UNEXPECTED_TASK_CONSOLE").toMatchObject({ hasConsole: false });
-         const recoveredPid = recoveredRun.pid;
-         const recoveredProcesses = await waitForGatewayTaskSupervisorProcesses({ probe });
-         expect(recoveredPid).not.toBe(failedProcesses.childPid);
-@@ -688,6 +689,7 @@
-         });
-         expect(startMutations).toEqual(["schtasks-start"]);
-         const startedRun = await proof.waitForExactProbeRun(eventsPath, 2);
-+        expect(startedRun, "PR138751_UNEXPECTED_TASK_CONSOLE").toMatchObject({ hasConsole: false });
-         const startedPid = startedRun.pid;
-         const startedProcesses = await waitForGatewayTaskSupervisorProcesses({ probe });
-         expect(startedPid).not.toBe(recoveredPid);
-@@ -716,6 +718,7 @@
-         expect(restartResult).toEqual({ outcome: "completed" });
-         expect(restartMutations).toEqual(["schtasks-end", "schtasks-restart"]);
-         const restartedRun = await proof.waitForExactProbeRun(eventsPath, 3);
-+        expect(restartedRun, "PR138751_UNEXPECTED_TASK_CONSOLE").toMatchObject({ hasConsole: false });
-         const restartedPid = restartedRun.pid;
-         const restartedProcesses = await waitForGatewayTaskSupervisorProcesses({ probe });
-         lifecyclePids = [recoveredPid, startedPid, restartedPid];
-@@ -887,6 +890,7 @@
-                   ...failedProcesses,
-                 },
-                 pids: lifecyclePids,
-+                consoleProbes: [recoveredRun, startedRun, restartedRun],
-                 gatewayPort,
-                 portReleaseRebind: true,
-                 startupFallback: false,
+diff --git a/src/process/supervisor/supervisor.anchored-shell.real.test.ts b/src/process/supervisor/supervisor.anchored-shell.real.test.ts
+index 77e5d27372f..2b68edf967f 100644
+--- a/src/process/supervisor/supervisor.anchored-shell.real.test.ts
++++ b/src/process/supervisor/supervisor.anchored-shell.real.test.ts
+@@ -166,6 +166,48 @@ async function expectPending(promise: Promise<void>) {
+ }
+ 
+ describe("supervisor anchored shell real process ownership", () => {
++  it.skipIf(process.platform !== "win32")(
++    "keeps anchored Windows commands console-free",
++    async () => {
++      const cwd = tempDirs.make("openclaw-anchored-shell-console-");
++      const koffiPath = createRequire(import.meta.url).resolve("koffi");
++      await writeFile(
++        path.join(cwd, "console.cjs"),
++        `
++        const koffi = require(${JSON.stringify(koffiPath)});
++        const kernel32 = koffi.load("kernel32.dll");
++        const getConsoleWindow = kernel32.func("__stdcall", "GetConsoleWindow", "void *", []);
++        process.stdout.write(JSON.stringify({ hasConsole: Boolean(getConsoleWindow()) }));
++        process.stderr.write("owned-console-stderr");
++        process.exitCode = 23;
++      `,
++        "utf8",
++      );
++      const supervisor = createProcessSupervisor();
++      try {
++        const run = await supervisor.spawn({
++          mode: "anchored-shell",
++          command: `"${process.execPath}" console.cjs`,
++          sessionId: "console-free-command",
++          backendId: "console-free-command",
++          cwd,
++        });
++        const result = await run.wait();
++        await run.waitForExtinction!();
++        expect(result).toMatchObject({
++          reason: "exit",
++          exitCode: 23,
++          stderr: "owned-console-stderr",
++        });
++        expect(JSON.parse(result.stdout), "PR138751_UNEXPECTED_CONSOLE").toEqual({
++          hasConsole: false,
++        });
++      } finally {
++        await supervisor.shutdown();
++      }
++    },
++  );
++
+   it.skipIf(process.platform === "win32").each([
+     { oneShot: false, ignoreTerm: false },
+     { oneShot: true, ignoreTerm: false },
