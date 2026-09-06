@@ -1,0 +1,79 @@
+{
+  "repository": "steipete/openclaw",
+  "runId": 34006494266,
+  "runAttempt": 1,
+  "runURL": "https://github.com/steipete/openclaw/actions/runs/34006494266",
+  "controlCommit": "be0851f27f86b39688bde8c917bf5a63fd347a10",
+  "artifactId": 9981217614,
+  "artifactName": "clawsweeper-main03182-owner-strength-34006494266-1",
+  "reportedArtifactDigest": "sha256:0ca6c5af9fad21634aac6d7b05470f06a0d98bb7c1b12f6e469ff003845a20de",
+  "originalArtifactManifestSHA256": "4ccce52bf17a54b508a10e90072e5d57146b90c43b7f9f093dbea38f64aedb83",
+  "sourceBase": "03182ae34303203557df136e147297ad5be25099",
+  "sourceTree": "d557a87eb766ad394799b70c262953746c30f0ee",
+  "detectorSHA256": "25a7c748f00c875c787a90651ed0b6ea6b86cc4eea2e056679c9167dfd705c02",
+  "productHead": "b92b6dc2ad5a8e5a2500811e71b3fc68cdbd7cf2",
+  "productPR": "https://github.com/openclaw/clawsweeper/pull/1460",
+  "files": [
+    {
+      "file": "result.json",
+      "originalArtifactFile": "result.json",
+      "bytes": 2041,
+      "sha256": "4402be5af02c4e7def3e90acc9c9eb04e130924851975040ce6c1885239e2785",
+      "kind": "unchanged raw artifact observation"
+    },
+    {
+      "file": "recipe.json",
+      "originalArtifactFile": "recipe.stdout",
+      "bytes": 28780,
+      "sha256": "e0152862df97c00609208a77c129fc0da57f5eebd58bf563e65e2cd61d253ec1",
+      "kind": "unchanged raw artifact observation"
+    },
+    {
+      "file": "original-00.observed.json",
+      "originalArtifactFile": "original-00.observed.json",
+      "bytes": 11366,
+      "sha256": "653ed62fd2d20675905262babf0e506f7c2b9ed1997af9ef2d96810602b9d5f9",
+      "kind": "unchanged raw artifact observation"
+    },
+    {
+      "file": "original-01.observed.json",
+      "originalArtifactFile": "original-01.observed.json",
+      "bytes": 10254,
+      "sha256": "0fc412734c79826dc82192de561a7a8e749088081d22683c5625a475297d47de",
+      "kind": "unchanged raw artifact observation"
+    },
+    {
+      "file": "original-02.observed.json",
+      "originalArtifactFile": "original-02.observed.json",
+      "bytes": 42303,
+      "sha256": "6a50f37c318623b8fcff0175f5a3e4b8162229d39f0bce8c97a3d2def722802c",
+      "kind": "unchanged raw artifact observation"
+    },
+    {
+      "file": "original-03.observed.json",
+      "originalArtifactFile": "original-03.observed.json",
+      "bytes": 32019,
+      "sha256": "46116a7910ffbb8f20360badef610ae5491241e43431be9b6bbc86527fc7639e",
+      "kind": "unchanged raw artifact observation"
+    },
+    {
+      "file": "qualification.json",
+      "bytes": 10622,
+      "sha256": "208c68778af92c5ecf240a3be5944f9348100db98cb0748e2676c1b01efb9a86",
+      "kind": "independent data-only audit result"
+    }
+  ],
+  "observed": {
+    "originalsPassed": 4,
+    "recipePassed": 24,
+    "realPersistenceControlsPassed": 20,
+    "boundaryAssertionsPassed": 344,
+    "canonicalCheckExit": 0,
+    "fullTests": 5112,
+    "fullPass": 5094,
+    "fullSkip": 18,
+    "preliminaryCoveragePass": 13,
+    "newTestsPassed": 12
+  },
+  "limits": "These raw files were downloaded once from the original successful Actions artifact. Qualification is a separate data-only audit, not raw producer output. ZIP digest is reported GitHub metadata, not independently recomputed. Rendered reports contain explicitly synthetic readiness/lease metadata to exercise actual production classification/compaction/rendering; they do not authorize a merge or claim live model review or migration. Original inputs are historical captured 1/12-file hunks, not newly fetched full PRs. Exact detector/report/dependency bytes match the product branch; newer queue changes are covered separately by current-base CI. No new tests or workflow run were performed to publish this data-only copy."
+}

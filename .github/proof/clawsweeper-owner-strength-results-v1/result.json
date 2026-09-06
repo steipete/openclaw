@@ -1,0 +1,64 @@
+{
+  "exitCode": 0,
+  "recipeComplete": true,
+  "originalsComplete": true,
+  "recipeAllPassed": true,
+  "originalsAllPassed": true,
+  "observedCount": 28,
+  "recipe": {
+    "status": "complete",
+    "exitCode": 0,
+    "scenarioCount": 24,
+    "failedNames": [],
+    "observedSHA256": "e0152862df97c00609208a77c129fc0da57f5eebd58bf563e65e2cd61d253ec1",
+    "sourceDependencyToolBuildPreserved": true
+  },
+  "originals": [
+    {
+      "name": "original-pr-131624-full",
+      "ordinal": 0,
+      "status": "complete",
+      "exitCode": 0,
+      "assertionFailureCount": 0,
+      "observedSHA256": "653ed62fd2d20675905262babf0e506f7c2b9ed1997af9ef2d96810602b9d5f9",
+      "sourceDependencyToolBuildPreserved": true
+    },
+    {
+      "name": "original-pr-131624-production-normalized",
+      "ordinal": 1,
+      "status": "complete",
+      "exitCode": 0,
+      "assertionFailureCount": 0,
+      "observedSHA256": "0fc412734c79826dc82192de561a7a8e749088081d22683c5625a475297d47de",
+      "sourceDependencyToolBuildPreserved": true
+    },
+    {
+      "name": "original-pr-136282-full",
+      "ordinal": 2,
+      "status": "complete",
+      "exitCode": 0,
+      "assertionFailureCount": 0,
+      "observedSHA256": "6a50f37c318623b8fcff0175f5a3e4b8162229d39f0bce8c97a3d2def722802c",
+      "sourceDependencyToolBuildPreserved": true
+    },
+    {
+      "name": "original-pr-136282-production-normalized",
+      "ordinal": 3,
+      "status": "complete",
+      "exitCode": 0,
+      "assertionFailureCount": 0,
+      "observedSHA256": "46116a7910ffbb8f20360badef610ae5491241e43431be9b6bbc86527fc7639e",
+      "sourceDependencyToolBuildPreserved": true
+    }
+  ],
+  "sourceTree": "d557a87eb766ad394799b70c262953746c30f0ee",
+  "classifierSHA256": "25a7c748f00c875c787a90651ed0b6ea6b86cc4eea2e056679c9167dfd705c02",
+  "productOverlay": true,
+  "fullSuiteExecuted": true,
+  "checkAttempted": true,
+  "checkExitCode": 0,
+  "checkPassed": true,
+  "startedAt": 1788661635.5026596,
+  "sourceDependencyToolBuildPreserved": true,
+  "endedAt": 1788662123.1848395
+}

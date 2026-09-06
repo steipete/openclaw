@@ -1,0 +1,83 @@
+{
+  "name": "original-pr-131624-production-normalized",
+  "ordinal": 1,
+  "mode": "production-normalized",
+  "expected": {
+    "detection": {
+      "change": false,
+      "surfaces": []
+    },
+    "sqlite": {
+      "change": false,
+      "files": []
+    }
+  },
+  "detection": {
+    "change": false,
+    "surfaces": []
+  },
+  "sqlite": {
+    "change": false,
+    "files": []
+  },
+  "markers": {
+    "sqliteTableWarning": false,
+    "persistedModelWarning": false,
+    "compatibilityGate": false,
+    "humanVerdict": false,
+    "passVerdict": true
+  },
+  "rendered": "Codex review: passed. _Reviewed September 3, 2026, 8:00 PM ET / September 4, 2026, 00:00 UTC._\n\n# ClawSweeper review\n\n## What this changes\n\nSynthetic completed review for offline detector-to-render proof only.\n\n## Merge readiness\n\n✅ **Ready for maintainer review**\n\nSynthetic completed review for offline detector-to-render proof only.\n\n**Priority:** None\n**Reviewed head:** `cccccccccccccccccccccccccccccccccccccccc`\n\n## Review scores\n\n| Measure | Result | What it means |\n|---|---|---|\n| **Overall readiness** | 🦞 diamond lobster **(5/6)** | PR readiness rating was derived from proof quality, review findings, security review, and reviewer confidence. |\n| **Proof confidence** | 🌊 off-meta tidepool | Not applicable: No real behavior proof assessment was recorded in this older report. |\n| **Patch quality** | 🦞 diamond lobster **(5/6)** | No actionable review findings were identified. |\n\n## Verification\n\n| Check | Result | Evidence |\n|---|---|---|\n| **Real behavior** | Not applicable | Not applicable: No real behavior proof assessment was recorded in this older report. |\n| **Evidence reviewed** | None listed | None. |\n| **Findings** | None | None. |\n| **Security** | None | None. |\n\n## Before merge\n\nNone.\n\n\n<details>\n<summary><strong>Agent review details</strong></summary>\n\n### Security\n\nNone.\n\n### Review metrics\n\nNone.\n\n### Technical review\n\nIs this the best way to solve the issue?\n\nNo migration or upgrade compatibility proof supplied.\n\nCodex review notes: reviewed against [aaaaaaaaaaaa](https://github.com/openclaw/openclaw/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa).\n\n### Labels\n\nLabel changes:\n\n- add `rating: 🦞 diamond lobster`: Overall readiness is 🦞 diamond lobster; proof is 🌊 off-meta tidepool and patch quality is 🦞 diamond lobster.\n- add `status: 🚀 automerge armed`: This PR is in ClawSweeper's automerge lane. Not applicable: No real behavior proof assessment was recorded in this older report.\n\nLabel justifications:\n\n- `rating: 🦞 diamond lobster`: Overall readiness is 🦞 diamond lobster; proof is 🌊 off-meta tidepool and patch quality is 🦞 diamond lobster.\n- `status: 🚀 automerge armed`: This PR is in ClawSweeper's automerge lane. Not applicable: No real behavior proof assessment was recorded in this older report.\n\n### Rating scale\n\n| Score | Internal tier | Crab rank | Meaning |\n|---:|:---:|---|---|\n| **6/6** | S | 🦀 challenger crab | Exceptional readiness |\n| **5/6** | A | 🦞 diamond lobster | Very strong readiness |\n| **4/6** | B | 🐚 platinum hermit | Good normal PR; ordinary maintainer review |\n| **3/6** | C | 🦐 gold shrimp | Useful, but confidence is limited |\n| **2/6** | D | 🦪 silver shellfish | Proof or implementation needs work |\n| **1/6** | F | 🧂 unranked krab | Not merge-ready |\n| N/A | NA | 🌊 off-meta tidepool | Rating does not apply |\n\nOverall follows the weaker of proof and patch quality.\nShiny media proof means a screenshot, video, or linked artifact directly shows the changed behavior. Runtime, network, CSP, and security claims still need visible diagnostics.\n\n### Workflow\n\n- ClawSweeper keeps one durable marker-backed review comment per issue or PR.\n- Re-runs edit this comment so the latest verdict, findings, and automation markers stay together instead of adding duplicate bot comments.\n- A fresh review can be triggered by eligible `@clawsweeper re-review` comments, exact-item GitHub events, scheduled/background review runs, or manual workflow dispatch.\n- PR/issue authors and users with repository write access can comment `@clawsweeper re-review` or `@clawsweeper re-run` on an open PR or issue to request a fresh review only.\n- Maintainers can also comment `@clawsweeper review` to request a fresh review only.\n- Fresh-review commands do not start repair, autofix, rebase, CI repair, or automerge.\n- Maintainer-only repair and merge flows require explicit commands such as `@clawsweeper autofix`, `@clawsweeper automerge`, `@clawsweeper fix ci`, or `@clawsweeper address review`.\n- Maintainers can comment `@clawsweeper explain` to ask for more context, or `@clawsweeper stop` to stop active automation.\n\n</details>\n\n<!-- clawsweeper-verdict:pass item=999999 sha=cccccccccccccccccccccccccccccccccccccccc confidence=high updated_at=unknown reviewed_at=2026-09-04T00:00:00.000Z lease_owner=synthetic-offline-fixture lease_comment_id=1059 source_revision=unknown live_verification=absent -->\n<!-- clawsweeper-review-state:ready item=999999 sha=cccccccccccccccccccccccccccccccccccccccc v=1 -->\n\n<!-- clawsweeper-review-version item=999999 reviewed_at=2026-09-04T00:00:00.000Z sha=cccccccccccccccccccccccccccccccccccccccc source_revision=unknown lease_owner=synthetic-offline-fixture lease_comment_id=1059 v=1 -->",
+  "failures": [],
+  "passed": true,
+  "pullFiles": [
+    {
+      "filename": "packages/normalization-core/src/json-schema.ts",
+      "patch": "@@ -1,6 +1,6 @@\n // Browser-safe JSON Schema normalization and value checks shared by core and Control UI.\n-import { Guard } from \"typebox/guard\";\n import { Check } from \"typebox/schema\";\n+import { isJsonValue } from \"./json-value.js\";\n import { isRecord } from \"./record-coerce.js\";\n \n type JsonSchemaObject = Record<string, unknown>;\n@@ -185,96 +185,11 @@ function isStringArray(value: unknown): value is string[] {\n   return Array.isArray(value) && value.every((entry) => typeof entry === \"string\");\n }\n \n-function isJsonValue(\n-  value: unknown,\n-  active = new WeakSet<object>(),\n-  complete = new WeakSet<object>(),\n-): boolean {\n-  if (value === null || typeof value === \"string\" || typeof value === \"boolean\") {\n-    return true;\n-  }\n-  if (typeof value === \"number\") {\n-    return Number.isFinite(value);\n-  }\n-  if (typeof value !== \"object\") {\n-    return false;\n-  }\n-  let entries: unknown[];\n-  try {\n-    if (Array.isArray(value)) {\n-      const ownKeys = Reflect.ownKeys(value);\n-      if (\n-        ownKeys.length !== value.length + 1 ||\n-        ownKeys.some((key) => {\n-          if (key === \"length\") {\n-            return false;\n-          }\n-          if (typeof key !== \"string\") {\n-            return true;\n-          }\n-          const index = Number(key);\n-          return (\n-            !Number.isSafeInteger(index) ||\n-            index < 0 ||\n-            index >= value.length ||\n-            String(index) !== key\n-          );\n-        })\n-      ) {\n-        return false;\n-      }\n-      entries = value;\n-    } else {\n-      const prototype = Object.getPrototypeOf(value);\n-      if (prototype !== Object.prototype && prototype !== null) {\n-        return false;\n-      }\n-      const ownKeys = Reflect.ownKeys(value);\n-      if (\n-        ownKeys.some(\n-          (key) =>\n-            typeof key !== \"string\" || !Object.prototype.propertyIsEnumerable.call(value, key),\n-        )\n-      ) {\n-        return false;\n-      }\n-      entries = Object.values(value);\n\n\n[truncated 1133 chars]"
+    }
+  ],
+  "provenance": {
+    "sourceHead": "03182ae34303203557df136e147297ad5be25099",
+    "fixture": {
+      "file": "persistence-classifier-131624-json-schema.json",
+      "bytes": 3556,
+      "sha256": "029baaa91c3b1cf9c49edb7cdc9eef56bd484baae741c169e69c549559254cc1",
+      "repository": "openclaw/openclaw",
+      "number": 131624,
+      "headSha": "d62425c1d58340973a4c8387fd8e13c8ecdf2b1d",
+      "baseSha": "b03e0ec8cf8effb19a4e8043a5a3c1dacd418812",
+      "pullFileCount": 1
+    },
+    "candidateBindingSHA256": "6ce9a1f8b34230f85f286bfc2cba3a43f7e612f395746fd385a930ad5684f3df",
+    "sourceDiffSHA256": "cc3c0bca548f3a35374aa6a50db33d6314bee2b19dfd6101afe06257c099b214",
+    "inputSHA256": "1705ef0d21890764d1b577a986a331a43d9501d414d951e7964b5a93784e1045",
+    "patchInventory": [
+      {
+        "filename": "packages/normalization-core/src/json-schema.ts",
+        "length": 2024,
+        "sha256": "2b8d49ea0c04755c0b980967a93303a6d2151cd981e90f79abb9596e20c08a2e"
+      }
+    ],
+    "compiledHashes": {
+      "dist/clawsweeper-change-detection.js": "7ab9ba168fb02bdcf22b9365887ddb7308e2546b35cb86c977dbfcf61b2518c3",
+      "dist/clawsweeper-context-hydration.js": "7022f8ede08b336d03976377b9f0652e3a4a0615954451006e80bcff15d8056e",
+      "dist/clawsweeper-item-policy.js": "cc23af970f77346cd0cd214574abf782c6ee201aaf9140c5aad11a77b59d80f9",
+      "dist/clawsweeper-text.js": "2e458aebf44527fe2b241a69f6fefeabae894f2f60b6a6de43237ac638020ecf",
+      "dist/clawsweeper.js": "75bdd1116f6ceaf7a27a8923daaa676a55328ac2b9066f10b989ed48edc1765d"
+    },
+    "sourceHashes": {
+      "docs/proof/persisted-model-diagnostics/run-proof.mjs": "e99291818859932c5ca5fddba3a2ff15efc001361037c694b0920b2629a10166",
+      "src/clawsweeper-context-hydration.ts": "e6021a37bd8315f783509b0f0a5b047bae9be63754ba72bda5f07beaa100eb12",
+      "src/clawsweeper-text.ts": "fa23270af2e1c53b2ffac74f63476ec3974dd26e4258b10427990d0841782a0c",
+      "src/clawsweeper-item-policy.ts": "5cfbaf111b59a4f64d0e62d80736c10baa9e09bdaa21aeb4d5fcc893eec01109",
+      "src/clawsweeper-change-detection.ts": "25a7c748f00c875c787a90651ed0b6ea6b86cc4eea2e056679c9167dfd705c02"
+    },
+    "environment": {
+      "provider": "local-node",
+      "node": "v24.19.0",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "limits": "Offline compiled detector-to-render observation with synthetic report readiness. Compaction uses production compactPullFile. No model, GitHub publication, migration or OpenClaw/Codex runtime execution; outer runner owns complete source/build/host provenance."
+  }
+}

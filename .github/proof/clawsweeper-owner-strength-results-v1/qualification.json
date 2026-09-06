@@ -1,0 +1,230 @@
+{
+  "auditCompleted": true,
+  "auditError": null,
+  "evidenceQualified": true,
+  "qualified": true,
+  "behavioralSuccess": true,
+  "fullSuiteExecuted": true,
+  "fullCheckQualified": true,
+  "productOverlay": true,
+  "formattedTSOrDocsSemanticsVerified": false,
+  "nativeLeaseProof": false,
+  "globalProcessCensusObserved": false,
+  "homeRemovalObserved": false,
+  "downloadedArchiveDigestIndependentlyVerified": false,
+  "checkAttempted": true,
+  "producerFullSuiteExecuted": true,
+  "producerCheckPassed": true,
+  "rawCheckExitCode": 0,
+  "rawDriverExitCode": 0,
+  "sourceTransitionsQualified": true,
+  "formattedSourceTree": "d557a87eb766ad394799b70c262953746c30f0ee",
+  "formattedClassifierSHA256": "25a7c748f00c875c787a90651ed0b6ea6b86cc4eea2e056679c9167dfd705c02",
+  "formattedPostimagesByteVerified": 5,
+  "fixtureJsonDataPreserved": true,
+  "formatterPatchSHA256": "b47e931e00337fa40a1871f87baf7de7b8ece5b2360917df5f541121689e34fb",
+  "formatterSemanticReviewRequired": true,
+  "taskLocalPnpmResolutionQualified": true,
+  "shimEntriesVerified": 2,
+  "corepackTargetFilesVerified": 3,
+  "preEnableTargetEqualityProducerAsserted": true,
+  "fullCheckRawSummaries": [
+    {
+      "tests": 13,
+      "suites": 0,
+      "pass": 13,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "tests": 5112,
+      "suites": 0,
+      "pass": 5094,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 18,
+      "todo": 0
+    }
+  ],
+  "skipTodoDirectiveRows": [
+    {
+      "line": 137,
+      "title": "macOS producer locks retain live V1 owners and recover dead V1 owners (0.17893ms)",
+      "reason": "requires macOS lock identity transition",
+      "raw": "\ufe63 macOS producer locks retain live V1 owners and recover dead V1 owners (0.17893ms) # requires macOS lock identity transition",
+      "following": []
+    },
+    {
+      "line": 139,
+      "title": "macOS import locks retain live V1 owners and recover dead V1 owners (0.063536ms)",
+      "reason": "requires macOS lock identity transition",
+      "raw": "\ufe63 macOS import locks retain live V1 owners and recover dead V1 owners (0.063536ms) # requires macOS lock identity transition",
+      "following": []
+    },
+    {
+      "line": 142,
+      "title": "macOS process identities distinguish processes started within the same second (0.087152ms)",
+      "reason": "requires macOS proc_pidinfo",
+      "raw": "\ufe63 macOS process identities distinguish processes started within the same second (0.087152ms) # requires macOS proc_pidinfo",
+      "following": []
+    },
+    {
+      "line": 143,
+      "title": "macOS process identities remain stable when a live holder is stopped (0.055073ms)",
+      "reason": "requires macOS proc_pidinfo",
+      "raw": "\ufe63 macOS process identities remain stable when a live holder is stopped (0.055073ms) # requires macOS proc_pidinfo",
+      "following": []
+    },
+    {
+      "line": 144,
+      "title": "macOS process identity query failures remain unknown and recover on the next query (0.048293ms)",
+      "reason": "requires macOS proc_pidinfo",
+      "raw": "\ufe63 macOS process identity query failures remain unknown and recover on the next query (0.048293ms) # requires macOS proc_pidinfo",
+      "following": []
+    },
+    {
+      "line": 145,
+      "title": "macOS process identities ignore the observer timezone (0.042344ms)",
+      "reason": "requires macOS proc_pidinfo",
+      "raw": "\ufe63 macOS process identities ignore the observer timezone (0.042344ms) # requires macOS proc_pidinfo",
+      "following": []
+    },
+    {
+      "line": 146,
+      "title": "macOS process identities reject malformed boot timestamps and recover (0.041072ms)",
+      "reason": "requires macOS proc_pidinfo",
+      "raw": "\ufe63 macOS process identities reject malformed boot timestamps and recover (0.041072ms) # requires macOS proc_pidinfo",
+      "following": []
+    },
+    {
+      "line": 3990,
+      "title": "queue request CPU benchmark (opt in) (2.122295ms)",
+      "reason": "SKIP",
+      "raw": "\ufe63 queue request CPU benchmark (opt in) (2.122295ms) # SKIP",
+      "following": []
+    },
+    {
+      "line": 3991,
+      "title": "Bay and claimed-run CPU benchmark at 500 projections and 100 leases (opt in) (0.128084ms)",
+      "reason": "SKIP",
+      "raw": "\ufe63 Bay and claimed-run CPU benchmark at 500 projections and 100 leases (opt in) (0.128084ms) # SKIP",
+      "following": []
+    },
+    {
+      "line": 4021,
+      "title": "Bay TTL CPU benchmark at 20,000 projections with one state write per second (opt in) (0.082315ms)",
+      "reason": "SKIP",
+      "raw": "\ufe63 Bay TTL CPU benchmark at 20,000 projections with one state write per second (opt in) (0.082315ms) # SKIP",
+      "following": []
+    },
+    {
+      "line": 4022,
+      "title": "completion and receipt CPU breakdown (opt in) (0.060982ms)",
+      "reason": "SKIP",
+      "raw": "\ufe63 completion and receipt CPU breakdown (opt in) (0.060982ms) # SKIP",
+      "following": []
+    },
+    {
+      "line": 5229,
+      "title": "Linux containment exposes only configured writable roots and minimal runtime files (44.995016ms)",
+      "reason": "runner does not provide delegated validation namespaces",
+      "raw": "\ufe63 Linux containment exposes only configured writable roots and minimal runtime files (44.995016ms) # runner does not provide delegated validation namespaces",
+      "following": []
+    },
+    {
+      "line": 5230,
+      "title": "Linux containment protects namespace init from target termination (4.006741ms)",
+      "reason": "runner does not provide delegated validation namespaces",
+      "raw": "\ufe63 Linux containment protects namespace init from target termination (4.006741ms) # runner does not provide delegated validation namespaces",
+      "following": []
+    },
+    {
+      "line": 5231,
+      "title": "Linux network containment preserves isolated loopback communication (4.134824ms)",
+      "reason": "runner does not provide delegated validation namespaces",
+      "raw": "\ufe63 Linux network containment preserves isolated loopback communication (4.134824ms) # runner does not provide delegated validation namespaces",
+      "following": []
+    },
+    {
+      "line": 5232,
+      "title": "Linux containment cannot reach host-local listeners (4.113041ms)",
+      "reason": "runner does not provide delegated validation namespaces",
+      "raw": "\ufe63 Linux containment cannot reach host-local listeners (4.113041ms) # runner does not provide delegated validation namespaces",
+      "following": []
+    },
+    {
+      "line": 7790,
+      "title": "bun dependency setup rejects and reaps detached descendants (3.308827ms)",
+      "reason": "runner does not provide delegated user namespaces and Landlock ABI 3+",
+      "raw": "\ufe63 bun dependency setup rejects and reaps detached descendants (3.308827ms) # runner does not provide delegated user namespaces and Landlock ABI 3+",
+      "following": []
+    },
+    {
+      "line": 7791,
+      "title": "npm dependency setup rejects and reaps detached descendants (3.080201ms)",
+      "reason": "runner does not provide delegated user namespaces and Landlock ABI 3+",
+      "raw": "\ufe63 npm dependency setup rejects and reaps detached descendants (3.080201ms) # runner does not provide delegated user namespaces and Landlock ABI 3+",
+      "following": []
+    },
+    {
+      "line": 7906,
+      "title": "validation rejects and reaps an immediate detached double fork (2.899228ms)",
+      "reason": "runner does not provide delegated user namespaces and Landlock ABI 3+",
+      "raw": "\ufe63 validation rejects and reaps an immediate detached double fork (2.899228ms) # runner does not provide delegated user namespaces and Landlock ABI 3+",
+      "following": []
+    }
+  ],
+  "newTestsMissingOrRepeated": [],
+  "canonicalCheckCommandVerified": true,
+  "postCheckSourceDependencyToolReceiptPreserved": true,
+  "newTestsPassed": 12,
+  "selectedTestFileCounts": {
+    "fix-prompt-builder": 1,
+    "all": 308
+  },
+  "recipe": {
+    "observed": 24,
+    "passed": 24,
+    "differences": 0,
+    "positiveControls": 20,
+    "positiveControlsPassed": true
+  },
+  "originals": {
+    "observed": 4,
+    "passed": 4,
+    "differences": 0
+  },
+  "observationCount": 28,
+  "boundaryAssertionCount": 344,
+  "recipeCaseCredit": 24,
+  "originalCaseCredit": 4,
+  "processGroupsClosed": true,
+  "childCommandCount": 12,
+  "uploadedInitialInstallBuildFinalTransitionsVerified": true,
+  "perObservationPreservationFlagsVerified": true,
+  "sourceFiles": 1419,
+  "sourceHead": "03182ae34303203557df136e147297ad5be25099",
+  "sourceTree": "d557a87eb766ad394799b70c262953746c30f0ee",
+  "classifierSHA256": "25a7c748f00c875c787a90651ed0b6ea6b86cc4eea2e056679c9167dfd705c02",
+  "dependencyEntries": 1237,
+  "buildEntries": 530,
+  "corepackEntries": 452,
+  "nodeSHA256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+  "artifactFiles": 58,
+  "artifactUncompressedBytes": 3851937,
+  "artifactManifestSHA256": "4ccce52bf17a54b508a10e90072e5d57146b90c43b7f9f093dbea38f64aedb83",
+  "reportedArtifactDigest": "sha256:0ca6c5af9fad21634aac6d7b05470f06a0d98bb7c1b12f6e469ff003845a20de",
+  "repository": "steipete/openclaw",
+  "controlHead": "be0851f27f86b39688bde8c917bf5a63fd347a10",
+  "controlTree": "7496b1ebdeb870159fe2cc85a20ca86aebdf47ca",
+  "runId": 34006494266,
+  "runAttempt": 1,
+  "jobId": 101414555610,
+  "artifactId": 9981217614,
+  "workflowConclusion": "success",
+  "diagnosticExit": 0,
+  "skippedWorkflowSteps": [],
+  "limits": "Exact public03182 plus five reviewed candidate paths; full canonical check and unchanged24+4 focused observations. Uploaded source/index/format/install/check/final transitions, actual aggregate arithmetic, all12 new test names and12 process-group receipts verified. Task-local pnpm PATH resolution, enable/version receipts, symlink destinations and target byte hashes match across every retained snapshot; equality to pre-enable targets is an assertion in the pinned producer, not a separately uploaded pre-enable snapshot. No guessed whole-test count or filtered suite. Formatter postimages and patch are retained; fixture JSON data equality is verified, while TS/docs semantics require parent review and are not inferred from byte identity. Recipe24 markers/rendered hashes are producer output; all13 checks per row independently recomputed, while original4 raw rendered text permits eight checks. Original captures remain historical1/12-file inputs. Reported ZIP digest is metadata only; no native lifecycle/global census/HOME deletion or live review/migration claim."
+}

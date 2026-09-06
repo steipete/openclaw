@@ -1,0 +1,218 @@
+{
+  "name": "original-pr-136282-production-normalized",
+  "ordinal": 3,
+  "mode": "production-normalized",
+  "expected": {
+    "detection": {
+      "change": false,
+      "surfaces": []
+    },
+    "sqlite": {
+      "change": false,
+      "files": []
+    }
+  },
+  "detection": {
+    "change": false,
+    "surfaces": []
+  },
+  "sqlite": {
+    "change": false,
+    "files": []
+  },
+  "markers": {
+    "sqliteTableWarning": false,
+    "persistedModelWarning": false,
+    "compatibilityGate": false,
+    "humanVerdict": false,
+    "passVerdict": true
+  },
+  "rendered": "Codex review: passed. _Reviewed September 3, 2026, 8:00 PM ET / September 4, 2026, 00:00 UTC._\n\n# ClawSweeper review\n\n## What this changes\n\nSynthetic completed review for offline detector-to-render proof only.\n\n## Merge readiness\n\n✅ **Ready for maintainer review**\n\nSynthetic completed review for offline detector-to-render proof only.\n\n**Priority:** None\n**Reviewed head:** `cccccccccccccccccccccccccccccccccccccccc`\n\n## Review scores\n\n| Measure | Result | What it means |\n|---|---|---|\n| **Overall readiness** | 🦞 diamond lobster **(5/6)** | PR readiness rating was derived from proof quality, review findings, security review, and reviewer confidence. |\n| **Proof confidence** | 🌊 off-meta tidepool | Not applicable: No real behavior proof assessment was recorded in this older report. |\n| **Patch quality** | 🦞 diamond lobster **(5/6)** | No actionable review findings were identified. |\n\n## Verification\n\n| Check | Result | Evidence |\n|---|---|---|\n| **Real behavior** | Not applicable | Not applicable: No real behavior proof assessment was recorded in this older report. |\n| **Evidence reviewed** | None listed | None. |\n| **Findings** | None | None. |\n| **Security** | None | None. |\n\n## Before merge\n\nNone.\n\n\n<details>\n<summary><strong>Agent review details</strong></summary>\n\n### Security\n\nNone.\n\n### Review metrics\n\nNone.\n\n### Technical review\n\nIs this the best way to solve the issue?\n\nNo migration or upgrade compatibility proof supplied.\n\nCodex review notes: reviewed against [aaaaaaaaaaaa](https://github.com/openclaw/openclaw/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa).\n\n### Labels\n\nLabel changes:\n\n- add `rating: 🦞 diamond lobster`: Overall readiness is 🦞 diamond lobster; proof is 🌊 off-meta tidepool and patch quality is 🦞 diamond lobster.\n- add `status: 🚀 automerge armed`: This PR is in ClawSweeper's automerge lane. Not applicable: No real behavior proof assessment was recorded in this older report.\n\nLabel justifications:\n\n- `rating: 🦞 diamond lobster`: Overall readiness is 🦞 diamond lobster; proof is 🌊 off-meta tidepool and patch quality is 🦞 diamond lobster.\n- `status: 🚀 automerge armed`: This PR is in ClawSweeper's automerge lane. Not applicable: No real behavior proof assessment was recorded in this older report.\n\n### Rating scale\n\n| Score | Internal tier | Crab rank | Meaning |\n|---:|:---:|---|---|\n| **6/6** | S | 🦀 challenger crab | Exceptional readiness |\n| **5/6** | A | 🦞 diamond lobster | Very strong readiness |\n| **4/6** | B | 🐚 platinum hermit | Good normal PR; ordinary maintainer review |\n| **3/6** | C | 🦐 gold shrimp | Useful, but confidence is limited |\n| **2/6** | D | 🦪 silver shellfish | Proof or implementation needs work |\n| **1/6** | F | 🧂 unranked krab | Not merge-ready |\n| N/A | NA | 🌊 off-meta tidepool | Rating does not apply |\n\nOverall follows the weaker of proof and patch quality.\nShiny media proof means a screenshot, video, or linked artifact directly shows the changed behavior. Runtime, network, CSP, and security claims still need visible diagnostics.\n\n### Workflow\n\n- ClawSweeper keeps one durable marker-backed review comment per issue or PR.\n- Re-runs edit this comment so the latest verdict, findings, and automation markers stay together instead of adding duplicate bot comments.\n- A fresh review can be triggered by eligible `@clawsweeper re-review` comments, exact-item GitHub events, scheduled/background review runs, or manual workflow dispatch.\n- PR/issue authors and users with repository write access can comment `@clawsweeper re-review` or `@clawsweeper re-run` on an open PR or issue to request a fresh review only.\n- Maintainers can also comment `@clawsweeper review` to request a fresh review only.\n- Fresh-review commands do not start repair, autofix, rebase, CI repair, or automerge.\n- Maintainer-only repair and merge flows require explicit commands such as `@clawsweeper autofix`, `@clawsweeper automerge`, `@clawsweeper fix ci`, or `@clawsweeper address review`.\n- Maintainers can comment `@clawsweeper explain` to ask for more context, or `@clawsweeper stop` to stop active automation.\n\n</details>\n\n<!-- clawsweeper-verdict:pass item=999999 sha=cccccccccccccccccccccccccccccccccccccccc confidence=high updated_at=unknown reviewed_at=2026-09-04T00:00:00.000Z lease_owner=synthetic-offline-fixture lease_comment_id=1059 source_revision=unknown live_verification=absent -->\n<!-- clawsweeper-review-state:ready item=999999 sha=cccccccccccccccccccccccccccccccccccccccc v=1 -->\n\n<!-- clawsweeper-review-version item=999999 reviewed_at=2026-09-04T00:00:00.000Z sha=cccccccccccccccccccccccccccccccccccccccc source_revision=unknown lease_owner=synthetic-offline-fixture lease_comment_id=1059 v=1 -->",
+  "failures": [],
+  "passed": true,
+  "pullFiles": [
+    {
+      "filename": "config/assertion-safety-baseline.txt",
+      "status": "modified",
+      "additions": 0,
+      "deletions": 1,
+      "patch": "@@ -247,7 +247,6 @@ extensions/codex/src/migration/source-files.ts\t1\n extensions/codex/src/session-catalog-listing.ts\t3\n extensions/codex/src/session-catalog-node-continue.ts\t1\n extensions/codex/src/session-catalog-parsing.ts\t8\n-extensions/codex/src/session-catalog-transcript-item.ts\t1\n extensions/codex/src/session-catalog.ts\t2\n extensions/codex/src/session-cli.ts\t1\n extensions/codex/src/session-upstream-activity.ts\t3"
+    },
+    {
+      "filename": "docs/plugins/codex-supervision.md",
+      "status": "modified",
+      "additions": 9,
+      "deletions": 5,
+      "patch": "@@ -140,11 +140,15 @@ openclaw nodes approve <requestId>\n \n Non-archived Codex sessions also appear in the main Control UI sidebar, grouped\n by host. Select one to read its persisted transcript. The viewer uses the latest\n-Codex `thread/turns/list` API with `itemsView: \"full\"` and loads at most 20 turns\n-per request; **Load older transcript items** follows the opaque App Server cursor from the latest page.\n-Loaded pages render in chronological order. The viewer never loads an unbounded\n-`thread/read` history. A page above the 20 MiB transport safety ceiling fails\n-closed instead of risking the node or Gateway connection.\n+Codex `thread/turns/list` API with `itemsView: \"full\"` and returns at most 50\n+transcript items per request (20 when the caller omits `limit`). One Codex turn\n+can hold thousands of items, so the page cursor pairs the App Server turn cursor\n+with the item offset already delivered from that turn page; **Load older\n+transcript items** follows it. Loaded pages render in chronological order.\n+Oversized tool payloads arrive as a 4 KiB preview marked `truncated` instead of\n+whole. The viewer never loads an unbounded `thread/read` history. A page above\n+the 20 MiB transport safety ceiling fails closed instead of risking the node or\n+Gateway connection.\n \n Open the **Codex** group in the normal sessions sidebar. It lists the same sessions\n grouped by host. **Load more sessions** appends the next page from each host that"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog-listing.ts",
+      "status": "modified",
+      "additions": 71,
+      "deletions": 18,
+      "patch": "@@ -5,6 +5,7 @@ import type { OpenClawPluginNodeHostCommand } from \"openclaw/plugin-sdk/plugin-e\n import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";\n import {\n   sessionCatalogAdoptedSourceKey,\n+  sessionCatalogPaging,\n   type SessionCatalogEntrySnapshot,\n   type SessionCatalogProvider,\n } from \"openclaw/plugin-sdk/session-catalog\";\n@@ -27,7 +28,10 @@ import {\n   CODEX_APP_SERVER_THREADS_LIST_COMMAND,\n   CODEX_APP_SERVER_THREAD_TURNS_LIST_COMMAND,\n   CODEX_LOCAL_SESSION_HOST_ID,\n+  type CodexTranscriptCursor,\n+  decodeCodexTranscriptCursor,\n   DEFAULT_TRANSCRIPT_PAGE_LIMIT,\n+  encodeCodexTranscriptCursor,\n   filterCatalogPageByTitle,\n   MAX_TITLE_SEARCH_CATALOG_PAGES,\n   MAX_CURSOR_LENGTH,\n@@ -49,6 +53,7 @@ import {\n   createCodexTerminalNodeHostCommand,\n   type CodexTerminalConfigSources,\n } from \"./session-catalog-terminal.js\";\n+import { toGenericTranscriptItem } from \"./session-catalog-transcript-item.js\";\n import type {\n   CodexSessionCatalogControl,\n   CodexSessionCatalogControlFactory,\n@@ -434,8 +439,50 @@ function readBoundedLimit(value: unknown, key: string, fallback: number, max: nu\n   return value as number;\n }\n \n-function flattenTranscriptPageDesc(page: CodexThreadTurnsListResponse) {\n-  return page.data.flatMap((turn) => turn.items.toReversed());\n+/**\n+ * Upstream turns arrive newest-first with chronological items inside each turn.\n+ * The shared pager wants one chronological list so it can bound the newest\n+ * suffix and hand back an offset the next request resumes from.\n+ */\n+function flattenTranscriptPageChronological(page: CodexThreadTurnsListResponse) {\n+  return page.data.toReversed().flatMap((turn) => turn.items);\n+}\n+\n+function boundedTranscriptPage(params: {\n+  hostId: string;\n+  label: string;\n+  threadId: string;\n+  page: CodexThreadTurnsListResponse;\n+  limit: number;\n+  cursor: CodexTranscriptCursor;\n+}): CodexSessionTranscriptPage {\n+  const items = flattenTranscriptPageChronological(params.page).map(toGenericTranscrip\n\n[truncated 3536 chars]"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog-node-continue.test.ts",
+      "status": "modified",
+      "additions": 18,
+      "deletions": 5,
+      "patch": "@@ -1,6 +1,7 @@\n // Codex supervision tests cover passive listing and safe local session takeover.\n /* oxlint-disable typescript/unbound-method -- assertions inspect vi.fn-backed object methods, not unbound class methods. */\n import { describe, expect, it, vi } from \"vitest\";\n+import { encodeCodexTranscriptCursor } from \"./session-catalog-parsing.js\";\n import {\n   transcriptMirrorMocks,\n   nodeHostMocks,\n@@ -711,7 +712,11 @@ describe(\"Codex supervision actions\", () => {\n         {\n           id: \"turn-1\",\n           items: [\n-            { id: \"item-1\", type: \"userMessage\", text: \"question\" },\n+            {\n+              id: \"item-1\",\n+              type: \"userMessage\",\n+              content: [{ type: \"text\", text: \"question\" }],\n+            },\n             { id: \"item-2\", type: \"agentMessage\", text: \"full answer\" },\n           ],\n         },\n@@ -736,7 +741,9 @@ describe(\"Codex supervision actions\", () => {\n         { id: \"item-2\", type: \"agentMessage\", text: \"full answer\" },\n         { id: \"item-1\", type: \"userMessage\", text: \"question\" },\n       ],\n-      nextCursor: \"turns-page-2\",\n+      // The turn page is fully delivered, so the cursor advances to the next\n+      // upstream turn page with a fresh item offset.\n+      nextCursor: encodeCodexTranscriptCursor({ turnCursor: \"turns-page-2\", itemOffset: 0 }),\n     });\n     expect(listTurnPage).toHaveBeenCalledWith({\n       threadId: \"thread-1\",\n@@ -763,7 +770,13 @@ describe(\"Codex supervision actions\", () => {\n           data: [\n             {\n               id: \"turn-remote\",\n-              items: [{ id: \"item-remote\", type: \"userMessage\", text: \"remote prompt\" }],\n+              items: [\n+                {\n+                  id: \"item-remote\",\n+                  type: \"userMessage\",\n+                  content: [{ type: \"text\", text: \"remote prompt\" }],\n+                },\n+              ],\n             },\n           ],\n           nextCursor: \"remote-turns-2\",\n@@ -791,7 +804,7 @@ describe(\"Codex supervision act\n\n[truncated 726 chars]"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog-parsing.ts",
+      "status": "modified",
+      "additions": 43,
+      "deletions": 0,
+      "patch": "@@ -52,6 +52,49 @@ export function readControlCursor(value: unknown, label: string): string | undef\n   return value;\n }\n \n+const TRANSCRIPT_CURSOR_ERROR = \"invalid Codex session catalog transcript request cursor\";\n+\n+export type CodexTranscriptCursor = { turnCursor?: string; itemOffset: number };\n+\n+/**\n+ * The app-server pages transcripts by turn and one turn can hold thousands of\n+ * items, so a page boundary falls inside a turn. The cursor carries the upstream\n+ * turn cursor plus how many items of that turn page were already delivered;\n+ * dropping either half replays delivered items or skips them.\n+ */\n+export function encodeCodexTranscriptCursor(cursor: CodexTranscriptCursor): string {\n+  const payload = { ...(cursor.turnCursor ? { t: cursor.turnCursor } : {}), o: cursor.itemOffset };\n+  return Buffer.from(JSON.stringify(payload), \"utf8\").toString(\"base64url\");\n+}\n+\n+export function decodeCodexTranscriptCursor(value: unknown): CodexTranscriptCursor {\n+  const cursor = readControlCursor(value, \"transcript request\");\n+  if (cursor === undefined) {\n+    return { itemOffset: 0 };\n+  }\n+  let parsed: unknown;\n+  try {\n+    parsed = JSON.parse(Buffer.from(cursor, \"base64url\").toString(\"utf8\"));\n+  } catch (error) {\n+    throw new CatalogParamsError(TRANSCRIPT_CURSOR_ERROR, { cause: error });\n+  }\n+  if (!isRecord(parsed) || !Number.isSafeInteger(parsed.o) || Number(parsed.o) < 0) {\n+    throw new CatalogParamsError(TRANSCRIPT_CURSOR_ERROR);\n+  }\n+  const turnCursor =\n+    parsed.t === undefined ? undefined : readControlCursor(parsed.t, \"transcript request\");\n+  const decoded: CodexTranscriptCursor = {\n+    ...(turnCursor ? { turnCursor } : {}),\n+    itemOffset: Number(parsed.o),\n+  };\n+  // Re-encoding must round-trip: a non-canonical payload would otherwise carry\n+  // fields past the bounded turn-cursor check.\n+  if (encodeCodexTranscriptCursor(decoded) !== cursor) {\n+    throw new CatalogParamsError(TRANSCRIPT_CURSOR_ERROR);\n+  }\n+  return decoded;\n+}\n+\n export f\n\n[truncated 70 chars]"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog-transcript-item.ts",
+      "status": "modified",
+      "additions": 15,
+      "deletions": 2,
+      "patch": "@@ -1,7 +1,16 @@\n import type { SessionCatalogTranscriptItem } from \"openclaw/plugin-sdk/session-catalog\";\n+import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";\n import type { CodexThreadItem } from \"./app-server/protocol.js\";\n import { projectCodexUserItemText } from \"./app-server/transcript-history-projection.js\";\n \n+// A single Codex tool item embeds its whole command payload — one observed `rg`\n+// run carried 2.4 MB — while every consumer (chat transcript, history import)\n+// shows a preview. Page limits bound item count, never the bytes inside one\n+// item, so the preview bound belongs here at the producer. 4 KiB is roughly\n+// fifty output lines: enough to read what the command did, and small enough\n+// that a full page of tool items stays well under the page byte budget.\n+const TOOL_TEXT_PREVIEW_BYTES = 4096;\n+\n const CODEX_MESSAGE_TYPES = new Map<string, SessionCatalogTranscriptItem[\"type\"]>([\n   [\"userMessage\", \"userMessage\"],\n   [\"agentMessage\", \"agentMessage\"],\n@@ -38,10 +47,14 @@ export function toGenericTranscriptItem(item: CodexThreadItem): SessionCatalogTr\n     item.type === \"userMessage\"\n       ? projectCodexUserItemText(item)\n       : item.text || resultText || changesText || fallback;\n+  const preview =\n+    (type === \"toolCall\" || type === \"toolResult\") && text\n+      ? truncateUtf8Prefix(text, TOOL_TEXT_PREVIEW_BYTES)\n+      : text;\n   return {\n     id: item.id,\n     type,\n-    ...(text ? { text } : {}),\n-    raw: item as SessionCatalogTranscriptItem[\"raw\"],\n+    ...(preview ? { text: preview } : {}),\n+    ...(preview === text ? {} : { truncated: true }),\n   };\n }"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog-transcript.test.ts",
+      "status": "added",
+      "additions": 182,
+      "deletions": 0,
+      "patch": "@@ -0,0 +1,182 @@\n+// One Codex turn can hold thousands of items and one item can hold megabytes of\n+// tool output, so these cover the two bounds a transcript read owes its client:\n+// bytes inside an item, and items inside a page.\n+import { describe, expect, it, vi } from \"vitest\";\n+import { toGenericTranscriptItem } from \"./session-catalog-transcript-item.js\";\n+import {\n+  CODEX_LOCAL_SESSION_HOST_ID,\n+  createEligibleControl,\n+  createRuntime,\n+  readCodexSessionTranscript,\n+} from \"./session-catalog.test-helpers.js\";\n+\n+// Sized like a real `rg` sweep: big enough to bury a browser, small enough\n+// that the whole page still clears the app-server ingestion guard.\n+const HUGE_OUTPUT = \"x\".repeat(250 * 1024);\n+\n+function turnPage(items: unknown[], nextCursor?: string) {\n+  return {\n+    data: [{ id: \"turn-1\", items }] as never,\n+    ...(nextCursor ? { nextCursor } : {}),\n+  };\n+}\n+\n+function commandItem(id: string, output: string) {\n+  return {\n+    id,\n+    type: \"commandExecution\",\n+    command: [\"rg\", \"pattern\"],\n+    aggregatedOutput: output,\n+    exitCode: 0,\n+  };\n+}\n+\n+describe(\"Codex transcript item projection\", () => {\n+  it(\"previews oversized tool output instead of forwarding the whole payload\", () => {\n+    const item = toGenericTranscriptItem(commandItem(\"item-1\", HUGE_OUTPUT) as never);\n+\n+    expect(item.type).toBe(\"toolResult\");\n+    expect(item.truncated).toBe(true);\n+    expect(Buffer.byteLength(item.text ?? \"\", \"utf8\")).toBe(4096);\n+    expect(Buffer.byteLength(JSON.stringify(item), \"utf8\")).toBeLessThan(16 * 1024);\n+  });\n+\n+  it(\"keeps small tool output whole and unflagged\", () => {\n+    const item = toGenericTranscriptItem(commandItem(\"item-1\", \"3 matches\") as never);\n+\n+    expect(item.text).toBe(\"3 matches\");\n+    expect(item.truncated).toBeUndefined();\n+  });\n+\n+  it(\"leaves agent messages unclamped\", () => {\n+    const text = \"answer \".repeat(2000);\n+    const item = toGenericTranscriptItem({ id: \"item-1\", type: \"agentMessage\", text } as \n\n[truncated 4701 chars]"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog-types.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 2,
+      "patch": "@@ -121,9 +121,8 @@ export type CodexSessionTranscriptPage = {\n   hostId: string;\n   label: string;\n   threadId: string;\n-  items: import(\"./app-server/protocol.js\").CodexThreadItem[];\n+  items: import(\"openclaw/plugin-sdk/session-catalog\").SessionCatalogTranscriptItem[];\n   nextCursor?: string;\n-  backwardsCursor?: string;\n };\n \n export type CodexSessionCatalogParams = {"
+    },
+    {
+      "filename": "extensions/codex/src/session-catalog.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 3,
+      "patch": "@@ -30,7 +30,6 @@ import {\n   resolveLocalCodexTerminalExecutable,\n   startCodexCatalogTerminal,\n } from \"./session-catalog-terminal.js\";\n-import { toGenericTranscriptItem } from \"./session-catalog-transcript-item.js\";\n import type {\n   CodexSessionCatalogControlFactory,\n   CodexSessionCatalogHost,\n@@ -217,7 +216,7 @@ function registerCodexSessionCatalog(params: {\n     },\n     read: async (request) => {\n       const { agentId, source, control } = bindRequest(request);\n-      const page = await readCodexSessionTranscript({\n+      return await readCodexSessionTranscript({\n         agentId,\n         runtime: params.api.runtime,\n         control,\n@@ -227,7 +226,6 @@ function registerCodexSessionCatalog(params: {\n         limit: request.limit ?? DEFAULT_TRANSCRIPT_PAGE_LIMIT,\n         ...(source ? { source } : {}),\n       });\n-      return { ...page, items: page.items.map(toGenericTranscriptItem) };\n     },\n     continueSession: async (request) => {\n       const config = params.getRuntimeConfig();"
+    },
+    {
+      "filename": "ui/src/pages/chat/chat-pane-catalog.test.ts",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 10,
+      "patch": "@@ -202,13 +202,13 @@ describe(\"chat pane catalog session lifecycle\", () => {\n \n   it.each([\n     {\n-      name: \"uses a raw command for an empty tool call\",\n-      item: { type: \"toolCall\", raw: { command: \"git status --short\" } },\n+      name: \"labels a tool call with the text its catalog provided\",\n+      item: { type: \"toolCall\", text: \"git status --short\" },\n       expected: \"Tool call\\n\\ngit status --short\",\n     },\n     {\n-      name: \"uses aggregated output for an empty tool result\",\n-      item: { type: \"toolResult\", raw: { aggregatedOutput: \"working tree clean\" } },\n+      name: \"labels a tool result with the text its catalog provided\",\n+      item: { type: \"toolResult\", text: \"working tree clean\" },\n       expected: \"Tool result\\n\\nworking tree clean\",\n     },\n     {\n@@ -228,19 +228,20 @@ describe(\"chat pane catalog session lifecycle\", () => {\n     expect(message.content[0]?.text).not.toContain(\"Unsupported external session item\");\n   });\n \n-  it(\"clamps oversized aggregated tool output before rendering\", () => {\n+  it(\"marks a preview that its catalog truncated\", () => {\n     const client = { request: vi.fn() } as unknown as GatewayBrowserClient;\n     const { pane } = createTestChatPane({ client, sessions: {} as SessionCapability });\n \n     const message = pane.catalogItemMessage({\n       type: \"toolResult\",\n-      raw: { aggregatedOutput: \"x\".repeat(5000) },\n+      text: \"first bytes of a huge command output\",\n+      truncated: true,\n     } as SessionCatalogTranscriptItem) as { content: Array<{ text: string }> };\n \n-    // The 500-char preview cap keeps a single huge tool result from injecting\n-    // megabytes into one chat message; the \"Tool result\\n\\n\" prefix adds a bit.\n-    expect(message.content[0]?.text.length).toBeLessThan(600);\n-    expect(message.content[0]?.text.startsWith(\"Tool result\")).toBe(true);\n+    // Without the marker a previewed payload reads as output that simply ended.\n+    expect(message.content[0]?.text).toBe(\n+      \"Tool resul\n\n[truncated 135 chars]"
+    },
+    {
+      "filename": "ui/src/pages/chat/chat-pane-session.ts",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 17,
+      "patch": "@@ -8,7 +8,6 @@ import type { GatewaySessionRow } from \"../../api/types.ts\";\n import { t } from \"../../i18n/index.ts\";\n import { nativeHistoryMessageIdentity } from \"../../lib/chat/history-message-identity.ts\";\n import { formatUiError } from \"../../lib/format-error.ts\";\n-import { clampText } from \"../../lib/format.ts\";\n import { isGatewayMethodAdvertised } from \"../../lib/gateway-methods.ts\";\n import { readSessionMethodAccess } from \"../../lib/session-method-access.ts\";\n import {\n@@ -27,11 +26,6 @@ import { parseAgentSessionKey } from \"../../lib/sessions/session-key.ts\";\n import { releaseChatAttachmentPayloads } from \"./attachment-payload-store.ts\";\n import { catalogMessageId } from \"./catalog-message-id.ts\";\n import { loadChatBranches } from \"./chat-history-branches.ts\";\n-import {\n-  CATALOG_TOOL_RESULT_PREVIEW_MAX_CHARS,\n-  catalogRawResult,\n-  catalogRawString,\n-} from \"./chat-pane-shared.ts\";\n import { ChatPaneTaskSuggestions } from \"./chat-pane-task-suggestions.ts\";\n import type { ChatPageHost } from \"./chat-state-host.ts\";\n import { resolveChatAgentId, selectedChatSessionRow } from \"./chat-state-route.ts\";\n@@ -378,22 +372,18 @@ export abstract class ChatPaneSession extends ChatPaneTaskSuggestions {\n     if (item.type === \"reasoning\") {\n       content = text ? `Thinking\\n\\n${text}` : \"Thinking\";\n     } else if (item.type === \"toolCall\") {\n-      const label =\n-        text ?? catalogRawString(item.raw, [\"command\", \"name\", \"tool\", \"title\", \"query\"]);\n-      content = label ? `Tool call\\n\\n${label}` : \"Tool call\";\n+      content = text ? `Tool call\\n\\n${text}` : \"Tool call\";\n     } else if (item.type === \"toolResult\") {\n-      // Raw aggregated output is only bounded by the transcript read's per-item\n-      // byte cap (megabytes), so clamp it to the preview size before rendering.\n-      const aggregated = catalogRawString(item.raw, [\"aggregatedOutput\"]);\n-      const output =\n-        text ??\n-        (aggregated ? clampText(aggregated, CATALOG_TOOL_RESULT_PREVI\n\n[truncated 567 chars]"
+    },
+    {
+      "filename": "ui/src/pages/chat/chat-pane-shared.ts",
+      "status": "modified",
+      "additions": 0,
+      "deletions": 29,
+      "patch": "@@ -1,4 +1,3 @@\n-import { asNullableRecord as catalogRawRecord } from \"@openclaw/normalization-core/record-coerce\";\n import type { GatewayBrowserClient } from \"../../api/gateway.ts\";\n import type { RouteId } from \"../../app-routes.ts\";\n import type { ApplicationContext } from \"../../app/context.ts\";\n@@ -7,7 +6,6 @@ import type { BoardProvider } from \"../../lib/board/provider.ts\";\n import type { BoardFace, BoardVisibleChatDock } from \"../../lib/board/settings.ts\";\n import type { BoardSnapshot, BoardTab } from \"../../lib/board/types.ts\";\n import type { ChatAttachment, ChatGoalDraftMode } from \"../../lib/chat/chat-types.ts\";\n-import { clampText } from \"../../lib/format.ts\";\n import { areUiSessionKeysEquivalent } from \"../../lib/sessions/session-key.ts\";\n import { releaseChatAttachmentPayloads } from \"./attachment-payload-store.ts\";\n import type { ChatPageHost } from \"./chat-state-host.ts\";\n@@ -180,7 +178,6 @@ export const boardChatDockLayout = createDockPanelLayout({\n   defaultWidth: 420,\n });\n \n-export const CATALOG_TOOL_RESULT_PREVIEW_MAX_CHARS = 500;\n // One distance owns both halves of early history loading: upward intent within\n // this range arms the sentinel observer, and the observer's rootMargin fires\n // the same distance out. Splitting them re-creates the wall at the smaller value.\n@@ -190,32 +187,6 @@ export const CHAT_HISTORY_TOUCH_INTENT_PX = 8;\n export const CHAT_HISTORY_UPWARD_KEYS = new Set([\"ArrowUp\", \"PageUp\", \"Home\"]);\n export const headerPlatformByClient = new WeakMap<GatewayBrowserClient, Promise<string | null>>();\n \n-export function catalogRawString(raw: unknown, keys: readonly string[]): string | null {\n-  const record = catalogRawRecord(raw);\n-  if (!record) {\n-    return null;\n-  }\n-  for (const key of keys) {\n-    const value = record[key];\n-    if (typeof value === \"string\" && value.trim()) {\n-      return value.trim();\n-    }\n-  }\n-  return null;\n-}\n-export function catalogRawResult(raw: unknown): string | null {\n-  const result = catalogRa\n\n[truncated 343 chars]"
+    }
+  ],
+  "provenance": {
+    "sourceHead": "03182ae34303203557df136e147297ad5be25099",
+    "fixture": {
+      "file": "persistence-classifier-136282-cursor.json",
+      "bytes": 32778,
+      "sha256": "bc84a750b3921aaf20ec16e7cdcd0af19862520c895637666c48fccd9eefc467",
+      "repository": "openclaw/openclaw",
+      "number": 136282,
+      "headSha": "fff68ad520ce60c45b1d824d29cdf50fe1e05f6c",
+      "baseSha": "0fafd993b4f93af51037dd9e29f69fcb94479a6e",
+      "pullFileCount": 12
+    },
+    "candidateBindingSHA256": "6ce9a1f8b34230f85f286bfc2cba3a43f7e612f395746fd385a930ad5684f3df",
+    "sourceDiffSHA256": "cc3c0bca548f3a35374aa6a50db33d6314bee2b19dfd6101afe06257c099b214",
+    "inputSHA256": "a1c2f0716350cd750467a7ec9ce7a91a06d58f1e7023f22eefdb5e25706e2df7",
+    "patchInventory": [
+      {
+        "filename": "config/assertion-safety-baseline.txt",
+        "length": 421,
+        "sha256": "c328bc57bceb0272fbd065a6801cb9764f2fe370a93c852a6940bcfb5e8f7854"
+      },
+      {
+        "filename": "docs/plugins/codex-supervision.md",
+        "length": 1453,
+        "sha256": "4de1fccceb22617c55ff90777b4461ae2043185757ee2b0de6f56f7c4628f85c"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog-listing.ts",
+        "length": 2024,
+        "sha256": "0747608465e53766cd2ebcf2a471f725010818afd6dcccd2fccf91d0c50d67ef"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog-node-continue.test.ts",
+        "length": 2023,
+        "sha256": "ec0944a2a63365428e5d0794c128003863ccd8fa1fe58a76b6685c6db9646525"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog-parsing.ts",
+        "length": 2022,
+        "sha256": "933018401022cb6cac573687f4738a32c01f20ae5f5f18cd42000a9eb5712da6"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog-transcript-item.ts",
+        "length": 1637,
+        "sha256": "8e154d823745faea10f85c65eb86612adb4fad91138c3e310de0569f87a91e2d"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog-transcript.test.ts",
+        "length": 2024,
+        "sha256": "8efa0698af60d31fb02cd5a784b120350ea2a7944cce49ba2a81effac2934291"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog-types.ts",
+        "length": 374,
+        "sha256": "cd7eba87400454a1ca6271aef5fdbee6907c98c96630ed38b933ac321f70c3ce"
+      },
+      {
+        "filename": "extensions/codex/src/session-catalog.ts",
+        "length": 1007,
+        "sha256": "e25e0d95b9cde2bc1487e9494a63cbd21c8f1024a26631d2544656ae87c9ac13"
+      },
+      {
+        "filename": "ui/src/pages/chat/chat-pane-catalog.test.ts",
+        "length": 2023,
+        "sha256": "28478bccffbb83a64e956835a4825302e8658e7f748df53c967355649c3a3490"
+      },
+      {
+        "filename": "ui/src/pages/chat/chat-pane-session.ts",
+        "length": 2023,
+        "sha256": "bbc83d59e8f30e97793ad2adb93ed0a075a409bb8024334bdfa5941e9e63463d"
+      },
+      {
+        "filename": "ui/src/pages/chat/chat-pane-shared.ts",
+        "length": 2023,
+        "sha256": "c345ab33b0ddc939af00103aa5719b71b87ebc92c692f686c63ca64223ce073f"
+      }
+    ],
+    "compiledHashes": {
+      "dist/clawsweeper-change-detection.js": "7ab9ba168fb02bdcf22b9365887ddb7308e2546b35cb86c977dbfcf61b2518c3",
+      "dist/clawsweeper-context-hydration.js": "7022f8ede08b336d03976377b9f0652e3a4a0615954451006e80bcff15d8056e",
+      "dist/clawsweeper-item-policy.js": "cc23af970f77346cd0cd214574abf782c6ee201aaf9140c5aad11a77b59d80f9",
+      "dist/clawsweeper-text.js": "2e458aebf44527fe2b241a69f6fefeabae894f2f60b6a6de43237ac638020ecf",
+      "dist/clawsweeper.js": "75bdd1116f6ceaf7a27a8923daaa676a55328ac2b9066f10b989ed48edc1765d"
+    },
+    "sourceHashes": {
+      "docs/proof/persisted-model-diagnostics/run-proof.mjs": "e99291818859932c5ca5fddba3a2ff15efc001361037c694b0920b2629a10166",
+      "src/clawsweeper-context-hydration.ts": "e6021a37bd8315f783509b0f0a5b047bae9be63754ba72bda5f07beaa100eb12",
+      "src/clawsweeper-text.ts": "fa23270af2e1c53b2ffac74f63476ec3974dd26e4258b10427990d0841782a0c",
+      "src/clawsweeper-item-policy.ts": "5cfbaf111b59a4f64d0e62d80736c10baa9e09bdaa21aeb4d5fcc893eec01109",
+      "src/clawsweeper-change-detection.ts": "25a7c748f00c875c787a90651ed0b6ea6b86cc4eea2e056679c9167dfd705c02"
+    },
+    "environment": {
+      "provider": "local-node",
+      "node": "v24.19.0",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "limits": "Offline compiled detector-to-render observation with synthetic report readiness. Compaction uses production compactPullFile. No model, GitHub publication, migration or OpenClaw/Codex runtime execution; outer runner owns complete source/build/host provenance."
+  }
+}

@@ -1,0 +1,7 @@
+# Schema owner proof observations
+
+This is a data-only copy of the successful proof for [ClawSweeper PR 1460](https://github.com/openclaw/clawsweeper/pull/1460), published so reviewers can read the observations without Actions artifact-download access. It does not rerun tests or change the product.
+
+[receipt.json](receipt.json) binds the original run, artifact, source and file hashes. [result.json](result.json), [recipe.json](recipe.json), and the four `original-*.observed.json` files are unchanged raw observations. The latter include actual classifier results, full rendered synthetic reports, markers and assertion outcomes. [qualification.json](qualification.json) is the separate data-only audit: all 344 boundary assertions, all 28 scenarios and 12 new regression tests passed; the full check recorded 5,094 passes and 18 explicit skips out of 5,112, plus 13 passing preliminary coverage tests. Skips remain listed with their actual reasons.
+
+The proof uses the real compiled classifier, production input compaction and public renderer. Synthetic report readiness isolates that boundary; it is not a live model review, migration execution or fresh whole-PR capture. The GitHub-reported ZIP digest was not independently recomputed. Full inventories, command receipts and formatter postimages remain in the linked original artifact; this compact copy retains the observations needed to inspect the review's reported access gap.
