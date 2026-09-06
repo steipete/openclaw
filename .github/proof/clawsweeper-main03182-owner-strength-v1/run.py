@@ -16,6 +16,8 @@ O = Path(sys.argv[3]).resolve()
 S = json.loads((P / 'source.json').read_text())
 assert S['state'] == 'candidate-source-bound-controls-held'
 F = None
+COREPACK_DIST = None
+COREPACK_TARGETS = None
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
@@ -91,12 +93,37 @@ def inventory(root):
                 result[key] = {'kind': 'file', 'bytes': len(data), 'sha256': digest(data)}
     return result
 
+def corepack_target_inventory():
+    result = {}
+    for name in ['corepack.js', 'pnpm.js', 'pnpx.js']:
+        path = COREPACK_DIST / name
+        assert path.is_file() and not path.is_symlink(), name
+        data = path.read_bytes()
+        result[name] = {'bytes': len(data), 'sha256': digest(data)}
+    return result
+
+def shim_inventory():
+    task_bin = O.parent / 'bin'
+    assert task_bin.is_dir() and not task_bin.is_symlink()
+    targets = corepack_target_inventory()
+    assert targets == COREPACK_TARGETS
+    result = {}
+    for path in sorted(task_bin.iterdir()):
+        assert path.name in ['pnpm', 'pnpx'] and path.is_symlink(), path.name
+        expected = COREPACK_DIST / (path.name + '.js')
+        assert path.resolve(strict=True) == expected
+        result[path.name] = {'kind': 'symlink', 'target': os.readlink(path),
+                             'resolvedTarget': str(expected), **targets[expected.name]}
+    assert 'pnpm' in result
+    return result
+
 def snapshot():
     return {'source': bind_source(), 'inputs': bind_inputs(),
             'dependencies': inventory(R / 'node_modules'), 'build': inventory(R / 'dist'),
             'corepack': inventory(O.parent / 'corepack'),
             'nodeSHA256': digest(Path(shutil.which('node')).resolve().read_bytes()),
-            'candidateBindingSHA256': digest((O / 'candidate-binding.json').read_bytes()) if (O / 'candidate-binding.json').exists() else None}
+            'candidateBindingSHA256': digest((O / 'candidate-binding.json').read_bytes()) if (O / 'candidate-binding.json').exists() else None,
+            'pnpmShims': shim_inventory(), 'corepackDistTargets': corepack_target_inventory()}
 
 def child_environment():
     # Source commands receive only the explicit tool path and fresh task-owned HOME.
@@ -239,12 +266,13 @@ def format_candidate(pnpm, env, installed):
         postimages.append({'path': name, 'file': output, 'bytes': len(data), 'sha256': digest(data)})
     save(O / 'format-postimages.json', postimages)
     formatted = snapshot()
-    for key in ['inputs', 'dependencies', 'build', 'corepack', 'nodeSHA256']:
+    for key in ['inputs', 'dependencies', 'build', 'corepack', 'nodeSHA256', 'pnpmShims', 'corepackDistTargets']:
         assert formatted[key] == installed[key], key
     save(O / 'formatted-inventory.json', formatted)
     return formatted
 
 def execute():
+    global COREPACK_DIST, COREPACK_TARGETS
     result = {'exitCode': 2, 'recipeComplete': False, 'originalsComplete': False,
               'recipeAllPassed': False, 'originalsAllPassed': False, 'observedCount': 0,
               'recipe': {'status': 'unattempted', 'exitCode': None}, 'originals': [],
@@ -260,20 +288,35 @@ def execute():
         corepack_sibling = Path(node).parent / 'corepack'
         assert corepack_sibling.is_file(), 'Pinned Node distribution lacks Corepack'
         corepack = str(corepack_sibling.resolve())
+        COREPACK_DIST = Path(corepack).parent
+        assert json.loads((COREPACK_DIST.parent / 'package.json').read_text())['version'] == '0.35.0'
+        COREPACK_TARGETS = corepack_target_inventory()
         phase = run('pnpm-prepare', [node, corepack, 'prepare', 'pnpm@11.10.0', '--activate'], 120, env)
         assert phase['exitCode'] == 0
         pnpm = [node, corepack, 'pnpm']
         version = subprocess.check_output(pnpm + ['--version'], cwd=R, env=env, text=True, timeout=15).strip()
         assert version == '11.10.0'
+        task_bin = O.parent / 'bin'
+        task_bin.mkdir()
+        phase = run('pnpm-enable', [node, corepack, 'enable', '--install-directory', str(task_bin), 'pnpm'], 15, env)
+        assert phase['exitCode'] == 0
+        shim_inventory()
+        env['PATH'] = str(task_bin) + os.pathsep + os.environ['PATH']
+        assert shutil.which('pnpm', path=env['PATH']) == str(task_bin / 'pnpm')
+        assert (task_bin / 'pnpm').resolve(strict=True) == COREPACK_DIST / 'pnpm.js'
+        phase = run('pnpm-path-version', ['pnpm', '--version'], 15, env)
+        assert phase['exitCode'] == 0 and (O / 'pnpm-path-version.stdout').read_text().strip() == '11.10.0'
         save(O / 'runtime.json', {'node': 'v24.19.0', 'pnpm': version, 'nodeSHA256': digest(Path(node).read_bytes()),
-                                 'sourceEnvironmentKeys': sorted(env), 'githubHosted': True})
+                                 'sourceEnvironmentKeys': sorted(env), 'githubHosted': True,
+                                 'corepackVersion': '0.35.0', 'sourcePATHPrefix': str(task_bin),
+                                 'barePnpmVersion': '11.10.0', 'pnpmResolvedTarget': str(COREPACK_DIST / 'pnpm.js')})
         initial = snapshot()
         save(O / 'initial-inventory.json', initial)
         phase = run('install', pnpm + ['install', '--frozen-lockfile'], 180, env)
         assert phase['exitCode'] == 0
         installed = snapshot()
         save(O / 'installed-inventory.json', installed)
-        for key in ['source', 'inputs', 'corepack', 'nodeSHA256']:
+        for key in ['source', 'inputs', 'corepack', 'nodeSHA256', 'pnpmShims', 'corepackDistTargets']:
             assert installed[key] == initial[key], key
         assert installed['dependencies'] and not installed['build']
         formatted = format_candidate(pnpm, env, installed)
@@ -285,7 +328,7 @@ def execute():
         result['checkExitCode'] = phase['exitCode']
         built = snapshot()
         save(O / 'built-inventory.json', built)
-        for key in ['source', 'inputs', 'dependencies', 'corepack', 'nodeSHA256', 'candidateBindingSHA256']:
+        for key in ['source', 'inputs', 'dependencies', 'corepack', 'nodeSHA256', 'candidateBindingSHA256', 'pnpmShims', 'corepackDistTargets']:
             assert built[key] == formatted[key], key
         assert phase['exitCode'] == 0
         result['fullSuiteExecuted'] = True
@@ -378,7 +421,7 @@ def collect():
     publish.mkdir()
     allowed = {'source.json', 'runtime.json', 'result.json', 'initial-inventory.json', 'installed-inventory.json', 'formatted-inventory.json', 'built-inventory.json', 'final-inventory.json', 'formatted-source.json', 'candidate-binding.json', 'format.patch', 'candidate-source.diff', 'format-postimages.json'}
     allowed.update(f'formatted-{i:02d}.postimage' for i in range(5))
-    for label in ['pnpm-prepare', 'install', 'format', 'stage', 'suite', 'recipe'] + [f'original-{i:02d}' for i in range(4)]:
+    for label in ['pnpm-prepare', 'pnpm-enable', 'pnpm-path-version', 'install', 'format', 'stage', 'suite', 'recipe'] + [f'original-{i:02d}' for i in range(4)]:
         allowed.update(label + suffix for suffix in ['.stdout', '.stderr', '.command.json'])
         if label.startswith('original-'):
             allowed.add(label + '.observed.json')
