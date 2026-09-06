@@ -1,0 +1,35 @@
+{
+  "pr": 137114,
+  "phase": "baseline only, no production edit",
+  "source": "7475087fa97a73587e2b15ac514733ae3bbfa024",
+  "runtime": {
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "commander": "15.0.0",
+    "vitest": "5.0.0"
+  },
+  "interface": "run.sh TARGET LANE EVIDENCE baseline",
+  "files": {
+    "run.sh": "e06ed6c364998f2338427bad43e5d7fb0e9321a859f153de98fd15b9029d551f",
+    "baseline-cli.mjs": "bc54c12eba67d1bc65e18f40a67b061a88b6af3dbe6d9c12674549da2be4184a",
+    "parser-baseline.mjs": "2f72e656e6b10528daff63e0c39810cce5018f78d898320e3e186ab8075c6253"
+  },
+  "sourceFiles": {
+    "src/infra/cli-root-options.ts": "65d6fad7d9b0485013f7a8e6bf028168e7cecd30fc1a41ff98f73c54250ce006",
+    "src/cli/program/route-args.ts": "0d17d8b2824a59686fc90269467f46e78187d51bb5d54d752f89d355b87f5513",
+    "src/cli/parent-command-path.ts": "05ad8324ac29e137c1d39e5912b64de2137cd01032e4c119b6660d651e5e2496",
+    "src/cli/gateway-run-argv.ts": "95f6703bd5068d04b4d52fb9f0aeefd9ff963990bc731fa9ed875b887fe39d82",
+    "src/cli/cron-cli/output-mode.ts": "0670baf3fd678272f056fe87c552a441a96b3cd86d342493552c144c95a6b7db",
+    "src/cli/channels-cli-add-args.ts": "813136da940688e44bf347acfbbf77649e7994300e6455647e8d56e1b4014399",
+    "src/cli/program/build-program.ts": "7b667816a034ecef87d7fb7dd90bc019e889e89a76f747a6281a9a9c0748199d",
+    "src/cli/program/commander-parse-facts.ts": "4883f842c3377efae1ffa9e6a89021debb0b72566c94929a980ce5b4a791e681",
+    "src/cli/program/openclaw-command.ts": "bfddf9946badd6e4caf7809ea42b851b32989a38cb1a086e7923f6e04d5f3f2f",
+    "src/cli/program/error-output.ts": "87a6641ecf5de607254e29a157e9929ed2541364e0fa22c72c7dcbfbe7303f01"
+  },
+  "cases": {
+    "cli": 16,
+    "malformedRouteVersusCommanderPairs": 4,
+    "parser": 22
+  },
+  "validation": "Final concrete baseline independently accepted by backup_unicode at bc54c12e/e06ed6c3/2f72e656. Syntax checks pass; retention-only reversal restores prior reviewed304f0d01 exactly. Actual hosted baseline pending; no target execution."
+}

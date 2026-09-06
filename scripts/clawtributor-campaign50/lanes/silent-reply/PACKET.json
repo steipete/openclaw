@@ -1,0 +1,36 @@
+{
+  "pr": 138345,
+  "head": "48c2ae6392b0d6ab448357ddbd7b13cd572f55cf",
+  "base": "eb08c36779e624193a3e92812a3dfde74979f5f5",
+  "mode": "red",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "vitest": "4.1.11",
+  "artifacts": {
+    "run.sh": "b802f64d85bb4483b28a88b3aa894faf03112e139382fc8ad4570883c16d2074",
+    "regression-tests.patch": "bcf4cdb1f116566109ddb8d77d306d4d0d057923baf7a9f713ab034291df2fda",
+    "silent-reply-prompt-mode.e2e.test.ts": "254e45b268bf4ca20e578f285fd1b3dde90bfd983c5125bb538d172bf2da617d",
+    "verify-red.py": "aafee1c764592cf0fd4fdd4e40627389bd8f675c4398ba37190b04ce3b975004"
+  },
+  "baselineFiles": {
+    "src/agents/embedded-agent-runner/run/run-attempt-dispatch.ts": "91da0190edc80a0a8e6723d19e25e0d831e7930080f8b71bd94af39cab8835dc",
+    "src/agents/tool-terminal-outcome.ts": "ed974a8d65cd8a969a116d9438c99a7e098705b27cce795a53dcda85fd72787e",
+    "src/agents/tool-error-state.ts": "9dc1c99d4cdd7686ad432b2857df022bd2ff6d218ac716fba7d3e2f5b725c665",
+    "src/auto-reply/reply/get-reply-run-context.ts": "497b799f5022f7831d54cfa367479acc045b0f70a77cdd2ea8f765ad471ed45a",
+    "src/auto-reply/reply/agent-runner-embedded-candidate.ts": "3dd5e3a5dea075e291e01bdfb64efd989bbf158e45bc607ec1a5bcbaf112ff80",
+    "src/agents/embedded-agent-runner/run/attempt-system-prompt-prepare.ts": "0b1910da413de9415536f8677b817798b66d0a69576ffb15c61eb4244161304f",
+    "src/agents/embedded-agent-runner/run/attempt-system-prompt.ts": "8a89bb894eade262dad821444c76782cccf3413d5bb7cc0755315d8b1bc5c54c",
+    "src/agents/embedded-agent-runner/system-prompt.ts": "f87d625fb9cc9d7e20421741ea1fda29e0f55d79481e702be5037a38fca464d6",
+    "src/agents/system-prompt-config.ts": "9ddcffece26c8ae894fda51031fff44abfc84f808ea60296961a33c992f306aa",
+    "src/agents/system-prompt.ts": "86bea5e9282bf26dfcce408b242b02d09b25d0af8790737e2a6a1be74c21bdf0",
+    "src/agents/cli-runner/helpers.ts": "7757fffc7fd30fd031a7e7f6ac196a74f943161afe83d420a7c5ec60b15a0587",
+    "extensions/qa-lab/src/qa-channel-transport.ts": "7ef1ee29d317550ce80b852c6540fdccc9461042f99fadff6c16b69d056c5c44",
+    "extensions/qa-lab/src/providers/mock-openai/mock-openai-contracts.ts": "21cb66166b3bea9ed4f4edb8565d4ff9a15904d02f3d97cd04d41b7f2bd912aa",
+    "scripts/run-vitest.mts": "c20c5a2b67f51749577ba1917f01f3fb8a32291634108d452fea98fcdfd8f209",
+    "scripts/lib/vitest-build-prerequisites.mts": "01f2e04ae956cd87ce2f036619f9f4453755cb4d467b92a1ba0afdb421bfa9bd",
+    "test/vitest/vitest.e2e.config.ts": "d538c4405ac7b9766c104177c7d14e805096d3e6fe5138c76eee416ab3c5e495",
+    "test/vitest/vitest.e2e.global-setup.ts": "7f876f55d8a12ef5f0b0d27a655eedfa223ef6b214c0180eadcd4591e13e4861",
+    "extensions/qa-lab/src/gateway-child-command.ts": "4ac6b0900fd17fa9da9a2821afa171f881cbadf7bfc2813f300fed140c2e6fca",
+    "extensions/qa-lab/src/gateway-child-env.ts": "823c6e723fa0f2c33d9b2e9f9e3310a5edd5e11e1db4525b227b5eca0a51f35c"
+  }
+}

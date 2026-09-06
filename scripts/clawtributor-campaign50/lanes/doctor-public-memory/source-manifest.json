@@ -1,0 +1,32 @@
+{
+  "base": "140d9e705ea30fc86a4865cf8e38eca31a74b9dd",
+  "failedSyntheticMerge": "d89a6c475e85273018cd8eeda3dc97872e3bf208",
+  "prHead": "e49a08b5d046519f2210b64191bd8564107a9d46",
+  "node": "24.19.0",
+  "pnpm": "12.3.4",
+  "patchSha256": "c6e89609ffbc98610f7db71dafe727a6dc59ad6f75fe77c2b240a76651a16283",
+  "files": {
+    "src/commands/doctor-session-transcripts.ts": {
+      "before": "ee8c8eaca18450aa896a05ee3e74bc7afa7b7b5218bfd7589c1ff230471f9653",
+      "after": "6b58c9689ad73f2573d4f592a17e9cdb67026c59180fd9e40ce79954c1cd39e7"
+    },
+    "src/commands/doctor-session-sqlite.ts": {
+      "before": "e06eac6223d01679c403dbe09f1e57bfc7ff3eba7679300a8826b39584de61a0",
+      "after": "b4ca9e30e9571687b74fadc6a9b3e5605a4b1c89081d2114985c5c9760217a44"
+    },
+    "src/commands/doctor-session-sqlite.memory.test-support.ts": {
+      "before": "890e4723d4845419ea9d9c22153d016a1fba624ffb5067d75a036e0ae47a49a3",
+      "after": "8bd6fbcddc573a99cb77d640e9c0707f88dcea40646537269e24da27ee48ae97"
+    },
+    "package.json": {
+      "unchanged": "435b6ea6b1e56c5ddd009747603a7c6a520cf10ca729654631cbce788692aed1"
+    },
+    "pnpm-lock.yaml": {
+      "unchanged": "6dde7b9ea11f7900400453f98933ce6638d99534e25cd0a2a39e8921141e23d0"
+    },
+    "src/commands/doctor-session-sqlite.memory.test.ts": {
+      "before": "2a5eccd8961351dcb59ad890df94ca7429a98ebd8613e9ad1eafc6482c25cbbb",
+      "after": "0f992d8398907c40abde276d88470247dbac5ea0e4b3266f7412eab0aa80b985"
+    }
+  }
+}

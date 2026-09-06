@@ -1,0 +1,14 @@
+{
+  "os": "ubuntu-24.04",
+  "aptPackages": [
+    "fd-find"
+  ],
+  "existingBootstrapPackages": [
+    "ripgrep"
+  ],
+  "binaryMapping": {
+    "fd": "fdfind"
+  },
+  "targetExecution": "secretless hosted only",
+  "requiredSecrets": []
+}
