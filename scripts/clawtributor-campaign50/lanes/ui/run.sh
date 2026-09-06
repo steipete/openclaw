@@ -8,7 +8,20 @@ mode=$4
 case "$mode" in red|green) ;; *) exit 64 ;; esac
 mkdir -p "$evidence_dir"
 cd "$target_dir"
+if [[ "$mode" == green ]]; then
+  [[ "$(git rev-parse HEAD)" == 2cfe54b5a223b62418525dda5d7a060a082cd38c ]] || exit 65
+  git fetch --no-tags --depth=2 origin 2cfe54b5a223b62418525dda5d7a060a082cd38c
+  [[ "$(git rev-parse HEAD^)" == 9fcbf35492836af8991e87f3ea93b8300fda6a64 ]] || exit 65
+  git apply --check "$lane_dir/candidate-production.patch"
+  git apply "$lane_dir/candidate-production.patch"
+fi
 cp "$lane_dir/device-binding-state.e2e.test.ts" ui/src/e2e/device-binding-state.e2e.test.ts
+if [[ "$mode" == green ]]; then
+  node scripts/run-vitest.mjs ui/src/pages/devices/view.execution.test.ts \
+    ui/src/pages/devices/view.devices.test.ts src/shared/node-match.test.ts \
+    src/agents/bash-tools.exec-host-node-phases.test.ts \
+    > "$evidence_dir/focused.log" 2>&1
+fi
 pnpm exec playwright install --with-deps chromium > "$evidence_dir/chromium-install.log" 2>&1
 filters=()
 if [[ "$mode" == red ]]; then
@@ -42,3 +55,15 @@ if (mode === 'red') {
   console.log('PR133032_GREEN_CONFIRMED: ID and name selections survive loss/recovery with no config writes or pending draft');
 }
 NODE
+
+if [[ "$mode" == green ]]; then
+  node scripts/check-changed.mjs --base 9fcbf35492836af8991e87f3ea93b8300fda6a64 -- ui/src/pages/devices/view.ts \
+    ui/src/i18n/locales/en.ts ui/src/pages/devices/view.execution.test.ts \
+    ui/src/e2e/device-binding-state.e2e.test.ts docs/tools/exec.md \
+    > "$evidence_dir/changed-check.log" 2>&1
+  sha256sum ui/src/pages/devices/view.ts ui/src/pages/devices/view.execution.test.ts \
+    ui/src/i18n/locales/en.ts ui/src/e2e/device-binding-state.e2e.test.ts docs/tools/exec.md \
+    > "$evidence_dir/candidate-files.sha256"
+  sha256sum --check "$lane_dir/candidate-files.sha256"
+  git diff --check
+fi

@@ -20,7 +20,8 @@ $TargetDir = (Resolve-Path -LiteralPath $TargetDir).Path
 $LaneDir = (Resolve-Path -LiteralPath $LaneDir).Path
 New-Item -ItemType Directory -Force $EvidenceDir | Out-Null
 $EvidenceDir = (Resolve-Path -LiteralPath $EvidenceDir).Path
-$nodeExe = (Get-Command node.exe -CommandType Application).Source
+# Application discovery can return multiple PATH matches; bind the executable that wins.
+$nodeExe = (Get-Command node.exe -CommandType Application -All | Select-Object -First 1).Source
 $nodeDir = Split-Path $nodeExe
 $npmCmd = Join-Path $nodeDir "npm.cmd"
 if (-not (Test-Path -LiteralPath $npmCmd -PathType Leaf)) {
@@ -42,6 +43,8 @@ if (-not $Worker) {
   $start.FileName = (Get-Process -Id $PID).Path
   $start.UseShellExecute = $false
   $start.CreateNoWindow = $true
+  $start.RedirectStandardOutput = $true
+  $start.RedirectStandardError = $true
   $start.WorkingDirectory = $proofHome
   $start.Environment.Clear()
   foreach ($name in @(
@@ -70,11 +73,18 @@ if (-not $Worker) {
   }
   $child = [System.Diagnostics.Process]::new()
   $child.StartInfo = $start
+  $childStdout = [IO.File]::Create((Join-Path $EvidenceDir "bootstrap-child.stdout.log"))
+  $childStderr = [IO.File]::Create((Join-Path $EvidenceDir "bootstrap-child.stderr.log"))
   try {
     if (-not $child.Start()) { throw "Isolated Windows proof worker did not start" }
+    $copyStdout = $child.StandardOutput.BaseStream.CopyToAsync($childStdout)
+    $copyStderr = $child.StandardError.BaseStream.CopyToAsync($childStderr)
     $child.WaitForExit()
+    [void][Threading.Tasks.Task]::WhenAll([Threading.Tasks.Task[]]@($copyStdout, $copyStderr)).GetAwaiter().GetResult()
     $childExit = $child.ExitCode
   } finally {
+    $childStdout.Dispose()
+    $childStderr.Dispose()
     $child.Dispose()
   }
   exit $childExit
@@ -82,24 +92,34 @@ if (-not $Worker) {
 
 $toolsDir = Join-Path $env:USERPROFILE "tools"
 $proofExit = 1
+$phase = "source-sha"
 try {
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   $sourceSha = (& git -C $TargetDir rev-parse HEAD).Trim()
   if ($LASTEXITCODE -ne 0 -or $sourceSha -ne $env:SOURCE_SHA) {
     throw "Checkout SHA differs from the reviewed source"
   }
+  $phase = "source-status"
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   $dirty = & git -C $TargetDir status --porcelain
   if ($LASTEXITCODE -ne 0 -or $dirty) { throw "Target checkout is not clean" }
+  $phase = "package-manager-pin"
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   $package = Get-Content -Raw -LiteralPath (Join-Path $TargetDir "package.json") | ConvertFrom-Json
   if ($package.packageManager -notmatch "^pnpm@([0-9]+\.[0-9]+\.[0-9]+)(\+sha(256|512)\.[a-f0-9]+)?$" -or
       $Matches[1] -ne $env:PNPM_VERSION) {
     throw "Reviewed pnpm version differs from the source packageManager"
   }
+  $phase = "node-pin"
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   $actualNode = (& $nodeExe -p "process.versions.node").Trim()
   if ($LASTEXITCODE -ne 0 -or $actualNode -ne $env:NODE_VERSION) {
     throw "Selected Node version differs from the reviewed pin"
   }
 
   Set-Location $toolsDir
+  $phase = "pnpm-install"
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   & $npmCmd install --global --prefix $toolsDir --registry=https://registry.npmjs.org "pnpm@$env:PNPM_VERSION" *> (Join-Path $EvidenceDir "pnpm-install.log")
   if ($LASTEXITCODE -ne 0) { throw "Pinned pnpm installation failed" }
   # pnpm12 regenerates this npm shim to its installed Windows-native executable.
@@ -108,7 +128,7 @@ try {
   if ($LASTEXITCODE -ne 0 -or $actualPnpm -ne $env:PNPM_VERSION) {
     throw "Installed pnpm version differs from the reviewed pin"
   }
-  if ((Split-Path (Get-Command pnpm).Source) -ne $toolsDir) {
+  if ((Split-Path (Get-Command pnpm -All | Select-Object -First 1).Source) -ne $toolsDir) {
     throw "Bare pnpm does not resolve to the validated task-local installation"
   }
   @{
@@ -124,12 +144,23 @@ try {
   } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "source.json")
 
   Set-Location $TargetDir
+  $phase = "source-install"
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   & $pnpmCmd install --frozen-lockfile *> (Join-Path $EvidenceDir "dependencies.log")
   if ($LASTEXITCODE -ne 0) { throw "Frozen source dependency installation failed" }
+  $phase = "native-proof"
+  $phase | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-phase.txt")
   & (Join-Path $LaneDir "run.ps1") $TargetDir $LaneDir $EvidenceDir $Mode
   $proofExit = $LASTEXITCODE
 } catch {
   [Console]::Error.WriteLine($_.Exception.Message)
+  $message = $_.Exception.Message
+  @{
+    phase = $phase
+    exceptionType = $_.Exception.GetType().FullName
+    errorId = $_.FullyQualifiedErrorId
+    message = $message.Substring(0, [Math]::Min($message.Length, 4096))
+  } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "bootstrap-error.json")
   $proofExit = 1
 } finally {
   $proofExit | Set-Content -Encoding utf8 (Join-Path $EvidenceDir "exit-code.txt")

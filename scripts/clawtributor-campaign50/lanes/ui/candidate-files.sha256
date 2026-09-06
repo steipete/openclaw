@@ -1,0 +1,5 @@
+fa178a97a969521592e02b31564129f970441460bafce1faebcec403739c8cf4  ui/src/pages/devices/view.ts
+61d81b86dd915d9b39ae36cfd0d2d4bd172483a78d03b5a6283ac051aa87d556  ui/src/pages/devices/view.execution.test.ts
+dbd9424918d32e0387af21134939f97b3f8ce74f0aba1bd39829ace41862b543  ui/src/i18n/locales/en.ts
+b704c6b1fe0019373b20285c74565aaa610b505a4ecf9f66bf8b0d589f327446  ui/src/e2e/device-binding-state.e2e.test.ts
+9c3cb5d20e4f182cdef74eba7a165d16e4bf273e3696bd5cf09dd42cdf8efb84  docs/tools/exec.md
