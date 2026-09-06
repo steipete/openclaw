@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
+import { writeFileSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -72,6 +73,43 @@ async function runChild() {
   await fs.access(path.join(repoRoot, "dist/index.js"));
   await fs.access(path.join(repoRoot, "dist/plugin-sdk/qa-lab.js"));
   await fs.mkdir(artifactBase, { recursive: true });
+  let currentPhase = "runtime-import";
+  const events: Array<Record<string, unknown>> = [];
+  let capture = (): Record<string, unknown> => ({});
+  const record = (event: string, details: Record<string, unknown> = {}) => {
+    events.push({ sequence: events.length + 1, utc: new Date().toISOString(), event, ...details });
+    let snapshot: Record<string, unknown>;
+    try {
+      snapshot = capture();
+    } catch (error) {
+      snapshot = { captureError: error instanceof Error ? error.message : String(error) };
+    }
+    try {
+      writeFileSync(
+        path.join(artifactBase, "diagnostics.json"),
+        JSON.stringify(
+          {
+            phase: currentPhase,
+            events: events.slice(-256),
+            ...snapshot,
+          },
+          null,
+          2,
+        ),
+      );
+    } catch (error) {
+      console.error(
+        "Proof diagnostic write failed:",
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+    console.log(JSON.stringify({ proofPhase: currentPhase, event, ...details }));
+  };
+  const phase = (name: string, details: Record<string, unknown> = {}) => {
+    currentPhase = name;
+    record("phase-enter", details);
+  };
+  phase("runtime-import");
   const [qa, sessions, store, transcript, hostStore, stateHelpers] = await Promise.all([
     import(fromRepo("extensions/qa-lab/api.ts")),
     import(fromRepo("src/plugin-sdk/agent-sessions.ts")),
@@ -83,14 +121,39 @@ async function runChild() {
   const state = qa.createQaBusState();
   const transport = qa.createQaChannelTransport(state);
   const bus = await qa.startQaBusServer({ state });
-  const provider = await startProvider();
+  const provider = await startProvider((event, details) => record(event, details));
   const owner = qa.createQaGatewayChild();
   let gateway: Awaited<ReturnType<typeof owner.start>> | undefined;
   let active: ProofCase | undefined;
   const results: Array<Record<string, unknown>> = [];
   let baselineRed = false;
   let shutdownConfirmed = false;
+  let captureSession: (() => unknown) | undefined;
+  const runs: Array<{ case: string; kind: string; runId: string }> = [];
+  capture = () => {
+    const snapshot = state.getSnapshot();
+    return {
+      activeCase: active?.name,
+      runs,
+      provider: { requests: active?.requests, errors: provider.errors },
+      accounting: captureSession?.(),
+      bus: {
+        cursor: snapshot.cursor,
+        messages: snapshot.messages.slice(-24).map((message: Record<string, unknown>) => ({
+          direction: message.direction,
+          accountId: message.accountId,
+          conversation: message.conversation,
+          replyToId: message.replyToId,
+          deleted: message.deleted,
+          isError: message.isError,
+          text: typeof message.text === "string" ? message.text.slice(0, 2000) : message.text,
+        })),
+      },
+      completedCases: results,
+    };
+  };
   try {
+    phase("gateway-start");
     gateway = await owner.start({
       repoRoot,
       command: {
@@ -144,7 +207,9 @@ async function runChild() {
         };
       },
     });
+    phase("transport-ready");
     await transport.waitReady({ gateway, timeoutMs: TIMEOUT });
+    phase("transport-ready-complete");
     assert.equal(gateway.cfg.plugins?.slots?.memory, "memory-core");
     assert.equal(gateway.cfg.agents?.defaults?.compaction?.mode, "safeguard");
     const cases = [
@@ -194,6 +259,8 @@ async function runChild() {
       const proof = createCase(item.name);
       active = proof;
       provider.arm(proof);
+      captureSession = undefined;
+      phase("case-seed", { case: item.name });
       const target = {
         agentId: "qa",
         sessionId: proof.sessionId,
@@ -304,6 +371,46 @@ async function runChild() {
       assert.equal(seeded.totalTokens, item.totalTokens);
       assert.equal(seeded.totalTokensFresh, item.fresh);
       assert.equal(seeded.totalTokensVersion, item.version);
+      captureSession = () => {
+        const entry = hostStore.loadSessionEntry({
+          agentId: target.agentId,
+          sessionKey: target.sessionKey,
+          storePath: target.storePath,
+          env: target.env,
+          readConsistency: "latest",
+        });
+        const transcriptEvents = entry?.sessionId
+          ? store.loadTranscriptEventsSync({ ...target, sessionId: entry.sessionId })
+          : [];
+        return {
+          sessionId: entry?.sessionId,
+          totalTokens: entry?.totalTokens,
+          totalTokensFresh: entry?.totalTokensFresh,
+          totalTokensVersion: entry?.totalTokensVersion,
+          compactionCount: entry?.compactionCount,
+          status: entry?.status,
+          lastRunId: entry?.lastRunId,
+          lifecycleRunId: entry?.lifecycleRunId,
+          lastRunError: entry?.lastRunError,
+          compactionEvents: transcriptEvents
+            .filter((event: { type?: string }) => event.type === "compaction")
+            .map((event: { id?: string }) => event.id),
+          recentTranscript: transcriptEvents
+            .slice(-8)
+            .map(
+              (event: {
+                type?: string;
+                id?: string;
+                message?: { role?: string; content?: unknown };
+              }) => ({
+                type: event.type,
+                id: event.id,
+                role: event.message?.role,
+                contentPreview: JSON.stringify(event.message?.content)?.slice(0, 1000),
+              }),
+            ),
+        };
+      };
       const compactIds = () =>
         sessions.SessionManager.open(target, gateway!.workspaceDir)
           .getEntries()
@@ -330,8 +437,12 @@ async function runChild() {
         );
         assert.equal(result.status, "ok", `Real run failed: ${JSON.stringify(result)}`);
       };
+      phase("first-chat-send", { case: item.name });
       const runId = await send(proof.finalMarker);
+      runs.push({ case: item.name, kind: "first", runId });
+      phase("first-provider-request", { case: item.name, runId });
       await checkpoint(proof.firstRequest.promise, `${item.name} first real provider request`);
+      phase("first-provider-held", { case: item.name, runId });
       const held = readEntry();
       assert.equal(held.totalTokensFresh, true, "Memory-flush freshness was not persisted");
       assert.equal(held.totalTokensVersion, 1, "Memory-flush version was not canonical");
@@ -346,9 +457,13 @@ async function runChild() {
         assert.equal(held.totalTokens, item.expected, `${item.name} total changed`);
         assert.equal(summaryFirst, false, `${item.name} unexpectedly compacted`);
       }
+      record("held-accounting-checked", { heldTotal: held.totalTokens, summaryFirst, baselineRed });
       proof.releaseFirst.resolve();
+      phase("first-terminal", { case: item.name, runId });
       await terminal(runId);
+      phase("first-reply-delivery", { case: item.name, runId });
       await stateHelpers.waitForCompactionReply(state, runId, proof.finalMarker);
+      phase("first-accounting", { case: item.name, runId });
       const after = readEntry(true);
       const ids = compactIds();
       const expectedCompaction = item.tail && !baselineRed;
@@ -364,9 +479,14 @@ async function runChild() {
         assert.equal(ids.length, 0);
         assert.equal(after.compactionCount ?? 0, 0);
       }
+      phase("continuation-send", { case: item.name });
       const successor = await send(proof.recoveryMarker);
+      runs.push({ case: item.name, kind: "continuation", runId: successor });
+      phase("continuation-terminal", { case: item.name, runId: successor });
       await terminal(successor);
+      phase("continuation-reply-delivery", { case: item.name, runId: successor });
       await stateHelpers.waitForCompactionReply(state, successor, proof.recoveryMarker);
+      phase("continuation-accounting", { case: item.name, runId: successor });
       assert.deepEqual(compactIds(), ids, "Continuation repeated or lost compaction");
       assert.equal(proof.requests.filter((request) => request.kind === "continuation").length, 1);
       assert.deepEqual(provider.errors, []);
@@ -381,6 +501,7 @@ async function runChild() {
         requests: proof.requests,
       };
       results.push(result);
+      phase("case-complete", { case: item.name });
       console.log(JSON.stringify(result));
     }
     await fs.writeFile(
@@ -391,13 +512,32 @@ async function runChild() {
         2,
       ),
     );
+  } catch (error) {
+    record("failure", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    throw error;
   } finally {
+    record("before-cleanup");
+    if (gateway) {
+      try {
+        writeFileSync(path.join(artifactBase, "gateway.log"), gateway.logs());
+      } catch (error) {
+        console.error("Proof Gateway log retention failed:", error);
+      }
+    }
     active?.releaseFirst.resolve();
     try {
-      const stopped = await owner.stop({ keepTemp: true });
+      const stopped = await owner.stop(
+        gateway
+          ? { keepTemp: true }
+          : { preserveToDir: path.join(artifactBase, "gateway-start-logs") },
+      );
       assert.equal(stopped.process, "confirmed-stopped");
       assert.deepEqual(stopped.errors, []);
       shutdownConfirmed = true;
+      record("gateway-stopped", { shutdownConfirmed });
       if (gateway) {
         await fs.writeFile(path.join(artifactBase, "gateway.log"), gateway.logs());
         const stagedRoot = gateway.runtimeEnv.OPENCLAW_QA_STAGED_RUNTIME_ROOT;

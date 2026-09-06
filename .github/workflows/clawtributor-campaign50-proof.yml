@@ -46,6 +46,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Run isolated source-bound proof
+        if: runner.os != 'Windows'
         env:
           PROOF_LANE: ${{ matrix.id }}
           PROOF_DIRECTORY: ${{ matrix.directory }}
@@ -68,6 +69,24 @@ jobs:
             "$GITHUB_WORKSPACE/target" \
             "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/lanes/$PROOF_DIRECTORY" \
             "$evidence"
+      - name: Run isolated Windows source-bound proof
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          PROOF_LANE: ${{ matrix.id }}
+          PROOF_DIRECTORY: ${{ matrix.directory }}
+          PROOF_MODE: ${{ matrix.mode }}
+          SOURCE_SHA: ${{ matrix.source }}
+          NODE_VERSION: ${{ matrix.node }}
+          PNPM_VERSION: ${{ matrix.pnpm }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $proofRoot = Join-Path $env:GITHUB_WORKSPACE "proof/scripts/clawtributor-campaign50"
+          $laneDir = Join-Path $proofRoot "lanes/$env:PROOF_DIRECTORY"
+          $targetDir = Join-Path $env:GITHUB_WORKSPACE "target"
+          $evidenceDir = Join-Path $env:GITHUB_WORKSPACE "evidence/$env:PROOF_LANE"
+          & (Join-Path $laneDir "bootstrap-windows.ps1") $targetDir $laneDir $evidenceDir $env:PROOF_MODE
+          exit $LASTEXITCODE
       - name: Retain proof artifacts
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

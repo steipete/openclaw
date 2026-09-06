@@ -65,7 +65,9 @@ function assistant(response: ServerResponse, text: string) {
     `${events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join("")}data: [DONE]\n\n`,
   );
 }
-export async function startProvider() {
+export async function startProvider(
+  observe: (event: string, details: Record<string, unknown>) => void = () => {},
+) {
   let active: ProofCase | undefined;
   const errors: string[] = [];
   const pending = new Set<Promise<void>>();
@@ -111,11 +113,27 @@ export async function startProvider() {
         );
       }
       proof.requests.push({ kind, bytes });
+      observe("provider-request", {
+        case: proof.name,
+        kind,
+        bytes,
+        hasFinalMarker: textOf(input).includes(proof.finalMarker),
+        hasRecoveryMarker: textOf(input).includes(proof.recoveryMarker),
+        hasSummaryMarker: textOf(input).includes(proof.summaryMarker),
+      });
+      response.once("close", () =>
+        observe("provider-response-closed", {
+          case: proof.name,
+          kind,
+          writableEnded: response.writableEnded,
+        }),
+      );
       if (proof.requests.length === 1) {
         proof.firstRequest.resolve();
         await proof.releaseFirst.promise;
       }
       if (response.destroyed) return;
+      observe("provider-response", { case: proof.name, kind });
       assistant(
         response,
         isSummary
@@ -126,6 +144,7 @@ export async function startProvider() {
       );
     })().catch((error: unknown) => {
       errors.push(error instanceof Error ? error.message : String(error));
+      observe("provider-error", { error: errors.at(-1) });
       if (!response.destroyed) {
         response.writeHead(500);
         response.end("Synthetic provider assertion failed");

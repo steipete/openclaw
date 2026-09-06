@@ -1,5 +1,6 @@
 import path from "node:path";
-import { expect, it } from "vitest";
+import { expect } from "playwright/test";
+import { it } from "vitest";
 import { installMockGateway } from "../test-helpers/control-ui-e2e.ts";
 import { createControlUiE2eSuite } from "./control-ui-e2e-suite.test-support.ts";
 
