@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: yu-xin-c/openclaw
-          ref: 24a9509760c838c1aff3358c50ea86963015c712
+          ref: f74ea1aff7129a377fab8d9bbba3a86a626dca56
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
@@ -21,7 +21,7 @@ jobs:
       - name: Install pinned package manager and dependencies
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = 24a9509760c838c1aff3358c50ea86963015c712
+          test "$(git rev-parse HEAD)" = f74ea1aff7129a377fab8d9bbba3a86a626dca56
           npm install --global pnpm@12.3.4
           pnpm install --frozen-lockfile
       - name: Generate the required synthetic prompt snapshots
