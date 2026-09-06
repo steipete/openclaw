@@ -1,0 +1,47 @@
+name: Delivery cache snapshot proof
+on:
+  push:
+    branches: [codex/proof-delivery-cache-123624]
+permissions:
+  contents: read
+jobs:
+  snapshots:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: yu-xin-c/openclaw
+          ref: 26e34012884fc352c3f5623d896492b0dbaa11b6
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+      - name: Install pinned package manager and dependencies
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 26e34012884fc352c3f5623d896492b0dbaa11b6
+          npm install --global pnpm@12.3.4
+          pnpm install --frozen-lockfile
+      - name: Generate the required synthetic prompt snapshots
+        run: |
+          set -euo pipefail
+          proof_state=$(mktemp -d)
+          HOME="$proof_state" XDG_CONFIG_HOME="$proof_state/config" XDG_CACHE_HOME="$proof_state/cache" OPENCLAW_STATE_DIR="$proof_state/state" pnpm prompt:snapshots:gen
+          git diff --name-only > "$RUNNER_TEMP/changed-snapshot-paths.txt"
+          if grep -v '^test/fixtures/agents/prompt-snapshots/codex-runtime-happy-path/' "$RUNNER_TEMP/changed-snapshot-paths.txt"; then
+            echo 'Generator changed a path outside its snapshot scope' >&2
+            exit 1
+          fi
+          mkdir -p snapshot-proof
+          git diff --binary -- test/fixtures/agents/prompt-snapshots/codex-runtime-happy-path > snapshot-proof/snapshots.patch
+          git rev-parse HEAD > snapshot-proof/source-head.txt
+          git rev-parse HEAD^{tree} > snapshot-proof/source-tree.txt
+          sha256sum snapshot-proof/snapshots.patch > snapshot-proof/sha256.txt
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: delivery-cache-snapshots
+          path: snapshot-proof/
+          if-no-files-found: error
+          retention-days: 7
