@@ -1,0 +1,127 @@
+name: PR 127231 historical Discord diagnostic
+
+on:
+  push:
+    branches: [codex/proof-127231-discord-history]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-127231-discord-history
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    if: github.repository == 'steipete/openclaw' && github.actor == 'steipete'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+        working-directory: candidate
+    env:
+      SOURCE_SHA: 0b4ed1650f058551a24529bebae0285751569906
+      SOURCE_TREE: 39ba1d4d3da72c13a1081cdeaf9af9ce53944e51
+    steps:
+      - name: Checkout diagnostic tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Checkout historical tested merge
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: 0b4ed1650f058551a24529bebae0285751569906
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up exact Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.19.0
+          check-latest: false
+
+      - name: Verify source and prepare isolated dependencies
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$SOURCE_TREE"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test "$(node --version)" = v24.19.0
+          test "$(node -p 'process.platform + ":" + process.arch')" = linux:x64
+          test "$(git rev-parse HEAD:extensions/discord/src/voice/voice-recording-backlog.test.ts)" = 1c3ddf038be0fcffc6368a3a3f30a468c26bf3db
+          export PROOF_DIR="$RUNNER_TEMP/pr-127231-discord-history"
+          export HOME="$RUNNER_TEMP/pr-127231-discord-home"
+          mkdir -p "$PROOF_DIR" "$HOME"
+          echo "PROOF_DIR=$PROOF_DIR" >> "$GITHUB_ENV"
+          echo "HOME=$HOME" >> "$GITHUB_ENV"
+          printf '%s\n%s\n' "$SOURCE_SHA" "$SOURCE_TREE" > "$PROOF_DIR/source.txt"
+          node --version > "$PROOF_DIR/node.txt"
+          uname -a > "$PROOF_DIR/platform.txt"
+          npm install --global --prefix "$RUNNER_TEMP/pr-127231-discord-pnpm" --ignore-scripts pnpm@12.3.4
+          test "$("$RUNNER_TEMP/pr-127231-discord-pnpm/bin/pnpm" --version)" = 12.3.4
+          echo "$RUNNER_TEMP/pr-127231-discord-pnpm/bin" >> "$GITHUB_PATH"
+
+      - name: Install frozen dependencies with normal lifecycle
+        run: |
+          set -euo pipefail
+          pnpm --version > "$PROOF_DIR/pnpm.txt"
+          pnpm install --frozen-lockfile 2>&1 | tee "$PROOF_DIR/install.log"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Apply the reviewed logging-only probe
+        run: |
+          set -euo pipefail
+          payload="$GITHUB_WORKSPACE/tooling/.github/proofs/pr-127231/voice-recording-backlog.test.ts.txt"
+          test "$(sha256sum "$payload" | cut -d ' ' -f 1)" = 9c4b0a89bcccd0e7c19e3959afbdb6089def56e72807ad160e29cbc5241e585d
+          test "$(git hash-object extensions/discord/src/voice/voice-recording-backlog.test.ts)" = 1c3ddf038be0fcffc6368a3a3f30a468c26bf3db
+          cp "$payload" extensions/discord/src/voice/voice-recording-backlog.test.ts
+          git diff --check
+          git diff -- extensions/discord/src/voice/voice-recording-backlog.test.ts > "$PROOF_DIR/probe.diff"
+
+      - name: Run the historical configuration groups
+        env:
+          OPENCLAW_NODE_TEST_GROUPS_GZIP_BASE64: H4sIAAAAAAAAA52NMQqAMBAE/7K1iYJi4VdEJCSnXuEFckEE8e8WgliK1TQzTH/AR5l4VnQ9MmkuN37B0p5JlKOYwOpjCvb2bVYMBXRxKYziVkIHvziZKZinUXPLpm5xFt9XnPyvTVPhHC4DnE030wAAAA==
+          OPENCLAW_NODE_TEST_CONFIGS_JSON: "[]"
+          OPENCLAW_NODE_TEST_ENV_JSON: "null"
+          OPENCLAW_NODE_TEST_INCLUDE_PATTERNS_JSON: "null"
+          OPENCLAW_NODE_TEST_TARGETS_JSON: "null"
+          OPENCLAW_NODE_TEST_VITEST_ARGS_JSON: "[]"
+          OPENCLAW_VITEST_SHARD_NAME: changed-extensions-bundle-11
+          OPENCLAW_VITEST_MAX_WORKERS: "2"
+          OPENCLAW_NODE_TEST_PLAN_CONCURRENCY: "1"
+          OPENCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "300000"
+          OPENCLAW_VITEST_NO_OUTPUT_RETRY: "1"
+          OPENCLAW_BUILD_ALL_NO_PNPM: "1"
+          pnpm_config_verify_deps_before_run: "false"
+          NODE_OPTIONS: --max-old-space-size=8192
+          OPENCLAW_VITEST_FS_MODULE_CACHE_WRITER: "0"
+          OPENCLAW_NODE_COMPILE_CACHE_WRITER: "0"
+          NODE_COMPILE_CACHE_PORTABLE: "1"
+        run: |
+          set -euo pipefail
+          export OPENCLAW_VITEST_FS_MODULE_CACHE_PATH="$RUNNER_TEMP/pr-127231-discord-fs-cache"
+          export NODE_COMPILE_CACHE="$RUNNER_TEMP/pr-127231-discord-node-cache"
+          printf '%s\n' "$OPENCLAW_NODE_TEST_GROUPS_GZIP_BASE64" > "$PROOF_DIR/groups.gzip-base64.txt"
+          time -p node --import tsx scripts/ci-run-node-test-shard.mts 2>&1 | tee "$PROOF_DIR/shard.log"
+          for scenario in jobs bytes; do
+            grep -F "[discord-backlog-phase] $scenario finally-destroyed" "$PROOF_DIR/shard.log"
+          done
+          cmp "$GITHUB_WORKSPACE/tooling/.github/proofs/pr-127231/voice-recording-backlog.test.ts.txt" extensions/discord/src/voice/voice-recording-backlog.test.ts
+          test "$(git diff --name-only)" = extensions/discord/src/voice/voice-recording-backlog.test.ts
+          printf '%s\n' 'Historical merge configuration groups passed; hosted Linux cache and worker scheduling differ from the original CI run.' > "$PROOF_DIR/verdict.txt"
+
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pr-127231-discord-history-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pr-127231-discord-history/
+          if-no-files-found: error
+          retention-days: 7

@@ -1,0 +1,186 @@
+import fs from "node:fs/promises";
+import { PassThrough } from "node:stream";
+import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
+import { defineDiscordVoiceTests } from "./voice-test-harness.test-support.js";
+
+const voiceAudio = await import("./audio.js");
+
+defineDiscordVoiceTests(
+  ({
+    expect,
+    it,
+    vi,
+    createManager,
+    makeVoiceConfig,
+    getSessionEntry,
+    getSessionConnection,
+    handleSpeakingStart,
+    startTranscripts,
+    decodeOpusStreamChunksMock,
+    transcribeAudioFileMock,
+    loggerWarnMock,
+  }) => {
+    it.each([
+      { limit: "jobs", blocked: "transcription", frames: 1, attempts: 256, expectedFiles: 128 },
+      { limit: "bytes", blocked: "publication", frames: 500, attempts: 40, expectedFiles: 34 },
+    ] as const)(
+      "bounds queued WAV $limit during stalled $blocked across reconnect",
+      async (scenario) => {
+        const phase = (name: string, detail?: unknown) => {
+          console.log("[discord-backlog-phase]", scenario.limit, name, detail ?? "");
+        };
+        let decoded = 0;
+        phase("create-manager");
+        const manager = createManager(makeVoiceConfig(), undefined, {
+          tools: { media: { audio: { maxBytes: scenario.frames * 3_840 + 44 } } },
+        });
+        const release = createDeferred<void>();
+        const sink = vi.fn(async () => {
+          if (scenario.blocked === "publication") {
+            await release.promise;
+          }
+        });
+        phase("start-transcripts");
+        await startTranscripts(manager, sink);
+        phase("transcripts-started");
+        const entry = getSessionEntry(manager);
+        decodeOpusStreamChunksMock.mockImplementation(async (input, callbacks) => {
+          try {
+            for await (const packet of input) {
+              decoded += 1;
+              if (decoded === 1) {
+                phase("first-decoded-packet");
+              }
+              await callbacks.onChunk(Buffer.alloc(3_840, packet[0]), packet);
+            }
+          } catch (error) {
+            callbacks.onError?.(error);
+          }
+        });
+        transcribeAudioFileMock.mockImplementation(async () => {
+          phase("transcription-entered");
+          if (scenario.blocked === "transcription") {
+            await release.promise;
+          }
+          return { text: "Recorded speech" };
+        });
+        let created = createDeferred<void>();
+        const files: Array<{ path: string; bytes: number }> = [];
+        const writeWav = voiceAudio.writeVoiceWavFile;
+        const writes = vi.spyOn(voiceAudio, "writeVoiceWavFile").mockImplementation(async (pcm) => {
+          if (files.length === 0) {
+            phase("first-wav-write", pcm.length);
+          }
+          const wav = await writeWav(pcm);
+          files.push({ path: wav.path, bytes: (await fs.stat(wav.path)).size });
+          if (files.length === 1 || files.length % 32 === 0 || files.length === scenario.expectedFiles) {
+            phase("wav-written", files.length);
+          }
+          created.resolve();
+          return wav;
+        });
+        const streams: PassThrough[] = [];
+        const receive = (target = entry) => {
+          const stream = new PassThrough({ objectMode: true });
+          streams.push(stream);
+          getSessionConnection(target).receiver.subscribe.mockReturnValueOnce(stream);
+          const receiving = handleSpeakingStart(manager, target, "guest").catch(
+            (error: unknown) => {
+              if (!(error instanceof Error) || !error.message.includes("recording backlog")) {
+                throw error;
+              }
+            },
+          );
+          return { stream, receiving };
+        };
+        phase("begin-receive", {
+          budgetEnabled: entry.audioInputBudget.enabled,
+          budgetBytes: entry.audioInputBudget.enabled ? entry.audioInputBudget.maxBytes : undefined,
+        });
+        const first = receive();
+        try {
+          for (let chunk = 0; chunk < scenario.attempts; chunk++) {
+            created = createDeferred<void>();
+            for (let frame = 0; frame < scenario.frames; frame++) {
+              first.stream.write(Buffer.from([7]));
+            }
+            if (chunk === 0 || chunk % 32 === 0) {
+              phase("await-created-or-receive", chunk);
+            }
+            const continuing = await Promise.race([
+              created.promise.then(() => true),
+              first.receiving.then(() => false),
+            ]);
+            if (!continuing) {
+              break;
+            }
+          }
+          phase("finish-first-receive", files.length);
+          first.stream.end();
+          await first.receiving;
+          phase("first-receive-finished", files.length);
+          expect(files).toHaveLength(scenario.expectedFiles);
+          expect(files.reduce((total, file) => total + file.bytes, 0)).toBeLessThanOrEqual(
+            64 * 1024 * 1024,
+          );
+          expect(loggerWarnMock).toHaveBeenCalledWith(expect.stringContaining("recording backlog"));
+          expect(entry.transcripts?.isCurrent()).toBe(true);
+
+          phase("leave");
+          await manager.leave({ guildId: "g1" });
+          phase("left-rejoin");
+          expect(
+            await manager.startTranscriptsCapture({ guildId: "g1", channelId: "1001" }),
+          ).toMatchObject({ ok: true });
+          phase("rejoined");
+          const replacement = getSessionEntry(manager);
+          const blocked = receive(replacement);
+          for (let frame = 0; frame < scenario.frames; frame++) {
+            blocked.stream.write(Buffer.from([8]));
+          }
+          blocked.stream.end();
+          phase("await-blocked-receive");
+          await blocked.receiving;
+          phase("blocked-receive-finished");
+          expect(files).toHaveLength(scenario.expectedFiles);
+
+          phase("release-processing");
+          release.resolve();
+          await entry.processingQueue;
+          phase("processing-drained");
+          await Promise.all(
+            files.map(async (file) => {
+              await expect(fs.access(file.path)).rejects.toMatchObject({ code: "ENOENT" });
+            }),
+          );
+          phase("files-removed");
+          const calls = sink.mock.calls.length;
+          const resumed = receive(replacement);
+          resumed.stream.end(Buffer.from([9]));
+          phase("await-resumed-receive");
+          await resumed.receiving;
+          phase("resumed-receive-finished");
+          await replacement.processingQueue;
+          phase("replacement-processing-drained");
+          expect(files).toHaveLength(scenario.expectedFiles + 1);
+          expect(sink).toHaveBeenCalledTimes(calls + 1);
+          expect(replacement.transcripts?.isCurrent()).toBe(true);
+        } finally {
+          phase("finally-release");
+          release.resolve();
+          for (const stream of streams) {
+            stream.end();
+          }
+          phase("finally-await-first");
+          await first.receiving;
+          phase("finally-await-processing");
+          await entry.processingQueue;
+          phase("finally-destroy");
+          await manager.destroy();
+          phase("finally-destroyed");
+          writes.mockRestore();
+        }
+      },
+    );
+  },
+);
