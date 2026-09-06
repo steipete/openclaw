@@ -1,11 +1,11 @@
 [
   {
-    "id": "model-status-case-three-id-red",
-    "directory": "model-status-case-three-id",
-    "source": "55d979e5187e544230808cb7ab906828c3e3f603",
+    "id": "prepared-catalog-red",
+    "directory": "prepared-catalog",
+    "source": "3967d9b6df1f478c32b0c4127bbadf5c51f1878f",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "three-id-once",
+    "variant": "restart-boundaries",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   }

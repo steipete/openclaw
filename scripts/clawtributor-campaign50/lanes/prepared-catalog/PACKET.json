@@ -1,0 +1,20 @@
+{
+  "source": "3967d9b6df1f478c32b0c4127bbadf5c51f1878f",
+  "mode": "red",
+  "lane": "prepared-catalog-red",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "files": {
+    "run.sh": "de1e9228d29a75f6ac7d4c1f7ff79a774ceb379927c55afe8e648f69a17ea880",
+    "gateway-proof.mjs": "17a10797a95155a0c88cd36cf4c39c506a69c26e0d084339e8ea52327f014a80",
+    "provider.mjs": "aa2357a6363592d7cebdf681cc203e250dd4d1521434b15f99aa74de24e7db0a",
+    "baseline-tests.patch": "d83794254578ab2a1c7b19292908de395107c093a028e42b85f603f569bc8494",
+    "validate-tests.mjs": "07b619189a066f7a66a237da1ffb3ba07f8ce6ac42255d9039c2f952bef4f983",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "PROOF-DESIGN.md": "b697cf2824f561ba544c1c1d126202dd27dff9d61a03ef044417079e30a36002"
+  },
+  "overlayTestSha256": "4369daf07aafb678989bf703bb50458ed2ec2fdd6d47631fb5cab39d7a0716cc",
+  "targetExecuted": false,
+  "productionEdited": false,
+  "revision": 2
+}
