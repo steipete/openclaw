@@ -48,7 +48,7 @@ if (stage === "baseline") {
       [
         4,
         "rejects invalid --gateway-port",
-        /--gateway-port must be an integer between 1 and 65535/,
+        /expected "vi\.fn\(\)" to be called with arguments:[\s\S]*Number of calls: 0/,
       ],
     ],
     [
@@ -56,7 +56,7 @@ if (stage === "baseline") {
       [
         4,
         "rejects invalid --gateway-port",
-        /--gateway-port must be an integer between 1 and 65535/,
+        /expected "vi\.fn\(\)" to be called with arguments:[\s\S]*Number of calls: 0/,
       ],
     ],
   ]);
@@ -81,7 +81,13 @@ if (stage === "baseline") {
       const value = test.title.slice(prefix.length).replace(/ before onboarding dispatch$/, "");
       assert.equal(value.trim(), "", test.title);
     }
-    assert.match(test.failureMessages.join("\n").replace(/\u001b\[[0-9;]*m/g, ""), pattern);
+    const failure = test.failureMessages.join("\n").replace(/\u001b\[[0-9;]*m/g, "");
+    assert.match(failure, pattern);
+    if (name === "register.onboard.test.ts" || name === "register.setup.test.ts") {
+      const line = name === "register.onboard.test.ts" ? 218 : 492;
+      const ownerFrames = failure.split("\n").filter((frame) => frame.includes(`/${ownerTest}:`));
+      assert.deepEqual(ownerFrames, [`    at ${capture.modules[0].file}:${line}:29`]);
+    }
   }
   console.log(`GATEWAY_PORT_UNIT_BASELINE_OWNER_RED: ${ownerTest} has two blank-input failures`);
 } else {

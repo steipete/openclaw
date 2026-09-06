@@ -1,0 +1,6 @@
+{
+  "native-env-proof.mjs": "3da5344fa24f6b38036e93b31bb35fb07c00b7f03ac3cfb5b7b6524e85a4ccd6",
+  "run.ps1": "3c8b1b8507b18af7bf330290251f5f678cda0732f125779c233e06f6c71c74ac",
+  "bootstrap-windows.ps1": "5a1b3c7c2619e73048f9c2b5caee0b9c123d732f857eadde334d6a972abe65c2",
+  "expected-source.json": "e14118706e1d57ad613ab6462a73cf88582b0a9206d65bd54a35fefc12942a9e"
+}

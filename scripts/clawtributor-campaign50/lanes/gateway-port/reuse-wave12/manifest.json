@@ -1,0 +1,34 @@
+{
+  "runId": 34026143939,
+  "runUrl": "https://github.com/steipete/openclaw/actions/runs/34026143939",
+  "harness": "784ffd48ad113450c20482eabad88787055a7c61",
+  "source": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "testsPatchSha256": "c56c410a669bffa6894809d6f256901be84b19171d5a12dea88e56c340cfb018",
+  "owners": [
+    "src/cli/gateway-port-option.test.ts",
+    "src/cli/gateway-rpc.runtime.test.ts",
+    "src/cli/program/register.onboard.test.ts"
+  ],
+  "artifacts": {
+    "baseline-gateway-port-option.json": "fd023d0746ba2eec76fe5e145faf0d23c628eeade9d7badb65220d3295e0ee7b",
+    "baseline-gateway-port-option.json.capture.json": "4469c597ea3fa52c82ae8d3feda6521a8d82ddde1f7feb7470ad74b03773f0da",
+    "baseline-gateway-rpc.runtime.json": "0da15c818b25f0098483c4e7c55010a4d9e790243abfddd2751dcbb62470a240",
+    "baseline-gateway-rpc.runtime.json.capture.json": "3362aa40d314f832457fa056690c09a53b63389560ebfb25775f0b613c4d9a28",
+    "baseline-register.onboard.json": "4459e568adb9e6947d8b805f0a68ed8b3e4f9ffb97266d37827df70ef431d91d",
+    "baseline-register.onboard.json.capture.json": "57e6310afa36b832962bc1dfaf66b790b846e29614913fb9c41c428bd60f6ce8",
+    "source.json": "344029a4d593c1f38b17f0163ed871adcc576daec1be1391c50fc726e0cbcfc7",
+    "baseline-source.sha256": "cf24060f6223a854624dd533c4688f6ea36dabd8664caa59875268924a158965",
+    "final-working-tree.patch": "5927367f99e5cc94be172a3a998a1fdccf283e78e1c63c118500be0a24bc419a",
+    "baseline-gateway-port-option.log.txt": "287b6f4a46814bb544affec5e01309587cb523b842953758ad9c72bbca7fec03",
+    "baseline-gateway-rpc.runtime.log.txt": "0d8d7cef79f82d866c77500a9b85391f5c849e33547f27cdbdbc95c3d409fc47",
+    "baseline-register.onboard.log.txt": "ffe9b6e4e40a1de4726f8a4ead8a1360c9aa0f63c69d5ecb81d1124a6292a9da"
+  },
+  "meaning": "Previously executed baseline owners only. Setup, CLI and candidate have not run.",
+  "transportRenames": {
+    "baseline-gateway-port-option.log": "baseline-gateway-port-option.log.txt",
+    "baseline-gateway-rpc.runtime.log": "baseline-gateway-rpc.runtime.log.txt",
+    "baseline-register.onboard.log": "baseline-register.onboard.log.txt"
+  }
+}

@@ -1,22 +1,32 @@
 [
   {
-    "id": "noop-compaction",
-    "directory": "noop-compaction",
+    "id": "cron-timeout-observation-red",
+    "directory": "cron-timeout-observation",
     "runner": "ubuntu-24.04",
-    "source": "954d47a99a6b814da0bb31eb92adeb8603368f20",
+    "source": "b5412c2a40b200f7b11d235a4216e18d8e7ffd6f",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "process-observation"
+  },
+  {
+    "id": "gateway-port-remainder",
+    "directory": "gateway-port",
+    "runner": "ubuntu-24.04",
+    "source": "ff41d00c264440c5b7fda67b6bf615f256a1c916",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "context-engine"
+    "variant": "cli-peers"
   },
   {
-    "id": "worker-owner-green",
-    "directory": "worker-owner",
-    "runner": "ubuntu-24.04",
-    "source": "76fb700f1322bc5d8d03ec6f9a63d0d637668aa7",
+    "id": "windows-fallback-env-red",
+    "directory": "windows-fallback-env",
+    "runner": "windows-2025",
+    "source": "c5a7231000329eb43375b7befb5a3452632845ed",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "paired-node"
+    "mode": "red",
+    "variant": "native-env"
   }
 ]

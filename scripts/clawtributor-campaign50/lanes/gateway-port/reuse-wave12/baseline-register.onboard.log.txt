@@ -1,0 +1,108 @@
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mroutes the read-only recommendations subcommand
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mroutes the recommendations acknowledgement subcommand
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mroutes failed recommendation ids through acknowledgement
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mroutes the recommendations refresh subcommand
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations read
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations acknowledge
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations refresh
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations acknowledge
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations refresh
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations acknowledge
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects inapplicable parent options for recommendations refresh
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mkeeps parent --json supported for reading recommendations
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --reset as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --reset as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --workspace as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --workspace as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --classic as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --classic as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --flow as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --flow as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --mode as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --mode as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --gateway-port as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --gateway-port as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --install-daemon as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --install-daemon as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --skip-skills as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --skip-skills as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --import-from as one parent JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports rejected --import-from as one leaf JSON error
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mdefaults installDaemon to undefined when no daemon flags are provided
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22msets installDaemon from explicit install flags and prioritizes --skip-daemon
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mparses a valid numeric gateway port
+ [31m×[39m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects invalid --gateway-port  before onboarding dispatch[32m 65[2mms[22m[39m
+[31m   → expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects invalid --gateway-port  	  before onboarding dispatch[32m 10[2mms[22m[39m
+[31m   → expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects invalid --gateway-port not-a-port before onboarding dispatch[32m 8[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects invalid --gateway-port 70000 before onboarding dispatch[32m 4[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --reset-scope to setup wizard options
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --skip-bootstrap to setup wizard options
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --agent-name to onboarding
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22maccepts retired --tailscale-reset-on-exit as a no-op
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22maccepts retired --no-tailscale-reset-on-exit as a no-op
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --remote-token to remote setup wizard options
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --remote-password to remote setup wizard options
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --tui to guided onboarding
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --skip-ui to guided onboarding
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects conflicting custom model input capabilities (json: false)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects conflicting custom model input capabilities (json: true)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22memits one options JSON object for modern onboarding without risk acknowle…
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22memits one options JSON object for modern onboarding with unsupported setu…
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mparses --mistral-api-key and forwards mistralApiKey
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mdedupes provider auth flags before registering command options
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards --gateway-token-ref-env
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mforwards onboarding migration flags
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mreports errors via runtime on setup wizard command failures
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mroutes --modern through the inference-gated OpenClaw entrypoint
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22muses the single-output noninteractive overview behind the inference gate
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mpreserves guided fallback context for --modern
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrequires --accept-risk before noninteractive modern onboarding
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects classic mode flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects reset flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects provider auth flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects remote mode flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects Gateway config flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects negated daemon config flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects migration flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects skip flags flags that --modern does not use
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mkeeps noninteractive JSON modern onboarding to one overview request
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects invalid --gateway-port  before onboarding dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/program/register.onboard.test.ts[2m > [22mregisterOnboardCommand[2m > [22mrejects invalid --gateway-port  	  before onboarding dispatch
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m src/cli/program/register.onboard.test.ts:[2m218:29[22m[39m
+    [90m216|[39m       await runCli(["onboard", "--gateway-port", gatewayPort]);
+    [90m217|[39m
+    [90m218|[39m       expect(runtime.error).toHaveBeenCalledWith(
+    [90m   |[39m                             [31m^[39m
+    [90m219|[39m         "--gateway-port must be an integer between 1 and 65535.",
+    [90m220|[39m       );
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[2m | [22m[33m64 skipped[39m[90m (68)[39m
+[2m   Start at [22m 10:00:22
+[2m   Duration [22m 1.01s[2m (transform 40%, worker 37%, tests 11%, setup 8%, import 5%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/gateway-port/baseline-register.onboard.json
+[test] failed 1 Vitest shard in 2.42s
+[test] FAILED (exit 1)

@@ -1,0 +1,71 @@
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22maddGatewayClientOptions[2m > [22mregisters and parses explicit gateway token authentication
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22maddGatewayClientOptions[2m > [22mregisters and parses explicit gateway password authentication
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22maddGatewayClientOptions[2m > [22mregisters and parses a local Gateway port
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22muses the 30s Gateway RPC default timeout when --timeout is omitted
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22maccepts a caller-specific default timeout
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mforwards specialized connection and authorization context
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mprojects --port to the canonical local Gateway override
+ [31m×[39m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid target { port: '' } before opening a Gateway connection[32m 112[2mms[22m[39m
+[31m   → promise resolved "{ ok: true }" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid target { port: ' 	 ' } before opening a Gateway connection[32m 3[2mms[22m[39m
+[31m   → promise resolved "{ ok: true }" instead of rejecting[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid target { url: 'ws://127.0.0.1:19083', …(1) } before opening a Gateway connection[32m 3[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mforwards explicit gateway token authentication
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mforwards explicit gateway password authentication
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron status
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron list
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron add
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron update
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron remove
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron get
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron runs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for cron run
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for logs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects malformed shared --timeout before gateway call for secrets reload
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects explicit empty shared --timeout value ""
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects explicit empty shared --timeout value "   "
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid shared --timeout value "0"
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid shared --timeout value "-1"
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid shared --timeout value "1.5"
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mpasses strict integer timeouts to the gateway call
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mforwards caller cancellation to the gateway call
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22misImplicitLocalGatewayTargetFromCliRuntime[2m > [22mforwards CLI target options to the canonical Gateway classifier
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid target { port: '' } before opening a Gateway connection
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/gateway-rpc.runtime.test.ts[2m > [22mcallGatewayFromCliRuntime[2m > [22mrejects invalid target { port: ' 	 ' } before opening a Gateway connection
+[31m[1mAssertionError[22m: promise resolved "{ ok: true }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ {[39m
+[31m+   "ok": true,[39m
+[2m  }[22m
+
+[36m [2m❯[22m src/cli/gateway-rpc.runtime.test.ts:[2m129:67[22m[39m
+    [90m127|[39m     "rejects invalid target $opts before opening a Gateway connection",
+    [90m128|[39m     async ({ opts, error }) => {
+    [90m129|[39m       await expect(callGatewayFromCliRuntime("cron.status", opts)).rej…
+    [90m   |[39m                                                                   [31m^[39m
+    [90m130|[39m
+    [90m131|[39m       expect(callGatewayMock).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[2m | [22m[33m27 skipped[39m[90m (30)[39m
+[2m   Start at [22m 10:00:18
+[2m   Duration [22m 1.53s[2m (worker 52%, transform 31%, tests 9%, setup 6%, import 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/gateway-port/baseline-gateway-rpc.runtime.json
+[test] failed 1 Vitest shard in 2.83s
+[test] FAILED (exit 1)
