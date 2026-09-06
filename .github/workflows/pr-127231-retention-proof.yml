@@ -1,0 +1,174 @@
+name: PR 127231 retention proof
+
+on:
+  push:
+    branches: [codex/proof-127231-retention]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-127231-retention-proof
+  cancel-in-progress: false
+
+jobs:
+  retention:
+    if: github.repository == 'steipete/openclaw' && github.actor == 'steipete'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+        working-directory: candidate
+    env:
+      OPENCLAW_BUILD_PRIVATE_QA: "1"
+      SOURCE_SHA: 76dc89a46c3f4e66c81e8fec0596c75247d02df3
+      SOURCE_TREE: 334abf9441cf32e68a2c0505efaa45a77780be61
+      PROOF_DIR: ${{ runner.temp }}/pr-127231-proof
+    steps:
+      - name: Checkout reviewed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: 76dc89a46c3f4e66c81e8fec0596c75247d02df3
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.19.0
+          check-latest: false
+
+      - name: Prepare isolated package manager and identity
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$SOURCE_TREE"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          mkdir -p "$PROOF_DIR" "$RUNNER_TEMP/pr-127231-home"
+          echo "HOME=$RUNNER_TEMP/pr-127231-home" >> "$GITHUB_ENV"
+          npm install --global --prefix "$RUNNER_TEMP/pr-127231-pnpm" --ignore-scripts pnpm@12.3.4
+          test "$("$RUNNER_TEMP/pr-127231-pnpm/bin/pnpm" --version)" = "12.3.4"
+          echo "$RUNNER_TEMP/pr-127231-pnpm/bin" >> "$GITHUB_PATH"
+          printf '%s\n%s\n' "$SOURCE_SHA" "$SOURCE_TREE" > "$PROOF_DIR/source.txt"
+          node --version > "$PROOF_DIR/node.txt"
+
+      - name: Install exact candidate dependencies
+        run: |
+          set -euo pipefail
+          pnpm --version > "$PROOF_DIR/pnpm.txt"
+          pnpm install --frozen-lockfile 2>&1 | tee "$PROOF_DIR/install.log"
+
+      - name: Prepare canonical QA runtime and AI runtime
+        run: |
+          set -euo pipefail
+          env -u OPENCLAW_RUN_NODE_SKIP_DTS_BUILD pnpm build qaRuntime 2>&1 | tee "$PROOF_DIR/qa-runtime.log"
+          OPENCLAW_RUN_NODE_SKIP_DTS_BUILD=1 node --import tsx scripts/tsdown-build.mts --config tsdown.ai.config.ts 2>&1 | tee "$PROOF_DIR/ai-runtime.log"
+
+      - name: Verify the completed runtime generation
+        id: ready
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/pr-127231-readiness.mjs" <<'JS'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import { createHash } from 'node:crypto';
+          import { spawnSync, execFileSync } from 'node:child_process';
+          import { pathToFileURL } from 'node:url';
+          const root = process.cwd();
+          const load = (file) => import(pathToFileURL(path.join(root, file)).href);
+          const { resolveBuildRequirement, resolveRuntimePostBuildRequirement } = await load('scripts/run-node.mts');
+          const { BUILD_STAMP_FILE, RUNTIME_POSTBUILD_STAMP_FILE } = await load('scripts/lib/local-build-metadata.mts');
+          const { runNodeConfigFiles, runNodeSourceRoots } = await load('scripts/run-node-watch-paths.mts');
+          const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+          assert.equal(git('rev-parse', 'HEAD'), process.env.SOURCE_SHA);
+          assert.equal(git('rev-parse', 'HEAD^{tree}'), process.env.SOURCE_TREE);
+          assert.equal(git('status', '--porcelain', '--untracked-files=all'), '');
+          const distRoot = path.join(root, 'dist');
+          const deps = {
+            cwd: root, env: { ...process.env, OPENCLAW_DEV_SOURCE_ROOT: root }, fs, spawnSync,
+            distRoot, distEntry: path.join(distRoot, 'entry.js'),
+            buildStampPath: path.join(distRoot, BUILD_STAMP_FILE),
+            runtimePostBuildStampPath: path.join(distRoot, RUNTIME_POSTBUILD_STAMP_FILE),
+            configFiles: runNodeConfigFiles.map((file) => path.join(root, file)),
+            sourceRoots: runNodeSourceRoots.map((name) => ({ name, path: path.join(root, name) })),
+          };
+          assert.deepEqual(resolveBuildRequirement(deps), { shouldBuild: false, reason: 'clean' });
+          assert.deepEqual(resolveRuntimePostBuildRequirement(deps), { shouldSync: false, reason: 'clean' });
+          const aiRoot = path.join(root, 'packages/ai');
+          const ai = JSON.parse(fs.readFileSync(path.join(aiRoot, 'package.json'), 'utf8'));
+          const outputs = [deps.distEntry, deps.buildStampPath, deps.runtimePostBuildStampPath];
+          for (const target of Object.values(ai.exports)) {
+            assert.equal(typeof target.import, 'string');
+            outputs.push(path.resolve(aiRoot, target.import));
+          }
+          const hashes = Object.fromEntries(outputs.map((file) => [path.relative(root, file), createHash('sha256').update(fs.readFileSync(file)).digest('hex')]));
+          const result = { sha: process.env.SOURCE_SHA, tree: process.env.SOURCE_TREE, node: process.version, hashes };
+          const baseline = path.join(process.env.PROOF_DIR, 'runtime-before.json');
+          if (process.argv[2] === 'after') {
+            assert.deepEqual(result, JSON.parse(fs.readFileSync(baseline, 'utf8')));
+          }
+          fs.writeFileSync(path.join(process.env.PROOF_DIR, `runtime-${process.argv[2]}.json`), JSON.stringify(result, null, 2) + '\n');
+          JS
+          node --import tsx "$RUNNER_TEMP/pr-127231-readiness.mjs" before
+
+      - name: Run the real ordinary retention regression
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' }}
+        run: |
+          set -euo pipefail
+          node scripts/run-vitest.mjs run --config test/vitest/vitest.agents-core.config.ts src/agents/agent-tools-agent-config.exec.test.ts --testNamePattern 'keeps each actual exec result' --reporter=default --reporter=json --outputFile.json "$PROOF_DIR/ordinary.json" 2>&1 | tee "$PROOF_DIR/ordinary.log"
+
+      - name: Run the real delayed approval regression
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' }}
+        env:
+          OPENCLAW_E2E_USE_PREBUILT_DIST: "1"
+          OPENCLAW_E2E_WORKERS: "1"
+        run: |
+          set -euo pipefail
+          node scripts/run-vitest.mjs run --config test/vitest/vitest.e2e.config.ts src/agents/bash-tools.exec-gateway-approval.e2e.test.ts --reporter=default --reporter=json --outputFile.json "$PROOF_DIR/approval.json" 2>&1 | tee "$PROOF_DIR/approval.log"
+
+      - name: Verify exact tests and unchanged runtime generation
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' }}
+        run: |
+          set -euo pipefail
+          node --import tsx "$RUNNER_TEMP/pr-127231-readiness.mjs" after
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const cases = [
+            ['ordinary', 'src/agents/agent-tools-agent-config.exec.test.ts', 'Agent-specific exec tool defaults keeps each actual exec result for its own agent retention after another process tool loads'],
+            ['approval', 'src/agents/bash-tools.exec-gateway-approval.e2e.test.ts', 'gateway-hosted exec approvals keeps a scheduled approval floor in a reused full-permission session'],
+          ];
+          for (const [label, file, fullName] of cases) {
+            const report = JSON.parse(fs.readFileSync(path.join(process.env.PROOF_DIR, `${label}.json`), 'utf8'));
+            assert.equal(report.success, true);
+            assert.equal(report.numFailedTests, 0);
+            assert.equal(report.numPassedTests, 1);
+            assert.equal(report.testResults.length, 1);
+            assert.equal(report.testResults[0].name, path.resolve(file));
+            const selected = report.testResults[0].assertionResults.filter((entry) => entry.fullName === fullName);
+            assert.equal(selected.length, 1);
+            assert.equal(selected[0].status, 'passed');
+          }
+          const observations = fs.readFileSync(path.join(process.env.PROOF_DIR, 'ordinary.log'), 'utf8').match(/\{"retentionObservation":\{[^\n]+\}\}/g) ?? [];
+          assert.equal(observations.length, 1);
+          const observation = JSON.parse(observations[0]).retentionObservation;
+          assert.ok(observation.elapsedMs >= 95_000);
+          assert.equal(observation.longStatus, 'completed');
+          assert.equal(observation.shortStatus, 'failed');
+          fs.writeFileSync(path.join(process.env.PROOF_DIR, 'verdict.json'), JSON.stringify({ status: 'passed', sha: process.env.SOURCE_SHA, tree: process.env.SOURCE_TREE, observation, tests: cases.map(([label]) => label) }) + '\n');
+          JS
+
+      - name: Upload targeted proof evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pr-127231-retention-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pr-127231-proof/
+          if-no-files-found: error
+          retention-days: 7
