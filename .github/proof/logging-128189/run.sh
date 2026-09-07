@@ -38,7 +38,7 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.equal(process.versions.node, '24.20.0');
 assert.ok(pkg.packageManager.startsWith('pnpm@12.3.4+sha512.'));
 JS
-  sha256sum package.json pnpm-lock.yaml src/logging/{redact-bounded,redact,logger,logger-file-transport,subsystem,config,state}.ts > "$arm_artifacts/source-inputs.sha256"
+  sha256sum package.json pnpm-lock.yaml src/logging/{redact-bounded,redact,redact-pattern-runtime,logger,logger-file-transport,subsystem,config,state}.ts > "$arm_artifacts/source-inputs.sha256"
   printf '%s\n' "$source_head" > "$arm_artifacts/source-head.txt"
   printf '%s\n' "$source_tree" > "$arm_artifacts/source-tree.txt"
   clean_run pnpm install --frozen-lockfile > "$proof_dir/$arm-install.log" 2>&1
@@ -66,7 +66,7 @@ done
 # Match dependencies and every unchanged logging owner before comparing timings.
 cmp "$checkout_root/baseline/package.json" "$checkout_root/candidate/package.json"
 cmp "$checkout_root/baseline/pnpm-lock.yaml" "$checkout_root/candidate/pnpm-lock.yaml"
-for owner in redact logger logger-file-transport subsystem config state; do
+for owner in redact redact-pattern-runtime logger logger-file-transport subsystem config state; do
   cmp "$checkout_root/baseline/src/logging/$owner.ts" "$checkout_root/candidate/src/logging/$owner.ts"
 done
 set +e
@@ -94,13 +94,13 @@ const files = report.testResults.map((file) => ({
   count: file.assertionResults.length,
   passed: file.assertionResults.filter((test) => test.status === 'passed').length,
 }));
-writeFileSync(output, JSON.stringify({ source: '88c1629b9e3e42c809d14dbc6417677c3487305c', success: report.success, files }));
+writeFileSync(output, JSON.stringify({ source: '978e9a4cdc8b668f9a5856cf254b9e97a15834c3', success: report.success, files }));
 assert.deepEqual(files.map((file) => file.path).sort(), expected, 'focused logging suite collection differs');
 assert.equal(report.success, true);
 assert.ok(files.every((file) => file.count > 0 && file.passed === file.count), 'focused logging cases skipped or failed');
 JS
   collection_exit=$?
-  clean_run node scripts/check-changed.mjs --base 44dbc50d172e9e7ec407b8e21e26aefa430cc933 --head 88c1629b9e3e42c809d14dbc6417677c3487305c -- \
+  clean_run node scripts/check-changed.mjs --base 5f661669b2c2979f2a61e23d4addb3bdd4545469 --head 978e9a4cdc8b668f9a5856cf254b9e97a15834c3 -- \
     src/logging/redact-bounded.ts src/logging/redact.test.ts 2>&1 | tee "$proof_dir/changed-checks.log"
   changed_exit=${PIPESTATUS[0]}
   set -e

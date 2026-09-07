@@ -24,14 +24,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: openclaw/openclaw
-          ref: 44dbc50d172e9e7ec407b8e21e26aefa430cc933
+          ref: 5f661669b2c2979f2a61e23d4addb3bdd4545469
           path: sources/baseline
           persist-credentials: false
       - name: Check out immutable candidate source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: steipete/openclaw
-          ref: 88c1629b9e3e42c809d14dbc6417677c3487305c
+          ref: 978e9a4cdc8b668f9a5856cf254b9e97a15834c3
           path: sources/candidate
           fetch-depth: 2
           persist-credentials: false
