@@ -1,22 +1,22 @@
 [
   {
-    "id": "blank-status-logs-red",
-    "directory": "blank-status-logs-red",
-    "runner": "ubuntu-24.04",
-    "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "id": "macos-cli-selection-red",
+    "directory": "macos-cli-selection-red",
+    "runner": "macos-26",
+    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "cli"
+    "mode": "red",
+    "variant": "native-selection"
   },
   {
-    "id": "sidebar-label-140125-green",
-    "directory": "sidebar-label-140125-green",
-    "runner": "ubuntu-24.04",
-    "source": "411e3f41b5484be425fa0e726621ae0b10f2a62a",
+    "id": "ios-composer-order-comparison",
+    "directory": "ios-composer-order-comparison",
+    "runner": "macos-26",
+    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "browser"
+    "mode": "compare",
+    "variant": "composer-order-comparison"
   }
 ]

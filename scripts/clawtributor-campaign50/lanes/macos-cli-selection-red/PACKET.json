@@ -1,0 +1,34 @@
+{
+  "pr": 140131,
+  "base": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
+  "authorHead": "26236284165e3b172a3299588f940634ff3ec66e",
+  "mode": "red",
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "sourceFiles": {
+    "apps/macos/Sources/OpenClaw/CLIInstaller.swift": "060dc7630961db1bf9dc32581706f81c205343ad62166b5392c95a71c39f3f7c",
+    "apps/macos/Sources/OpenClaw/CommandResolver.swift": "8e8615c83b3d0b1f2ce71d10a81e9d441e32e59566ac55f70cb050569a4fdf70",
+    "apps/macos/Sources/OpenClaw/CLIInstallPrompter.swift": "3d98102c7f21a5c3f808ea9b29959f9da16f4991d72ffe3a3139f8894d7b1732",
+    "apps/macos/Sources/OpenClaw/PostUpdate.swift": "dafd8046c4b7292ee5f5f40ce534fc08f292d20dbfdc35f75ba2c37634c69c86",
+    "apps/macos/Sources/OpenClaw/AppProfile.swift": "722a5e2c84b2daa6783191c7316ee324d4ab0bcf2110415f8029d826a7a23206",
+    "apps/macos/Tests/OpenClawIPCTests/TestIsolation.swift": "2a97afcab2c21639df71a0a0fdef98da5f22e4f860f955e70d93c9440f77d923",
+    "scripts/test-macos-native.mts": "58f79c0d94e6890cb1e1f5e10380b021a8149b7e3b67cc1df3ecf38d5b56d05f",
+    "apps/macos/Package.swift": "1619b5db813b8b30c2d15281f149eeb63bf0278fee85acd9431689591e84fa41",
+    "apps/macos/Package.resolved": "6041ee40156d8269b547d38c04bbee073b33b5aff3f62e05b7d29701042fd4e3"
+  },
+  "testPath": "apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionProofTests.swift",
+  "testSha256": "961b942317d4375fc427e830d9d1c67f12f3995f6b1200edc99d7915e630261d",
+  "artifacts": {
+    "run.sh": "278bb77e6ce20469114b82c8f5109abd3222b45a637172571e948bc795f6507b",
+    "validate.py": "ce25ace5ad622a5e90b629a3b734942f12457bb47b80fdc7d2c7c2fd4ce0ced8",
+    "regression.patch": "2d3953234a7046749db532ffb1f6926babebb36d05dd6e358d4c68b85c92679d",
+    "CLIInstallerSelectionProofTests.swift": "961b942317d4375fc427e830d9d1c67f12f3995f6b1200edc99d7915e630261d"
+  },
+  "reporterContract": {
+    "abi": 0,
+    "cliSource": "https://raw.githubusercontent.com/swiftlang/swift-package-manager/swift-6.3-RELEASE/Sources/Commands/SwiftTestCommand.swift",
+    "schema": "https://github.com/swiftlang/swift-testing/blob/main/Documentation/ABI/JSON.md"
+  },
+  "execution": "disposable macos-swift only; canonical startup home/keychain owner; no production patch",
+  "lane": "macos-cli-selection-red"
+}
