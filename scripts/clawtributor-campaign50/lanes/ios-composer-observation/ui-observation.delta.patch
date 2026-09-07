@@ -1,0 +1,28 @@
+--- ordered/UITests/FocusUITests.swift
++++ observation/UITests/FocusUITests.swift
+@@ -8,6 +8,7 @@
+     private var setupLabelReads: [[String: Any]] = []
+     private var waitResults: [[String: Any]] = []
+     private var emitted = false
++    private var composerTraceNonce = ""
+ 
+     override func setUp() {
+         super.setUp()
+@@ -20,6 +21,7 @@
+ 
+     override func tearDown() {
+         if !self.emitted { self.finish("invalid", "unexpected-interruption") }
++        ComposerTraceCapture.drain(nonce: self.composerTraceNonce, scenario: self.scenario, test: self)
+         self.app?.terminate()
+         super.tearDown()
+     }
+@@ -31,7 +33,8 @@
+     private func launch(_ scenario: String) -> Bool {
+         self.scenario = scenario
+         self.app = XCUIApplication(bundleIdentifier: "org.openclaw.tests.focus136179")
+-        self.app.launchArguments = ["--focus-scenario", scenario]
++        self.composerTraceNonce = UUID().uuidString.lowercased()
++        self.app.launchArguments = ["--focus-scenario", scenario, "--composer-observation-nonce", self.composerTraceNonce]
+         self.app.launch()
+         return self.require(self.app.state == .runningForeground, "setup-foreground")
+             && self.require(self.wait {

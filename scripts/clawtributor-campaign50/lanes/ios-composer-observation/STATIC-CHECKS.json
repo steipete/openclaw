@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-09-07T03:47:17.043847+00:00",
+  "pythonAST": "passed",
+  "bashSyntax": "passed",
+  "syntheticTraceParserChecks": 18,
+  "originalOwnerStatementsReconstructed": true,
+  "originalOrderedUIBodyReconstructed": true,
+  "sourcePinsMatched": 19,
+  "swiftCompile": false,
+  "nativeExecution": false,
+  "productEdits": false
+}

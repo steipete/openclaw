@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-09-07T03:09:40.016686+00:00",
+  "designSha256": "7ff9e1e04fec076d68391a576c089f434844e4b97ca9408c9308fa08148c0abd",
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+  "lockSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "status": "Frozen proposal for independent review; no packet or execution",
+  "bounds": {
+    "records": 2048,
+    "depth": 32,
+    "textFieldsPerRecord": 4,
+    "utf16UnitsPerText": 64,
+    "ranges": 8,
+    "serializedBytes": 8388608,
+    "postCaseCaptureSeconds": 3,
+    "snapshotBooleans": [
+      "isFirstResponder",
+      "hasMarkedText"
+    ]
+  },
+  "productEdits": false,
+  "targetExecution": false,
+  "revision": 2,
+  "previousDesignSha256": "fff79668104f1c166c4f52e328216cf8495a63a59c25c2a369e01bcd9657d8ad",
+  "rangeEncoding": "Lossless decimal strings of native Swift location/length values including NSNotFound; no signed/unsigned reinterpretation or truncation",
+  "drainContract": "ack observer before request; seal only depth0; success ack only after atomic nonce/PID/case-bound file creation; capture failures distinct"
+}

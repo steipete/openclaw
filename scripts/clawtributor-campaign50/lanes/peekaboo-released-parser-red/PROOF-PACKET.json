@@ -1,0 +1,15 @@
+{
+  "source": "6adfb69831b86e93bcd3fd365e11a22700fb37bb",
+  "runner": "macos-26",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "red",
+  "variant": "released-cli-parser",
+  "releaseSource": "f047bd97a260814bfebf4c81e7a4fdfe64581ff4",
+  "files": {
+    "parser-proof.py": "f01261b19936631b90d9dc8af44f25e19bfa30b5788fae5e431a0a245dade230",
+    "run.sh": "805ac6e606ce91caff8584a5b929f36e61114382311e7322be60243bbb899660",
+    "PAYLOAD-HASHES.json": "6224c7555af0818198c94e1fe5a3ca8b1d8fd536a9080a2b77f8bc2684f2d61a",
+    "release-plan.json": "d1378ddfce4ade3b03b8401fa719ac7a83ffeaa631803861a2e7532de23825a6"
+  }
+}

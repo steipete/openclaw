@@ -1,0 +1,27 @@
+{
+  "peekaboo": {
+    "sha256": "f9256c0a2622db4e9ef46ccc29bb51e56f084ad41fd407cdc48d7aa28dc8a692",
+    "size": 74947840,
+    "mode": 493
+  },
+  "libswiftCompatibilitySpan.dylib": {
+    "sha256": "7d4b029a6af0d6bc6867e51c582d1248bf535be4e4e8cc324b5fcaa095605ef9",
+    "size": 188208,
+    "mode": 493
+  },
+  "LICENSE": {
+    "sha256": "62316704df7426e5a79d2827ff8aca36e9abb3a73b8e68557030749ebefec667",
+    "size": 1074,
+    "mode": 420
+  },
+  "README.md": {
+    "sha256": "093ceee99bbcc9540a8201845a81bbae4262c6647afde61c9c6607ce1aad21e4",
+    "size": 611,
+    "mode": 420
+  },
+  "VERSION": {
+    "sha256": "8722a3e4c8ef0feb2e7a669f5f854c72d5d6390b25598f9745dc95e5ffe51dce",
+    "size": 6,
+    "mode": 420
+  }
+}

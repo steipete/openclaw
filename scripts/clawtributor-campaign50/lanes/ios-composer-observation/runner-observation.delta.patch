@@ -1,0 +1,161 @@
+--- ordered/proof.py
++++ observation/proof.py
+@@ -1,4 +1,4 @@
+-"""Ordered four-case setup diagnostic. No product repair or weakened baseline oracle."""
++"""Bounded composer observations; instrumented results are causal leads only."""
+ import hashlib
+ import json
+ import os
+@@ -10,12 +10,15 @@
+ import subprocess
+ import sys
+ import uuid
++from trace_validation import validate_capture, validate_trace
+ 
+ SOURCE = "a1707cb38032c6d94e3a3c49d0de4e68f62539b9"
+ LOCK_SHA256 = "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d"
+ ADMISSION_SHA256 = "9b61a58e502d2aa3ba0bdc336cbbf03b3208ee96289bf1b0a22d8b3e8a9ec3e8"
+ HOST_PACKET_SHA256 = "c2cb5165548264cd2d8076d7f4a07f38e3f139e78daa09958ac0959fea76e0c5"
+ BASELINE_PACKET_SHA256 = "04b38400f898113ba85ef931d3cf912dad30dcd0aa8eb150ae0424d69896b235"
++ORDERED_PACKET_SHA256 = "8811a3e0b22e4515d49f86fc391126658453e9df03cbafdb08af9f6d9e5a77a9"
++DESIGN_SHA256 = "7ff9e1e04fec076d68391a576c089f434844e4b97ca9408c9308fa08148c0abd"
+ TESTS = {
+     "secure": "testSecureFocus",
+     "text": "testTextFocus",
+@@ -40,7 +43,7 @@
+     target, lane, evidence = map(lambda value: Path(value).resolve(), sys.argv[1:4])
+     mode = sys.argv[4]
+     require(mode == "baseline", "Only baseline is authorized by this packet")
+-    require(os.environ.get("PROOF_VARIANT") == "ordered-setup-diagnostic", "Wrong proof variant")
++    require(os.environ.get("PROOF_VARIANT") == "composer-observation", "Wrong proof variant")
+     require(os.environ.get("CI") in {"1", "true"} and os.environ.get("GITHUB_ACTIONS") == "true", "Missing real CI identity")
+     require(os.environ.get("RUNNER_OS") == "macOS" and os.environ.get("RUNNER_ENVIRONMENT") == "github-hosted",
+             "This packet requires the reviewed secretless hosted macOS route")
+@@ -52,9 +55,11 @@
+     resolved = None
+     return_code = 1
+     exports_attempted = set()
+-    receipt = {"source": SOURCE, "mode": mode, "stage": "ordered-setup-diagnostic", "work": str(work),
++    overlay_installed = False
++    receipt = {"source": SOURCE, "mode": mode, "stage": "composer-observation", "work": str(work),
+                "admittedLockSha256": LOCK_SHA256, "commands": [], "cases": [], "diagnosticRecords": [],
+-               "caseOrder": list(TESTS), "attachments": {}}
++               "caseOrder": list(TESTS), "attachments": {}, "composerTraces": {},
++               "instrumented": True, "baselineAccepted": False}
+ 
+     def command(name, argv, timeout=120, check=True, cwd=target):
+         log = evidence / (name + ".log")
+@@ -95,8 +100,45 @@
+             "source": SOURCE,
+             "hostSha256": receipt["hostSourceHashes"]["Host/FocusHost.swift"],
+             "uiTestsSha256": receipt["hostSourceHashes"]["UITests/FocusUITests.swift"],
++            "captureHelperSha256": receipt["hostSourceHashes"]["UITests/ComposerTraceCapture.swift"],
+             "simulatorUDID": device,
+             "files": [{"path": str(path.relative_to(evidence)), "sha256": digest(path)} for path in files],
++        }
++
++    def verify_overlay(phase):
++        for relative, expected in packet["instrumentedSourceHashes"].items():
++            require(digest(target / relative) == expected, f"Instrumented source drift: {relative}")
++        _, tracked = command("instrumented-tracked-" + phase, ["git", "diff", "--name-only", "HEAD", "--"])
++        require(tracked.splitlines() == [packet["ownerPath"]], "Unexpected tracked source delta")
++        _, untracked = command("instrumented-untracked-" + phase, ["git", "ls-files", "--others", "--exclude-standard"])
++        require(untracked.splitlines() == [packet["helperPath"]], "Unexpected untracked source delta")
++        receipt.setdefault("sourceOverlayChecks", []).append(phase)
++
++    def capture_composer(scenario, log):
++        captures = [json.loads(value) for value in re.findall(r"COMPOSER_CAPTURE (\{[^\n]*\})", log)]
++        require(len(captures) == 1 and "COMPOSER_CAPTURE_ERROR" not in log, "Missing/duplicate composer capture status")
++        capture = captures[0]
++        (evidence / (scenario + "-composer-capture.json")).write_text(json.dumps(capture, indent=2) + "\n")
++        nonce = validate_capture(capture, scenario)
++        pids = re.findall(r"Terminate org\.openclaw\.tests\.focus136179:(\d+)", log)
++        require(len(pids) == 1 and int(pids[0]) > 1, "Missing exact native app PID")
++        _, container_text = command("composer-container-" + scenario, [
++            "xcrun", "simctl", "get_app_container", device, "org.openclaw.tests.focus136179", "data"])
++        container = Path(container_text.strip()).resolve(strict=True)
++        require(device.lower() in {part.lower() for part in container.parts}, "Container is not on owned Simulator")
++        trace_path = container / "tmp" / ("composer-observation-" + nonce + ".json")
++        require(trace_path.is_file() and not trace_path.is_symlink(), "Missing regular composer trace")
++        require(trace_path.stat().st_size <= 8 * 1024 * 1024, "Composer trace exceeds bound")
++        copied = evidence / (scenario + "-composer-trace.json")
++        shutil.copyfile(trace_path, copied)
++        trace = json.loads(copied.read_text())
++        validation = validate_trace(trace, capture, scenario, int(pids[0]))
++        receipt["composerTraces"][scenario] = {
++            "path": copied.name, "sha256": digest(copied), "validation": validation,
++            "source": SOURCE, "ownerSha256": packet["instrumentedSourceHashes"][packet["ownerPath"]],
++            "helperSha256": packet["instrumentedSourceHashes"][packet["helperPath"]],
++            "uiTestsSha256": receipt["hostSourceHashes"]["UITests/FocusUITests.swift"],
++            "captureHelperSha256": receipt["hostSourceHashes"]["UITests/ComposerTraceCapture.swift"], "simulatorUDID": device,
+         }
+ 
+     try:
+@@ -112,6 +154,8 @@
+         require(digest(lane / "ADMISSION.json") == ADMISSION_SHA256, "Root dependency admission differs")
+         require(digest(lane / "HOST-PACKET.json") == HOST_PACKET_SHA256, "Accepted host packet differs")
+         require(digest(lane / "BASELINE-PACKET.json") == BASELINE_PACKET_SHA256, "Original ordered baseline differs")
++        require(digest(lane / "ORDERED-PACKET.json") == ORDERED_PACKET_SHA256, "Original diagnostic packet differs")
++        require(digest(lane / "reference/DESIGN.md.txt") == DESIGN_SHA256, "Reviewed observation design differs")
+         require(digest(lane / "Package.resolved") == LOCK_SHA256, "Admitted dependency lock differs")
+         admission = json.loads((lane / "ADMISSION.json").read_text())
+         require(admission["admitted"] is True and admission["source"] == SOURCE
+@@ -134,11 +178,26 @@
+         receipt["hostSourceHashes"] = {
+             relative: digest(lane / relative) for relative in admission["hostSourceHashes"]
+         }
+-        receipt["sourceHashes"] = packet["sourceHashes"]
++        receipt["hostSourceHashes"]["UITests/ComposerTraceCapture.swift"] = digest(lane / "UITests/ComposerTraceCapture.swift")
++        receipt["baseSourceHashes"] = packet["sourceHashes"]
++        receipt["sourceHashes"] = packet["instrumentedSourceHashes"]
++        require(not (target / packet["helperPath"]).exists(), "Unexpected existing observation helper")
++        shutil.copyfile(lane / "Overlay/ChatComposerTextViewIOS.swift", target / packet["ownerPath"])
++        shutil.copyfile(lane / "Overlay/ComposerObservation.swift", target / packet["helperPath"])
++        overlay_installed = True
++        verify_overlay("installed")
++        for relative in ("Overlay/ChatComposerTextViewIOS.swift", "Overlay/ComposerObservation.swift", "source-overlay.patch"):
++            copied = evidence / relative
++            copied.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(lane / relative, copied)
+ 
+         _, xcode = command("xcode-version", ["xcodebuild", "-version"])
+         require(xcode.strip() == "Xcode 26.6\nBuild version 17F113", "Xcode pin unavailable")
+         command("swift-version", ["swift", "--version"])
++        _, sdk_text = command("ios-sdk-path", ["xcrun", "--sdk", "iphonesimulator", "--show-sdk-path"])
++        sdk = Path(sdk_text.strip())
++        for framework, name in (("UIKit", "UITextView.h"), ("UIKit", "UIView.h"), ("CoreFoundation", "CFNotificationCenter.h")):
++            shutil.copyfile(sdk / "System/Library/Frameworks" / (framework + ".framework") / "Headers" / name, evidence / name)
+         _, xcodegen = command("xcodegen-version", ["xcodegen", "--version"])
+         require(xcodegen.strip() == "Version: 2.46.0", "XcodeGen pin unavailable")
+         _, node = command("node-version", ["node", "--version"])
+@@ -236,6 +295,7 @@
+             record = records[0]
+             receipt["diagnosticRecords"].append(record)
+             (evidence / (scenario + "-record.json")).write_text(json.dumps(record, indent=2) + "\n")
++            capture_composer(scenario, log)
+             require(record["scenario"] == scenario and record["version"] == 1, "Wrong fixture result")
+             require(record["foreground"] and record["sideEffects"] == "0" and record["bootstrapError"] == "none",
+                     f"{scenario}: bootstrap/effect failure")
+@@ -256,14 +316,18 @@
+         require(any(row["scenario"] == "secure" and row["outcome"] == "failed" for row in receipt["cases"]),
+                 "NONREPRODUCTION: protected input did not demonstrate focus loss")
+         verify_dependency_checkouts("completed")
+-        for relative, expected in packet["sourceHashes"].items():
+-            require(digest(target / relative) == expected, f"Source changed during proof: {relative}")
+-        command("source-final-diff", ["git", "diff", "--exit-code"])
+-        receipt["verdict"] = "baseline intended focus failure with valid passive control"
++        verify_overlay("completed")
++        receipt["verdict"] = "instrumented diagnostics complete; not uninstrumented baseline qualification"
+         return_code = 0
+     except Exception as error:
+         receipt["error"] = f"{type(error).__name__}: {error}"
+     finally:
++        if overlay_installed:
++            try:
++                verify_overlay("final")
++            except Exception as error:
++                receipt["sourceOverlayError"] = str(error)
++                return_code = 1
+         try:
+             if resolved is not None:
+                 if resolved.exists():
