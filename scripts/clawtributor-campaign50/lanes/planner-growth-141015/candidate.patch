@@ -1,0 +1,180 @@
+diff --git a/scripts/debug-claude-usage.ts b/scripts/debug-claude-usage.ts
+index 33d86ece585..2c4aa320ac3 100644
+--- a/scripts/debug-claude-usage.ts
++++ b/scripts/debug-claude-usage.ts
+@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
+ import { expectDefined } from "../packages/normalization-core/src/expect.js";
+ import { normalizeOptionalString } from "../packages/normalization-core/src/string-coerce.js";
+ import { requireOptionArgument } from "./lib/arg-utils.mts";
+-import { readBoundedResponseText as readBoundedResponseTextWithLimit } from "./lib/bounded-response.mjs";
++import { readBoundedResponseText } from "./lib/bounded-response.mjs";
+ import {
+   maskIdentifier,
+   parseStrictIntegerOption,
+@@ -177,17 +177,6 @@ const withFetchTimeout = async <T>(
+   }
+ };
+ 
+-const readBoundedResponseText = (
+-  response: Response,
+-  label: string,
+-  signal: AbortSignal,
+-  maxBytes = FETCH_RESPONSE_MAX_BYTES,
+-): Promise<string> =>
+-  readBoundedResponseTextWithLimit(response, label, maxBytes, {
+-    createTooLargeError: (message: string) => new Error(message),
+-    signal,
+-  });
+-
+ const fetchText = async (
+   label: string,
+   url: string,
+@@ -198,7 +187,7 @@ const fetchText = async (
+   const timeoutMs = options.timeoutMs ?? resolveFetchTimeoutMs();
+   return await withFetchTimeout(label, timeoutMs, async (signal) => {
+     const res = await fetchImpl(url, { ...init, signal });
+-    const text = await readBoundedResponseText(res, label, signal);
++    const text = await readBoundedResponseText(res, label, FETCH_RESPONSE_MAX_BYTES, { signal });
+     return { res, text };
+   });
+ };
+@@ -535,10 +524,8 @@ const main = async (argv = process.argv.slice(2)) => {
+ 
+ export const testing = {
+   CLAUDE_COOKIE_HOST_SQL,
+-  FETCH_RESPONSE_MAX_BYTES,
+   fetchAnthropicOAuthUsage,
+   parseArgs,
+-  readBoundedResponseText,
+   resolveFetchTimeoutMs,
+ };
+ 
+diff --git a/scripts/firecrawl-compare.ts b/scripts/firecrawl-compare.ts
+index c17335dfeed..42ba6ca49cc 100644
+--- a/scripts/firecrawl-compare.ts
++++ b/scripts/firecrawl-compare.ts
+@@ -4,7 +4,7 @@ import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+ import { fetchFirecrawlContent } from "../extensions/firecrawl/api.ts";
+ import { formatErrorMessage } from "../src/infra/errors.ts";
+ import { extractReadableContent } from "../src/web-fetch/content-extractors.runtime.js";
+-import { readBoundedResponseText as readBoundedResponseTextWithLimit } from "./lib/bounded-response.mjs";
++import { readBoundedResponseText } from "./lib/bounded-response.mjs";
+ 
+ const DEFAULT_URLS = [
+   "https://en.wikipedia.org/wiki/Web_scraping",
+@@ -36,18 +36,6 @@ function truncate(value: string, max = 180): string {
+   return value.length > max ? `${truncateUtf16Safe(value, max)}…` : value;
+ }
+ 
+-function readBoundedResponseText(
+-  response: Response,
+-  label: string,
+-  signal: AbortSignal,
+-  maxBytes = FETCH_HTML_MAX_BYTES,
+-): Promise<string> {
+-  return readBoundedResponseTextWithLimit(response, label, maxBytes, {
+-    createTooLargeError: (message: string) => new Error(message),
+-    signal,
+-  });
+-}
+-
+ async function fetchHtml(
+   url: string,
+   options: FetchHtmlOptions = {},
+@@ -71,8 +59,8 @@ async function fetchHtml(
+     const body = await readBoundedResponseText(
+       res,
+       "local HTML fetch",
+-      controller.signal,
+       options.maxBytes ?? FETCH_HTML_MAX_BYTES,
++      { signal: controller.signal },
+     );
+     return {
+       ok: res.ok,
+diff --git a/test/scripts/ci-node-test-plan.test.ts b/test/scripts/ci-node-test-plan.test.ts
+index 1a3d4ca6084..5519112aebd 100644
+--- a/test/scripts/ci-node-test-plan.test.ts
++++ b/test/scripts/ci-node-test-plan.test.ts
+@@ -2214,11 +2214,16 @@ describe("scripts/lib/ci-node-test-plan.mts", () => {
+       [DEFAULT_NODE_TEST_RUNNER, 1],
+       [EXTRA_LARGE_NODE_TEST_RUNNER, 2],
+     ]);
++    // Only the tooling overlay changes; retain the real process-start source classification.
++    const unitFastPaths = await vi.importActual<
++      typeof import("../vitest/vitest.unit-fast-paths.mjs")
++    >("../vitest/vitest.unit-fast-paths.mjs");
+     const createPlanWithInventory = async (
+       includeGrowthFile: boolean,
+       extraFiles: string[] = [],
+     ) => {
+       vi.resetModules();
++      vi.doMock("../vitest/vitest.unit-fast-paths.mjs", () => unitFastPaths);
+       vi.doMock("../../scripts/lib/list-test-files.mts", async (importOriginal) => {
+         const actual =
+           await importOriginal<typeof import("../../scripts/lib/list-test-files.mts")>();
+@@ -2246,6 +2251,7 @@ describe("scripts/lib/ci-node-test-plan.mts", () => {
+         return createPlan(options);
+       } finally {
+         vi.doUnmock("../../scripts/lib/list-test-files.mts");
++        vi.doUnmock("../vitest/vitest.unit-fast-paths.mjs");
+         vi.resetModules();
+       }
+     };
+diff --git a/test/scripts/dev-tooling-safety.test.ts b/test/scripts/dev-tooling-safety.test.ts
+index 0428d3925cd..0fada3dc198 100644
+--- a/test/scripts/dev-tooling-safety.test.ts
++++ b/test/scripts/dev-tooling-safety.test.ts
+@@ -1136,24 +1136,21 @@ describe("script-specific dev tooling hardening", () => {
+   });
+ 
+   it("bounds Claude usage response body reads by content-length", async () => {
+-    const maxBytes = claudeUsageTesting.FETCH_RESPONSE_MAX_BYTES;
++    const maxBytes = 256 * 1024;
+     const response = new Response("{}", {
+       headers: { "content-length": String(maxBytes + 1) },
+     });
+-    const controller = new AbortController();
+ 
+     await expect(
+-      claudeUsageTesting.readBoundedResponseText(
+-        response,
+-        "Claude usage test",
+-        controller.signal,
+-        maxBytes,
+-      ),
+-    ).rejects.toThrow(`Claude usage test response body exceeded ${maxBytes} bytes`);
++      claudeUsageTesting.fetchAnthropicOAuthUsage("test-token", {
++        fetchImpl: async () => response,
++        timeoutMs: 1_000,
++      }),
++    ).rejects.toThrow(`Anthropic OAuth usage request response body exceeded ${maxBytes} bytes`);
+   });
+ 
+   it("bounds Claude usage response body reads by streamed bytes", async () => {
+-    const maxBytes = claudeUsageTesting.FETCH_RESPONSE_MAX_BYTES;
++    const maxBytes = 256 * 1024;
+     const response = new Response(
+       new ReadableStream({
+         start(controller) {
+@@ -1162,16 +1159,13 @@ describe("script-specific dev tooling hardening", () => {
+         },
+       }),
+     );
+-    const controller = new AbortController();
+ 
+     await expect(
+-      claudeUsageTesting.readBoundedResponseText(
+-        response,
+-        "Claude usage test",
+-        controller.signal,
+-        maxBytes,
+-      ),
+-    ).rejects.toThrow(`Claude usage test response body exceeded ${maxBytes} bytes`);
++      claudeUsageTesting.fetchAnthropicOAuthUsage("test-token", {
++        fetchImpl: async () => response,
++        timeoutMs: 1_000,
++      }),
++    ).rejects.toThrow(`Anthropic OAuth usage request response body exceeded ${maxBytes} bytes`);
+   });
+ 
+   it.each([

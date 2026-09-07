@@ -1,0 +1,3007 @@
+[
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > isolates mutations between workflow fixtures",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fetches the required release preparation history for artifact mode",
+    "durationMs": 24
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fetches the required release preparation history for source mode",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fetches the required release preparation history for published mode",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gates frozen runtime-pair compatibility on the trusted suite outcome",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > separates release QA lanes without weakening their resource locks",
+    "durationMs": 19
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs full-access restart proof as a failing nightly gate",
+    "durationMs": 7
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves module heredocs and cleans child temporary artifacts",
+    "durationMs": 50
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes PR edited metadata only to interested automation",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps ClawSweeper dispatch events aligned with receiver workflows",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs the PR context and evidence gate only for relevant PR changes",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > isolates auto-response per item and ignores ClawSweeper PR label feedback",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes stale bug issues through ClawSweeper instead of Barnacle closure",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > makes the hosted release-gate fallback explicit and exact-SHA only",
+    "durationMs": 9
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs macos-swift native phases (historical=false, event=workflow_dispatch, release_gate=false)",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs ios-build native phases (historical=false, event=workflow_dispatch, release_gate=false)",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs ios-build native phases (historical=true, event=workflow_dispatch, release_gate=false)",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs ios-build native phases (historical=false, event=pull_request, release_gate=false)",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs ios-build native phases (historical=false, event=push, release_gate=false)",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs ios-build native phases (historical=false, event=workflow_dispatch, release_gate=true)",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs ios-build native phases (historical=true, event=workflow_dispatch, release_gate=true)",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains macOS tests and one guard/cache owner for {\"eventName\":\"pull_request\",\"releaseGate\":false,\"full\":false}",
+    "durationMs": 135
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains macOS tests and one guard/cache owner for {\"eventName\":\"push\",\"releaseGate\":false,\"full\":false}",
+    "durationMs": 155
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains macOS tests and one guard/cache owner for {\"eventName\":\"workflow_dispatch\",\"releaseGate\":true,\"full\":false}",
+    "durationMs": 155
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains macOS tests and one guard/cache owner for {\"eventName\":\"workflow_dispatch\",\"releaseGate\":false,\"full\":true}",
+    "durationMs": 143
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains macOS tests and one guard/cache owner for {\"eventName\":\"workflow_dispatch\",\"releaseGate\":false,\"full\":true,\"historical\":true}",
+    "durationMs": 132
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > starts Apple builds and screenshots directly on hosted capacity",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > serializes the shared Swift package suite on hosted macOS retries",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps Testbox pull request validation off leased runner capacity",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps every path-filtered hosted gate runnable on landing-relevant events",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins every external GitHub Action reference to a full commit SHA",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > schedules approved Docker refreshes from independently resolved channels",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > forbids moving reusable workflow references",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps locale refresh matrices alive and publishes each aggregate through a PR",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > enables auto-merge for the exact generated pull request head",
+    "durationMs": 1975
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > waits for the published pull request head before enabling auto-merge",
+    "durationMs": 1965
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves inherited auto-merge while replacing a generated pull request head",
+    "durationMs": 2038
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > accepts inherited auto-merge completing immediately after publication",
+    "durationMs": 1734
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > waits for the existing pull request head before replacing it",
+    "durationMs": 1985
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > refuses to replace an auto-merge-enabled head when publication opts out",
+    "durationMs": 1403
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > does not mutate inherited auto-merge when generated publication fails",
+    "durationMs": 1484
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects an incompatible inherited auto-merge method without mutating it",
+    "durationMs": 1380
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > defers a newer owned snapshot even when the desired diff is disjoint",
+    "durationMs": 1729
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > defers stale generator inputs and preserves an existing pull request and disarms auto-merge",
+    "durationMs": 1091
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > publishes after unrelated source changes when input invalidation is disabled",
+    "durationMs": 1504
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves an existing pull request when a no-change run becomes stale",
+    "durationMs": 1012
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > disarms stale output when inputs advance during PR publication (inherited=false)",
+    "durationMs": 1961
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > disarms stale output when inputs advance during PR publication (inherited=true)",
+    "durationMs": 2016
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > leaves a current no-change run's existing pull request and auto-merge unchanged",
+    "durationMs": 710
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > does not overwrite a successor that moves while stale auto-merge is disabled",
+    "durationMs": 1051
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fails stale generated publication when no successor run is guaranteed",
+    "durationMs": 2219
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fails OpenGrep SARIF artifact uploads when reports are missing",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > verifies the pinned OpenGrep release binary before installing it",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs real behavior proof from the trusted workflow revision",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps docs-change detection fail-safe and fixture-aware",
+    "durationMs": 660
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs generated docs checks in the docs-only job",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds matrix fan-out for runner-registration pressure",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs changed Docker seed owners in one gated scheduler job",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > splits Windows tests two ways on every runner backend",
+    "durationMs": 465
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes each Mac partition once and keeps historical coverage on blacksmith",
+    "durationMs": 331
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes each Mac partition once and keeps historical coverage on github",
+    "durationMs": 330
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes each Mac partition once and keeps historical coverage on hybrid",
+    "durationMs": 301
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps Windows projects serial on each runner while both jobs remain parallel",
+    "durationMs": 63
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > installs the Android SDK platform used by Gradle",
+    "durationMs": 7
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds frozen target context to the declared live release branch",
+    "durationMs": 88
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds authenticated historical ref v2026.8.1 to its exact commit",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds authenticated historical ref v2026.8.1-beta.2 to its exact commit",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds authenticated historical ref v2026.8.1-1 to its exact commit",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds authenticated candidate ref release/2026.8.1 to its exact commit",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds authenticated candidate ref release/2026.8.1-1 to its exact commit",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds authenticated candidate ref extended-stable/2026.8.33 to its exact commit",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects unavailable authenticated context ref evidence",
+    "durationMs": 8
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects unavailable authenticated context comparison evidence",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects unavailable authenticated historical ref evidence",
+    "durationMs": 9
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects unavailable authenticated candidate ref evidence",
+    "durationMs": 9
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects wrong-namespace historical ref refs/heads/v2026.8.1 before remote admission",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects wrong-namespace historical ref release/2026.8.1 before remote admission",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects wrong-namespace candidate ref refs/tags/release/2026.8.1 before remote admission",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects wrong-namespace candidate ref v2026.8.1 before remote admission",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > protects correction credentials",
+    "durationMs": 75
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins Swift 6.3 workflow jobs to Xcode 26.6-capable runners",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > loads Android CI setup from the workflow revision for frozen targets",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds Android SDK command-line tools downloads",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > covers Android app variants, lint, and benchmark compilation",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > executes Android test/lint and retained full-tier commands for {\"eventName\":\"pull_request\",\"releaseGate\":false,\"full\":false,\"legacy\":false}",
+    "durationMs": 298
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > executes Android test/lint and retained full-tier commands for {\"eventName\":\"push\",\"releaseGate\":false,\"full\":false,\"legacy\":false}",
+    "durationMs": 260
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > executes Android test/lint and retained full-tier commands for {\"eventName\":\"workflow_dispatch\",\"releaseGate\":true,\"full\":false,\"legacy\":false}",
+    "durationMs": 270
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > executes Android test/lint and retained full-tier commands for {\"eventName\":\"workflow_dispatch\",\"releaseGate\":false,\"full\":true,\"legacy\":false}",
+    "durationMs": 258
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > executes Android test/lint and retained full-tier commands for {\"eventName\":\"workflow_dispatch\",\"releaseGate\":false,\"full\":true,\"legacy\":true}",
+    "durationMs": 182
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/benchmark/src/main/Example.kt\"],\"build\":true}",
+    "durationMs": 134
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/build.gradle.kts\"],\"build\":true}",
+    "durationMs": 141
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/app/build.gradle.kts\"],\"build\":true}",
+    "durationMs": 150
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/settings.gradle.kts\"],\"build\":true}",
+    "durationMs": 141
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/gradle.properties\"],\"build\":true}",
+    "durationMs": 142
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/gradle/libs.versions.toml\"],\"build\":true}",
+    "durationMs": 143
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/gradle/wrapper/gradle-wrapper.properties\"],\"build\":true}",
+    "durationMs": 135
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/gradlew\"],\"build\":true}",
+    "durationMs": 131
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/Config/Version.properties\"],\"build\":true}",
+    "durationMs": 137
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/app/src/main/java/ai/openclaw/app/Example.kt\"],\"build\":false}",
+    "durationMs": 130
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"apps/android/wear/src/main/Example.kt\"],\"build\":false}",
+    "durationMs": 127
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"docs/ci.md\"],\"build\":false}",
+    "durationMs": 125
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[],\"build\":true}",
+    "durationMs": 130
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":[\"\"],\"build\":true}",
+    "durationMs": 145
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"paths\":null,\"build\":true}",
+    "durationMs": 132
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"build\":true}",
+    "durationMs": 137
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"json\":\"{\",\"build\":true}",
+    "durationMs": 136
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > retains benchmark assembly for changed or unknown inputs: {\"json\":\"[42]\",\"build\":true}",
+    "durationMs": 138
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > propagates test-play failure from :app:testPlayDebugUnitTest",
+    "durationMs": 24
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > propagates test-play failure from :app:lintPlayDebug",
+    "durationMs": 35
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > propagates test-third-party failure from :app:lintThirdPartyDebug",
+    "durationMs": 31
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > propagates test-wear failure from :wear:lintDebug",
+    "durationMs": 33
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > Android validation tiers > propagates ktlint failure from :benchmark:assembleDebug",
+    "durationMs": 30
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves pending ready CI after a delayed draft opened",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves running ready CI after a delayed draft opened",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves pending ready CI after a delayed draft reopened",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves running ready CI after a delayed draft reopened",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves pending ready CI after a delayed draft synchronize",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves running ready CI after a delayed draft synchronize",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > admits ready CI after the forward draft-to-ready sequence",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > converted_to_draft cancels pending CI and skips its jobs",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > converted_to_draft cancels running CI and skips its jobs",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > a newer non-draft head supersedes pending CI only for its PR",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > a newer non-draft head supersedes running CI only for its PR",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > isolates manual dispatches on the same target from each other and PR CI",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > passive drafts do not resurrect explicitly cancelled pending CI",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > passive drafts do not resurrect explicitly cancelled running CI",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > pipelines canonical main across two non-canceling slots with coalesced pending work",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves push grouping for openclaw/openclaw on refs/heads/topic",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves push grouping for contributor/fork on refs/heads/main",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > CI workflow admission > preserves push grouping for contributor/fork on refs/heads/topic",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > composes dedicated suite coverage before precise planning (build=false, UI=false)",
+    "durationMs": 122
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > composes dedicated suite coverage before precise planning (build=true, UI=true)",
+    "durationMs": 107
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares contract setup while retaining process envelopes (push, blacksmith, frozen=false)",
+    "durationMs": 97
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares contract setup while retaining process envelopes (pull_request, github, frozen=false)",
+    "durationMs": 95
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares contract setup while retaining process envelopes (pull_request, hybrid, frozen=false)",
+    "durationMs": 101
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares contract setup while retaining process envelopes (workflow_dispatch, blacksmith, frozen=false)",
+    "durationMs": 103
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares contract setup while retaining process envelopes (workflow_dispatch, blacksmith, frozen=true)",
+    "durationMs": 113
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares contract setup while retaining process envelopes (workflow_dispatch, github, frozen=true)",
+    "durationMs": 114
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > joins plugin contract envelopes and stops admission on any failure",
+    "durationMs": 207
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > joins channel contract envelopes and stops admission on any failure",
+    "durationMs": 192
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps CodeQL critical quality scans off Blacksmith registrations",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps hybrid preflight and the gate hosted while security uses Blacksmith",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for full-release-validation.yml/release_checks_independent",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for full-release-validation.yml/release_checks_candidate",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for full-release-validation.yml/performance",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for full-release-validation.yml/release_execution_plan",
+    "durationMs": 10
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for full-release-validation.yml/release_decision",
+    "durationMs": 9
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for full-release-validation.yml/diagnostic_drain",
+    "durationMs": 9
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-npm-preflight.yml/check_openclaw_npm",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-npm-preflight.yml/prepare_openclaw_npm",
+    "durationMs": 10
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-npm-preflight.yml/check_sdk_npm",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-npm-preflight.yml/check_dependencies_npm",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-npm-preflight.yml/check_contents_npm",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-npm-preflight.yml/verify_openclaw_npm",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/authorize_actor",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/validate_selected_ref",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_mock_parity",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_runtime_token_efficiency",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_matrix",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_buzz",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_telegram",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_discord",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_whatsapp",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for qa-live-transports-convex.yml/run_live_slack",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-performance.yml/kova",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-performance.yml/source_performance",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for npm-telegram-beta-e2e.yml/run_package_telegram_e2e",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-live-and-e2e-checks-reusable.y\u2026/validate_docker_openwebui",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors the global hosted runner override for openclaw-release-checks.yml/qa_lab_runtime_pair_lane_release_checks",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > resolves one event-aware logical runner profile without changing physical routing",
+    "durationMs": 149
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors trusted dispatch runner selection for check shards with context \"\"",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > honors trusted dispatch runner selection for check shards with context \"release/2026.9.1\"",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > encodes GitHub, Blacksmith, and hybrid runner-backend shapes",
+    "durationMs": 57
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gives breaker-routed hosted jobs their hosted timeout budgets",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fetches the complete pull request scan range before checkout removes credentials",
+    "durationMs": 99
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > scans only the pull request commit range for leaked credentials",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects invalid security checkout depth input \"\"",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects invalid security checkout depth input \"-1\"",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects invalid security checkout depth input \"1.5\"",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps setup cache access explicit and isolates every cache write",
+    "durationMs": 234
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > owns one exact immutable semantic dependency cache",
+    "durationMs": 363
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: uncached frozen",
+    "durationMs": 32
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: uncached mutable",
+    "durationMs": 29
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: invalid frozen policy",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: uncached failure",
+    "durationMs": 30
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: cached success",
+    "durationMs": 30
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: cached relink",
+    "durationMs": 41
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: cached store rebuild",
+    "durationMs": 51
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the dependency install recipe: cached terminal failure",
+    "durationMs": 55
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves pnpm hard links and validates cached importers and supply-chain policy offline",
+    "durationMs": 240
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > persists content-validated public full-build declarations",
+    "durationMs": 41
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > persists Node 22 declarations through trusted bounded artifacts",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fingerprints dependency install inputs without ordinary script churn",
+    "durationMs": 585
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > hashes transform inputs once per enabled setup and never for skipped caches",
+    "durationMs": 110
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > persists isolated transform and compile caches through immutable protected archives",
+    "durationMs": 8
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > warms protected caches without main-run cancellation",
+    "durationMs": 44
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > publishes a portable release npm seed without hooks or push-time downloads",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses bundled Node shards and telemetry-backed runner sizes",
+    "durationMs": 107
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the extension boundary sticky disk on one protected key",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the Gradle sticky disk on O(1) per-task protected keys",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > caches Robolectric SDK artifacts for Android test tasks only",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > never keys a Blacksmith sticky disk by unbounded run dimensions",
+    "durationMs": 218
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > deletes only exact allowlisted retired sticky disks from protected main",
+    "durationMs": 327
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > selects every supplemental boundary check exactly once across the CI matrix",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs all source checks serially and preserves individual failures",
+    "durationMs": 1298
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > groups current source checks and allocates SDK reports only for dispatch",
+    "durationMs": 611
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses the current SDK diff and preserves the historical baseline check",
+    "durationMs": 78
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains fetch deadlines in other standalone workflows",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > owns Docs Agent Git without changing cadence, deadlines, or action authority",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > owns docs mirror Git lifecycle without changing transport or stale-source policy",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins plugin publication owners before selected checkout and preserves Git deadlines",
+    "durationMs": 6
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins the Mantis Git owner and preserves distinct terminal ref-validation contracts",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps shared Mantis reaction ownership stable",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps legacy Mantis scenarios on manual dispatch in .github/workflows/mantis-web-ui-chat-proof.yml",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps legacy Mantis scenarios on manual dispatch in .github/workflows/mantis-discord-status-reactions.yml",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps legacy Mantis scenarios on manual dispatch in .github/workflows/mantis-discord-thread-attachment.yml",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds release ref validation fetches across checkout auth modes",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > checks the generated Git owner in the workflow guard lane",
+    "durationMs": 42
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses the maintained authenticated checkout for security-fast",
+    "durationMs": 7
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses native preflight tooling unless a dispatch selects a different revision",
+    "durationMs": 67
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps manual candidates separate from trusted cache authority",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > classifies cache write authority from proven candidate identity",
+    "durationMs": 23
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses the maintained checkout across workflow sanity jobs",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins workflow sanity's typed Git policy after Python setup",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares Testbox checkouts with one maintained owner and scoped history",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds the workflow sanity ShellCheck download",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins workflow and pre-commit actionlint to the large-stdin deadlock fix",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs committed generated baseline drift checks in workflow sanity",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > shares checkout ownership across Linux and native platforms with their existing budgets",
+    "durationMs": 69
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > checks native and Node state schema versions in the macOS lane",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares offline Apple assets before CI opens a macOS SwiftPM graph",
+    "durationMs": 23
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves the Apple asset contract for false historical / true helper",
+    "durationMs": 21
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves the Apple asset contract for true historical / false helper",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves the Apple asset contract for false historical / false helper",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares Watch RTC by source capability: {\"historical\":false,\"hasWatchRtc\":true,\"expected\":true}",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares Watch RTC by source capability: {\"historical\":false,\"hasWatchRtc\":false,\"expected\":true}",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares Watch RTC by source capability: {\"historical\":true,\"hasWatchRtc\":true,\"expected\":true}",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares Watch RTC by source capability: {\"historical\":true,\"hasWatchRtc\":false,\"expected\":false}",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retries macOS release builds only when Sparkle metadata is incomplete",
+    "durationMs": 41
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses native macOS Swift tests and preserves the first failure",
+    "durationMs": 175
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds the Windows Crabbox hydrate main fetch",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds Mantis Slack runner IP discovery",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fails Windows Testbox setup when Blacksmith phone-home is not accepted",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs dependency policy guards in PR CI preflight",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares the frozen diff base for check-shard/prod-types at checkout",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares the frozen diff base for checks-fast-core/baseline-ratchets at checkout",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares the frozen diff base for checks-fast-core/release-lint-core-1 at checkout",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > prepares the frozen diff base for checks-fast-core/ci-routing at checkout",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the full npm-lock sweep for manual run",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the full npm-lock sweep for target without changed checks",
+    "durationMs": 33
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves absent npm-lock capability handling (historical=false)",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves absent npm-lock capability handling (historical=true)",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs temp path guardrails in the hosted guard shard",
+    "durationMs": 146
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs declared typechecks for scripts=[ 'tsgo:scripts', 'tsgo:test:root' ] frozen=false",
+    "durationMs": 49
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs declared typechecks for scripts=[ 'tsgo:scripts' ] frozen=false",
+    "durationMs": 49
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs declared typechecks for scripts=[] frozen=false",
+    "durationMs": 36
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs declared typechecks for scripts=[] frozen=true",
+    "durationMs": 55
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs declared typechecks for scripts=[ 'tsgo:test:root' ] frozen=true",
+    "durationMs": 56
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes eligible core test leaves to one type owner before runner allocation",
+    "durationMs": 346
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":null,\"invalid\":true}",
+    "durationMs": 127
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[]}",
+    "durationMs": 151
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"docs/ci.md\"]}",
+    "durationMs": 164
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/commands/doctor.test.ts\",\"package.json\"]}",
+    "durationMs": 166
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/commands/doctor.test.ts\",\"src/shared.test-support.ts\"]}",
+    "durationMs": 163
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"packages/mermaid-renderer/src/render.test.ts\"]}",
+    "durationMs": 171
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/gateway/gateway-acp-bind.live.test.ts\"]}",
+    "durationMs": 161
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/commands/doctor.test.ts\"],\"changedCoreTestSupport\":false}",
+    "durationMs": 104
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/commands/doctor.test.ts\"],\"eventName\":\"push\"}",
+    "durationMs": 107
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/commands/doctor.test.ts\"],\"eventName\":\"workflow_dispatch\"}",
+    "durationMs": 106
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains full type owners for ineligible manifest inputs {\"changedPaths\":[\"src/commands/doctor.test.ts\"],\"scopeEnv\":{\"OPENCLAW_CI_CHANGED_PATHS_JSON\":\"invalid\"},\"invalid\":true}",
+    "durationMs": 105
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves type workload for hybrid pull_request frozen=false hosted-contract=true stripe-support=true",
+    "durationMs": 129
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves type workload for github workflow_dispatch frozen=false hosted-contract=true stripe-support=true",
+    "durationMs": 129
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves type workload for blacksmith push frozen=false hosted-contract=true stripe-support=true",
+    "durationMs": 38
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves type workload for hybrid workflow_dispatch frozen=true hosted-contract=false stripe-support=true",
+    "durationMs": 38
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves type workload for hybrid workflow_dispatch frozen=true hosted-contract=true stripe-support=false",
+    "durationMs": 49
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > preserves type workload for hybrid workflow_dispatch frozen=true hosted-contract=true stripe-support=true",
+    "durationMs": 120
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > halts only the type row whose first stripe 1/5 fails",
+    "durationMs": 114
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > halts only the type row whose first stripe 5/5 fails",
+    "durationMs": 102
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > resolves manual diff and cache bases from authenticated main when anonymous Git is unavailable",
+    "durationMs": 52
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > resolves manual diff and cache bases from authenticated trunk/release when anonymous Git is unavailable",
+    "durationMs": 44
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects unavailable authenticated manual diff-base ref evidence",
+    "durationMs": 41
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects unavailable authenticated manual diff-base comparison evidence",
+    "durationMs": 41
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects ambiguous zero-before main pushes and preserves concrete bases",
+    "durationMs": 117
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses stable deadcode checks for current and frozen checkouts",
+    "durationMs": 242
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the preflight manifest import closure dependency-free",
+    "durationMs": 170
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs mobile protocol coverage for Node and native-only changes",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps type-aware oxlint within hosted fork-runner resources",
+    "durationMs": 146
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (bundled-protocol, pull_request)",
+    "durationMs": 1070
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (bundled-protocol, push)",
+    "durationMs": 1030
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (bundled-protocol, workflow_dispatch)",
+    "durationMs": 1046
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (guards, pull_request)",
+    "durationMs": 1366
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (guards, push)",
+    "durationMs": 1323
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (guards, workflow_dispatch)",
+    "durationMs": 1389
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (npm-lock, pull_request)",
+    "durationMs": 1058
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (npm-lock, push)",
+    "durationMs": 1040
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses prefetched CI base without later network access (npm-lock, workflow_dispatch)",
+    "durationMs": 1008
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs all baseline ratchets against the exact tested tree",
+    "durationMs": 243
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes standalone changed-path-facts coverage for test-only routing",
+    "durationMs": 157
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes standalone changed-path-facts coverage for source-only routing",
+    "durationMs": 214
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes standalone changed-path-facts coverage for legacy combined contract and routing ta\u2026",
+    "durationMs": 249
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Git-owner action)",
+    "durationMs": 162
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Docs Agent)",
+    "durationMs": 150
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Performance owner .github/workflows/ope\u2026)",
+    "durationMs": 177
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Performance owner test/scripts/openclaw\u2026)",
+    "durationMs": 184
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Performance owner test/scripts/openclaw\u2026)",
+    "durationMs": 212
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Performance owner test/scripts/openclaw\u2026)",
+    "durationMs": 141
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Git-owner fixture)",
+    "durationMs": 141
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Windows process census fixture)",
+    "durationMs": 154
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Mac app)",
+    "durationMs": 142
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (Mac artifact proof)",
+    "durationMs": 193
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (iOS app pull request)",
+    "durationMs": 164
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (iOS app main push)",
+    "durationMs": 155
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (iOS app exact-head release gate)",
+    "durationMs": 154
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (shared native)",
+    "durationMs": 139
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (docs)",
+    "durationMs": 132
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (unrelated CI workflow)",
+    "durationMs": 130
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (ordinary manual)",
+    "durationMs": 171
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (historical Mac scope without native Nod\u2026)",
+    "durationMs": 177
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > routes native CI jobs through scope output and manifest (historical non-Mac scope without native\u2026)",
+    "durationMs": 213
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > qualifies npm-beta 2026.9.1-beta.1 without native app jobs through a validated release branch",
+    "durationMs": 344
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > qualifies npm-beta 2026.9.1-beta.1 without native app jobs through a validated release tag",
+    "durationMs": 311
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > qualifies npm-stable 2026.9.1 without native app jobs through a validated release branch",
+    "durationMs": 319
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > qualifies npm-stable 2026.9.1 without native app jobs through a validated release tag",
+    "durationMs": 265
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > qualifies npm-stable 2026.9.1-1 without native app jobs through a validated release branch",
+    "durationMs": 324
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > qualifies npm-stable 2026.9.1-1 without native app jobs through a validated release tag",
+    "durationMs": 321
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable base branch correction to the exact source",
+    "durationMs": 265
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable base tag correction to the exact source",
+    "durationMs": 210
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable annotated base tag to the exact source",
+    "durationMs": 186
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable versioned correction without a base loo\u2026 to the exact source",
+    "durationMs": 152
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable missing base tag to the exact source",
+    "durationMs": 72
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable different base source to the exact source",
+    "durationMs": 213
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > binds npm stable different peeled source to the exact source",
+    "durationMs": 222
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for stable target",
+    "durationMs": 136
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for alpha target",
+    "durationMs": 153
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for PR event",
+    "durationMs": 137
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for fork repository",
+    "durationMs": 135
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for PR release gate",
+    "durationMs": 155
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for PR number",
+    "durationMs": 223
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for mutable target",
+    "durationMs": 169
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for wrong target",
+    "durationMs": 140
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for unvalidated branch",
+    "durationMs": 167
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for wrong release train",
+    "durationMs": 178
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for wrong release tag",
+    "durationMs": 151
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for unknown scope",
+    "durationMs": 127
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for npm-stable with 2026.9.1-beta.1",
+    "durationMs": 126
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for npm-stable with 2026.9.1-alpha.1",
+    "durationMs": 132
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for npm-stable with 2026.9.33",
+    "durationMs": 135
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for npm-stable with 2026.9.33-1",
+    "durationMs": 168
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > rejects scoped npm CI qualification for correction package in a different relea\u2026",
+    "durationMs": 141
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > forwards changed paths only to canonical PR fallback (pull_request, openclaw/openclaw)",
+    "durationMs": 139
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > forwards changed paths only to canonical PR fallback (pull_request, example/openclaw)",
+    "durationMs": 138
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > forwards changed paths only to canonical PR fallback (push, openclaw/openclaw)",
+    "durationMs": 138
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > forwards changed paths only to canonical PR fallback (workflow_dispatch, openclaw/openclaw)",
+    "durationMs": 142
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > projects immutable reader history only when the selected target has the reader (present=false)",
+    "durationMs": 183
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > projects immutable reader history only when the selected target has the reader (present=true)",
+    "durationMs": 166
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds the final Node matrix for pull_request compact plans",
+    "durationMs": 357
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds the final Node matrix for pull_request precise plans",
+    "durationMs": 360
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds the final Node matrix for push compact plans",
+    "durationMs": 491
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > bounds the final Node matrix for workflow_dispatch compact plans",
+    "durationMs": 402
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > admits slow compact and plugin fallback rows before shorter work",
+    "durationMs": 172
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses target-owned CI plans and capabilities for older release checkouts",
+    "durationMs": 3812
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the current standalone UI envelope",
+    "durationMs": 36
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the frozen current standalone UI envelope",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > executes the frozen legacy standalone UI envelope",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps private Control UI servers and resource-sensitive files under one serial owner",
+    "durationMs": 881
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > retains shared worker limits and local throttling in the bundled UI project",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses the target-owned UI project capability for frozen manual matrices and commands",
+    "durationMs": 721
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gates current Control UI changes on ordinary and real-Gateway Chromium E2E",
+    "durationMs": 2238
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uploads only captured synthetic widget failures: {\"failed\":false,\"captured\":false}",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uploads only captured synthetic widget failures: {\"failed\":false,\"captured\":true}",
+    "durationMs": 8
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uploads only captured synthetic widget failures: {\"failed\":true,\"captured\":false}",
+    "durationMs": 10
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uploads only captured synthetic widget failures: {\"failed\":true,\"captured\":true}",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > selects the complete real-Gateway command without retrying failures (frozen: false, prebuilt: true, exit: 0)",
+    "durationMs": 9
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > selects the complete real-Gateway command without retrying failures (frozen: true, prebuilt: true, exit: 0)",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > selects the complete real-Gateway command without retrying failures (frozen: true, prebuilt: false, exit: 0)",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > selects the complete real-Gateway command without retrying failures (frozen: false, prebuilt: false, exit: 0)",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > selects the complete real-Gateway command without retrying failures (frozen: true, prebuilt: true, exit: 42)",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > builds artifacts once and smoke-tests the built CLI with Node and Bun",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps automatic source-only Control UI locale drift advisory and manual CI strict",
+    "durationMs": 64
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > splits native source verification from generated locale parity",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > measures startup memory before the built artifact-check wave",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with one passing named case",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with a passing frozen case",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with a failed named case",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with a skipped current case",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with a skipped frozen case",
+    "durationMs": 24
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with a missing current case",
+    "durationMs": 25
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with an unavailable historical case",
+    "durationMs": 23
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with a failed suite",
+    "durationMs": 34
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates Discord built proof with malformed JSON",
+    "durationMs": 26
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gates browser native-host proof (frozen=false, present=true)",
+    "durationMs": 4
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gates browser native-host proof (frozen=false, present=false)",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gates browser native-host proof (frozen=true, present=true)",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > gates browser native-host proof (frozen=true, present=false)",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: passed",
+    "durationMs": 79
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: skipped",
+    "durationMs": 66
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: pending",
+    "durationMs": 71
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: todo",
+    "durationMs": 69
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: absent",
+    "durationMs": 67
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: wrong-name",
+    "durationMs": 63
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: wrong-file",
+    "durationMs": 65
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: failed",
+    "durationMs": 59
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: suite-failed",
+    "durationMs": 64
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: duplicate",
+    "durationMs": 65
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: malformed",
+    "durationMs": 69
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > validates browser native-host proof report: missing-report",
+    "durationMs": 62
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs the built SQLite verifier (selected=false, exit=0)",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs the built SQLite verifier (selected=true, exit=0)",
+    "durationMs": 19
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs the built SQLite verifier (selected=true, exit=1)",
+    "durationMs": 22
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs the built SQLite verifier (selected=true, exit=143)",
+    "durationMs": 22
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > restores dist in PR CI and saves it only from the trusted warmer",
+    "durationMs": 10
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the AI runtime in Testbox build artifact caches",
+    "durationMs": 3
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the full built TUI PTY suite out of the artifact canary gate",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps docs i18n CI on the workflow-owned Go toolchain",
+    "durationMs": 135
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > packs grouped Node matrix rows and unpacks them in the shard runner",
+    "durationMs": 146
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the complete github manifest output below the safety budget",
+    "durationMs": 2654
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the complete hybrid manifest output below the safety budget",
+    "durationMs": 2531
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the complete blacksmith manifest output below the safety budget",
+    "durationMs": 1905
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses projected legacy groups for historical targets without the codec",
+    "durationMs": 253
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > fails and retries quiet Node test shard stalls quickly",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > clamps Node test workers to the detected core count",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > uses candidate-owned script interfaces for frozen target CI",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps missing performance coverage fatal outside historical targets",
+    "durationMs": 45
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > emits one final CI gate after every selected lane",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > does not admit the final gate for cancelled workflows or draft pull requests",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate selection projections match their owning job predicates",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: same-repo Blacksmith PR",
+    "durationMs": 63
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: fork PR",
+    "durationMs": 21
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: same-repo docs-only PR",
+    "durationMs": 23
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: no Node or docs scope",
+    "durationMs": 21
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: canonical Blacksmith push",
+    "durationMs": 78
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: non-main push",
+    "durationMs": 38
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: fork repository push",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: GitHub push",
+    "durationMs": 19
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: hybrid PR",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: targeted core test PR",
+    "durationMs": 54
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: Blacksmith has no hosted stripes",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: frozen target without hosted capability",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: frozen target with hosted capability",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: current target needs no capability fall\u2026",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: hosted checks out of scope",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: compatibility target",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: current target",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: manual Node 22 without artifacts",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: UI performance without runtime artifact\u2026",
+    "durationMs": 26
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: UI performance for shared runtime build\u2026",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: UI performance outside build and UI sco\u2026",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: ordinary manual screenshot override",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: release gate without screenshot scope",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: release gate keeps smoke without screen\u2026",
+    "durationMs": 43
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: npm-beta excludes manual screenshots",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: npm-beta excludes PR screenshots",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: npm-stable excludes manual screenshots",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: npm-stable excludes PR screenshots",
+    "durationMs": 29
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate preserves eligibility: PR screenshot scope off",
+    "durationMs": 19
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > runs Node 22 compatibility only from manual CI dispatches",
+    "durationMs": 21
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects an unexpected selected skip",
+    "durationMs": 23
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=true, result=success)",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=true, result=skipped)",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=true, result=failure)",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=true, result=cancelled)",
+    "durationMs": 11
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=true, result=)",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=true, result=unknown)",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=false, result=success)",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=false, result=skipped)",
+    "durationMs": 31
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=false, result=failure)",
+    "durationMs": 20
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=false, result=cancelled)",
+    "durationMs": 24
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=false, result=)",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate checks all downstream lanes (selected=false, result=unknown)",
+    "durationMs": 21
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects required result failure independently of downstream success",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects required result cancelled independently of downstream success",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects required result skipped independently of downstream success",
+    "durationMs": 12
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects required result  independently of downstream success",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects required result unknown independently of downstream success",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects required result success= independently of downstream success",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects missing or malformed selection  even after success",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects missing or malformed selection unknown even after success",
+    "durationMs": 19
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects missing or malformed selection TRUE even after success",
+    "durationMs": 42
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects missing or malformed selection true|false even after success",
+    "durationMs": 40
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects missing or malformed selection true| even after success",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate rejects missing or malformed selection false= even after success",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > ci-gate reports failed upstream and selected dependent skips",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > resolves topology-aware protocol bases and drives the real guard",
+    "durationMs": 3059
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > wires and fetches one explicit protocol base before QA execution",
+    "durationMs": 406
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > pins the QA Git owner before checkouts and preserves all ten terminal fetch contracts",
+    "durationMs": 7
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > classifies QA timeouts only from isolated supervisor diagnostics",
+    "durationMs": 1152
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps maturity scorecard generated QA evidence handoff strict",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > round-trips profile evidence and rejects digest drift",
+    "durationMs": 1579
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > suppresses only reported QA result failures when explicitly allowed",
+    "durationMs": 28
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > authorizes maturity PR publication only for a canonical direct dispatch",
+    "durationMs": 7
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps a reusable maturity call artifact-only even when its caller was dispatched",
+    "durationMs": 18
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > copies only regular allowlisted maturity publication files",
+    "durationMs": 47
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps exact release validation identity separate from release context",
+    "durationMs": 27
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > checks out the complete trusted Release Decision scripts tree",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps maturity scorecard release docs opt-in from release checks",
+    "durationMs": 17
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps workflow guards in fast CI-routing checks",
+    "durationMs": 1480
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps push docs validation ClawHub-backed",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > skips generated-asset validation only when a frozen candidate lacks the contract",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps network CodeQL off unrelated source-only refactors",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "ci workflow guards > keeps the Crabbox gate publisher on protected main with minimal permissions",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "pins generated publisher and maturity owners before credentials and selected checkout",
+    "durationMs": 10
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "Linux App validation routing > keeps native tests required and selects packaging only for manual validation: pull_request",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "Linux App validation routing > keeps native tests required and selects packaging only for manual validation: workflow_dispatch",
+    "durationMs": 2
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "Linux App validation routing > retains both first-run cases and failure evidence for manual validation",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "reports stale Linux release requests before selected code runs",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "pins simple release admission owners before selected checkout and preserves Git contracts",
+    "durationMs": 802
+  },
+  {
+    "file": "test/scripts/ci-workflow-guards.test.ts",
+    "name": "pins every Performance Git owner before checkout and preserves Git deadlines",
+    "durationMs": 5
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > binds split timing identity to exact complete-file membership",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains a complete measured generation and ignores complementary partial generations",
+    "durationMs": 691
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps Chromium files in the UI CI owner and Node-driven Playwright files in Node stripes",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps oversized sparse groups nonempty on github",
+    "durationMs": 3254
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps oversized sparse groups nonempty on hybrid",
+    "durationMs": 4136
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > bounds github child groups by the slower github path",
+    "durationMs": 2186
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > bounds hybrid child groups by the slower github path",
+    "durationMs": 2359
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > bounds hybrid child groups by the slower blacksmith path",
+    "durationMs": 2148
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > inventories source-scanning Control UI policy tests",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > matches policy owners only for exact changed paths",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > projects cache-warm groups from the owned node test plan",
+    "durationMs": 1992
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > creates split shards without walking test roots",
+    "durationMs": 11843
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > bundles split shards deterministically without changing coverage",
+    "durationMs": 6085
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > prefers blacksmith measurements while retaining unmeasured hints and defaults",
+    "durationMs": 8731
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > prefers github measurements while retaining unmeasured hints and defaults",
+    "durationMs": 11018
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > prefers hybrid measurements while retaining unmeasured hints and defaults",
+    "durationMs": 10470
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps hybrid fallback bounds and unmeasured stripes when other measurements change",
+    "durationMs": 5789
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains parent floors and uses higher github child timings without changing test partitions",
+    "durationMs": 11678
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains parent floors and uses higher hybrid child timings without changing test partitions",
+    "durationMs": 12030
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > partitions whole-config runtime consumers from ordinary serial CLI work",
+    "durationMs": 50
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > spends the hybrid CLI budget only on complete affordable non-build bins",
+    "durationMs": 50
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > preserves coverage and execution policies with committed compact measurements",
+    "durationMs": 20437
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > splits the slow core unit shards while keeping paired source/security coverage",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps Doctor session SQLite owners complete and isolated",
+    "durationMs": 6756
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > partitions each giant compact group across three deterministic stripes",
+    "durationMs": 625
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > names the node shard checks as core test lanes",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps extension, bundled, contracts, and channels configs out of the core node lane",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps compact agentic config ownership aligned with the full agentic project set",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > marks only dist-dependent shards for built artifact restore",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > preserves runtime preparation and core-only ownership in full and compact plans",
+    "durationMs": 1718
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > splits tooling checks independently from built artifacts",
+    "durationMs": 9869
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps non-tooling placement checks independent of singleton tooling split names",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps hosted tooling within the GitHub job cap when its inventory grows",
+    "durationMs": 127863
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > assigns Blacksmith runners to every core node shard",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > splits core runtime configs into smaller source-only shards",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps the full TUI PTY suite in its dedicated built-CLI shard",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > covers every infra test exactly once across core runtime infra shards",
+    "durationMs": 19
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > covers every cron test exactly once across core runtime cron shards",
+    "durationMs": 13
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > splits the agentic lane into control-plane, command, agent, gateway, SDK, and plugin shards",
+    "durationMs": 121
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps plugin prerelease npm install behavior on the release-only agentic plugin shard",
+    "durationMs": 25
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > covers flat agents-core and explicitly nested isolated tests exactly once",
+    "durationMs": 35
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps embedded-agent tests in four bounded config surfaces",
+    "durationMs": 16
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps expensive plugin shards release-only when normal CI asks for the cheaper plan",
+    "durationMs": 1886
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps changed native browser tests in UI jobs and out of extension fallback",
+    "durationMs": 14
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains the changed host plugin test when the store-alias diff forces fallback",
+    "durationMs": 2810
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains only exact changed plugin-owner tests in deterministic order",
+    "durationMs": 5573
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > does not widen plugin coverage for deleted tests, sources, docs, or directories",
+    "durationMs": 3544
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains changed plugin tests once in blacksmith compact fallback without changing group policies",
+    "durationMs": 4242
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains changed plugin tests once in github compact fallback without changing group policies",
+    "durationMs": 11416
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > retains changed plugin tests once in hybrid compact fallback without changing group policies",
+    "durationMs": 7078
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > splits auto-reply into balanced core/top-level and reply subtree shards",
+    "durationMs": 0
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > covers every auto-reply reply test exactly once across split shards",
+    "durationMs": 15
+  },
+  {
+    "file": "test/scripts/ci-node-test-plan.test.ts",
+    "name": "scripts/lib/ci-node-test-plan.mts > keeps each dispatch entrypoint in its own dedicated shard",
+    "durationMs": 1
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > prepares directly from the reviewed head (detached) without visiting main",
+    "durationMs": 1734
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > prepares directly from the reviewed head (pr-42) without visiting main",
+    "durationMs": 1291
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > prepares directly from the reviewed head (pr-42-prep) without visiting main",
+    "durationMs": 1232
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refuses same-head preparation with staged foreign state",
+    "durationMs": 793
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refuses same-head preparation with unstaged foreign state",
+    "durationMs": 632
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refuses same-head preparation with untracked foreign state",
+    "durationMs": 512
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refuses same-head preparation with unmerged foreign state",
+    "durationMs": 503
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > recovers preparation after failed detach handoff",
+    "durationMs": 1668
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > recovers preparation after failed fetch handoff",
+    "durationMs": 1668
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > finishes an older main transition before rejecting a stale PR-head review",
+    "durationMs": 495
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > completes supervised prepare with three fresh checkpoints and exact stamps",
+    "durationMs": 1664
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > completes supervised merge with two checkpoints and releases its exact lock after cleanup",
+    "durationMs": 3379
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > retains the operation lock when checkpoint 2 fails after preparation mutated state",
+    "durationMs": 955
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > retains the operation lock when checkpoint 3 fails after preparation mutated state",
+    "durationMs": 1428
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refreshes gate and publication snapshots when a newly reviewed head rebuilds preparation",
+    "durationMs": 2647
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > keeps nested preparation coherent and refreshes after hosted gates",
+    "durationMs": 2557
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > keeps hosted membership on the gate snapshot when the API base advances only in the remote",
+    "durationMs": 2683
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > captures private FETCH_HEAD despite a competing shared-ref write and worktree origin/refmap overrides",
+    "durationMs": 973
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > starts a new operation fresh and rejects a stale detached main review",
+    "durationMs": 1278
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > preserves foreign checkout-hook changes when cold review initialization requests a reset",
+    "durationMs": 637
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > uses the private checkpoint after an uninterrupted cold bootstrap while main moves",
+    "durationMs": 1442
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > provisions without a local main anchor and retries cold fetch 1 failure",
+    "durationMs": 1107
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > provisions without a local main anchor and retries cold fetch 2 failure",
+    "durationMs": 916
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > invalidates the previous snapshot when the same operation provisions a new worktree",
+    "durationMs": 372
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > recovers cold bootstrap fetch interruption through the native exact owner",
+    "durationMs": 1017
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > recovers cold private fetch interruption through the native exact owner",
+    "durationMs": 936
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > rejects changed exact PR identity at metadata before preparation stamps",
+    "durationMs": 861
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > rejects changed exact PR identity at fetched before preparation stamps",
+    "durationMs": 829
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > rejects changed exact PR identity at branch before preparation stamps",
+    "durationMs": 879
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refreshes after CI and required checks with strict drift=false",
+    "durationMs": 2466
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > refreshes after CI and required checks with strict drift=true",
+    "durationMs": 2635
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > rejects a moved prepared branch without consuming CI proof",
+    "durationMs": 1955
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > invalidates a previous snapshot when the next checkpoint fails",
+    "durationMs": 248
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates authentication failure under an OR-list before any main fetch",
+    "durationMs": 140
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > stops native merge on viewer quota failure before fetch or dispatch and releases its lock",
+    "durationMs": 331
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates failed refresh through enter_worktree 42 false in bash (OR-list=false)",
+    "durationMs": 209
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates failed refresh through enter_worktree 42 false in bash (OR-list=true)",
+    "durationMs": 175
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates failed refresh through review_guard 42 in bash (OR-list=false)",
+    "durationMs": 169
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates failed refresh through review_guard 42 in bash (OR-list=true)",
+    "durationMs": 162
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates failed refresh through review_validate_artifacts 42 in bash (OR-list=false)",
+    "durationMs": 146
+  },
+  {
+    "file": "test/scripts/pr-main-refresh.test.ts",
+    "name": "native PR main refresh boundaries > propagates failed refresh through review_validate_artifacts 42 in bash (OR-list=true)",
+    "durationMs": 162
+  }
+]

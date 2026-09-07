@@ -1,12 +1,12 @@
 [
   {
-    "id": "telegram-progress-max-lines-green",
-    "directory": "telegram-progress-max-lines-green",
+    "id": "planner-growth-141015",
+    "directory": "planner-growth-141015",
     "runner": "ubuntu-24.04",
-    "source": "9fa180758af681d309a8dada4246847832ab6df5",
-    "node": "24.20.0",
+    "source": "e3e2953f4b9a3ef1cd0568763c74c42f33067410",
+    "node": "24.19.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "ci-maintenance"
+    "mode": "compare",
+    "variant": "planner-growth-141015"
   }
 ]

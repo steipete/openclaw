@@ -1,0 +1,159 @@
+{
+  "status": "Frozen revision2 for independent executable review; no execution",
+  "base": "e3e2953f4b9a3ef1cd0568763c74c42f33067410",
+  "reviewedPrHead": "262ff0e9af577ea1a56782009ee0634b9b889190",
+  "candidatePatch": "8f78d1b9526662d63537a860a59cd00356bddf362206b1460dc34368ad1d2a04",
+  "candidateIndex": "0b13611f03dda4b7ba79649403ec3569932674fc4c38c88a75297376c09a2a69",
+  "sourceHashes": {
+    "package.json": "5b285099c0e5dea48ab15368bacc24a105a9ae4d9ff55b718bbccd8dd323def5",
+    "pnpm-lock.yaml": "2934e9952a80d087fcd68801599849142095f7af6f933d68d9c2828bdce5af8c",
+    "test/scripts/ci-node-test-plan.test.ts": "0dfac6ed840392141ee0d44c480fd4ac81473ec2c48df17445fb6896001bdb95",
+    "scripts/lib/ci-node-test-plan.mts": "0cb254e28ee1dbfdc6e5c17bcc47c1de42ec6d72edab711074e562e9a88d9330",
+    "scripts/lib/list-test-files.mts": "7c1109668d34143f6599488dd554cc0a4bac6b084038f012472da8f81ed52674",
+    "test/vitest/vitest.unit-fast-paths.mjs": "9a9a194df47fff940504314cc69face0d210eb04e01fe72ae60b26f676777a6f",
+    "scripts/debug-claude-usage.ts": "c4b284b7c7698b8bb3f6ef75476c86defb595b4cb546ecac09696d595db65289",
+    "scripts/firecrawl-compare.ts": "b846dafce2329628eb056fa41f4de861c505881ff1660fdc19e5463714d0c49d",
+    "scripts/lib/bounded-response.mjs": "a184e4db3490fdda4bf62f65702e970048798d8ab86c1a94a0f18f0ffb65e033",
+    "test/scripts/dev-tooling-safety.test.ts": "71ef2cb629ad6bffdb0bdc005a8e8265a74260584aaa873ca668354f8e51d12d",
+    "test/scripts/bounded-response.test.ts": "e5d2d9c9114d08e1f93e30413b63cc330e2f838dc026a845d577f371e5672a78",
+    "test/scripts/firecrawl-compare.test.ts": "8e1124426376ab41040e075a712622fb17031d4ade3ffc59fa86ce1a0641099d",
+    "test/scripts/ci-workflow-guards.test.ts": "ec2aca366a7f605b94c94a8f06d3e08bea52c2c93d6ba479fede9d7279fc17f0",
+    "test/scripts/pr-main-refresh.test.ts": "7e040ffc01e90bb1c112ebb8f783c67fba40a6baf05ab71aca420ee690896423",
+    "test/vitest/vitest.tooling.config.ts": "798c4d6373d19e8b3f15e18a07a672298b951258667b7f63f232bb30c692f5c3",
+    "test/vitest/vitest.scoped-config.ts": "dd8a2d840536a3e53c38b329d699322ba8c5fdd29f81486f5ec8f56a72c3ab71",
+    "test/vitest/vitest.shared.config.ts": "9ea9e68d34d9614fc3a1581b6b644f3cc81a4ea6e4f0238a7ddf4de81a754027",
+    "test/vitest/vitest.timeouts.ts": "82465558c77ce00d1e892a4ba06be6df5d4e449eecffb5383d1c45ce8ad7d073",
+    "test/vitest/vitest.performance-config.ts": "57fe1e361d6a9039d4d0e487aae9ccfb1740fe3681c10be8cd2b4245b1fe23b9",
+    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
+    "scripts/lib/vitest-resource-ownership.mts": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+    "scripts/lib/windows-taskkill.mjs": "9100b4bda17e716e721a44132641190e8346a77260dc2194304bfee20fa1958d",
+    "scripts/windows-cmd-helpers.mjs": "a2a52f2cbc6e890dee15ca7f514f0ebacd0479f1d58785b6c3fccccc0720b24b",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest-child.mts": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+    "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
+    "scripts/lib/vitest-report-owner.mts": "5cd760dc4f748e1e613d812ae010a4bbd1557c678be79f0cdd982f70cb7fdf5d",
+    "scripts/lib/vitest-report-capture.mts": "efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2",
+    "scripts/check-changed.mjs": "8f3a65590bd58f2395e33294ef0d6d406cdb94170799a48d407f652eaaddb382",
+    "scripts/check-changed.mts": "bd73503b1f523f540529b84c0b24a3d0fe516d0113959674c38dc301c8b30dcc"
+  },
+  "candidateHashes": {
+    "scripts/debug-claude-usage.ts": "8be6dce3ee83804f0822010c513f3aecbbe25db87aa4d049ae5d5f487dbfef41",
+    "scripts/firecrawl-compare.ts": "6fc0e771f732f325f7ccb2786de36f4e52e367cf33e0dbcadd1ffbc4e11722a1",
+    "test/scripts/ci-node-test-plan.test.ts": "9290bc52c621c4f16f1d32bb6fa28690dd671d555d7c926184455392bf3d99f6",
+    "test/scripts/dev-tooling-safety.test.ts": "edfd5ea44819abcbe57ea1682cd90aa9f5346fd59de71454fd38f651cb6e4525"
+  },
+  "changedFiles": [
+    "scripts/debug-claude-usage.ts",
+    "scripts/firecrawl-compare.ts",
+    "test/scripts/ci-node-test-plan.test.ts",
+    "test/scripts/dev-tooling-safety.test.ts"
+  ],
+  "lane": "planner-growth-141015",
+  "mode": "compare",
+  "variant": "planner-growth-141015",
+  "node": "24.19.0",
+  "pnpm": "12.3.4",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "originalFiles": [
+    "test/scripts/ci-workflow-guards.test.ts",
+    "test/scripts/ci-node-test-plan.test.ts",
+    "test/scripts/pr-main-refresh.test.ts"
+  ],
+  "growthTitle": "keeps hosted tooling within the GitHub job cap when its inventory grows",
+  "variants": [
+    {
+      "includeGrowthFile": false,
+      "extraFiles": []
+    },
+    {
+      "includeGrowthFile": true,
+      "extraFiles": []
+    },
+    {
+      "includeGrowthFile": false,
+      "extraFiles": [
+        "test/scripts/npm-package-locks-report.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": true,
+      "extraFiles": [
+        "test/scripts/npm-package-locks-report.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": false,
+      "extraFiles": [
+        "test/scripts/zz-growth-probe-0.test.ts",
+        "test/scripts/zz-growth-probe-1.test.ts",
+        "test/scripts/zz-growth-probe-2.test.ts",
+        "test/scripts/zz-growth-probe-3.test.ts",
+        "test/scripts/zz-growth-probe-4.test.ts",
+        "test/scripts/zz-growth-probe-5.test.ts",
+        "test/scripts/zz-growth-probe-6.test.ts",
+        "test/scripts/zz-growth-probe-7.test.ts",
+        "test/scripts/zz-growth-probe-8.test.ts",
+        "test/scripts/zz-growth-probe-9.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": true,
+      "extraFiles": [
+        "test/scripts/zz-growth-probe-0.test.ts",
+        "test/scripts/zz-growth-probe-1.test.ts",
+        "test/scripts/zz-growth-probe-2.test.ts",
+        "test/scripts/zz-growth-probe-3.test.ts",
+        "test/scripts/zz-growth-probe-4.test.ts",
+        "test/scripts/zz-growth-probe-5.test.ts",
+        "test/scripts/zz-growth-probe-6.test.ts",
+        "test/scripts/zz-growth-probe-7.test.ts",
+        "test/scripts/zz-growth-probe-8.test.ts",
+        "test/scripts/zz-growth-probe-9.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": false,
+      "extraFiles": [
+        "test/scripts/openclaw-performance-crabbox.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": true,
+      "extraFiles": [
+        "test/scripts/openclaw-performance-crabbox.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": false,
+      "extraFiles": [
+        "test/scripts/install-smoke-ref-admission.test.ts"
+      ]
+    },
+    {
+      "includeGrowthFile": true,
+      "extraFiles": [
+        "test/scripts/install-smoke-ref-admission.test.ts"
+      ]
+    }
+  ],
+  "claudeTitles": [
+    "aborts stalled Claude usage fetches at the request timeout",
+    "times out stalled Claude usage response body reads",
+    "bounds Claude usage response body reads by content-length",
+    "bounds Claude usage response body reads by streamed bytes"
+  ],
+  "files": {
+    "candidate.patch": "8f78d1b9526662d63537a860a59cd00356bddf362206b1460dc34368ad1d2a04",
+    "proof.mjs": "1ff9848beebe91ea6ae13c6f307b335ceb2aad46add7d15e1487d671e9879e78",
+    "completed-report.mjs": "eac849f61a9142ee9077620e923d5aa1c720ede766d4308b528619a237669a19",
+    "instrument.mjs": "94840e64a53b8aaad700ef52e958023ee467e32e27b7595650d0ec2d1406d33b",
+    "run.sh": "5f1a0fd7a0cbf90e10d3f7279b55b7a30b15d754ab0d3ae9f958e8ac57799051",
+    "README.md": "26e37d11357aae4407d1f8846c7dba11f7cc655c3c9e12d250eb20ba75131279",
+    "order.mjs": "41b140047489b37da87ded2c36c813c0684f8d838431a27caa2c5c4707c8aa77",
+    "failed-shard-cases.json": "e0f079796f8899f45175ecf0ff1546287e363e97d95ad9aff50ece996867e41b",
+    "candidate/scripts/firecrawl-compare.ts": "6fc0e771f732f325f7ccb2786de36f4e52e367cf33e0dbcadd1ffbc4e11722a1",
+    "candidate/scripts/debug-claude-usage.ts": "8be6dce3ee83804f0822010c513f3aecbbe25db87aa4d049ae5d5f487dbfef41",
+    "candidate/test/scripts/dev-tooling-safety.test.ts": "edfd5ea44819abcbe57ea1682cd90aa9f5346fd59de71454fd38f651cb6e4525",
+    "candidate/test/scripts/ci-node-test-plan.test.ts": "9290bc52c621c4f16f1d32bb6fa28690dd671d555d7c926184455392bf3d99f6"
+  }
+}
