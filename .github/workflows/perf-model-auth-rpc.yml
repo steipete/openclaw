@@ -13,10 +13,10 @@ jobs:
         include:
           - phase: baseline
             repository: openclaw/openclaw
-            source: 372ad5d3320678f1cbed7c73e066a3d945d631bf
+            source: fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc
           - phase: candidate
             repository: steipete/openclaw
-            source: 2467fa7b1d430904a159bff0a2e1f82821766a90
+            source: 1667c547e83ddfd79fa85a7312348859ce45da95
     if: github.repository == 'steipete/openclaw'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -37,7 +37,7 @@ jobs:
           repository: ${{ matrix.repository }}
           ref: ${{ matrix.source }}
           path: source
-          fetch-depth: 2
+          fetch-depth: 3
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
@@ -68,7 +68,9 @@ jobs:
             ${{ runner.temp }}/model-auth-125900/artifacts/observation-exit.txt
             ${{ runner.temp }}/model-auth-125900/artifacts/owner-tests.json
             ${{ runner.temp }}/model-auth-125900/artifacts/owner-tests-exit.txt
-            ${{ runner.temp }}/model-auth-125900/artifacts/changed-check-plan.txt
+            ${{ runner.temp }}/model-auth-125900/artifacts/startup-normal.json
+            ${{ runner.temp }}/model-auth-125900/artifacts/startup-comparison.json
+            ${{ runner.temp }}/model-auth-125900/artifacts/startup-check-exit.txt
             ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/auth-rpc-observation.json
             ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/provider-http.json
             ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/visible-status.json

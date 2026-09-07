@@ -8,12 +8,12 @@ tooling_root=$(cd "$(dirname "$0")/../../.." && pwd)
 phase=$4
 case "$phase" in
   baseline)
-    source_head=372ad5d3320678f1cbed7c73e066a3d945d631bf
-    source_tree=853efb3a501f5f6035fcf8762ea2760cae53b019
+    source_head=fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc
+    source_tree=30cf40bb426f2c70d1a3c8f3d064914049d5d4f3
     ;;
   candidate)
-    source_head=2467fa7b1d430904a159bff0a2e1f82821766a90
-    source_tree=d6f1d9abc63b71f6783bbfc738f5fd2b4bdb782b
+    source_head=1667c547e83ddfd79fa85a7312348859ce45da95
+    source_tree=7ba5acf4e58fb27aaaadf060c819c60f3a15d7e0
     ;;
   *) exit 2 ;;
 esac
@@ -43,10 +43,9 @@ test "$(git -C "$tooling_root" rev-parse HEAD)" = "$tooling_head"
 test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
 test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
 if [[ "$phase" == candidate ]]; then
-  test "$(git -C "$source_dir" rev-parse HEAD^1)" = 04bbfde34e17beaf62b158600f448b5cb24c4001
-  test "$(git -C "$source_dir" rev-parse HEAD^2)" = 372ad5d3320678f1cbed7c73e066a3d945d631bf
-  test "$(git -C "$source_dir" rev-parse 'HEAD^2^{tree}')" = 853efb3a501f5f6035fcf8762ea2760cae53b019
-  git -C "$source_dir" merge-base --is-ancestor 372ad5d3320678f1cbed7c73e066a3d945d631bf HEAD
+  test "$(git -C "$source_dir" rev-parse 'HEAD^1')" = efddff09bfd96a10d64cb0604858c164d685cd2b
+  test "$(git -C "$source_dir" rev-parse 'HEAD^1^2')" = fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc
+  git -C "$source_dir" merge-base --is-ancestor fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc HEAD
 fi
 git -C "$source_dir" diff --exit-code
 cd "$source_dir"
@@ -133,6 +132,8 @@ printf '%s\n' "$owner_exit" > "$proof_dir/artifacts/owner-tests-exit.txt"
 verify_source_scope
 clean_run pnpm build qaRuntime 2>&1 | tee "$proof_dir/artifacts/build-runtime.log"
 clean_run pnpm ui:build 2>&1 | tee "$proof_dir/artifacts/build-ui.log"
+clean_run node --import ./scripts/tsx.mjs "$tooling_root/.github/proof/model-auth-125900/capture-startup.mjs" \
+  "$source_head" "$source_tree" "$phase" normal "$proof_dir/artifacts/startup-normal.json" "$tooling_head"
 verify_source_scope
 clean_run pnpm exec playwright install chromium 2>&1 | tee "$proof_dir/artifacts/browser-install.log"
 
@@ -201,15 +202,17 @@ for (const title of [
   assert.ok(passed.has(title), title);
 }
 JS
-  clean_run node scripts/check-changed.mjs --dry-run \
-    --base 372ad5d3320678f1cbed7c73e066a3d945d631bf --head "$source_head" -- \
-    ui/src/lib/model-auth.ts "$regression_path" ui/src/app/app-host.ts \
-    ui/src/app/app-host.chat-metadata.test.ts \
-    2>&1 | tee "$proof_dir/artifacts/changed-check-plan.txt"
-  clean_run node scripts/check-changed.mjs \
-    --base 372ad5d3320678f1cbed7c73e066a3d945d631bf --head "$source_head" -- \
-    ui/src/lib/model-auth.ts "$regression_path" ui/src/app/app-host.ts \
-    ui/src/app/app-host.chat-metadata.test.ts
+  # Measure the canonical budget after the real browser exits. Its normalized
+  # build identity must never be served by the live Gateway's normal bundle.
+  set +e
+  clean_run pnpm ui:check-performance:base fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc \
+    2>&1 | tee "$proof_dir/artifacts/startup-check.log"
+  startup_exit=${PIPESTATUS[0]}
+  set -e
+  printf '%s\n' "$startup_exit" > "$proof_dir/artifacts/startup-check-exit.txt"
+  clean_run node --import ./scripts/tsx.mjs "$tooling_root/.github/proof/model-auth-125900/capture-startup.mjs" \
+    "$source_head" "$source_tree" "$phase" comparison "$proof_dir/artifacts/startup-comparison.json" "$tooling_head"
   verify_source_scope
+  test "$startup_exit" -eq 0
 fi
 exit "$proof_exit"

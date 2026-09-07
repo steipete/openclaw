@@ -124,7 +124,16 @@ const suite = createControlUiE2eSuite({
               api: "openai-completions",
               apiKey: "synthetic-catalog-key",
               baseUrl: `http://127.0.0.1:${address.port}/v1`,
-              models: [{ id: "anchor", name: "Synthetic anchor" }],
+              models: [
+                {
+                  id: "anchor",
+                  name: "Synthetic anchor",
+                  reasoning: false,
+                  input: ["text"],
+                  cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+                  maxTokens: 8192,
+                },
+              ],
             },
           },
         },
@@ -196,7 +205,6 @@ suite.define(() => {
               messages: [
                 {
                   message: { role: "user", content: [{ type: "text", text: label }] },
-                  timestamp: 1_780_000_000_000,
                 },
               ],
             },
