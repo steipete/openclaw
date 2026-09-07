@@ -1,0 +1,24 @@
+{
+  "source": "411e3f41b5484be425fa0e726621ae0b10f2a62a",
+  "parent": "b75423c2fcc30bda76fbe0480662bcaaea54a5b4",
+  "comparativeBaseline": "608b9ba2437d22188bac854a012458880ff55211",
+  "baselineRuns": [
+    34090441998,
+    34103844505
+  ],
+  "candidateCssSha256": "46dde3304f4a6cdf148fda57f6ece4ccdb7221532117abccf27d13ea01fd15ba",
+  "authorTestSha256": "15e621ea7862819e58dbb303c5903def92cb199025be7695bf6963a58ae82c91",
+  "acceptedCanarySourceSha256": "04aa47379cfb9a942c881dd47ba3189b96d755c2c944f11c23dba342ea6d2643",
+  "preservedPrimaryBodySha256": "b63d0476e88174fec5d8754251bf61b0c49d517801e4632f65d3817420bccea0",
+  "preservedLinkBodySha256": "6c4cada6ebe229d9487967fd1136fca2e764fcd5d87e50c5a6a817184054ebe1",
+  "ephemeralCanarySha256": "ddfe78d345278e8ef24f04b8a8f70720e738a3d38a3df5b8b3b7ca374f61315c",
+  "baselineLinkGeometrySha256": "c93456ee1d1c1c6d18ca1c785c7fb37e6b3ffbd7a3e776348c1c28dd93fd8377",
+  "sourceDrift": "native-vs-baseline.diff explicitlyretains CSS/authortest differences, session-navigation rowsByKey optimization and UI/package/dependency/export differences; actualnative sourceexecutesonhostedgreen",
+  "state": "awaitingindependentgreenpacketreview; targetunrun; noGitpublication",
+  "controllerOriginalEphemeralCanarySha256": "c5113b6d818106ba9db83fba83d3d900fda415cefac997fcd936795b3f814d23",
+  "controllerFormatting": {
+    "changes": "Import wrapping and one blank line after the completed link test only; all runtime statements unchanged.",
+    "executedLinkTestStatementSha256": "6cac5f48fc29db841411752db72e7de0e96cc77309a51faebdbedc0a799530b6",
+    "acceptedLinkSliceReconstruction": "Append one newline to the executed link-test slice to reproduce preservedLinkBodySha256; this restores the blank line outside its closed test statement."
+  }
+}

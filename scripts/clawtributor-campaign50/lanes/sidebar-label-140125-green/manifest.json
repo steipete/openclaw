@@ -1,0 +1,18 @@
+{
+  "BINDING.json": "bad6b125b5677d44bf45573a9f78fbb7b3ff36dcb009b1d0ceb44cfc38111971",
+  "PROOF.md": "96f5c7a5e092c63664426e1cbeed4a7c98fe94bdbb58c9b711b0f9edde1f8141",
+  "accepted-canary-source.txt": "04aa47379cfb9a942c881dd47ba3189b96d755c2c944f11c23dba342ea6d2643",
+  "baseline-link-geometry.json": "c93456ee1d1c1c6d18ca1c785c7fb37e6b3ffbd7a3e776348c1c28dd93fd8377",
+  "candidate-production.patch": "a94833c9d092a06de0122010c5d7b21aceea20f2d3b7602e3f42dfa261a3ffb6",
+  "candidate.sha256": "7609cc7a39d5f72eae55899475f9d4abf5d08d8ce754f6e7df00c172b35e20f2",
+  "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+  "native-vs-baseline.diff": "1b9ec7f7050bcd4a3979fec509474288e6fc8b2cd436ff9a9dfcc0b6f22df75d",
+  "product.sha256": "14af1e59f7a1f2537cbf198ec0c2fb914af38d41ec6327ddd21e40e0651904d3",
+  "proof.sha256": "67a82cf0bf212d65b0bfbd590a6a262849a72750c4bb8be83a388f572fda6b5b",
+  "row.json": "48c9053641db7adc51799220a3a17178ebee031304937f36536571091df53e88",
+  "run.sh": "61f5e6c1306ffc30b3608f6a095ef34e585d44871d942613a5a6152f59f27bac",
+  "sidebar-label-owner.e2e.test.ts": "ddfe78d345278e8ef24f04b8a8f70720e738a3d38a3df5b8b3b7ca374f61315c",
+  "source-base.txt": "6a46d8018e377a5daa156b05e420f9f472f3b57eda54a718c621caa8ac10169c",
+  "unchanged.sha256": "e79a7cc86211f1721e502482f7c27e7b020ef31a86f23c14d0d70bc4462be9e0",
+  "validate.mjs": "94aef4dce9f6f86416db3f7ecb18295e3c80d75d4688a5b76c736cce0dc47538"
+}

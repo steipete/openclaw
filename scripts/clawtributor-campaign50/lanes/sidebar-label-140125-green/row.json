@@ -1,0 +1,10 @@
+{
+  "id": "sidebar-label-140125-green",
+  "directory": "sidebar-label-140125-green",
+  "runner": "run.sh",
+  "source": "411e3f41b5484be425fa0e726621ae0b10f2a62a",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "green",
+  "variant": "browser"
+}

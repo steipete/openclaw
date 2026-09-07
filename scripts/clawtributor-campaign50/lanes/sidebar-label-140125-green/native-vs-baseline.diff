@@ -1,0 +1,419 @@
+diff --git a/package.json b/package.json
+index be38f9ad556..02976f63b23 100644
+--- a/package.json
++++ b/package.json
+@@ -396,13 +396,7 @@
+     "!dist/plugin-sdk/blob-runtime.d.ts",
+     "!dist/plugin-sdk/realtime-transcription-session.d.ts",
+     "!dist/plugin-sdk/speech-provider.d.ts",
+-    "!dist/plugin-sdk/realtime-voice-provider.d.ts",
+-    "!dist/plugin-sdk/provider-thinking-runtime.d.ts",
+-    "!dist/plugin-sdk/embedding-provider-adapter.d.ts",
+-    "!dist/plugin-sdk/agent-harness-registration.d.ts",
+-    "!dist/plugin-sdk/session-catalog-paging.d.ts",
+-    "!dist/plugin-sdk/provider-auth-aliases.d.ts",
+-    "!dist/plugin-sdk/provider-model-metadata.d.ts"
++    "!dist/plugin-sdk/realtime-voice-provider.d.ts"
+   ],
+   "type": "module",
+   "main": "dist/index.js",
+@@ -722,9 +716,6 @@
+     "./plugin-sdk/embedding-providers": {
+       "default": "./dist/plugin-sdk/embedding-providers.js"
+     },
+-    "./plugin-sdk/embedding-provider-adapter": {
+-      "default": "./dist/plugin-sdk/embedding-provider-adapter.js"
+-    },
+     "./plugin-sdk/media-generation-runtime": {
+       "default": "./dist/plugin-sdk/media-generation-runtime.js"
+     },
+@@ -849,9 +840,6 @@
+     "./plugin-sdk/agent-harness-exec-review-runtime": {
+       "default": "./dist/plugin-sdk/agent-harness-exec-review-runtime.js"
+     },
+-    "./plugin-sdk/agent-harness-registration": {
+-      "default": "./dist/plugin-sdk/agent-harness-registration.js"
+-    },
+     "./plugin-sdk/agent-harness-runtime": {
+       "types": "./dist/plugin-sdk/agent-harness-runtime.d.ts",
+       "default": "./dist/plugin-sdk/agent-harness-runtime.js"
+@@ -1146,9 +1134,6 @@
+       "types": "./dist/plugin-sdk/session-catalog.d.ts",
+       "default": "./dist/plugin-sdk/session-catalog.js"
+     },
+-    "./plugin-sdk/session-catalog-paging": {
+-      "default": "./dist/plugin-sdk/session-catalog-paging.js"
+-    },
+     "./plugin-sdk/session-catalog-runtime": {
+       "default": "./dist/plugin-sdk/session-catalog-runtime.js"
+     },
+@@ -1357,9 +1342,6 @@
+       "types": "./dist/plugin-sdk/provider-auth.d.ts",
+       "default": "./dist/plugin-sdk/provider-auth.js"
+     },
+-    "./plugin-sdk/provider-auth-aliases": {
+-      "default": "./dist/plugin-sdk/provider-auth-aliases.js"
+-    },
+     "./plugin-sdk/provider-oauth-runtime": {
+       "default": "./dist/plugin-sdk/provider-oauth-runtime.js"
+     },
+@@ -1408,9 +1390,6 @@
+     "./plugin-sdk/provider-model-types": {
+       "default": "./dist/plugin-sdk/provider-model-types.js"
+     },
+-    "./plugin-sdk/provider-model-metadata": {
+-      "default": "./dist/plugin-sdk/provider-model-metadata.js"
+-    },
+     "./plugin-sdk/provider-model-shared": {
+       "default": "./dist/plugin-sdk/provider-model-shared.js"
+     },
+@@ -1423,9 +1402,6 @@
+     "./plugin-sdk/provider-stream-shared": {
+       "default": "./dist/plugin-sdk/provider-stream-shared.js"
+     },
+-    "./plugin-sdk/provider-thinking-runtime": {
+-      "default": "./dist/plugin-sdk/provider-thinking-runtime.js"
+-    },
+     "./plugin-sdk/provider-transport-runtime": {
+       "default": "./dist/plugin-sdk/provider-transport-runtime.js"
+     },
+@@ -1903,7 +1879,6 @@
+     "test:docker:codex-media-path": "bash scripts/e2e/codex-media-path-docker.sh",
+     "test:docker:doctor-switch": "bash scripts/e2e/doctor-install-switch-docker.sh",
+     "test:docker:compose-setup": "bash scripts/e2e/compose-setup.sh",
+-    "test:docker:fleet-cache": "bash scripts/e2e/fleet-cache-docker.sh",
+     "test:docker:e2e-build": "bash scripts/e2e/build-image.sh",
+     "test:docker:gateway-network": "bash scripts/e2e/gateway-network-docker.sh",
+     "test:docker:kitchen-sink-plugin": "bash scripts/e2e/kitchen-sink-plugin-docker.sh",
+@@ -2064,8 +2039,8 @@
+     "test:voicecall:closedloop": "node --import ./scripts/tsx.mjs scripts/test-voicecall-closedloop.mts",
+     "test:watch": "node --import ./scripts/tsx.mjs scripts/test-projects.mts --watch",
+     "test:windows:ci": "pnpm test:windows:ci:1 && pnpm test:windows:ci:2",
+-    "test:windows:ci:1": "node --import ./scripts/tsx.mjs scripts/test-projects.mts extensions/acpx/src/runtime-argv.process.test.ts src/state/openclaw-state-ownership.test.ts src/snapshot/local-repository.windows.test.ts src/state/openclaw-database-paths.windows.test.ts src/node-host/invoke-system-run-allowlist.test.ts src/node-host/node-worker-transfer-client.test.ts packages/terminal-core/src/display-string.test.ts src/config/sessions/session-accessor.sqlite-archive.worker.test.ts src/commands/doctor-gateway-auth-token.windows.test.ts src/infra/state-migrations.audit-logs.windows.test.ts src/commands/backup-verify.test.ts src/commands/agents.commands.list.test.ts src/gateway/gateway-cron-process-identity.windows.test.ts src/shared/runtime-import.test.ts src/shared/worker-bundle-archive.test.ts src/node-host/node-worker-bundle-installer.test.ts test/scripts/check-openclaw-package-tarball.test.ts test/scripts/direct-run-entrypoints.test.ts test/scripts/format-generated-module.test.ts test/scripts/openclaw-cross-os-installer.windows.test.ts test/scripts/openclaw-cross-os-release-workflow.test.ts test/scripts/pnpm-runner.test.ts extensions/canvas/scripts/pnpm-runner.test.ts test/scripts/run-with-env.test.ts test/scripts/ui.test.ts test/scripts/vitest-process-group.test.ts test/scripts/vitest-worker-artifacts.test.ts src/agents/tools/media-tool-file-url.windows.test.ts extensions/memory-core/src/memory-extra-file-path.windows.test.ts src/daemon/schtasks.startup-fallback.test.ts src/daemon/schtasks.env-case.real.test.ts src/plugin-sdk/node-host.test.ts test/e2e/qa-lab/runtime/package-openclaw-for-docker.e2e.test.ts extensions/lobster/src/lobster-runner.test.ts src/gateway/worker-environments/workspace-quiescence.windows.test.ts",
+-    "test:windows:ci:2": "node --import ./scripts/tsx.mjs scripts/test-projects.mts src/infra/sqlite-private-directory.windows.test.ts src/cli/update-cli/restart-helper.windows.test.ts src/skills/runtime/refresh.windows.test.ts src/skills/runtime/refresh-watch-path.test.ts src/skills/runtime/refresh.missing-root.integration.test.ts src/infra/sqlite-snapshot.test.ts src/infra/ports.test.ts src/infra/diagnostic-process-siblings.env.test.ts src/infra/windows-diagnostic-env.test.ts src/infra/windows-encoding.test.ts src/infra/windows-process-start.test.ts src/infra/windows-process-start.native.test.ts src/shared/pid-alive.env.test.ts src/infra/advertised-lan-host.windows.test.ts src/infra/update-managed-service-handoff-command.test.ts src/infra/update-managed-service-handoff-lifecycle.test.ts src/infra/executable-path.test.ts src/agents/cli-executable-identity.test.ts src/plugin-sdk/windows-spawn.test.ts src/infra/fs-safe-remove.test.ts src/infra/state-migrations.legacy-session-store.test.ts src/infra/windows-install-roots.test.ts src/infra/ssh-client.windows.test.ts src/infra/exec-allowlist-pattern.test.ts src/infra/process-env.test.ts src/infra/openclaw-cli-shim.windows.test.ts src/agents/sessions/windows-git-bash-path.test.ts test/scripts/npm-runner.test.ts test/scripts/ts-topology.test.ts test/scripts/vitest-worker-artifacts.transforms.test.ts test/scripts/ci-platform-checkout.test.ts test/scripts/install-ps1.test.ts test/scripts/write-plugin-sdk-entry-dts.test.ts test/scripts/write-unified-entry-dts.test.ts test/scripts/tsdown-declaration-resolution.test.ts src/test-utils/openclaw-test-state.test.ts test/helpers/openclaw-test-instance.test.ts src/utils.test.ts src/media/local-media-path.windows.test.ts src/media/web-media.file-url.windows.test.ts src/process/exec.windows.test.ts src/process/exec.windows.integration.test.ts src/agents/sessions/exec.real.test.ts src/process/windows-command.test.ts src/process/terminal-pty.test.ts src/process/supervisor/supervisor.anchored-shell.real.test.ts src/tui/tui.resolve-codex-bin.test.ts src/media-understanding/attachments.file-url.windows.test.ts src/cli/completion-runtime.windows.test.ts src/cli/daemon-cli/status.print.test.ts src/cli/mcp-cli.path-case.windows.test.ts src/auto-reply/usage-bar/template.windows.test.ts src/auto-reply/reply.triggers.trigger-handling.stages-inbound-media-into-sandbox-workspace.test.ts src/agents/provider-local-service.env-case.test.ts src/agents/bash-tools.exec.script-preflight.test.ts src/agents/agent-tools.read.windows.test.ts src/agents/agent-tools.read.host-operations.test.ts src/agents/sandbox/fs-paths.test.ts src/agents/sessions/tools/render-utils.test.ts src/agents/sessions/tools/path-utils.test.ts extensions/msteams/src/media-helpers.test.ts extensions/msteams/src/messenger.test.ts extensions/mxc/test/mxc-backend.test.ts extensions/mxc/test/path-comparison.test.ts extensions/mxc/test/sandbox-policy-loader.test.ts",
++    "test:windows:ci:1": "node --import ./scripts/tsx.mjs scripts/test-projects.mts extensions/acpx/src/runtime-argv.process.test.ts src/state/openclaw-state-ownership.test.ts src/snapshot/local-repository.windows.test.ts src/state/openclaw-database-paths.windows.test.ts src/node-host/invoke-system-run-allowlist.test.ts src/node-host/node-worker-transfer-client.test.ts packages/terminal-core/src/display-string.test.ts src/config/sessions/session-accessor.sqlite-archive.worker.test.ts src/commands/doctor-gateway-auth-token.windows.test.ts src/infra/state-migrations.audit-logs.windows.test.ts src/commands/backup-verify.test.ts src/commands/agents.commands.list.test.ts src/gateway/gateway-cron-process-identity.windows.test.ts src/shared/runtime-import.test.ts src/shared/worker-bundle-archive.test.ts src/node-host/node-worker-bundle-installer.test.ts test/scripts/check-openclaw-package-tarball.test.ts test/scripts/direct-run-entrypoints.test.ts test/scripts/format-generated-module.test.ts test/scripts/openclaw-cross-os-installer.windows.test.ts test/scripts/openclaw-cross-os-release-workflow.test.ts test/scripts/pnpm-runner.test.ts extensions/canvas/scripts/pnpm-runner.test.ts test/scripts/run-with-env.test.ts test/scripts/ui.test.ts test/scripts/vitest-process-group.test.ts test/scripts/vitest-worker-artifacts.test.ts src/agents/tools/media-tool-file-url.windows.test.ts extensions/memory-core/src/memory-extra-file-path.windows.test.ts src/daemon/schtasks.startup-fallback.test.ts src/plugin-sdk/node-host.test.ts test/e2e/qa-lab/runtime/package-openclaw-for-docker.e2e.test.ts extensions/lobster/src/lobster-runner.test.ts src/gateway/worker-environments/workspace-quiescence.windows.test.ts",
++    "test:windows:ci:2": "node --import ./scripts/tsx.mjs scripts/test-projects.mts src/skills/runtime/refresh.windows.test.ts src/skills/runtime/refresh-watch-path.test.ts src/skills/runtime/refresh.missing-root.integration.test.ts src/infra/sqlite-snapshot.test.ts src/infra/ports.test.ts src/infra/diagnostic-process-siblings.env.test.ts src/infra/windows-diagnostic-env.test.ts src/infra/windows-encoding.test.ts src/infra/windows-process-start.test.ts src/infra/windows-process-start.native.test.ts src/shared/pid-alive.env.test.ts src/infra/advertised-lan-host.windows.test.ts src/infra/update-managed-service-handoff-command.test.ts src/infra/update-managed-service-handoff-lifecycle.test.ts src/infra/executable-path.test.ts src/agents/cli-executable-identity.test.ts src/plugin-sdk/windows-spawn.test.ts src/infra/fs-safe-remove.test.ts src/infra/state-migrations.legacy-session-store.test.ts src/infra/windows-install-roots.test.ts src/infra/ssh-client.windows.test.ts src/infra/exec-allowlist-pattern.test.ts src/infra/process-env.test.ts src/infra/openclaw-cli-shim.windows.test.ts src/agents/sessions/windows-git-bash-path.test.ts test/scripts/npm-runner.test.ts test/scripts/ts-topology.test.ts test/scripts/vitest-worker-artifacts.transforms.test.ts test/scripts/ci-platform-checkout.test.ts test/scripts/install-ps1.test.ts test/scripts/write-plugin-sdk-entry-dts.test.ts test/scripts/write-unified-entry-dts.test.ts test/scripts/tsdown-declaration-resolution.test.ts src/test-utils/openclaw-test-state.test.ts test/helpers/openclaw-test-instance.test.ts src/utils.test.ts src/media/local-media-path.windows.test.ts src/media/web-media.file-url.windows.test.ts src/process/exec.windows.test.ts src/process/exec.windows.integration.test.ts src/agents/sessions/exec.real.test.ts src/process/windows-command.test.ts src/process/terminal-pty.test.ts src/process/supervisor/supervisor.anchored-shell.real.test.ts src/tui/tui.resolve-codex-bin.test.ts src/media-understanding/attachments.file-url.windows.test.ts src/cli/completion-runtime.windows.test.ts src/cli/daemon-cli/status.print.test.ts src/cli/mcp-cli.path-case.windows.test.ts src/auto-reply/usage-bar/template.windows.test.ts src/auto-reply/reply.triggers.trigger-handling.stages-inbound-media-into-sandbox-workspace.test.ts src/agents/provider-local-service.env-case.test.ts src/agents/bash-tools.exec.script-preflight.test.ts src/agents/agent-tools.read.windows.test.ts src/agents/agent-tools.read.host-operations.test.ts src/agents/sandbox/fs-paths.test.ts src/agents/sessions/tools/render-utils.test.ts src/agents/sessions/tools/path-utils.test.ts extensions/msteams/src/media-helpers.test.ts extensions/msteams/src/messenger.test.ts extensions/mxc/test/mxc-backend.test.ts extensions/mxc/test/path-comparison.test.ts extensions/mxc/test/sandbox-policy-loader.test.ts",
+     "test:windows:schtasks:integration": "node --import ./scripts/tsx.mjs scripts/run-with-env.mts CI_WINDOWS_SCHTASKS_INTEGRATION=1 OPENCLAW_E2E_SKIP_BUILD=1 OPENCLAW_E2E_VERBOSE=1 OPENCLAW_VITEST_MAX_WORKERS=1 -- node scripts/run-vitest.mjs src/daemon/schtasks.integration.e2e.test.ts",
+     "tool-display:check": "node --import ./scripts/tsx.mjs scripts/tool-display.ts --check",
+     "tool-display:write": "node --import ./scripts/tsx.mjs scripts/tool-display.ts --write",
+@@ -2113,8 +2088,6 @@
+     "native:i18n:baseline": "node --import ./scripts/tsx.mjs scripts/native-app-i18n.ts baseline --write",
+     "native:i18n:check": "node --import ./scripts/tsx.mjs scripts/native-app-i18n.ts check",
+     "native:i18n:sync": "node --import ./scripts/tsx.mjs scripts/native-app-i18n.ts sync --write",
+-    "native-catalogs:gen": "node scripts/generate-native-session-catalogs.mjs",
+-    "native-catalogs:check": "node scripts/generate-native-session-catalogs.mjs --check",
+     "native:i18n:verify": "node --import ./scripts/tsx.mjs scripts/native-app-i18n.ts verify",
+     "android:i18n:check": "node --import ./scripts/tsx.mjs scripts/android-app-i18n.ts check",
+     "apple:i18n:check": "node --import ./scripts/tsx.mjs scripts/apple-app-i18n.ts check",
+@@ -2136,8 +2109,8 @@
+     "@modelcontextprotocol/sdk": "1.30.0",
+     "@mozilla/readability": "0.6.0",
+     "@openclaw/ai": "workspace:*",
+-    "@openclaw/fs-safe": "0.8.3",
+-    "@openclaw/proxyline": "0.3.11",
++    "@openclaw/fs-safe": "0.8.1",
++    "@openclaw/proxyline": "0.3.7",
+     "@silvia-odwyer/photon-node": "0.3.4",
+     "@trycua/cua-driver": "0.22.2",
+     "acorn": "8.18.0",
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index 8cc5eef2b58..354bfdf88fc 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -202,11 +202,11 @@ importers:
+         specifier: workspace:*
+         version: link:packages/ai
+       '@openclaw/fs-safe':
+-        specifier: 0.8.3
+-        version: 0.8.3
++        specifier: 0.8.1
++        version: 0.8.1
+       '@openclaw/proxyline':
+-        specifier: 0.3.11
+-        version: 0.3.11(undici@8.10.2)
++        specifier: 0.3.7
++        version: 0.3.7(undici@8.10.2)
+       '@silvia-odwyer/photon-node':
+         specifier: 0.3.4
+         version: 0.3.4
+@@ -1697,8 +1697,8 @@ importers:
+   extensions/onepassword:
+     dependencies:
+       '@openclaw/fs-safe':
+-        specifier: 0.8.3
+-        version: 0.8.3
++        specifier: 0.8.1
++        version: 0.8.1
+     devDependencies:
+       '@openclaw/plugin-sdk':
+         specifier: workspace:*
+@@ -2660,9 +2660,6 @@ importers:
+       '@tanstack/virtual-core':
+         specifier: 3.17.8
+         version: 3.17.8
+-      diff:
+-        specifier: 9.0.0
+-        version: 9.0.0
+       dompurify:
+         specifier: 3.4.14
+         version: 3.4.14
+@@ -4133,54 +4130,54 @@ packages:
+     engines: {node: '>=22'}
+     hasBin: true
+ 
+-  '@openclaw/fs-safe-darwin-arm64@0.8.3':
+-    resolution: {integrity: sha512-JYmJPUjVdoxMyU326epDW3MWqpQqkPb1H9ZB6kp/e/T4vuerMXtDehEXXbxw2BECioCB+ZzGcCwFfyFPJkk5Xg==}
++  '@openclaw/fs-safe-darwin-arm64@0.8.1':
++    resolution: {integrity: sha512-fCXsPrEmqkKBEDG2nHndsbUrlxXVHT9VAT/oLCCqkfNaiJxQ5POS6YexUoshDfpqWYWL7ggWAZ+kiLukffk/fQ==}
+     engines: {node: '>=22'}
+     cpu: [arm64]
+     os: [darwin]
+ 
+-  '@openclaw/fs-safe-darwin-x64@0.8.3':
+-    resolution: {integrity: sha512-3dl5F73Bg0+RBFXawlOC8oWMwYIFyrInK2ukyzrzQ/JVRKpYAm9IiRRSNnGrXUE8f/qyBrovJb0AGzG58kWeBQ==}
++  '@openclaw/fs-safe-darwin-x64@0.8.1':
++    resolution: {integrity: sha512-ZnYE9v7HYTBOwY1HZLK1epQLt6Qk///BK2OvTHdWtPAB/TlTm5djFE3RQqNF/DDvO5HaKpgNFYjzKGel/peaGg==}
+     engines: {node: '>=22'}
+     cpu: [x64]
+     os: [darwin]
+ 
+-  '@openclaw/fs-safe-linux-arm64-gnu@0.8.3':
+-    resolution: {integrity: sha512-8XAM646RKkTnVcLMmS+ufoFnWa3ShT9U1ZI6dOUS3Dzq3xzSZPUb0U7utFBzVsFnYirHKmgAvGxVphNbDfJjlQ==}
++  '@openclaw/fs-safe-linux-arm64-gnu@0.8.1':
++    resolution: {integrity: sha512-JHvbIVkK7Mq/43WLYBkF+xn8YpYV3rP55KBDpKAN0MYjDYF/YRQVruzWOVOatiZdOWep48/wicysi9eqY94QRA==}
+     engines: {node: '>=22'}
+     cpu: [arm64]
+     os: [linux]
+     libc: [glibc]
+ 
+-  '@openclaw/fs-safe-linux-arm64-musl@0.8.3':
+-    resolution: {integrity: sha512-6adbSOi/oAqOcnOwwpul8C+c67E91qF3RBeuDRgOTdd1WMFyXzcMj9YxVTyfN5kswqZ1rVgcPjElryPEyMRT2Q==}
++  '@openclaw/fs-safe-linux-arm64-musl@0.8.1':
++    resolution: {integrity: sha512-DEsbhMNSDGVoksXnXXrvjkSz+4gE+5njFVU/kwtQffHWOsT0qv4xS+uUyqiGumiQL2iYYDpKARfXyNNX1bDFkA==}
+     engines: {node: '>=22'}
+     cpu: [arm64]
+     os: [linux]
+     libc: [musl]
+ 
+-  '@openclaw/fs-safe-linux-x64-gnu@0.8.3':
+-    resolution: {integrity: sha512-R4NHf6EGlFKh51Yu+VGx0HiD7z31DTO+BZFPF7sMxe2j8shrjDzchoOk7uos88o/boQZhr4hS/T7hJrMKgzQoQ==}
++  '@openclaw/fs-safe-linux-x64-gnu@0.8.1':
++    resolution: {integrity: sha512-oyduwu1ZjU2DcGxnGatUhpMa/uetv+CbYGxlqP67vZyXDvutXoTSrl0srJZ6mnzx6ENtROT+z4v+r213Y2jakA==}
+     engines: {node: '>=22'}
+     cpu: [x64]
+     os: [linux]
+     libc: [glibc]
+ 
+-  '@openclaw/fs-safe-linux-x64-musl@0.8.3':
+-    resolution: {integrity: sha512-vxPDvc4LygQESNNUi17KU+jrosA12sjsb7X/FziqsoTLonA1QTa3zdvdI3GpfZiK4qjLmqZyNPwFCo7Y2V2jBQ==}
++  '@openclaw/fs-safe-linux-x64-musl@0.8.1':
++    resolution: {integrity: sha512-bsR9XhMzY/vi4ejv3s8A0titbsDcsfIQnIS5SxgfRmA+fEUcDqcgJyvkbDKG9YbGoyxVtoFPEflB5loZk82xTg==}
+     engines: {node: '>=22'}
+     cpu: [x64]
+     os: [linux]
+     libc: [musl]
+ 
+-  '@openclaw/fs-safe-win32-x64-msvc@0.8.3':
+-    resolution: {integrity: sha512-aAhYKQg2cognuh8d4wg84i3RFltTmnAlb+J2+D17/babmnC14hKr7l/KhTN//vsdIvzU9UiTnFs14uft78Y/Sg==}
++  '@openclaw/fs-safe-win32-x64-msvc@0.8.1':
++    resolution: {integrity: sha512-rOkDKnLx61xvio+slHc8kG0IzpVVxt6JIJu9Q+1CrBmKSyf9YPZYqVJcjXReqA+J/c4vvVLHp5sbwQerOAqT/w==}
+     engines: {node: '>=22'}
+     cpu: [x64]
+     os: [win32]
+ 
+-  '@openclaw/fs-safe@0.8.3':
+-    resolution: {integrity: sha512-2hzKN8W5CQhhoa+9NZCO9vwpuEInrX4nlVbm2JrEvI2aYCI/dXcjHcZWJOefWR/t3VfqLntr30+7lLg3dj0t5A==}
++  '@openclaw/fs-safe@0.8.1':
++    resolution: {integrity: sha512-I11v+xiet4RCE1G1bmWFLEMmd9nBnZMmKqHPT9gkqVtoqacY7GtFvpt1O7cffUDD6C2YlAt7Z5Z2Vlbq5rYxDg==}
+     engines: {node: '>=22'}
+ 
+   '@openclaw/libterminal@0.3.2':
+@@ -4192,8 +4189,8 @@ packages:
+       node-pty:
+         optional: true
+ 
+-  '@openclaw/proxyline@0.3.11':
+-    resolution: {integrity: sha512-XDlrrQE0fapfTpqCBK9WB+U4W+/0lsrRIXI2nZ74W/lWMF+X4T5t2dfj8Ms250Th4qjnNi6WuSX5OZJqyLoZ3g==}
++  '@openclaw/proxyline@0.3.7':
++    resolution: {integrity: sha512-RWkt4mPcBOj7E8euyeqynkIFXvEIxVStYH0YHDC08feq5qFyBXGmfdWC+MTMVJXfHN2ituoxLlrIyjpyJpW7ew==}
+     engines: {node: '>=22.19.0'}
+     peerDependencies:
+       undici: '>=8.5.0 <9'
+@@ -11453,43 +11450,44 @@ snapshots:
+       - bufferutil
+       - utf-8-validate
+ 
+-  '@openclaw/fs-safe-darwin-arm64@0.8.3':
++  '@openclaw/fs-safe-darwin-arm64@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe-darwin-x64@0.8.3':
++  '@openclaw/fs-safe-darwin-x64@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe-linux-arm64-gnu@0.8.3':
++  '@openclaw/fs-safe-linux-arm64-gnu@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe-linux-arm64-musl@0.8.3':
++  '@openclaw/fs-safe-linux-arm64-musl@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe-linux-x64-gnu@0.8.3':
++  '@openclaw/fs-safe-linux-x64-gnu@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe-linux-x64-musl@0.8.3':
++  '@openclaw/fs-safe-linux-x64-musl@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe-win32-x64-msvc@0.8.3':
++  '@openclaw/fs-safe-win32-x64-msvc@0.8.1':
+     optional: true
+ 
+-  '@openclaw/fs-safe@0.8.3':
++  '@openclaw/fs-safe@0.8.1':
+     optionalDependencies:
+-      '@openclaw/fs-safe-darwin-arm64': 0.8.3
+-      '@openclaw/fs-safe-darwin-x64': 0.8.3
+-      '@openclaw/fs-safe-linux-arm64-gnu': 0.8.3
+-      '@openclaw/fs-safe-linux-arm64-musl': 0.8.3
+-      '@openclaw/fs-safe-linux-x64-gnu': 0.8.3
+-      '@openclaw/fs-safe-linux-x64-musl': 0.8.3
+-      '@openclaw/fs-safe-win32-x64-msvc': 0.8.3
++      '@openclaw/fs-safe-darwin-arm64': 0.8.1
++      '@openclaw/fs-safe-darwin-x64': 0.8.1
++      '@openclaw/fs-safe-linux-arm64-gnu': 0.8.1
++      '@openclaw/fs-safe-linux-arm64-musl': 0.8.1
++      '@openclaw/fs-safe-linux-x64-gnu': 0.8.1
++      '@openclaw/fs-safe-linux-x64-musl': 0.8.1
++      '@openclaw/fs-safe-win32-x64-msvc': 0.8.1
+       jszip: 3.10.1
++      tar: 7.5.22
+ 
+   '@openclaw/libterminal@0.3.2':
+     dependencies:
+       ghostty-web: 0.4.0
+ 
+-  '@openclaw/proxyline@0.3.11(undici@8.10.2)':
++  '@openclaw/proxyline@0.3.7(undici@8.10.2)':
+     dependencies:
+       undici: 8.10.2
+ 
+diff --git a/ui/package.json b/ui/package.json
+index f4f3d6627a1..d60a45ccfba 100644
+--- a/ui/package.json
++++ b/ui/package.json
+@@ -37,7 +37,6 @@
+     "@panzoom/panzoom": "4.6.2",
+     "@tanstack/lit-virtual": "3.13.37",
+     "@tanstack/virtual-core": "3.17.8",
+-    "diff": "9.0.0",
+     "dompurify": "3.4.14",
+     "ghostty-web": "0.4.0",
+     "highlight.js": "11.12.0",
+diff --git a/ui/src/components/app-sidebar-session-navigation.ts b/ui/src/components/app-sidebar-session-navigation.ts
+index 9e320e4e593..2a4e5aa7292 100644
+--- a/ui/src/components/app-sidebar-session-navigation.ts
++++ b/ui/src/components/app-sidebar-session-navigation.ts
+@@ -38,7 +38,7 @@ import {
+   buildSidebarSessionNavigationState,
+   collectCategorizedChildRootRows,
+   collectPromotedMainChildRows,
+-  collectSidebarSessionRowsByKey,
++  collectSidebarSessionCandidateRows,
+   compareSidebarSessionRowsByMode,
+   collectKnownSidebarSessionCatalogIds,
+   collectKnownSidebarSessionGroups,
+@@ -659,11 +659,10 @@ export class AppSidebarSessionNavigationElement extends AppSidebarBase {
+     ) {
+       scopedRootRows.push(lineageRoot);
+     }
+-    const sessionRowsByKey = collectSidebarSessionRowsByKey({
++    const sessionCandidateRows = collectSidebarSessionCandidateRows({
+       rows,
+       childRowsByParent: childSessionRowsByParent,
+     });
+-    const sessionCandidateRows = [...sessionRowsByKey.values()];
+     const categorizedChildRows = collectCategorizedChildRootRows({
+       rows: sessionCandidateRows,
+       scopedRoots: scopedRootRows,
+@@ -693,7 +692,8 @@ export class AppSidebarSessionNavigationElement extends AppSidebarBase {
+     // renders as its live row inside the Coding catalog, never as a thread.
+     const projected = projectSessionTree({
+       roots: orderedRootRows.filter((row) => !adopted.has(row.key)),
+-      rowsByKey: sessionRowsByKey,
++      agentRows: rows,
++      childRowsByParent: childSessionRowsByParent,
+       loadingChildKeys: this.sessionData.loadingChildSessionKeys,
+       knownSessionAttention: this.attention.knownSessionAttention(),
+       toSidebarSession: navigationState.toSidebarSession,
+diff --git a/ui/src/e2e/sidebar-interactions.e2e.test.ts b/ui/src/e2e/sidebar-interactions.e2e.test.ts
+index 1d0cfe3d579..74570d66d4c 100644
+--- a/ui/src/e2e/sidebar-interactions.e2e.test.ts
++++ b/ui/src/e2e/sidebar-interactions.e2e.test.ts
+@@ -411,7 +411,12 @@ suite.define(() => {
+           cases: [
+             {
+               match: { agentId: "main" },
+-              response: { agentId: "main", avatar: "", emoji: "🦞", name: "Main" },
++              response: {
++                agentId: "main",
++                avatar: "",
++                emoji: "🦞",
++                name: "Scheduled Automations",
++              },
+             },
+             {
+               match: { agentId: "research" },
+@@ -444,7 +449,7 @@ suite.define(() => {
+       const sidebar = page.locator("openclaw-app-sidebar");
+       await sidebar.getByRole("button", { name: /Switch agent/ }).click();
+       const menu = sidebar.locator("wa-dropdown.sidebar-agent-menu");
+-      const mainSwitch = menu.getByRole("menuitemradio", { name: "Main" });
++      const mainSwitch = menu.getByRole("menuitemradio", { name: "Scheduled Automations" });
+       const researchSwitch = menu.getByRole("menuitemradio", { name: "Research" });
+       await expect
+         .poll(() =>
+@@ -489,9 +494,27 @@ suite.define(() => {
+       expect(new Set(gridLayout.widths).size).toBe(1);
+       expect(gridLayout.avatarOffsets).toEqual([0, 0, 0]);
+       expect(gridLayout.labelOffsets).toEqual([0, 0, 0]);
+-      await page.evaluate(() => {
+-        document.documentElement.style.setProperty("--control-ui-text-scale", "1.4");
++      const capabilities = menu.getByRole("menuitem", {
++        name: "What can Scheduled Automations do?",
++        exact: true,
+       });
++      for (const scale of [1, 1.4]) {
++        await page.evaluate((value) => {
++          document.documentElement.style.setProperty("--control-ui-text-scale", String(value));
++        }, scale);
++        await captureSidebarUiProof(suite, page, `agent-menu-long-label-${scale}.png`);
++        await expect
++          .poll(() =>
++            capabilities.evaluate((item) => {
++              const label = item.querySelector(".sidebar-customize-menu__text");
++              if (!label) {
++                throw new Error("Capabilities label is missing");
++              }
++              return label.getBoundingClientRect().right - item.getBoundingClientRect().right;
++            }),
++          )
++          .toBeLessThanOrEqual(0);
++      }
+       await expect
+         .poll(() =>
+           menu.evaluate((dropdown) => {
+diff --git a/ui/src/styles/layout.css b/ui/src/styles/layout.css
+index e70b138ebb0..c0dfcfc7830 100644
+--- a/ui/src/styles/layout.css
++++ b/ui/src/styles/layout.css
+@@ -2549,6 +2549,7 @@ wa-dropdown-item.sidebar-customize-menu__item {
+ }
+ 
+ .sidebar-customize-menu__text {
++  display: block;
+   flex: 1;
+   white-space: nowrap;
+   overflow: hidden;

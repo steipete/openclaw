@@ -1,22 +1,22 @@
 [
   {
-    "id": "gateway-repair-load-green",
-    "directory": "gateway-repair-load-green",
+    "id": "blank-status-logs-red",
+    "directory": "blank-status-logs-red",
     "runner": "ubuntu-24.04",
     "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "native-repair"
+    "mode": "baseline",
+    "variant": "cli"
   },
   {
-    "id": "plugin-source-build-139075-baseline",
-    "directory": "plugin-source-build-139075-baseline",
+    "id": "sidebar-label-140125-green",
+    "directory": "sidebar-label-140125-green",
     "runner": "ubuntu-24.04",
-    "source": "2d58961f33fd48b94b48bf569b65fb1c6ad2d954",
+    "source": "411e3f41b5484be425fa0e726621ae0b10f2a62a",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "source-and-packaged-builds"
+    "mode": "green",
+    "variant": "browser"
   }
 ]

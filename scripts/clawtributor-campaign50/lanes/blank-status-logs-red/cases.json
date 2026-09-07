@@ -1,0 +1,286 @@
+[
+  {
+    "id": "logs-omitted",
+    "owner": "logs",
+    "kind": "omitted",
+    "argv": [
+      "channels",
+      "logs",
+      "--channel",
+      "all",
+      "--json"
+    ],
+    "expected": {
+      "exit": 0,
+      "lines": 200
+    }
+  },
+  {
+    "id": "logs-blank",
+    "owner": "logs",
+    "kind": "blank",
+    "argv": [
+      "channels",
+      "logs",
+      "--channel",
+      "all",
+      "--json",
+      "--lines",
+      ""
+    ],
+    "expected": {
+      "exit": 0,
+      "lines": 200
+    }
+  },
+  {
+    "id": "logs-whitespace",
+    "owner": "logs",
+    "kind": "whitespace",
+    "argv": [
+      "channels",
+      "logs",
+      "--channel",
+      "all",
+      "--json",
+      "--lines",
+      "   "
+    ],
+    "expected": {
+      "exit": 1,
+      "error": "--lines must be a positive integer."
+    }
+  },
+  {
+    "id": "logs-default",
+    "owner": "logs",
+    "kind": "default",
+    "argv": [
+      "channels",
+      "logs",
+      "--channel",
+      "all",
+      "--json",
+      "--lines",
+      "200"
+    ],
+    "expected": {
+      "exit": 0,
+      "lines": 200
+    }
+  },
+  {
+    "id": "logs-normal",
+    "owner": "logs",
+    "kind": "normal",
+    "argv": [
+      "channels",
+      "logs",
+      "--channel",
+      "all",
+      "--json",
+      "--lines",
+      "1"
+    ],
+    "expected": {
+      "exit": 0,
+      "lines": 1
+    }
+  },
+  {
+    "id": "models-omitted",
+    "owner": "models",
+    "kind": "omitted",
+    "argv": [
+      "models",
+      "status",
+      "--json"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-timeout-blank",
+    "owner": "models",
+    "kind": "blank",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-timeout",
+      ""
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-timeout-whitespace",
+    "owner": "models",
+    "kind": "whitespace",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-timeout",
+      "   "
+    ],
+    "expected": {
+      "exit": 1,
+      "error": "--probe-timeout must be a positive number."
+    }
+  },
+  {
+    "id": "probe-timeout-default",
+    "owner": "models",
+    "kind": "default",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-timeout",
+      "8000"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-timeout-normal",
+    "owner": "models",
+    "kind": "normal",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-timeout",
+      "1.5"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-concurrency-blank",
+    "owner": "models",
+    "kind": "blank",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-concurrency",
+      ""
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-concurrency-whitespace",
+    "owner": "models",
+    "kind": "whitespace",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-concurrency",
+      "   "
+    ],
+    "expected": {
+      "exit": 1,
+      "error": "--probe-concurrency must be a positive integer."
+    }
+  },
+  {
+    "id": "probe-concurrency-default",
+    "owner": "models",
+    "kind": "default",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-concurrency",
+      "2"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-concurrency-normal",
+    "owner": "models",
+    "kind": "normal",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-concurrency",
+      "1"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-max-tokens-blank",
+    "owner": "models",
+    "kind": "blank",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-max-tokens",
+      ""
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-max-tokens-whitespace",
+    "owner": "models",
+    "kind": "whitespace",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-max-tokens",
+      "   "
+    ],
+    "expected": {
+      "exit": 1,
+      "error": "--probe-max-tokens must be a positive integer."
+    }
+  },
+  {
+    "id": "probe-max-tokens-default",
+    "owner": "models",
+    "kind": "default",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-max-tokens",
+      "8"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  },
+  {
+    "id": "probe-max-tokens-normal",
+    "owner": "models",
+    "kind": "normal",
+    "argv": [
+      "models",
+      "status",
+      "--json",
+      "--probe-max-tokens",
+      "1"
+    ],
+    "expected": {
+      "exit": 0
+    }
+  }
+]
