@@ -5,12 +5,10 @@ source_dir=$1
 proof_dir=$2
 tooling_head=$3
 tooling_root=$(cd "$(dirname "$0")/../../.." && pwd)
-source_head=ea376be52530c68d196ce8614fbd7f986dea3963
-source_tree=5d66a2a08fc8067d6ccde51ecddd8dcfa6008e43
-arm=baseline
-regression_path=extensions/memory-core/src/short-term-promotion.test.ts
-regression_sha256=a4038774acdcb050271b1799b2b7d2e4eceb00aa79bc3f0551a8977a0b9f7868
-regression_applied=0
+source_head=bb8295a2f69bb7232ee38d51c13becb1d2bf5e80
+source_tree=aff804944b86fba6f70af72a1a84b5eb68d774f0
+check_base=ea376be52530c68d196ce8614fbd7f986dea3963
+arm=candidate
 node_bin=$(dirname "$(command -v node)")
 clean_path="$proof_dir/tools/node_modules/.bin:$node_bin:/usr/local/bin:/usr/bin:/bin"
 
@@ -25,6 +23,8 @@ clean_run() {
 test "$(git -C "$tooling_root" rev-parse HEAD)" = "$tooling_head"
 test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
 test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
+test "$(git -C "$source_dir" rev-parse "$check_base^{tree}")" = 5d66a2a08fc8067d6ccde51ecddd8dcfa6008e43
+git -C "$source_dir" merge-base --is-ancestor "$check_base" "$source_head"
 test -x /usr/bin/time
 git -C "$source_dir" diff --exit-code
 cd "$source_dir"
@@ -47,15 +47,7 @@ cd "$source_dir"
 verify_source() {
   test "$(git rev-parse HEAD)" = "$source_head"
   test "$(git rev-parse 'HEAD^{tree}')" = "$source_tree"
-  if [[ "$regression_applied" == 1 ]]; then
-    test "$(git diff --name-only)" = "$regression_path"
-    git diff --binary --full-index -- "$regression_path" > "$proof_dir/artifacts/observed-regression.patch"
-    cmp "$proof_dir/artifacts/observed-regression.patch" \
-      "$tooling_root/.github/proof/memory-promotion-121287/regression.patch"
-    printf '%s  %s\n' "$regression_sha256" "$regression_path" | sha256sum --check
-  else
-    git diff --exit-code
-  fi
+  git diff --exit-code
   git diff --cached --exit-code
   git ls-files --others --exclude-standard > "$proof_dir/artifacts/untracked-source.txt"
   test ! -s "$proof_dir/artifacts/untracked-source.txt"
@@ -118,21 +110,37 @@ cmp "$proof_dir/artifacts/runtime-after-build.json" "$proof_dir/artifacts/runtim
 printf '%s\n' "$proof_exit" > "$proof_dir/artifacts/observation-exit.txt"
 test "$proof_exit" = 0
 
-# Run the new unit regression only after the unchanged-source live observation.
-git apply --check "$tooling_root/.github/proof/memory-promotion-121287/regression.patch"
-git apply "$tooling_root/.github/proof/memory-promotion-121287/regression.patch"
-regression_applied=1
-verify_source
+suite_paths=(
+  extensions/memory-core/src/short-term-promotion.test.ts
+  extensions/memory-core/src/cli.test.ts
+  extensions/memory-core/src/dreaming-phases.test.ts
+)
 set +e
 clean_run timeout --signal=TERM --kill-after=15s 240s \
   node scripts/run-vitest.mjs run --config test/vitest/vitest.extension-memory.config.ts \
-  --configLoader runner "$regression_path" \
-  --testNamePattern 'keeps blocked origins out of ranking before applying the candidate limit' \
-  --reporter=json --outputFile="$proof_dir/regression-report.json" \
-  2>&1 | tee "$proof_dir/regression.log"
-regression_exit=${PIPESTATUS[0]}
+  --configLoader runner "${suite_paths[@]}" \
+  --reporter=default --reporter=json --outputFile="$proof_dir/suites-report.json" \
+  2>&1 | tee "$proof_dir/suites.log"
+suites_exit=${PIPESTATUS[0]}
 set -e
 verify_source
-test "$regression_exit" = 1
-clean_run node "$tooling_root/.github/proof/memory-promotion-121287/verify-regression.mjs" \
-  "$proof_dir/regression-report.json" "$proof_dir/artifacts/expected-regression-failure.json"
+printf '%s\n' "$suites_exit" > "$proof_dir/artifacts/owner-suites-exit.txt"
+test "$suites_exit" = 0
+clean_run node "$tooling_root/.github/proof/memory-promotion-121287/verify-suites.mjs" \
+  "$proof_dir/suites-report.json" "$proof_dir/artifacts/owner-suites.json"
+
+changed_paths=(
+  docs/cli/memory.md
+  extensions/memory-core/src/short-term-promotion.ts
+  "${suite_paths[@]}"
+)
+clean_run node scripts/check-changed.mjs --base "$check_base" --head "$source_head" --dry-run -- "${changed_paths[@]}" \
+  2>&1 | tee "$proof_dir/artifacts/check-plan.log"
+set +e
+clean_run node scripts/check-changed.mjs --base "$check_base" --head "$source_head" -- "${changed_paths[@]}" \
+  2>&1 | tee "$proof_dir/check.log"
+checks_exit=${PIPESTATUS[0]}
+set -e
+verify_source
+printf '%s\n' "$checks_exit" > "$proof_dir/artifacts/check-exit.txt"
+exit "$checks_exit"
