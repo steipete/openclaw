@@ -1,22 +1,12 @@
 [
   {
-    "id": "ios-composer-observation",
-    "directory": "ios-composer-observation",
-    "runner": "macos-26",
-    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+    "id": "setup-error-reporting-green",
+    "directory": "setup-error-reporting-green",
+    "mode": "green",
+    "runner": "ubuntu-24.04",
+    "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "composer-observation"
-  },
-  {
-    "id": "peekaboo-released-parser-red",
-    "directory": "peekaboo-released-parser-red",
-    "runner": "macos-26",
-    "source": "6adfb69831b86e93bcd3fd365e11a22700fb37bb",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "released-cli-parser"
+    "variant": "owner-command-candidate"
   }
 ]

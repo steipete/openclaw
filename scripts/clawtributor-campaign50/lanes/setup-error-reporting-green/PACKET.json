@@ -1,0 +1,34 @@
+{
+  "status": "DRAFT_AWAITING_FINAL_INDEPENDENT_ACCEPTANCE",
+  "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "row": {
+    "id": "setup-error-reporting-green",
+    "directory": "setup-error-reporting-green",
+    "mode": "green"
+  },
+  "files": {
+    "run.sh": "51aacf944f6761293104143ac846108099d665a9eb5706a40f9948a1afd17189",
+    "candidate.patch": "fa6a3b697e3fee4a0c2f1bedc77569c18411826efae7ce24c97d317665c0e627",
+    "error-reporting.test.ts": "25c9dac397fe67a155d8947bbda4d1f5484ff3572cab4fbefcebd55b2f9ca96f",
+    "verify-green.mjs": "96ddcf446cb03b3a43ec7d3e1ddcffd09ea42121b9ef6a5b9cf208b73bb8572d",
+    "completed-report.mjs": "eac849f61a9142ee9077620e923d5aa1c720ede766d4308b528619a237669a19",
+    "source-before.sha256": "5cdb2016d3d25f27260fc168311d5f2a154fc2153986eba78ca903a9569842c6",
+    "source-after.sha256": "9d7b808a4bcfdb4782f645d6aac863d9cff1d8828df299c60836ff04a62e4868"
+  },
+  "production": {
+    "additions": 8,
+    "deletions": 10,
+    "net": -2
+  },
+  "regressionTests": 9,
+  "fullOwnerSuites": 3,
+  "caseReceipts": 8,
+  "sourceHashesBefore": 29,
+  "sourceHashesAfter": 30,
+  "proofKind": "real verifier to one-shot command function via existing synthetic dependency fixtures/captured RuntimeEnv ports; no built CLI process, Gateway socket, live provider or reporter Codex diagnosis",
+  "checkChanged": "explicit pinned base and five final paths; required hosted type/format gates",
+  "targetCodeExecutedLocally": false,
+  "baselineTestDifference": "Only explicit NonNullable<OpenClawConfig[logging]> policy annotation plus formatter layout; runtime/assertions unchanged. Original baseline fcdcc preserved."
+}
