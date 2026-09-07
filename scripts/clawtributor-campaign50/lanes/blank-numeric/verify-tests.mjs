@@ -135,7 +135,7 @@ for (const contract of expected) {
         `Error: expected [Function] to throw error including '${contract.label}' but got 'Cannot apply metadata`,
       ),
     );
-    assert.deepEqual(frames, ["211:9"]);
+    assert.deepEqual(frames, ["211:8"]);
     requireRejectsFrame();
   } else if (
     contract.label === "Invalid --timeout" &&

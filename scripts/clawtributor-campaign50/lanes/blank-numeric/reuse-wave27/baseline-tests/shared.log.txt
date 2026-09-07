@@ -1,0 +1,73 @@
+[test] starting test/vitest/vitest.unit-fast.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[vitest-workers] prepared 01440744bc6b in 6211ms (8468 inputs, 4236 outputs)
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mkeeps omitted optional values absent and parses valid values[32m 2[2mms[22m[39m
+ [31m×[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --duration values[32m 6[2mms[22m[39m
+[31m   → expected [Function] to throw an error[39m
+ [31m×[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --duration values[32m 1[2mms[22m[39m
+[31m   → expected [Function] to throw an error[39m
+ [31m×[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --limit values[32m 1[2mms[22m[39m
+[31m   → expected [Function] to throw an error[39m
+ [31m×[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --limit values[32m 1[2mms[22m[39m
+[31m   → expected [Function] to throw an error[39m
+ [31m×[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --timeout-ms value ""[32m 1[2mms[22m[39m
+[31m   → expected [Function] to throw an error[39m
+ [31m×[39m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --timeout-ms value "  "[32m 0[2mms[22m[39m
+[31m   → expected [Function] to throw an error[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 6 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --duration values
+[41m[1m FAIL [22m[49m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --duration values
+[41m[1m FAIL [22m[49m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --limit values
+[41m[1m FAIL [22m[49m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --limit values
+[31m[1mAssertionError[22m: expected [Function] to throw an error[39m
+
+[32m- Expected:[39m
+null
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/cli/capability-cli/shared.test.ts:[2m26:19[22m[39m
+    [90m 24|[39m     ["--limit", () => parseOptionalPositiveInteger("  ", "--limit")],
+    [90m 25|[39m   ])("rejects explicit blank %s values", (label, parse) => {
+    [90m 26|[39m     expect(parse).toThrow(`${label} must be`);
+    [90m   |[39m                   [31m^[39m
+    [90m 27|[39m   });
+    [90m 28|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --timeout-ms value ""
+[41m[1m FAIL [22m[49m [30m[45m unit-fast [49m[39m src/cli/capability-cli/shared.test.ts[2m > [22mcapability CLI numeric option parsing[2m > [22mrejects explicit blank --timeout-ms value "  "
+[31m[1mAssertionError[22m: expected [Function] to throw an error[39m
+
+[32m- Expected:[39m
+null
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/cli/capability-cli/shared.test.ts:[2m30:47[22m[39m
+    [90m 28|[39m
+    [90m 29|[39m   it.each(["", "  "])("rejects explicit blank --timeout-ms value %j", …
+    [90m 30|[39m     expect(() => parseOptionalTimeoutMs(raw)).toThrow("Invalid --timeo…
+    [90m   |[39m                                               [31m^[39m
+    [90m 31|[39m   });
+    [90m 32|[39m });
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 23:11:57
+[2m   Duration [22m 16.34s[2m (transform 88%, import 11%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-numeric-compare/baseline-tests/shared.json
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 18.69s
+[test] FAILED (exit 1)

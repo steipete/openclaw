@@ -28,14 +28,22 @@ run_unit() {
 }
 
 python3 "$proof_lane/verify-reuse.py" "$proof_lane" > "$proof_evidence/reuse-verification.json"
+python3 "$proof_lane/verify-reuse27.py" "$proof_lane" > "$proof_evidence/reuse-wave27-verification.json"
 cp -R "$proof_lane/reuse-wave25" "$proof_evidence/reuse-wave25"
+cp -R "$proof_lane/reuse-wave27" "$proof_evidence/reuse-wave27"
 cp "$proof_lane/reuse-lineage.json" "$proof_evidence/reuse-lineage.json"
-cp "$proof_lane/reuse-wave25/baseline-tests/capability.json" "$proof_evidence/baseline-tests/capability.json"
-cp "$proof_lane/reuse-wave25/baseline-tests/capability.log.txt" "$proof_evidence/baseline-tests/capability.log"
-cp "$proof_lane/reuse-wave25/baseline-tests/capability.exit" "$proof_evidence/baseline-tests/capability.exit"
-node "$proof_lane/verify-tests.mjs" baseline capability "$proof_evidence/baseline-tests/capability.json" "$proof_evidence/baseline-tests/capability.log" 1 src/cli/capability-cli.test.ts > "$proof_evidence/baseline-tests/capability.verdict.json"
-run_unit baseline shared src/cli/capability-cli/shared.test.ts ''
-run_unit baseline models src/commands/models/scan.test.ts 'numeric value'
+cp "$proof_lane/reuse-wave27-lineage.json" "$proof_evidence/reuse-wave27-lineage.json"
+for owner in capability shared models; do
+  cp "$proof_lane/reuse-wave27/baseline-tests/$owner.json" "$proof_evidence/baseline-tests/$owner.json"
+  cp "$proof_lane/reuse-wave27/baseline-tests/$owner.log.txt" "$proof_evidence/baseline-tests/$owner.log"
+  cp "$proof_lane/reuse-wave27/baseline-tests/$owner.exit" "$proof_evidence/baseline-tests/$owner.exit"
+  case "$owner" in
+    capability) file=src/cli/capability-cli.test.ts ;;
+    shared) file=src/cli/capability-cli/shared.test.ts ;;
+    models) file=src/commands/models/scan.test.ts ;;
+  esac
+  node "$proof_lane/verify-tests.mjs" baseline "$owner" "$proof_evidence/baseline-tests/$owner.json" "$proof_evidence/baseline-tests/$owner.log" 1 "$file" > "$proof_evidence/baseline-tests/$owner.verdict.json"
+done
 pnpm build > "$proof_evidence/baseline-build.log" 2>&1
 python3 "$proof_lane/record-build.py" "$proof_lane" "$proof_evidence" baseline
 python3 "$proof_lane/cli-proof.py" "$proof_target" "$proof_lane" "$proof_evidence/baseline-cli" baseline > "$proof_evidence/baseline-cli.log" 2>&1

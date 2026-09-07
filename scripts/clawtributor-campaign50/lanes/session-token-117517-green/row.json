@@ -1,0 +1,10 @@
+{
+  "id": "session-token-117517-green",
+  "directory": "session-token-117517-green",
+  "runner": "run.sh",
+  "source": "b57c5f25a9142ac8e1195e8552c54c268c2e03f8",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "compare",
+  "variant": "sqlite-cli"
+}

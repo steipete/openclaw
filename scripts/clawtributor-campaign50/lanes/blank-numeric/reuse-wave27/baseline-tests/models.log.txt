@@ -1,0 +1,125 @@
+[test] starting test/vitest/vitest.commands.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[vitest-workers] prepared 01440744bc6b in 5811ms (8468 inputs, 4236 outputs)
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mdoes not load config or resolve secrets for metadata-only scans
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mprints metadata-only JSON in the same deterministic ranking as the table
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22msanitizes provider-controlled model refs and modality in scan tables
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mdowngrades to metadata-only scan when no OpenRouter key is configured
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22muses OPENROUTER_API_KEY directly without loading model config
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mrejects applying metadata-only scan results
+ [31m×[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mminParams numeric value[2m > [22mrejects "" before scanning[32m 46[2mms[22m[39m
+[31m   → expected [Function] to throw error including '--min-params' but got 'Cannot apply metadata-only OpenRouter…'[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mminParams numeric value[2m > [22mrejects "   " before scanning[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mminParams numeric value[2m > [22mrejects "7b" before scanning[32m 2[2mms[22m[39m
+ [31m×[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxAgeDays numeric value[2m > [22mrejects "" before scanning[32m 3[2mms[22m[39m
+[31m   → expected [Function] to throw error including '--max-age-days' but got 'Cannot apply metadata-only OpenRouter…'[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxAgeDays numeric value[2m > [22mrejects "   " before scanning[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxAgeDays numeric value[2m > [22mrejects "30d" before scanning[32m 2[2mms[22m[39m
+ [31m×[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxCandidates numeric value[2m > [22mrejects "" before scanning[32m 2[2mms[22m[39m
+[31m   → expected [Function] to throw error including '--max-candidates' but got 'Cannot apply metadata-only OpenRouter…'[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxCandidates numeric value[2m > [22mrejects "   " before scanning[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxCandidates numeric value[2m > [22mrejects "2.5" before scanning[32m 2[2mms[22m[39m
+ [31m×[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mtimeout numeric value[2m > [22mrejects "" before scanning[32m 2[2mms[22m[39m
+[31m   → expected [Function] to throw error including '--timeout' but got 'Cannot apply metadata-only OpenRouter…'[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mtimeout numeric value[2m > [22mrejects "   " before scanning[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mtimeout numeric value[2m > [22mrejects "1000ms" before scanning[32m 1[2mms[22m[39m
+ [31m×[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mconcurrency numeric value[2m > [22mrejects "" before scanning[32m 2[2mms[22m[39m
+[31m   → expected [Function] to throw error including '--concurrency' but got 'Cannot apply metadata-only OpenRouter…'[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mconcurrency numeric value[2m > [22mrejects "   " before scanning[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mconcurrency numeric value[2m > [22mrejects "2x" before scanning[32m 1[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mrejects applying auto-downgraded metadata-only scan results before scanning
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 5 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mminParams numeric value[2m > [22mrejects "" before scanning
+[31m[1mAssertionError[22m: expected [Function] to throw error including '--min-params' but got 'Cannot apply metadata-only OpenRouter…'[39m
+
+Expected: [32m"--min-params"[39m
+Received: [31m"Cannot apply metadata-only OpenRouter scan results. Remove --no-probe or configure OPENROUTER_API_KEY and rerun with probes before changing defaults."[39m
+
+[36m [2m❯[22m src/commands/models/scan.test.ts:[2m211:8[22m[39m
+    [90m209|[39m       await expect(
+    [90m210|[39m         modelsScanCommand({ [key]: raw, probe: false, setDefault: true…
+    [90m211|[39m       ).rejects.toThrow(label);
+    [90m   |[39m        [31m^[39m
+    [90m212|[39m
+    [90m213|[39m       expect(mocks.loadModelsConfig).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxAgeDays numeric value[2m > [22mrejects "" before scanning
+[31m[1mAssertionError[22m: expected [Function] to throw error including '--max-age-days' but got 'Cannot apply metadata-only OpenRouter…'[39m
+
+Expected: [32m"--max-age-days"[39m
+Received: [31m"Cannot apply metadata-only OpenRouter scan results. Remove --no-probe or configure OPENROUTER_API_KEY and rerun with probes before changing defaults."[39m
+
+[36m [2m❯[22m src/commands/models/scan.test.ts:[2m211:8[22m[39m
+    [90m209|[39m       await expect(
+    [90m210|[39m         modelsScanCommand({ [key]: raw, probe: false, setDefault: true…
+    [90m211|[39m       ).rejects.toThrow(label);
+    [90m   |[39m        [31m^[39m
+    [90m212|[39m
+    [90m213|[39m       expect(mocks.loadModelsConfig).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mmaxCandidates numeric value[2m > [22mrejects "" before scanning
+[31m[1mAssertionError[22m: expected [Function] to throw error including '--max-candidates' but got 'Cannot apply metadata-only OpenRouter…'[39m
+
+Expected: [32m"--max-candidates"[39m
+Received: [31m"Cannot apply metadata-only OpenRouter scan results. Remove --no-probe or configure OPENROUTER_API_KEY and rerun with probes before changing defaults."[39m
+
+[36m [2m❯[22m src/commands/models/scan.test.ts:[2m211:8[22m[39m
+    [90m209|[39m       await expect(
+    [90m210|[39m         modelsScanCommand({ [key]: raw, probe: false, setDefault: true…
+    [90m211|[39m       ).rejects.toThrow(label);
+    [90m   |[39m        [31m^[39m
+    [90m212|[39m
+    [90m213|[39m       expect(mocks.loadModelsConfig).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mtimeout numeric value[2m > [22mrejects "" before scanning
+[31m[1mAssertionError[22m: expected [Function] to throw error including '--timeout' but got 'Cannot apply metadata-only OpenRouter…'[39m
+
+Expected: [32m"--timeout"[39m
+Received: [31m"Cannot apply metadata-only OpenRouter scan results. Remove --no-probe or configure OPENROUTER_API_KEY and rerun with probes before changing defaults."[39m
+
+[36m [2m❯[22m src/commands/models/scan.test.ts:[2m211:8[22m[39m
+    [90m209|[39m       await expect(
+    [90m210|[39m         modelsScanCommand({ [key]: raw, probe: false, setDefault: true…
+    [90m211|[39m       ).rejects.toThrow(label);
+    [90m   |[39m        [31m^[39m
+    [90m212|[39m
+    [90m213|[39m       expect(mocks.loadModelsConfig).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[42m commands [49m[39m src/commands/models/scan.test.ts[2m > [22mmodels scan command[2m > [22mconcurrency numeric value[2m > [22mrejects "" before scanning
+[31m[1mAssertionError[22m: expected [Function] to throw error including '--concurrency' but got 'Cannot apply metadata-only OpenRouter…'[39m
+
+Expected: [32m"--concurrency"[39m
+Received: [31m"Cannot apply metadata-only OpenRouter scan results. Remove --no-probe or configure OPENROUTER_API_KEY and rerun with probes before changing defaults."[39m
+
+[36m [2m❯[22m src/commands/models/scan.test.ts:[2m211:8[22m[39m
+    [90m209|[39m       await expect(
+    [90m210|[39m         modelsScanCommand({ [key]: raw, probe: false, setDefault: true…
+    [90m211|[39m       ).rejects.toThrow(label);
+    [90m   |[39m        [31m^[39m
+    [90m212|[39m
+    [90m213|[39m       expect(mocks.loadModelsConfig).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[2m | [22m[33m7 skipped[39m[90m (22)[39m
+[2m   Start at [22m 23:12:17
+[2m   Duration [22m 12.80s[2m (transform 84%, import 9%, worker 6%, tests 1%, setup 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-numeric-compare/baseline-tests/models.json
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 15.18s
+[test] FAILED (exit 1)

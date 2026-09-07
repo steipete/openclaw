@@ -1,22 +1,22 @@
 [
   {
-    "id": "ios-focus-locked-baseline",
-    "directory": "ios-focus-locked-baseline",
-    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+    "id": "blank-numeric-compare",
+    "directory": "blank-numeric",
+    "source": "07d5b2409af0bee1ceb30b785ad75711ee0cf63a",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "locked-baseline",
-    "runner": "macos-26",
+    "mode": "compare",
+    "variant": "remaining",
+    "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
   {
-    "id": "prepared-catalog-green",
-    "directory": "prepared-catalog-green",
-    "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "current-lifecycle",
+    "id": "session-token-117517-green",
+    "directory": "session-token-117517-green",
     "runner": "ubuntu-24.04",
-    "node": "24.20.0"
+    "source": "b57c5f25a9142ac8e1195e8552c54c268c2e03f8",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "compare",
+    "variant": "sqlite-cli"
   }
 ]

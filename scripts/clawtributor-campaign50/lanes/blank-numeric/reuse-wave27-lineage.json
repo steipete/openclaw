@@ -1,0 +1,26 @@
+{
+  "run": 34066139039,
+  "job": 101575130042,
+  "harness": "957a0e088e06853da2815e50804a28fe08bcd183",
+  "stage": "all baseline unit reports; original comparison stopped at models frame reader",
+  "source_base": "07d5b2409af0bee1ceb30b785ad75711ee0cf63a",
+  "candidate_patch_sha256": "04669c097e77d5f47a748a1729d70099d4ff00e2997fbcd5adf6beeaf45d544a",
+  "prior_capability_run": 34062271559,
+  "files": {
+    "baseline-tests/capability.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-tests/capability.json": "668eb0d34c9e045977078b989ca64fc17f2091caf4a72e150c5a09f946480d37",
+    "baseline-tests/capability.log.txt": "e3bd59967bbd10647e63bc9793591e83a311db3cc2ea8ec6d45d598ab98fdf24",
+    "baseline-tests/models.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-tests/models.json": "3e534ebfdb8d47b86807d74180418a9ab70cd0a7172ac7e55989d17a32f64b8f",
+    "baseline-tests/models.log.txt": "ce69aebf1188c2c62dd46a12f971e90bdd2af6d639570c625837710be40f0d99",
+    "baseline-tests/shared.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-tests/shared.json": "30ead3f5f96d839150965a17abdd66d68755a64b2a3cd62869ffec878db618b1",
+    "baseline-tests/shared.log.txt": "2344135c1b33551a379ee6dfa2ee0e23b34935fe255019a753cb576a9426c31c",
+    "final-working-tree.patch": "7398d08c16ff59b0c6786615e4718a633b009c77f2c2c9742d672ba39e5a2b57",
+    "manifest.json": "b973c539b6ac2b427c0fd55e7d1ca7768a9b47776e9cae772a17b96be59add9e",
+    "run.json": "29e00060aa854665735b3ed8ba46fa69b7f0cabc7390eacc2edbf058f6d97a08",
+    "source-baseline-before.json": "f826c30c0a085618eff1164e11a90da12f3fbb4b31b70b2bb8271416a0117649",
+    "source-clean.json": "f7684155b34060c8c12a61691b6aa5a68f6c08ae9a67ff013920c09d4576ff42",
+    "source.json": "a7eedec87471b601e7e7d74e960e7cb28257ca804fadb0c3d4838cb566f538d5"
+  }
+}

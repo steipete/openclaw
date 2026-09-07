@@ -1,0 +1,481 @@
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects missing required repeatable input for infer [ 'image', 'edit', '--prompt', …(1) ]
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects missing required repeatable input for capability [ 'image', 'edit', '--prompt', …(1) ]
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects missing required repeatable input for infer [ 'image', 'describe-many' ]
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects missing required repeatable input for capability [ 'image', 'describe-many' ]
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects missing required repeatable input for infer [ 'embedding', 'create' ]
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects missing required repeatable input for capability [ 'embedding', 'create' ]
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mlists canonical capabilities
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps model list catalog inspection read-only
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps model inspect catalog inspection read-only
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps model providers catalog inspection read-only
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrenders an explicit empty model list without changing JSON output
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports model providers configured through their environment key
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mscopes provider state and model selection to an explicit agent
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses the configured system agent for embedding provider state
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrequires an explicit owner for agent-backed provider state in explicit fleets
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mscopes audio providers to the parent-level agent with system owner undefined
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mscopes audio providers to the leaf-level agent with system owner undefined
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mscopes audio providers to the parent-level agent with system owner alpha
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mscopes audio providers to the leaf-level agent with system owner alpha
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mscopes web search auth inspection to the selected agent
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minspects runtime-declared manifest models without live discovery
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdefaults model run to local transport
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mruns local model probes through the lean completion path
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses the configured system agent for local model runs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrequires an agent owner for model runs in explicit fleets
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mlets explicit model run agents override the system agent
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects unknown model run agents
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mopts explicit local provider/model probes into bundled static catalog fallback
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not enable bundled static catalog fallback without an explicit provider/model override
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image files to local model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22madds minimal instructions only for openai local model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses thinking overrides to local model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image files to gateway model probes as attachments
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mnormalizes HEIC files to JPEG before local model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mnormalizes sniffed HEIC sequences to JPEG before local model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mnormalizes sniffed HEIF sequences to JPEG before gateway model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects non-image files for model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails local model probes when the provider returns no text output
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22msurfaces provider errors when local model probes return no text output
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects local Codex provider probes before simple-completion dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects empty model run prompts before local dispatch ("")
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects empty model run prompts before local dispatch ("   ")
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects empty model run prompts before local dispatch ("\n\t")
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects malformed explicit model refs before local dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects malformed explicit model refs before gateway dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mruns gateway model probes in fresh raw sessions without chat-agent prompt policy or tools
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22msurfaces gateway model fallback attempts in model probe JSON
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrequests admin scope for gateway model probes with provider/model overrides
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcanonicalizes case-only catalog model refs before local dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcanonicalizes case-only catalog model refs before gateway dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcanonicalizes case-only catalog refs and preserves auth profiles before local dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mleaves auth profile refs unchanged before gateway dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpreserves custom mixed-case profile refs before local dispatch when the catalog has no match
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses thinking overrides to gateway model probes
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid model run thinking overrides before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects empty model run prompts before gateway dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdefaults tts status to gateway transport
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects conflicting TTS persona selectors via local (persona then off)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects conflicting TTS persona selectors via local (off then persona)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects conflicting TTS persona selectors via gateway (persona then off)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects conflicting TTS persona selectors via gateway (off then persona)
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes image describe through media understanding, not generation
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mprints both the input path and result for audio transcribe by default
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mprints both the input path and result for image describe by default
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mprints both the input path and result for image describe-many by default
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mprints both the input path and result for video describe by default
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps encoded image describe HTTP URLs intact
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image describe prompts through media understanding
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps image describe URL files as remote media references
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses the explicit media-understanding provider for image describe model overrides
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps explicit-model image describe URL files as remote media references
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps explicit-model image describe HTTP URLs as URLs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfalls back to configured image models for explicit-model image describe
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not retry image input preparation failures as model fallbacks
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses describe-many prompts to each image
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails image describe when no description text is returned
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports missing image understanding configuration for image describe
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports missing image understanding configuration for image describe-many
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrewrites mismatched explicit image output extensions to the detected file type
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image generation timeout through to runtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps image generation owner selection explicit in multi-agent fleets
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid image generation agent '' before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid image generation agent 'retired' before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through model run owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through image generate owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through image edit owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through image describe owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through image describe-many owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through audio transcribe owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through video generate owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through video describe owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes --agent through embedding create owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through model run owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through image generate owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through image edit owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through image describe owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through image describe-many owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through audio transcribe owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through video generate owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through video describe owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minherits parent --agent through embedding create owner selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mprefers a leaf --agent over the parent selector
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid inherited agent '' before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid inherited agent 'retired' before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image output format and generic background hints through to generation runtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image quality and OpenAI moderation hints through to generation runtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses image output format, quality, and OpenAI hints through to edit runtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mforwards --count through to the image edit runtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects unsupported image output format and background hints
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mforwards size, aspect ratio, and resolution overrides for image edit
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports the expanded image.edit flags in capability inspect
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports the expanded image.generate flags in capability inspect
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mkeeps capability inspect metadata flags in sync with each command's registered options
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mstreams url-only generated videos to --output paths
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpreserves an existing --output and removes its temp when a video stream fails
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpreserves an existing buffered image --output when publication fails
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpreserves an existing buffered video --output when publication fails
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mblocks private-network url-only generated video downloads by default
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mallows private-network generated video downloads when the provider request opts in
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpasses video generation parameters through to runtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails video generate when a provider returns an undeliverable asset
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails closed when an url-only generated video exceeds the in-memory byte cap
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mredacts provider video URLs when the no-output download fails
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mbuffers an url-only generated video that stays under the byte cap
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mhonors a smaller configured mediaMaxMb cap on the in-memory video path
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects an empty-body url-only generated video in buffered mode
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects an empty-body url-only generated video in streamed mode
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects successful textual responses from generated video URLs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects partial image generate count before provider dispatch
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects web search limit before provider dispatch[32m 133[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--limit must be a positive integer'[39m
+[vitest-workers] prepared 01440744bc6b in 6277ms (8468 inputs, 4236 outputs)
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects image generate count before provider dispatch[33m 16101[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects image edit count before provider dispatch[32m 25[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects video generate duration before provider dispatch[32m 51[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--duration must be a finite number'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects web search limit before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--limit must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects image generate count before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects image edit count before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects video generate duration before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--duration must be a finite number'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image generate before provider dispatch[32m 6[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image edit before provider dispatch[32m 17[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe before provider dispatch[32m 4[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe-many before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects video generate before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image generate before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image edit before provider dispatch[32m 4[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe-many before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects video generate before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image generate before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image edit before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image describe before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image describe-many before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects video generate before provider dispatch[32m 2[2mms[22m[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects web search limit before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--limit must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects image generate count before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects image edit count before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects video generate duration before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--duration must be a finite number'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects web search limit before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--limit must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects image generate count before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects image edit count before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain '--count must be a positive integer'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects video generate duration before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain '--duration must be a finite number'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image generate before provider dispatch[32m 3[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image edit before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe-many before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects video generate before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image generate before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image edit before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'ENOENT: no such file or directory, op…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe-many before provider dispatch[32m 2[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [31m×[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects video generate before provider dispatch[32m 2[2mms[22m[39m
+[31m   → expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image generate before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image edit before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image describe before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects image describe-many before provider dispatch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "1000ms"[2m > [22mrejects video generate before provider dispatch[32m 2[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes audio transcribe through transcription, not realtime
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mresolves command SecretRefs before local audio transcription
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails audio transcribe when no transcript text is returned
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports missing audio transcription configuration for audio transcribe
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22msurfaces the underlying transcription failure for audio transcribe
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mforwards transcription prompt and language hints
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses request-scoped TTS overrides without mutating prefs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mhydrates local TTS provider config from API-key auth profiles
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mhydrates local TTS default provider config from API-key auth profiles
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mhydrates local TTS channel provider config from API-key auth profiles
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mhydrates local TTS channel direct provider config from API-key auth profiles
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not override inherited local TTS channel provider API keys
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not hydrate local TTS provider config from token auth profiles
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not override existing TTS provider API keys with different casing
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not override existing direct TTS provider API keys
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdisables TTS fallback when explicit provider or voice/model selection is requested
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mselects a TTS provider without inventing a model override
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects conflicting TTS provider and model selections
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22maccepts equivalent TTS provider casing with a model selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdoes not infer and forward a local provider guess for gateway TTS overrides
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails clearly when gateway TTS output is requested against a remote gateway
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpreserves an existing local TTS --output when the final copy fails
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mpreserves an existing gateway TTS --output when the final copy fails
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses only embedding providers for embedding creation
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcloses the embedding provider without masking embedding failure
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mretries embedding provider cleanup before reporting close failure
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mresolves command SecretRefs before local model capability execution
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mderives the embedding provider from a provider/model override
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects malformed model refs before embedding create provider dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects malformed model refs before image generate provider dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects malformed model refs before image edit provider dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects malformed model refs before video generate provider dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcleans provider auth profiles and usage stats on logout
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mremoves model auth profiles from the selected agent store
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes parent --agent through model auth login
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes leaf --agent through model auth login
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes parent --agent through model auth status
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes leaf --agent through model auth status
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes parent --agent through model auth logout
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mroutes leaf --agent through model auth logout
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid parent model auth agent '' before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects invalid leaf model auth agent 'retired' before dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mfails logout if the auth store update does not complete
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects providerless audio model overri…
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects providerless image describe mod…
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects providerless video describe mod…
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mlists generic embedding providers when the memory registry is empty
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mmarks env-backed audio providers as configured
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mmarks env-backed image providers as configured
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mmarks env-backed video generation and description providers as configured
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mmarks env-backed TTS providers as configured
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mmarks env-backed embedding providers as configured
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mdistinguishes the local STT fallback winner from global provider selection
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mresolves plugin web search SecretRefs before running infer web search
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mrejects partial web search limit before provider dispatch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports structured web search failures in the envelope and exits nonzero
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses the infer web search provider override when resolving SecretRefs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mresolves only plugin web fetch SecretRefs before running infer web fetch
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22muses the infer web fetch provider override when resolving fallback SecretRefs
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mreports structured web fetch failures in the envelope and exits nonzero
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22msurfaces available, configured, and selected for web providers
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22msurfaces selected and configured embedding provider state
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mincludes generic embedding providers in embedding provider state
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mincludes selected custom generic embedding provider aliases
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 36 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects web search limit before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects web search limit before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects web search limit before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects web search limit before provider dispatch
+[31m[1mAssertionError[22m: expected 'Cannot read properties of undefined (…' to contain '--limit must be a positive integer'[39m
+
+Expected: [32m"--limit must be a positive integer"[39m
+Received: [31m"Cannot read properties of undefined (reading 'result')"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3218:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects image generate count before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects image generate count before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects image generate count before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects image generate count before provider dispatch
+[31m[1mAssertionError[22m: expected 'Cannot read properties of undefined (…' to contain '--count must be a positive integer'[39m
+
+Expected: [32m"--count must be a positive integer"[39m
+Received: [31m"Cannot read properties of undefined (reading 'images')"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3218:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects image edit count before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects image edit count before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects image edit count before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects image edit count before provider dispatch
+[31m[1mAssertionError[22m: expected 'ENOENT: no such file or directory, op…' to contain '--count must be a positive integer'[39m
+
+Expected: [32m"--count must be a positive integer"[39m
+Received: [31m"ENOENT: no such file or directory, open '/home/runner/work/openclaw/openclaw/target/photo.png'"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3218:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value ""[2m > [22mrejects video generate duration before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22mblank value "   "[2m > [22mrejects video generate duration before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value ""[2m > [22mrejects video generate duration before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22mblank value "   "[2m > [22mrejects video generate duration before provider dispatch
+[31m[1mAssertionError[22m: expected 'Cannot read properties of undefined (…' to contain '--duration must be a finite number'[39m
+
+Expected: [32m"--duration must be a finite number"[39m
+Received: [31m"Cannot read properties of undefined (reading 'videos')"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3218:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image generate before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image generate before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image generate before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image generate before provider dispatch
+[31m[1mAssertionError[22m: expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+
+Expected: [32m"Invalid --timeout. Use a positive millisecond value"[39m
+Received: [31m"Cannot read properties of undefined (reading 'images')"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3236:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image edit before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image edit before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image edit before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image edit before provider dispatch
+[31m[1mAssertionError[22m: expected 'ENOENT: no such file or directory, op…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+
+Expected: [32m"Invalid --timeout. Use a positive millisecond value"[39m
+Received: [31m"ENOENT: no such file or directory, open '/home/runner/work/openclaw/openclaw/target/photo.png'"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3236:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe-many before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe-many before provider dispatch
+[31m[1mAssertionError[22m: promise resolved "undefined" instead of rejecting[39m
+
+[32m- Expected:[39m
+Error {
+  "message": "rejected promise",
+}
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/cli/capability-cli.test.ts:[2m3234:68[22m[39m
+    [90m3232|[39m         ["video generate", ["video", "generate", "--prompt", "clip"]],
+    [90m3233|[39m       ] as const)("rejects %s before provider dispatch", async (_name,…
+    [90m3234|[39m         await expect(runCap(command, ...argv, "--timeout-ms", raw)).re…
+    [90m   |[39m                                                                    [31m^[39m
+    [90m3235|[39m
+    [90m3236|[39m         expectRuntimeErrorContains("Invalid --timeout. Use a positive …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout ""[2m > [22mrejects video generate before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22minfer numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects video generate before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects video generate before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects video generate before provider dispatch
+[31m[1mAssertionError[22m: expected 'Cannot read properties of undefined (…' to contain 'Invalid --timeout. Use a positive mil…'[39m
+
+Expected: [32m"Invalid --timeout. Use a positive millisecond value"[39m
+Received: [31m"Cannot read properties of undefined (reading 'videos')"[39m
+
+[36m [2m❯[22m expectRuntimeErrorContains src/cli/capability-cli.test.ts:[2m883:47[22m[39m
+    [90m881|[39m
+    [90m882|[39m   function expectRuntimeErrorContains(expected: string): void {
+    [90m883|[39m     expect(runtimeErrorMessages().join("\n")).toContain(expected);
+    [90m   |[39m                                               [31m^[39m
+    [90m884|[39m   }
+    [90m885|[39m
+[90m [2m❯[22m src/cli/capability-cli.test.ts:[2m3236:9[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/36]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout ""[2m > [22mrejects image describe-many before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe before provider dispatch
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/capability-cli.test.ts[2m > [22mcapability cli[2m > [22mcapability numeric options[2m > [22minvalid timeout "   "[2m > [22mrejects image describe-many before provider dispatch
+[31m[1mAssertionError[22m: promise resolved "undefined" instead of rejecting[39m
+
+[32m- Expected:[39m
+Error {
+  "message": "rejected promise",
+}
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/cli/capability-cli.test.ts:[2m3234:68[22m[39m
+    [90m3232|[39m         ["video generate", ["video", "generate", "--prompt", "clip"]],
+    [90m3233|[39m       ] as const)("rejects %s before provider dispatch", async (_name,…
+    [90m3234|[39m         await expect(runCap(command, ...argv, "--timeout-ms", raw)).re…
+    [90m   |[39m                                                                    [31m^[39m
+    [90m3235|[39m
+    [90m3236|[39m         expectRuntimeErrorContains("Invalid --timeout. Use a positive …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/36]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m36 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[2m | [22m[33m193 skipped[39m[90m (239)[39m
+[2m   Start at [22m 21:51:57
+[2m   Duration [22m 18.28s[2m (tests 91%, worker 4%, transform 4%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-numeric-compare/baseline-tests/capability.json
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 20.66s
+[test] FAILED (exit 1)
