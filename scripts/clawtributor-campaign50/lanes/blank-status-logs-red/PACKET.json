@@ -28,14 +28,18 @@
     "src/commands/channels.logs.test.ts": "dafd4a7f19b78bb17673c9ff8f5efabba6e7c8c2657670c769e42b6319ac52ac",
     "src/commands/models/list.status.test.ts": "708b25863c17497000890a9267f45fafa4360f4a0f25efb8d233e52282d44ae0",
     "docs/cli/channels.md": "ee99512de587db18fd208f4aa9f86794ec1c420f42dfb43fa4f2775c514d588e",
-    "docs/cli/models.md": "283899cd7cbc0f33e5392472f340623ae2cca4ef6f9eeac762895b5b0250c01e"
+    "docs/cli/models.md": "283899cd7cbc0f33e5392472f340623ae2cca4ef6f9eeac762895b5b0250c01e",
+    "scripts/lib/bundled-plugin-dependency-links.mjs": "523cd3654eb54ff272af89d4106f300c75ed6603c3c86edf4af1f27cd741a23c",
+    "scripts/copy-bundled-plugin-metadata.mts": "365f4d3759290e81c5909882f7d29cf7e7031242fa256e4daddc54649dcceb72",
+    "scripts/runtime-postbuild.mts": "31c1034c653bb38c1993cc12875b4c84c9fac15d4ec35221707ccb8400a88d80",
+    "scripts/build-all.mts": "22231702d7c93c4bceff980a5328f92eef726065ea24eada411503b0544056d8"
   },
   "files": {
     "run.sh": "9db4e14ad0442709dd1a6f017ce6a208fae4603bd497d4718fc182fcdd11f0ca",
     "cli-proof.mjs": "89a58d044875d3f4325237e8299e8cc7651169af02eaec8f24ef0019440356f0",
-    "verify-source.mjs": "0909c9e9b26c74a0e9641c7789b14007923bca41fb2383f6575fe32344a63067",
+    "verify-source.mjs": "7a0071d6d94295874a8f4f5aa78f9ac90c64e1700b44093765759bfacb0faf33",
     "cases.json": "196f2f418a8fcf258c8fb962b9278c1b5e2abd264e3274bd05ff5bbc2fe4f3cf",
-    "PROOF-DESIGN.md": "4b6644962f48d731087ef92c5349a7d31d69265a39bb73622811331060adfb39"
+    "PROOF-DESIGN.md": "f17e0722751adeb4c16921b0750bbc4d2f77eb6ee691191a2c5479efb4f91af1"
   },
   "cases": 18,
   "productionProjection": {
@@ -44,5 +48,12 @@
     "net": 0
   },
   "status": "frozen for independent review; not executed",
-  "sourceTrust": "Locally inspected protected main; contributor workflow and artifacts not reused; hosted secretless execution only after review."
+  "sourceTrust": "Locally inspected protected main; contributor workflow and artifacts not reused; hosted secretless execution only after review.",
+  "revision": 2,
+  "previousPacket": "71fd7142da3803bf5ee67312eaff31098b874090dbc3ff9d655569f0ac9b3ffb",
+  "reuse": {
+    "run": 34113491460,
+    "job": 101714878187,
+    "accepted": "Normal build exited0; no CLI case ran. Dist artifact absent: rebuild same source only to obtain executable CLI. No previous CLI reproduction or final inventory success reused."
+  }
 }

@@ -1,0 +1,116 @@
+[
+  {
+    "id": "automations-unsupported",
+    "kind": "unsupported",
+    "argv": [
+      "automations",
+      "update",
+      "--help"
+    ],
+    "expected": {
+      "exit": 1,
+      "stderr": "OpenClaw cron has no command \"update\".\nTry: openclaw cron --help\nDocs: https://docs.openclaw.ai/cli\n",
+      "stdout": ""
+    }
+  },
+  {
+    "id": "automations-edit",
+    "kind": "edit",
+    "argv": [
+      "automations",
+      "edit",
+      "--help"
+    ],
+    "expected": {
+      "exit": 0,
+      "stderr": "",
+      "usage": "Usage: openclaw cron edit [options] <id>",
+      "description": "Edit an automation (patch fields)"
+    }
+  },
+  {
+    "id": "automations-parent",
+    "kind": "parent",
+    "argv": [
+      "automations",
+      "--help"
+    ],
+    "expected": {
+      "exit": 0,
+      "stderr": "",
+      "usage": "Usage: openclaw cron|automations [options] [command]",
+      "description": "Manage automations (via Gateway)"
+    }
+  },
+  {
+    "id": "automations-unknown",
+    "kind": "unknown",
+    "argv": [
+      "automations",
+      "zzzzzzzzzz",
+      "--help"
+    ],
+    "expected": {
+      "exit": 1,
+      "stderr": "OpenClaw cron has no command \"zzzzzzzzzz\".\nTry: openclaw cron --help\nDocs: https://docs.openclaw.ai/cli\n",
+      "stdout": ""
+    }
+  },
+  {
+    "id": "cron-unsupported",
+    "kind": "unsupported",
+    "argv": [
+      "cron",
+      "update",
+      "--help"
+    ],
+    "expected": {
+      "exit": 1,
+      "stderr": "OpenClaw cron has no command \"update\".\nTry: openclaw cron --help\nDocs: https://docs.openclaw.ai/cli\n",
+      "stdout": ""
+    }
+  },
+  {
+    "id": "cron-edit",
+    "kind": "edit",
+    "argv": [
+      "cron",
+      "edit",
+      "--help"
+    ],
+    "expected": {
+      "exit": 0,
+      "stderr": "",
+      "usage": "Usage: openclaw cron edit [options] <id>",
+      "description": "Edit an automation (patch fields)"
+    }
+  },
+  {
+    "id": "cron-parent",
+    "kind": "parent",
+    "argv": [
+      "cron",
+      "--help"
+    ],
+    "expected": {
+      "exit": 0,
+      "stderr": "",
+      "usage": "Usage: openclaw cron|automations [options] [command]",
+      "description": "Manage automations (via Gateway)"
+    }
+  },
+  {
+    "id": "cron-unknown",
+    "kind": "unknown",
+    "argv": [
+      "cron",
+      "zzzzzzzzzz",
+      "--help"
+    ],
+    "expected": {
+      "exit": 1,
+      "stderr": "OpenClaw cron has no command \"zzzzzzzzzz\".\nTry: openclaw cron --help\nDocs: https://docs.openclaw.ai/cli\n",
+      "stdout": ""
+    }
+  }
+]

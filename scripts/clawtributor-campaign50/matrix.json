@@ -1,12 +1,22 @@
 [
   {
-    "id": "planner-growth-141015",
-    "directory": "planner-growth-141015",
+    "id": "blank-status-logs-red",
+    "directory": "blank-status-logs-red",
     "runner": "ubuntu-24.04",
-    "source": "e3e2953f4b9a3ef1cd0568763c74c42f33067410",
-    "node": "24.19.0",
+    "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "planner-growth-141015"
+    "mode": "baseline",
+    "variant": "baseline"
+  },
+  {
+    "id": "automation-docs-command-contract",
+    "directory": "automation-docs-command-contract",
+    "runner": "ubuntu-24.04",
+    "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "baseline",
+    "variant": "baseline"
   }
 ]

@@ -18,6 +18,9 @@ assert.equal(
 for (const [file, expected] of Object.entries(packet.sourceHashes)) {
   assert.equal(hash(fs.readFileSync(path.join(target, file))), expected, file);
 }
+for (const [file, expected] of Object.entries(packet.dependencyHashes)) {
+  assert.equal(hash(fs.readFileSync(path.join(target, file))), expected, file);
+}
 for (const [file, expected] of Object.entries(packet.files)) {
   assert.equal(hash(fs.readFileSync(path.join(lane, file))), expected, file);
 }
@@ -75,6 +78,7 @@ try {
         source: packet.source,
         node: process.version,
         sourceHashes: packet.sourceHashes,
+        dependencyHashes: packet.dependencyHashes,
         buildFiles: built.filter((row) => row[1] === "file").length,
         buildLinks: built.filter((row) => row[1] === "symlink").length,
         buildHash: hash(JSON.stringify(built)),

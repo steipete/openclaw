@@ -1,0 +1,206 @@
+[
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "docs/cli/cron.md",
+    "sha256": "ee7e7f0f235c4e0b2728be30c648f247ab4a043097e32263944b0170fb3cc69e",
+    "bytes": 26068
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli.ts",
+    "sha256": "c80f6a69181dc79d1dd95103a8f1bedd3317a9b82b0ada91bd42bb1b685b38fe",
+    "bytes": 175
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli/register.ts",
+    "sha256": "69e2c25a52b6eed011994770802784c2d7666a52975e495518a82f9d61a44a5b",
+    "bytes": 2194
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli/output-mode.ts",
+    "sha256": "0670baf3fd678272f056fe87c552a441a96b3cd86d342493552c144c95a6b7db",
+    "bytes": 2503
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli/register.cron-edit.ts",
+    "sha256": "7255be47456d9d68b4b13c315ae4ffcb4effcd01b3a0d28d78dcce5dc30e728a",
+    "bytes": 20127
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli/register.cron-add.ts",
+    "sha256": "e1d05bf00de993bfb4cdee9ce0c124756886c3a1d64c71f2f9390b5e72f19a7b",
+    "bytes": 19857
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli/register.cron-simple.ts",
+    "sha256": "58563c621e8b7e9b6bc7377d3900e2c79cfb16c873bc28c1e422fa75297c18ad",
+    "bytes": 10638
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli/register.cron-scratch.ts",
+    "sha256": "bcc54649f747c00287afa61aa9042d1667a8b04ed0b776940316a3e4eaa4780c",
+    "bytes": 3305
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/program/register.subclis-core.ts",
+    "sha256": "cbdc2149666e43b0c6eaa4e2e647fdfe84ef9c1d1089def43ad83a30b4d7a573",
+    "bytes": 9467
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/program/openclaw-command.ts",
+    "sha256": "bfddf9946badd6e4caf7809ea42b851b32989a38cb1a086e7923f6e04d5f3f2f",
+    "bytes": 2803
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/program/commander-parse-facts.ts",
+    "sha256": "4883f842c3377efae1ffa9e6a89021debb0b72566c94929a980ce5b4a791e681",
+    "bytes": 5191
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/program/parent-default-help.ts",
+    "sha256": "1affca171de344292555ee6e942bd8b51839ba2c9662885ddbb135b5945d5800",
+    "bytes": 1642
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/program/error-output.ts",
+    "sha256": "87a6641ecf5de607254e29a157e9929ed2541364e0fa22c72c7dcbfbe7303f01",
+    "bytes": 6155
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/cron-cli.test.ts",
+    "sha256": "c3619db7d34260c5627956d86345729ab7eee5012da9d408bd29c484b8661495",
+    "bytes": 72746
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "src/cli/program/error-output.test.ts",
+    "sha256": "91b1848fd9707a6db3d3cd1e212ff7c38f950dd03175c14f38596f137086783a",
+    "bytes": 25646
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "package.json",
+    "sha256": "5b285099c0e5dea48ab15368bacc24a105a9ae4d9ff55b718bbccd8dd323def5",
+    "bytes": 134807
+  },
+  {
+    "ref": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "path": "pnpm-lock.yaml",
+    "sha256": "2934e9952a80d087fcd68801599849142095f7af6f933d68d9c2828bdce5af8c",
+    "bytes": 564463
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "docs/cli/cron.md",
+    "sha256": "ba6cff26f7f3137975c58f4cd5d412cc4d154aeeb278e6c8a2717122a2849f63",
+    "bytes": 24197
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli.ts",
+    "sha256": "c80f6a69181dc79d1dd95103a8f1bedd3317a9b82b0ada91bd42bb1b685b38fe",
+    "bytes": 175
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli/register.ts",
+    "sha256": "69e2c25a52b6eed011994770802784c2d7666a52975e495518a82f9d61a44a5b",
+    "bytes": 2194
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli/output-mode.ts",
+    "sha256": "0670baf3fd678272f056fe87c552a441a96b3cd86d342493552c144c95a6b7db",
+    "bytes": 2503
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli/register.cron-edit.ts",
+    "sha256": "7255be47456d9d68b4b13c315ae4ffcb4effcd01b3a0d28d78dcce5dc30e728a",
+    "bytes": 20127
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli/register.cron-add.ts",
+    "sha256": "e1d05bf00de993bfb4cdee9ce0c124756886c3a1d64c71f2f9390b5e72f19a7b",
+    "bytes": 19857
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli/register.cron-simple.ts",
+    "sha256": "58563c621e8b7e9b6bc7377d3900e2c79cfb16c873bc28c1e422fa75297c18ad",
+    "bytes": 10638
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli/register.cron-scratch.ts",
+    "sha256": "bcc54649f747c00287afa61aa9042d1667a8b04ed0b776940316a3e4eaa4780c",
+    "bytes": 3305
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/program/register.subclis-core.ts",
+    "sha256": "865e1c31257d50fa8433fd291fc99c58bbbdd2d977629a6de6d93d9dc9a44f40",
+    "bytes": 9479
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/program/openclaw-command.ts",
+    "sha256": "bfddf9946badd6e4caf7809ea42b851b32989a38cb1a086e7923f6e04d5f3f2f",
+    "bytes": 2803
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/program/commander-parse-facts.ts",
+    "sha256": "4883f842c3377efae1ffa9e6a89021debb0b72566c94929a980ce5b4a791e681",
+    "bytes": 5191
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/program/parent-default-help.ts",
+    "sha256": "1affca171de344292555ee6e942bd8b51839ba2c9662885ddbb135b5945d5800",
+    "bytes": 1642
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/program/error-output.ts",
+    "sha256": "87a6641ecf5de607254e29a157e9929ed2541364e0fa22c72c7dcbfbe7303f01",
+    "bytes": 6155
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/cron-cli.test.ts",
+    "sha256": "c3619db7d34260c5627956d86345729ab7eee5012da9d408bd29c484b8661495",
+    "bytes": 72746
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "src/cli/program/error-output.test.ts",
+    "sha256": "701c6b9881c57256a1ccfb25c5a3ac62abc8822a8b6c85e90c7bc6532e937019",
+    "bytes": 23644
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "package.json",
+    "sha256": "8ae5d197d23abb5b037153b72c57c2ebabc2889ce7e8c1a6e9763d1167a09a18",
+    "bytes": 133280
+  },
+  {
+    "ref": "v2026.9.2",
+    "path": "pnpm-lock.yaml",
+    "sha256": "1272d58782dc06178fbf749051c8b45c2545739c7e633ff921461ad818582661",
+    "bytes": 560561
+  }
+]
