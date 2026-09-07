@@ -1,0 +1,23 @@
+{
+  "package.json": "5b285099c0e5dea48ab15368bacc24a105a9ae4d9ff55b718bbccd8dd323def5",
+  "pnpm-lock.yaml": "2934e9952a80d087fcd68801599849142095f7af6f933d68d9c2828bdce5af8c",
+  ".oxlintrc.json": "8bcc5a2e0f91d0dcd53ba9c38b6df90e6c9ef8e76773fa43d98d62507bee045c",
+  ".oxfmtrc.jsonc": "14b80d5a4adf7197e58a96d3824affa437555b815c498f53e38f302972c0ed70",
+  "extensions/tsconfig.json": "76b3187c3beb694090ba48eabe55794f9247299b0ec64322ceaf04b1ccd4c494",
+  "extensions/telegram/src/bot-message-dispatch.progress-updates.test.ts": "d9fad584a5d107b7dc0c5ae9296f348adcab4141fe4fdd4b6335f8d2531033ec",
+  "extensions/telegram/src/bot-message-dispatch.test-harness.ts": "490cf27cbbbb31600ccb8cabc39c7437d897653ade76c2c3895b9b01ad18ede9",
+  "extensions/telegram/src/draft-stream.test-helpers.ts": "2aa7e58ff1253fd8ebfabc3a97bb3733eb5b5e527a3fcda0e3056853e5d33016",
+  "extensions/telegram/src/bot-message-dispatch-progress.ts": "76f1c0364f3207396b05c7786a5a2f838489a2da4a7197fce1585c4c03c99d44",
+  "extensions/telegram/src/bot-message-dispatch.ts": "76d9271ad3b836c15be557df455b7603018071f89820457420d645b3b687a906",
+  "extensions/telegram/src/bot-message-dispatch-turn.ts": "7fd920900edb6186f35da9828ac1155033633429ef89b5a5020a04050c9739ed",
+  "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+  "scripts/run-vitest-child.mts": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+  "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
+  "scripts/test-projects.mts": "41cedf3b12f00f562ca70c72b9d9a1fedfbd1ef129d3d2ed9dced9b4584ad898",
+  "scripts/lib/vitest-report-owner.mts": "5cd760dc4f748e1e613d812ae010a4bbd1557c678be79f0cdd982f70cb7fdf5d",
+  "scripts/lib/vitest-report-capture.mts": "efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2",
+  "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
+  "scripts/run-oxlint-shards.mts": "c88f58f906094f9e0d9a2ad35c91bcbef57305f1265cda2d0072450cd827dbd7",
+  "scripts/run-oxlint.mts": "aa0c1abaf70ef3340aa8a75b49d8fdd84cfab37aeeb6a31d7796849f7b284459",
+  "scripts/prepare-extension-package-boundary-artifacts.mts": "58c77fd8e67b6ed99d39495500683bb990e69938da58eebd7ca4a2cfb0dd267d"
+}

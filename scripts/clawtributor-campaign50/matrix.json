@@ -1,22 +1,12 @@
 [
   {
-    "id": "macos-cli-selection-red",
-    "directory": "macos-cli-selection-red",
-    "runner": "macos-26",
-    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
+    "id": "telegram-progress-max-lines-green",
+    "directory": "telegram-progress-max-lines-green",
+    "runner": "ubuntu-24.04",
+    "source": "9fa180758af681d309a8dada4246847832ab6df5",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "native-selection"
-  },
-  {
-    "id": "ios-composer-order-comparison",
-    "directory": "ios-composer-order-comparison",
-    "runner": "macos-26",
-    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "composer-order-comparison"
+    "mode": "green",
+    "variant": "ci-maintenance"
   }
 ]
