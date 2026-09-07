@@ -22,8 +22,59 @@ jobs:
       - id: plan
         name: Resolve pinned proof lanes
         run: python3 scripts/clawtributor-campaign50/select-matrix.py
-  proof:
+  telemetry-reuse:
     needs: plan
+    if: contains(fromJSON(needs.plan.outputs.matrix).include.*.id, 'telemetry-packaged-red-remaining')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/clawtributor-campaign50
+      - name: Initialize isolated transport receipt
+        run: |
+          set -euo pipefail
+          [[ "$RUNNER_ENVIRONMENT" == github-hosted ]]
+          mkdir -p "$RUNNER_TEMP/telemetry-reuse/raw"
+          printf '%s\n' '{"passed":false,"phase":"download-not-complete"}' > "$RUNNER_TEMP/telemetry-reuse/receipt.json"
+      - name: Download the immutable prior package artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: '10003125023'
+          repository: steipete/openclaw
+          run-id: '34078660938'
+          github-token: ${{ github.token }}
+          skip-decompress: true
+          digest-mismatch: error
+          path: ${{ runner.temp }}/telemetry-reuse/raw
+      - name: Verify and select retained package evidence
+        run: |
+          python3 scripts/clawtributor-campaign50/verify-telemetry-transfer.py \
+            scripts/clawtributor-campaign50/lanes/telemetry-packaged-red-remaining/reuse-manifest.json \
+            "$RUNNER_TEMP/telemetry-reuse/raw" "$RUNNER_TEMP/telemetry-reuse/verified" \
+            "$RUNNER_TEMP/telemetry-reuse/receipt.json"
+      - name: Transfer verified data to this run
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: campaign50-telemetry-reuse-input-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/telemetry-reuse/verified/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain transport receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: campaign50-telemetry-transport-receipt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/telemetry-reuse/receipt.json
+          if-no-files-found: error
+          retention-days: 14
+  proof:
+    needs: [plan, telemetry-reuse]
+    if: always() && !cancelled() && needs.plan.result == 'success'
     strategy:
       fail-fast: false
       max-parallel: 2
@@ -42,6 +93,13 @@ jobs:
           ref: ${{ matrix.source }}
           path: target
           persist-credentials: false
+      - name: Receive verified package evidence from this run
+        if: matrix.id == 'telemetry-packaged-red-remaining'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: campaign50-telemetry-reuse-input-${{ github.run_attempt }}
+          digest-mismatch: error
+          path: proof/scripts/clawtributor-campaign50/lanes/telemetry-packaged-red-remaining/reuse-input
       - name: Verify exact macOS proof host
         if: runner.os == 'macOS'
         id: mac-preflight

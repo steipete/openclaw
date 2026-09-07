@@ -1,0 +1,117 @@
+{
+  "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+  "repository": "steipete/openclaw",
+  "runId": 34078660938,
+  "jobId": 101609628104,
+  "harness": "02a4b70842855a852a63394e1fb132e12189fdbe",
+  "artifactName": "campaign50-telemetry-packaged-red-1",
+  "artifactId": 10003125023,
+  "artifactZipSha256": "0498dfdf394c1432743b892943831d7fdc88c76ce913d9edec682652e7755a04",
+  "archivePrefix": "evidence/telemetry-packaged-red/",
+  "classification": "HARNESS_ORACLE_FAILURE",
+  "files": {
+    "package/openclaw-telemetry-140283.tgz": {
+      "sha256": "7685287f10ecb765d2ce60a0550f6310eb48610d5552ffc301a4bc77bc4c33f3",
+      "size": 60350703
+    },
+    "pack.json": {
+      "sha256": "602ba9c7fd883ecf1b6dcb4d24fdb071a5912681269b5470b39eb08fb2c2196b",
+      "size": 1191092
+    },
+    "installed.json": {
+      "sha256": "472a2eba972c08caa595ac91e0f9e666258596bddc0a0b0a91d6533aa12a2a55",
+      "size": 646
+    },
+    "installed-dependencies.json": {
+      "sha256": "f6bb78cf80d2fc020ec3f9d03c1f452b6866cc43f4841b7085b4d78ee9d29f1f",
+      "size": 62794
+    },
+    "observed.json": {
+      "sha256": "083d8b39c930eeda48d33efd1b617dac724131202c42b967b7a265f0689404e6",
+      "size": 5710
+    },
+    "explicit-help.stdout.log": {
+      "sha256": "8d198d4462ad0b769ecd0c383ab31ee45f88f7c9ad2f664ca19332c8c04309c9",
+      "size": 419
+    },
+    "explicit-help.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "explicit-help.process.json": {
+      "sha256": "4534ab24366425111055af33bf6cceb9b6a58fdfa9cfbd55f8f9ac66665d6c54",
+      "size": 406
+    },
+    "explicit-help.config-before.json": {
+      "sha256": "c0b0e6fab9c1b6a9d425155716c8e66cca3707fc208afa45661b68932b78e775",
+      "size": 254
+    },
+    "explicit-help.config-after.json": {
+      "sha256": "c0b0e6fab9c1b6a9d425155716c8e66cca3707fc208afa45661b68932b78e775",
+      "size": 254
+    },
+    "version.stdout.log": {
+      "sha256": "f3c8ec4823cd33ea757f444fdea6e3e1b9d32a000bcf242884f806e1425ad739",
+      "size": 28
+    },
+    "version.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "version.process.json": {
+      "sha256": "031bfb029657b43b6f0582816b85e319e2a9909b96cbf21e254b9c6761779e7e",
+      "size": 386
+    },
+    "version.config-before.json": {
+      "sha256": "c0b0e6fab9c1b6a9d425155716c8e66cca3707fc208afa45661b68932b78e775",
+      "size": 254
+    },
+    "version.config-after.json": {
+      "sha256": "c0b0e6fab9c1b6a9d425155716c8e66cca3707fc208afa45661b68932b78e775",
+      "size": 254
+    },
+    "source.json": {
+      "sha256": "a82c231f04c900ea77cde168a13e972c3529fef9b9dca1b80c17e62474f63c09",
+      "size": 381
+    },
+    "source-sha.txt": {
+      "sha256": "0c29ad3911590d5f2a728212fee693b12cda6554f5fc022ff741f88497501783",
+      "size": 41
+    },
+    "source-files.sha256": {
+      "sha256": "902dd05904ea17b4a1dad896cbdc104f7f9b38a90f9d47b875d24101233e7d89",
+      "size": 4659
+    },
+    "source-before.log": {
+      "sha256": "83aa1583a236aea28fc7e2e0f556ce32e682c61b86451cca48132e61419399e8",
+      "size": 1621
+    },
+    "source-after.log": {
+      "sha256": "83aa1583a236aea28fc7e2e0f556ce32e682c61b86451cca48132e61419399e8",
+      "size": 1621
+    },
+    "final-tracked.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "final-working-tree.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "proof.sha256": {
+      "sha256": "9736d2c01bddfec00c881a541f7ba46d09560b43a88f132e459e3eac88a9bbea",
+      "size": 368
+    }
+  },
+  "reuse": [
+    "canonical package build/pack",
+    "final archive inventory/integrity",
+    "original installed entry binding",
+    "original version control",
+    "corrected explicit help control"
+  ],
+  "notObserved": [
+    "bare parent defect",
+    "remaining help/parser/show/consent controls"
+  ]
+}

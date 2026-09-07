@@ -1,22 +1,12 @@
 [
   {
-    "id": "gpt-live-diagnostic-137699-compare",
-    "directory": "gpt-live-diagnostic-137699-compare",
-    "runner": "ubuntu-24.04",
-    "source": "68c589aafad75433640347089f0523ec1ce0c20c",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "ordinary-controller-error"
-  },
-  {
-    "id": "service-label-red",
-    "directory": "service-label-red",
+    "id": "telemetry-packaged-red-remaining",
+    "directory": "telemetry-packaged-red-remaining",
     "runner": "ubuntu-24.04",
     "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "diagnostic-role-labels"
+    "variant": "installed-parent-help-remaining"
   }
 ]

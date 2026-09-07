@@ -1,0 +1,22 @@
+{
+  "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "red",
+  "productionOverlay": false,
+  "purpose": "remaining-only baseline continuation after proven reader error; no pack/build replay",
+  "priorRunId": 34078660938,
+  "files": {
+    "run.sh": "a5d72e02cda1b88beb1ce204237340b2d406a339dc2231bcf900af9cb32395fc",
+    "packaged-telemetry.mjs": "4a68026537c94136b8016f68c868177e6f6ff85a028065bc61eeaf29f1071d45",
+    "verify-reuse.mjs": "c89c0430dfa60302b6fbdad50b5a1b28c2a7cbf8d902e58c6ba40ca628504bad",
+    "reuse-manifest.json": "89405fd851ec36a213ab622df4f853069c484a61b549677f66667065a1a11e53",
+    "source-files.sha256": "8929c2b37b2edc28b6af9ca951a48d4a1a4f249e19de782bc77837665ab81566"
+  },
+  "sourceFiles": 51,
+  "transportFiles": 23,
+  "transportInput": "lane_dir/reuse-input/",
+  "status": "frozen for independent delta/reuse review; no scheduling acceptance",
+  "newCalls": "fresh install + dependency graph; repeated installed version setup;11 previously unexecuted CLI calls including bare parent",
+  "cachedReader": "CACHED-READER-RESULT.json verified all23 files and exact capitalized help"
+}
