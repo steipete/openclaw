@@ -1,0 +1,110 @@
+{
+  "requested": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json",
+  "complete": true,
+  "entries": [
+    {
+      "invocation": 1,
+      "config": "test/vitest/vitest.unit-fast.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.unit-fast.config.ts",
+        "--maxWorkers=1",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/auto-reply/reply/memory-flush.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/1/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/1/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    },
+    {
+      "invocation": 2,
+      "config": "test/vitest/vitest.auto-reply.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.auto-reply.config.ts",
+        "--maxWorkers=1",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/auto-reply/reply/agent-runner-memory.test.ts",
+        "src/auto-reply/reply/reply-state.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/2/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/2/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    },
+    {
+      "invocation": 3,
+      "config": "test/vitest/vitest.agents-core.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.agents-core.config.ts",
+        "--maxWorkers=1",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/agents/context.test.ts",
+        "src/agents/context.opencode-go.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/3/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/3/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    }
+  ],
+  "error": "",
+  "aggregate": "/home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json",
+  "publication": "",
+  "merge": {
+    "code": 0,
+    "noOutputTimedOut": false,
+    "signal": null,
+    "groupJoined": true
+  }
+}

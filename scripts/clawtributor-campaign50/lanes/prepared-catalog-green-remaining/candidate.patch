@@ -1,0 +1,402 @@
+--- a/src/agents/context.opencode-go.test.ts
++++ b/src/agents/context.opencode-go.test.ts
+@@ -1,5 +1,5 @@
+ import { afterAll, beforeAll, describe, expect, it } from "vitest";
+-import { resolveMemoryFlushContextWindowTokens } from "../auto-reply/reply/memory-flush.js";
++import { resolveContextTokens } from "../auto-reply/reply/model-selection-context.js";
+ import type { OpenClawConfig } from "../config/types.openclaw.js";
+ import { refreshContextWindowCache, resetContextWindowCacheForTest } from "./context.js";
+ 
+@@ -14,10 +14,10 @@
+     };
+ 
+     await refreshContextWindowCache(cfg);
+-    contextWindowTokens = resolveMemoryFlushContextWindowTokens({
++    contextWindowTokens = resolveContextTokens({
+       cfg,
+       provider: "opencode-go",
+-      modelId: "deepseek-v4-pro",
++      model: "deepseek-v4-pro",
+     });
+     configuredModels = cfg.models;
+   });
+--- a/src/auto-reply/reply/agent-runner-memory.test.ts
++++ b/src/auto-reply/reply/agent-runner-memory.test.ts
+@@ -12,6 +12,7 @@
+ } from "../../agents/admitted-run-context.js";
+ import { createAssistantErrorTranscript } from "../../agents/assistant-error-transcript.js";
+ import { testing as cliBackendsTesting } from "../../agents/cli-backends.test-support.js";
++import { resetContextWindowCacheForTest } from "../../agents/context.js";
+ import { acceptCompactionSuccessor } from "../../agents/embedded-agent-runner/compaction-successor.js";
+ import type { runEmbeddedAgentEntry } from "../../agents/embedded-agent-runner/run-entry.js";
+ import type { EmbeddedAgentRunResult } from "../../agents/embedded-agent-runner/types.js";
+@@ -549,6 +550,82 @@
+     setActivePluginRegistry(createEmptyPluginRegistry());
+     clearMemoryPluginState();
+     await fs.rm(rootDir, { recursive: true, force: true });
++  });
++
++  it.each([
++    {
++      name: "prepared-flush",
++      tokens: 177_000,
++      prepared: true,
++      cap: undefined,
++      preflight: false,
++      calls: 0,
++    },
++    {
++      name: "prepared-preflight",
++      tokens: 190_000,
++      prepared: true,
++      cap: undefined,
++      preflight: true,
++      calls: 0,
++    },
++    {
++      name: "authored-cap",
++      tokens: 78_000,
++      prepared: true,
++      cap: 100_000,
++      preflight: false,
++      calls: 1,
++    },
++    {
++      name: "provider-mismatch",
++      tokens: 177_000,
++      prepared: true,
++      preparedProvider: "other-provider",
++      cap: undefined,
++      preflight: false,
++      calls: 1,
++    },
++    {
++      name: "missing-catalog",
++      tokens: 177_000,
++      prepared: false,
++      cap: undefined,
++      preflight: false,
++      calls: 1,
++    },
++  ])("uses $name catalog facts for maintenance decisions", async (testCase) => {
++    resetContextWindowCacheForTest();
++    const provider = "catalog-fixture";
++    const model = "catalog-window";
++    const entry = createFlushSessionEntry({ totalTokens: testCase.tokens, compactionCount: 0 });
++    const storePath = path.join(rootDir, "catalog-session.json");
++    await writeTestSessionStore(storePath, "main", entry);
++    const followupRun = createTestFollowupRun({
++      provider,
++      model,
++      thinkingCatalog: testCase.prepared
++        ? [{ provider: testCase.preparedProvider ?? provider, id: model, contextWindow: 1_000_000 }]
++        : undefined,
++    });
++    const overrides = {
++      followupRun,
++      storePath,
++      modelContextTokens: testCase.cap,
++      promptForEstimate: "",
++    };
++    if (testCase.preflight) {
++      await runDefaultPreflight(entry, overrides);
++      expect(compactEmbeddedAgentSessionMock.mock.calls.length, "CATALOG_WINDOW_PREFLIGHT").toBe(
++        testCase.calls,
++      );
++      expect(runEmbeddedAgentMock).not.toHaveBeenCalled();
++    } else {
++      const result = await runDefaultMemoryFlush(entry, overrides);
++      expect(runEmbeddedAgentMock.mock.calls.length, "CATALOG_WINDOW_FLUSH").toBe(testCase.calls);
++      expect(result.outcome).toBe(testCase.calls === 0 ? "skipped" : "completed");
++      expect(compactEmbeddedAgentSessionMock).not.toHaveBeenCalled();
++    }
+   });
+ 
+   it("preserves an external memory provider's disabled maintenance thresholds", async () => {
+--- a/src/auto-reply/reply/agent-runner-memory.ts
++++ b/src/auto-reply/reply/agent-runner-memory.ts
+@@ -19,6 +19,7 @@
+ import { createDeferredEmbeddedRunLifecycleManager } from "../../agents/embedded-agent-runner/run/deferred-lifecycle-owner.js";
+ import type { RunEmbeddedAgentInternalParams } from "../../agents/embedded-agent-runner/run/internal-params.js";
+ import { createToolResultPromptProjectionState } from "../../agents/embedded-agent-runner/session-prompt-state.js";
++import { findModelInCatalog } from "../../agents/model-catalog-lookup.js";
+ import { isCliRuntimeAliasForProvider } from "../../agents/model-runtime-aliases.js";
+ import { isCliProvider } from "../../agents/model-selection.js";
+ import { resolveContextConfigProviderForRuntime } from "../../agents/openai-routing.js";
+@@ -77,12 +78,12 @@
+ import {
+   hasAlreadyFlushedForCurrentCompaction,
+   resolveMaxActiveTranscriptBytes,
+-  resolveMemoryFlushContextWindowTokens,
+   resolveCompactionThreshold,
+   resolveResponsesServerCompactionThreshold,
+   shouldRunMemoryFlush,
+   shouldRunPreflightCompaction,
+ } from "./memory-flush.js";
++import { resolveContextTokens } from "./model-selection-context.js";
+ import { readPostCompactionContext } from "./post-compaction-context.js";
+ import { refreshQueuedFollowupSession, type FollowupRun } from "./queue.js";
+ import { isRenderablePayload } from "./reply-payloads-base.js";
+@@ -756,14 +757,21 @@
+     storePath: compactionStorePath,
+   };
+ 
+-  const contextWindowTokens = resolveMemoryFlushContextWindowTokens({
++  const model = findModelInCatalog(
++    params.followupRun.run.thinkingCatalog ?? [],
++    params.followupRun.run.provider,
++    params.followupRun.run.model ?? params.defaultModel,
++  );
++  const contextWindowTokens = resolveContextTokens({
+     cfg: params.cfg,
+     provider: resolveContextConfigProviderForRuntime({
+       provider: params.followupRun.run.provider,
+       runtimeId,
+       config: params.cfg,
+     }),
+-    modelId: params.followupRun.run.model ?? params.defaultModel,
++    model: params.followupRun.run.model ?? params.defaultModel,
++    modelContextWindow: model?.contextWindow,
++    modelContextTokens: model?.contextTokens,
+   });
+   const memoryFlushPlan = resolveMemoryFlushPlan({ cfg: params.cfg, contextWindowTokens });
+   const reserveTokensFloor =
+@@ -777,6 +785,7 @@
+     params.promptForEstimate ?? params.followupRun.prompt,
+   );
+   const responsesServerCompactionThreshold = resolveResponsesServerCompactionThreshold({
++    contextWindowTokens,
+     cfg: params.cfg,
+     provider: params.followupRun.run.provider,
+     modelId: params.followupRun.run.model ?? params.defaultModel,
+@@ -1293,14 +1302,21 @@
+   let activeSessionEntry = entry ?? params.sessionEntry;
+   const recordFailure = (error: unknown) =>
+     recordMemoryFlushFailure(error, params, activeSessionEntry);
+-  const contextWindowTokens = resolveMemoryFlushContextWindowTokens({
++  const model = findModelInCatalog(
++    params.followupRun.run.thinkingCatalog ?? [],
++    params.followupRun.run.provider,
++    params.followupRun.run.model ?? params.defaultModel,
++  );
++  const contextWindowTokens = resolveContextTokens({
+     cfg: params.cfg,
+     provider: resolveContextConfigProviderForRuntime({
+       provider: params.followupRun.run.provider,
+       runtimeId,
+       config: params.cfg,
+     }),
+-    modelId: params.followupRun.run.model ?? params.defaultModel,
++    model: params.followupRun.run.model ?? params.defaultModel,
++    modelContextWindow: model?.contextWindow,
++    modelContextTokens: model?.contextTokens,
+   });
+   let memoryFlushPlan: MemoryFlushPlan | null;
+   try {
+--- a/src/auto-reply/reply/memory-flush.test.ts
++++ b/src/auto-reply/reply/memory-flush.test.ts
+@@ -71,6 +71,26 @@
+ describe("Responses server compaction host/transport parity", () => {
+   it.each([
+     {
++      name: "prepared-only OpenAI window",
++      provider: "openai",
++      api: "openai-responses" as const,
++      resolvedBaseUrl: "https://api.openai.com/v1",
++      preparedWindow: 800_000,
++      expectedEnabled: true,
++      expectedThreshold: 560_000,
++    },
++    {
++      name: "prepared active cap below an authored native window",
++      provider: "openai",
++      api: "openai-responses" as const,
++      baseUrl: "https://api.openai.com/v1",
++      resolvedBaseUrl: "https://api.openai.com/v1",
++      contextWindow: 1_000_000,
++      preparedWindow: 160_000,
++      expectedEnabled: true,
++      expectedThreshold: 112_000,
++    },
++    {
+       name: "OpenAI default route without an authored base URL",
+       provider: "openai",
+       api: "openai-responses" as const,
+@@ -181,6 +201,11 @@
+       extraParams: testCase.extraParams,
+     });
+     const hostThreshold = resolveResponsesServerCompactionThreshold({
++      contextWindowTokens:
++        testCase.preparedWindow ??
++        testCase.contextTokens ??
++        testCase.contextWindow ??
++        TEST_CONTEXT_WINDOW,
+       cfg,
+       provider: testCase.provider,
+       modelId: TEST_MODEL_ID,
+@@ -193,8 +218,8 @@
+         api: testCase.api,
+         baseUrl: testCase.resolvedBaseUrl,
+         compat: testCase.compat,
+-        contextTokens: testCase.contextTokens,
+-        contextWindow: testCase.contextWindow ?? TEST_CONTEXT_WINDOW,
++        contextTokens: testCase.contextTokens ?? testCase.preparedWindow,
++        contextWindow: testCase.contextWindow ?? testCase.preparedWindow ?? TEST_CONTEXT_WINDOW,
+       },
+       {
+         storeMode: "provider-policy",
+@@ -272,6 +297,7 @@
+ 
+     expect(
+       resolveResponsesServerCompactionThreshold({
++        contextWindowTokens: 100_000,
+         cfg,
+         provider: "anthropic",
+         modelId,
+@@ -279,3 +305,25 @@
+     ).toBe(expected);
+   });
+ });
++
++it("uses a prepared-only Anthropic window for its enabled server floor", () => {
++  expect(
++    resolveResponsesServerCompactionThreshold({
++      contextWindowTokens: 1_000_000,
++      cfg: {
++        models: {
++          providers: {
++            anthropic: {
++              api: "anthropic-messages",
++              baseUrl: "https://api.anthropic.com/v1",
++              models: [],
++            },
++          },
++        },
++        agents: { defaults: { params: { anthropicServerCompaction: true } } },
++      },
++      provider: "anthropic",
++      modelId: "claude-opus-4-6",
++    }),
++  ).toBe(700_000);
++});
+--- a/src/auto-reply/reply/memory-flush.ts
++++ b/src/auto-reply/reply/memory-flush.ts
+@@ -1,8 +1,6 @@
+ // Builds memory flush prompts when conversation context exceeds model budget.
+ import { resolveAnthropicServerCompactionPlan } from "@openclaw/ai/internal/anthropic";
+ import { resolveOpenAIResponsesServerCompactionPlan } from "@openclaw/ai/internal/openai-responses-payload-policy";
+-import { resolveContextTokensForModel } from "../../agents/context.js";
+-import { DEFAULT_CONTEXT_TOKENS } from "../../agents/defaults.js";
+ import { resolveModelExtraParamSources } from "../../agents/model-extra-params.js";
+ import { normalizeStaticProviderModelId } from "../../agents/model-ref-shared.js";
+ import { normalizeProviderId } from "../../agents/model-selection.js";
+@@ -13,21 +11,6 @@
+ } from "../../config/model-provider-config.js";
+ import { resolveFreshSessionTotalTokens, type SessionEntry } from "../../config/sessions.js";
+ import type { OpenClawConfig } from "../../config/types.openclaw.js";
+-
+-export function resolveMemoryFlushContextWindowTokens(params: {
+-  modelId?: string;
+-  cfg?: OpenClawConfig;
+-  provider?: string;
+-}): number {
+-  return (
+-    resolveContextTokensForModel({
+-      cfg: params.cfg,
+-      provider: params.provider,
+-      model: params.modelId,
+-      allowAsyncLoad: false,
+-    }) ?? DEFAULT_CONTEXT_TOKENS
+-  );
+-}
+ 
+ export function resolveMaxActiveTranscriptBytes(cfg?: OpenClawConfig): number | undefined {
+   const parsed = parseNonNegativeByteSize(
+@@ -54,6 +37,7 @@
+ }
+ 
+ export function resolveResponsesServerCompactionThreshold(params: {
++  contextWindowTokens: number;
+   cfg?: OpenClawConfig;
+   provider?: string;
+   modelId?: string;
+@@ -83,20 +67,13 @@
+         provider,
+         api: configuredModel?.api ?? providerConfig?.api ?? "anthropic-messages",
+         baseUrl: configuredModel?.baseUrl ?? providerConfig?.baseUrl,
+-        contextWindow:
+-          configuredModel?.contextWindow ??
+-          resolveMemoryFlushContextWindowTokens({ cfg: params.cfg, provider, modelId }),
++        contextWindow: configuredModel?.contextWindow ?? params.contextWindowTokens,
+       },
+       extraParams,
+     ).threshold;
+   }
+   const defaultOpenAIBaseUrl =
+     normalizedProvider === "openai" ? "https://api.openai.com/v1" : undefined;
+-  const activeContextTokens = resolveMemoryFlushContextWindowTokens({
+-    cfg: params.cfg,
+-    provider,
+-    modelId,
+-  });
+   return resolveOpenAIResponsesServerCompactionPlan(
+     {
+       provider,
+@@ -106,8 +83,8 @@
+         (normalizedProvider === "openai" ? "openai-responses" : undefined),
+       baseUrl: configuredModel?.baseUrl ?? providerConfig?.baseUrl ?? defaultOpenAIBaseUrl,
+       compat: configuredModel?.compat,
+-      contextTokens: configuredModel?.contextTokens ?? activeContextTokens,
+-      contextWindow: configuredModel?.contextWindow ?? activeContextTokens,
++      contextTokens: configuredModel?.contextTokens ?? params.contextWindowTokens,
++      contextWindow: configuredModel?.contextWindow ?? params.contextWindowTokens,
+     },
+     extraParams,
+   ).threshold;
+--- a/src/auto-reply/reply/reply-state.test.ts
++++ b/src/auto-reply/reply/reply-state.test.ts
+@@ -24,12 +24,12 @@
+ } from "./history.js";
+ import {
+   hasAlreadyFlushedForCurrentCompaction,
+-  resolveMemoryFlushContextWindowTokens,
+   resolveCompactionThreshold,
+   shouldRunMemoryFlush,
+   shouldRunPreflightCompaction,
+ } from "./memory-flush.js";
+ import { CURRENT_MESSAGE_MARKER } from "./mentions.js";
++import { resolveContextTokens } from "./model-selection-context.js";
+ import { incrementCompactionCount } from "./session-updates.js";
+ 
+ const tempDirs: string[] = [];
+@@ -469,7 +469,7 @@
+   });
+ });
+ 
+-describe("resolveMemoryFlushContextWindowTokens", () => {
++describe("resolveContextTokens", () => {
+   it("uses provider-specific configured limits when the same model id exists on multiple providers", () => {
+     const cfg = {
+       models: {
+@@ -480,17 +480,17 @@
+       },
+     };
+     expect(
+-      resolveMemoryFlushContextWindowTokens({
++      resolveContextTokens({
+         cfg: cfg as never,
+         provider: "provider-b",
+-        modelId: "shared-model",
++        model: "shared-model",
+       }),
+     ).toBe(512_000);
+     expect(
+-      resolveMemoryFlushContextWindowTokens({
++      resolveContextTokens({
+         cfg: cfg as never,
+         provider: "provider-a",
+-        modelId: "shared-model",
++        model: "shared-model",
+       }),
+     ).toBe(200_000);
+   });

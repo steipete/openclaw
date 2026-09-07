@@ -1,22 +1,22 @@
 [
   {
-    "id": "blank-numeric-compare",
-    "directory": "blank-numeric",
-    "source": "07d5b2409af0bee1ceb30b785ad75711ee0cf63a",
+    "id": "prepared-catalog-green-remaining",
+    "directory": "prepared-catalog-green-remaining",
+    "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
     "pnpm": "12.3.4",
-    "mode": "compare",
+    "mode": "green",
     "variant": "remaining",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
   {
-    "id": "session-token-117517-green",
-    "directory": "session-token-117517-green",
-    "runner": "ubuntu-24.04",
-    "source": "b57c5f25a9142ac8e1195e8552c54c268c2e03f8",
-    "node": "24.20.0",
+    "id": "ios-focus-ordered-diagnostic",
+    "directory": "ios-focus-ordered-diagnostic",
+    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
     "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "sqlite-cli"
+    "mode": "baseline",
+    "variant": "ordered-setup-diagnostic",
+    "runner": "macos-26",
+    "node": "24.20.0"
   }
 ]

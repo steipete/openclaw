@@ -1,0 +1,346 @@
+[test] native report set: /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH
+[test] starting test/vitest/vitest.unit-fast.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[vitest-workers] prepared 47c1f6a9641a in 6209ms (8518 inputs, 4246 outputs)
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps prepared-only OpenAI window gates aligned[32m 276[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps prepared active cap below an authored n… gates aligned[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps OpenAI default route without an authore… gates aligned[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps OpenAI direct Sol route with an active … gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps OpenAI public route gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps ChatGPT OAuth route gates aligned[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps Azure OpenAI route gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps Azure Cognitive Services route gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps OpenAI route with store disabled by com… gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps case-normalized OpenAI provider gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps custom proxy route gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps explicitly disabled OpenAI server compa… gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mResponses server compaction host/transport parity[2m > [22mkeeps explicitly enabled Azure server compact… gates aligned[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mAnthropic server compaction host threshold[2m > [22mkeeps Anthropic disabled by default[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mAnthropic server compaction host threshold[2m > [22muses 70 percent of the Anthropic contex…[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mAnthropic server compaction host threshold[2m > [22muses the Anthropic minimum for small wi…[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mAnthropic server compaction host threshold[2m > [22mclamps configured Anthropic thresholds[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22mAnthropic server compaction host threshold[2m > [22muses configured Anthropic thresholds[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m unit-fast [49m[39m src/auto-reply/reply/memory-flush.test.ts[2m > [22muses a prepared-only Anthropic window for its enabled server floor[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m19 passed[39m[22m[90m (19)[39m
+[2m   Start at [22m 23:36:28
+[2m   Duration [22m 16.28s[2m (transform 86%, import 12%, tests 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/1/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/1/1/blob.json
+[test] starting test/vitest/vitest.auto-reply.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses prepared-flush catalog facts for maintenance decisions[33m 626[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses prepared-preflight catalog facts for maintenance decisions[33m 331[2mms[22m[39m
+[vitest] still running with no output for 30000ms.
+[vitest] still running with no output for 60000ms.
+[vitest] still running with no output for 90000ms.
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses authored-cap catalog facts for maintenance decisions[33m 109556[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses provider-mismatch catalog facts for maintenance decisions[33m 775[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses missing-catalog catalog facts for maintenance decisions[33m 730[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpreserves an external memory provider's disabled maintenance thresholds[32m 213[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for provider plan at 8767 tokens[32m 212[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for provider plan at 8768 tokens[33m 411[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for provider plan at 12767 tokens[33m 305[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for provider plan at 12768 tokens[33m 324[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for custom plan at 18767 tokens[32m 224[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for custom plan at 18768 tokens[33m 315[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for custom plan at 20767 tokens[33m 313[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mseparates early flush and blocking compaction for custom plan at 20768 tokens[33m 330[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mreuses its private buffer and admitted lifecycle across a model fallback[33m 325[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22minherits requester taint across a multi-write flush[33m 302[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdowngrades an owner-directed flush after a network-tainted embedded turn[33m 2971[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrevalidates original thinking for memory-flush fallback with turn request=undefined[33m 333[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrevalidates original thinking for memory-flush fallback with turn request=default[33m 322[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrevalidates original thinking for memory-flush fallback with turn request=ultra[33m 332[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpreserves thinking for runtime-discovered Ollama memory-flush models[33m 325[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mkeeps catalog-adopted sessions on Codex for memory flush turns[32m 284[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mcounts resolved error payloads as failed memory flushes[33m 331[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mreports restricted memory-flush write failures for visible delivery[33m 712[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22msurfaces generic non-abort memory-flush failures so cron meta.error is populated (regression: #80755)[32m 221[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mredacts and caps generic visible memory-flush failures before delivery[32m 232[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not surface user-abort errors as visible payloads (regression: #80755)[32m 224[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mincrements and UTF-16-safely persists a capped non-abort flush failure[32m 232[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrecords a failed initial plan resolution attempt, cleans up, and retries[33m 354[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrecords a failed time-refreshed plan resolution attempt, cleans up, and retries[33m 367[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrecords a failed target preparation attempt, cleans up, and retries[33m 372[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrecords a failed maintenance execution setup attempt, cleans up, and retries[33m 383[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mhonors a time-refreshed null plan before preparing or registering a run[32m 209[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not track failure on abort error[32m 239[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mclears failure counters on successful flush[33m 343[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mmarks flush as completed after MAX_FLUSH_FAILURES to break retry loop[32m 256[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mruns memory flush on the configured maintenance model without active fallbacks[32m 242[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mprepares the requested memory runtime without pinning observations (owner undefined)[32m 228[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mprepares the requested memory runtime without pinning observations (owner model-owner)[32m 224[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mignores stale runtime pins before memory-flush fallback preflight[32m 242[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips memory flush for CLI providers[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips memory flush for incognito sessions[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips memory flush for an incognito key after process-local state is gone[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips memory flush for compatible CLI session runtime pins[32m 147[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses the policy owner's memory-flush writability for global[32m 147[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses the policy owner's memory-flush writability for agent:other:main[32m 149[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips memory flush when a persisted sandbox requirement caps workspace access[32m 190[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mcontinues when preflight compaction reports the session is already under target[32m 250[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mfails when required preflight context-engine compaction is deferred to background maintenance[32m 214[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpasses persisted session policy and runtime policy key to preflight compaction[32m 234[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mfails required preflight compaction after native harness stale_thread_binding failure[33m 347[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mfails required preflight compaction after native harness missing_thread_binding failure[32m 223[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mfails required preflight compaction after an unstructured thread-not-found failure[32m 225[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mstill fails preflight compaction for non-binding native harness failures[32m 228[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpasses resolved context budget and user auth profile to preflight compaction[32m 150[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpasses resolved context budget and auto auth profile to preflight compaction[32m 155[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at fresh local tool turn in a 32K window with memory flush disabled[32m 237[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at below the 32K threshold with memory flush disabled[32m 219[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at at the 32K threshold with memory flush disabled[32m 266[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at below the capped 8K threshold with memory flush disabled[32m 223[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at at the capped 8K threshold with memory flush disabled[32m 282[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at below threshold with memory flush disabled[32m 215[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at at threshold with memory flush disabled[32m 267[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at reported pressure with memory flush disabled[32m 274[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mapplies session compaction at reported pressure after a runtime fallb… with memory flush disabled[32m 276[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips the pre-compaction checkpoint when there is no hard pressure[32m 159[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mawaits one pre-compaction checkpoint and compacts the refreshed session[33m 310[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips compaction when the checkpoint returns a session below hard pressure[32m 235[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not compact after cancellation during the pre-compaction checkpoint[32m 239[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrejects authorization invalidation before start without accounting or adopting compaction[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrejects abort invalidation before start without accounting or adopting compaction[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrejects authorization invalidation after start notice without accounting or adopting compaction[32m 239[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrejects abort invalidation after start notice without accounting or adopting compaction[32m 239[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrejects authorization invalidation after awaited compactor without accounting or adopting compaction[32m 242[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrejects abort invalidation after awaited compactor without accounting or adopting compaction[32m 244[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpreflight compacts a fresh session when the current prompt estimate pushes the next request over budget[32m 273[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not preflight compact a fresh session when only accumulated output tokens are large and the latest output keeps the request under budget[32m 173[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mstops at unavailable context and accepts only a later valid transcript snapshot[33m 512[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mignores unversioned fresh state and legacy CLI usage on the first upgraded turn[33m 351[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mupdates the active preflight run after transcript rotation[33m 325[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mincludes recent output tokens when deciding preflight compaction[32m 261[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mkeeps nonzero unavailable output as growth after the previous exact snapshot[33m 302[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not add unavailable output twice when full-message estimation already includes it[32m 270[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mreads flush usage and byte size from SQLite without statting a retired transcript path[33m 478[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mincludes appended transcript growth before persisting fresh usage[33m 341[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mfails when required preflight compaction returns an unknown successful no-op[32m 259[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips OpenClaw preflight compaction for explicit Codex runtime overrides[32m 226[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips fresh persisted token totals for explicit Codex runtime overrides[32m 226[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mskips preflight compaction for compatible CLI session runtime pins[32m 144[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mkeeps the OpenAI API context window for persisted OpenClaw runtime overrides[33m 332[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mestimates Codex tool-result mirrors through the provider projection without provider usage after runtime cutover[33m 405[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mestimates Codex tool-result mirrors through the provider projection after provider usage after runtime cutover[33m 370[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22maccounts for provider-visible history beyond the recent read bounds[33m 377[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses a provider usage anchor older than the scan window when pressure is below threshold[33m 359[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses a provider usage anchor older than the scan window when pressure is above threshold[33m 374[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not use the active run sessionFile when the session entry has no transcript path[32m 253[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not treat unavailable Anthropic context as transcript prompt usage[32m 290[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mkeeps preflight compaction conservative for content appended after latest usage[32m 288[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mcombines latest usage with post-usage tail pressure across 0 display-only messages[32m 295[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mcombines latest usage with post-usage tail pressure across 513 display-only messages[32m 288[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not count bytes from a large latest usage record as post-usage tail pressure[32m 266[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not treat raw transcript metadata bytes as token pressure[33m 338[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mtriggers preflight compaction when the active transcript exceeds the configured byte threshold[33m 339[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22menforces the active transcript byte threshold during heartbeats[32m 295[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mdoes not repeat byte-triggered compaction until an oversized successor grows by one threshold[33m 396[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mre-arms byte-triggered compaction after the oversized successor grows by one threshold[33m 434[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpreserves token-pressure compaction while byte retries are latched[33m 434[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mlatches Codex byte preflight for a fresh session selected from the outset when the successful mock omits the host callback[33m 553[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mlatches Codex byte preflight for a upgraded session with historical embedded ownership when the successful mock omits the host callback[33m 540[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpersists Codex byte accounting before the accepted compactor returns[33m 571[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mrefreshes the Codex byte latch after maintenance shrinks an oversized transcript[33m 566[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mclears a Codex byte latch after shrink below the cap without compacting[33m 327[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mresets a Codex byte latch on session identity mismatch and rearms compaction[33m 348[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mresets a Codex byte latch on threshold mismatch and rearms compaction[33m 350[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mleaves a reset SQLite Codex session below the byte fuse for native compaction[33m 336[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mkeeps ownsNativeCompaction absolute over the SQLite transcript byte guard[32m 249[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mpreserves post-compaction context when prepared delivery ownership changes[33m 331[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mkeeps incognito preflight compaction in the process-local transcript store[32m 183[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mresolves usage from an active branch whose leaf target predates the bounded tail[33m 307[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22mforces memory flush when a SQLite-backed transcript exceeds the byte threshold[33m 499[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22memits preflight compaction notices around a successful budget compaction[33m 308[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22memits an incomplete preflight compaction notice when post-compaction state update throws[32m 282[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/agent-runner-memory.test.ts[2m > [22mrunMemoryFlushIfNeeded[2m > [22muses configured prompts and stored bootstrap warning signatures[32m 244[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mreturns current message when history is empty[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mwraps history entries and excludes current by default[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mtrims history to configured limit[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mbuilds context from map and appends entry[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mbuilds context from pending map without appending[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mbuilds structured inbound history with media metadata[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mrecords pending entries only when enabled[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhistory helpers[2m > [22mclears history entries only when enabled[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mrequires totalTokens and threshold[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mskips when entry is missing[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 8000-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 16000-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 24000-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 32768-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 128000-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 200000-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors the selected reserve in a 32000-token window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors a server floor of 12000 without lowering the local threshold[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mhonors a server floor of 16000 without lowering the local threshold[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mskips when under threshold[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mtriggers at the threshold boundary[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mskips when already flushed for current compaction count[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mruns when above threshold and not flushed[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mruns on consecutive compaction cycles when flush records the pre-increment count[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunMemoryFlush[2m > [22mignores stale cached totals[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunPreflightCompaction[2m > [22mignores stale cached totals when no projected token count is provided[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mshouldRunPreflightCompaction[2m > [22mtriggers when a projected token count crosses the threshold[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhasAlreadyFlushedForCurrentCompaction[2m > [22mreturns true when memoryFlushCompactionCount matches compactionCount[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhasAlreadyFlushedForCurrentCompaction[2m > [22mreturns false when memoryFlushCompactionCount differs[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhasAlreadyFlushedForCurrentCompaction[2m > [22mreturns false when memoryFlushCompactionCount is undefined[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mhasAlreadyFlushedForCurrentCompaction[2m > [22mtreats missing compactionCount as 0[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mresolveContextTokens[2m > [22muses provider-specific configured limits when the same model id exists on multiple providers[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mincrements compaction count[32m 244[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mclears CLI bindings after context-engine compaction[32m 132[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mpreserves CLI bindings after native-harness compaction[32m 141[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mpreserves CLI bindings after server-endpoint compaction[32m 121[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mpersists incognito compaction metadata only in the scoped store[32m 33[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mupdates totalTokens when tokensAfter is provided[32m 113[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22maccepts zero tokensAfter as a fresh post-compaction total[32m 122[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mpersists a chronology-qualified 12000-token current-context snapshot[32m 123[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mpersists a chronology-qualified 0-token current-context snapshot[32m 107[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mmarks current context unknown when no ordered snapshot is available[32m 112[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mignores non-finite tokensAfter values[32m 107[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mincrements compaction count by an explicit amount[32m 107[2mms[22m[39m
+ [32m✓[39m [30m[45m auto-reply [49m[39m src/auto-reply/reply/reply-state.test.ts[2m > [22mincrementCompactionCount[2m > [22mmarks totalTokens stale when tokensAfter is not provided[32m 111[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[32m168 passed[39m[22m[90m (168)[39m
+[2m   Start at [22m 23:36:45
+[2m   Duration [22m 168.88s[2m (tests 89%, transform 8%, import 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/2/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/2/1/blob.json
+[test] starting test/vitest/vitest.agents-core.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mkeeps the smallest context window when the same bare model id appears under multiple providers[32m 45[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mstores provider-qualified entries independently[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mprefers discovered contextTokens over contextWindow[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mkeeps bare claude-cli GA variants at the discovered window[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mdoes not upgrade non-Anthropic GA 1M model ids from discovery[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mdoes not upgrade provider-qualified anthropic GA 1M discovery ids without verified ownership[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mupgrades provider-owned anthropic GA 1M discovery ids[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyDiscoveredContextWindows[2m > [22mdoes not upgrade bare GA 1M discovery ids without verified ownership[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyConfiguredContextWindows[2m > [22mwrites bare model id to cache; does not touch raw provider-qualified discovery entries[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyConfiguredContextWindows[2m > [22mdoes not overwrite raw provider-qualified discovery keys[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyConfiguredContextWindows[2m > [22mwrites provider-owned bare keys for self-prefixed configured ids[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyConfiguredContextWindows[2m > [22madds config-only model context windows and ignores invalid entries[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mapplyConfiguredContextWindows[2m > [22mprefers configured contextTokens over contextWindow[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mcreateSessionManagerRuntimeRegistry[2m > [22mstores, reads, and clears values by object identity[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mcreateSessionManagerRuntimeRegistry[2m > [22mignores non-object keys[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mresolves the corrected anthropic/claude-opus-4-7 context window[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mresolves the corrected anthropic/claude-sonnet-4-6 context window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mresolves the corrected anthropic/claude-opus-4-6 context window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps bare claude-cli/claude-opus-4-7 at its discovered window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps bare claude-cli/claude-sonnet-4-6 at its discovered window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps bare claude-cli/claude-opus-4-6 at its discovered window[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mresolves explicit claude-cli/claude-opus-4-7[1m] to 1M[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mresolves explicit claude-cli/claude-sonnet-4-6[1m] to 1M[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mresolves explicit claude-cli/claude-opus-4-6[1m] to 1M[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mcan exclude unscoped cache entries from provider-owned lookup[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns 1M context when anthropic context1m is enabled for a GA 1M model[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns 1M context when claude-cli context1m is enabled for a GA 1M model[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mlets a claude-cli model disable the global context1m default[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22muses the caller-supplied model provider for the claude-cli runtime[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22muses the caller-supplied model provider for the fixture-cli runtime[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns 1M context for GA-capable Anthropic 4.x models even without context1m[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic model claude-fable-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic-vertex model claude-fable-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured claude-cli model claude-fable-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic model claude-mythos-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic-vertex model claude-mythos-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured claude-cli model claude-mythos-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic model claude-sonnet-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic-vertex model claude-sonnet-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured claude-cli model claude-sonnet-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic model claude-opus-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic-vertex model claude-opus-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured claude-cli model claude-opus-5[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic model claude-sonnet-4-6[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mreturns the fixed context for unconfigured anthropic-vertex model claude-sonnet-4-6[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mdoes not give fable-5 context window to claude-fable-50 (prefix boundary check)[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mdoes not give mythos-5 context window to claude-mythos-50[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mclamps an authored Anthropic window to the fixed provider limit[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps fixed Anthropic context above stale static native-window metadata[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic model claude-fable-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic-vertex model claude-fable-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed claude-cli model claude-fable-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic model claude-mythos-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic-vertex model claude-mythos-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed claude-cli model claude-mythos-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic model claude-sonnet-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic-vertex model claude-sonnet-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed claude-cli model claude-sonnet-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed claude-cli model claude-opus-5[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic model claude-sonnet-4-6[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mignores a materialized lower context window for fixed anthropic-vertex model claude-sonnet-4-6[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mhonors an explicit lower contextTokens cap for a fixed Anthropic model[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps older Anthropic Sonnet 4.x models at the configured window when context1m is set[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mdoes not force 1M context for non-opus/sonnet Anthropic models[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps bare claude-cli opus 4.7 variants at the fallback without context1m[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mdoes not force 1M context for non-Anthropic providers with opus 4.7 ids[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mdoes not force 1M context for model-only anthropic opus 4.7 ids[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mprefers per-model contextTokens config over contextWindow[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps configured contextTokens authoritative over lower discovery[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mprefers verified provider discovery over static catalog fallbacks[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps verified provider discovery ahead of static caps under configured windows[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mkeeps configured native windows separate from prepared runtime caps[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.test.ts[2m > [22mresolveContextTokensForModel[2m > [22mcaps prepared runtime tokens by a lower configured native window[32m 1[2mms[22m[39m
+[vitest] still running with no output for 30000ms.
+ [32m✓[39m [30m[45m agents-core [49m[39m src/agents/context.opencode-go.test.ts[2m > [22mOpenCode Go context metadata[2m > [22mwarms the provider-owned context window without writing model config[32m 3[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[32m74 passed[39m[22m[90m (74)[39m
+[2m   Start at [22m 23:39:35
+[2m   Duration [22m 41.29s[2m (tests 85%, transform 10%, import 3%, worker 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/3/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/3/1/blob.json
+[vitest-workers] verifying completed generation before cleanup
+[2m11:40:18 PM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+[2m11:40:18 PM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+[2m11:40:18 PM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH/aggregate.json
+[test] native JSON aggregate: /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json; originals: /home/runner/work/openclaw/openclaw/evidence/prepared-catalog-green/unit.json.reports-HQuRXH. Native merge omits snapshot summaries and JSON coverageMap; startTime is merge time. Use index.json for process outcomes.
+[test] passed 3 Vitest shards in 233.21s

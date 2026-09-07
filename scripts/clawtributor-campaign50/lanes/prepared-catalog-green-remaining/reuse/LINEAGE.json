@@ -1,0 +1,114 @@
+{
+  "run": 34067314611,
+  "job": 101578264433,
+  "harness": "f35646704bdfafd0e8a5368c11c945f1dd59b8f8",
+  "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
+  "candidate": "1a42e4917dfda234bd3a4e32dfcd365a06baf4cf3271497fbda544fcc6f3704b",
+  "correctedReader": "01ee2284d0bdd3f4f3120db0b9f63d13b808eb38e1b9f3b8380a1429a1b8c03e",
+  "readerCorrection": "One exact title literal to the observed40-character interpolated name; all other executed guards retained.",
+  "unitCounts": {
+    "memory-flush.test.ts": 19,
+    "agent-runner-memory.test.ts": 123,
+    "reply-state.test.ts": 45,
+    "context.test.ts": 73,
+    "context.opencode-go.test.ts": 1
+  },
+  "artifacts": [
+    {
+      "artifactPath": "unit.json",
+      "transportPath": "unit.json",
+      "sha256": "d1483c42547ae2d746f2b39335604acb3a544ed5b67c00a52ef216fe00ea9c9a",
+      "bytes": 90925
+    },
+    {
+      "artifactPath": "source.json",
+      "transportPath": "source.json",
+      "sha256": "de74c2ff10b40b5611fa5caa1d85ddbe93514a54dd791e76f9a7c72506b1f89a",
+      "bytes": 383
+    },
+    {
+      "artifactPath": "unchanged-source.sha256",
+      "transportPath": "unchanged-source.sha256",
+      "sha256": "5e00c9c22cf1ec59a25e9a7076d3c947c10dfc215985c0fbbf81cfeffe30c94a",
+      "bytes": 2706
+    },
+    {
+      "artifactPath": "final-working-tree.patch",
+      "transportPath": "final-working-tree.patch",
+      "sha256": "c6b750e8101656b90ebc9659d49a395a7fc4c65ebd6b486b5a010c6c32e18106",
+      "bytes": 16897
+    },
+    {
+      "artifactPath": "unit.log",
+      "transportPath": "unit.log.txt",
+      "sha256": "7c734c9cb5a35d57cfaf9c8a89ebe29413b0aa6d78b77a8e45b04b0fcba0318d",
+      "bytes": 65673
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/index.json",
+      "transportPath": "index.json",
+      "sha256": "fc0e396dffe19e8c6917ec794b9a7afb73860494e331d1d347e69d866f26e1ff",
+      "bytes": 3564
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/aggregate.json.capture.json",
+      "transportPath": "aggregate.capture.json",
+      "sha256": "ee538c5cfef6dc3392e84f5dcdb1bd554449a1d3017ee75fbd86f8b885c3c3f8",
+      "bytes": 3203
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/1/1/report.json",
+      "transportPath": "shard-1.json",
+      "sha256": "d7cf3952d377bfe59cfa7c6e606ede030292697527d5b2e449bbe31ec334a265",
+      "bytes": 7197
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/1/1/report.json.capture.json",
+      "transportPath": "shard-1.capture.json",
+      "sha256": "0a223044cbaf75785de6ae80479e0d3b3f9d65a22e13e488e2697a25643e19be",
+      "bytes": 1769
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/2/1/report.json",
+      "transportPath": "shard-2.json",
+      "sha256": "ce0190f5fab8aac20117b7e1d1ea31e835675cb72a016f4f77cd2755dea8accf",
+      "bytes": 57737
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/2/1/report.json.capture.json",
+      "transportPath": "shard-2.capture.json",
+      "sha256": "8e894386f7456b1fe40bd0201c4f09789256db6f1fc0cca5aba1743fdde51b3e",
+      "bytes": 2095
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/3/1/report.json",
+      "transportPath": "shard-3.json",
+      "sha256": "78a5f062421f60e5dfeb2867b8002803c1e2356f96e5e95b072090fd4fcefb3c",
+      "bytes": 26955
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/3/1/report.json.capture.json",
+      "transportPath": "shard-3.capture.json",
+      "sha256": "1616bb4e5fbfefc0e63dbb8782d14fd66641d11a5f274b54d2a68db4991d8cf3",
+      "bytes": 2080
+    },
+    {
+      "artifactPath": "run.json (controller cache)",
+      "transportPath": "run.json",
+      "sha256": "ffc897cfc209ef7ddb2c94b67eced7e7163e1a6995434733825592b5b0746298",
+      "bytes": 9769
+    },
+    {
+      "artifactPath": "memory-job.log (controller cache)",
+      "transportPath": "memory-job.log.txt",
+      "sha256": "083fc31c2913d1469ec49c1a6f47b9b88c2c3f51ebaa434e6793a33cefa5a792",
+      "bytes": 46958
+    },
+    {
+      "artifactPath": "unit.json.reports-HQuRXH/vitest.merge.config.mjs",
+      "transportPath": "merge-config.mjs.txt",
+      "sha256": "0267467bc152d9afa20dca9c0bd9bef4e1c235199c2dcfdb7092433fcb028000",
+      "bytes": 6750
+    }
+  ]
+}
