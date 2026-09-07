@@ -1,0 +1,15 @@
+{
+  "nodeEnv": "production",
+  "compiler": "0.28.2",
+  "declaration": {
+    "entry": "dist/control-ui/8545fcb9fe657212ae5f456164f5f6d3510675d683bf862185417143840e7c0a/index.js",
+    "styles": [
+      "dist/control-ui/8545fcb9fe657212ae5f456164f5f6d3510675d683bf862185417143840e7c0a/index.css"
+    ]
+  },
+  "exports": {
+    "sdkMarker": "stale-sdk-v1",
+    "workspaceMarker": "stale-workspace-v1",
+    "pluginMarker": "plugin-v1"
+  }
+}

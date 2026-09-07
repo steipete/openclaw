@@ -1,0 +1,14 @@
+src/cli/plugins-control-ui-build.ts: OK
+src/cli/plugins-build-bundle.ts: OK
+src/plugins/sdk-alias.ts: OK
+src/cli/plugins-control-ui-build.test.ts: OK
+src/infra/errno.ts: OK
+src/cli/plugins-authoring-command.ts: OK
+scripts/build-plugin-control-ui.mts: OK
+package.json: OK
+src/plugins/dev-source-root.ts: OK
+src/infra/openclaw-root.ts: OK
+src/plugins/package-manifest.ts: OK
+tsconfig.json: OK
+scripts/tsx.mjs: OK
+scripts/lib/tsx-cli-shim.mjs: OK

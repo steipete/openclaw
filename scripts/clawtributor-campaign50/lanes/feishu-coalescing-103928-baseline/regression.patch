@@ -1,0 +1,371 @@
+--- a/extensions/feishu/src/delivery-trace.test.ts
++++ b/extensions/feishu/src/delivery-trace.test.ts
+@@ -1,3 +1,6 @@
++import { writeFile } from "node:fs/promises";
++import path from "node:path";
++import { expectDefined } from "@openclaw/normalization-core";
+ // Feishu delivery trace goldens: replayable wire-level lifecycle recordings.
+ //
+ // IN events are fed straight into the reply-dispatcher plan (dispatcher,
+@@ -6,6 +9,7 @@
+ // HTTP fetch, so streaming-card entity calls are captured at the wire seam.
+ // Refresh goldens with OPENCLAW_TRACE_UPDATE=1 (see delivery-trace harness docs).
+ import {
++  createWireRecorder,
+   deliveryTraceScenarios,
+   expectDeliveryTraceMatchesGolden,
+   runDeliveryTraceScenario,
+@@ -13,6 +17,7 @@
+   type DeliveryTraceScenarioName,
+   type WireRecorder,
+ } from "openclaw/plugin-sdk/channel-contract-testing";
++import { isChannelPartialDeliveryError } from "openclaw/plugin-sdk/channel-inbound";
+ import { withFetchPreconnect } from "openclaw/plugin-sdk/test-env";
+ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+ import { FeishuConfigSchema } from "./config-schema.js";
+@@ -599,3 +604,345 @@
+     });
+   }
+ });
++
++type CoalescingFailure = "preview" | "final" | "settings";
++
++function createCoalescingProof(
++  id: string,
++  options: { hold?: "create" | "content"; fail?: CoalescingFailure } = {},
++) {
++  const recorder = createWireRecorder();
++  setupFeishuTrace(recorder, "streaming-happy");
++  const normalFetch = expectDefined(traceState.cardKitFetch, "recording CardKit fetch");
++  const release = Promise.withResolvers<void>();
++  const wire: Array<{
++    phase: "request" | "response";
++    path: string;
++    method?: string;
++    body?: unknown;
++    status?: number;
++  }> = [];
++  const logs: string[] = [];
++  const outcomes: Array<{ name: string; status: string; value?: unknown; error?: string }> = [];
++  const pending: Promise<unknown>[] = [];
++  let held = false;
++  let contentRequests = 0;
++  traceState.cardKitFetch = withFetchPreconnect(async (input, init) => {
++    const url = new URL(input instanceof Request ? input.url : input.toString());
++    const wirePath = url.pathname.replace(/^\/open-apis/, "");
++    const isContent = wirePath.endsWith("/elements/content/content");
++    const isCreate = wirePath === "/cardkit/v1/cards";
++    const isSettings = wirePath.endsWith("/settings");
++    // Token requests stay in the existing recorder's redacted path.
++    const body = wirePath.startsWith("/auth/") ? undefined : parseJsonRecord(init?.body);
++    wire.push({
++      phase: "request",
++      path: wirePath,
++      method: init?.method ?? "GET",
++      ...(body ? { body } : {}),
++    });
++    if (isContent) {
++      contentRequests += 1;
++    }
++    if (
++      !held &&
++      ((options.hold === "create" && isCreate) || (options.hold !== "create" && isContent))
++    ) {
++      held = true;
++      await release.promise;
++    }
++    const rejects =
++      (options.fail === "preview" && isContent && contentRequests === 1) ||
++      (options.fail === "final" && isContent && contentRequests > 1) ||
++      (options.fail === "settings" && isSettings);
++    const response = rejects
++      ? jsonResponse({ code: 99990001, msg: `synthetic ${options.fail} response failure` }, 503)
++      : await normalFetch(input, init);
++    wire.push({ phase: "response", path: wirePath, status: response.status });
++    recorder.recordInEvent("coalescing-http-response", { path: wirePath, status: response.status });
++    return response;
++  });
++  const created = createFeishuReplyDispatcher({
++    cfg: {},
++    agentId: "agent",
++    runtime: {
++      log: (message) => logs.push(String(message)),
++      error: (message) => logs.push(String(message)),
++      exit: (code) => {
++        throw new Error(`unexpected runtime exit ${code}`);
++      },
++    },
++    chatId: "oc-trace-chat",
++    sendTarget: "oc-trace-chat",
++    replyToMessageId: "om-inbound",
++  });
++  function track<T>(name: string, promise: Promise<T>): Promise<T> {
++    pending.push(promise);
++    // Observe immediately and join in cleanup, including expected provider errors.
++    void promise.then(
++      (value) => {
++        outcomes.push({ name, status: "fulfilled", value });
++      },
++      (error: unknown) => {
++        outcomes.push({ name, status: "rejected", error: String(error) });
++      },
++    );
++    return promise;
++  }
++  const start = () => track("start", Promise.resolve(created.dispatcherOptions.onReplyStart?.()));
++  const idle = () => track("idle", Promise.resolve(created.dispatcherOptions.onIdle?.()));
++  const deliver = (payload: Parameters<typeof created.delivery.deliver>[0]) =>
++    track(
++      "delivery",
++      (async () => {
++        const result = await created.delivery.deliver(payload, { kind: "final" });
++        if (result?.finalization) {
++          track("finalization", result.finalization);
++        }
++        return result;
++      })(),
++    );
++  const contentBodies = () =>
++    wire.flatMap((event) =>
++      event.phase === "request" && event.path.endsWith("/elements/content/content")
++        ? [event.body]
++        : [],
++    );
++  const settingsRequests = () =>
++    wire.filter((event) => event.phase === "request" && event.path.endsWith("/settings"));
++  return {
++    created,
++    recorder,
++    wire,
++    logs,
++    outcomes,
++    start,
++    idle,
++    deliver,
++    contentBodies,
++    settingsRequests,
++    release: () => release.resolve(),
++    waitHeld: () => vi.waitFor(() => expect(held).toBe(true), { timeout: 5_000 }),
++    async cleanup() {
++      release.resolve();
++      track("cleanup-idle", Promise.resolve(created.dispatcherOptions.onIdle?.()));
++      let joined = 0;
++      while (joined < pending.length) {
++        const batch = pending.slice(joined);
++        joined += batch.length;
++        await Promise.allSettled(batch);
++      }
++      created.dispatcherOptions.onCleanup?.();
++      const directory = process.env.PROOF_EVIDENCE_DIR;
++      if (directory) {
++        const output =
++          JSON.stringify(
++            {
++              id,
++              wire,
++              logs,
++              outcomes,
++              events: recorder.finish(),
++              joined,
++              pending: pending.length,
++              visible: created.getVisibleReplyState(),
++            },
++            null,
++            2,
++          ) + "\n";
++        expect(Buffer.byteLength(output)).toBeLessThan(1024 * 1024);
++        await writeFile(path.join(directory, `${id}.json`), output);
++      }
++      expect(joined).toBe(pending.length);
++      expect(outcomes).toHaveLength(joined);
++      const names =
++        id === "delayed-start"
++          ? ["start", "idle", "cleanup-idle"]
++          : id === "discard-controls"
++            ? ["start", "delivery", "idle", "cleanup-idle"]
++            : ["start", "delivery", "finalization", "idle", "cleanup-idle"];
++      expect(outcomes.map((row) => row.name).sort()).toEqual(names.sort());
++      for (const row of outcomes) {
++        const rejected =
++          (options.fail === "final" || options.fail === "settings") &&
++          (row.name === "idle" || row.name === "finalization");
++        expect(row.status, `${id}: ${row.name}`).toBe(rejected ? "rejected" : "fulfilled");
++      }
++      expect(
++        wire.filter((event) => event.phase === "request" && event.path === "/cardkit/v1/cards"),
++      ).toEqual([expect.objectContaining({ method: "POST" })]);
++      expect(recorder.finish().filter((event) => event.kind === "im.message.reply")).toHaveLength(
++        id === "discard-controls" ? 2 : 1,
++      );
++    },
++  };
++}
++
++const COALESCING_FIRST = "First complete snapshot with ordinary text.";
++const COALESCING_MIDDLE = `${COALESCING_FIRST} Middle snapshot that becomes stale.`;
++const COALESCING_LATEST = `${COALESCING_MIDDLE} Latest complete answer retained.`;
++
++describe("Feishu combined-owner coalescing proof", () => {
++  it("omits the stale middle wire snapshot while joining finalization", async () => {
++    const proof = createCoalescingProof("stale-middle");
++    try {
++      await proof.start();
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_FIRST });
++      await proof.waitHeld();
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_MIDDLE });
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_LATEST });
++      const delivery = await proof.deliver({ text: COALESCING_LATEST });
++      const finalization = expectDefined(delivery?.finalization, "deferred Feishu finalization");
++      const idle = proof.idle();
++      expect(proof.settingsRequests()).toHaveLength(0);
++      expect(proof.outcomes.some((row) => row.name === "finalization")).toBe(false);
++      proof.release();
++      await idle;
++      await expect(finalization).resolves.toMatchObject({
++        visibleReplySent: true,
++        content: COALESCING_LATEST,
++        messageIds: ["om-1"],
++      });
++      expect(proof.settingsRequests()).toHaveLength(1);
++      expect(proof.contentBodies()[0]).toMatchObject({ content: COALESCING_FIRST });
++      expect(proof.contentBodies().at(-1)).toMatchObject({ content: COALESCING_LATEST });
++      // This assertion must fail on the unchanged dispatcher for the named backlog.
++      expect(proof.contentBodies(), "STALE_MIDDLE_WIRE_SNAPSHOT").not.toContainEqual(
++        expect.objectContaining({ content: COALESCING_MIDDLE }),
++      );
++      expect(proof.contentBodies()).toHaveLength(2);
++    } finally {
++      await proof.cleanup();
++    }
++  });
++
++  it("retains the latest partial when startup and idle overlap", async () => {
++    const proof = createCoalescingProof("delayed-start", { hold: "create" });
++    try {
++      const start = proof.start();
++      // Auto mode starts on the first partial, not on reply-start alone.
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_FIRST });
++      await proof.waitHeld();
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_MIDDLE });
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_LATEST });
++      const idle = proof.idle();
++      expect(proof.contentBodies()).toHaveLength(0);
++      expect(proof.settingsRequests()).toHaveLength(0);
++      proof.release();
++      await Promise.all([start, idle]);
++      expect(proof.contentBodies().at(-1)).toMatchObject({ content: COALESCING_LATEST });
++      expect(proof.settingsRequests()).toHaveLength(1);
++      expect(proof.created.getVisibleReplyState().visibleReplySent).toBe(true);
++      expect(proof.outcomes.every((row) => row.status === "fulfilled")).toBe(true);
++    } finally {
++      await proof.cleanup();
++    }
++  });
++
++  it("joins the held preview before replacing it with controls", async () => {
++    const proof = createCoalescingProof("discard-controls");
++    try {
++      await proof.start();
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_FIRST });
++      await proof.waitHeld();
++      const delivery = proof.deliver({
++        text: "Open the result.",
++        presentation: {
++          blocks: [
++            {
++              type: "buttons",
++              buttons: [
++                { label: "Result", action: { type: "url", url: "https://example.com/result" } },
++              ],
++            },
++          ],
++        },
++      });
++      expect(proof.recorder.finish().some((event) => event.kind === "im.message.delete")).toBe(
++        false,
++      );
++      proof.release();
++      await expect(delivery).resolves.toMatchObject({
++        visibleReplySent: true,
++        content: "Open the result.",
++      });
++      await proof.idle();
++      const events = proof.recorder.finish();
++      const deleted = events.findIndex((event) => event.kind === "im.message.delete");
++      const replacement = events.findLastIndex((event) => event.kind === "im.message.reply");
++      const acceptedPreview = events.findIndex(
++        (event) =>
++          event.kind === "coalescing-http-response" &&
++          JSON.stringify(event.data).includes("/elements/content/content"),
++      );
++      expect(acceptedPreview).toBeGreaterThan(-1);
++      expect(deleted).toBeGreaterThan(acceptedPreview);
++      expect(replacement).toBeGreaterThan(deleted);
++      expect(JSON.stringify(events[replacement])).toContain("https://example.com/result");
++      expect(JSON.stringify(events[replacement])).not.toContain(COALESCING_FIRST);
++      expect(events.filter((event) => event.kind === "im.message.reply")).toHaveLength(2);
++      expect(proof.created.getVisibleReplyState().visibleReplySent).toBe(true);
++    } finally {
++      await proof.cleanup();
++    }
++  });
++
++  it("records a failed preview and settles the successful final", async () => {
++    const proof = createCoalescingProof("preview-error", { fail: "preview" });
++    try {
++      await proof.start();
++      proof.created.replyOptions.onPartialReply?.({ text: COALESCING_FIRST });
++      await proof.waitHeld();
++      const delivery = await proof.deliver({ text: COALESCING_LATEST });
++      const finalization = expectDefined(delivery?.finalization, "deferred Feishu finalization");
++      const idle = proof.idle();
++      proof.release();
++      await idle;
++      await expect(finalization).resolves.toMatchObject({
++        visibleReplySent: true,
++        content: COALESCING_LATEST,
++      });
++      expect(
++        proof.logs.some((line) => line.includes("Update failed:") && line.includes("HTTP 503")),
++      ).toBe(true);
++      expect(proof.outcomes.every((row) => row.status === "fulfilled")).toBe(true);
++    } finally {
++      await proof.cleanup();
++    }
++  });
++
++  it.each(["final", "settings"] as const)(
++    "preserves accepted content when %s finalization fails",
++    async (failure) => {
++      const proof = createCoalescingProof(`${failure}-error`, { fail: failure });
++      try {
++        await proof.start();
++        proof.created.replyOptions.onPartialReply?.({ text: COALESCING_FIRST });
++        await proof.waitHeld();
++        const delivery = await proof.deliver({ text: COALESCING_LATEST });
++        const finalization = expectDefined(delivery?.finalization, "deferred Feishu finalization");
++        const idle = proof.idle();
++        proof.release();
++        const [closeResult, deliveryResult] = await Promise.allSettled([idle, finalization]);
++        expect(closeResult.status).toBe("rejected");
++        expect(deliveryResult.status).toBe("rejected");
++        if (deliveryResult.status !== "rejected") {
++          throw new Error("expected rejected provider finalization");
++        }
++        expect(isChannelPartialDeliveryError(deliveryResult.reason)).toBe(true);
++        if (!isChannelPartialDeliveryError(deliveryResult.reason)) {
++          throw new Error("expected accepted-content error result");
++        }
++        expect(deliveryResult.reason.deliveryResult).toMatchObject({
++          visibleReplySent: true,
++          content: failure === "final" ? COALESCING_FIRST : COALESCING_LATEST,
++          messageIds: ["om-1"],
++        });
++        expect(proof.logs.some((line) => line.includes("HTTP 503"))).toBe(true);
++        expect(proof.created.getVisibleReplyState().visibleReplySent).toBe(true);
++      } finally {
++        await proof.cleanup();
++      }
++    },
++  );
++});

@@ -1,0 +1,116 @@
+diff --git a/src/cli/plugins-control-ui-build.test.ts b/src/cli/plugins-control-ui-build.test.ts
+index 10c11503..6ce7ad1b 100644
+--- a/src/cli/plugins-control-ui-build.test.ts
++++ b/src/cli/plugins-control-ui-build.test.ts
+@@ -4,6 +4,7 @@ import os from "node:os";
+ import path from "node:path";
+ import { pathToFileURL } from "node:url";
+ import { afterEach, describe, expect, it, vi } from "vitest";
++import { withEnvAsync } from "../test-utils/env.js";
+ import {
+   createPluginImportFixture,
+   unresolvedPluginImportCases,
+@@ -75,20 +76,42 @@ describe("native plugin browser builds", () => {
+     ).toEqual(first);
+   });
+ 
+-  it("reuses a Windows build collision only when every asset matches", async () => {
++  it.each(["EEXIST", "ENOTEMPTY", "EPERM"])(
++    "reuses %s only when every asset matches",
++    async (code) => {
++      const project = await fixture();
++      const first = await buildPluginControlUi(project);
++      const collision = Object.assign(new Error("directory already exists"), { code });
++      vi.spyOn(fs, "rename").mockRejectedValue(collision);
++
++      expect(await buildPluginControlUi(project)).toEqual(first);
++      assert.ok(first.styles?.[0]);
++      const stylesheet = path.join(project.rootDir, first.styles[0]);
++      await fs.writeFile(stylesheet, ".tampered {}");
++      await expect(buildPluginControlUi(project)).rejects.toThrow(
++        "immutable Control UI build was modified",
++      );
++      expect(await fs.readFile(stylesheet, "utf8")).toBe(".tampered {}");
++      expect(await fs.readdir(path.join(project.rootDir, "dist/control-ui"))).toEqual([
++        path.basename(path.dirname(first.entry)),
++      ]);
++    },
++  );
++
++  it("preserves the published generation when rename fails for another reason", async () => {
+     const project = await fixture();
+     const first = await buildPluginControlUi(project);
+-    const collision = Object.assign(new Error("directory already exists"), { code: "EPERM" });
+-    vi.spyOn(fs, "rename").mockRejectedValue(collision);
++    await writePluginBuildManifest(project.rootDir, { id: "fixture", controlUi: first });
++    const manifestPath = path.join(project.rootDir, "openclaw.plugin.json");
++    const manifest = await fs.readFile(manifestPath, "utf8");
++    const assetPath = path.join(project.rootDir, first.entry);
++    const asset = await fs.readFile(assetPath);
++    const failure = Object.assign(new Error("disk unavailable"), { code: "EIO" });
++    vi.spyOn(fs, "rename").mockRejectedValue(failure);
+ 
+-    expect(await buildPluginControlUi(project)).toEqual(first);
+-    assert.ok(first.styles?.[0]);
+-    const stylesheet = path.join(project.rootDir, first.styles[0]);
+-    await fs.writeFile(stylesheet, ".tampered {}");
+-    await expect(buildPluginControlUi(project)).rejects.toThrow(
+-      "immutable Control UI build was modified",
+-    );
+-    expect(await fs.readFile(stylesheet, "utf8")).toBe(".tampered {}");
++    await expect(buildPluginControlUi(project)).rejects.toBe(failure);
++    expect(await fs.readFile(manifestPath, "utf8")).toBe(manifest);
++    expect(await fs.readFile(assetPath)).toEqual(asset);
+     expect(await fs.readdir(path.join(project.rootDir, "dist/control-ui"))).toEqual([
+       path.basename(path.dirname(first.entry)),
+     ]);
+@@ -108,6 +131,49 @@ describe("native plugin browser builds", () => {
+     expect(built.truncateUtf16Safe("A😀B", 2)).toBe("A");
+   });
+ 
++  it("bundles SDK source instead of stale dist under NODE_ENV=production", async () => {
++    const project = await fixture();
++    const sdkRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-build-sdk-"));
++    directories.push(sdkRoot);
++    await Promise.all(
++      ["src/plugin-sdk", "dist/plugin-sdk", "extensions"].map((dir) =>
++        fs.mkdir(path.join(sdkRoot, dir), { recursive: true }),
++      ),
++    );
++    await fs.writeFile(
++      path.join(sdkRoot, "package.json"),
++      JSON.stringify({
++        name: "openclaw",
++        type: "module",
++        bin: { openclaw: "openclaw.mjs" },
++        exports: { "./plugin-sdk/control-ui": { default: "./dist/plugin-sdk/control-ui.js" } },
++      }),
++    );
++    await fs.writeFile(
++      path.join(sdkRoot, "src/plugin-sdk/control-ui.ts"),
++      'export const origin = "source";',
++    );
++    await fs.writeFile(
++      path.join(sdkRoot, "dist/plugin-sdk/control-ui.js"),
++      'export const origin = "stale dist";',
++    );
++    await fs.writeFile(
++      path.join(project.rootDir, project.source),
++      'export { origin } from "openclaw/plugin-sdk/control-ui";',
++    );
++    const build = (nodeEnv: string | undefined) =>
++      withEnvAsync({ NODE_ENV: nodeEnv, OPENCLAW_DEV_SOURCE_ROOT: sdkRoot }, () =>
++        buildPluginControlUi(project),
++      );
++
++    const development = await build(undefined);
++    const production = await build("production");
++
++    expect(production).toEqual(development);
++    const built = await import(pathToFileURL(path.join(project.rootDir, production.entry)).href);
++    expect(built.origin).toBe("source");
++  });
++
+   it.each(unresolvedPluginImportCases)(
+     "rejects unresolved $name without publishing a browser build",
+     async (testCase) => {

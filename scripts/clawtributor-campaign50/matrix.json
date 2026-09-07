@@ -1,12 +1,22 @@
 [
   {
-    "id": "plugin-source-build-139075-compare",
-    "directory": "plugin-source-build-139075-compare",
+    "id": "feishu-coalescing-103928-baseline",
+    "directory": "feishu-coalescing-103928-baseline",
+    "runner": "ubuntu-24.04",
+    "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "baseline",
+    "variant": "combined-owner-delayed-response"
+  },
+  {
+    "id": "plugin-source-build-139075-continue",
+    "directory": "plugin-source-build-139075-continue",
     "runner": "ubuntu-24.04",
     "source": "e831b5e425880278fdf5ca11365f503aab60e44f",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "composed-source-and-packaged-builds"
+    "variant": "candidate-only-after-wave52"
   }
 ]

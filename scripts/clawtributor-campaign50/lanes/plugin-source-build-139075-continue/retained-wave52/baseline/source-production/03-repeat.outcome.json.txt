@@ -1,0 +1,9 @@
+{
+  "scenario": "source-production",
+  "stage": "03-repeat",
+  "action": "build",
+  "nodeEnv": "production",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

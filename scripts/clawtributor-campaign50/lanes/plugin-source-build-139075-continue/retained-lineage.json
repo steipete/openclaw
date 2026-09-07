@@ -1,0 +1,531 @@
+{
+  "run": 34147489594,
+  "job": 101822582964,
+  "harness": "fbd558c211a0cc5067113dc86bdc49925fee94a6",
+  "source": "e831b5e425880278fdf5ca11365f503aab60e44f",
+  "wholeRun": "FAILURE",
+  "completed": [
+    "real baseline 4 cases/16 children/30 raw assets",
+    "test-only regression red 1 intended failure at172:24 and13 controls"
+  ],
+  "unperformed": [
+    "candidate build",
+    "candidate and sibling tests",
+    "changed-file gates",
+    "candidate final hashes"
+  ],
+  "files": {
+    "baseline/behavior.json": {
+      "stored": "retained-wave52/baseline/behavior.json.txt",
+      "sha256": "d520f9db3f0e54b97f7053b9dafe179c6786924337657d3134fbbaaebd269823"
+    },
+    "baseline/cleanup.json": {
+      "stored": "retained-wave52/baseline/cleanup.json.txt",
+      "sha256": "bb6ee8b568fdd66c29e74bdfd4ce0292456c9003fbd82d56540f7de1ca88fed3"
+    },
+    "baseline/driver.log": {
+      "stored": "retained-wave52/baseline/driver.log.txt",
+      "sha256": "b9837e5078785e60f4ce9137e050bde72b0d39894ae8bd2bf26b3ab73721592f"
+    },
+    "baseline/packaged-default/01-build.outcome.json": {
+      "stored": "retained-wave52/baseline/packaged-default/01-build.outcome.json.txt",
+      "sha256": "0a2e72fb23c9b89ebe9b969a93870f3e6b4793ae45d77c6119cef7858e22993f"
+    },
+    "baseline/packaged-default/01-build.stderr.log": {
+      "stored": "retained-wave52/baseline/packaged-default/01-build.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-default/01-build.stdout.log": {
+      "stored": "retained-wave52/baseline/packaged-default/01-build.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-default/01-index.css": {
+      "stored": "retained-wave52/baseline/packaged-default/01-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/packaged-default/01-index.js": {
+      "stored": "retained-wave52/baseline/packaged-default/01-index.js.txt",
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    },
+    "baseline/packaged-default/01-manifest.json": {
+      "stored": "retained-wave52/baseline/packaged-default/01-manifest.json.txt",
+      "sha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64"
+    },
+    "baseline/packaged-default/01-snapshot.json": {
+      "stored": "retained-wave52/baseline/packaged-default/01-snapshot.json.txt",
+      "sha256": "60eece53dc4e3c37c0251ac7179de645ac4139e1843df13a890ca71839785c42"
+    },
+    "baseline/packaged-default/02-check.json": {
+      "stored": "retained-wave52/baseline/packaged-default/02-check.json.txt",
+      "sha256": "27abe63a5e5dfa059a768b337d5d2dd7a86b3364693ad32e408a15b578b61306"
+    },
+    "baseline/packaged-default/02-check.outcome.json": {
+      "stored": "retained-wave52/baseline/packaged-default/02-check.outcome.json.txt",
+      "sha256": "51e7c3f50db28d85df64a5e46af4168a01cc6d21e469997b936d53984e4d0d3a"
+    },
+    "baseline/packaged-default/02-check.stderr.log": {
+      "stored": "retained-wave52/baseline/packaged-default/02-check.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-default/02-check.stdout.log": {
+      "stored": "retained-wave52/baseline/packaged-default/02-check.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-default/02-index.css": {
+      "stored": "retained-wave52/baseline/packaged-default/02-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/packaged-default/02-index.js": {
+      "stored": "retained-wave52/baseline/packaged-default/02-index.js.txt",
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    },
+    "baseline/packaged-default/02-manifest.json": {
+      "stored": "retained-wave52/baseline/packaged-default/02-manifest.json.txt",
+      "sha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64"
+    },
+    "baseline/packaged-default/02-snapshot.json": {
+      "stored": "retained-wave52/baseline/packaged-default/02-snapshot.json.txt",
+      "sha256": "60eece53dc4e3c37c0251ac7179de645ac4139e1843df13a890ca71839785c42"
+    },
+    "baseline/packaged-default/03-index.css": {
+      "stored": "retained-wave52/baseline/packaged-default/03-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/packaged-default/03-index.js": {
+      "stored": "retained-wave52/baseline/packaged-default/03-index.js.txt",
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    },
+    "baseline/packaged-default/03-manifest.json": {
+      "stored": "retained-wave52/baseline/packaged-default/03-manifest.json.txt",
+      "sha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64"
+    },
+    "baseline/packaged-default/03-repeat.outcome.json": {
+      "stored": "retained-wave52/baseline/packaged-default/03-repeat.outcome.json.txt",
+      "sha256": "8b4365c75415ee2b57469581baf64f2f824744da76c18a69947fde674a769f89"
+    },
+    "baseline/packaged-default/03-repeat.stderr.log": {
+      "stored": "retained-wave52/baseline/packaged-default/03-repeat.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-default/03-repeat.stdout.log": {
+      "stored": "retained-wave52/baseline/packaged-default/03-repeat.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-default/03-snapshot.json": {
+      "stored": "retained-wave52/baseline/packaged-default/03-snapshot.json.txt",
+      "sha256": "60eece53dc4e3c37c0251ac7179de645ac4139e1843df13a890ca71839785c42"
+    },
+    "baseline/packaged-default/fixture-inputs.json": {
+      "stored": "retained-wave52/baseline/packaged-default/fixture-inputs.json.txt",
+      "sha256": "c7b3216b1c3aacfbbcf65573dd4f6f2bc0de7ce9125bd5730e6d283f49c42f33"
+    },
+    "baseline/packaged-production/01-build.outcome.json": {
+      "stored": "retained-wave52/baseline/packaged-production/01-build.outcome.json.txt",
+      "sha256": "0874e0ca420fd27bff8ee8479260276c3c738faca1baf199f1a5294ac3c5992f"
+    },
+    "baseline/packaged-production/01-build.stderr.log": {
+      "stored": "retained-wave52/baseline/packaged-production/01-build.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-production/01-build.stdout.log": {
+      "stored": "retained-wave52/baseline/packaged-production/01-build.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-production/01-index.css": {
+      "stored": "retained-wave52/baseline/packaged-production/01-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/packaged-production/01-index.js": {
+      "stored": "retained-wave52/baseline/packaged-production/01-index.js.txt",
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    },
+    "baseline/packaged-production/01-manifest.json": {
+      "stored": "retained-wave52/baseline/packaged-production/01-manifest.json.txt",
+      "sha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64"
+    },
+    "baseline/packaged-production/01-snapshot.json": {
+      "stored": "retained-wave52/baseline/packaged-production/01-snapshot.json.txt",
+      "sha256": "60eece53dc4e3c37c0251ac7179de645ac4139e1843df13a890ca71839785c42"
+    },
+    "baseline/packaged-production/02-check.json": {
+      "stored": "retained-wave52/baseline/packaged-production/02-check.json.txt",
+      "sha256": "7182d4626e79107694be038a26cd61a45dd7683991c622d1c7d672b8d43b41a9"
+    },
+    "baseline/packaged-production/02-check.outcome.json": {
+      "stored": "retained-wave52/baseline/packaged-production/02-check.outcome.json.txt",
+      "sha256": "bb45c5f0680b86b274275f6c45f57a6aa52bf2d21e9e987bd41c3cf6cb499679"
+    },
+    "baseline/packaged-production/02-check.stderr.log": {
+      "stored": "retained-wave52/baseline/packaged-production/02-check.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-production/02-check.stdout.log": {
+      "stored": "retained-wave52/baseline/packaged-production/02-check.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-production/02-index.css": {
+      "stored": "retained-wave52/baseline/packaged-production/02-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/packaged-production/02-index.js": {
+      "stored": "retained-wave52/baseline/packaged-production/02-index.js.txt",
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    },
+    "baseline/packaged-production/02-manifest.json": {
+      "stored": "retained-wave52/baseline/packaged-production/02-manifest.json.txt",
+      "sha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64"
+    },
+    "baseline/packaged-production/02-snapshot.json": {
+      "stored": "retained-wave52/baseline/packaged-production/02-snapshot.json.txt",
+      "sha256": "60eece53dc4e3c37c0251ac7179de645ac4139e1843df13a890ca71839785c42"
+    },
+    "baseline/packaged-production/03-index.css": {
+      "stored": "retained-wave52/baseline/packaged-production/03-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/packaged-production/03-index.js": {
+      "stored": "retained-wave52/baseline/packaged-production/03-index.js.txt",
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    },
+    "baseline/packaged-production/03-manifest.json": {
+      "stored": "retained-wave52/baseline/packaged-production/03-manifest.json.txt",
+      "sha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64"
+    },
+    "baseline/packaged-production/03-repeat.outcome.json": {
+      "stored": "retained-wave52/baseline/packaged-production/03-repeat.outcome.json.txt",
+      "sha256": "211b5cbf95492f8dc20018b6d5ae5273051a8a8f9b4a83f3815c403d802f717f"
+    },
+    "baseline/packaged-production/03-repeat.stderr.log": {
+      "stored": "retained-wave52/baseline/packaged-production/03-repeat.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-production/03-repeat.stdout.log": {
+      "stored": "retained-wave52/baseline/packaged-production/03-repeat.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/packaged-production/03-snapshot.json": {
+      "stored": "retained-wave52/baseline/packaged-production/03-snapshot.json.txt",
+      "sha256": "60eece53dc4e3c37c0251ac7179de645ac4139e1843df13a890ca71839785c42"
+    },
+    "baseline/packaged-production/fixture-inputs.json": {
+      "stored": "retained-wave52/baseline/packaged-production/fixture-inputs.json.txt",
+      "sha256": "c7b3216b1c3aacfbbcf65573dd4f6f2bc0de7ce9125bd5730e6d283f49c42f33"
+    },
+    "baseline/source-after.log": {
+      "stored": "retained-wave52/baseline/source-after.log.txt",
+      "sha256": "66800bf21d3a6a6fe02f580cd0543fa941dbb7ca26896851d651fb9f8a37ac27"
+    },
+    "baseline/source-before.log": {
+      "stored": "retained-wave52/baseline/source-before.log.txt",
+      "sha256": "66800bf21d3a6a6fe02f580cd0543fa941dbb7ca26896851d651fb9f8a37ac27"
+    },
+    "baseline/source-default/01-build.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/01-build.outcome.json.txt",
+      "sha256": "e07986a8497e7ef4866afc3136a7d7cfde1aae7c433bcd9ee722fde428f6dd16"
+    },
+    "baseline/source-default/01-build.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/01-build.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/01-build.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/01-build.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/01-index.css": {
+      "stored": "retained-wave52/baseline/source-default/01-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-default/01-index.js": {
+      "stored": "retained-wave52/baseline/source-default/01-index.js.txt",
+      "sha256": "30de836c0a54901deff943d43f671bc3b09c7e422d020c1a96e61adad4afba33"
+    },
+    "baseline/source-default/01-manifest.json": {
+      "stored": "retained-wave52/baseline/source-default/01-manifest.json.txt",
+      "sha256": "1d81b38637799ef84d38bbd5cdfa4f59e9e796009b9239aa280f6a03c0fa77a2"
+    },
+    "baseline/source-default/01-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-default/01-snapshot.json.txt",
+      "sha256": "75c583a157604d824126aee734581c484cd3fc613d94b940fecfd2919316a888"
+    },
+    "baseline/source-default/02-check.json": {
+      "stored": "retained-wave52/baseline/source-default/02-check.json.txt",
+      "sha256": "453ee60fc77fe43cf3dac9c4f6792e787e4c8ba5146fae59d974b0f9fdf6e941"
+    },
+    "baseline/source-default/02-check.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/02-check.outcome.json.txt",
+      "sha256": "f3ad4cc745ace503b03f598f61af3b5a50aa9ed9d60f4b75dff3bd7f95ea6cc4"
+    },
+    "baseline/source-default/02-check.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/02-check.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/02-check.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/02-check.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/02-index.css": {
+      "stored": "retained-wave52/baseline/source-default/02-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-default/02-index.js": {
+      "stored": "retained-wave52/baseline/source-default/02-index.js.txt",
+      "sha256": "30de836c0a54901deff943d43f671bc3b09c7e422d020c1a96e61adad4afba33"
+    },
+    "baseline/source-default/02-manifest.json": {
+      "stored": "retained-wave52/baseline/source-default/02-manifest.json.txt",
+      "sha256": "1d81b38637799ef84d38bbd5cdfa4f59e9e796009b9239aa280f6a03c0fa77a2"
+    },
+    "baseline/source-default/02-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-default/02-snapshot.json.txt",
+      "sha256": "75c583a157604d824126aee734581c484cd3fc613d94b940fecfd2919316a888"
+    },
+    "baseline/source-default/03-index.css": {
+      "stored": "retained-wave52/baseline/source-default/03-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-default/03-index.js": {
+      "stored": "retained-wave52/baseline/source-default/03-index.js.txt",
+      "sha256": "30de836c0a54901deff943d43f671bc3b09c7e422d020c1a96e61adad4afba33"
+    },
+    "baseline/source-default/03-manifest.json": {
+      "stored": "retained-wave52/baseline/source-default/03-manifest.json.txt",
+      "sha256": "1d81b38637799ef84d38bbd5cdfa4f59e9e796009b9239aa280f6a03c0fa77a2"
+    },
+    "baseline/source-default/03-repeat.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/03-repeat.outcome.json.txt",
+      "sha256": "6caf27ce3b5991c55e14e722815398bbc5f35ba7acfd5ea8a79b4a6082a514be"
+    },
+    "baseline/source-default/03-repeat.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/03-repeat.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/03-repeat.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/03-repeat.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/03-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-default/03-snapshot.json.txt",
+      "sha256": "75c583a157604d824126aee734581c484cd3fc613d94b940fecfd2919316a888"
+    },
+    "baseline/source-default/04-index.css": {
+      "stored": "retained-wave52/baseline/source-default/04-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-default/04-index.js": {
+      "stored": "retained-wave52/baseline/source-default/04-index.js.txt",
+      "sha256": "30de836c0a54901deff943d43f671bc3b09c7e422d020c1a96e61adad4afba33"
+    },
+    "baseline/source-default/04-manifest.json": {
+      "stored": "retained-wave52/baseline/source-default/04-manifest.json.txt",
+      "sha256": "1d81b38637799ef84d38bbd5cdfa4f59e9e796009b9239aa280f6a03c0fa77a2"
+    },
+    "baseline/source-default/04-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-default/04-snapshot.json.txt",
+      "sha256": "75c583a157604d824126aee734581c484cd3fc613d94b940fecfd2919316a888"
+    },
+    "baseline/source-default/04-stale-check.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/04-stale-check.outcome.json.txt",
+      "sha256": "4f05efde5f357a868b63947977dd0f7427143c5fb8171d876f55b6d90f16fe40"
+    },
+    "baseline/source-default/04-stale-check.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/04-stale-check.stderr.log.txt",
+      "sha256": "a70a4a77c86c7b5b42e200570e639df41ad1eb7e36d7c2c84b885db170182b37"
+    },
+    "baseline/source-default/04-stale-check.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/04-stale-check.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/05-changed-build.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/05-changed-build.outcome.json.txt",
+      "sha256": "673da2fe84a2f845b1adf6125881faef48aa47daf305640e5b2d153b581f36f8"
+    },
+    "baseline/source-default/05-changed-build.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/05-changed-build.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/05-changed-build.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/05-changed-build.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/05-index.css": {
+      "stored": "retained-wave52/baseline/source-default/05-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-default/05-index.js": {
+      "stored": "retained-wave52/baseline/source-default/05-index.js.txt",
+      "sha256": "e3a38b6e3021d721ad14421bf219970a2c46722caf3ecaec91e28cca80f5e323"
+    },
+    "baseline/source-default/05-manifest.json": {
+      "stored": "retained-wave52/baseline/source-default/05-manifest.json.txt",
+      "sha256": "2eb7c028748698e7a6502a67d92c78debef475b11782a9dc224864b645b66783"
+    },
+    "baseline/source-default/05-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-default/05-snapshot.json.txt",
+      "sha256": "191b3192194f4cb724d809ee1c5da4e7a0578274b0c1fba08354d79dc82ac19d"
+    },
+    "baseline/source-default/06-changed-check.json": {
+      "stored": "retained-wave52/baseline/source-default/06-changed-check.json.txt",
+      "sha256": "672cf7f9d7b58acf5fabb4e84f48454382620987e1080b63bad47424871cedff"
+    },
+    "baseline/source-default/06-changed-check.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/06-changed-check.outcome.json.txt",
+      "sha256": "e6c7955552fde20b5e33c2cc4fb4884bee1b1b9bbc0bc6782aaf7b007ddd2c49"
+    },
+    "baseline/source-default/06-changed-check.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/06-changed-check.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/06-changed-check.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/06-changed-check.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/07-failed-build.outcome.json": {
+      "stored": "retained-wave52/baseline/source-default/07-failed-build.outcome.json.txt",
+      "sha256": "e38910f2b4ea0982d01c9a815b341c3b86e9f7536d2141cae32db558473b475c"
+    },
+    "baseline/source-default/07-failed-build.stderr.log": {
+      "stored": "retained-wave52/baseline/source-default/07-failed-build.stderr.log.txt",
+      "sha256": "2fe2b1e267dd70ddb136ac0ab08d5416a89687e6459d75f8729d9d3652dd48da"
+    },
+    "baseline/source-default/07-failed-build.stdout.log": {
+      "stored": "retained-wave52/baseline/source-default/07-failed-build.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-default/07-index.css": {
+      "stored": "retained-wave52/baseline/source-default/07-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-default/07-index.js": {
+      "stored": "retained-wave52/baseline/source-default/07-index.js.txt",
+      "sha256": "e3a38b6e3021d721ad14421bf219970a2c46722caf3ecaec91e28cca80f5e323"
+    },
+    "baseline/source-default/07-manifest.json": {
+      "stored": "retained-wave52/baseline/source-default/07-manifest.json.txt",
+      "sha256": "2eb7c028748698e7a6502a67d92c78debef475b11782a9dc224864b645b66783"
+    },
+    "baseline/source-default/07-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-default/07-snapshot.json.txt",
+      "sha256": "191b3192194f4cb724d809ee1c5da4e7a0578274b0c1fba08354d79dc82ac19d"
+    },
+    "baseline/source-default/fixture-inputs.json": {
+      "stored": "retained-wave52/baseline/source-default/fixture-inputs.json.txt",
+      "sha256": "69b299f504b723f652dca89d9321e6d59be259f50e04cc60d0022d40a423fce9"
+    },
+    "baseline/source-production/01-build.outcome.json": {
+      "stored": "retained-wave52/baseline/source-production/01-build.outcome.json.txt",
+      "sha256": "cec6addae20140c53da80bda1be2e272a21ef6f5d078b49198ae1fe27ec6b019"
+    },
+    "baseline/source-production/01-build.stderr.log": {
+      "stored": "retained-wave52/baseline/source-production/01-build.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-production/01-build.stdout.log": {
+      "stored": "retained-wave52/baseline/source-production/01-build.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-production/01-index.css": {
+      "stored": "retained-wave52/baseline/source-production/01-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-production/01-index.js": {
+      "stored": "retained-wave52/baseline/source-production/01-index.js.txt",
+      "sha256": "b214488ae560ecc9a2311f88d8eeeaf99a6e356b06fae7083ea907a4d033b5ed"
+    },
+    "baseline/source-production/01-manifest.json": {
+      "stored": "retained-wave52/baseline/source-production/01-manifest.json.txt",
+      "sha256": "96ce678eed8172c63341b0783f1bf79c0cbaba02e906264b8dcb01a9c7dfb937"
+    },
+    "baseline/source-production/01-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-production/01-snapshot.json.txt",
+      "sha256": "063856b94eaa6b8832a024dba8b521463e635f91e6cddbc8ae74cd8ce3c39d03"
+    },
+    "baseline/source-production/02-check.json": {
+      "stored": "retained-wave52/baseline/source-production/02-check.json.txt",
+      "sha256": "ad4f53df06c5e0669df21b9f8899738e348085fbaab8714d2636e66cb1465751"
+    },
+    "baseline/source-production/02-check.outcome.json": {
+      "stored": "retained-wave52/baseline/source-production/02-check.outcome.json.txt",
+      "sha256": "7e0297c8800e1e4b62b27e46fb6a09fda6b60e02892c126eb0d4bd0c8ef56eb0"
+    },
+    "baseline/source-production/02-check.stderr.log": {
+      "stored": "retained-wave52/baseline/source-production/02-check.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-production/02-check.stdout.log": {
+      "stored": "retained-wave52/baseline/source-production/02-check.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-production/02-index.css": {
+      "stored": "retained-wave52/baseline/source-production/02-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-production/02-index.js": {
+      "stored": "retained-wave52/baseline/source-production/02-index.js.txt",
+      "sha256": "b214488ae560ecc9a2311f88d8eeeaf99a6e356b06fae7083ea907a4d033b5ed"
+    },
+    "baseline/source-production/02-manifest.json": {
+      "stored": "retained-wave52/baseline/source-production/02-manifest.json.txt",
+      "sha256": "96ce678eed8172c63341b0783f1bf79c0cbaba02e906264b8dcb01a9c7dfb937"
+    },
+    "baseline/source-production/02-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-production/02-snapshot.json.txt",
+      "sha256": "063856b94eaa6b8832a024dba8b521463e635f91e6cddbc8ae74cd8ce3c39d03"
+    },
+    "baseline/source-production/03-index.css": {
+      "stored": "retained-wave52/baseline/source-production/03-index.css.txt",
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "baseline/source-production/03-index.js": {
+      "stored": "retained-wave52/baseline/source-production/03-index.js.txt",
+      "sha256": "b214488ae560ecc9a2311f88d8eeeaf99a6e356b06fae7083ea907a4d033b5ed"
+    },
+    "baseline/source-production/03-manifest.json": {
+      "stored": "retained-wave52/baseline/source-production/03-manifest.json.txt",
+      "sha256": "96ce678eed8172c63341b0783f1bf79c0cbaba02e906264b8dcb01a9c7dfb937"
+    },
+    "baseline/source-production/03-repeat.outcome.json": {
+      "stored": "retained-wave52/baseline/source-production/03-repeat.outcome.json.txt",
+      "sha256": "47acba7f266f7ab1fa0608ce9a56993861da592186c3a00da960b3793b0d79fc"
+    },
+    "baseline/source-production/03-repeat.stderr.log": {
+      "stored": "retained-wave52/baseline/source-production/03-repeat.stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-production/03-repeat.stdout.log": {
+      "stored": "retained-wave52/baseline/source-production/03-repeat.stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/source-production/03-snapshot.json": {
+      "stored": "retained-wave52/baseline/source-production/03-snapshot.json.txt",
+      "sha256": "063856b94eaa6b8832a024dba8b521463e635f91e6cddbc8ae74cd8ce3c39d03"
+    },
+    "baseline/source-production/fixture-inputs.json": {
+      "stored": "retained-wave52/baseline/source-production/fixture-inputs.json.txt",
+      "sha256": "69b299f504b723f652dca89d9321e6d59be259f50e04cc60d0022d40a423fce9"
+    },
+    "baseline/test-validation.log": {
+      "stored": "retained-wave52/baseline/test-validation.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/tests.json": {
+      "stored": "retained-wave52/baseline/tests.json.txt",
+      "sha256": "1078bb2c755daadb336334f3c4b43387843fdb27ba971df17b8febc3ede54e23"
+    },
+    "baseline/tests.log": {
+      "stored": "retained-wave52/baseline/tests.log.txt",
+      "sha256": "343cc5637c9b9f8b4274a81408aa4bdca232b7c2b917698bdcb7f95949266a59"
+    },
+    "source.json": {
+      "stored": "retained-wave52/source.json.txt",
+      "sha256": "ef632b159546f201925c13d54bc241148a7d7678cf0fca09719096111f61c402"
+    },
+    "exit-code.txt": {
+      "stored": "retained-wave52/exit-code.txt.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "final-working-tree.patch": {
+      "stored": "retained-wave52/final-working-tree.patch.txt",
+      "sha256": "ea5ea39b1d27b7ad18c436d8ee765eac556c6f5c3eb0b49a7003b84ed415d50d"
+    }
+  }
+}

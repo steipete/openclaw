@@ -1,0 +1,22 @@
+{
+  "declaration": {
+    "entry": "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.js",
+    "styles": [
+      "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.css"
+    ]
+  },
+  "manifestSha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64",
+  "files": {
+    "index.css": {
+      "bytes": 26,
+      "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+    },
+    "index.js": {
+      "bytes": 135,
+      "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+    }
+  },
+  "generations": [
+    "69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da"
+  ]
+}

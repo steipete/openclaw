@@ -1,0 +1,9 @@
+{
+  "scenario": "source-default",
+  "stage": "04-stale-check",
+  "action": "check",
+  "nodeEnv": null,
+  "status": 1,
+  "signal": null,
+  "error": null
+}

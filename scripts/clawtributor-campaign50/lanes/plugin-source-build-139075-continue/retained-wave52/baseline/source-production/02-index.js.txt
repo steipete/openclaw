@@ -1,0 +1,1 @@
+var o="stale-sdk-v1";var e="stale-workspace-v1";var l="plugin-v1";export{l as pluginMarker,o as sdkMarker,e as workspaceMarker};

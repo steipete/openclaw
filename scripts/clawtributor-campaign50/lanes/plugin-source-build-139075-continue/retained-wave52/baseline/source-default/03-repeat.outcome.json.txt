@@ -1,0 +1,9 @@
+{
+  "scenario": "source-default",
+  "stage": "03-repeat",
+  "action": "build",
+  "nodeEnv": null,
+  "status": 0,
+  "signal": null,
+  "error": null
+}

@@ -1,0 +1,35 @@
+diff --git a/src/cli/plugins-control-ui-build.ts b/src/cli/plugins-control-ui-build.ts
+index 023e294d3f2..ebe43ba07a6 100644
+--- a/src/cli/plugins-control-ui-build.ts
++++ b/src/cli/plugins-control-ui-build.ts
+@@ -1,7 +1,7 @@
+ import { createHash, randomUUID } from "node:crypto";
+ import fs from "node:fs/promises";
+ import path from "node:path";
+-import { isRecord } from "@openclaw/normalization-core/record-coerce";
++import { hasErrnoCode } from "../infra/errno.js";
+ import {
+   CONTROL_UI_PLUGIN_MAX_ASSET_BYTES,
+   CONTROL_UI_PLUGIN_MAX_BUILD_BYTES,
+@@ -47,7 +47,8 @@ export async function buildPluginControlUi(params: {
+     tsconfigRaw: {
+       compilerOptions: { experimentalDecorators: true, useDefineForClassFields: false },
+     },
+-    alias: buildPluginLoaderAliasMap(entry, process.argv[1], import.meta.url),
++    // Browser artifacts must embed checked-out source, not a prior build's dist.
++    alias: buildPluginLoaderAliasMap(entry, process.argv[1], import.meta.url, "src"),
+   });
+   if (
+     files.some((file) => file.contents.length > CONTROL_UI_PLUGIN_MAX_ASSET_BYTES) ||
+@@ -102,10 +103,7 @@ export async function buildPluginControlUi(params: {
+       await fs.rename(staging, outputDir);
+     } catch (error) {
+       // Windows reports an existing destination directory as EPERM; reuse still requires matching bytes.
+-      if (
+-        !isRecord(error) ||
+-        (error.code !== "EEXIST" && error.code !== "ENOTEMPTY" && error.code !== "EPERM")
+-      ) {
++      if (!["EEXIST", "ENOTEMPTY", "EPERM"].some((code) => hasErrnoCode(error, code))) {
+         throw error;
+       }
+       for (const file of files) {

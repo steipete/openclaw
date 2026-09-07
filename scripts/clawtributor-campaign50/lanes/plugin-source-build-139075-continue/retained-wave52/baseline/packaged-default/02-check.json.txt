@@ -1,0 +1,15 @@
+{
+  "nodeEnv": null,
+  "compiler": "0.28.2",
+  "declaration": {
+    "entry": "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.js",
+    "styles": [
+      "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.css"
+    ]
+  },
+  "exports": {
+    "sdkMarker": "packaged-sdk-v1",
+    "workspaceMarker": "packaged-workspace-v1",
+    "pluginMarker": "plugin-v1"
+  }
+}

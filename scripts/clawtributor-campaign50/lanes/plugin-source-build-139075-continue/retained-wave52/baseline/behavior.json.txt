@@ -1,0 +1,289 @@
+{
+  "sourceSha": "e831b5e425880278fdf5ca11365f503aab60e44f",
+  "mode": "baseline",
+  "outcome": "confirmed-stale-dist-build",
+  "cases": [
+    {
+      "id": "source-default",
+      "nodeEnv": null,
+      "exports": {
+        "sdkMarker": "source-sdk-v2",
+        "workspaceMarker": "source-workspace-v2",
+        "pluginMarker": "plugin-v1"
+      },
+      "initial": {
+        "declaration": {
+          "entry": "dist/control-ui/cdcc7cbabc2aa9d3181f9d3e81a3aa6270a82a63e0e8fadae6faa1822d64f24f/index.js",
+          "styles": [
+            "dist/control-ui/cdcc7cbabc2aa9d3181f9d3e81a3aa6270a82a63e0e8fadae6faa1822d64f24f/index.css"
+          ]
+        },
+        "manifestSha256": "1d81b38637799ef84d38bbd5cdfa4f59e9e796009b9239aa280f6a03c0fa77a2",
+        "files": {
+          "index.css": {
+            "bytes": 26,
+            "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+          },
+          "index.js": {
+            "bytes": 131,
+            "sha256": "30de836c0a54901deff943d43f671bc3b09c7e422d020c1a96e61adad4afba33"
+          }
+        },
+        "generations": [
+          "cdcc7cbabc2aa9d3181f9d3e81a3aa6270a82a63e0e8fadae6faa1822d64f24f"
+        ]
+      },
+      "observedDefect": false
+    },
+    {
+      "id": "source-production",
+      "nodeEnv": "production",
+      "exports": {
+        "sdkMarker": "stale-sdk-v1",
+        "workspaceMarker": "stale-workspace-v1",
+        "pluginMarker": "plugin-v1"
+      },
+      "initial": {
+        "declaration": {
+          "entry": "dist/control-ui/8545fcb9fe657212ae5f456164f5f6d3510675d683bf862185417143840e7c0a/index.js",
+          "styles": [
+            "dist/control-ui/8545fcb9fe657212ae5f456164f5f6d3510675d683bf862185417143840e7c0a/index.css"
+          ]
+        },
+        "manifestSha256": "96ce678eed8172c63341b0783f1bf79c0cbaba02e906264b8dcb01a9c7dfb937",
+        "files": {
+          "index.css": {
+            "bytes": 26,
+            "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+          },
+          "index.js": {
+            "bytes": 129,
+            "sha256": "b214488ae560ecc9a2311f88d8eeeaf99a6e356b06fae7083ea907a4d033b5ed"
+          }
+        },
+        "generations": [
+          "8545fcb9fe657212ae5f456164f5f6d3510675d683bf862185417143840e7c0a"
+        ]
+      },
+      "observedDefect": true
+    },
+    {
+      "id": "packaged-default",
+      "nodeEnv": null,
+      "exports": {
+        "sdkMarker": "packaged-sdk-v1",
+        "workspaceMarker": "packaged-workspace-v1",
+        "pluginMarker": "plugin-v1"
+      },
+      "initial": {
+        "declaration": {
+          "entry": "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.js",
+          "styles": [
+            "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.css"
+          ]
+        },
+        "manifestSha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64",
+        "files": {
+          "index.css": {
+            "bytes": 26,
+            "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+          },
+          "index.js": {
+            "bytes": 135,
+            "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+          }
+        },
+        "generations": [
+          "69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da"
+        ]
+      },
+      "observedDefect": false
+    },
+    {
+      "id": "packaged-production",
+      "nodeEnv": "production",
+      "exports": {
+        "sdkMarker": "packaged-sdk-v1",
+        "workspaceMarker": "packaged-workspace-v1",
+        "pluginMarker": "plugin-v1"
+      },
+      "initial": {
+        "declaration": {
+          "entry": "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.js",
+          "styles": [
+            "dist/control-ui/69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da/index.css"
+          ]
+        },
+        "manifestSha256": "aebf50d9b9fc2571852bd30498e986005f451cc0ea61a66e2c435af9b92cbc64",
+        "files": {
+          "index.css": {
+            "bytes": 26,
+            "sha256": "55b09dad8c9ac88f88133f88714e5c952581b78554a892838bf3f7b909ba862c"
+          },
+          "index.js": {
+            "bytes": 135,
+            "sha256": "85ed87dae5ac82b2689d3f6740b3c26b325d1a95b3c3344ad67b7666937b278a"
+          }
+        },
+        "generations": [
+          "69638325be9575d59f5a04c68df45141c5b2b52e7fc49ebfdede4443081be9da"
+        ]
+      },
+      "observedDefect": false
+    }
+  ],
+  "invocations": [
+    {
+      "scenario": "source-default",
+      "stage": "01-build",
+      "action": "build",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-default",
+      "stage": "02-check",
+      "action": "check",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-default",
+      "stage": "03-repeat",
+      "action": "build",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-default",
+      "stage": "04-stale-check",
+      "action": "check",
+      "nodeEnv": null,
+      "status": 1,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-default",
+      "stage": "05-changed-build",
+      "action": "build",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-default",
+      "stage": "06-changed-check",
+      "action": "check",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-default",
+      "stage": "07-failed-build",
+      "action": "build",
+      "nodeEnv": null,
+      "status": 1,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-production",
+      "stage": "01-build",
+      "action": "build",
+      "nodeEnv": "production",
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-production",
+      "stage": "02-check",
+      "action": "check",
+      "nodeEnv": "production",
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "source-production",
+      "stage": "03-repeat",
+      "action": "build",
+      "nodeEnv": "production",
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "packaged-default",
+      "stage": "01-build",
+      "action": "build",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "packaged-default",
+      "stage": "02-check",
+      "action": "check",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "packaged-default",
+      "stage": "03-repeat",
+      "action": "build",
+      "nodeEnv": null,
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "packaged-production",
+      "stage": "01-build",
+      "action": "build",
+      "nodeEnv": "production",
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "packaged-production",
+      "stage": "02-check",
+      "action": "check",
+      "nodeEnv": "production",
+      "status": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "scenario": "packaged-production",
+      "stage": "03-repeat",
+      "action": "build",
+      "nodeEnv": "production",
+      "status": 0,
+      "signal": null,
+      "error": null
+    }
+  ],
+  "controls": {
+    "checkReadOnly": true,
+    "repeatStable": true,
+    "oldGenerationPreserved": true,
+    "staleCheckRejected": true,
+    "compileFailurePreservedManifest": true,
+    "packagedFallbackPreserved": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "synthetic-browser-build",
+  "controlUi": {
+    "entry": "dist/control-ui/3376ecf36786f34c25ff03582b52d5d777c85fc294a8ececbd649bfcc440df1b/index.js",
+    "styles": [
+      "dist/control-ui/3376ecf36786f34c25ff03582b52d5d777c85fc294a8ececbd649bfcc440df1b/index.css"
+    ]
+  }
+}

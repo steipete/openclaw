@@ -1,0 +1,1 @@
+var o="packaged-sdk-v1";var e="packaged-workspace-v1";var d="plugin-v1";export{d as pluginMarker,o as sdkMarker,e as workspaceMarker};

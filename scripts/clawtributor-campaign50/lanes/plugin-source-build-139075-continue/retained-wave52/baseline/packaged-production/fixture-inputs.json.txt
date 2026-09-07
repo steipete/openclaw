@@ -1,0 +1,34 @@
+{
+  "kind": "packaged",
+  "sourceExists": false,
+  "files": {
+    "host/package.json": {
+      "sha256": "f2bfbbd02769d6e419f55d4b92a03766958fc58e3a4493b124d2ae1fbe2b0e06",
+      "text": "{\"name\":\"openclaw\",\"version\":\"2026.9.2\",\"type\":\"module\",\"bin\":{\"openclaw\":\"openclaw.mjs\"},\"exports\":{\"./plugin-sdk/control-ui\":{\"default\":\"./dist/plugin-sdk/control-ui.js\"}}}"
+    },
+    "host/dist/plugin-sdk/control-ui.js": {
+      "sha256": "ff3e993a5e45b53b31f4671afa480d9880959c86b1d6a6d13c0a1b1e3558b297",
+      "text": "export const sdkMarker = \"packaged-sdk-v1\";\n"
+    },
+    "host/packages/gateway-protocol/dist/index.mjs": {
+      "sha256": "0ae48707a736862b85aa6bb5c686450f995ba7c23f672c9888d21756ac22b207",
+      "text": "export const workspaceMarker = \"packaged-workspace-v1\";\n"
+    },
+    "host/plugins/proof/package.json": {
+      "sha256": "d332ba099927fab8e3ff720287363f500208260e6a386dc02bfed25daa14f7d4",
+      "text": "{\"name\":\"synthetic-browser-build\",\"version\":\"1.0.0\",\"type\":\"module\",\"openclaw\":{\"controlUi\":\"index.ts\"},\"devDependencies\":{\"esbuild\":\"0.28.2\"}}"
+    },
+    "host/plugins/proof/openclaw.plugin.json": {
+      "sha256": "adba1115a3044256aedfab94e9136b3ad7a7f391ff7934f6ac8620843b7fa6c3",
+      "text": "{\"id\":\"synthetic-browser-build\"}\n"
+    },
+    "host/plugins/proof/index.ts": {
+      "sha256": "11d48aea377203c7a2a8d59a0a2e4ad7c8643b87a5c2fa1b8aa1c079a96f14e7",
+      "text": "import \"./style.css\";\nexport { sdkMarker } from \"openclaw/plugin-sdk/control-ui\";\nexport { workspaceMarker } from \"@openclaw/gateway-protocol\";\nexport const pluginMarker = \"plugin-v1\";\n"
+    },
+    "host/plugins/proof/style.css": {
+      "sha256": "700e99281d136e073a41353429ff143754529370cc36867e4c11bb8fd136bf1e",
+      "text": ".proof { color: var(--text); }\n"
+    }
+  }
+}

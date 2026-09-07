@@ -1,0 +1,9 @@
+{
+  "scenario": "packaged-production",
+  "stage": "02-check",
+  "action": "check",
+  "nodeEnv": "production",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

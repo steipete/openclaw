@@ -1,0 +1,9 @@
+/home/runner/work/openclaw/openclaw/target/src/cli/plugins-control-ui-build.ts:87
+        throw new Error("Control UI build is missing or stale. Run openclaw plugins build.");
+              ^
+
+Error: Control UI build is missing or stale. Run openclaw plugins build.
+    at buildPluginControlUi (/home/runner/work/openclaw/openclaw/target/src/cli/plugins-control-ui-build.ts:87:15)
+    at async <anonymous> (/home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/plugin-source-build-139075-compare/check-artifact.mjs:14:21)
+
+Node.js v24.20.0

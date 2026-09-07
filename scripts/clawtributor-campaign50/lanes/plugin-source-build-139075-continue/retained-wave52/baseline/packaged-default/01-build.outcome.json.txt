@@ -1,0 +1,9 @@
+{
+  "scenario": "packaged-default",
+  "stage": "01-build",
+  "action": "build",
+  "nodeEnv": null,
+  "status": 0,
+  "signal": null,
+  "error": null
+}

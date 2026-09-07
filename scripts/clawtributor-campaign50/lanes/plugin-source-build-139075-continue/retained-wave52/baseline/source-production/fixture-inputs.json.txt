@@ -1,0 +1,42 @@
+{
+  "kind": "source",
+  "sourceExists": true,
+  "files": {
+    "host/package.json": {
+      "sha256": "f2bfbbd02769d6e419f55d4b92a03766958fc58e3a4493b124d2ae1fbe2b0e06",
+      "text": "{\"name\":\"openclaw\",\"version\":\"2026.9.2\",\"type\":\"module\",\"bin\":{\"openclaw\":\"openclaw.mjs\"},\"exports\":{\"./plugin-sdk/control-ui\":{\"default\":\"./dist/plugin-sdk/control-ui.js\"}}}"
+    },
+    "host/dist/plugin-sdk/control-ui.js": {
+      "sha256": "6982fdb9f5760ab80c25d784b6b0542a5a78d3c170e94859430a90e1f7f2a543",
+      "text": "export const sdkMarker = \"stale-sdk-v1\";\n"
+    },
+    "host/packages/gateway-protocol/dist/index.mjs": {
+      "sha256": "7e3abe053c6217623512a23ea933a2f0e5aeb450792ae4765d585b2ee62d89f7",
+      "text": "export const workspaceMarker = \"stale-workspace-v1\";\n"
+    },
+    "host/plugins/proof/package.json": {
+      "sha256": "d332ba099927fab8e3ff720287363f500208260e6a386dc02bfed25daa14f7d4",
+      "text": "{\"name\":\"synthetic-browser-build\",\"version\":\"1.0.0\",\"type\":\"module\",\"openclaw\":{\"controlUi\":\"index.ts\"},\"devDependencies\":{\"esbuild\":\"0.28.2\"}}"
+    },
+    "host/plugins/proof/openclaw.plugin.json": {
+      "sha256": "adba1115a3044256aedfab94e9136b3ad7a7f391ff7934f6ac8620843b7fa6c3",
+      "text": "{\"id\":\"synthetic-browser-build\"}\n"
+    },
+    "host/plugins/proof/index.ts": {
+      "sha256": "11d48aea377203c7a2a8d59a0a2e4ad7c8643b87a5c2fa1b8aa1c079a96f14e7",
+      "text": "import \"./style.css\";\nexport { sdkMarker } from \"openclaw/plugin-sdk/control-ui\";\nexport { workspaceMarker } from \"@openclaw/gateway-protocol\";\nexport const pluginMarker = \"plugin-v1\";\n"
+    },
+    "host/plugins/proof/style.css": {
+      "sha256": "700e99281d136e073a41353429ff143754529370cc36867e4c11bb8fd136bf1e",
+      "text": ".proof { color: var(--text); }\n"
+    },
+    "host/src/plugin-sdk/control-ui.ts": {
+      "sha256": "2c69e1b519509f579824aceef927a947a23bdf2cc21cbe9d93136d1cd9cf0b65",
+      "text": "export const sdkMarker = \"source-sdk-v2\";\n"
+    },
+    "host/packages/gateway-protocol/src/index.ts": {
+      "sha256": "849081b9b716fff0ee4b42a002afaf02bb7070f48a16244a5773e8320fa52c24",
+      "text": "export const workspaceMarker = \"source-workspace-v2\";\n"
+    }
+  }
+}
