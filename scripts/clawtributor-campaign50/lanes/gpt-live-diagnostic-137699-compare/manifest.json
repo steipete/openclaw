@@ -1,0 +1,11 @@
+{
+  "PROOF.md": "7c0e575e0adb1d20043942d54139a15d559b78e9d0114fbf8296acc5af68b2e7",
+  "baseline.sha256": "13d1c429f7743e067360bf460749009fa3d3fa01153148ea3c07c44ed3ca562a",
+  "candidate.sha256": "c130cffb6d3c0b29776c58f9ce3f3e296429cfcca529c1ce8e8504bfa78fbaab",
+  "driver.mjs": "7f6c2f772b7085a8cde33564be75cd7b1a99f5ca2f863acc9bd0599c171f6791",
+  "production.patch": "64561aff3d0d9912ab7b02f5fe1bec6b2f13a00063961515397e55bb85b770c8",
+  "regression.patch": "d4ab01d1eaec30d2f62a1d61049b579bcdf63a6b2ad21fa268c0274cdcfdc6bd",
+  "row.json": "2332866f44f50c3f78f55f9a8c5a84c9a61540271ed33161c2cb492746ce3b88",
+  "run.sh": "b476a15308f8c82b048d457c5ffe5f8a3e45f7ae3b5ba70a0b34b212a75725dd",
+  "validate-owner.mjs": "adf4e7532b1b254a62deeedc9a777789a2729388e3d3b537b3da7611bc5ddc31"
+}

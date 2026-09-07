@@ -1,0 +1,10 @@
+{
+  "id": "gpt-live-diagnostic-137699-compare",
+  "directory": "gpt-live-diagnostic-137699-compare",
+  "runner": "ubuntu-24.04",
+  "source": "68c589aafad75433640347089f0523ec1ce0c20c",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "compare",
+  "variant": "ordinary-controller-error"
+}

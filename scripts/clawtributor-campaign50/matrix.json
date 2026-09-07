@@ -1,22 +1,22 @@
 [
   {
-    "id": "setup-error-reporting-red",
-    "directory": "setup-error-reporting",
-    "source": "6df7c32f477a458950f01a541119944b5bd85557",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "verifier-command-errors",
+    "id": "gpt-live-diagnostic-137699-compare",
+    "directory": "gpt-live-diagnostic-137699-compare",
     "runner": "ubuntu-24.04",
-    "node": "24.20.0"
+    "source": "68c589aafad75433640347089f0523ec1ce0c20c",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "compare",
+    "variant": "ordinary-controller-error"
   },
   {
-    "id": "telemetry-packaged-red",
-    "directory": "telemetry-packaged-red",
+    "id": "service-label-red",
+    "directory": "service-label-red",
+    "runner": "ubuntu-24.04",
     "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+    "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "installed-parent-help",
-    "runner": "ubuntu-24.04",
-    "node": "24.20.0"
+    "variant": "diagnostic-role-labels"
   }
 ]

@@ -1,0 +1,21 @@
+{
+  "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "red",
+  "productionOverlay": false,
+  "files": {
+    "run.sh": "b940fd3b88f96dc0e83af5cf5e66a8f8103f215cf9ab5c2edae120b22a008f4d",
+    "diagnostic-service.mjs": "9c55c411464b1781bd12f3852a7a1c10b38cd63f7f0494fe87d7b76b5ceb6490",
+    "source-files.sha256": "dc1a0f71f06bceede4c45b5073ff063ffa36543c36cd635c766034ddbd44696c",
+    "BASELINE-DESIGN.md": "c92f47318112da3fdc8d55d2f5bf578400d13b86db24797ff78eeed40c454fe9"
+  },
+  "sourceOwnerCount": 31,
+  "status": "frozen for independent executable review; no dispatch acceptance",
+  "proofScope": "real built CLI projection of observed stopped/unknown service, not packaged install/running service/native target/probe failure",
+  "syntaxOnly": [
+    "node --check diagnostic-service.mjs",
+    "bash -n run.sh"
+  ],
+  "formatter": "trusted oxfmt0.65 artifact-only"
+}
