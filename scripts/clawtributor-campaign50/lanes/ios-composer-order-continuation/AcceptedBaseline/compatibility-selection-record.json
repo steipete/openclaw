@@ -1,0 +1,70 @@
+{
+  "bundleID": "org.openclaw.tests.composercompat",
+  "outcome": "passed",
+  "phase": "complete",
+  "pid": 35624,
+  "scenario": "selection",
+  "snapshots": [
+    {
+      "binding": "abcde",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "mounted",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "5",
+      "text": "abcde"
+    },
+    {
+      "binding": "abcdef",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "caret-after-refresh",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "2",
+      "text": "abcdef"
+    },
+    {
+      "binding": "abXcdef",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "caret-after-insertion",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "3",
+      "text": "abXcdef"
+    },
+    {
+      "binding": "abcdef",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "selection-after-refresh",
+      "selectable": true,
+      "selectedLength": "3",
+      "selectedLocation": "1",
+      "text": "abcdef"
+    },
+    {
+      "binding": "aYef",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "selection-after-replacement",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "2",
+      "text": "aYef"
+    }
+  ],
+  "version": 1
+}

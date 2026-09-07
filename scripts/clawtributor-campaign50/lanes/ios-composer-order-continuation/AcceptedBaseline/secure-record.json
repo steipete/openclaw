@@ -1,0 +1,79 @@
+{
+  "bootstrapError": "none",
+  "foreground": true,
+  "observations": [
+    {
+      "countdown": "9:34",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": false,
+      "phase": "ready",
+      "submitEnabled": false,
+      "value": "Secret value"
+    },
+    {
+      "countdown": "9:27",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "first-tap",
+      "submitEnabled": false,
+      "value": "Secret value"
+    },
+    {
+      "countdown": "9:25",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "first-tap-focused",
+      "submitEnabled": false,
+      "value": "Secret value"
+    },
+    {
+      "countdown": "9:23",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "retap",
+      "submitEnabled": false,
+      "value": "Secret value"
+    }
+  ],
+  "outcome": "failed",
+  "phase": "retap-focus",
+  "scenario": "secure",
+  "setupLabelReads": [
+    {
+      "actualLabel": "secure",
+      "elapsedSeconds": 0.20867633333341473,
+      "expectedLabel": "secure",
+      "finishedAt": 790.3763948750001,
+      "matches": true,
+      "startedAt": 790.1677185416667
+    }
+  ],
+  "sideEffects": "0",
+  "version": 1,
+  "waitResults": [
+    {
+      "finishedAt": 790.37699625,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 789.1332032500001,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.2437929999999824,
+      "waitElapsedSeconds": 1.2436702083333557,
+      "waitStartedAt": 789.1333260416667
+    },
+    {
+      "finishedAt": 791.4712210416667,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 790.3926972083334,
+      "timeoutSeconds": 8,
+      "totalElapsedSeconds": 1.0785238333332927,
+      "waitElapsedSeconds": 1.0784505833332787,
+      "waitStartedAt": 790.3927704583334
+    }
+  ]
+}

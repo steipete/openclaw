@@ -1,0 +1,88 @@
+name: FocusProof
+options:
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.6"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    CODE_SIGNING_ALLOWED: YES
+    CODE_SIGNING_REQUIRED: YES
+    CODE_SIGN_IDENTITY: "-"
+    ENABLE_APP_INTENTS_METADATA_GENERATION: NO
+packages:
+  OpenClawKit:
+    path: __PACKAGE_PATH__
+targets:
+  FocusHost:
+    type: application
+    platform: iOS
+    sources: [Host]
+    dependencies:
+      - package: OpenClawKit
+        product: OpenClawChatUI
+      - package: OpenClawKit
+        product: OpenClawProtocol
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.openclaw.tests.focus136179
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+  FocusUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: FocusHost
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        PRODUCT_BUNDLE_IDENTIFIER: org.openclaw.tests.focus136179.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: FocusHost
+  CompatibilityHost:
+    type: application
+    platform: iOS
+    sources: [CompatibilityHost]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.openclaw.tests.composercompat
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+  ComposerCompatibilityTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [CompatibilityTests]
+    dependencies:
+      - target: CompatibilityHost
+      - package: OpenClawKit
+        product: OpenClawChatUI
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        PRODUCT_BUNDLE_IDENTIFIER: org.openclaw.tests.composercompat.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/CompatibilityHost.app/CompatibilityHost"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  FocusProof:
+    shared: true
+    build:
+      targets:
+        FocusHost: all
+        FocusUITests: all
+    test:
+      targets: [FocusUITests]
+      parallelizable: false
+  CompatibilityProof:
+    shared: true
+    build:
+      targets:
+        CompatibilityHost: all
+        ComposerCompatibilityTests: all
+    test:
+      targets: [ComposerCompatibilityTests]
+      parallelizable: false

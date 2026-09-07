@@ -1,0 +1,42 @@
+{
+  "bootstrapError": "none",
+  "foreground": true,
+  "observations": [],
+  "outcome": "failed",
+  "phase": "control-draft",
+  "scenario": "passive",
+  "setupLabelReads": [
+    {
+      "actualLabel": "passive",
+      "elapsedSeconds": 0.1897326250000333,
+      "expectedLabel": "passive",
+      "finishedAt": 1160.0579942083334,
+      "matches": true,
+      "startedAt": 1159.8682615833334
+    }
+  ],
+  "sideEffects": "0",
+  "version": 1,
+  "waitResults": [
+    {
+      "finishedAt": 1160.058749625,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1158.8392520416667,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.2194975833333501,
+      "waitElapsedSeconds": 1.218972041666575,
+      "waitStartedAt": 1158.8397775833334
+    },
+    {
+      "finishedAt": 1161.1681911666667,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1160.0762308333335,
+      "timeoutSeconds": 8,
+      "totalElapsedSeconds": 1.0919603333331906,
+      "waitElapsedSeconds": 1.0919034583332632,
+      "waitStartedAt": 1160.0762877083334
+    }
+  ]
+}

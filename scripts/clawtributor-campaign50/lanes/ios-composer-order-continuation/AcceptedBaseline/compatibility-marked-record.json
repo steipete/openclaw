@@ -1,0 +1,58 @@
+{
+  "bundleID": "org.openclaw.tests.composercompat",
+  "outcome": "passed",
+  "phase": "complete",
+  "pid": 37065,
+  "scenario": "marked",
+  "snapshots": [
+    {
+      "binding": "ab",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "mounted",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "2",
+      "text": "ab"
+    },
+    {
+      "binding": "a\u306bb",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "1",
+      "markedLocation": "1",
+      "phase": "marked-before-refresh",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "2",
+      "text": "a\u306bb"
+    },
+    {
+      "binding": "a\u306bb",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "1",
+      "markedLocation": "1",
+      "phase": "marked-after-refresh",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "2",
+      "text": "a\u306bb"
+    },
+    {
+      "binding": "a\u306b!b",
+      "editable": true,
+      "firstResponder": true,
+      "markedLength": "none",
+      "markedLocation": "none",
+      "phase": "committed-and-edited",
+      "selectable": true,
+      "selectedLength": "0",
+      "selectedLocation": "3",
+      "text": "a\u306b!b"
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,126 @@
+{
+  "bootstrapError": "none",
+  "foreground": true,
+  "observations": [
+    {
+      "countdown": "9:51",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": false,
+      "phase": "ready",
+      "submitEnabled": false,
+      "value": "api.example.com, uploads.example.com"
+    },
+    {
+      "countdown": "9:47",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "first-tap",
+      "submitEnabled": false,
+      "value": "api.example.com, uploads.example.com"
+    },
+    {
+      "countdown": "9:45",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "first-tap-focused",
+      "submitEnabled": false,
+      "value": "api.example.com, uploads.example.com"
+    },
+    {
+      "countdown": "9:42",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "retap",
+      "submitEnabled": false,
+      "value": "api.example.com, uploads.example.com"
+    },
+    {
+      "countdown": "9:39",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "post-tick",
+      "submitEnabled": false,
+      "value": "api.example.com, uploads.example.com"
+    },
+    {
+      "countdown": "9:37",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "typed",
+      "submitEnabled": false,
+      "value": "api.example.com"
+    },
+    {
+      "countdown": "9:33",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "hosts-post-tick",
+      "submitEnabled": false,
+      "value": "api.example.com"
+    }
+  ],
+  "outcome": "passed",
+  "phase": "complete",
+  "scenario": "hosts",
+  "setupLabelReads": [
+    {
+      "actualLabel": "hosts",
+      "elapsedSeconds": 0.2854686666667021,
+      "expectedLabel": "hosts",
+      "finishedAt": 1075.2377753333335,
+      "matches": true,
+      "startedAt": 1074.9523066666668
+    }
+  ],
+  "sideEffects": "0",
+  "version": 1,
+  "waitResults": [
+    {
+      "finishedAt": 1075.2380680833335,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1073.91996425,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.3181038333334527,
+      "waitElapsedSeconds": 1.3179699166666978,
+      "waitStartedAt": 1073.9200981666668
+    },
+    {
+      "finishedAt": 1076.3834341666668,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1075.2516935,
+      "timeoutSeconds": 8,
+      "totalElapsedSeconds": 1.1317406666667011,
+      "waitElapsedSeconds": 1.1316835000000083,
+      "waitStartedAt": 1075.2517506666668
+    },
+    {
+      "finishedAt": 1088.6613589583335,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1087.4471110416666,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.2142479166668636,
+      "waitElapsedSeconds": 1.2142320833333997,
+      "waitStartedAt": 1087.447126875
+    },
+    {
+      "finishedAt": 1094.2236204166668,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1092.8262240000001,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.397396416666652,
+      "waitElapsedSeconds": 1.3973797500000273,
+      "waitStartedAt": 1092.8262406666668
+    }
+  ]
+}

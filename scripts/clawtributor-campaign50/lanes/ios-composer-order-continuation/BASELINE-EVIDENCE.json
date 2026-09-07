@@ -1,0 +1,32 @@
+{
+  "run": 34114744042,
+  "job": 101721088581,
+  "harness": "7d6c69586ad9d8192d3b44dfba2e2868777406ae",
+  "priorRunOutcome": "FAILURE, unchanged",
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "comparisonPacketSha256": "61de13890d250a379488aec667ed54502a2ff30a983d2138af7310575191db45",
+  "baselineReceiptSha256": "9b676fbb5f1fe9acd85081fe5b2a40b2e56538f3bf13bafe51fa7bb97bfa86d8",
+  "failedCandidateReceiptSha256": "1af214d6e23de38251f6573c85a9f07f4a102a5ef77f68f9880c0b1e4c9b4cf7",
+  "scope": "Reuse only accepted baseline original4+compatibility4; prior candidate setup failure and overall failed run remain unchanged.",
+  "historicalEvidenceFiles": {
+    "AcceptedBaseline/compatibility-external-record.json": "40cda8a07a5a8c0beb00c0448a2b1c55fa67d38748978bb41e2099d7fa5c5f6f",
+    "AcceptedBaseline/compatibility-focus-record.json": "5749c7bc94b4353439aae3831bb209cbfe3ebbf926b94bf7f77b344412dcab32",
+    "AcceptedBaseline/compatibility-marked-record.json": "f658b67342657b7ec2ab05e78345c70504aa06c05687ac33306e721d3f53ad1d",
+    "AcceptedBaseline/compatibility-selection-record.json": "52ba950a42d1dec16c9db44f29081c13cdb883f5b231a8644080eb0e2a024154",
+    "AcceptedBaseline/failed-candidate-receipt.json": "1af214d6e23de38251f6573c85a9f07f4a102a5ef77f68f9880c0b1e4c9b4cf7",
+    "AcceptedBaseline/failed-comparison-receipt.json": "6bdaa90e29b84c857d0edb163ccdb0ab973681ab4220bab462631519db5c6cf0",
+    "AcceptedBaseline/hosts-record.json": "bc066e9d06441b51defc6b29b24f3504b39ed46f0bacef40f9e69cb7e2d54e6d",
+    "AcceptedBaseline/passive-record.json": "052f89f32776965e99fb4c9f2593188979e64c2a654f8f295eeffb87e9f7bee2",
+    "AcceptedBaseline/receipt.json": "9b676fbb5f1fe9acd85081fe5b2a40b2e56538f3bf13bafe51fa7bb97bfa86d8",
+    "AcceptedBaseline/secure-record.json": "872502c9e291fc3de6fc693994cf24d569c081267cf6ae33f95dabb23cb2ba1a",
+    "AcceptedBaseline/summary-compatibility-external.log": "940a6b17a710d2819e761788b902470cc16c8576e4d0bf62ea3ecd8fb9b46c84",
+    "AcceptedBaseline/summary-compatibility-focus.log": "4293334f9e08d79abbce057f313f7d2c3181c07329d254e8ea05a591a4168e0f",
+    "AcceptedBaseline/summary-compatibility-marked.log": "ae635931ad424951c46487ce7cbe3e92686090f3c10dd145feb1a1a21b676cc6",
+    "AcceptedBaseline/summary-compatibility-selection.log": "83cb9047faf1b4ab91046a744f366bf8888a149c1b7341ec6c2c3e9c0cabff78",
+    "AcceptedBaseline/summary-hosts.log": "27167e8b37aacaf75150e0efc5f67038926a61af71c183c9890e760032d886a3",
+    "AcceptedBaseline/summary-passive.log": "a9554c2ff6239ae242d706f8edb3a7f97e02cf14541d71d7d5955d3d3ba94c0e",
+    "AcceptedBaseline/summary-secure.log": "b6490b184dbc2ae66f659a5a20116a6d4d942027d8ab0b5145c067b5d6e4e658",
+    "AcceptedBaseline/summary-text.log": "09f872d7a4540dcea63512c08c0d338f0b99068ea130ad71cc4de0e14a2c1e54",
+    "AcceptedBaseline/text-record.json": "d4596763fd9597cd9700272c11b67e42b43b2b6f5186832b6c40972280ffb6f5"
+  }
+}

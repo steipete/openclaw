@@ -1,22 +1,22 @@
 [
   {
-    "id": "plugin-source-build-139075-baseline",
-    "directory": "plugin-source-build-139075-baseline-cwd",
-    "runner": "ubuntu-24.04",
-    "source": "2d58961f33fd48b94b48bf569b65fb1c6ad2d954",
+    "id": "macos-cli-selection-red",
+    "directory": "macos-cli-selection-red",
+    "runner": "macos-26",
+    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "source-and-packaged-builds"
+    "mode": "red",
+    "variant": "native-selection"
   },
   {
-    "id": "setup-error-installed-pair",
-    "directory": "setup-error-installed-pair",
-    "mode": "green",
-    "runner": "ubuntu-24.04",
-    "source": "5520a73e9115be31d5f710da23e9bd93ecff291f",
+    "id": "ios-composer-order-continuation",
+    "directory": "ios-composer-order-continuation",
+    "runner": "macos-26",
+    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "variant": "installed-pair"
+    "mode": "candidate",
+    "variant": "composer-order-comparison"
   }
 ]

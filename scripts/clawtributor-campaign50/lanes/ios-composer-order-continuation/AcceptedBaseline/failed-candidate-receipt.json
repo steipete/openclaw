@@ -1,0 +1,1579 @@
+{
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "mode": "candidate",
+  "stage": "composer-order-comparison",
+  "work": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84",
+  "admittedLockSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "commands": [
+    {
+      "name": "source-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39741,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39742,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "xcode-version",
+      "argv": [
+        "xcodebuild",
+        "-version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39745,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "swift-version",
+      "argv": [
+        "swift",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39746,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "xcodegen-version",
+      "argv": [
+        "xcodegen",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39750,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "node-version",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39751,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "pnpm-version",
+      "argv": [
+        "pnpm",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39752,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-runtimes",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "runtimes",
+        "--json"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39753,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-types",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "devicetypes",
+        "--json"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39758,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-create",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "create",
+        "Focus136179-focus136179-32ecac390e044eb6bb50c6d68a0cca84",
+        "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+        "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39762,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-boot",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "boot",
+        "8A5BBC4C-FAFE-4600-A397-07080BDB1BAC"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39768,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-boot-status",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "bootstatus",
+        "8A5BBC4C-FAFE-4600-A397-07080BDB1BAC",
+        "-b"
+      ],
+      "timeoutSeconds": 180,
+      "groupRetirement": {
+        "pgid": 39840,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "generate-project",
+      "argv": [
+        "xcodegen",
+        "generate",
+        "--spec",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/project/project.yml"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 41187,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "build-for-testing",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=8A5BBC4C-FAFE-4600-A397-07080BDB1BAC",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "build-for-testing"
+      ],
+      "timeoutSeconds": 1200,
+      "groupRetirement": {
+        "pgid": 41248,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-0-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/ElevenLabsKit",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47730,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-0-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/ElevenLabsKit",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47731,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-1-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/GRDB.swift",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47732,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-1-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/GRDB.swift",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47733,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-2-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/SwiftMath",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47738,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-2-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/SwiftMath",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47745,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-3-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-cmark",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47771,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-3-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-cmark",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47778,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-4-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-markdown",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47810,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-4-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-markdown",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47815,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-verify-FocusHost.app",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/DerivedData/Build/Products/Debug-iphonesimulator/FocusHost.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47834,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-details-FocusHost.app",
+      "argv": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/DerivedData/Build/Products/Debug-iphonesimulator/FocusHost.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47865,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-verify-FocusUITests-Runner.app",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/DerivedData/Build/Products/Debug-iphonesimulator/FocusUITests-Runner.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47874,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-details-FocusUITests-Runner.app",
+      "argv": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/DerivedData/Build/Products/Debug-iphonesimulator/FocusUITests-Runner.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 47883,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-secure",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=8A5BBC4C-FAFE-4600-A397-07080BDB1BAC",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/candidate/secure.xcresult",
+        "-only-testing:FocusUITests/FocusUITests/testSecureFocus"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 47888,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 65
+      },
+      "exitCode": 65
+    },
+    {
+      "name": "export-attachments-secure",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/candidate/secure.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/candidate/secure-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55034,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-secure",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/candidate/secure.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55035,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-final-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55038,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-final-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55039,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-final-diff",
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55044,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-0-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/ElevenLabsKit",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55045,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-0-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/ElevenLabsKit",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55046,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-1-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/GRDB.swift",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55047,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-1-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/GRDB.swift",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55048,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-2-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/SwiftMath",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55050,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-2-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/SwiftMath",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55051,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-3-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-cmark",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55052,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-3-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-cmark",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55053,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-4-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-markdown",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55054,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-4-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-markdown",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55055,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-shutdown",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "shutdown",
+        "8A5BBC4C-FAFE-4600-A397-07080BDB1BAC"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55056,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-delete",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "delete",
+        "8A5BBC4C-FAFE-4600-A397-07080BDB1BAC"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55665,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-cleanup-inventory",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "devices",
+        "--json"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 55735,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    }
+  ],
+  "cases": [],
+  "diagnosticRecords": [
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [],
+      "outcome": "failed",
+      "phase": "setup-scenario",
+      "scenario": "secure",
+      "setupLabelReads": [
+        {
+          "actualLabel": "",
+          "elapsedSeconds": 2.2744708749999063,
+          "expectedLabel": "secure",
+          "finishedAt": 1682.2809654166667,
+          "matches": false,
+          "startedAt": 1680.0064945416668
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1682.281297,
+          "result": "XCTWaiterResult(rawValue: 2)",
+          "resultRawValue": 2,
+          "startedAt": 1678.9852252916667,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 3.2960717083333293,
+          "waitElapsedSeconds": 3.296016916666531,
+          "waitStartedAt": 1678.9852800833335
+        }
+      ]
+    }
+  ],
+  "caseOrder": [
+    "secure",
+    "text",
+    "hosts",
+    "passive"
+  ],
+  "attachments": {
+    "secure": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "candidate",
+      "ownerSha256": "d05cb45e128266e9b2bdbc106b0e7bafd7c8b5ce51be804ef3937e87b1660b55",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "8A5BBC4C-FAFE-4600-A397-07080BDB1BAC",
+      "files": [
+        {
+          "path": "secure-attachments/4D4A98AE-D636-4E5B-8E79-2B3365803D5D.txt",
+          "sha256": "6df200015624d272d88332584be4c8cd1f3625196cb689f7a914b577a734f2e4"
+        },
+        {
+          "path": "secure-attachments/5966FB7B-C425-494A-80FE-7270BB4B8859.txt",
+          "sha256": "4b6a3bc6f02bab346c8878f820e918185b2135061b13007c10540f39603442f8"
+        },
+        {
+          "path": "secure-attachments/67314151-D38D-4EB8-B55C-B5ACE2C71726.mp4",
+          "sha256": "83c54139e55a9ac7df6ad740753c966e13bafd42411b18e1824329b75d1ea69e"
+        },
+        {
+          "path": "secure-attachments/C7C0A036-DA4D-4C57-95EB-0348B0F1033E.png",
+          "sha256": "2288ac1c651fbe15b291e4df4357aaad8cfce7d613c86820594216876e4f7b01"
+        },
+        {
+          "path": "secure-attachments/manifest.json",
+          "sha256": "57559a82deded7883951ce8277ba10b7c85cbbac8a4c1d8d78e2c4f423209189"
+        }
+      ]
+    }
+  },
+  "compatibility": [],
+  "finalBindingVerified": true,
+  "effectiveSourceHashes": {
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatView.swift": "a9e5305867e98cecb82516798b7d674134a0ea50e538afda852449bf5cc2baa2",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatQuestionCard.swift": "76ec6582ef8b1a62edf5f98a383531a28bb8114b2ff10cf1da8ae15bff500f3b",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel.swift": "f28841a1287e1a856ed8b65a1db9bda403cc32d7e0e8f199b15de75e36211ae5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatTransport.swift": "07c701188af2f03f566f44c2b011db241d6637aef652467993cf47dc5e9867a7",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel+TransportEvents.swift": "400a05c4baa02fc20b1fa5c089c12ef36fa76b20eb3880b68eff09f2e9012e7f",
+    "apps/shared/OpenClawKit/Package.swift": "8a25894b16af18d1d9fd1e587ee6ce5e0265a4e168c540c734d552040dc5f2bd",
+    "apps/shared/OpenClawKit/Tests/OpenClawKitTests/ChatComposerParityTests.swift": "41299c903d3c6a863eac0da1606a998ac71c96851b7321534e375700db8066a4",
+    "apps/ios/Sources/Design/ChatProTab.swift": "e72f3ec1c3306637e7c2fa231b4ceb8224042556b76ecbfb0831f070e7c88c01",
+    "apps/ios/Tests/SwiftUIRenderSmokeTests.swift": "32d048a2e624ff8c06bf8127f12a158b38e344cf576bdb5f726212fcb257cdba",
+    "apps/ios/UITests/OpenClawSnapshotUITests.swift": "e65f0d807d7c365d559fbf4e0160afd5fe4fd49bc5e85ab620e8f06ab7edc855",
+    "apps/ios/project.yml": "b5bdd8b8679a895370c01e1e9db4abbde9ecb30452a48a55512d4250a1a0ee32",
+    ".github/workflows/ci.yml": "059b16b2ee3cf56207571e53b32358b0c707cf8b93a7b6f040eafe5b604a0851",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatSessions.swift": "c1a0cf57cac6cda7b4e68b27215d245a460e8fe6e3c972f4bf9bef26bef1666d",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatModels.swift": "7a9e9edcf2cd54feb59ca0623222cda3102324cfff880c34fc20e130a92150f5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposer.swift": "9ce90edff690146dde6b16b4fc5b8a9047b4227f46e64f04b37387e0c5e8ca11",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposerTextViewIOS.swift": "d05cb45e128266e9b2bdbc106b0e7bafd7c8b5ce51be804ef3937e87b1660b55",
+    "scripts/prepare-apple-mermaid.mjs": "0e914c41fec9dce2dfcffcf774a0c6f121b43044176e930c15b7cc7033f7384b",
+    "scripts/install-xcodegen.sh": "f6f16d0fa85e57bc6579e523f0f47c60e82c7a8b585609cdfacd34394aedf811",
+    "package.json": "380f37efd466e4e438cb2258c78b06df3df55abfc4af7dec6e7eb07f1ea2608d"
+  },
+  "dependencyPins": [
+    {
+      "identity": "elevenlabskit",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/steipete/ElevenLabsKit",
+      "state": {
+        "revision": "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b",
+        "version": "0.1.1"
+      }
+    },
+    {
+      "identity": "grdb.swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/groue/GRDB.swift.git",
+      "state": {
+        "revision": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+        "version": "7.11.1"
+      }
+    },
+    {
+      "identity": "swift-cmark",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/swiftlang/swift-cmark.git",
+      "state": {
+        "revision": "924936d0427cb25a61169739a7660230bffa6ea6",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "identity": "swift-markdown",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/swiftlang/swift-markdown",
+      "state": {
+        "revision": "3c6f9523da3a1ec2fd829673e472d95b8097a3b8",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "identity": "swiftmath",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/mgriebling/SwiftMath",
+      "state": {
+        "revision": "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7",
+        "version": "1.7.3"
+      }
+    }
+  ],
+  "admittedOriginalHostSourceHashes": {
+    "Host/FocusHost.swift": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+    "UITests/FocusUITests.swift": "bbf2fe54aba293f8112bc6b61701d47bcb2dd6dd1b82951238bf239496488038",
+    "project.template.yml": "f8b51eb78ee627acca9ea64ef593a31638c3bab441f9fe814000febcca7bc2bc"
+  },
+  "hostSourceHashes": {
+    "Host/FocusHost.swift": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+    "UITests/FocusUITests.swift": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+    "project.template.yml": "bf6960e77d9087b72e919f69dca39a5667d3388c0f3908ab82a441d2bbba2195"
+  },
+  "sourceHashes": {
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatView.swift": "a9e5305867e98cecb82516798b7d674134a0ea50e538afda852449bf5cc2baa2",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatQuestionCard.swift": "76ec6582ef8b1a62edf5f98a383531a28bb8114b2ff10cf1da8ae15bff500f3b",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel.swift": "f28841a1287e1a856ed8b65a1db9bda403cc32d7e0e8f199b15de75e36211ae5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatTransport.swift": "07c701188af2f03f566f44c2b011db241d6637aef652467993cf47dc5e9867a7",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel+TransportEvents.swift": "400a05c4baa02fc20b1fa5c089c12ef36fa76b20eb3880b68eff09f2e9012e7f",
+    "apps/shared/OpenClawKit/Package.swift": "8a25894b16af18d1d9fd1e587ee6ce5e0265a4e168c540c734d552040dc5f2bd",
+    "apps/shared/OpenClawKit/Tests/OpenClawKitTests/ChatComposerParityTests.swift": "41299c903d3c6a863eac0da1606a998ac71c96851b7321534e375700db8066a4",
+    "apps/ios/Sources/Design/ChatProTab.swift": "e72f3ec1c3306637e7c2fa231b4ceb8224042556b76ecbfb0831f070e7c88c01",
+    "apps/ios/Tests/SwiftUIRenderSmokeTests.swift": "32d048a2e624ff8c06bf8127f12a158b38e344cf576bdb5f726212fcb257cdba",
+    "apps/ios/UITests/OpenClawSnapshotUITests.swift": "e65f0d807d7c365d559fbf4e0160afd5fe4fd49bc5e85ab620e8f06ab7edc855",
+    "apps/ios/project.yml": "b5bdd8b8679a895370c01e1e9db4abbde9ecb30452a48a55512d4250a1a0ee32",
+    ".github/workflows/ci.yml": "059b16b2ee3cf56207571e53b32358b0c707cf8b93a7b6f040eafe5b604a0851",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatSessions.swift": "c1a0cf57cac6cda7b4e68b27215d245a460e8fe6e3c972f4bf9bef26bef1666d",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatModels.swift": "7a9e9edcf2cd54feb59ca0623222cda3102324cfff880c34fc20e130a92150f5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposer.swift": "9ce90edff690146dde6b16b4fc5b8a9047b4227f46e64f04b37387e0c5e8ca11",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposerTextViewIOS.swift": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+    "scripts/prepare-apple-mermaid.mjs": "0e914c41fec9dce2dfcffcf774a0c6f121b43044176e930c15b7cc7033f7384b",
+    "scripts/install-xcodegen.sh": "f6f16d0fa85e57bc6579e523f0f47c60e82c7a8b585609cdfacd34394aedf811",
+    "package.json": "380f37efd466e4e438cb2258c78b06df3df55abfc4af7dec6e7eb07f1ea2608d"
+  },
+  "packetSha256": "61de13890d250a379488aec667ed54502a2ff30a983d2138af7310575191db45",
+  "compatibilitySourceHashes": {
+    "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+    "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+  },
+  "runtime": {
+    "isAvailable": true,
+    "version": "26.5",
+    "isInternal": false,
+    "buildversion": "23F77",
+    "supportedArchitectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "supportedDeviceTypes": [
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17 Pro.simdevicetype",
+        "name": "iPhone 17 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17 Pro Max.simdevicetype",
+        "name": "iPhone 17 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17e.simdevicetype",
+        "name": "iPhone 17e",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17e",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone Air.simdevicetype",
+        "name": "iPhone Air",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-Air",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17.simdevicetype",
+        "name": "iPhone 17",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16 Pro.simdevicetype",
+        "name": "iPhone 16 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16 Pro Max.simdevicetype",
+        "name": "iPhone 16 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16e.simdevicetype",
+        "name": "iPhone 16e",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16e",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16.simdevicetype",
+        "name": "iPhone 16",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16 Plus.simdevicetype",
+        "name": "iPhone 16 Plus",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Plus",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15 Pro.simdevicetype",
+        "name": "iPhone 15 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15 Pro Max.simdevicetype",
+        "name": "iPhone 15 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15.simdevicetype",
+        "name": "iPhone 15",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15 Plus.simdevicetype",
+        "name": "iPhone 15 Plus",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Plus",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Pro.simdevicetype",
+        "name": "iPhone 14 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Pro Max.simdevicetype",
+        "name": "iPhone 14 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14.simdevicetype",
+        "name": "iPhone 14",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Plus.simdevicetype",
+        "name": "iPhone 14 Plus",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Plus",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (3rd generation).simdevicetype",
+        "name": "iPhone SE (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 Pro.simdevicetype",
+        "name": "iPhone 13 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 Pro Max.simdevicetype",
+        "name": "iPhone 13 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13.simdevicetype",
+        "name": "iPhone 13",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 mini.simdevicetype",
+        "name": "iPhone 13 mini",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13-mini",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 Pro.simdevicetype",
+        "name": "iPhone 12 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 Pro Max.simdevicetype",
+        "name": "iPhone 12 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12.simdevicetype",
+        "name": "iPhone 12",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 mini.simdevicetype",
+        "name": "iPhone 12 mini",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12-mini",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (2nd generation).simdevicetype",
+        "name": "iPhone SE (2nd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE--2nd-generation-",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11 Pro.simdevicetype",
+        "name": "iPhone 11 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11 Pro Max.simdevicetype",
+        "name": "iPhone 11 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11.simdevicetype",
+        "name": "iPhone 11",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M5) (16GB).simdevicetype",
+        "name": "iPad Pro 13-inch (M5) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M5).simdevicetype",
+        "name": "iPad Pro 13-inch (M5)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-12GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M5) (16GB).simdevicetype",
+        "name": "iPad Pro 11-inch (M5) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M5).simdevicetype",
+        "name": "iPad Pro 11-inch (M5)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5-12GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M4) (16GB).simdevicetype",
+        "name": "iPad Pro 11-inch (M4) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M4-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M4).simdevicetype",
+        "name": "iPad Pro 11-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M4-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M4) (16GB).simdevicetype",
+        "name": "iPad Pro 13-inch (M4) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M4).simdevicetype",
+        "name": "iPad Pro 13-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 13-inch (M4).simdevicetype",
+        "name": "iPad Air 13-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-13-inch-M4",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 11-inch (M4).simdevicetype",
+        "name": "iPad Air 11-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-11-inch-M4",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (A16).simdevicetype",
+        "name": "iPad (A16)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-A16",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 13-inch (M3).simdevicetype",
+        "name": "iPad Air 13-inch (M3)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-13-inch-M3",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 11-inch (M3).simdevicetype",
+        "name": "iPad Air 11-inch (M3)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-11-inch-M3",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 11-inch (M2).simdevicetype",
+        "name": "iPad Air 11-inch (M2)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-11-inch-M2",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 13-inch (M2).simdevicetype",
+        "name": "iPad Air 13-inch (M2)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-13-inch-M2",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad mini (A17 Pro).simdevicetype",
+        "name": "iPad mini (A17 Pro)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini-A17-Pro",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (4th generation) (16GB).simdevicetype",
+        "name": "iPad Pro (11-inch) (4th generation) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-4th-generation-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (4th generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (4th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-4th-generation-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (6th generation) (16GB).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (6th generation) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-12-9-inch-6th-generation-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (6th generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (6th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-12-9-inch-6th-generation-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (10th generation).simdevicetype",
+        "name": "iPad (10th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-10th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air (5th generation).simdevicetype",
+        "name": "iPad Air (5th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-5th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad mini (6th generation).simdevicetype",
+        "name": "iPad mini (6th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini-6th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (3rd generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-3rd-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (5th generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (5th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-12-9-inch-5th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (9th generation).simdevicetype",
+        "name": "iPad (9th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-9th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air (4th generation).simdevicetype",
+        "name": "iPad Air (4th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air--4th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (8th generation).simdevicetype",
+        "name": "iPad (8th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad--8th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air (3rd generation).simdevicetype",
+        "name": "iPad Air (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air--3rd-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad mini (5th generation).simdevicetype",
+        "name": "iPad mini (5th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini--5th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (2nd generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (2nd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--11-inch---2nd-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (4th generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (4th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--12-9-inch---4th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (1st generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (1st generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--11-inch-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (3rd generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--12-9-inch---3rd-generation-",
+        "productFamily": "iPad"
+      }
+    ],
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "platform": "iOS",
+    "bundlePath": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime",
+    "runtimeRoot": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot",
+    "lastUsage": {
+      "arm64": "2026-09-07T11:44:25Z",
+      "x86_64": "0001-01-01T00:00:00Z"
+    },
+    "name": "iOS 26.5"
+  },
+  "deviceType": {
+    "productFamily": "iPhone",
+    "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17 Pro.simdevicetype",
+    "maxRuntimeVersion": 4294967295,
+    "maxRuntimeVersionString": "65535.255.255",
+    "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+    "modelIdentifier": "iPhone18,1",
+    "minRuntimeVersionString": "26.0.0",
+    "minRuntimeVersion": 1703936,
+    "name": "iPhone 17 Pro"
+  },
+  "simulatorUDID": "8A5BBC4C-FAFE-4600-A397-07080BDB1BAC",
+  "generatedProjectHashes": {
+    "FocusProof.xcodeproj/project.pbxproj": "bdfd43991db139f0d03bcdeec2f97af1dc0e4d15a3dcec94a88fbe3816eb2dff",
+    "FocusProof.xcodeproj/project.xcworkspace/contents.xcworkspacedata": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f",
+    "FocusProof.xcodeproj/xcshareddata/xcschemes/CompatibilityProof.xcscheme": "9f9d7d02c35e7047635c7e4eb392c8c9778864fb6cc300f7e477c9b0c4e6c59d",
+    "FocusProof.xcodeproj/xcshareddata/xcschemes/FocusProof.xcscheme": "70bae0f8e964b8f5b406f4d64af15e2f386025b93e8147f2c3a2ea5e1a9b63e4"
+  },
+  "resolvedSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "resolvedPackages": {
+    "originHash": "4805b7bdf0b862d3719df1e11ba9fb2c8231d1d5b75ecf4d6a7e4d322245d44c",
+    "pins": [
+      {
+        "identity": "elevenlabskit",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/steipete/ElevenLabsKit",
+        "state": {
+          "revision": "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "identity": "grdb.swift",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/groue/GRDB.swift.git",
+        "state": {
+          "revision": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+          "version": "7.11.1"
+        }
+      },
+      {
+        "identity": "swift-cmark",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/swiftlang/swift-cmark.git",
+        "state": {
+          "revision": "924936d0427cb25a61169739a7660230bffa6ea6",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "identity": "swift-markdown",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/swiftlang/swift-markdown",
+        "state": {
+          "revision": "3c6f9523da3a1ec2fd829673e472d95b8097a3b8",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "identity": "swiftmath",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/mgriebling/SwiftMath",
+        "state": {
+          "revision": "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7",
+          "version": "1.7.3"
+        }
+      }
+    ],
+    "version": 3
+  },
+  "projectLockPath": "project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+  "dependencyCheckoutChecks": {
+    "built": {
+      "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b": {
+        "identity": "elevenlabskit",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/ElevenLabsKit"
+      },
+      "b83108d10f42680d78f23fe4d4d80fc88dab3212": {
+        "identity": "grdb.swift",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/GRDB.swift"
+      },
+      "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7": {
+        "identity": "swiftmath",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/SwiftMath"
+      },
+      "924936d0427cb25a61169739a7660230bffa6ea6": {
+        "identity": "swift-cmark",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-cmark"
+      },
+      "3c6f9523da3a1ec2fd829673e472d95b8097a3b8": {
+        "identity": "swift-markdown",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-markdown"
+      }
+    },
+    "completed": {
+      "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b": {
+        "identity": "elevenlabskit",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/ElevenLabsKit"
+      },
+      "b83108d10f42680d78f23fe4d4d80fc88dab3212": {
+        "identity": "grdb.swift",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/GRDB.swift"
+      },
+      "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7": {
+        "identity": "swiftmath",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/SwiftMath"
+      },
+      "924936d0427cb25a61169739a7660230bffa6ea6": {
+        "identity": "swift-cmark",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-cmark"
+      },
+      "3c6f9523da3a1ec2fd829673e472d95b8097a3b8": {
+        "identity": "swift-markdown",
+        "checkout": "/Users/runner/work/_temp/focus136179-32ecac390e044eb6bb50c6d68a0cca84/SourcePackages/checkouts/swift-markdown"
+      }
+    }
+  },
+  "error": "RuntimeError: Unclassified UI failure",
+  "installedLockSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "commandGroupRetirementVerified": true,
+  "exitCode": 1
+}

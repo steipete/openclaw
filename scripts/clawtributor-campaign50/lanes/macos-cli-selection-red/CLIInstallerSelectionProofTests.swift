@@ -27,13 +27,13 @@ struct CLIInstallerSelectionProofTests {
         try #require(env["CI"] == "true")
         try #require(env["HOME"] == env["CFFIXED_USER_HOME"])
         try #require(home.lastPathComponent == "home")
-        try #require(launcherRoot.deletingLastPathComponent() == canonicalTmp)
+        try #require(launcherRoot.deletingLastPathComponent().path == canonicalTmp.path)
         try #require(launcherRoot.lastPathComponent.hasPrefix("oc-test-"))
         try #require(env["OPENCLAW_PROFILE"] == "default")
         try #require(env["OPENCLAW_STATE_DIR"] == launcherRoot.appendingPathComponent("state").path)
         try #require(env["OPENCLAW_CONFIG_PATH"] == launcherRoot.appendingPathComponent("state/openclaw.json").path)
         try #require(env["TMP"] == launcherRoot.appendingPathComponent("tmp").path)
-        try #require(FileManager().homeDirectoryForCurrentUser.resolvingSymlinksInPath() == home)
+        try #require(FileManager().homeDirectoryForCurrentUser.resolvingSymlinksInPath().path == home.path)
         try #require(GatewayEnvironment.expectedGatewayVersionString() == nil)
         let external = home.appendingPathComponent("campaign140131-external/bin/openclaw")
         let managed = URL(fileURLWithPath: CLIInstaller.managedExecutableLocation())
@@ -49,7 +49,7 @@ struct CLIInstallerSelectionProofTests {
             }
             if fileManager.fileExists(atPath: directory.path) { return }
             let parent = directory.deletingLastPathComponent()
-            if parent != home { try createParent(parent) }
+            if parent.path != home.path { try createParent(parent) }
             try fileManager.createDirectory(at: directory, withIntermediateDirectories: false)
             directories.append(directory)
         }

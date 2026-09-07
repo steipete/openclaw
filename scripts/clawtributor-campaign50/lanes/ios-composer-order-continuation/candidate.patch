@@ -1,0 +1,12 @@
+--- a/apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposerTextViewIOS.swift
++++ b/apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposerTextViewIOS.swift
+@@ -94,8 +94,8 @@
+ 
+         func textViewDidChange(_ textView: UITextView) {
+             guard !self.isProgrammaticUpdate, textView.isFirstResponder else { return }
++            self.parent.text = textView.text
+             self.lastReportedText = textView.text
+-            self.parent.text = textView.text
+             textView.invalidateIntrinsicContentSize()
+         }
+     }

@@ -1,0 +1,117 @@
+{
+  "bootstrapError": "none",
+  "foreground": true,
+  "observations": [
+    {
+      "countdown": "9:51",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": false,
+      "phase": "ready",
+      "submitEnabled": false,
+      "value": "Other answer"
+    },
+    {
+      "countdown": "9:42",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "first-tap",
+      "submitEnabled": false,
+      "value": "Other answer"
+    },
+    {
+      "countdown": "9:39",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "first-tap-focused",
+      "submitEnabled": false,
+      "value": "Other answer"
+    },
+    {
+      "countdown": "9:37",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "retap",
+      "submitEnabled": false,
+      "value": "Other answer"
+    },
+    {
+      "countdown": "9:34",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "post-tick",
+      "submitEnabled": false,
+      "value": "Other answer"
+    },
+    {
+      "countdown": "9:32",
+      "fieldEnabled": true,
+      "fieldHittable": true,
+      "keyboard": true,
+      "phase": "typed",
+      "submitEnabled": true,
+      "value": "synthetic-focus-probe"
+    }
+  ],
+  "outcome": "passed",
+  "phase": "complete",
+  "scenario": "text",
+  "setupLabelReads": [
+    {
+      "actualLabel": "text",
+      "elapsedSeconds": 0.8089885833333028,
+      "expectedLabel": "text",
+      "finishedAt": 1000.4883360416667,
+      "matches": true,
+      "startedAt": 999.6793474583334
+    }
+  ],
+  "sideEffects": "0",
+  "version": 1,
+  "waitResults": [
+    {
+      "finishedAt": 1000.4886967916667,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 998.6200270833334,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.8686697083333002,
+      "waitElapsedSeconds": 1.868524083333341,
+      "waitStartedAt": 998.6201727083334
+    },
+    {
+      "finishedAt": 1001.6108353333334,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1000.509046,
+      "timeoutSeconds": 8,
+      "totalElapsedSeconds": 1.101789333333386,
+      "waitElapsedSeconds": 1.101744541666676,
+      "waitStartedAt": 1000.5090907916667
+    },
+    {
+      "finishedAt": 1019.2012598333334,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1017.9827608333334,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.2184990000000653,
+      "waitElapsedSeconds": 1.21848229166676,
+      "waitStartedAt": 1017.9827775416667
+    },
+    {
+      "finishedAt": 1023.54840675,
+      "result": "XCTWaiterResult(rawValue: 1)",
+      "resultRawValue": 1,
+      "startedAt": 1022.4415627083334,
+      "timeoutSeconds": 3,
+      "totalElapsedSeconds": 1.1068440416665908,
+      "waitElapsedSeconds": 1.106822166666575,
+      "waitStartedAt": 1022.4415845833335
+    }
+  ]
+}

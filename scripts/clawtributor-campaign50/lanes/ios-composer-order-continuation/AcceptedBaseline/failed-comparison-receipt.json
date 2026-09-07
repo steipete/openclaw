@@ -1,0 +1,22 @@
+{
+  "variant": "composer-order-comparison",
+  "comparisonAccepted": false,
+  "focusPRQualified": false,
+  "phases": [
+    {
+      "mode": "baseline",
+      "exitCode": 0,
+      "receiptSha256": "9b676fbb5f1fe9acd85081fe5b2a40b2e56538f3bf13bafe51fa7bb97bfa86d8"
+    },
+    {
+      "mode": "candidate",
+      "exitCode": 1,
+      "receiptSha256": "1af214d6e23de38251f6573c85a9f07f4a102a5ef77f68f9880c0b1e4c9b4cf7"
+    }
+  ],
+  "packetSha256": "61de13890d250a379488aec667ed54502a2ff30a983d2138af7310575191db45",
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "candidateOwnerSha256": "d05cb45e128266e9b2bdbc106b0e7bafd7c8b5ce51be804ef3937e87b1660b55",
+  "error": "RuntimeError: candidate: incomplete native evidence",
+  "exitCode": 1
+}

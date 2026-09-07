@@ -1,0 +1,3451 @@
+{
+  "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+  "mode": "baseline",
+  "stage": "composer-order-comparison",
+  "work": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80",
+  "admittedLockSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "commands": [
+    {
+      "name": "source-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3577,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3578,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "xcode-version",
+      "argv": [
+        "xcodebuild",
+        "-version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3579,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "swift-version",
+      "argv": [
+        "swift",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3581,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "xcodegen-version",
+      "argv": [
+        "xcodegen",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3625,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "node-version",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3629,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "pnpm-version",
+      "argv": [
+        "pnpm",
+        "--version"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3635,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-runtimes",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "runtimes",
+        "--json"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 3641,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-types",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "devicetypes",
+        "--json"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 4571,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-create",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "create",
+        "Focus136179-focus136179-227c4d151d2c44a382bbfc3cf2400e80",
+        "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+        "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 4576,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-boot",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "boot",
+        "4E195492-ABB1-4CD5-A566-9E340AFC912C"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 4582,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-boot-status",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "bootstatus",
+        "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-b"
+      ],
+      "timeoutSeconds": 180,
+      "groupRetirement": {
+        "pgid": 4645,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "generate-project",
+      "argv": [
+        "xcodegen",
+        "generate",
+        "--spec",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/project.yml"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 5631,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "build-for-testing",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "build-for-testing"
+      ],
+      "timeoutSeconds": 1200,
+      "groupRetirement": {
+        "pgid": 5929,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-0-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/ElevenLabsKit",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11356,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-0-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/ElevenLabsKit",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11357,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-1-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/GRDB.swift",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11358,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-1-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/GRDB.swift",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11359,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-2-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/SwiftMath",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11361,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-2-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/SwiftMath",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11362,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-3-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-cmark",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11363,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-3-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-cmark",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11364,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-4-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-markdown",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11365,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-built-4-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-markdown",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11366,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-verify-FocusHost.app",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/FocusHost.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11367,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-details-FocusHost.app",
+      "argv": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/FocusHost.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11368,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-verify-FocusUITests-Runner.app",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/FocusUITests-Runner.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11369,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-details-FocusUITests-Runner.app",
+      "argv": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/FocusUITests-Runner.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 11370,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-secure",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/secure.xcresult",
+        "-only-testing:FocusUITests/FocusUITests/testSecureFocus"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 11371,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 65
+      },
+      "exitCode": 65
+    },
+    {
+      "name": "export-attachments-secure",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/secure.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/secure-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 20327,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-secure",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/secure.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 20335,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-text",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/text.xcresult",
+        "-only-testing:FocusUITests/FocusUITests/testTextFocus"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 20338,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "export-attachments-text",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/text.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/text-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 24504,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-text",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/text.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 24507,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-hosts",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/hosts.xcresult",
+        "-only-testing:FocusUITests/FocusUITests/testAllowedHostsFocus"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 24508,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "export-attachments-hosts",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/hosts.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/hosts-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 27786,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-hosts",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/hosts.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 27815,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-passive",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "FocusProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/passive.xcresult",
+        "-only-testing:FocusUITests/FocusUITests/testPassiveDismissal"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 27818,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 65
+      },
+      "exitCode": 65
+    },
+    {
+      "name": "export-attachments-passive",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/passive.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/passive-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 31990,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-passive",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/passive.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 31991,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "compatibility-build-for-testing",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "CompatibilityProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "build-for-testing"
+      ],
+      "timeoutSeconds": 1200,
+      "groupRetirement": {
+        "pgid": 31993,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-verify-compatibility",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/CompatibilityHost.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 33547,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-details-compatibility",
+      "argv": [
+        "codesign",
+        "--display",
+        "--verbose=4",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/CompatibilityHost.app"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 33548,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "signature-verify-compatibility-tests",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData/Build/Products/Debug-iphonesimulator/CompatibilityHost.app/PlugIns/ComposerCompatibilityTests.xctest"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 33549,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-compatibility-external",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "CompatibilityProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-external.xcresult",
+        "-only-testing:ComposerCompatibilityTests/ComposerCompatibilityTests/testExternalReplaceAndClear"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 33550,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "export-attachments-compatibility-external",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-external.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-external-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 35113,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-compatibility-external",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-external.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 35167,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-compatibility-selection",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "CompatibilityProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-selection.xcresult",
+        "-only-testing:ComposerCompatibilityTests/ComposerCompatibilityTests/testCaretAndSelectionEcho"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 35184,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "export-attachments-compatibility-selection",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-selection.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-selection-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 36471,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-compatibility-selection",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-selection.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 36575,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-compatibility-marked",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "CompatibilityProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-marked.xcresult",
+        "-only-testing:ComposerCompatibilityTests/ComposerCompatibilityTests/testMarkedTextRefreshAndCommit"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 36590,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "export-attachments-compatibility-marked",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-marked.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-marked-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 38089,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-compatibility-marked",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-marked.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 38106,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "test-compatibility-focus",
+      "argv": [
+        "xcodebuild",
+        "-project",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/project/FocusProof.xcodeproj",
+        "-scheme",
+        "CompatibilityProof",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "id=4E195492-ABB1-4CD5-A566-9E340AFC912C",
+        "-derivedDataPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/DerivedData",
+        "-clonedSourcePackagesDirPath",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages",
+        "-disableAutomaticPackageResolution",
+        "-onlyUsePackageVersionsFromResolvedFile",
+        "test-without-building",
+        "-parallel-testing-enabled",
+        "NO",
+        "-test-timeouts-enabled",
+        "YES",
+        "-default-test-execution-time-allowance",
+        "120",
+        "-maximum-test-execution-time-allowance",
+        "120",
+        "-resultBundlePath",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-focus.xcresult",
+        "-only-testing:ComposerCompatibilityTests/ComposerCompatibilityTests/testFalseFocusAndDisabled"
+      ],
+      "timeoutSeconds": 240,
+      "groupRetirement": {
+        "pgid": 38112,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "export-attachments-compatibility-focus",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-focus.xcresult",
+        "--output-path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-focus-attachments"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39043,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "summary-compatibility-focus",
+      "argv": [
+        "xcrun",
+        "xcresulttool",
+        "get",
+        "test-results",
+        "summary",
+        "--path",
+        "/Users/runner/work/openclaw/openclaw/evidence/ios-composer-order-comparison/baseline/compatibility-focus.xcresult",
+        "--compact"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39044,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-final-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39045,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-final-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39046,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "source-final-diff",
+      "argv": [
+        "git",
+        "diff",
+        "--binary"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39183,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-0-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/ElevenLabsKit",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39221,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-0-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/ElevenLabsKit",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39234,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-1-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/GRDB.swift",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39242,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-1-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/GRDB.swift",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39246,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-2-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/SwiftMath",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39285,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-2-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/SwiftMath",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39291,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-3-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-cmark",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39297,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-3-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-cmark",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39303,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-4-revision",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-markdown",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39310,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "dependency-completed-4-status",
+      "argv": [
+        "git",
+        "-C",
+        "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-markdown",
+        "status",
+        "--porcelain"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39315,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-shutdown",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "shutdown",
+        "4E195492-ABB1-4CD5-A566-9E340AFC912C"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39323,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-delete",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "delete",
+        "4E195492-ABB1-4CD5-A566-9E340AFC912C"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39629,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    },
+    {
+      "name": "simulator-cleanup-inventory",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "devices",
+        "--json"
+      ],
+      "timeoutSeconds": 120,
+      "groupRetirement": {
+        "pgid": 39717,
+        "gone": true,
+        "signals": [],
+        "leaderExitCode": 0
+      },
+      "exitCode": 0
+    }
+  ],
+  "cases": [
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [
+        {
+          "countdown": "9:34",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": false,
+          "phase": "ready",
+          "submitEnabled": false,
+          "value": "Secret value"
+        },
+        {
+          "countdown": "9:27",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap",
+          "submitEnabled": false,
+          "value": "Secret value"
+        },
+        {
+          "countdown": "9:25",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap-focused",
+          "submitEnabled": false,
+          "value": "Secret value"
+        },
+        {
+          "countdown": "9:23",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "retap",
+          "submitEnabled": false,
+          "value": "Secret value"
+        }
+      ],
+      "outcome": "failed",
+      "phase": "retap-focus",
+      "scenario": "secure",
+      "setupLabelReads": [
+        {
+          "actualLabel": "secure",
+          "elapsedSeconds": 0.20867633333341473,
+          "expectedLabel": "secure",
+          "finishedAt": 790.3763948750001,
+          "matches": true,
+          "startedAt": 790.1677185416667
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 790.37699625,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 789.1332032500001,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2437929999999824,
+          "waitElapsedSeconds": 1.2436702083333557,
+          "waitStartedAt": 789.1333260416667
+        },
+        {
+          "finishedAt": 791.4712210416667,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 790.3926972083334,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.0785238333332927,
+          "waitElapsedSeconds": 1.0784505833332787,
+          "waitStartedAt": 790.3927704583334
+        }
+      ],
+      "classification": "focus-failed"
+    },
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [
+        {
+          "countdown": "9:51",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": false,
+          "phase": "ready",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:42",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:39",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap-focused",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:37",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "retap",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:34",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "post-tick",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:32",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "typed",
+          "submitEnabled": true,
+          "value": "synthetic-focus-probe"
+        }
+      ],
+      "outcome": "passed",
+      "phase": "complete",
+      "scenario": "text",
+      "setupLabelReads": [
+        {
+          "actualLabel": "text",
+          "elapsedSeconds": 0.8089885833333028,
+          "expectedLabel": "text",
+          "finishedAt": 1000.4883360416667,
+          "matches": true,
+          "startedAt": 999.6793474583334
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1000.4886967916667,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 998.6200270833334,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.8686697083333002,
+          "waitElapsedSeconds": 1.868524083333341,
+          "waitStartedAt": 998.6201727083334
+        },
+        {
+          "finishedAt": 1001.6108353333334,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1000.509046,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.101789333333386,
+          "waitElapsedSeconds": 1.101744541666676,
+          "waitStartedAt": 1000.5090907916667
+        },
+        {
+          "finishedAt": 1019.2012598333334,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1017.9827608333334,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2184990000000653,
+          "waitElapsedSeconds": 1.21848229166676,
+          "waitStartedAt": 1017.9827775416667
+        },
+        {
+          "finishedAt": 1023.54840675,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1022.4415627083334,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.1068440416665908,
+          "waitElapsedSeconds": 1.106822166666575,
+          "waitStartedAt": 1022.4415845833335
+        }
+      ],
+      "classification": "passed"
+    },
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [
+        {
+          "countdown": "9:51",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": false,
+          "phase": "ready",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:47",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:45",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap-focused",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:42",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "retap",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:39",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "post-tick",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:37",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "typed",
+          "submitEnabled": false,
+          "value": "api.example.com"
+        },
+        {
+          "countdown": "9:33",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "hosts-post-tick",
+          "submitEnabled": false,
+          "value": "api.example.com"
+        }
+      ],
+      "outcome": "passed",
+      "phase": "complete",
+      "scenario": "hosts",
+      "setupLabelReads": [
+        {
+          "actualLabel": "hosts",
+          "elapsedSeconds": 0.2854686666667021,
+          "expectedLabel": "hosts",
+          "finishedAt": 1075.2377753333335,
+          "matches": true,
+          "startedAt": 1074.9523066666668
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1075.2380680833335,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1073.91996425,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.3181038333334527,
+          "waitElapsedSeconds": 1.3179699166666978,
+          "waitStartedAt": 1073.9200981666668
+        },
+        {
+          "finishedAt": 1076.3834341666668,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1075.2516935,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.1317406666667011,
+          "waitElapsedSeconds": 1.1316835000000083,
+          "waitStartedAt": 1075.2517506666668
+        },
+        {
+          "finishedAt": 1088.6613589583335,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1087.4471110416666,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2142479166668636,
+          "waitElapsedSeconds": 1.2142320833333997,
+          "waitStartedAt": 1087.447126875
+        },
+        {
+          "finishedAt": 1094.2236204166668,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1092.8262240000001,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.397396416666652,
+          "waitElapsedSeconds": 1.3973797500000273,
+          "waitStartedAt": 1092.8262406666668
+        }
+      ],
+      "classification": "passed"
+    },
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [],
+      "outcome": "failed",
+      "phase": "control-draft",
+      "scenario": "passive",
+      "setupLabelReads": [
+        {
+          "actualLabel": "passive",
+          "elapsedSeconds": 0.1897326250000333,
+          "expectedLabel": "passive",
+          "finishedAt": 1160.0579942083334,
+          "matches": true,
+          "startedAt": 1159.8682615833334
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1160.058749625,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1158.8392520416667,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2194975833333501,
+          "waitElapsedSeconds": 1.218972041666575,
+          "waitStartedAt": 1158.8397775833334
+        },
+        {
+          "finishedAt": 1161.1681911666667,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1160.0762308333335,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.0919603333331906,
+          "waitElapsedSeconds": 1.0919034583332632,
+          "waitStartedAt": 1160.0762877083334
+        }
+      ],
+      "classification": "draft-reordered"
+    }
+  ],
+  "diagnosticRecords": [
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [
+        {
+          "countdown": "9:34",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": false,
+          "phase": "ready",
+          "submitEnabled": false,
+          "value": "Secret value"
+        },
+        {
+          "countdown": "9:27",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap",
+          "submitEnabled": false,
+          "value": "Secret value"
+        },
+        {
+          "countdown": "9:25",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap-focused",
+          "submitEnabled": false,
+          "value": "Secret value"
+        },
+        {
+          "countdown": "9:23",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "retap",
+          "submitEnabled": false,
+          "value": "Secret value"
+        }
+      ],
+      "outcome": "failed",
+      "phase": "retap-focus",
+      "scenario": "secure",
+      "setupLabelReads": [
+        {
+          "actualLabel": "secure",
+          "elapsedSeconds": 0.20867633333341473,
+          "expectedLabel": "secure",
+          "finishedAt": 790.3763948750001,
+          "matches": true,
+          "startedAt": 790.1677185416667
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 790.37699625,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 789.1332032500001,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2437929999999824,
+          "waitElapsedSeconds": 1.2436702083333557,
+          "waitStartedAt": 789.1333260416667
+        },
+        {
+          "finishedAt": 791.4712210416667,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 790.3926972083334,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.0785238333332927,
+          "waitElapsedSeconds": 1.0784505833332787,
+          "waitStartedAt": 790.3927704583334
+        }
+      ],
+      "classification": "focus-failed"
+    },
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [
+        {
+          "countdown": "9:51",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": false,
+          "phase": "ready",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:42",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:39",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap-focused",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:37",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "retap",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:34",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "post-tick",
+          "submitEnabled": false,
+          "value": "Other answer"
+        },
+        {
+          "countdown": "9:32",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "typed",
+          "submitEnabled": true,
+          "value": "synthetic-focus-probe"
+        }
+      ],
+      "outcome": "passed",
+      "phase": "complete",
+      "scenario": "text",
+      "setupLabelReads": [
+        {
+          "actualLabel": "text",
+          "elapsedSeconds": 0.8089885833333028,
+          "expectedLabel": "text",
+          "finishedAt": 1000.4883360416667,
+          "matches": true,
+          "startedAt": 999.6793474583334
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1000.4886967916667,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 998.6200270833334,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.8686697083333002,
+          "waitElapsedSeconds": 1.868524083333341,
+          "waitStartedAt": 998.6201727083334
+        },
+        {
+          "finishedAt": 1001.6108353333334,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1000.509046,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.101789333333386,
+          "waitElapsedSeconds": 1.101744541666676,
+          "waitStartedAt": 1000.5090907916667
+        },
+        {
+          "finishedAt": 1019.2012598333334,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1017.9827608333334,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2184990000000653,
+          "waitElapsedSeconds": 1.21848229166676,
+          "waitStartedAt": 1017.9827775416667
+        },
+        {
+          "finishedAt": 1023.54840675,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1022.4415627083334,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.1068440416665908,
+          "waitElapsedSeconds": 1.106822166666575,
+          "waitStartedAt": 1022.4415845833335
+        }
+      ],
+      "classification": "passed"
+    },
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [
+        {
+          "countdown": "9:51",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": false,
+          "phase": "ready",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:47",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:45",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "first-tap-focused",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:42",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "retap",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:39",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "post-tick",
+          "submitEnabled": false,
+          "value": "api.example.com, uploads.example.com"
+        },
+        {
+          "countdown": "9:37",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "typed",
+          "submitEnabled": false,
+          "value": "api.example.com"
+        },
+        {
+          "countdown": "9:33",
+          "fieldEnabled": true,
+          "fieldHittable": true,
+          "keyboard": true,
+          "phase": "hosts-post-tick",
+          "submitEnabled": false,
+          "value": "api.example.com"
+        }
+      ],
+      "outcome": "passed",
+      "phase": "complete",
+      "scenario": "hosts",
+      "setupLabelReads": [
+        {
+          "actualLabel": "hosts",
+          "elapsedSeconds": 0.2854686666667021,
+          "expectedLabel": "hosts",
+          "finishedAt": 1075.2377753333335,
+          "matches": true,
+          "startedAt": 1074.9523066666668
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1075.2380680833335,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1073.91996425,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.3181038333334527,
+          "waitElapsedSeconds": 1.3179699166666978,
+          "waitStartedAt": 1073.9200981666668
+        },
+        {
+          "finishedAt": 1076.3834341666668,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1075.2516935,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.1317406666667011,
+          "waitElapsedSeconds": 1.1316835000000083,
+          "waitStartedAt": 1075.2517506666668
+        },
+        {
+          "finishedAt": 1088.6613589583335,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1087.4471110416666,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2142479166668636,
+          "waitElapsedSeconds": 1.2142320833333997,
+          "waitStartedAt": 1087.447126875
+        },
+        {
+          "finishedAt": 1094.2236204166668,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1092.8262240000001,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.397396416666652,
+          "waitElapsedSeconds": 1.3973797500000273,
+          "waitStartedAt": 1092.8262406666668
+        }
+      ],
+      "classification": "passed"
+    },
+    {
+      "bootstrapError": "none",
+      "foreground": true,
+      "observations": [],
+      "outcome": "failed",
+      "phase": "control-draft",
+      "scenario": "passive",
+      "setupLabelReads": [
+        {
+          "actualLabel": "passive",
+          "elapsedSeconds": 0.1897326250000333,
+          "expectedLabel": "passive",
+          "finishedAt": 1160.0579942083334,
+          "matches": true,
+          "startedAt": 1159.8682615833334
+        }
+      ],
+      "sideEffects": "0",
+      "version": 1,
+      "waitResults": [
+        {
+          "finishedAt": 1160.058749625,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1158.8392520416667,
+          "timeoutSeconds": 3,
+          "totalElapsedSeconds": 1.2194975833333501,
+          "waitElapsedSeconds": 1.218972041666575,
+          "waitStartedAt": 1158.8397775833334
+        },
+        {
+          "finishedAt": 1161.1681911666667,
+          "result": "XCTWaiterResult(rawValue: 1)",
+          "resultRawValue": 1,
+          "startedAt": 1160.0762308333335,
+          "timeoutSeconds": 8,
+          "totalElapsedSeconds": 1.0919603333331906,
+          "waitElapsedSeconds": 1.0919034583332632,
+          "waitStartedAt": 1160.0762877083334
+        }
+      ],
+      "classification": "draft-reordered"
+    }
+  ],
+  "caseOrder": [
+    "secure",
+    "text",
+    "hosts",
+    "passive"
+  ],
+  "attachments": {
+    "secure": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "secure-attachments/0D64B3A4-2D0A-413C-9552-0737C7371FA7",
+          "sha256": "39e986d03f27d3448e97af4369858167d43d253966ac5e490428e5c325a21703"
+        },
+        {
+          "path": "secure-attachments/15C778F3-C652-4B86-907A-8C1AABA19D9B.png",
+          "sha256": "66853df3193b05c56344565bfce5ee5123f824e5477c238187a42f86f85bbc23"
+        },
+        {
+          "path": "secure-attachments/42957192-3200-4117-BC41-3A637C773B91.png",
+          "sha256": "68505758fea2370a83b3bbe1aafc5ae4c5e7dfa72e5635338a3f38ae62f70bf2"
+        },
+        {
+          "path": "secure-attachments/441C133E-2A9A-4902-963C-8374D838C818",
+          "sha256": "6a72fa1672c65635f07919008afe7e3570f9af1b946c5ae49001fc285306b68b"
+        },
+        {
+          "path": "secure-attachments/8E1828D4-C61F-4AC3-B7E1-2F1451CAF474",
+          "sha256": "6a72fa1672c65635f07919008afe7e3570f9af1b946c5ae49001fc285306b68b"
+        },
+        {
+          "path": "secure-attachments/C3E9F6AB-3BA3-434E-9395-88D648F269DD.mp4",
+          "sha256": "f84439a2886bf4c3f6d741c2be767a9b1cdef76d7a63734fec20de45ecd29d5d"
+        },
+        {
+          "path": "secure-attachments/DAF50004-5209-49C9-9A35-C4908371909C",
+          "sha256": "39e986d03f27d3448e97af4369858167d43d253966ac5e490428e5c325a21703"
+        },
+        {
+          "path": "secure-attachments/E9B3D48F-4C8A-4CB0-B124-BE6494847097.txt",
+          "sha256": "8b8da0e894570665d3a7b2cd954fd5ce67511e9097f446f2f6de9db99b759a06"
+        },
+        {
+          "path": "secure-attachments/manifest.json",
+          "sha256": "cf3bb9deebb3818e053deda31d87b5713ead62a177c73c665b79248c9ea20e78"
+        }
+      ]
+    },
+    "text": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "text-attachments/3075283E-F61B-4B3E-8628-A34AB077F7D2.png",
+          "sha256": "a1f9bb2a9c276700aae345970833399541421d8162d168b2802ff5843c761900"
+        },
+        {
+          "path": "text-attachments/50CB1001-B1E8-4CEF-BB3B-BEF8095D3B36.png",
+          "sha256": "e77cbd751a07a8ba8950d6ea8db3ab517c6a2bf45a7affde50788cfc58802f5b"
+        },
+        {
+          "path": "text-attachments/634AD109-E364-4F26-9EF0-0CAE6A345192.png",
+          "sha256": "5ff75c13099faab68207746e2e069322198dfa6df1a75eec7f09b3ef62b882a9"
+        },
+        {
+          "path": "text-attachments/A7B82187-CB16-4423-B2D9-286177E64FC8.txt",
+          "sha256": "461a86aff6c30f28cda2a18cc769ab6506d641997cabdfd0a97282565136c369"
+        },
+        {
+          "path": "text-attachments/manifest.json",
+          "sha256": "14b1ba9eb5bb7d8f634705999534277bb512960eef84ba886ea0ae4646f73f61"
+        }
+      ]
+    },
+    "hosts": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "hosts-attachments/1849ACA2-37E4-4B7B-8094-9D2CCB792A14.png",
+          "sha256": "49309f1ffb89a53dd0ff192d4998ade46dd92894b138568bba1aaafc2fb1f9fa"
+        },
+        {
+          "path": "hosts-attachments/6FB3BBD2-EDCA-4D6F-B1D6-72E6E391EC24.png",
+          "sha256": "e671dd7d89bd5e93cdc37ab6342983f4a0407491cf7f7d35bcb375110c682166"
+        },
+        {
+          "path": "hosts-attachments/977295BB-A769-408D-A381-D4A104962D04.txt",
+          "sha256": "1a2f3af9b4228ed82d68092ce9a7de830e0b976bca5a801b1dc4efe80c03abcb"
+        },
+        {
+          "path": "hosts-attachments/F934A45E-E36D-4706-8067-92B43FF15635.png",
+          "sha256": "139c8c61e06b3fd4b8d0d4b2da2867f4167cbe9ca54a18fabe16f2377ac631dd"
+        },
+        {
+          "path": "hosts-attachments/manifest.json",
+          "sha256": "0d4b3215ca3e339b82d7f7dfc7ddb936154b7135fb7c49205ff65c7c86688586"
+        }
+      ]
+    },
+    "passive": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "passive-attachments/11502722-B736-4194-B82D-9DA5B2D5AD1E.png",
+          "sha256": "a9c4dccbd1d7853515c636fae18709c49992c36e3d28ca70c394e81dc011658f"
+        },
+        {
+          "path": "passive-attachments/1AC3510A-D24C-4E53-8FD9-D4BDDFB06BE8.mp4",
+          "sha256": "e81394f43ce14fe460c225261c1529716b232104d85b1eee6fe676bf5ba2eb91"
+        },
+        {
+          "path": "passive-attachments/31F2851E-CBE3-4515-9955-053350654303.txt",
+          "sha256": "4d860ba4ea46e8b294a223586d26ca5a8859e852dff4d393d088516d934c084c"
+        },
+        {
+          "path": "passive-attachments/42BC0AA4-15A2-428C-8665-918E3BCBAFBB",
+          "sha256": "49ee8ab3c4c17f887ae5054594f5caed416bc221868792b74e96bcf95c86d222"
+        },
+        {
+          "path": "passive-attachments/4C83A633-BD07-453C-94ED-B920C3026C93",
+          "sha256": "d7e50607de6f8b326c27a82116073594a94f4d0205de1c894b51667fadca6acf"
+        },
+        {
+          "path": "passive-attachments/manifest.json",
+          "sha256": "93240850e98227c70f6a093710b39ac5d253b33130e68dc257dccdac34dcf875"
+        }
+      ]
+    },
+    "compatibility-external": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "compatibility-external-attachments/35710CB9-914B-4FA2-A150-2B216EF1ADC3.txt",
+          "sha256": "da208f225631bb8981531d8e57f3e44aec5de8b5190b19645922db4e24dfd9cb"
+        },
+        {
+          "path": "compatibility-external-attachments/43B5B413-2BAB-4493-9C30-D816E55376F2.png",
+          "sha256": "97a65a4f6ab387f40be60542299d6164de6f52851d452c2a8d26fa2650ec369f"
+        },
+        {
+          "path": "compatibility-external-attachments/CF846284-2379-4D80-A500-15FA43142720.png",
+          "sha256": "8c9e3a2d07233e02a1cd062fcfb0f86c68e4d3bbad703fbc889938f7f3ba894c"
+        },
+        {
+          "path": "compatibility-external-attachments/E0E97DBD-43D8-4411-9D9B-4CAA6CC8A2F5.png",
+          "sha256": "8f7b0387dd3a5b242666223143ba0c0c5da736d27855a71ca3c5c37f40bb84d2"
+        },
+        {
+          "path": "compatibility-external-attachments/manifest.json",
+          "sha256": "722013319c20744b2c2ce3eaaff63794e42d033280d4c70d314a2da34acadf54"
+        }
+      ]
+    },
+    "compatibility-selection": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "compatibility-selection-attachments/1B4EB1AD-E190-4375-A032-CE3DC88B91D8.png",
+          "sha256": "8b96972a461ff57e3c557dc71e7c7d2e69ac3f6e09c9e3f2a4db32d05c00a688"
+        },
+        {
+          "path": "compatibility-selection-attachments/363246AE-124E-4D3C-88E5-DC1D53EBFB09.png",
+          "sha256": "98166700e66390a824cce7b0f670f18d9798c6ecdcd652f3432f8ea404eca192"
+        },
+        {
+          "path": "compatibility-selection-attachments/54750AEE-CCC2-4F4A-8C7B-D9052F314386.png",
+          "sha256": "6b842fdfde963fb4766d77193ea799d8ca10b9b690b976b80a45c76f1117e480"
+        },
+        {
+          "path": "compatibility-selection-attachments/812D2277-8140-46A8-A86B-0946BCEB70ED.png",
+          "sha256": "8686ea8f4c075d23e17143d8014663f6e53b1448f52b2a3c3593da374988d130"
+        },
+        {
+          "path": "compatibility-selection-attachments/B99FBB41-173C-4453-ADC0-44D011173B80.txt",
+          "sha256": "207de65b16ac1922270f446f57ee07e43aed5ca422bf48aa051036984dc82df2"
+        },
+        {
+          "path": "compatibility-selection-attachments/C3F70028-3EA2-4861-9D84-01AFCAF93ED4.png",
+          "sha256": "455b64ed055b1a4c0225e786f3edd31f2fdedf52f1c5c8ce86d51f1a7666adac"
+        },
+        {
+          "path": "compatibility-selection-attachments/manifest.json",
+          "sha256": "270a74c0f1a2f1edd6c324f0c7e332bc4d769f5617b3835d89618b5de60cdc96"
+        }
+      ]
+    },
+    "compatibility-marked": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "compatibility-marked-attachments/57E25E43-DD55-49BD-84DE-3543B7199375.png",
+          "sha256": "6ed65e7b4b5ebecc0f63e0efb037e699dd7e4e644fb57c5ca181d0fd01793717"
+        },
+        {
+          "path": "compatibility-marked-attachments/B5FDCBB7-36CA-4DC9-83D4-0A8EB2BDE6CB.txt",
+          "sha256": "1d5b91b739ec1ae9194434019912160adfa413cff9bd1df56f2bb83f51ba5e23"
+        },
+        {
+          "path": "compatibility-marked-attachments/CAD9DDE0-AC85-4C18-9941-AE42A2E1CE9B.png",
+          "sha256": "5e1a8a722be9bb3bcc8f372b6d9a423243d740983263210a64c7c8d38fdd809b"
+        },
+        {
+          "path": "compatibility-marked-attachments/CEFA42EE-61B6-4281-973D-F4AEBDF2FBD5.png",
+          "sha256": "f32873a850d4e690cc86557fdf41e31ec23385d770bbc488f82d899ff1f549dc"
+        },
+        {
+          "path": "compatibility-marked-attachments/FEBED087-59F2-40A2-A23D-AF2F741A18DD.png",
+          "sha256": "93a887789d27bc39f1fed82bde120020a9409ac7d9a8b6c67ffda7810e25f508"
+        },
+        {
+          "path": "compatibility-marked-attachments/manifest.json",
+          "sha256": "7eafb40148d87543b1f10e3085088c2f216b64f866b824afea022c4d0bf543a8"
+        }
+      ]
+    },
+    "compatibility-focus": {
+      "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+      "mode": "baseline",
+      "ownerSha256": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+      "compatibilitySourceHashes": {
+        "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+        "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+      },
+      "hostSha256": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+      "uiTestsSha256": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+      "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+      "files": [
+        {
+          "path": "compatibility-focus-attachments/16E1A89F-C5A1-463F-B921-21DFD3B9C835.png",
+          "sha256": "3788ebabf773e30338ca137e994a5767a05a3088a09b3c02f5607c2bb82587fb"
+        },
+        {
+          "path": "compatibility-focus-attachments/17E98803-3AE1-45DD-975D-85790D2958B0.png",
+          "sha256": "38a909478cc89e8c80112a5b7b9e11f3c3179e9fdc70155c507ecc6345cbc150"
+        },
+        {
+          "path": "compatibility-focus-attachments/28FCFDE1-FB8E-45A2-981C-695E9B3B85D5.txt",
+          "sha256": "d2f0d321bb90d2bbc62eb4a8dd5cca48c65791468330ece97a5aed9f1ea3fd55"
+        },
+        {
+          "path": "compatibility-focus-attachments/85D7AAD5-3EAE-4047-A9E2-6FFC6D0D26B1.png",
+          "sha256": "d23289a39d157cde3d2b1917da6463d89efea31d48eee1a1e13f76a9e4122d26"
+        },
+        {
+          "path": "compatibility-focus-attachments/A0A322AB-9969-42A4-ADE9-119F6CF36C2D.png",
+          "sha256": "416508a90b155bb5ecf3085e1d64e1fde6d458667c913a4024f4334d4596839a"
+        },
+        {
+          "path": "compatibility-focus-attachments/manifest.json",
+          "sha256": "97a3fc638cdd7d4e9decf8191c08ceb3e3db5d6789295a5e28243ecee3b6e94e"
+        }
+      ]
+    }
+  },
+  "compatibility": [
+    {
+      "bundleID": "org.openclaw.tests.composercompat",
+      "outcome": "passed",
+      "phase": "complete",
+      "pid": 34173,
+      "scenario": "external",
+      "snapshots": [
+        {
+          "binding": "draft",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "mounted",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "5",
+          "text": "draft"
+        },
+        {
+          "binding": "replacement!",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "replaced-and-edited",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "12",
+          "text": "replacement!"
+        },
+        {
+          "binding": "x",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "cleared-and-edited",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "1",
+          "text": "x"
+        }
+      ],
+      "version": 1,
+      "classification": "passed"
+    },
+    {
+      "bundleID": "org.openclaw.tests.composercompat",
+      "outcome": "passed",
+      "phase": "complete",
+      "pid": 35624,
+      "scenario": "selection",
+      "snapshots": [
+        {
+          "binding": "abcde",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "mounted",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "5",
+          "text": "abcde"
+        },
+        {
+          "binding": "abcdef",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "caret-after-refresh",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "2",
+          "text": "abcdef"
+        },
+        {
+          "binding": "abXcdef",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "caret-after-insertion",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "3",
+          "text": "abXcdef"
+        },
+        {
+          "binding": "abcdef",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "selection-after-refresh",
+          "selectable": true,
+          "selectedLength": "3",
+          "selectedLocation": "1",
+          "text": "abcdef"
+        },
+        {
+          "binding": "aYef",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "selection-after-replacement",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "2",
+          "text": "aYef"
+        }
+      ],
+      "version": 1,
+      "classification": "passed"
+    },
+    {
+      "bundleID": "org.openclaw.tests.composercompat",
+      "outcome": "passed",
+      "phase": "complete",
+      "pid": 37065,
+      "scenario": "marked",
+      "snapshots": [
+        {
+          "binding": "ab",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "mounted",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "2",
+          "text": "ab"
+        },
+        {
+          "binding": "a\u306bb",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "1",
+          "markedLocation": "1",
+          "phase": "marked-before-refresh",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "2",
+          "text": "a\u306bb"
+        },
+        {
+          "binding": "a\u306bb",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "1",
+          "markedLocation": "1",
+          "phase": "marked-after-refresh",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "2",
+          "text": "a\u306bb"
+        },
+        {
+          "binding": "a\u306b!b",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "committed-and-edited",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "3",
+          "text": "a\u306b!b"
+        }
+      ],
+      "version": 1,
+      "classification": "passed"
+    },
+    {
+      "bundleID": "org.openclaw.tests.composercompat",
+      "outcome": "passed",
+      "phase": "complete",
+      "pid": 38269,
+      "scenario": "focus",
+      "snapshots": [
+        {
+          "binding": "draft",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "mounted",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "5",
+          "text": "draft"
+        },
+        {
+          "binding": "draft",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "false-focus-request",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "5",
+          "text": "draft"
+        },
+        {
+          "binding": "draft",
+          "editable": false,
+          "firstResponder": false,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "disabled",
+          "selectable": false,
+          "selectedLength": "0",
+          "selectedLocation": "5",
+          "text": "draft"
+        },
+        {
+          "binding": "draft!",
+          "editable": true,
+          "firstResponder": true,
+          "markedLength": "none",
+          "markedLocation": "none",
+          "phase": "refocused-and-edited",
+          "selectable": true,
+          "selectedLength": "0",
+          "selectedLocation": "6",
+          "text": "draft!"
+        }
+      ],
+      "version": 1,
+      "classification": "passed"
+    }
+  ],
+  "finalBindingVerified": true,
+  "effectiveSourceHashes": {
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatView.swift": "a9e5305867e98cecb82516798b7d674134a0ea50e538afda852449bf5cc2baa2",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatQuestionCard.swift": "76ec6582ef8b1a62edf5f98a383531a28bb8114b2ff10cf1da8ae15bff500f3b",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel.swift": "f28841a1287e1a856ed8b65a1db9bda403cc32d7e0e8f199b15de75e36211ae5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatTransport.swift": "07c701188af2f03f566f44c2b011db241d6637aef652467993cf47dc5e9867a7",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel+TransportEvents.swift": "400a05c4baa02fc20b1fa5c089c12ef36fa76b20eb3880b68eff09f2e9012e7f",
+    "apps/shared/OpenClawKit/Package.swift": "8a25894b16af18d1d9fd1e587ee6ce5e0265a4e168c540c734d552040dc5f2bd",
+    "apps/shared/OpenClawKit/Tests/OpenClawKitTests/ChatComposerParityTests.swift": "41299c903d3c6a863eac0da1606a998ac71c96851b7321534e375700db8066a4",
+    "apps/ios/Sources/Design/ChatProTab.swift": "e72f3ec1c3306637e7c2fa231b4ceb8224042556b76ecbfb0831f070e7c88c01",
+    "apps/ios/Tests/SwiftUIRenderSmokeTests.swift": "32d048a2e624ff8c06bf8127f12a158b38e344cf576bdb5f726212fcb257cdba",
+    "apps/ios/UITests/OpenClawSnapshotUITests.swift": "e65f0d807d7c365d559fbf4e0160afd5fe4fd49bc5e85ab620e8f06ab7edc855",
+    "apps/ios/project.yml": "b5bdd8b8679a895370c01e1e9db4abbde9ecb30452a48a55512d4250a1a0ee32",
+    ".github/workflows/ci.yml": "059b16b2ee3cf56207571e53b32358b0c707cf8b93a7b6f040eafe5b604a0851",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatSessions.swift": "c1a0cf57cac6cda7b4e68b27215d245a460e8fe6e3c972f4bf9bef26bef1666d",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatModels.swift": "7a9e9edcf2cd54feb59ca0623222cda3102324cfff880c34fc20e130a92150f5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposer.swift": "9ce90edff690146dde6b16b4fc5b8a9047b4227f46e64f04b37387e0c5e8ca11",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposerTextViewIOS.swift": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+    "scripts/prepare-apple-mermaid.mjs": "0e914c41fec9dce2dfcffcf774a0c6f121b43044176e930c15b7cc7033f7384b",
+    "scripts/install-xcodegen.sh": "f6f16d0fa85e57bc6579e523f0f47c60e82c7a8b585609cdfacd34394aedf811",
+    "package.json": "380f37efd466e4e438cb2258c78b06df3df55abfc4af7dec6e7eb07f1ea2608d"
+  },
+  "dependencyPins": [
+    {
+      "identity": "elevenlabskit",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/steipete/ElevenLabsKit",
+      "state": {
+        "revision": "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b",
+        "version": "0.1.1"
+      }
+    },
+    {
+      "identity": "grdb.swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/groue/GRDB.swift.git",
+      "state": {
+        "revision": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+        "version": "7.11.1"
+      }
+    },
+    {
+      "identity": "swift-cmark",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/swiftlang/swift-cmark.git",
+      "state": {
+        "revision": "924936d0427cb25a61169739a7660230bffa6ea6",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "identity": "swift-markdown",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/swiftlang/swift-markdown",
+      "state": {
+        "revision": "3c6f9523da3a1ec2fd829673e472d95b8097a3b8",
+        "version": "0.8.0"
+      }
+    },
+    {
+      "identity": "swiftmath",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/mgriebling/SwiftMath",
+      "state": {
+        "revision": "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7",
+        "version": "1.7.3"
+      }
+    }
+  ],
+  "admittedOriginalHostSourceHashes": {
+    "Host/FocusHost.swift": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+    "UITests/FocusUITests.swift": "bbf2fe54aba293f8112bc6b61701d47bcb2dd6dd1b82951238bf239496488038",
+    "project.template.yml": "f8b51eb78ee627acca9ea64ef593a31638c3bab441f9fe814000febcca7bc2bc"
+  },
+  "hostSourceHashes": {
+    "Host/FocusHost.swift": "bc62a376981341e4d9a6cb251f1a5f6f6853144721178d9c3e2c82f41b1518a0",
+    "UITests/FocusUITests.swift": "2b134e5b5a944398bc802a3ed6e6ddd52ef99935a421c1435877f20fd178f26e",
+    "project.template.yml": "bf6960e77d9087b72e919f69dca39a5667d3388c0f3908ab82a441d2bbba2195"
+  },
+  "sourceHashes": {
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatView.swift": "a9e5305867e98cecb82516798b7d674134a0ea50e538afda852449bf5cc2baa2",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatQuestionCard.swift": "76ec6582ef8b1a62edf5f98a383531a28bb8114b2ff10cf1da8ae15bff500f3b",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel.swift": "f28841a1287e1a856ed8b65a1db9bda403cc32d7e0e8f199b15de75e36211ae5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatTransport.swift": "07c701188af2f03f566f44c2b011db241d6637aef652467993cf47dc5e9867a7",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatViewModel+TransportEvents.swift": "400a05c4baa02fc20b1fa5c089c12ef36fa76b20eb3880b68eff09f2e9012e7f",
+    "apps/shared/OpenClawKit/Package.swift": "8a25894b16af18d1d9fd1e587ee6ce5e0265a4e168c540c734d552040dc5f2bd",
+    "apps/shared/OpenClawKit/Tests/OpenClawKitTests/ChatComposerParityTests.swift": "41299c903d3c6a863eac0da1606a998ac71c96851b7321534e375700db8066a4",
+    "apps/ios/Sources/Design/ChatProTab.swift": "e72f3ec1c3306637e7c2fa231b4ceb8224042556b76ecbfb0831f070e7c88c01",
+    "apps/ios/Tests/SwiftUIRenderSmokeTests.swift": "32d048a2e624ff8c06bf8127f12a158b38e344cf576bdb5f726212fcb257cdba",
+    "apps/ios/UITests/OpenClawSnapshotUITests.swift": "e65f0d807d7c365d559fbf4e0160afd5fe4fd49bc5e85ab620e8f06ab7edc855",
+    "apps/ios/project.yml": "b5bdd8b8679a895370c01e1e9db4abbde9ecb30452a48a55512d4250a1a0ee32",
+    ".github/workflows/ci.yml": "059b16b2ee3cf56207571e53b32358b0c707cf8b93a7b6f040eafe5b604a0851",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatSessions.swift": "c1a0cf57cac6cda7b4e68b27215d245a460e8fe6e3c972f4bf9bef26bef1666d",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatModels.swift": "7a9e9edcf2cd54feb59ca0623222cda3102324cfff880c34fc20e130a92150f5",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposer.swift": "9ce90edff690146dde6b16b4fc5b8a9047b4227f46e64f04b37387e0c5e8ca11",
+    "apps/shared/OpenClawKit/Sources/OpenClawChatUI/ChatComposerTextViewIOS.swift": "968ff5be45f09a7eee9ed500fada1aa90c23d22cd75163daa895a5d95b2d749a",
+    "scripts/prepare-apple-mermaid.mjs": "0e914c41fec9dce2dfcffcf774a0c6f121b43044176e930c15b7cc7033f7384b",
+    "scripts/install-xcodegen.sh": "f6f16d0fa85e57bc6579e523f0f47c60e82c7a8b585609cdfacd34394aedf811",
+    "package.json": "380f37efd466e4e438cb2258c78b06df3df55abfc4af7dec6e7eb07f1ea2608d"
+  },
+  "packetSha256": "61de13890d250a379488aec667ed54502a2ff30a983d2138af7310575191db45",
+  "compatibilitySourceHashes": {
+    "CompatibilityHost/CompatibilityHost.swift": "7f3cd6a2e70da92d66bf6994d5de6a10dc71533dc3eaf3c64edd9b9623c6f947",
+    "CompatibilityTests/ComposerCompatibilityTests.swift": "e1853f796c73bb88d78df5f8fbe137a2fd2387068fcffc4e5b2dcbb4c664f7b1"
+  },
+  "runtime": {
+    "isAvailable": true,
+    "version": "26.5",
+    "isInternal": false,
+    "buildversion": "23F77",
+    "supportedArchitectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "supportedDeviceTypes": [
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17 Pro.simdevicetype",
+        "name": "iPhone 17 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17 Pro Max.simdevicetype",
+        "name": "iPhone 17 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17e.simdevicetype",
+        "name": "iPhone 17e",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17e",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone Air.simdevicetype",
+        "name": "iPhone Air",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-Air",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17.simdevicetype",
+        "name": "iPhone 17",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16 Pro.simdevicetype",
+        "name": "iPhone 16 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16 Pro Max.simdevicetype",
+        "name": "iPhone 16 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16e.simdevicetype",
+        "name": "iPhone 16e",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16e",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16.simdevicetype",
+        "name": "iPhone 16",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 16 Plus.simdevicetype",
+        "name": "iPhone 16 Plus",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Plus",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15 Pro.simdevicetype",
+        "name": "iPhone 15 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15 Pro Max.simdevicetype",
+        "name": "iPhone 15 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15.simdevicetype",
+        "name": "iPhone 15",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 15 Plus.simdevicetype",
+        "name": "iPhone 15 Plus",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Plus",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Pro.simdevicetype",
+        "name": "iPhone 14 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Pro Max.simdevicetype",
+        "name": "iPhone 14 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14.simdevicetype",
+        "name": "iPhone 14",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Plus.simdevicetype",
+        "name": "iPhone 14 Plus",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Plus",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (3rd generation).simdevicetype",
+        "name": "iPhone SE (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 Pro.simdevicetype",
+        "name": "iPhone 13 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 Pro Max.simdevicetype",
+        "name": "iPhone 13 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13.simdevicetype",
+        "name": "iPhone 13",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 mini.simdevicetype",
+        "name": "iPhone 13 mini",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-13-mini",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 Pro.simdevicetype",
+        "name": "iPhone 12 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 Pro Max.simdevicetype",
+        "name": "iPhone 12 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12.simdevicetype",
+        "name": "iPhone 12",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 mini.simdevicetype",
+        "name": "iPhone 12 mini",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-12-mini",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (2nd generation).simdevicetype",
+        "name": "iPhone SE (2nd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE--2nd-generation-",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11 Pro.simdevicetype",
+        "name": "iPhone 11 Pro",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11 Pro Max.simdevicetype",
+        "name": "iPhone 11 Pro Max",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11.simdevicetype",
+        "name": "iPhone 11",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+        "productFamily": "iPhone"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M5) (16GB).simdevicetype",
+        "name": "iPad Pro 13-inch (M5) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M5).simdevicetype",
+        "name": "iPad Pro 13-inch (M5)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-12GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M5) (16GB).simdevicetype",
+        "name": "iPad Pro 11-inch (M5) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M5).simdevicetype",
+        "name": "iPad Pro 11-inch (M5)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5-12GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M4) (16GB).simdevicetype",
+        "name": "iPad Pro 11-inch (M4) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M4-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 11-inch (M4).simdevicetype",
+        "name": "iPad Pro 11-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M4-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M4) (16GB).simdevicetype",
+        "name": "iPad Pro 13-inch (M4) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro 13-inch (M4).simdevicetype",
+        "name": "iPad Pro 13-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 13-inch (M4).simdevicetype",
+        "name": "iPad Air 13-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-13-inch-M4",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 11-inch (M4).simdevicetype",
+        "name": "iPad Air 11-inch (M4)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-11-inch-M4",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (A16).simdevicetype",
+        "name": "iPad (A16)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-A16",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 13-inch (M3).simdevicetype",
+        "name": "iPad Air 13-inch (M3)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-13-inch-M3",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 11-inch (M3).simdevicetype",
+        "name": "iPad Air 11-inch (M3)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-11-inch-M3",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 11-inch (M2).simdevicetype",
+        "name": "iPad Air 11-inch (M2)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-11-inch-M2",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air 13-inch (M2).simdevicetype",
+        "name": "iPad Air 13-inch (M2)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-13-inch-M2",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad mini (A17 Pro).simdevicetype",
+        "name": "iPad mini (A17 Pro)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini-A17-Pro",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (4th generation) (16GB).simdevicetype",
+        "name": "iPad Pro (11-inch) (4th generation) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-4th-generation-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (4th generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (4th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-4th-generation-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (6th generation) (16GB).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (6th generation) (16GB)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-12-9-inch-6th-generation-16GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (6th generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (6th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-12-9-inch-6th-generation-8GB",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (10th generation).simdevicetype",
+        "name": "iPad (10th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-10th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air (5th generation).simdevicetype",
+        "name": "iPad Air (5th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air-5th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad mini (6th generation).simdevicetype",
+        "name": "iPad mini (6th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini-6th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (3rd generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-3rd-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (5th generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (5th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-12-9-inch-5th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (9th generation).simdevicetype",
+        "name": "iPad (9th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-9th-generation",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air (4th generation).simdevicetype",
+        "name": "iPad Air (4th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air--4th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad (8th generation).simdevicetype",
+        "name": "iPad (8th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad--8th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Air (3rd generation).simdevicetype",
+        "name": "iPad Air (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Air--3rd-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad mini (5th generation).simdevicetype",
+        "name": "iPad mini (5th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini--5th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (2nd generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (2nd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--11-inch---2nd-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (4th generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (4th generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--12-9-inch---4th-generation-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (11-inch) (1st generation).simdevicetype",
+        "name": "iPad Pro (11-inch) (1st generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--11-inch-",
+        "productFamily": "iPad"
+      },
+      {
+        "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPad Pro (12.9-inch) (3rd generation).simdevicetype",
+        "name": "iPad Pro (12.9-inch) (3rd generation)",
+        "identifier": "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--12-9-inch---3rd-generation-",
+        "productFamily": "iPad"
+      }
+    ],
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "platform": "iOS",
+    "bundlePath": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime",
+    "runtimeRoot": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot",
+    "lastUsage": {
+      "arm64": "0001-01-01T00:00:00Z",
+      "x86_64": "0001-01-01T00:00:00Z"
+    },
+    "name": "iOS 26.5"
+  },
+  "deviceType": {
+    "productFamily": "iPhone",
+    "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 17 Pro.simdevicetype",
+    "maxRuntimeVersion": 4294967295,
+    "maxRuntimeVersionString": "65535.255.255",
+    "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+    "modelIdentifier": "iPhone18,1",
+    "minRuntimeVersionString": "26.0.0",
+    "minRuntimeVersion": 1703936,
+    "name": "iPhone 17 Pro"
+  },
+  "simulatorUDID": "4E195492-ABB1-4CD5-A566-9E340AFC912C",
+  "generatedProjectHashes": {
+    "FocusProof.xcodeproj/project.pbxproj": "bdfd43991db139f0d03bcdeec2f97af1dc0e4d15a3dcec94a88fbe3816eb2dff",
+    "FocusProof.xcodeproj/project.xcworkspace/contents.xcworkspacedata": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f",
+    "FocusProof.xcodeproj/xcshareddata/xcschemes/CompatibilityProof.xcscheme": "9f9d7d02c35e7047635c7e4eb392c8c9778864fb6cc300f7e477c9b0c4e6c59d",
+    "FocusProof.xcodeproj/xcshareddata/xcschemes/FocusProof.xcscheme": "70bae0f8e964b8f5b406f4d64af15e2f386025b93e8147f2c3a2ea5e1a9b63e4"
+  },
+  "resolvedSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "resolvedPackages": {
+    "originHash": "4805b7bdf0b862d3719df1e11ba9fb2c8231d1d5b75ecf4d6a7e4d322245d44c",
+    "pins": [
+      {
+        "identity": "elevenlabskit",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/steipete/ElevenLabsKit",
+        "state": {
+          "revision": "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "identity": "grdb.swift",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/groue/GRDB.swift.git",
+        "state": {
+          "revision": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+          "version": "7.11.1"
+        }
+      },
+      {
+        "identity": "swift-cmark",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/swiftlang/swift-cmark.git",
+        "state": {
+          "revision": "924936d0427cb25a61169739a7660230bffa6ea6",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "identity": "swift-markdown",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/swiftlang/swift-markdown",
+        "state": {
+          "revision": "3c6f9523da3a1ec2fd829673e472d95b8097a3b8",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "identity": "swiftmath",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/mgriebling/SwiftMath",
+        "state": {
+          "revision": "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7",
+          "version": "1.7.3"
+        }
+      }
+    ],
+    "version": 3
+  },
+  "projectLockPath": "project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+  "dependencyCheckoutChecks": {
+    "built": {
+      "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b": {
+        "identity": "elevenlabskit",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/ElevenLabsKit"
+      },
+      "b83108d10f42680d78f23fe4d4d80fc88dab3212": {
+        "identity": "grdb.swift",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/GRDB.swift"
+      },
+      "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7": {
+        "identity": "swiftmath",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/SwiftMath"
+      },
+      "924936d0427cb25a61169739a7660230bffa6ea6": {
+        "identity": "swift-cmark",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-cmark"
+      },
+      "3c6f9523da3a1ec2fd829673e472d95b8097a3b8": {
+        "identity": "swift-markdown",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-markdown"
+      }
+    },
+    "completed": {
+      "0f1e4c039bd0e22b03c0cb7f43c00c1865858f0b": {
+        "identity": "elevenlabskit",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/ElevenLabsKit"
+      },
+      "b83108d10f42680d78f23fe4d4d80fc88dab3212": {
+        "identity": "grdb.swift",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/GRDB.swift"
+      },
+      "fa8244ed032f4a1ade4cb0571bf87d2f1a9fd2d7": {
+        "identity": "swiftmath",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/SwiftMath"
+      },
+      "924936d0427cb25a61169739a7660230bffa6ea6": {
+        "identity": "swift-cmark",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-cmark"
+      },
+      "3c6f9523da3a1ec2fd829673e472d95b8097a3b8": {
+        "identity": "swift-markdown",
+        "checkout": "/Users/runner/work/_temp/focus136179-227c4d151d2c44a382bbfc3cf2400e80/SourcePackages/checkouts/swift-markdown"
+      }
+    }
+  },
+  "verdict": "Completed native observations; comparison owns acceptance",
+  "installedLockSha256": "65a6c7259f2012d6cad33d2386b94fa653ce1080ead2015f858d8d1ae3648a0d",
+  "commandGroupRetirementVerified": true,
+  "exitCode": 0
+}
