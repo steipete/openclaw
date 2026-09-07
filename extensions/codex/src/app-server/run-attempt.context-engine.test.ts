@@ -12,7 +12,10 @@ import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
 import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
 import { initializeGlobalHookRunner } from "openclaw/plugin-sdk/hook-runtime";
 import { MESSAGE_TOOL_DELIVERY_HINTS } from "openclaw/plugin-sdk/message-tool-delivery-hints";
-import { createMockPluginRegistry } from "openclaw/plugin-sdk/plugin-test-runtime";
+import {
+  createMockPluginRegistry,
+  loadUserTurnTranscriptRecorderFactoryForTest,
+} from "openclaw/plugin-sdk/plugin-test-runtime";
 import { registerSandboxBackend } from "openclaw/plugin-sdk/sandbox";
 import { upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
 import { readSessionTranscriptEvents } from "openclaw/plugin-sdk/session-transcript-runtime";
@@ -25,6 +28,7 @@ import { readAttemptTerminal } from "./attempt-terminal.test-helper.js";
 import { shouldEnableCodexAppServerNativeToolSurface } from "./dynamic-tool-build.js";
 import {
   assistantMessage,
+  bindProductionHarnessHostCapabilitiesForTest,
   createParams as createSharedParams,
   createStartedThreadHarness as createSharedStartedThreadHarness,
   runCodexAppServerAttempt as runSharedCodexAppServerAttempt,
@@ -108,14 +112,13 @@ async function createSqliteParams(workspaceDir: string, storeName: string) {
     sessionKey,
     storePath,
   };
-  const message = userMessage("hello", Date.now());
-  params.userTurnTranscriptRecorder = {
-    message,
-    resolveMessage: async () => message,
-    markRuntimePersisted() {},
-    getAdmissionReceipt: () => undefined,
-  } as EmbeddedRunAttemptParams["userTurnTranscriptRecorder"];
-  return { ...params, sessionTarget };
+  const createUserTurnTranscriptRecorder = await loadUserTurnTranscriptRecorderFactoryForTest();
+  const userTurnTranscriptRecorder = createUserTurnTranscriptRecorder({
+    message: userMessage(params.prompt, Date.now()),
+    target: { ...sessionTarget, sessionEntry: undefined },
+    beforeMessageWrite: ({ message }) => message,
+  });
+  return { ...params, agentId: "main", sessionTarget, userTurnTranscriptRecorder };
 }
 
 const DISABLED_CODEX_WEB_SEARCH_THREAD_CONFIG_FINGERPRINT = JSON.stringify({
@@ -2046,11 +2049,6 @@ describe("runCodexAppServerAttempt context-engine lifecycle", () => {
     const workspaceDir = path.join(tempDir, "workspace-early-async");
     const params = await createSqliteParams(workspaceDir, "early-async-order");
     params.onBlockReply = vi.fn();
-    const recorder = params.userTurnTranscriptRecorder;
-    if (!recorder) {
-      throw new Error("expected user turn transcript recorder");
-    }
-    recorder.markRuntimePersistencePending = vi.fn();
     const harness = createStartedThreadHarness(async (method) => {
       if (method === "turn/start") {
         await harness.notify({
@@ -2112,13 +2110,8 @@ describe("runCodexAppServerAttempt context-engine lifecycle", () => {
       source.appendMessage(userMessage("prior question", 1));
       const retainedId = source.appendMessage(assistantMessage("retained answer", 2));
       if (admitted) {
-        const appended = source.appendMessageWithTranscriptAnchor(userMessage(params.prompt, 3));
-        const recorder = params.userTurnTranscriptRecorder;
-        if (!appended.anchor || !recorder) {
-          throw new Error("expected the fixture's current-turn admission");
-        }
-        const receipt = { ...appended.anchor, role: "user" as const, logicalTurnId: params.runId };
-        recorder.getAdmissionReceipt = () => receipt;
+        const persisted = await params.userTurnTranscriptRecorder.persistApproved();
+        expect(persisted?.admission).toBeDefined();
       }
       const read = vi.spyOn(SessionManager, "openModelContextAsync");
       const contextEngine = createContextEngine({
@@ -2136,6 +2129,9 @@ describe("runCodexAppServerAttempt context-engine lifecycle", () => {
       params.contextEngine = contextEngine;
       const harness = createStartedThreadHarness();
 
+      if (admitted) {
+        await bindProductionHarnessHostCapabilitiesForTest(params);
+      }
       const run = runCodexAppServerAttempt(params);
       await harness.waitForMethod("turn/start");
 
@@ -2168,7 +2164,16 @@ describe("runCodexAppServerAttempt context-engine lifecycle", () => {
       }
 
       await harness.completeTurn();
-      await run;
+      const result = await run;
+      expect(result.assistantTexts).toContain("final answer");
+      await params.userTurnTranscriptRecorder.waitForRuntimePersistence();
+      if (admitted) {
+        expect(params.userTurnTranscriptRecorder.getPersistedMessage?.()?.__openclaw).toMatchObject(
+          {
+            mirrorIdentity: "turn-1:prompt",
+          },
+        );
+      }
     },
   );
 
