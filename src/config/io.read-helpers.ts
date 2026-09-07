@@ -2,12 +2,12 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { asOptionalRecord, isRecord } from "@openclaw/normalization-core/record-coerce";
 import JSON5 from "json5";
 import { loadDotEnv } from "../infra/dotenv.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { collectErrorGraphCandidates, extractErrorCode } from "../infra/errors.js";
 import { resolveRequiredHomeDir } from "../infra/home-dir.js";
-import { isRecord } from "../utils.js";
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import {
   applyConfigEnvVars,
@@ -30,6 +30,7 @@ import {
 } from "./includes.js";
 import type { ConfigIoDeps, NormalizedConfigIoDeps, ParseConfigJson5Result } from "./io.types.js";
 import { resolveConfigPath, resolveIncludeRoots, resolveStateDir } from "./paths.js";
+import { createConfigResolutionFacts, type ConfigResolutionFacts } from "./resolution-facts.js";
 import { getRuntimeConfigSourceSnapshot } from "./runtime-snapshot.js";
 import type { OpenClawConfig } from "./types.js";
 
@@ -59,10 +60,7 @@ export function resolveConfigSnapshotHash(snapshot: {
 }
 
 export function coerceConfig(value: unknown): OpenClawConfig {
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
-    return {};
-  }
-  return value as OpenClawConfig;
+  return (asOptionalRecord(value) ?? {}) as OpenClawConfig;
 }
 
 export function hasConfigMeta(value: unknown): boolean {
@@ -82,6 +80,47 @@ export function resolveGatewayMode(value: unknown): string | null {
   }
   const trimmed = gateway.mode.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+export function visitConfigValueTree(
+  value: unknown,
+  visit: (candidate: unknown, path: readonly string[]) => boolean,
+  rootPath: readonly string[] = [],
+): void {
+  type Frame = { kind: "leave" } | { kind: "visit"; value: unknown; key?: string };
+  const currentPath = [...rootPath];
+  const pending: Frame[] = [{ kind: "visit", value }];
+  while (pending.length > 0) {
+    const frame = pending.pop()!;
+    if (frame.kind === "leave") {
+      currentPath.pop();
+      continue;
+    }
+    if (frame.key !== undefined) {
+      currentPath.push(frame.key);
+      pending.push({ kind: "leave" });
+    }
+    if (!visit(frame.value, currentPath)) {
+      continue;
+    }
+    const entries =
+      Array.isArray(frame.value) || isRecord(frame.value) ? Object.entries(frame.value) : [];
+    for (let index = entries.length - 1; index >= 0; index -= 1) {
+      const [key, child] = entries[index]!;
+      pending.push({ kind: "visit", key, value: child });
+    }
+  }
+}
+
+export function rejectConfigNonFiniteNumbers(value: unknown): void {
+  visitConfigValueTree(value, (candidate) => {
+    if (typeof candidate === "number") {
+      if (!Number.isFinite(candidate)) {
+        throw new Error(`Value must be a finite number, got ${String(candidate)}`);
+      }
+    }
+    return true;
+  });
 }
 
 export function collectEnvRefPaths(
@@ -300,6 +339,7 @@ type ConfigReadResolution = {
   resolvedConfigRaw: unknown;
   envSnapshotForRestore: Record<string, string | undefined>;
   envWarnings: EnvSubstitutionWarning[];
+  resolutionFacts: ConfigResolutionFacts;
 };
 
 export function resolveConfigForRead(
@@ -311,12 +351,23 @@ export function resolveConfigForRead(
     applyConfigEnvVars(resolvedIncludes as OpenClawConfig, env, { lowerPrecedenceEnv });
   }
   const envWarnings: EnvSubstitutionWarning[] = [];
+  const pendingEnvSecretRefs = new Map<string, string>();
+  const resolvedEnvSecretRefs = new Map<string, string>();
+  const resolvedConfigRaw = resolveConfigEnvVars(resolvedIncludes, env, {
+    onMissing: (warning) => envWarnings.push(warning),
+    onPendingEnvSecretRef: (id, configPath) => pendingEnvSecretRefs.set(configPath, id),
+    onResolvedEnvSecretRef: (id, configPath) => resolvedEnvSecretRefs.set(configPath, id),
+  });
   return {
-    resolvedConfigRaw: resolveConfigEnvVars(resolvedIncludes, env, {
-      onMissing: (warning) => envWarnings.push(warning),
-    }),
+    resolvedConfigRaw,
     envSnapshotForRestore: { ...env } as Record<string, string | undefined>,
     envWarnings,
+    resolutionFacts: createConfigResolutionFacts(
+      envWarnings,
+      pendingEnvSecretRefs,
+      coerceConfig(resolvedConfigRaw).secrets?.defaults?.env,
+      resolvedEnvSecretRefs,
+    ),
   };
 }
 

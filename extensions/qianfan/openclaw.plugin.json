@@ -1,6 +1,5 @@
 {
   "id": "qianfan",
-  "icon": "https://cdn.simpleicons.org/baidu",
   "activation": {
     "onStartup": false
   },
@@ -33,6 +32,9 @@
               "output": 3.543915,
               "cacheRead": 0.147663,
               "cacheWrite": 0
+            },
+            "compat": {
+              "codeMode": "capable"
             }
           },
           {

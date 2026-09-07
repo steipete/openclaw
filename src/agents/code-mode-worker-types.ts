@@ -1,10 +1,11 @@
 import type { Result } from "@openclaw/normalization-core/result";
+import type { Snapshot } from "quickjs-wasi";
+import type { CodeModeJsonSource, CodeModeOutputSource } from "./code-mode-json.js";
 import type { CodeModeApiVirtualFile } from "./code-mode-namespaces.js";
 
 type CodeModeBridgeMethod =
   | "search"
   | "describe"
-  | "call"
   | "callValue"
   | "nodes"
   | "yield"
@@ -13,9 +14,13 @@ type CodeModeBridgeMethod =
   | "agentWait"
   | "skillsList"
   | "skillsRead"
+  | "sleep"
   | "swarmNote";
 
+export type CodeModeLanguage = "javascript" | "typescript";
+
 export type CodeModeConfig = {
+  languages: CodeModeLanguage[];
   timeoutMs: number;
   memoryLimitBytes: number;
   maxOutputBytes: number;
@@ -48,6 +53,9 @@ type CodeModeWorkerInput =
   | {
       kind: "exec";
       source: string;
+      language?: CodeModeLanguage;
+      prelude?: string;
+      executionTimeoutMs?: number;
       config: CodeModeConfig;
       catalog: unknown[];
       apiFiles?: CodeModeApiVirtualFile[];
@@ -56,7 +64,7 @@ type CodeModeWorkerInput =
     }
   | {
       kind: "resume";
-      snapshotBytes: Uint8Array;
+      snapshot: Snapshot;
       config: CodeModeConfig;
       settledRequests: SettledBridgeRequest[];
       pendingRequests?: PendingBridgeRequest[];
@@ -64,24 +72,28 @@ type CodeModeWorkerInput =
 
 export type CodeModeWorkerPayload = CodeModeWorkerInput & {
   wasmModule: WebAssembly.Module;
+  wasmExtensions: Array<{ name: string; wasm: WebAssembly.Module }>;
 };
 
 export type CodeModeSettlementMode =
   | { kind: "awaiting" }
   | { kind: "draining"; requiredRequestIds: string[] };
 
-export type CodeModeWorkerResult =
+export type CodeModeFailurePhase = "input" | "guest" | "bridge" | "host";
+
+type CodeModeWorkerOutcome<Output, Value> =
   | {
       status: "completed";
-      value: unknown;
-      output: unknown[];
+      value: Value;
+      output: Output;
     }
   | {
       status: "waiting";
-      snapshotBytes: Uint8Array;
+      snapshot: Snapshot;
       pendingRequests: PendingBridgeRequest[];
+      canceledRequestIds: string[];
       settlementMode: CodeModeSettlementMode;
-      output: unknown[];
+      output: Output;
     }
   | {
       status: "failed";
@@ -90,8 +102,15 @@ export type CodeModeWorkerResult =
         | "invalid_input"
         | "runtime_unavailable"
         | "timeout"
-        | "output_limit_exceeded"
         | "snapshot_limit_exceeded"
         | "internal_error";
-      output: unknown[];
+      failurePhase: Extract<CodeModeFailurePhase, "input" | "guest">;
+      bridgeDispatchStarted: false;
+      output: Output;
     };
+
+export type CodeModeVmResult = CodeModeWorkerOutcome<unknown[], unknown>;
+export type CodeModeWorkerThreadResult = CodeModeWorkerOutcome<
+  CodeModeOutputSource,
+  CodeModeJsonSource
+>;

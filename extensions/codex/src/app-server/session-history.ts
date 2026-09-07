@@ -1,377 +1,192 @@
-/**
- * Reads OpenClaw session history for Codex transcript mirroring and sanitizes
- * image payloads before replaying messages into the app-server projector.
- */
-import fs from "node:fs/promises";
+/** Reads model context separately from full-fidelity Codex mirror evidence. */
+import { isDeepStrictEqual } from "node:util";
 import type { AgentMessage } from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { SessionEntry } from "openclaw/plugin-sdk/agent-sessions";
+import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
 import {
-  buildSessionContext,
-  migrateSessionEntries,
-  parseSessionEntries,
-} from "openclaw/plugin-sdk/agent-sessions";
+  captureCodexSessionTranscriptReadAdmission,
+  validateCodexSessionTranscriptContextVersion,
+  validateCodexSessionTranscriptReadAdmission,
+  type SessionTranscriptContextVersion,
+} from "openclaw/plugin-sdk/codex-session-transcript-runtime";
 import {
-  listSessionEntries,
+  getSessionEntry,
   parseSqliteSessionFileMarker,
+  resolveTranscriptSessionKeyBySessionId,
   type SqliteSessionFileMarker,
 } from "openclaw/plugin-sdk/session-store-runtime";
-import {
-  readSessionTranscriptEvents,
-  readSessionTranscriptRawDelta,
-  readSessionTranscriptVisibleMessageDelta,
+import type {
+  TranscriptTurnAdmission,
+  SessionTranscriptTargetParams,
 } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { sanitizeCodexHistoryImagePayloads } from "./image-payload-sanitizer.js";
+import {
+  consumeCodexHistory,
+  readCodexNativeHistory,
+  type ResolvedCodexHistoryTarget,
+} from "./session-history-read.js";
 
-const CODEX_HISTORY_PAGE_MAX_BYTES = 64 * 1024 * 1024;
-const CODEX_HISTORY_PAGE_MAX_EVENTS = 10_000;
-
-function isMissingFileError(error: unknown): boolean {
-  return Boolean(error && typeof error === "object" && "code" in error && error.code === "ENOENT");
-}
-
-type CodexMirroredSessionHistoryTarget = {
+type CodexHistoryView = "native-evidence" | "model-context";
+export type CodexMirroredSessionHistoryTarget = {
   agentId?: string;
   sessionFile: string;
   sessionId: string;
   sessionKey?: string;
+  sessionTarget?: Partial<SessionTranscriptTargetParams>;
 };
 
-/** One prepared Codex history plus an optional append-stable SQLite continuation. */
-export type CodexMirroredSessionHistorySnapshot = {
-  messages: AgentMessage[];
-  sqliteContinuation?: {
-    appendTailEntryId: string | null;
-    cursor: string;
-  };
-};
+/** Private attempt metadata; model messages remain owned by the existing array result. */
+export type CodexModelContextSnapshot = Readonly<{
+  target: Readonly<Extract<ResolvedCodexHistoryTarget, { kind: "sqlite" }>["target"]>;
+  version: Readonly<SessionTranscriptContextVersion>;
+  admission?: Readonly<TranscriptTurnAdmission>;
+}>;
 
-function selectPreferredSessionKey(
-  matches: Array<{ entry: { updatedAt?: number }; sessionKey: string }>,
-  sessionId: string,
-): string | undefined {
-  const structural = matches.filter(
-    ({ sessionKey }) => sessionKey === sessionId || sessionKey.endsWith(`:${sessionId}`),
-  );
-  const candidates = structural.length > 0 ? structural : matches;
-  if (candidates.length === 1) {
-    return candidates[0]?.sessionKey;
+/** A failed reuse check keeps the existing full-read and first-array fallback path. */
+export function isCodexModelContextSnapshotCurrent(
+  snapshot: CodexModelContextSnapshot | undefined,
+  target: CodexMirroredSessionHistoryTarget,
+  admission?: TranscriptTurnAdmission,
+): boolean {
+  if (!snapshot) {
+    return false;
   }
-  const sorted = candidates.toSorted(
-    (left, right) => (right.entry.updatedAt ?? 0) - (left.entry.updatedAt ?? 0),
-  );
-  return (sorted[0]?.entry.updatedAt ?? 0) > (sorted[1]?.entry.updatedAt ?? 0)
-    ? sorted[0]?.sessionKey
-    : undefined;
-}
-
-/** Returns sanitized session-context messages for a Codex mirrored session file. */
-export async function readCodexMirroredSessionHistoryMessages(
-  target: CodexMirroredSessionHistoryTarget,
-): Promise<AgentMessage[] | undefined> {
-  return (await readCodexMirroredSessionHistorySnapshot(target))?.messages;
-}
-
-/** Returns one prepared history snapshot that later SQLite appends can extend safely. */
-export async function readCodexMirroredSessionHistorySnapshot(
-  target: CodexMirroredSessionHistoryTarget,
-): Promise<CodexMirroredSessionHistorySnapshot | undefined> {
   try {
-    const sqliteMarker = parseSqliteSessionFileMarker(target.sessionFile);
-    if (sqliteMarker) {
-      return await readCodexMirroredSqliteSessionHistorySnapshot(target, sqliteMarker);
-    }
-    return buildCodexMirroredSessionHistorySnapshot(await readCodexMirroredSessionEntries(target));
-  } catch (error) {
-    // A new Codex session can be read before its transcript exists; other failures still warn.
-    if (isMissingFileError(error)) {
-      return { messages: [] };
-    }
-    return undefined;
-  }
-}
-
-/** Checks whether a mirrored history has any visible messages without loading all payload rows. */
-export async function hasCodexMirroredSessionHistory(
-  target: CodexMirroredSessionHistoryTarget,
-): Promise<boolean | undefined> {
-  try {
-    const sqliteMarker = parseSqliteSessionFileMarker(target.sessionFile);
-    if (!sqliteMarker) {
-      const snapshot = await readCodexMirroredSessionHistorySnapshot(target);
-      return snapshot ? snapshot.messages.length > 0 : undefined;
-    }
-    const sqliteTarget = resolveCodexMirroredSqliteTarget(target, sqliteMarker);
-    if (!sqliteTarget) {
+    const resolved = resolveCodexHistoryTarget(target, admission);
+    if (resolved.kind !== "sqlite" || !isDeepStrictEqual(resolved.target, snapshot.target)) {
       return false;
     }
-    const page = await readSessionTranscriptVisibleMessageDelta({
-      ...sqliteTarget,
-      maxBytes: CODEX_HISTORY_PAGE_MAX_BYTES,
-      maxMessages: 1,
-    });
-    if (page.kind === "page") {
-      return page.entries.length > 0
-        ? true
-        : page.requiredBytes !== undefined || page.hasMore
-          ? undefined
-          : false;
+    const currentAdmission =
+      admission ?? captureCodexSessionTranscriptReadAdmission(resolved.target);
+    if (!isDeepStrictEqual(currentAdmission, snapshot.admission)) {
+      return false;
     }
-    return page.kind === "missing" ? false : undefined;
+    // Admission alone permits later appends. Reuse always checks generation AND rawSeq.
+    validateCodexSessionTranscriptContextVersion(resolved.target, snapshot.version);
+    validateCodexSessionTranscriptReadAdmission(resolved.target, currentAdmission);
+    return true;
   } catch {
-    return undefined;
+    return false;
   }
 }
 
-/**
- * Refreshes a prepared snapshot from its SQLite cursor.
- *
- * Only a proven linear message append is applied in memory. Any rewrite,
- * branch/control entry, or parent discontinuity falls back to a full read.
- */
-export async function refreshCodexMirroredSessionHistorySnapshot(
+export function resolveCodexHistoryTarget(
   target: CodexMirroredSessionHistoryTarget,
-  snapshot: CodexMirroredSessionHistorySnapshot,
-): Promise<CodexMirroredSessionHistorySnapshot | undefined> {
-  try {
-    const sqliteMarker = parseSqliteSessionFileMarker(target.sessionFile);
-    const continuation = snapshot.sqliteContinuation;
-    if (!sqliteMarker || !continuation) {
-      return await readCodexMirroredSessionHistorySnapshot(target);
-    }
-    const sqliteTarget = resolveCodexMirroredSqliteTarget(target, sqliteMarker);
-    if (!sqliteTarget) {
-      return { messages: [] };
-    }
-    const delta = await readCodexMirroredSqliteDelta(sqliteTarget, continuation.cursor);
-    if (!delta) {
-      return await readCodexMirroredSessionHistorySnapshot(target);
-    }
-    let appendTailEntryId: string | null = continuation.appendTailEntryId;
-    const appendedMessages: AgentMessage[] = [];
-    for (const event of delta.events) {
-      const entry = asLinearMessageAppend(event, appendTailEntryId);
-      if (!entry) {
-        return await readCodexMirroredSessionHistorySnapshot(target);
-      }
-      appendTailEntryId = entry.id;
-      appendedMessages.push(entry.message);
-    }
-    return {
-      messages:
-        appendedMessages.length === 0
-          ? snapshot.messages
-          : snapshot.messages.concat(
-              sanitizeCodexHistoryImagePayloads(appendedMessages, "codex mirrored history"),
-            ),
-      sqliteContinuation: {
-        appendTailEntryId,
-        cursor: delta.cursor,
-      },
-    };
-  } catch {
-    return undefined;
-  }
-}
-
-function buildCodexMirroredSessionHistorySnapshot(
-  entries: SessionEntry[],
-  sqliteCursor?: string,
-  expectedSessionId?: string,
-): CodexMirroredSessionHistorySnapshot | undefined {
-  if (entries.length === 0) {
-    return { messages: [] };
-  }
-  const firstEntry = entries[0] as { type?: unknown; id?: unknown } | undefined;
-  if (firstEntry?.type !== "session") {
-    // A well-formed transcript that does not open with a `session` marker is
-    // simply not a Codex-mirrored session (e.g. a non-Codex model run reusing
-    // this hook) — an empty mirror, not a read failure, so callers must not
-    // warn. `undefined` stays reserved for genuine failures: read/parse errors
-    // (caught below) and malformed `session` headers (next check).
-    return { messages: [] };
-  }
-  if (
-    typeof firstEntry.id !== "string" ||
-    (expectedSessionId !== undefined && firstEntry.id !== expectedSessionId)
-  ) {
-    // A `session` header without a string id is a corrupted Codex transcript,
-    // not a foreign one — keep it on the warn path.
-    return undefined;
-  }
-  const appendTailEntryId =
-    sqliteCursor !== undefined ? readLinearAppendTailEntryId(entries) : undefined;
-  migrateSessionEntries(entries);
-  const sessionEntries = entries.filter((entry): entry is SessionEntry => {
-    return (
-      entry !== null &&
-      typeof entry === "object" &&
-      !Array.isArray(entry) &&
-      (entry as { type?: unknown }).type !== "session"
-    );
-  });
-  return {
-    messages: sanitizeCodexHistoryImagePayloads(
-      buildSessionContext(sessionEntries).messages,
-      "codex mirrored history",
-    ),
-    ...(sqliteCursor !== undefined && appendTailEntryId !== undefined
-      ? {
-          sqliteContinuation: {
-            appendTailEntryId,
-            cursor: sqliteCursor,
-          },
-        }
-      : {}),
-  };
-}
-
-function readLinearAppendTailEntryId(entries: readonly SessionEntry[]): string | null | undefined {
-  let tailEntryId: string | null = null;
-  for (const value of entries.slice(1)) {
-    const entry = value as unknown as Record<string, unknown>;
+  admission?: TranscriptTurnAdmission,
+): ResolvedCodexHistoryTarget {
+  if (target.sessionTarget) {
+    const { agentId, sessionId, sessionKey, storePath } = target.sessionTarget;
     if (
-      entry.type === "leaf" ||
-      typeof entry.id !== "string" ||
-      (entry.parentId !== null && typeof entry.parentId !== "string") ||
-      entry.parentId !== tailEntryId
+      !agentId ||
+      !sessionId ||
+      !sessionKey ||
+      !storePath ||
+      sessionId !== target.sessionId ||
+      (target.agentId !== undefined && agentId !== target.agentId) ||
+      (target.sessionKey !== undefined && sessionKey !== target.sessionKey)
     ) {
-      return undefined;
+      return { kind: "empty" };
     }
-    tailEntryId = entry.id;
+    return { kind: "sqlite", target: { agentId, sessionId, sessionKey, storePath } };
   }
-  return tailEntryId;
-}
-
-function asLinearMessageAppend(
-  value: unknown,
-  expectedParentId: string | null,
-): { id: string; message: AgentMessage } | undefined {
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
-    return undefined;
-  }
-  const entry = value as Record<string, unknown>;
-  if (
-    entry.type !== "message" ||
-    typeof entry.id !== "string" ||
-    entry.parentId !== expectedParentId ||
-    !entry.message ||
-    typeof entry.message !== "object" ||
-    Array.isArray(entry.message)
-  ) {
-    return undefined;
-  }
-  return { id: entry.id, message: entry.message as AgentMessage };
-}
-
-async function readCodexMirroredSessionEntries(
-  target: CodexMirroredSessionHistoryTarget,
-): Promise<SessionEntry[]> {
   const sqliteMarker = parseSqliteSessionFileMarker(target.sessionFile);
   if (sqliteMarker) {
     if (
       sqliteMarker.sessionId !== target.sessionId ||
       (target.agentId !== undefined && sqliteMarker.agentId !== target.agentId)
     ) {
-      return [];
+      return { kind: "empty" };
     }
     const sessionKey = resolveSqliteMarkerSessionKey(target, sqliteMarker);
-    if (!sessionKey) {
-      return [];
-    }
-    return (await readSessionTranscriptEvents({
-      agentId: sqliteMarker.agentId,
-      sessionId: sqliteMarker.sessionId,
-      sessionKey,
-      storePath: sqliteMarker.storePath,
-    })) as SessionEntry[];
+    return sessionKey
+      ? {
+          kind: "sqlite",
+          target: {
+            agentId: sqliteMarker.agentId,
+            sessionId: sqliteMarker.sessionId,
+            sessionKey,
+            storePath: sqliteMarker.storePath,
+          },
+        }
+      : { kind: "empty" };
   }
-  return parseSessionEntries(await fs.readFile(target.sessionFile, "utf-8")) as SessionEntry[];
+  if (admission) {
+    if (
+      admission.sessionId !== target.sessionId ||
+      (target.agentId !== undefined && admission.agentId !== target.agentId) ||
+      (target.sessionKey !== undefined && admission.sessionKey !== target.sessionKey)
+    ) {
+      return { kind: "empty" };
+    }
+    return {
+      kind: "sqlite",
+      target: {
+        agentId: admission.agentId,
+        sessionId: admission.sessionId,
+        sessionKey: admission.sessionKey,
+        storePath: admission.storePath,
+      },
+    };
+  }
+  return { kind: "file", sessionFile: target.sessionFile };
 }
 
-function resolveCodexMirroredSqliteTarget(
+/** Returns sanitized session-context messages for consumers that need an owned array. */
+export async function readCodexMirroredSessionHistoryMessages(
   target: CodexMirroredSessionHistoryTarget,
-  marker: SqliteSessionFileMarker,
-):
-  | {
-      agentId: string;
-      sessionId: string;
-      sessionKey: string;
-      storePath: string;
-    }
-  | undefined {
-  if (
-    marker.sessionId !== target.sessionId ||
-    (target.agentId !== undefined && marker.agentId !== target.agentId)
-  ) {
-    return undefined;
-  }
-  // Active Codex mirroring can publish transcript rows before the session-list
-  // projection is visible. The exact caller key remains safe because the
-  // marker already proves agent/session identity and the transcript header is
-  // validated before any messages are returned.
-  const sessionKey = resolveSqliteMarkerSessionKey(target, marker) ?? target.sessionKey?.trim();
-  return sessionKey
-    ? {
-        agentId: marker.agentId,
-        sessionId: marker.sessionId,
-        sessionKey,
-        storePath: marker.storePath,
+  admission?: TranscriptTurnAdmission,
+  view: CodexHistoryView = "native-evidence",
+  signal?: AbortSignal,
+  onModelContextSnapshot?: (snapshot: CodexModelContextSnapshot) => void,
+): Promise<AgentMessage[] | undefined> {
+  signal?.throwIfAborted();
+  try {
+    let result: AgentMessage[] | undefined;
+    if (view === "native-evidence") {
+      const { readCodexHistoryMessagesInWorker } =
+        await import("../../session-history-worker-runtime.js");
+      result = await readCodexHistoryMessagesInWorker(target, admission, signal);
+    } else {
+      const resolved = resolveCodexHistoryTarget(target, admission);
+      const read = (messages: Iterable<AgentMessage>) => Array.from(messages);
+      if (resolved.kind === "sqlite") {
+        let accepted:
+          | {
+              version?: SessionTranscriptContextVersion;
+              admission?: TranscriptTurnAdmission;
+            }
+          | undefined;
+        const loaded = await SessionManager.openModelContextAsync(resolved.target, {
+          admission,
+          signal,
+          onSnapshotRead: onModelContextSnapshot
+            ? (snapshot) => {
+                accepted = snapshot;
+              }
+            : undefined,
+        });
+        result = consumeCodexHistory(
+          loaded.buildSessionContext().messages,
+          loaded.getHeader(),
+          target.sessionId,
+          read,
+          "codex mirrored model context",
+        );
+        if (accepted?.version) {
+          onModelContextSnapshot?.({
+            target: { ...resolved.target },
+            version: { ...accepted.version },
+            ...(accepted.admission ? { admission: { ...accepted.admission } } : {}),
+          });
+        }
+      } else {
+        const history = await readCodexNativeHistory(resolved, target.sessionId, read, admission);
+        result = history.status === "ok" ? history.value : undefined;
       }
-    : undefined;
-}
-
-async function readCodexMirroredSqliteSessionHistorySnapshot(
-  target: CodexMirroredSessionHistoryTarget,
-  marker: SqliteSessionFileMarker,
-): Promise<CodexMirroredSessionHistorySnapshot | undefined> {
-  const sqliteTarget = resolveCodexMirroredSqliteTarget(target, marker);
-  if (!sqliteTarget) {
-    return { messages: [] };
-  }
-  const delta = await readCodexMirroredSqliteDelta(sqliteTarget);
-  if (!delta) {
-    return buildCodexMirroredSessionHistorySnapshot(
-      (await readSessionTranscriptEvents(sqliteTarget)) as SessionEntry[],
-      undefined,
-      sqliteTarget.sessionId,
-    );
-  }
-  return buildCodexMirroredSessionHistorySnapshot(
-    delta.events as SessionEntry[],
-    delta.cursor,
-    sqliteTarget.sessionId,
-  );
-}
-
-async function readCodexMirroredSqliteDelta(
-  target: {
-    agentId: string;
-    sessionId: string;
-    sessionKey: string;
-    storePath: string;
-  },
-  initialCursor?: string,
-): Promise<{ cursor: string; events: unknown[] } | undefined> {
-  const events: unknown[] = [];
-  let cursor = initialCursor;
-  while (true) {
-    const page = await readSessionTranscriptRawDelta({
-      ...target,
-      ...(cursor !== undefined ? { cursor } : {}),
-      maxBytes: CODEX_HISTORY_PAGE_MAX_BYTES,
-      maxEvents: CODEX_HISTORY_PAGE_MAX_EVENTS,
-    });
-    if (page.kind !== "page") {
-      return undefined;
     }
-    events.push(...page.events.map((row) => row.event));
-    cursor = page.cursor;
-    if (!page.hasMore) {
-      return { cursor, events };
-    }
-    if (page.events.length === 0) {
-      return undefined;
-    }
+    signal?.throwIfAborted();
+    return result;
+  } catch {
+    signal?.throwIfAborted();
+    return undefined;
   }
 }
 
@@ -380,17 +195,20 @@ function resolveSqliteMarkerSessionKey(
   marker: SqliteSessionFileMarker,
 ): string | undefined {
   const explicitSessionKey = target.sessionKey?.trim();
-  const entries = listSessionEntries({
-    agentId: marker.agentId,
-    readOnly: true,
-    storePath: marker.storePath,
-  });
   if (explicitSessionKey) {
-    const explicitEntry = entries.find(({ sessionKey }) => sessionKey === explicitSessionKey);
+    // The SDK exact-entry accessor uses a read-only database handle.
+    const explicitEntry = getSessionEntry({
+      agentId: marker.agentId,
+      sessionKey: explicitSessionKey,
+      storePath: marker.storePath,
+    });
     if (explicitEntry) {
-      return explicitEntry.entry.sessionId === marker.sessionId ? explicitSessionKey : undefined;
+      return explicitEntry.sessionId === marker.sessionId ? explicitSessionKey : undefined;
     }
   }
-  const matches = entries.filter(({ entry }) => entry.sessionId === marker.sessionId);
-  return selectPreferredSessionKey(matches, marker.sessionId);
+  return resolveTranscriptSessionKeyBySessionId({
+    agentId: marker.agentId,
+    sessionId: marker.sessionId,
+    storePath: marker.storePath,
+  });
 }

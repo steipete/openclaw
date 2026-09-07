@@ -3,7 +3,9 @@ import { OpenClawTerminalPanel } from "./terminal-panel.ts";
 
 export type CreateOptions = {
   parent: HTMLElement;
+  readOnly?: boolean;
   terminalOptions?: {
+    fontSize?: number;
     fontFamily?: string;
     theme?: { background?: string; foreground?: string };
   };
@@ -31,6 +33,7 @@ export function createTerminalController(dispose: () => void = vi.fn()) {
       renderer,
       write: vi.fn(),
       focus: vi.fn(),
+      attachCustomKeyEventHandler: vi.fn(),
       reset: vi.fn(),
       paste: vi.fn(),
     },

@@ -1,8 +1,8 @@
 // Gateway Client tests cover client.watchdog behavior.
 import { createServer as createHttpsServer } from "node:https";
 import { createServer } from "node:net";
+import type { EventFrame } from "@openclaw/gateway-protocol";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { WebSocket, WebSocketServer } from "ws";
 import { GatewayClient } from "./client.js";
 import {
   GatewayProtocolClient,
@@ -11,6 +11,7 @@ import {
 } from "./protocol-client.js";
 import { MAX_SAFE_TIMEOUT_DELAY_MS } from "./timeouts.js";
 import { rawDataToString } from "./websocket-data.js";
+import { WebSocket, WebSocketServer } from "./websocket.test-support.js";
 
 async function getFreePort(): Promise<number> {
   return await new Promise((resolve, reject) => {
@@ -34,22 +35,23 @@ function createOpenGatewayClient(requestTimeoutMs: number): {
   return { client, send };
 }
 
-function getPendingCount(client: GatewayClient): number {
-  return protocolHarness(client).pending.size;
+function hasPendingRequests(client: GatewayClient): boolean {
+  return protocolHarness(client).hasPendingRequests;
 }
 
 test("decodes every ws raw-data shape", () => {
   expect(rawDataToString(Buffer.from("buffer"))).toBe("buffer");
   expect(rawDataToString(Uint8Array.from(Buffer.from("array-buffer")).buffer)).toBe("array-buffer");
   expect(rawDataToString([Buffer.from("frag"), Buffer.from("ments")])).toBe("fragments");
+  expect(rawDataToString(Buffer.from([0xe9]), "latin1")).toBe("é");
 });
 
 type ProtocolHarness = {
   socket: GatewayProtocolSocket | null;
   stopped: boolean;
   generation: number;
+  hasPendingRequests: boolean;
   reconnectSupervisor: { reset(initialMs?: number): void };
-  pending: Map<string, unknown>;
   handleMessage: (socket: GatewayProtocolSocket, generation: number, raw: string) => void;
 };
 
@@ -132,6 +134,8 @@ type SyntheticGatewayProtocolConnection = {
 function createSyntheticGatewayProtocol(options?: {
   retryOnClose?: boolean;
   initialSocketFactoryFailures?: number;
+  onEvent?: (event: EventFrame) => void;
+  onGap?: (info: { expected: number; received: number }) => void;
 }): {
   client: GatewayProtocolClient<Record<string, never>>;
   connections: SyntheticGatewayProtocolConnection[];
@@ -162,6 +166,8 @@ function createSyntheticGatewayProtocol(options?: {
     buildConnectPlan: () => ({}),
     buildConnectParams: (plan) => plan,
     resolveClose: () => ({ retry: options?.retryOnClose ?? true, notify: true }),
+    onEvent: options?.onEvent,
+    onGap: options?.onGap,
     handshake: { mode: "require-challenge", timeoutMs: 100 },
     reconnect: { initialMs: 10, multiplier: 2, maxMs: 100 },
   });
@@ -176,7 +182,7 @@ function completeSyntheticGatewayProtocolHandshake(
     JSON.stringify({
       type: "event",
       event: "connect.challenge",
-      payload: { nonce: "synthetic-nonce" },
+      payload: { nonce: "synthetic-nonce", ts: 1_777_777_777_000 },
     }),
   );
   const connectFrame = JSON.parse(String(connection.send.mock.calls[0]?.[0])) as {
@@ -197,8 +203,9 @@ describe("GatewayClient", () => {
   let httpsServer: ReturnType<typeof createHttpsServer> | null = null;
 
   afterEach(async () => {
-    vi.useRealTimers();
+    // Timer spies must restore their fake functions before the clock uninstalls them.
     vi.restoreAllMocks();
+    vi.useRealTimers();
     if (wss) {
       for (const client of wss.clients) {
         client.terminate();
@@ -216,6 +223,200 @@ describe("GatewayClient", () => {
       });
       httpsServer = null;
     }
+  });
+
+  test.each([
+    { retirement: "event owner", firstListenerCalls: 0 },
+    { retirement: "first direct listener", firstListenerCalls: 1 },
+  ])(
+    "does not deliver a retired frame after the $retirement closes its socket",
+    ({ retirement, firstListenerCalls }) => {
+      const onEvent = vi.fn(() => {
+        if (retirement === "event owner") {
+          client.stop();
+        }
+      });
+      const firstListener = vi.fn(() => {
+        if (retirement === "first direct listener") {
+          client.stop();
+        }
+      });
+      const staleListener = vi.fn();
+      const { client, connections } = createSyntheticGatewayProtocol({ onEvent });
+      client.addEventListener(firstListener);
+      client.addEventListener(staleListener);
+      client.start();
+      const connection = connections[0];
+      if (!connection) {
+        throw new Error("synthetic protocol connection missing");
+      }
+
+      connection.handlers.message(
+        JSON.stringify({
+          type: "event",
+          event: "board.command",
+          payload: { command: "retired" },
+          seq: 1,
+        }),
+      );
+
+      expect(onEvent).toHaveBeenCalledOnce();
+      expect(firstListener).toHaveBeenCalledTimes(firstListenerCalls);
+      expect(staleListener).not.toHaveBeenCalled();
+      expect(connection.close).toHaveBeenCalledOnce();
+    },
+  );
+
+  test.each([
+    { replacement: "a new callback", reuseCallback: false },
+    { replacement: "the same callback", reuseCallback: true },
+  ])("does not revive a removed subscription replaced with $replacement", ({ reuseCallback }) => {
+    const removedListener = vi.fn();
+    const addedListener = reuseCallback ? removedListener : vi.fn();
+    let removeListener = () => {};
+    let isFirstEvent = true;
+    const onEvent = vi.fn(() => {
+      if (isFirstEvent) {
+        isFirstEvent = false;
+        removeListener();
+        client.addEventListener(addedListener);
+      }
+    });
+    const { client, connections } = createSyntheticGatewayProtocol({ onEvent });
+    removeListener = client.addEventListener(removedListener);
+    client.start();
+    const connection = connections[0];
+    if (!connection) {
+      throw new Error("synthetic protocol connection missing");
+    }
+
+    connection.handlers.message(
+      JSON.stringify({ type: "event", event: "board.changed", payload: {}, seq: 1 }),
+    );
+
+    expect(removedListener).not.toHaveBeenCalled();
+    expect(addedListener).not.toHaveBeenCalled();
+
+    connection.handlers.message(
+      JSON.stringify({ type: "event", event: "board.changed", payload: {}, seq: 2 }),
+    );
+
+    expect(addedListener).toHaveBeenCalledOnce();
+    if (!reuseCallback) {
+      expect(removedListener).not.toHaveBeenCalled();
+    }
+
+    // Calling the retired subscription's disposer cannot remove its replacement.
+    removeListener();
+    connection.handlers.message(
+      JSON.stringify({ type: "event", event: "board.changed", payload: {}, seq: 3 }),
+    );
+
+    expect(addedListener).toHaveBeenCalledTimes(2);
+    client.stop();
+  });
+
+  test.each([
+    { recovery: "stops the socket", restart: false },
+    { recovery: "replaces the socket", restart: true },
+  ])("drops a gapped frame when recovery $recovery", ({ restart }) => {
+    const onEvent = vi.fn();
+    const listener = vi.fn();
+    const onGap = vi.fn(() => {
+      client.stop();
+      if (restart) {
+        client.start();
+      }
+    });
+    const { client, connections } = createSyntheticGatewayProtocol({ onEvent, onGap });
+    client.addEventListener(listener);
+    client.start();
+    const first = connections[0];
+    if (!first) {
+      throw new Error("synthetic protocol connection missing");
+    }
+    first.handlers.message(
+      JSON.stringify({ type: "event", event: "board.changed", payload: {}, seq: 1 }),
+    );
+    onEvent.mockClear();
+    listener.mockClear();
+
+    first.handlers.message(
+      JSON.stringify({
+        type: "event",
+        event: "board.command",
+        payload: { command: "stale" },
+        seq: 3,
+      }),
+    );
+
+    expect(onGap).toHaveBeenCalledExactlyOnceWith({ expected: 2, received: 3 });
+    expect(onEvent).not.toHaveBeenCalled();
+    expect(listener).not.toHaveBeenCalled();
+    expect(connections).toHaveLength(restart ? 2 : 1);
+
+    if (restart) {
+      const replacement = connections[1];
+      if (!replacement) {
+        throw new Error("synthetic replacement protocol connection missing");
+      }
+      const fresh = {
+        type: "event" as const,
+        event: "board.command",
+        payload: { command: "current" },
+        seq: 2,
+      };
+      replacement.handlers.message(JSON.stringify(fresh));
+
+      expect(onGap).toHaveBeenCalledOnce();
+      expect(onEvent).toHaveBeenCalledExactlyOnceWith(fresh);
+      expect(listener).toHaveBeenCalledExactlyOnceWith(fresh);
+    }
+
+    client.stop();
+  });
+
+  test("delivers a gapped frame when gap recovery retains the active socket", () => {
+    const onEvent = vi.fn();
+    const onGap = vi.fn();
+    const listener = vi.fn();
+    const { client, connections } = createSyntheticGatewayProtocol({ onEvent, onGap });
+    client.addEventListener(listener);
+    client.start();
+    const connection = connections[0];
+    if (!connection) {
+      throw new Error("synthetic protocol connection missing");
+    }
+    connection.handlers.message(
+      JSON.stringify({ type: "event", event: "board.changed", payload: {}, seq: 1 }),
+    );
+    onEvent.mockClear();
+    listener.mockClear();
+    const gapped = {
+      type: "event" as const,
+      event: "board.command",
+      payload: { command: "current" },
+      seq: 3,
+    };
+
+    connection.handlers.message(JSON.stringify(gapped));
+
+    expect(onGap).toHaveBeenCalledExactlyOnceWith({ expected: 2, received: 3 });
+    expect(onEvent).toHaveBeenCalledExactlyOnceWith(gapped);
+    expect(listener).toHaveBeenCalledExactlyOnceWith(gapped);
+
+    const next = {
+      type: "event" as const,
+      event: "board.changed",
+      payload: {},
+      seq: 4,
+    };
+    connection.handlers.message(JSON.stringify(next));
+
+    expect(onGap).toHaveBeenCalledOnce();
+    expect(onEvent).toHaveBeenLastCalledWith(next);
+    expect(listener).toHaveBeenLastCalledWith(next);
+    client.stop();
   });
 
   test("keeps one socket when the protocol is started twice during its handshake", () => {
@@ -430,12 +631,22 @@ describe("GatewayClient", () => {
     client.updateNodeManifest({
       caps: ["canvas", "system"],
       commands: ["canvas.present", "system.run"],
+      workerRuns: {
+        bundleHash: "a".repeat(64),
+        openclawVersion: "2026.8.12",
+        protocolFeatures: ["worker-heartbeat-v1"],
+      },
     });
 
     expect(close).toHaveBeenCalledWith(1012, "node manifest changed");
     expect((client as unknown as { opts: Record<string, unknown> }).opts).toMatchObject({
       caps: ["canvas", "system"],
       commands: ["canvas.present", "system.run"],
+      workerRuns: {
+        bundleHash: "a".repeat(64),
+        openclawVersion: "2026.8.12",
+        protocolFeatures: ["worker-heartbeat-v1"],
+      },
     });
   });
 
@@ -461,7 +672,7 @@ describe("GatewayClient", () => {
           type: "event",
           event: "connect.challenge",
           seq: connectionNumber,
-          payload: { nonce: `nonce-${connectionNumber}` },
+          payload: { nonce: `nonce-${connectionNumber}`, ts: 1_777_777_777_000 },
         }),
       );
       socket.on("message", (data) => {
@@ -715,7 +926,7 @@ describe("GatewayClient", () => {
       "synthetic send failure",
     );
     expect(onSent).not.toHaveBeenCalled();
-    expect(getPendingCount(client)).toBe(0);
+    expect(hasPendingRequests(client)).toBe(false);
   });
 
   test("notifies accepted expectFinal requests while continuing to wait for final", async () => {
@@ -739,7 +950,7 @@ describe("GatewayClient", () => {
 
     expect(onSent).toHaveBeenCalledOnce();
     expect(onAccepted).toHaveBeenCalledWith({ status: "accepted", runId: "run-1" });
-    expect(getPendingCount(client)).toBe(1);
+    expect(hasPendingRequests(client)).toBe(true);
 
     handleGatewayMessage(client, {
       type: "res",
@@ -749,7 +960,7 @@ describe("GatewayClient", () => {
     });
 
     await expect(requestPromise).resolves.toEqual({ status: "ok" });
-    expect(getPendingCount(client)).toBe(0);
+    expect(hasPendingRequests(client)).toBe(false);
   });
 
   test("aborts in-flight requests from caller AbortSignal", async () => {
@@ -761,12 +972,12 @@ describe("GatewayClient", () => {
       timeoutMs: null,
     });
     expect(send).toHaveBeenCalledTimes(1);
-    expect(getPendingCount(client)).toBe(1);
+    expect(hasPendingRequests(client)).toBe(true);
 
     controller.abort();
 
     await expect(requestPromise).rejects.toThrow("gateway request aborted for status");
-    expect(getPendingCount(client)).toBe(0);
+    expect(hasPendingRequests(client)).toBe(false);
   });
 
   test.each([
@@ -784,7 +995,7 @@ describe("GatewayClient", () => {
       await vi.advanceTimersByTimeAsync(1);
 
       expect(isSettled()).toBe(false);
-      expect(getPendingCount(client)).toBe(1);
+      expect(hasPendingRequests(client)).toBe(true);
 
       client.stop();
       await expect(requestPromise).rejects.toThrow("gateway client stopped");
@@ -895,7 +1106,7 @@ r1USnb+wUdA7Zoj/mQ==
       client = new GatewayClient({
         url: `wss://127.0.0.1:${port}`,
         connectChallengeTimeoutMs: 0,
-        tlsFingerprint: "deadbeef",
+        tlsFingerprint: "ab".repeat(32),
         onConnectError: (err) => {
           clearTimeout(timeout);
           client?.stop();

@@ -1,366 +1,506 @@
-import { extractText } from "../../lib/chat/message-extract.ts";
-import { normalizeLowercaseStringOrEmpty } from "../../lib/string-coerce.ts";
+import {
+  createSessionProjection,
+  readSessionMessageIdentity,
+  reduceSessionProjection,
+  type SessionMessageIdentity,
+  type SessionProjectionEvent,
+  type SessionMessageEnvelope,
+  type SessionProjectionEntry,
+  type SessionProjectionScope,
+  type SessionProjectionState,
+} from "@openclaw/gateway-client/browser";
+import { asNullableRecord } from "@openclaw/normalization-core/record-coerce";
+import type {
+  ChatInputReceipts,
+  ChatPendingInputsPage,
+} from "../../../../packages/gateway-protocol/src/schema/logs-chat.js";
+import type {
+  ApplicationChatSubmissions,
+  RetainedChatSubmission,
+} from "../../app/chat-submissions.ts";
+import type { ChatQueueItem } from "../../lib/chat/chat-types.ts";
+import { findChatSubmissionMessage } from "../../lib/chat/history-message-identity.ts";
+import { chatOutboxDeliveryKey, type ChatComposerScope } from "../../lib/chat/outbox-store.ts";
+import {
+  resolveUiSelectedSessionAgentId,
+  resolveUiConversationIdentity,
+} from "../../lib/sessions/session-key.ts";
+import { matchesCompactionOperation } from "./chat-progress.ts";
+import type { CompactionStatus } from "./tool-stream-contract.ts";
 
-type TranscriptMessageIdentity = {
-  role: string;
-  signature: string | null;
-  isImported: boolean;
-  externalSource: string | null;
-  id: string | null;
-  sequence: number | null;
-  idempotencyKey: string | null;
+const chatSessionProjections = new WeakMap<
+  object,
+  {
+    projection?: SessionProjectionState;
+    runId?: string;
+  }
+>();
+// Display ownership outlives active-state cleanup. It is not the foreground
+// terminal fence: an unowned final cannot suppress authoritative active rows.
+const CHAT_PROJECTION_SCOPE_KEYS = [
+  "sessionKey",
+  "sessionId",
+  "agentId",
+  "lifecycleRevision",
+  "activeLeafEntryId",
+] as const;
+
+type ChatSessionProjectionOwner = ChatComposerScope & {
+  sessionKey: string;
+  chatMessages: unknown[];
+  chatSubmissions?: ApplicationChatSubmissions;
+  currentSessionId?: string | null;
+  chatDisplayedLeafEntryId?: string | null;
+  compactionStatus?: CompactionStatus | null;
+  compactionClearTimer?: number | null;
 };
 
-type IndexedHistoryMessage = {
-  index: number;
-  identity: TranscriptMessageIdentity;
-  message: unknown;
+function resetCompactionProjection(owner: ChatSessionProjectionOwner): void {
+  if (owner.compactionClearTimer != null) {
+    clearTimeout(owner.compactionClearTimer);
+    owner.compactionClearTimer = null;
+  }
+  owner.compactionStatus = null;
+}
+
+type ChatSessionProjectionScopeOptions = Omit<SessionProjectionScope, "sessionId"> & {
+  sessionId?: string | null;
 };
 
-type HistoryMessageIndex = Map<string, IndexedHistoryMessage[]>;
-
-function readTranscriptMetadata(message: unknown): Record<string, unknown> | null {
-  if (!message || typeof message !== "object" || Array.isArray(message)) {
-    return null;
+function readChatSubmissionBatch(owner: ChatSessionProjectionOwner, scope: SessionProjectionScope) {
+  const submissions = owner.chatSubmissions;
+  if (!submissions) {
+    return undefined;
   }
-  const metadata = (message as Record<string, unknown>)["__openclaw"];
-  return metadata && typeof metadata === "object" && !Array.isArray(metadata)
-    ? (metadata as Record<string, unknown>)
-    : null;
-}
-
-function readMetadataString(value: unknown): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-  const normalized = value.trim();
-  return normalized || null;
-}
-
-function hasTranscriptMeta(message: unknown): boolean {
-  const metadata = readTranscriptMetadata(message);
-  // An idempotency marker alone identifies a locally materialized queued turn;
-  // authoritative transcript metadata adds identity, sequence, or kind fields.
-  return metadata !== null && Object.keys(metadata).some((key) => key !== "idempotencyKey");
-}
-
-export function readTranscriptSequence(message: unknown): number | null {
-  const seq = readTranscriptMetadata(message)?.seq;
-  return typeof seq === "number" && Number.isSafeInteger(seq) && seq > 0 ? seq : null;
-}
-
-export function isLocallyOptimisticHistoryMessage(message: unknown): boolean {
-  if (!message || typeof message !== "object" || hasTranscriptMeta(message)) {
-    return false;
-  }
-  const role = normalizeLowercaseStringOrEmpty((message as { role?: unknown }).role);
-  return role === "user" || role === "assistant";
-}
-
-export function messageDisplaySignature(message: unknown): string | null {
-  if (!message || typeof message !== "object") {
-    return null;
-  }
-  const role = normalizeLowercaseStringOrEmpty((message as { role?: unknown }).role);
-  if (!role) {
-    return null;
-  }
-  const text = extractText(message)?.trim();
-  if (text) {
-    return `${role}:text:${text}`;
-  }
-  try {
-    const content = JSON.stringify((message as { content?: unknown }).content ?? null);
-    return `${role}:content:${content}`;
-  } catch {
-    return null;
-  }
-}
-
-function readTranscriptMessageIdentity(message: unknown): TranscriptMessageIdentity {
-  const metadata = readTranscriptMetadata(message);
-  const externalId = readMetadataString(metadata?.externalId);
-  const importedFrom = readMetadataString(metadata?.importedFrom);
-  const cliSessionId = readMetadataString(metadata?.cliSessionId);
-  const isImported = Boolean(externalId || importedFrom || cliSessionId);
-  // Imported ids are source-local. A partial source tuple cannot prove that
-  // two imports came from the same provider and CLI session.
-  const externalSource =
-    externalId && importedFrom && cliSessionId
-      ? JSON.stringify([importedFrom, cliSessionId, externalId])
-      : null;
+  const sessionKey = scope.sessionKey ?? owner.sessionKey;
+  const client = owner.client;
+  const handoff = submissions.readInitial(sessionKey, client ?? null);
+  // The pane captures one client and delivery key for the synchronous receipt batch.
+  const key = chatOutboxDeliveryKey(owner, {
+    sessionKey,
+    agentId: scope.agentId ?? resolveUiSelectedSessionAgentId(owner),
+  });
+  const retire = (runId: string) => {
+    const entry = submissions.readDelivered(key + runId, client ?? owner);
+    if (
+      entry?.kind === "delivered" &&
+      (!entry.sessionId || !scope.sessionId || entry.sessionId === scope.sessionId)
+    ) {
+      entry.pending = false;
+    }
+  };
   return {
-    role:
-      message && typeof message === "object"
-        ? normalizeLowercaseStringOrEmpty((message as { role?: unknown }).role)
-        : "",
-    signature: messageDisplaySignature(message),
-    isImported,
-    externalSource,
-    id: readMetadataString(metadata?.id),
-    sequence: readTranscriptSequence(message),
-    idempotencyKey: readMetadataString(metadata?.idempotencyKey),
+    initial: handoff,
+    accept: (runIds: ReadonlySet<string>) => {
+      runIds.forEach(retire);
+      if (handoff && runIds.has(handoff.pendingRunId)) {
+        handoff.pending = false;
+      }
+    },
+    receive: (message: unknown, identity: SessionMessageIdentity | null, persisted = false) => {
+      const runId = identity?.idempotencyKey?.replace(/:user$/u, "");
+      if (identity?.role !== "user" || !runId) {
+        return message;
+      }
+      const receipt = persisted || identity.id !== null || identity.sequence !== null;
+      if (receipt) {
+        retire(runId);
+      }
+      if (!handoff || identity.isImported || runId !== handoff.pendingRunId) {
+        return message;
+      }
+      // Cached bytes for this retained submission are not a receipt. Omit
+      // that snapshot copy; the pane admits the recorded local owner through
+      // sendPending, preserving provenance even with sender/reply metadata.
+      if (!receipt) {
+        return undefined;
+      }
+      handoff.pending = false;
+      return message;
+    },
   };
 }
 
-function indexHistoryMessage(
-  historyIndex: HistoryMessageIndex,
-  key: string,
-  entry: IndexedHistoryMessage,
+/** Every live, pending, terminal, and history path must identify the same pane and branch. */
+export function readChatSessionProjectionScope(
+  owner: ChatSessionProjectionOwner,
+  options: ChatSessionProjectionScopeOptions = {},
+): SessionProjectionScope {
+  const sessionId = Object.hasOwn(options, "sessionId")
+    ? options.sessionId
+    : owner.currentSessionId;
+  return {
+    sessionKey: resolveUiConversationIdentity(owner, options.sessionKey ?? owner.sessionKey)
+      .sessionKey,
+    ...(options.agentId ? { agentId: options.agentId } : {}),
+    ...(sessionId ? { sessionId } : {}),
+    ...(options.lifecycleRevision !== undefined
+      ? { lifecycleRevision: options.lifecycleRevision }
+      : {}),
+    ...(Object.hasOwn(options, "activeLeafEntryId") ||
+    Object.hasOwn(owner, "chatDisplayedLeafEntryId")
+      ? {
+          activeLeafEntryId: Object.hasOwn(options, "activeLeafEntryId")
+            ? (options.activeLeafEntryId ?? null)
+            : (owner.chatDisplayedLeafEntryId ?? null),
+        }
+      : {}),
+  };
+}
+
+function chatProjectionScopeChanged(
+  previous: SessionProjectionScope,
+  scope: SessionProjectionScope,
+) {
+  return CHAT_PROJECTION_SCOPE_KEYS.some(
+    (key) =>
+      Object.hasOwn(scope, key) && previous[key] !== undefined && previous[key] !== scope[key],
+  );
+}
+
+/** One pane owns its shared-reducer projection; split panes never share live state. */
+export function getChatSessionProjection(
+  owner: ChatSessionProjectionOwner,
+  scope: SessionProjectionScope = readChatSessionProjectionScope(owner),
+): SessionProjectionState {
+  const current = chatSessionProjections.get(owner)?.projection;
+  const scopeChanged = current !== undefined && chatProjectionScopeChanged(current.scope, scope);
+  if (scopeChanged) {
+    // A scoped read can precede a history request. Only its accepted publication
+    // switches the displayed transcript; a stale response cannot clear the pane.
+    return createSessionProjection(scope);
+  }
+  if (!current) {
+    const projection = createSessionProjection(scope, owner.chatMessages);
+    publishChatSessionProjection(owner, projection);
+    return projection;
+  }
+
+  const bindsScope = CHAT_PROJECTION_SCOPE_KEYS.some(
+    (key) =>
+      Object.hasOwn(scope, key) && current.scope[key] === undefined && scope[key] !== undefined,
+  );
+  // Learning a durable session or leaf binds this pane without reclassifying
+  // reducer-owned live entries, pending sends, or active runs as history.
+  const scopedProjection = bindsScope
+    ? { ...current, scope: { ...current.scope, ...scope } }
+    : current;
+  if (scopedProjection !== current) {
+    publishChatSessionProjection(owner, scopedProjection);
+  }
+  return scopedProjection;
+}
+
+export function getChatRunOwner(owner: object): string | undefined {
+  return chatSessionProjections.get(owner)?.runId;
+}
+
+export function setChatRunOwner(owner: object, runId: string | undefined): void {
+  chatSessionProjections.set(owner, { ...chatSessionProjections.get(owner), runId });
+}
+
+/** The only mutation boundary for the reducer and its rendered message array. */
+export function publishChatSessionProjection(
+  owner: ChatSessionProjectionOwner,
+  projection: SessionProjectionState,
 ): void {
-  const entries = historyIndex.get(key);
-  if (entries) {
-    entries.push(entry);
+  const current = chatSessionProjections.get(owner);
+  const runId = current?.runId;
+  if (
+    current?.projection &&
+    chatProjectionScopeChanged(current.projection.scope, projection.scope)
+  ) {
+    const status = owner.compactionStatus;
+    const sessionKeys = ["sessionKey", "sessionId", "agentId"] as const;
+    const previousScope = current.projection.scope;
+    const sessionChanged = sessionKeys.some(
+      (key) =>
+        Object.hasOwn(projection.scope, key) &&
+        previousScope[key] !== undefined &&
+        previousScope[key] !== projection.scope[key],
+    );
+    // Appending the completed marker advances the active leaf. Retain its live
+    // identity through that refresh, but never carry it into another session or branch.
+    if (
+      sessionChanged ||
+      !status ||
+      !projection.messages.some((message) => matchesCompactionOperation(message, status))
+    ) {
+      resetCompactionProjection(owner);
+    }
+  }
+  chatSessionProjections.set(owner, {
+    projection,
+    runId:
+      runId &&
+      Object.hasOwn(projection.runs, runId) &&
+      (!current.projection ||
+        !chatProjectionScopeChanged(current.projection.scope, projection.scope))
+        ? runId
+        : undefined,
+  });
+  // Run-only transitions share the transcript array. Preserve their ownership
+  // updates above without traversing or republishing every displayed row.
+  if (current?.projection?.messages === projection.messages) {
     return;
   }
-  historyIndex.set(key, [entry]);
+  if (
+    owner.chatMessages.length !== projection.messages.length ||
+    owner.chatMessages.some((message, index) => message !== projection.messages[index])
+  ) {
+    owner.chatMessages = [...projection.messages];
+  }
 }
 
-function createHistoryMessageIndex(
-  messages: unknown[],
-  shouldHideMessage: (message: unknown) => boolean,
-): HistoryMessageIndex {
-  const historyIndex: HistoryMessageIndex = new Map();
-  messages.forEach((message, index) => {
-    if (shouldHideMessage(message)) {
-      return;
+/** Publish one exact live transcript order without dropping reducer-owned entry identity. */
+export function publishChatSessionProjectionMessages(
+  owner: ChatSessionProjectionOwner,
+  messages: readonly unknown[],
+  options: {
+    event?: SessionProjectionEvent;
+    scope?: SessionProjectionScope;
+  } = {},
+): SessionProjectionState {
+  const scope = options.scope ?? readChatSessionProjectionScope(owner);
+  const base = getChatSessionProjection(owner, scope);
+  const current = options.event ? reduceSessionProjection(base, { ...options.event, scope }) : base;
+  const eventMessage = options.event?.type === "messagePersisted" ? options.event.message : null;
+  const currentMessages = new Set(current.messages);
+  const supersededMessages = new Set(
+    base.messages.filter((message) => !currentMessages.has(message)),
+  );
+  const eventAccepted = eventMessage === null || currentMessages.has(eventMessage);
+  const acceptedMessages: unknown[] = [];
+  let eventPublished = false;
+  for (let message of messages) {
+    if (supersededMessages.has(message)) {
+      if (eventMessage === null) {
+        continue;
+      }
+      message = eventMessage;
     }
-    const identity = readTranscriptMessageIdentity(message);
-    const entry = { identity, index, message };
-    if (identity.externalSource) {
-      indexHistoryMessage(historyIndex, `external:${identity.externalSource}`, entry);
+    if (message === eventMessage) {
+      if (!eventAccepted || eventPublished) {
+        continue;
+      }
+      eventPublished = true;
     }
-    // Source-local import ids must never collide with canonical native ids.
-    if (identity.id && !identity.isImported) {
-      indexHistoryMessage(historyIndex, `id:${identity.id}`, entry);
+    acceptedMessages.push(message);
+  }
+  // Classify raw predecessor relationships once, then restore each existing
+  // occurrence's live/pending provenance without changing presentation order.
+  const occurrences = new Map<unknown, SessionProjectionEntry[]>();
+  for (const entry of current.entries.toReversed()) {
+    const queue = occurrences.get(entry.message);
+    if (queue) {
+      queue.push(entry);
+    } else {
+      occurrences.set(entry.message, [entry]);
     }
-    if (identity.sequence !== null) {
-      indexHistoryMessage(historyIndex, `seq:${identity.sequence}`, entry);
+  }
+  const entries = createSessionProjection(scope, acceptedMessages).entries.map(
+    (entry) => occurrences.get(entry.message)?.pop() ?? entry,
+  );
+  const projection: SessionProjectionState = {
+    ...current,
+    scope: { ...current.scope, ...scope },
+    entries,
+    messages: acceptedMessages,
+  };
+  publishChatSessionProjection(owner, projection);
+  return projection;
+}
+
+/** Custody is its own display collection; only canonical user IDs can replace it. */
+export function selectChatInputDisplay(
+  messages: readonly unknown[],
+  queue: readonly ChatQueueItem[],
+  inputs: ChatPendingInputsPage["items"],
+) {
+  const userIds = new Set<string>();
+  const sendKeys = new Set<string>();
+  for (const message of messages) {
+    const identity = readSessionMessageIdentity(message);
+    if (identity?.role === "user") {
+      if (identity.id) {
+        userIds.add(identity.id);
+      }
+      if (identity.idempotencyKey) {
+        sendKeys.add(identity.idempotencyKey);
+      }
     }
-    if (identity.idempotencyKey) {
-      indexHistoryMessage(historyIndex, `send:${identity.idempotencyKey}`, entry);
-    }
-    if (identity.signature) {
-      indexHistoryMessage(historyIndex, `display:${identity.signature}`, entry);
-    }
-    if (identity.role) {
-      indexHistoryMessage(historyIndex, `role:${identity.role}`, entry);
-    }
+  }
+  const accepted = new Set(inputs.map((input) => input.runId));
+  return {
+    queue: queue.filter(
+      (item) =>
+        !item.sendRunId ||
+        (!accepted.has(item.sendRunId) &&
+          !sendKeys.has(item.sendRunId) &&
+          !sendKeys.has(`${item.sendRunId}:user`)),
+    ),
+    pendingInputs: inputs.filter((input) => !userIds.has(input.id)),
+  };
+}
+
+/** A custody or consumption receipt retires only an uncommitted local user source. */
+export function reconcileChatInputCustody(
+  owner: ChatSessionProjectionOwner,
+  page: ChatPendingInputsPage | undefined,
+  receipts: ChatInputReceipts = [],
+) {
+  const scope = readChatSessionProjectionScope(owner, {
+    agentId: resolveUiSelectedSessionAgentId(owner),
   });
-  return historyIndex;
-}
-
-function findTranscriptHistoryAnchor(
-  historyIndex: HistoryMessageIndex,
-  message: unknown,
-): IndexedHistoryMessage | null {
-  const identity = readTranscriptMessageIdentity(message);
-  // Imported identity is never display-only. Without the complete source
-  // tuple, no source-local id can prove ownership of a transcript row.
-  if (identity.isImported && !identity.externalSource) {
-    return null;
-  }
-  const authoritativeKeys: string[] = [];
-  if (identity.externalSource) {
-    authoritativeKeys.push(`external:${identity.externalSource}`);
-  }
-  if (identity.id && !identity.isImported) {
-    authoritativeKeys.push(`id:${identity.id}`);
-  }
-  if (identity.sequence !== null) {
-    authoritativeKeys.push(`seq:${identity.sequence}`);
-  }
-  for (const key of authoritativeKeys) {
-    const entries = historyIndex.get(key) ?? [];
-    for (let index = entries.length - 1; index >= 0; index -= 1) {
-      const entry = entries[index];
-      if (!entry) {
-        continue;
-      }
-      if (identity.role && entry.identity.role !== identity.role) {
-        continue;
-      }
-      if (identity.isImported !== entry.identity.isImported) {
-        continue;
-      }
-      if (identity.externalSource && entry.identity.externalSource !== identity.externalSource) {
-        continue;
-      }
-      if (
-        identity.id &&
-        (!identity.isImported || entry.identity.id) &&
-        entry.identity.id !== identity.id
-      ) {
-        continue;
-      }
-      if (
-        identity.sequence !== null &&
-        entry.identity.sequence !== null &&
-        entry.identity.sequence !== identity.sequence
-      ) {
-        continue;
-      }
-      // A missing canonical id cannot prove which same-sequence projection is
-      // being adopted. Preserve the projection check on every sequence fallback.
-      if (
-        key.startsWith("seq:") &&
-        !identity.externalSource &&
-        entry.identity.signature !== identity.signature
-      ) {
-        continue;
-      }
-      return entry;
-    }
-  }
-  if (authoritativeKeys.length > 0 || !identity.signature) {
-    return null;
-  }
-  const entries = (historyIndex.get(`display:${identity.signature}`) ?? []).filter(
-    (entry) => entry.identity.isImported === identity.isImported,
+  const acceptedRunIds = new Set(
+    [...(page?.items ?? []), ...receipts]
+      .map((item) => item.runId)
+      .filter((runId) => typeof runId === "string"),
   );
-  const sameInstance = entries.find((entry) => entry.message === message);
-  // Display text is not transcript identity. A copied legacy row is safe to
-  // anchor only when its visible signature has exactly one history candidate.
-  return sameInstance ?? (entries.length === 1 ? (entries[0] ?? null) : null);
-}
-
-function findOptimisticHistoryMatch(
-  historyIndex: HistoryMessageIndex,
-  identity: TranscriptMessageIdentity,
-  afterIndex: number,
-): IndexedHistoryMessage | "ambiguous" | null {
-  if (identity.idempotencyKey) {
-    const entries = historyIndex.get(`send:${identity.idempotencyKey}`) ?? [];
-    // A send already persisted before the active anchor is still consumed;
-    // only a later match is allowed to advance that anchor.
-    return entries.findLast((entry) => entry.index > afterIndex) ?? entries.at(-1) ?? null;
-  }
-  if (!identity.signature) {
-    return null;
-  }
-  const entries = (historyIndex.get(`display:${identity.signature}`) ?? []).filter(
-    (entry) => entry.index > afterIndex,
-  );
-  if (entries.length > 1) {
-    return "ambiguous";
-  }
-  if (entries[0]) {
-    return entries[0];
-  }
-  if (identity.role !== "assistant") {
-    return null;
-  }
-  const assistantEntries = (historyIndex.get("role:assistant") ?? []).filter(
-    (entry) => entry.index > afterIndex,
-  );
-  // A persisted assistant can complete a partial stream with different text;
-  // never replay that stream as an extra assistant answer.
-  if (assistantEntries.length > 1) {
-    return "ambiguous";
-  }
-  return assistantEntries[0] ?? null;
-}
-
-export function preserveOptimisticTailMessages(
-  historyMessages: unknown[],
-  previousMessages: unknown[],
-  shouldHideMessage: (message: unknown) => boolean = () => false,
-): unknown[] {
-  if (previousMessages.length === 0) {
-    return historyMessages;
-  }
-  if (historyMessages.length === 0) {
-    const optimisticMessages = previousMessages.filter(
-      (message) => isLocallyOptimisticHistoryMessage(message) && !shouldHideMessage(message),
+  const submissions = readChatSubmissionBatch(owner, scope);
+  submissions?.accept(acceptedRunIds);
+  if (acceptedRunIds.size) {
+    const projection = getChatSessionProjection(owner, scope);
+    const entries = projection.entries.filter(
+      (entry) =>
+        !(
+          entry.pending &&
+          entry.identity?.role === "user" &&
+          entry.identity.id === null &&
+          entry.identity.sequence === null &&
+          acceptedRunIds.has(entry.pendingRunId ?? "")
+        ),
     );
-    return optimisticMessages.length === previousMessages.length
-      ? previousMessages
-      : historyMessages;
-  }
-  const historyIndex = createHistoryMessageIndex(historyMessages, shouldHideMessage);
-  let sharedPreviousIndex = -1;
-  let sharedHistoryIndex = -1;
-  let sharedHistorySignature: string | null = null;
-  for (let index = previousMessages.length - 1; index >= 0; index--) {
-    const message = previousMessages[index];
-    // Only transcript-backed rows can anchor history; a newer optimistic turn
-    // may intentionally repeat an earlier user's exact visible text.
-    if (isLocallyOptimisticHistoryMessage(message) || shouldHideMessage(message)) {
-      continue;
-    }
-    const historyEntry = findTranscriptHistoryAnchor(historyIndex, message);
-    if (historyEntry) {
-      sharedPreviousIndex = index;
-      sharedHistoryIndex = historyEntry.index;
-      sharedHistorySignature = historyEntry.identity.signature;
-      break;
+    if (entries.length !== projection.entries.length) {
+      publishChatSessionProjection(owner, {
+        ...projection,
+        entries,
+        messages: entries.map((entry) => entry.message),
+      });
     }
   }
-  if (sharedPreviousIndex < 0) {
-    return historyMessages;
+  return {
+    acceptedRunIds,
+    page: page ?? { items: [], total: 0 },
+  };
+}
+
+export function shouldDisplayChatSubmission(
+  submission: RetainedChatSubmission,
+  receipt: SessionMessageIdentity | null,
+): boolean {
+  // A local copy suppresses display; only a durable receipt retires ownership.
+  if (receipt && (receipt.id !== null || receipt.sequence !== null)) {
+    submission.pending = false;
   }
-  const optimisticTail: unknown[] = [];
-  let consumedPersistedTurn = false;
-  for (const message of previousMessages.slice(sharedPreviousIndex + 1)) {
-    if (!isLocallyOptimisticHistoryMessage(message) || shouldHideMessage(message)) {
-      return historyMessages;
-    }
-    const identity = readTranscriptMessageIdentity(message);
-    if (!identity.signature) {
-      return historyMessages;
-    }
-    // A consumed historical send owns its following optimistic assistant;
-    // retaining that stream would duplicate the already-persisted answer.
-    if (consumedPersistedTurn && identity.role === "assistant") {
-      continue;
-    }
-    if (optimisticTail.length === 0) {
-      const historyMatch = findOptimisticHistoryMatch(historyIndex, identity, sharedHistoryIndex);
-      if (historyMatch === "ambiguous") {
-        return historyMessages;
-      }
-      if (historyMatch) {
-        if (historyMatch.index > sharedHistoryIndex) {
-          sharedHistoryIndex = historyMatch.index;
-          sharedHistorySignature = historyMatch.identity.signature;
-          consumedPersistedTurn = false;
-        } else if (identity.role === "user") {
-          consumedPersistedTurn = true;
-        }
-        continue;
-      }
-      // Only a pending send with its own identity may cross a repeated
-      // projection; identity-free tails may belong to the replaced snapshot.
-      if (
-        sharedHistoryIndex < historyMessages.length - 1 &&
-        (!identity.idempotencyKey ||
-          historyMessages.slice(sharedHistoryIndex + 1).some((historyMessage) => {
-            if (shouldHideMessage(historyMessage)) {
-              return false;
-            }
-            const historyIdentity = readTranscriptMessageIdentity(historyMessage);
-            const historySignature = historyIdentity.signature;
-            // A persisted repeat may follow a differently worded anchor; a
-            // distinct send key proves that row cannot consume this turn.
-            const isDistinctPersistedSend =
-              historySignature === identity.signature &&
-              historyIdentity.idempotencyKey !== null &&
-              historyIdentity.idempotencyKey !== identity.idempotencyKey;
-            return (
-              sharedHistorySignature === null ||
-              historySignature === null ||
-              (historySignature !== sharedHistorySignature && !isDistinctPersistedSend) ||
-              (historySignature === identity.signature && historyIdentity.idempotencyKey === null)
-            );
-          }))
-      ) {
-        return historyMessages;
-      }
-    }
-    if (identity.role === "user") {
-      consumedPersistedTurn = false;
-    }
-    optimisticTail.push(message);
+  return submission.pending && !receipt;
+}
+
+/** A retained submission has display ownership only until its own user receipt or custody. */
+export function admitChatSubmission(
+  owner: ChatSessionProjectionOwner,
+  submission = owner.chatSubmissions?.readInitial(owner.sessionKey, owner.client ?? null),
+): boolean {
+  if (
+    !submission?.pending ||
+    (submission.kind === "delivered" &&
+      (!owner.chatSubmissions ||
+        !shouldDisplayChatSubmission(
+          submission,
+          findChatSubmissionMessage(owner.chatMessages, submission.pendingRunId, true),
+        )))
+  ) {
+    return false;
   }
-  return optimisticTail.length > 0 ? [...historyMessages, ...optimisticTail] : historyMessages;
+  const scope = readChatSessionProjectionScope(owner, {
+    sessionKey: submission.sessionKey,
+    ...(submission.kind === "delivered" ? { agentId: submission.agentId } : {}),
+  });
+  const previousMessages = owner.chatMessages;
+  reduceChatSessionProjection(
+    owner,
+    { type: "sendPending", runId: submission.pendingRunId, message: submission.message },
+    { scope },
+  );
+  return owner.chatMessages !== previousMessages;
+}
+
+/** Publish the reducer and rendered transcript together; no caller maintains a second copy. */
+export function reduceChatSessionProjection(
+  owner: ChatSessionProjectionOwner,
+  event: SessionProjectionEvent,
+  options: {
+    scope?: SessionProjectionScope;
+    runActive?: boolean;
+  } = {},
+): SessionProjectionState {
+  const scope = options.scope ?? readChatSessionProjectionScope(owner);
+  const current = getChatSessionProjection(owner, scope);
+  const sessionKey = scope.sessionKey ?? owner.sessionKey;
+  const submissions = readChatSubmissionBatch(owner, scope);
+  const handoff = submissions?.initial;
+  const initialPending = handoff?.pending;
+  const receive = (message: unknown, envelope?: SessionMessageEnvelope) =>
+    submissions
+      ? submissions.receive(
+          message,
+          readSessionMessageIdentity(message, envelope),
+          Boolean(envelope),
+        )
+      : message;
+  const preparedEvent =
+    event.type === "messagePersisted" && submissions
+      ? { ...event, message: receive(event.message, event.envelope ?? event) }
+      : event.type === "snapshotLoaded" && submissions
+        ? {
+            ...event,
+            messages: event.messages
+              .map((message) => receive(message))
+              .filter((message) => message !== undefined),
+          }
+        : event;
+  let projection = current;
+  if (event.type === "snapshotLoaded" && handoff?.pending && options.runActive !== false) {
+    projection = reduceSessionProjection(projection, {
+      type: "sendPending",
+      runId: handoff.pendingRunId,
+      message: handoff.message,
+      scope,
+    });
+  }
+  projection = reduceSessionProjection(projection, { ...preparedEvent, scope });
+  if (event.type === "sessionReset" && projection !== current) {
+    resetCompactionProjection(owner);
+  }
+  // Without a transcript anchor this is best-effort display chronology, assuming
+  // comparable browser/Gateway clocks. Never assign a sequence or reorder canonical
+  // rows; older or untimestamped history stays ahead until authoritative adoption.
+  const initialIndex =
+    initialPending && handoff
+      ? projection.entries.findIndex(
+          (entry) => entry.pending && entry.pendingRunId === handoff.pendingRunId,
+        )
+      : -1;
+  const initial = projection.entries[initialIndex];
+  if (handoff && initial && initialIndex > 0) {
+    const outputIndex = projection.entries.findIndex((entry, index) => {
+      const message = asNullableRecord(entry.message);
+      return (
+        index < initialIndex &&
+        message?.role !== "user" &&
+        typeof message?.timestamp === "number" &&
+        message.timestamp >= handoff.message.timestamp
+      );
+    });
+    if (outputIndex >= 0) {
+      const entries = projection.entries.toSpliced(initialIndex, 1);
+      entries.splice(outputIndex, 0, initial);
+      projection = { ...projection, entries, messages: entries.map((entry) => entry.message) };
+    }
+  }
+  publishChatSessionProjection(owner, projection);
+  if (handoff && !handoff.pending && options.runActive === false) {
+    owner.chatSubmissions?.clearInitial(sessionKey);
+  }
+  return projection;
 }

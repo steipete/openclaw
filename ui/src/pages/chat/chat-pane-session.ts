@@ -1,58 +1,185 @@
-import { selectApplicationSession } from "../../app/agent-selection.ts";
+import { parseDateStringTimestampMs } from "@openclaw/normalization-core/number-coercion";
+import type {
+  SessionCatalogTranscriptItem,
+  SessionsCatalogReadResult,
+} from "../../../../packages/gateway-protocol/src/index.js";
+import type { ControlUiSessionPullRequest } from "../../../../src/gateway/control-ui-contract.js";
+import type { GatewaySessionRow } from "../../api/types.ts";
+import { t } from "../../i18n/index.ts";
+import { nativeHistoryMessageIdentity } from "../../lib/chat/history-message-identity.ts";
+import { formatUiError } from "../../lib/format-error.ts";
+import { clampText } from "../../lib/format.ts";
+import { isGatewayMethodAdvertised } from "../../lib/gateway-methods.ts";
+import { readSessionMethodAccess } from "../../lib/session-method-access.ts";
 import {
-  CHAT_COMPOSER_DRAFT_STORAGE_ERROR,
-  buildCatalogSessionKey,
-  catalogMessageId,
-  clampText,
-  dismissConfirmedActionPopovers,
-  flushChatQueueAfterIdleSessionReconciliation,
-  flushChatQueueForEvent,
-  loadChatComposerSnapshot,
-  loadChatBranches,
-  loadChatHistory,
+  summarizeSessionPullRequests,
+  SESSION_PULL_REQUESTS_SUBSCRIBE_METHOD,
+  sessionPullRequestsForGateway,
+} from "../../lib/session-pull-requests.ts";
+import {
   lookupCatalogSession,
-  parseAgentSessionKey,
   parseCatalogSessionKey,
-  refreshChatAvatar,
-  refreshChatMetadata,
-  refreshRouteSessionOptions,
-  resetChatStateForRouteSession,
-  resetChatThreadSessionPresentationState,
-  retryChatComposerMemoryFallback,
-  resolveChatAgentId,
-  resolveSessionDisplayName,
-  resolveSessionKey,
-  resolveStoredChatOutboxScope,
-  saveRouteSessionSettings,
-  scheduleChatScroll,
-  storedChatOutboxScopeKey,
-  syncSelectedSessionMessageSubscription,
   type CatalogSessionKey,
-  type ChatPageHost,
-  type GatewaySessionRow,
-  type SessionCatalogTranscriptItem,
-  type SessionsCatalogReadResult,
-} from "./chat-pane-deps.ts";
+} from "../../lib/sessions/catalog-key.ts";
+import { resolveSessionKey, scopedAgentParamsForSession } from "../../lib/sessions/index.ts";
+import { parseAgentSessionKey, scopedSessionArtifactKey } from "../../lib/sessions/session-key.ts";
+import { releaseChatAttachmentPayloads } from "./attachment-payload-store.ts";
+import { catalogMessageId } from "./catalog-message-id.ts";
+import { loadChatBranches } from "./chat-history-branches.ts";
 import {
   CATALOG_TOOL_RESULT_PREVIEW_MAX_CHARS,
   catalogRawResult,
   catalogRawString,
-  nativeHistoryMessageIdentity,
 } from "./chat-pane-shared.ts";
-import { ChatPaneSuggestions } from "./chat-pane-suggestions.ts";
+import { ChatPaneTaskSuggestions } from "./chat-pane-task-suggestions.ts";
+import { retirePullRequestRefreshes } from "./chat-pull-request-refresh.ts";
+import type { ChatPageHost } from "./chat-state-host.ts";
+import { resolveChatAgentId, selectedChatSessionRow } from "./chat-state-route.ts";
+import {
+  dismissChatPullRequest,
+  listDismissedChatPullRequests,
+} from "./components/chat-pull-requests.ts";
+import { scheduleChatScroll } from "./scroll.ts";
 
-export abstract class ChatPaneSession extends ChatPaneSuggestions {
+export abstract class ChatPaneSession extends ChatPaneTaskSuggestions {
+  private deferredSessionHydrationActive = false;
+  private pendingDeferredSessionHydration: (() => void) | null = null;
+
+  protected refreshSessionPullRequests(options: { refresh?: boolean } = {}): boolean {
+    if (!this.presented) {
+      sessionPullRequestsForGateway(this.context.gateway).unwatch(this);
+      return false;
+    }
+    const scope = this.captureConnectionScope();
+    if (
+      !scope ||
+      !isGatewayMethodAdvertised(
+        scope.context.gateway.snapshot,
+        SESSION_PULL_REQUESTS_SUBSCRIBE_METHOD,
+      )
+    ) {
+      if (scope) {
+        sessionPullRequestsForGateway(scope.context.gateway).unwatch(this);
+      }
+      this.sessionPullRequests = [];
+      this.sessionPullRequestsBranch = undefined;
+      this.sessionPullRequestsRateLimited = false;
+      this.requestUpdate();
+      return false;
+    }
+    const sessionKey = scope.state.sessionKey;
+    if (!sessionKey.trim() || parseCatalogSessionKey(sessionKey)) {
+      sessionPullRequestsForGateway(scope.context.gateway).unwatch(this);
+      this.sessionPullRequests = [];
+      this.sessionPullRequestsBranch = undefined;
+      this.sessionPullRequestsRateLimited = false;
+      this.requestUpdate();
+      return false;
+    }
+    const pullRequestEpoch = scope.context.sessions.capturePullRequestEpoch(sessionKey);
+    const store = sessionPullRequestsForGateway(scope.context.gateway);
+    const pullRequestKey = scopedSessionArtifactKey(
+      sessionKey,
+      scopedAgentParamsForSession(scope.state, sessionKey).agentId ??
+        resolveChatAgentId(scope.state),
+    );
+    store.watch(this, [pullRequestKey], { foreground: true });
+    const refreshAdmitted = options.refresh === true && store.refresh(pullRequestKey);
+    const result = store.get(pullRequestKey);
+    if (!this.isConnectionScopeCurrent(scope) || sessionKey !== scope.state.sessionKey) {
+      return refreshAdmitted;
+    }
+    if (!result) {
+      if (this.sessionPullRequests.length > 0 || this.sessionPullRequestsBranch !== undefined) {
+        scope.context.sessions.setPullRequestSummary(sessionKey, undefined, pullRequestEpoch);
+      }
+      this.sessionPullRequests = [];
+      this.sessionPullRequestsBranch = undefined;
+      this.sessionPullRequestsRateLimited = false;
+      this.dismissedSessionPullRequestIds = new Set();
+      this.requestUpdate();
+      return refreshAdmitted;
+    }
+    if (result.status === "unavailable") {
+      return refreshAdmitted;
+    }
+    this.sessionPullRequests = result.pullRequests;
+    if (!result.rateLimited || result.pullRequests.length > 0) {
+      const previousSummary = scope.context.sessions.pullRequestSummary(sessionKey);
+      scope.context.sessions.setPullRequestSummary(
+        sessionKey,
+        summarizeSessionPullRequests(result.pullRequests, previousSummary),
+        pullRequestEpoch,
+      );
+    }
+    const published =
+      this.githubPublication?.result?.status === "published"
+        ? this.githubPublication?.result
+        : undefined;
+    const publishedPullRequest = published
+      ? result.pullRequests.find((pullRequest) => pullRequest.url === published.url)
+      : undefined;
+    if (
+      result.branch &&
+      published &&
+      (result.branch.branch !== published.branch ||
+        (publishedPullRequest &&
+          publishedPullRequest.state !== "open" &&
+          publishedPullRequest.state !== "draft"))
+    ) {
+      this.githubPublication?.reset();
+    }
+    this.sessionPullRequestsBranch = result.branch;
+    this.sessionPullRequestsRateLimited = result.rateLimited;
+    this.dismissedSessionPullRequestIds = listDismissedChatPullRequests(sessionKey);
+    this.requestUpdate();
+    return refreshAdmitted;
+  }
+
+  protected resetSessionPullRequests(): void {
+    if (this.state) {
+      retirePullRequestRefreshes(this.state);
+    }
+    sessionPullRequestsForGateway(this.context.gateway).unwatch(this);
+    this.sessionPullRequests = [];
+    this.sessionPullRequestsBranch = undefined;
+    this.sessionPullRequestsRateLimited = false;
+    this.sessionPullRequestsExpanded = false;
+    this.githubPublication?.detach();
+    this.githubPublication = null;
+    this.dismissedSessionPullRequestIds = new Set();
+  }
+
+  protected readonly dismissSessionPullRequest = (
+    pullRequest: ControlUiSessionPullRequest,
+  ): void => {
+    const sessionKey = this.state?.sessionKey;
+    if (!sessionKey) {
+      return;
+    }
+    this.dismissedSessionPullRequestIds = dismissChatPullRequest(sessionKey, pullRequest);
+    this.requestUpdate();
+  };
+
   protected deferSessionHydrationUntilTranscript(
     sessionKey: string,
-    transcriptLoad: Promise<unknown>,
+    transcriptLoad: Promise<boolean>,
   ): void {
     const state = this.state;
     if (!state) {
       return;
     }
+    this.deferredSessionHydrationActive = true;
+    this.pendingDeferredSessionHydration = null;
     const requestVersion = ++this.deferredSessionHydrationRequestVersion;
     const connectionGeneration = this.connectionGeneration;
     const client = state.client;
+    const retireIfCurrent = () => {
+      if (this.deferredSessionHydrationRequestVersion === requestVersion) {
+        this.deferredSessionHydrationActive = false;
+        this.pendingDeferredSessionHydration = null;
+      }
+    };
     const isCurrent = () =>
       this.deferredSessionHydrationRequestVersion === requestVersion &&
       this.connectionGeneration === connectionGeneration &&
@@ -60,23 +187,50 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
       state.connected &&
       state.client === client &&
       state.sessionKey === sessionKey;
-    const scheduleAfterTranscript = () => {
+    const scheduleHydration = (historyCommitted: boolean) => {
       if (!isCurrent()) {
+        retireIfCurrent();
         return;
       }
+      if (!this.presented) {
+        this.pendingDeferredSessionHydration = () => scheduleHydration(historyCommitted);
+        return;
+      }
+      this.pendingDeferredSessionHydration = null;
       // These affordances do not shape the transcript. Start them together only
       // after the authoritative history has committed so they cannot delay chat paint.
       state.renderLifecycle.afterCommit((complete) => {
-        if (isCurrent()) {
+        if (isCurrent() && this.presented) {
+          this.deferredSessionHydrationActive = false;
+          if (historyCommitted) {
+            this.markSessionRead(selectedChatSessionRow(state));
+          }
           void loadChatBranches(state);
           void this.probeSessionDiscussion(sessionKey);
           this.hydrateSessionCompanion(sessionKey);
           void this.refreshSessionPullRequests();
+        } else if (isCurrent()) {
+          this.pendingDeferredSessionHydration = () => scheduleHydration(historyCommitted);
+        } else {
+          retireIfCurrent();
         }
         complete();
       });
     };
-    void transcriptLoad.then(scheduleAfterTranscript, scheduleAfterTranscript);
+    void transcriptLoad.then(scheduleHydration, () => scheduleHydration(false));
+  }
+
+  protected resumeDeferredSessionHydration(): boolean {
+    const resume = this.pendingDeferredSessionHydration;
+    this.pendingDeferredSessionHydration = null;
+    resume?.();
+    return this.deferredSessionHydrationActive;
+  }
+
+  protected retireDeferredSessionHydration(): void {
+    this.deferredSessionHydrationRequestVersion += 1;
+    this.deferredSessionHydrationActive = false;
+    this.pendingDeferredSessionHydration = null;
   }
 
   protected markSessionRead(row: GatewaySessionRow | undefined) {
@@ -89,38 +243,76 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
       (row.status === "failed" || row.status === "timeout") &&
       (row.lastReadAt == null || failureAt > row.lastReadAt);
     const agentStatusActive = Boolean(row.agentStatus && row.agentStatus.expiresAt > Date.now());
-    if (
-      !this.unreadPatchGuard.shouldPatch(
-        state.sessionKey,
-        row.unread === true || unreadFailure || agentStatusActive,
-      )
-    ) {
+    const unread = row.unread === true || unreadFailure || agentStatusActive;
+    if (!unread) {
+      this.unreadPatchGuard.shouldPatch(state.sessionKey, false, row.markedUnreadAt);
       return;
     }
     const agentId = parseAgentSessionKey(row.key)?.agentId ?? resolveChatAgentId(state);
-    const guardKey = state.sessionKey;
-    void this.context.sessions.patch(row.key, { unread: false }, { agentId }).catch(() => {
-      // Unlatch so later unread snapshots retry; the session capability
-      // publishes the actionable error for the owning page.
-      this.unreadPatchGuard.patchFailed(guardKey);
+    const access = readSessionMethodAccess(this.context.gateway.snapshot, {
+      method: "sessions.patch",
+      params: { key: row.key, unread: false, agentId },
     });
+    // Read-only navigation must remain silent: absence of mutation access is
+    // not an operation failure and should not latch the unread retry guard.
+    if (
+      !access.allowed ||
+      !this.unreadPatchGuard.shouldPatch(state.sessionKey, true, row.markedUnreadAt)
+    ) {
+      return;
+    }
+    const guardKey = state.sessionKey;
+    void this.context.sessions
+      .patch(
+        row.key,
+        { unread: false },
+        { agentId, expectedMarkedUnreadAt: row.markedUnreadAt ?? null },
+      )
+      .then(
+        (result) => {
+          // A null result means no request was sent (connection scope lost);
+          // unlatch like a failure or the badge stays lit until navigation.
+          if (result === null) {
+            this.unreadPatchGuard.patchFailed(guardKey);
+          }
+        },
+        () => {
+          // Unlatch so later unread snapshots retry; the session capability
+          // publishes the actionable error for the owning page.
+          this.unreadPatchGuard.patchFailed(guardKey);
+        },
+      );
   }
 
-  protected async restoreArchivedSession(sessionKey: string) {
+  protected async restoreArchivedSession(sessionKey: string, expectedSessionId: string) {
     const scope = this.captureConnectionScope();
     if (!scope || scope.state.sessionKey !== sessionKey) {
+      return;
+    }
+    const access = readSessionMethodAccess(scope.context.gateway.snapshot, {
+      method: "sessions.patch",
+      params: { key: sessionKey, archived: false },
+    });
+    if (!access.allowed) {
+      scope.state.lastError = access.reason;
+      scope.state.chatError = access.reason;
+      scope.state.requestUpdate?.();
       return;
     }
     const agentId = parseAgentSessionKey(sessionKey)?.agentId ?? resolveChatAgentId(scope.state);
     let failure: string | null = null;
     try {
       // The patch can resolve falsy on failure; the capability error explains it.
-      const patched = await scope.sessions.patch(sessionKey, { archived: false }, { agentId });
+      const patched = await scope.sessions.patch(
+        sessionKey,
+        { archived: false },
+        { agentId, expectedSessionId },
+      );
       if (!patched) {
         failure = scope.sessions.state.error;
       }
     } catch (error) {
-      failure = error instanceof Error ? error.message : String(error);
+      failure = formatUiError(error);
     }
     if (failure && this.isConnectionScopeCurrent(scope) && scope.state.sessionKey === sessionKey) {
       scope.state.lastError = failure;
@@ -144,159 +336,15 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
     return nextSessionKey;
   }
 
-  // Global chrome (persisted session settings, gateway session, agent
-  // selection) is owned by exactly one pane; the container guarantees a single
-  // active pane, so inactive split panes must never run these bindings.
-  protected applyActiveSessionBindings() {
-    const state = this.state;
-    if (
-      !state ||
-      !this.active ||
-      !this.sessionKey.trim() ||
-      parseCatalogSessionKey(state.sessionKey)
-    ) {
-      return;
-    }
-    const nextSessionKey = state.sessionKey;
-    saveRouteSessionSettings(state, nextSessionKey);
-    selectApplicationSession({
-      selection: this.context.agentSelection,
-      gateway: this.context.gateway,
-      sessionKey: nextSessionKey,
-    });
-  }
-
-  protected switchPaneSession(nextSessionKey: string) {
-    const state = this.state;
-    if (!state) {
-      return;
-    }
-    // Close old-session listener owners before the next render detaches their
-    // DOM; thread-global portals and caches are reset separately.
-    dismissConfirmedActionPopovers(this);
-    resetChatThreadSessionPresentationState(this.paneId);
-    this.sessionDiscussionOpenUrls.clear();
-    const previousSessionKey = state.sessionKey;
-    // An in-progress title edit belongs to the previous session; committing
-    // it against the newly routed row would rename the wrong session.
-    this.cancelHeaderRename();
-    const restoredPosition = this.resetOlderMessagesViewport(nextSessionKey);
-    const catalogKey = parseCatalogSessionKey(nextSessionKey);
-    const previousAgentId = resolveChatAgentId(state);
-    const previousSessionsResult = state.sessionsResult;
-    const nextSessionRow = state.sessionsResult?.sessions.find((row) => row.key === nextSessionKey);
-    const nextSessionLabel = resolveSessionDisplayName(nextSessionKey, nextSessionRow);
-    const previousComposerScope =
-      this.chatState.composerScopeForRouteSwitch() ??
-      resolveStoredChatOutboxScope(state, previousSessionKey);
-    const previousComposerScopeKey = storedChatOutboxScopeKey(previousComposerScope);
-    const existingFallback = state.chatComposerFallbackByScope[previousComposerScopeKey];
-    const draftPersistResult = this.chatState.persistComposerForRouteSwitch();
-    const draftPersisted = draftPersistResult.status === "persisted";
-    const previousStoredSnapshot = loadChatComposerSnapshot(
-      state,
-      previousSessionKey,
-      previousComposerScope.agentId,
-    );
-    const previousStoredDraft = previousStoredSnapshot ? previousStoredSnapshot.draft : null;
-    const storedDraftMatches = previousStoredDraft === state.chatMessage;
-    const hasStagedAttachments = state.chatAttachments.length > 0;
-    const retainExistingFallback = existingFallback !== undefined && !storedDraftMatches;
-    const previousDraftRetry =
-      draftPersistResult.status === "storage-failed"
-        ? {
-            expectedDraftRevision: draftPersistResult.expectedDraftRevision,
-            draftRevision: draftPersistResult.draftRevision,
-          }
-        : existingFallback?.storageFailed && !storedDraftMatches
-          ? existingFallback.draftRetry
-          : undefined;
-    resetChatStateForRouteSession(state, nextSessionKey, {
-      retainPreviousComposerInMemory:
-        !draftPersisted || hasStagedAttachments || retainExistingFallback,
-      previousDraftRetry,
-      previousComposerScope,
-    });
-    this.reconcileWaitingApprovalSnapshot();
-    retryChatComposerMemoryFallback(state, nextSessionKey);
-    // Route restoration is the new persistence baseline. An untouched pane
-    // must not later erase a draft written by another split pane. Memory-only
-    // fallbacks stay pane-local until a later edit persists successfully.
-    this.chatState.adoptComposerRoute();
-    this.taskSuggestionsRequestVersion += 1;
-    this.catalogLoadGeneration += 1;
-    this.taskSuggestions = [];
-    this.taskSuggestionBusyIds.clear();
-    this.taskSuggestionOperations.clear();
-    this.resetSessionSuggestions();
-    this.clearTypingActors();
-    this.resetSessionPullRequests();
-    if (catalogKey) {
-      this.openCatalogSession(catalogKey, state);
-      return;
-    }
-    this.catalogRequestedSessionKey = null;
-    this.markSessionRead(nextSessionRow);
-    if (previousSessionKey !== nextSessionKey) {
-      state.announceSessionSwitch?.(nextSessionKey, nextSessionLabel);
-    }
-    void state.loadAssistantIdentity();
-    void refreshChatAvatar(state).finally(() => this.requestUpdate());
-    const nextAgentId = resolveChatAgentId(state);
-    // Agent-scoped catalogs remain valid across same-agent sessions. Cross-agent
-    // failures must clear instead of retaining models owned by the previous agent.
-    void refreshChatMetadata(state, {
-      preserveModelCatalogOnFallback: Boolean(previousAgentId && previousAgentId === nextAgentId),
-    }).finally(() => state.requestUpdate?.());
-    const subscriptionSync = syncSelectedSessionMessageSubscription(state);
-    const composerStorageError = state.chatError === CHAT_COMPOSER_DRAFT_STORAGE_ERROR;
-    const historyLoad = loadChatHistory(state, { deferBranches: true });
-    if (composerStorageError) {
-      // History loading clears the shared error slot synchronously. Restore the
-      // pane-local storage warning unless the retry above made the draft durable.
-      state.lastError = CHAT_COMPOSER_DRAFT_STORAGE_ERROR;
-      state.chatError = CHAT_COMPOSER_DRAFT_STORAGE_ERROR;
-    }
-    state.requestUpdate();
-    void this.refreshTaskSuggestions();
-    void this.refreshSessionSuggestions();
-    this.deferSessionHydrationUntilTranscript(nextSessionKey, historyLoad);
-    const scheduleHistoryScroll = () => {
-      if (state.sessionKey !== nextSessionKey) {
-        return;
-      }
-      state.requestUpdate();
-      if (restoredPosition === null || restoredPosition.anchorToEnd) {
-        scheduleChatScroll(state, true);
-      } else {
-        this.restoreOlderMessagesViewport(nextSessionKey, restoredPosition.scrollTop);
-      }
-    };
-    void historyLoad.then(scheduleHistoryScroll, scheduleHistoryScroll);
-    void historyLoad.then(
-      () => this.sendPendingSkillWorkshopRevision(nextSessionKey),
-      () => this.sendPendingSkillWorkshopRevision(nextSessionKey),
-    );
-    const sessionsRefresh = refreshRouteSessionOptions(state);
-    flushChatQueueAfterIdleSessionReconciliation(
-      state,
-      nextSessionKey,
-      historyLoad,
-      sessionsRefresh,
-      previousSessionsResult,
-      () => void flushChatQueueForEvent(state),
-    );
-    void subscriptionSync;
-    void historyLoad;
-    void sessionsRefresh;
-  }
-
   protected openCatalogSession(key: CatalogSessionKey, state: ChatPageHost) {
-    this.catalogRequestedSessionKey = buildCatalogSessionKey(key);
+    this.catalogRequestedSessionKey = this.sessionKey;
     this.catalogMessages = [];
     this.catalogCursor = undefined;
     this.catalogSession = null;
     this.catalogHost = null;
+    // Payload-store entries and their object URLs are reclaimed only by
+    // explicit release; clearing the array alone strands them for the tab.
+    releaseChatAttachmentPayloads(state.chatAttachments);
     state.chatAttachments = [];
     state.chatLoading = true;
     state.requestUpdate();
@@ -304,13 +352,24 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
   }
 
   protected catalogItemMessage(item: SessionCatalogTranscriptItem): Record<string, unknown> | null {
-    const parsedTimestamp = item.timestamp ? Date.parse(item.timestamp) : Number.NaN;
-    const timestamp = Number.isFinite(parsedTimestamp) ? parsedTimestamp : null;
+    const timestamp = parseDateStringTimestampMs(item.timestamp) ?? null;
     const text = item.text?.trim() ? item.text : null;
     if (item.type === "userMessage") {
       return text
         ? {
             role: "user",
+            // Missing source attribution must never fall back to the current viewer.
+            senderLabel: item.sender?.label ?? t("sessionsView.user"),
+            ...(item.sender
+              ? {
+                  __openclaw: {
+                    senderIdentity: item.sender.identity,
+                    senderId: item.sender.identity.id,
+                    senderName: item.sender.label,
+                    senderProfileAvatarUrl: item.sender.avatarUrl,
+                  },
+                }
+              : {}),
             content: text,
             ...(timestamp == null ? {} : { timestamp }),
             messageId: item.id,
@@ -318,6 +377,7 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
         : null;
     }
     let content = text;
+    let truncated = item.truncated;
     if (item.type === "reasoning") {
       content = text ? `Thinking\n\n${text}` : "Thinking";
     } else if (item.type === "toolCall") {
@@ -325,17 +385,18 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
         text ?? catalogRawString(item.raw, ["command", "name", "tool", "title", "query"]);
       content = label ? `Tool call\n\n${label}` : "Tool call";
     } else if (item.type === "toolResult") {
-      // Raw aggregated output is only bounded by the transcript read's per-item
-      // byte cap (megabytes), so clamp it to the preview size before rendering.
-      const aggregated = catalogRawString(item.raw, ["aggregatedOutput"]);
       const output =
-        text ??
-        (aggregated ? clampText(aggregated, CATALOG_TOOL_RESULT_PREVIEW_MAX_CHARS) : null) ??
-        catalogRawResult(item.raw);
-      content = output ? `Tool result\n\n${output}` : "Tool result";
+        text ?? catalogRawString(item.raw, ["aggregatedOutput"]) ?? catalogRawResult(item.raw);
+      // Native text and raw fallbacks share the same display limit; source data stays intact.
+      const preview = output ? clampText(output, CATALOG_TOOL_RESULT_PREVIEW_MAX_CHARS) : null;
+      truncated ||= Boolean(output && preview !== output);
+      content = preview ? `Tool result\n\n${preview}` : "Tool result";
     }
     if (!content) {
       return null;
+    }
+    if (truncated) {
+      content = `${content}\n\n${t("chat.catalogOutputTruncated")}`;
     }
     return {
       role: "assistant",
@@ -392,23 +453,25 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
     if (older && !this.catalogCursor) {
       return false;
     }
+    const agentId = resolveChatAgentId(state);
     const generation = older ? this.catalogLoadGeneration : ++this.catalogLoadGeneration;
-    const requestedSessionKey = buildCatalogSessionKey(key);
+    const requestedSessionKey = this.sessionKey;
     const isCurrent = () =>
-      generation === this.catalogLoadGeneration && this.sessionKey === requestedSessionKey;
+      generation === this.catalogLoadGeneration &&
+      this.sessionKey === requestedSessionKey &&
+      resolveChatAgentId(state) === agentId;
     if (!older) {
       this.catalogLoading = true;
       this.catalogCursor = undefined;
       this.olderCursorsSeen.clear();
       this.historyObserverArmed = false;
-      this.historyBootstrapPagesLoaded = 0;
       this.transcriptScrollTop = null;
       this.historyObserver?.disconnect();
       this.historyObserver = null;
     }
     try {
       if (!older) {
-        const lookup = await lookupCatalogSession({ client, key, isCurrent });
+        const lookup = await lookupCatalogSession({ agentId, client, key, isCurrent });
         if (!lookup) {
           return false;
         }
@@ -420,9 +483,13 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
         this.olderCursorsSeen.add(requestedOlderCursor);
       }
       const page = await client.request<SessionsCatalogReadResult>("sessions.catalog.read", {
+        agentId,
         catalogId: key.catalogId,
         hostId: key.hostId,
         threadId: key.threadId,
+        ...(this.catalogSession?.sourceHomeId
+          ? { sourceHomeId: this.catalogSession.sourceHomeId }
+          : {}),
         limit: 50,
         ...(older && this.catalogCursor ? { cursor: this.catalogCursor } : {}),
       });
@@ -434,6 +501,7 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
         .map((item) => this.catalogItemMessage(item))
         .filter((message) => message !== null);
       const nextMessages = older ? this.prependUniqueCatalogMessages(messages) : messages;
+      const addedMessages = nextMessages.length > this.catalogMessages.length;
       // Exhaust when the cursor cannot make new forward progress: absent, unchanged,
       // or already visited this session (a provider cycling c1 -> c2 -> c1). Any of
       // these stops the re-armed observer from looping. An advancing, never-seen
@@ -449,10 +517,10 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
       const currentState = this.state ?? state;
       currentState.lastError = null;
       scheduleChatScroll(currentState, !older);
-      return older ? !olderExhausted : true;
+      return !older || addedMessages || !olderExhausted;
     } catch (error) {
       if (isCurrent()) {
-        (this.state ?? state).lastError = error instanceof Error ? error.message : String(error);
+        (this.state ?? state).lastError = formatUiError(error);
       }
       return false;
     } finally {
@@ -462,7 +530,9 @@ export abstract class ChatPaneSession extends ChatPaneSuggestions {
           this.catalogLoading = false;
           currentState.chatLoading = false;
         }
-        currentState.requestUpdate();
+        if (!older) {
+          currentState.requestUpdate();
+        }
       }
     }
   }

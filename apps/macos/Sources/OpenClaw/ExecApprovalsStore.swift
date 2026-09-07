@@ -1,23 +1,180 @@
 import CryptoKit
+import Darwin
 import Foundation
 import OpenClawKit
 import OSLog
 import Security
 
+enum ExecApprovalsMigrationLogEvent: Equatable {
+    case required(ExecApprovalsLegacyMigrationRequiredError)
+    case recovered(stateDirectoryPath: String)
+}
+
+final class ExecApprovalsMigrationRequiredCache: @unchecked Sendable {
+    struct FileIdentity: Hashable, Sendable {
+        let device: UInt64
+        let inode: UInt64
+        let modificationSeconds: Int64
+        let modificationNanoseconds: Int64
+    }
+
+    private struct CachedFailure {
+        let error: ExecApprovalsLegacyMigrationRequiredError
+        let identity: FileIdentity
+    }
+
+    private struct Condition {
+        var cachedFailure: CachedFailure?
+        var loggedIdentities: Set<FileIdentity?> = []
+    }
+
+    private let lock = NSLock()
+    private var conditions: [String: Condition] = [:]
+    private let identityReader: (URL) -> FileIdentity?
+    private let onEvent: (ExecApprovalsMigrationLogEvent) -> Void
+
+    init(
+        identityReader: @escaping (URL) -> FileIdentity? = ExecApprovalsMigrationRequiredCache.fileIdentity,
+        onEvent: @escaping (ExecApprovalsMigrationLogEvent) -> Void)
+    {
+        self.identityReader = identityReader
+        self.onEvent = onEvent
+    }
+
+    func cachedError(stateDirectoryURL: URL) -> ExecApprovalsLegacyMigrationRequiredError? {
+        let key = Self.stateDirectoryKey(stateDirectoryURL)
+        self.lock.lock()
+        defer { self.lock.unlock() }
+        guard var condition = self.conditions[key],
+              let cachedFailure = condition.cachedFailure
+        else { return nil }
+        guard self.identityReader(cachedFailure.error.legacyFileURL) == cachedFailure.identity else {
+            // A changed path may be Doctor's source -> claim rename. Keep the condition
+            // open until a full SQLite resolve succeeds, so that rename cannot log recovery.
+            condition.cachedFailure = nil
+            self.conditions[key] = condition
+            return nil
+        }
+        return cachedFailure.error
+    }
+
+    func record(_ error: ExecApprovalsLegacyMigrationRequiredError) {
+        let identity = self.identityReader(error.legacyFileURL)
+        let key = Self.stateDirectoryKey(error.stateDirectoryURL)
+        self.lock.lock()
+        var condition = self.conditions[key] ?? Condition()
+        let shouldLog = condition.loggedIdentities.insert(identity).inserted
+        condition.cachedFailure = identity.map { CachedFailure(error: error, identity: $0) }
+        self.conditions[key] = condition
+        self.lock.unlock()
+        if shouldLog {
+            self.onEvent(.required(error))
+        }
+    }
+
+    func markResolved(stateDirectoryURL: URL) {
+        let key = Self.stateDirectoryKey(stateDirectoryURL)
+        self.lock.lock()
+        let recovered = self.conditions.removeValue(forKey: key) != nil
+        self.lock.unlock()
+        if recovered {
+            self.onEvent(.recovered(stateDirectoryPath: key))
+        }
+    }
+
+    private static func stateDirectoryKey(_ url: URL) -> String {
+        url.standardizedFileURL.path
+    }
+
+    private static func fileIdentity(_ url: URL) -> FileIdentity? {
+        var status = stat()
+        guard lstat(url.path, &status) == 0 else { return nil }
+        return FileIdentity(
+            device: UInt64(truncatingIfNeeded: status.st_dev),
+            inode: UInt64(truncatingIfNeeded: status.st_ino),
+            modificationSeconds: Int64(status.st_mtimespec.tv_sec),
+            modificationNanoseconds: Int64(status.st_mtimespec.tv_nsec))
+    }
+}
+
 enum ExecApprovalsStore {
+    // Test stores are task-scoped so parallel suites cannot redirect unrelated
+    // shared-state consumers through the process environment.
+    @TaskLocal private static var scopedStateDirectoryURL: URL?
     private static let logger = Logger(subsystem: "ai.openclaw", category: "exec-approvals")
+    private static let migrationRequiredCache = ExecApprovalsMigrationRequiredCache { event in
+        switch event {
+        case let .required(error):
+            Self.logger.error("exec approvals resolve blocked: \(error.localizedDescription, privacy: .public)")
+        case let .recovered(stateDirectoryPath):
+            Self.logger.info(
+                "exec approvals migration requirement cleared for \(stateDirectoryPath, privacy: .public)")
+        }
+    }
+
     private static let defaultAgentId = "main"
     // Keep omitted-file behavior aligned with the TypeScript gateway/CLI contract.
     private static let defaultSecurity: ExecSecurity = .full
     private static let defaultAsk: ExecAsk = .off
     private static let defaultAskFallback: ExecSecurity = .deny
     private static let defaultAutoAllowSkills = false
+    private static let cwdBoundArgPatternPrefix = "sha256:cwd-argv:v1:"
+
+    #if compiler(>=6.4)
+    nonisolated(nonsending) static func withStateDirectory<T>(
+        _ url: URL,
+        operation: () async throws -> T) async rethrows -> T
+    {
+        try await self.$scopedStateDirectoryURL.withValue(url) {
+            try await operation()
+        }
+    }
+    #else
+    static func withStateDirectory<T>(
+        _ url: URL,
+        operation: () async throws -> T,
+        isolation: isolated (any Actor)? = #isolation) async rethrows -> T
+    {
+        try await self.$scopedStateDirectoryURL.withValue(
+            url,
+            operation: operation,
+            isolation: isolation)
+    }
+    #endif
+
     static func databaseURL() -> URL {
         ExecApprovalsSQLiteStore.databaseURL(stateDirectoryURL: self.stateDirURL())
     }
 
     static func socketPath() -> String {
-        self.stateDirURL().appendingPathComponent("exec-approvals.sock").path
+        self.socketPath(
+            stateDirectoryURL: self.stateDirURL(),
+            profileActive: AppProfile.current.isActive)
+    }
+
+    static func socketPath(stateDirectoryURL: URL, profileActive: Bool) -> String {
+        let canonical = stateDirectoryURL.appendingPathComponent("exec-approvals.sock").path
+        let maximumLength = MemoryLayout.size(ofValue: sockaddr_un().sun_path)
+        guard canonical.utf8.count >= maximumLength, profileActive else {
+            return canonical
+        }
+        let digest = SHA256.hash(data: Data(canonical.utf8))
+            .prefix(8)
+            .map { String(format: "%02x", $0) }
+            .joined()
+        return "/tmp/openclaw-\(geteuid())/exec-approvals-\(digest).sock"
+    }
+
+    static func resolvedPersistedSocketPath(
+        existing: String?,
+        stateDirectoryURL: URL,
+        computed: String) -> String
+    {
+        let existing = existing?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let oldCanonical = stateDirectoryURL.appendingPathComponent("exec-approvals.sock").path
+        return existing.isEmpty || (existing == oldCanonical && computed != oldCanonical)
+            ? computed
+            : existing
     }
 
     private static func homeURL() -> URL {
@@ -30,8 +187,11 @@ enum ExecApprovalsStore {
     }
 
     private static func stateDirURL() -> URL {
+        if let scopedStateDirectoryURL {
+            return scopedStateDirectoryURL
+        }
         guard let configured = OpenClawEnv.path("OPENCLAW_STATE_DIR") else {
-            return self.homeURL().appendingPathComponent(".openclaw", isDirectory: true)
+            return AppProfile.current.stateDirectoryURL(homeDirectory: self.homeURL())
         }
         let home = self.homeURL().path
         let expanded: String = if configured == "~" {
@@ -75,7 +235,7 @@ enum ExecApprovalsStore {
             normalizedAgents.reserveCapacity(agents.count)
             for (key, var agent) in agents {
                 if let allowlist = agent.allowlist {
-                    let normalized = self.normalizeAllowlistEntries(allowlist, dropInvalid: false).entries
+                    let normalized = self.normalizeAllowlistEntries(allowlist)
                     agent.allowlist = normalized.isEmpty ? nil : normalized
                 }
                 normalizedAgents[key] = agent
@@ -161,10 +321,12 @@ enum ExecApprovalsStore {
         if file.socket == nil {
             file.socket = ExecApprovalsSocketConfig(path: nil, token: nil)
         }
-        let path = file.socket?.path?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        if path.isEmpty {
-            file.socket?.path = self.socketPath()
-        }
+        let existingSocketPath = file.socket?.path
+        let resolvedSocketPath = self.resolvedPersistedSocketPath(
+            existing: existingSocketPath,
+            stateDirectoryURL: self.stateDirURL(),
+            computed: self.socketPath())
+        file.socket?.path = resolvedSocketPath
         let token = file.socket?.token?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if token.isEmpty {
             file.socket?.token = self.generateToken()
@@ -257,28 +419,28 @@ enum ExecApprovalsStore {
     static func resolveResult(
         agentId: String?) -> Result<ExecApprovalsResolved, ExecApprovalsReadError>
     {
+        let stateDirectoryURL = self.stateDirURL()
+        if let error = self.migrationRequiredCache.cachedError(stateDirectoryURL: stateDirectoryURL) {
+            return .failure(.migrationRequired(error))
+        }
         do {
             let file = try ExecApprovalsSQLiteStore.withImmediateTransaction(
-                stateDirectoryURL: self.stateDirURL())
+                stateDirectoryURL: stateDirectoryURL)
             { record in
                 let ensured = self.ensureFile(record)
                 return ExecApprovalsSQLiteMutation(
                     value: ensured.file,
                     documentToWrite: ensured.needsWrite ? ensured.file : nil)
             }
+            self.migrationRequiredCache.markResolved(stateDirectoryURL: stateDirectoryURL)
             return .success(self.resolveFromFile(file, agentId: agentId))
+        } catch let error as ExecApprovalsLegacyMigrationRequiredError {
+            self.migrationRequiredCache.record(error)
+            return .failure(.migrationRequired(error))
         } catch {
             self.logger.warning("exec approvals resolve failed: \(error.localizedDescription, privacy: .public)")
             return .failure(.unavailable)
         }
-    }
-
-    static func resolveAsyncResult(
-        agentId: String?) async -> Result<ExecApprovalsResolved, ExecApprovalsReadError>
-    {
-        await Task.detached(priority: .userInitiated) {
-            self.resolveResult(agentId: agentId)
-        }.value
     }
 
     static func resolveDefaults(from file: ExecApprovalsFile) -> ExecApprovalsResolvedDefaults {
@@ -303,8 +465,7 @@ enum ExecApprovalsStore {
             autoAllowSkills: agentEntry.autoAllowSkills ?? wildcardEntry.autoAllowSkills
                 ?? resolvedDefaults.autoAllowSkills)
         let allowlist = self.normalizeAllowlistEntries(
-            (wildcardEntry.allowlist ?? []) + (agentEntry.allowlist ?? []),
-            dropInvalid: true).entries
+            (wildcardEntry.allowlist ?? []) + (agentEntry.allowlist ?? []))
         let socketPath = self.expandPath(file.socket?.path ?? self.socketPath())
         let token = file.socket?.token ?? ""
         return ExecApprovalsResolved(
@@ -316,90 +477,9 @@ enum ExecApprovalsStore {
             allowlist: allowlist,
             file: file)
     }
-
-    static func resolveDefaultsAsyncResult() async
-        -> Result<ExecApprovalsResolvedDefaults, ExecApprovalsReadError>
-    {
-        await self.resolveAsyncResult(agentId: nil).map(\.defaults)
-    }
 }
 
 extension ExecApprovalsStore {
-    @discardableResult
-    static func updateDefaults(
-        _ mutate: (inout ExecApprovalsDefaults) -> Void) -> Result<Void, ExecApprovalsMutationError>
-    {
-        self.updateFile { file in
-            var defaults = file.defaults ?? ExecApprovalsDefaults()
-            mutate(&defaults)
-            file.defaults = defaults
-        }
-    }
-
-    @discardableResult
-    static func addAllowlistEntry(
-        agentId: String?,
-        pattern: String,
-        source: String? = nil,
-        commandText: String? = nil,
-        argPattern: String? = nil) -> Result<Void, ExecApprovalsMutationError>
-    {
-        self.addAllowlistEntries(
-            agentId: agentId,
-            entries: [ExecAllowlistEntry(
-                pattern: pattern,
-                source: source,
-                commandText: commandText,
-                argPattern: argPattern)])
-    }
-
-    @discardableResult
-    static func addAllowlistEntries(
-        agentId: String?,
-        entries: [ExecAllowlistEntry]) -> Result<Void, ExecApprovalsMutationError>
-    {
-        var normalizedEntries: [ExecAllowlistEntry] = []
-        normalizedEntries.reserveCapacity(entries.count)
-        for var item in entries {
-            switch ExecApprovalHelpers.validateAllowlistPattern(item.pattern) {
-            case let .valid(pattern):
-                item.pattern = pattern
-            case let .invalid(reason):
-                return .failure(.invalidPattern(reason))
-            }
-            item.commandText = nil
-            item.argPattern = self.normalizeArgPattern(item.argPattern)
-            normalizedEntries.append(item)
-        }
-
-        return self.updateFile { file in
-            let key = self.agentKey(agentId)
-            var agents = file.agents ?? [:]
-            var entry = agents[key] ?? ExecApprovalsAgent()
-            var allowlist = entry.allowlist ?? []
-            let now = Date().timeIntervalSince1970 * 1000
-            for incoming in normalizedEntries {
-                if let index = allowlist.firstIndex(where: {
-                    self.allowlistEntryMatchKey($0) == self.allowlistEntryMatchKey(incoming)
-                }) {
-                    if let source = incoming.source {
-                        allowlist[index].source = source
-                    }
-                    allowlist[index].lastUsedAt = now
-                    continue
-                }
-                allowlist.append(ExecAllowlistEntry(
-                    pattern: incoming.pattern,
-                    source: incoming.source,
-                    argPattern: incoming.argPattern,
-                    lastUsedAt: now))
-            }
-            entry.allowlist = allowlist
-            agents[key] = entry
-            file.agents = agents
-        }
-    }
-
     @discardableResult
     static func commitExecution(
         _ commit: ExecApprovalExecutionCommit) -> Result<Void, ExecApprovalsMutationError>
@@ -574,8 +654,9 @@ extension ExecApprovalsStore {
         let basisIsCurrent: Bool = switch basis {
         case .allowlistEntries:
             !usesByKey.isEmpty && usesByKey.keys.allSatisfy { currentKeys.contains($0) }
-        case .autoAllowedSkill:
-            current.agent.autoAllowSkills
+        case let .autoAllowedSkill(snapshot):
+            // The Gateway can retire while SQLite waits to begin this transaction.
+            current.agent.autoAllowSkills && snapshot.isCurrent
         case nil:
             false
         }
@@ -613,6 +694,15 @@ extension ExecApprovalsStore {
         let now = Date().timeIntervalSince1970 * 1000
         for grant in grants {
             let incoming = grant.match
+            if incoming.argPattern?.hasPrefix(self.cwdBoundArgPatternPrefix) == true {
+                // Renewing trust for one executable also clears its inactive
+                // pre-cwd grants, which can never authorize after this upgrade.
+                allowlist.removeAll { item in
+                    item.pattern == incoming.pattern &&
+                        item.source == "allow-always" &&
+                        item.argPattern?.hasPrefix(self.cwdBoundArgPatternPrefix) != true
+                }
+            }
             if let index = allowlist.firstIndex(where: {
                 self.allowlistEntryMatchKey($0) == self.allowlistEntryMatchKey(incoming)
             }) {
@@ -672,103 +762,7 @@ extension ExecApprovalsStore {
     }
 
     private static func shouldRecordLastUsedCommand(for entry: ExecAllowlistEntry) -> Bool {
-        !(entry.argPattern?.hasPrefix("sha256:argv:") ?? false)
-    }
-
-    @discardableResult
-    static func updateAllowlistEntry(
-        agentId: String?,
-        id: String,
-        pattern: String) -> Result<Void, ExecApprovalsMutationError>
-    {
-        let normalizedPattern: String
-        switch ExecApprovalHelpers.validateAllowlistPattern(pattern) {
-        case let .valid(validPattern):
-            normalizedPattern = validPattern
-        case let .invalid(reason):
-            return .failure(.invalidPattern(reason))
-        }
-
-        return self.updateFile { file in
-            let key = self.agentKey(agentId)
-            var agents = file.agents ?? [:]
-            var agent = agents[key] ?? ExecApprovalsAgent()
-            var allowlist = agent.allowlist ?? []
-            guard let index = allowlist.firstIndex(where: { $0.id == id }) else {
-                if key != "*", agents["*"]?.allowlist?.contains(where: { $0.id == id }) == true {
-                    throw ExecApprovalsMutationError.entryNotOwned
-                }
-                return
-            }
-            allowlist[index].pattern = normalizedPattern
-            agent.allowlist = allowlist
-            agents[key] = agent
-            file.agents = agents
-        }
-    }
-
-    @discardableResult
-    static func removeAllowlistEntry(
-        agentId: String?,
-        id: String) -> Result<Void, ExecApprovalsMutationError>
-    {
-        self.updateFile { file in
-            let key = self.agentKey(agentId)
-            var agents = file.agents ?? [:]
-            var agent = agents[key] ?? ExecApprovalsAgent()
-            var allowlist = agent.allowlist ?? []
-            guard let index = allowlist.firstIndex(where: { $0.id == id }) else {
-                if key != "*", agents["*"]?.allowlist?.contains(where: { $0.id == id }) == true {
-                    throw ExecApprovalsMutationError.entryNotOwned
-                }
-                return
-            }
-            allowlist.remove(at: index)
-            agent.allowlist = allowlist
-            agents[key] = agent
-            file.agents = agents
-        }
-    }
-
-    @discardableResult
-    static func updateAgentSettings(
-        agentId: String?,
-        mutate: (inout ExecApprovalsAgent) -> Void) -> Result<Void, ExecApprovalsMutationError>
-    {
-        self.updateFile { file in
-            let key = self.agentKey(agentId)
-            var agents = file.agents ?? [:]
-            var entry = agents[key] ?? ExecApprovalsAgent()
-            mutate(&entry)
-            if entry.isEmpty {
-                agents.removeValue(forKey: key)
-            } else {
-                agents[key] = entry
-            }
-            file.agents = agents.isEmpty ? nil : agents
-        }
-    }
-
-    private static func updateFile(
-        _ mutate: (inout ExecApprovalsFile) throws -> Void) -> Result<Void, ExecApprovalsMutationError>
-    {
-        do {
-            try ExecApprovalsSQLiteStore.withImmediateTransaction(
-                stateDirectoryURL: self.stateDirURL())
-            { record in
-                var file = self.ensureFile(record).file
-                try mutate(&file)
-                return ExecApprovalsSQLiteMutation(
-                    value: (),
-                    documentToWrite: self.normalizeIncoming(file))
-            }
-            return .success(())
-        } catch let error as ExecApprovalsMutationError {
-            return .failure(error)
-        } catch {
-            self.logger.error("exec approvals update failed: \(error.localizedDescription, privacy: .public)")
-            return .failure(.unavailable)
-        }
+        !(entry.argPattern?.hasPrefix("sha256:") ?? false)
     }
 
     private static func normalizeArgPattern(_ value: String?) -> String? {
@@ -826,12 +820,9 @@ extension ExecApprovalsStore {
     private static func normalizedPattern(_ pattern: String?) -> String? {
         switch ExecApprovalHelpers.validateAllowlistPattern(pattern) {
         case let .valid(normalized):
-            return normalized.lowercased()
-        case .invalid(.empty):
-            return nil
+            normalized.lowercased()
         case .invalid:
-            let trimmed = pattern?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            return trimmed.isEmpty ? nil : trimmed.lowercased()
+            nil
         }
     }
 
@@ -892,13 +883,9 @@ extension ExecApprovalsStore {
         }
     }
 
-    private static func normalizeAllowlistEntries(
-        _ entries: [ExecAllowlistEntry],
-        dropInvalid: Bool) -> (entries: [ExecAllowlistEntry], rejected: [ExecAllowlistRejectedEntry])
-    {
+    private static func normalizeAllowlistEntries(_ entries: [ExecAllowlistEntry]) -> [ExecAllowlistEntry] {
         var normalized: [ExecAllowlistEntry] = []
         normalized.reserveCapacity(entries.count)
-        var rejected: [ExecAllowlistRejectedEntry] = []
 
         for entry in entries {
             var migrated = self.migrateLegacyPattern(entry)
@@ -922,37 +909,20 @@ extension ExecApprovalsStore {
                         lastUsedAt: migrated.lastUsedAt,
                         lastUsedCommand: migrated.lastUsedCommand,
                         lastResolvedPath: normalizedResolvedPath))
-            case let .invalid(reason):
-                if dropInvalid {
-                    rejected.append(
-                        ExecAllowlistRejectedEntry(
-                            id: migrated.id,
-                            pattern: trimmedPattern,
-                            reason: reason))
-                } else if reason != .empty {
-                    normalized.append(
-                        ExecAllowlistEntry(
-                            id: migrated.id,
-                            pattern: trimmedPattern,
-                            source: migrated.source,
-                            commandText: migrated.commandText,
-                            argPattern: normalizedArgPattern,
-                            lastUsedAt: migrated.lastUsedAt,
-                            lastUsedCommand: migrated.lastUsedCommand,
-                            lastResolvedPath: normalizedResolvedPath))
-                }
+            case .invalid:
+                continue
             }
         }
 
-        return (normalized, rejected)
+        return normalized
     }
 
     private static func mergeAgents(
         current: ExecApprovalsAgent,
         legacy: ExecApprovalsAgent) -> ExecApprovalsAgent
     {
-        let currentAllowlist = self.normalizeAllowlistEntries(current.allowlist ?? [], dropInvalid: false).entries
-        let legacyAllowlist = self.normalizeAllowlistEntries(legacy.allowlist ?? [], dropInvalid: false).entries
+        let currentAllowlist = self.normalizeAllowlistEntries(current.allowlist ?? [])
+        let legacyAllowlist = self.normalizeAllowlistEntries(legacy.allowlist ?? [])
         var seen = Set<ExecAllowlistEntryMatchKey>()
         var allowlist: [ExecAllowlistEntry] = []
         func append(_ entry: ExecAllowlistEntry) {

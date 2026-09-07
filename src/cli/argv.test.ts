@@ -1,4 +1,5 @@
 // Argv tests cover CLI argument parsing helpers and platform-specific normalization.
+import { Command } from "commander";
 import { describe, expect, it } from "vitest";
 import {
   buildParseArgv,
@@ -12,11 +13,11 @@ import {
   isHelpOrVersionInvocation,
   isRootHelpInvocation,
   isRootVersionInvocation,
+  isSimpleCommandHelpInvocation,
   normalizeGeneratedHelpCommandArgv,
   normalizeRootHelpTargetArgv,
   normalizeRootLogLevelArgv,
   normalizeRootNoColorArgv,
-  shouldMigrateStateFromPath,
 } from "./argv.js";
 
 describe("argv helpers", () => {
@@ -284,6 +285,26 @@ describe("argv helpers", () => {
       expected: false,
     },
     {
+      name: "implicit root help command after terminator",
+      argv: ["node", "openclaw", "--", "help", "config"],
+      expected: true,
+    },
+    {
+      name: "implicit parent help command after terminator",
+      argv: ["node", "openclaw", "config", "--", "help"],
+      expected: true,
+    },
+    {
+      name: "literal root help-looking command",
+      argv: ["node", "openclaw", "--", "--help"],
+      expected: false,
+    },
+    {
+      name: "literal parent help-looking command",
+      argv: ["node", "openclaw", "--", "config", "--help"],
+      expected: false,
+    },
+    {
       name: "help flag after terminator",
       argv: ["node", "openclaw", "nodes", "invoke", "--", "--help"],
       expected: false,
@@ -364,6 +385,30 @@ describe("argv helpers", () => {
     },
   ])("detects help/version invocations: $name", ({ argv, expected }) => {
     expect(isHelpOrVersionInvocation(argv)).toBe(expected);
+  });
+
+  it.each([
+    { path: ["skills", "verify"], option: "tag" },
+    { path: ["skills", "verify"], option: "version" },
+    { path: ["models", "list"], option: "provider" },
+    { path: ["agent"], option: "message" },
+  ])("keeps actual help after a root-looking $option value on $path", async ({ path, option }) => {
+    const program = new Command()
+      .name("openclaw")
+      .enablePositionalOptions()
+      .option("--log-level <level>")
+      .exitOverride();
+    program.configureOutput({ writeOut: () => {}, writeErr: () => {} });
+    const leaf = path.reduce((parent, name) => parent.command(name), program);
+    leaf.option(`--${option} <value>`);
+    const argv = ["node", "openclaw", ...path, `--${option}`, "--log-level", "--help"];
+
+    await expect(program.parseAsync(argv)).rejects.toMatchObject({
+      code: "commander.helpDisplayed",
+      exitCode: 0,
+    });
+    expect(leaf.opts()[option]).toBe("--log-level");
+    expect(isHelpOrVersionInvocation(argv)).toBe(true);
   });
 
   it.each([
@@ -478,6 +523,31 @@ describe("argv helpers", () => {
         2,
       ),
     ).toEqual(["config", "validate"]);
+  });
+
+  it("limits simple help fast paths to root options, a command, and help", () => {
+    const commands = new Set(["setup"]);
+    expect(
+      isSimpleCommandHelpInvocation(
+        ["node", "openclaw", "--profile", "work", "setup", "--help"],
+        commands,
+      ),
+    ).toBe(true);
+    expect(
+      isSimpleCommandHelpInvocation(
+        ["node", "openclaw", "setup", "--workspace", "--help"],
+        commands,
+      ),
+    ).toBe(false);
+    expect(
+      isSimpleCommandHelpInvocation(
+        ["node", "openclaw", "setup", "--profile", "work", "--help"],
+        commands,
+      ),
+    ).toBe(false);
+    expect(isSimpleCommandHelpInvocation(["node", "openclaw", "--help", "setup"], commands)).toBe(
+      false,
+    );
   });
 
   it("extracts routed config get positionals with interleaved root options", () => {
@@ -729,35 +799,5 @@ describe("argv helpers", () => {
   ] as const)("builds parse argv from raw args: $name", ({ rawArgs, expected }) => {
     const parsed = buildParseArgv([...rawArgs]);
     expect(parsed).toEqual([...expected]);
-  });
-
-  it.each([
-    { argv: ["node", "openclaw", "status"], expected: true },
-    { argv: ["node", "openclaw", "health"], expected: false },
-    { argv: ["node", "openclaw", "sessions"], expected: false },
-    { argv: ["node", "openclaw", "--profile", "work", "status"], expected: true },
-    { argv: ["node", "openclaw", "--log-level=debug", "models", "list"], expected: true },
-    { argv: ["node", "openclaw", "config", "get", "update"], expected: false },
-    { argv: ["node", "openclaw", "config", "unset", "update"], expected: false },
-    { argv: ["node", "openclaw", "models", "list"], expected: true },
-    { argv: ["node", "openclaw", "models", "status"], expected: true },
-    { argv: ["node", "openclaw", "update", "status", "--json"], expected: false },
-    { argv: ["node", "openclaw", "agent", "--message", "hi"], expected: true },
-    { argv: ["node", "openclaw", "agents", "list"], expected: true },
-    { argv: ["node", "openclaw", "message", "send"], expected: true },
-  ] as const)("decides when to migrate state: $argv", ({ argv, expected }) => {
-    const commandPath = getCommandPathWithRootOptions([...argv], 2);
-    expect(shouldMigrateStateFromPath(commandPath)).toBe(expected);
-  });
-
-  it.each([
-    { path: ["status"], expected: true },
-    { path: ["update", "status"], expected: false },
-    { path: ["config", "get"], expected: false },
-    { path: ["agent"], expected: true },
-    { path: ["models", "status"], expected: true },
-    { path: ["agents", "list"], expected: true },
-  ])("reuses command path for migrate state decisions: $path", ({ path, expected }) => {
-    expect(shouldMigrateStateFromPath(path)).toBe(expected);
   });
 });

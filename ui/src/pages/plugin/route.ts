@@ -1,5 +1,6 @@
 import { definePage } from "@openclaw/uirouter";
 import { html } from "lit";
+import { routePageSpec } from "../../app-route-paths.ts";
 
 type PluginTabRef = {
   pluginId: string;
@@ -24,19 +25,35 @@ export function pluginTabKey(ref: PluginTabRef): string {
   return `${ref.pluginId}/${ref.id}`;
 }
 
+function pluginPageParams(search: string): Readonly<Record<string, string>> {
+  return Object.fromEntries(
+    [...new URLSearchParams(search)]
+      .filter(([key]) => key.startsWith("p."))
+      .map(([key, value]) => [key.slice(2), value]),
+  );
+}
+
 // One static route hosts every plugin-declared tab; the router only supports
 // exact paths, so the tab reference travels in the query.
 export const page = definePage({
-  id: "plugin",
-  path: "/plugin",
+  ...routePageSpec("plugin"),
   loaderDeps: (_context, location) => location.search,
-  loader: (_context, options) => pluginTabRefFromSearch(options.location.search),
+  loader: (_context, options) => ({
+    ...pluginTabRefFromSearch(options.location.search),
+    params: pluginPageParams(options.location.search),
+  }),
   component: () =>
     import("./plugin-page.ts").then(() => ({
       header: true,
       render: (data: unknown) => {
-        const ref = (data ?? { pluginId: "", id: "" }) as PluginTabRef;
-        return html`<openclaw-plugin-page .pluginId=${ref.pluginId} .tabId=${ref.id}>
+        const ref = (data ?? { pluginId: "", id: "", params: {} }) as PluginTabRef & {
+          params: Readonly<Record<string, string>>;
+        };
+        return html`<openclaw-plugin-page
+          .pluginId=${ref.pluginId}
+          .tabId=${ref.id}
+          .params=${ref.params}
+        >
         </openclaw-plugin-page>`;
       },
     })),

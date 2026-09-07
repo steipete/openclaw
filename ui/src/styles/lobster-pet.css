@@ -3,11 +3,6 @@
    perches on the sidebar footer.
    ============================================ */
 
-/* The footer bar is the pet's ledge. */
-.sidebar-shell__footer {
-  position: relative;
-}
-
 /* Every visit variant shares this zero-layout overlay strip above the footer.
    Its bottom edge sits 3px inside the bar so feet dangle over the divider, and
    overflow: hidden makes duck/peek/enter moves read as "behind the ledge". */
@@ -47,13 +42,14 @@ openclaw-lobster-pet {
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition: left 1.15s ease-in-out;
+  /* Seeded glint tint is mapped before the palette rules so palette and
+     offline class rules still out-cascade it on both look surfaces. */
+  --lob-glint: var(--lob-glint-seed, #00e5cc);
 }
 
-/* Seeded glint tint rides its own variable, mapped here (before the palette
-   rules) so palette and offline class rules still out-cascade it on both
-   look surfaces. */
-.lobster-pet {
-  --lob-glint: var(--lob-glint-seed, #00e5cc);
+/* Restore hit testing beneath the pointer-inert decorative pet host. */
+wa-dropdown.lobster-pet-dismiss-menu {
+  pointer-events: auto;
 }
 
 /* The Elder does everything at Elder speed. */
@@ -82,7 +78,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
   pointer-events: none;
 }
 
-/* ---- Rare palette variants (weights + lore in lobster-pet.ts) ---- */
+/* ---- Rare palette variants (lobster-pet-palettes.ts + lobster-pet-lore.ts) ---- */
 
 /* Ghost/albino: pale translucent shell, icy glints. */
 .lobster-pet--palette-ghost {
@@ -91,16 +87,6 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 .lobster-pet--palette-ghost .lobster-pet__svg {
   opacity: 0.62;
-}
-
-/* Abyss: deep-sea navy with bioluminescent eye glow. */
-.lobster-pet--palette-abyss {
-  --lob-glint: #52f5e3;
-}
-
-.lobster-pet--palette-abyss .lob-eye-open circle:nth-of-type(3),
-.lobster-pet--palette-abyss .lob-eye-open circle:nth-of-type(4) {
-  filter: drop-shadow(0 0 2.5px rgba(82, 245, 227, 0.9));
 }
 
 /* Lumen: photophore running lights. They pulse and glow in the dark theme;
@@ -152,6 +138,111 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 .lobster-pet--palette-selene {
   --lob-glint: #8fa8ff;
+}
+
+.lobster-pet--palette-eclipse {
+  --lob-glint: #ffd166;
+}
+
+.lobster-pet--palette-sourdough {
+  --lob-glint: #e6bc82;
+}
+
+.lobster-pet--palette-zombie {
+  --lob-glint: #b8d49a;
+}
+
+.lobster-pet--palette-plush {
+  --lob-glint: #ffb59e;
+}
+
+.lobster-pet--palette-disco {
+  --lob-glint: #cbd5e6;
+}
+
+.lobster-pet--palette-eclipse .lobster-pet__svg {
+  filter: drop-shadow(0 0 3px rgba(255, 209, 102, 0.72));
+}
+
+/* The cryptid is always photographed slightly out of focus. Its inner frame
+   drifts independently so the outer breathe/facing transform stays intact. */
+.lobster-pet--palette-cryptid .lobster-pet__svg {
+  filter: blur(1.1px) sepia(0.35) contrast(0.92);
+}
+
+.lob-cryptid-frame {
+  animation: lobster-pet-cryptid-sway 7s ease-in-out infinite alternate;
+  transform-origin: 60px 54px;
+}
+
+@keyframes lobster-pet-cryptid-sway {
+  from {
+    transform: translate(-1.5px, 0.5px) rotate(-0.8deg);
+  }
+  to {
+    transform: translate(1.5px, -0.5px) rotate(0.8deg);
+  }
+}
+
+/* Figlet's glyph art is terminal-light by default; light cards need real
+   ink or the text washes out (mood-style var passthrough carries it). */
+.lobster-pet--palette-ascii {
+  --lob-ascii-ink: #d8dee6;
+}
+
+:root[data-theme-mode="light"] .lobster-pet--palette-ascii {
+  --lob-ascii-ink: #46525e;
+}
+
+.lob-balloon-frame {
+  animation: lobster-pet-balloon-float 4.5s ease-in-out infinite alternate;
+  transform-origin: 60px 54px;
+}
+
+@keyframes lobster-pet-balloon-float {
+  from {
+    transform: translateY(-2px) rotate(-1.5deg);
+  }
+  to {
+    transform: translateY(2px) rotate(1.5deg);
+  }
+}
+
+.lob-portal-ring {
+  animation: lobster-pet-portal-pulse 4s ease-in-out infinite alternate;
+}
+
+.lob-portal-ring--blue {
+  color: #4a9df8;
+  filter: drop-shadow(0 0 4px #4a9df8);
+}
+
+.lob-portal-ring--orange {
+  color: #ff9a2e;
+  filter: drop-shadow(0 0 4px #ff9a2e);
+}
+
+@keyframes lobster-pet-portal-pulse {
+  from {
+    opacity: 0.68;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lob-skeleton__block {
+  animation: lobster-pet-skeleton-shimmer 1.8s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * 0.12s);
+}
+
+@keyframes lobster-pet-skeleton-shimmer {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .lobster-pet--palette-blueprint .lob-antennae path {
@@ -233,6 +324,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
   animation:
     lobster-pet-breathe 3.4s ease-in-out infinite,
     lobster-pet-phosphor 3.2s linear infinite;
+  animation-delay: var(--lob-breathe-delay, 0s), 0s;
 }
 
 @keyframes lobster-pet-phosphor {
@@ -304,6 +396,54 @@ openclaw-lobster-pet[data-dex-complete]::after {
   animation: lobster-pet-lumen 3.2s ease-in-out infinite;
 }
 
+.lob-bee-wings ellipse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lobster-pet-bee-wing-left 0.25s ease-in-out infinite alternate;
+}
+
+.lob-bee-wings ellipse:nth-child(2) {
+  animation-name: lobster-pet-bee-wing-right;
+}
+
+@keyframes lobster-pet-bee-wing-left {
+  from {
+    transform: rotate(-30deg);
+  }
+  to {
+    transform: rotate(-16deg);
+  }
+}
+
+@keyframes lobster-pet-bee-wing-right {
+  from {
+    transform: rotate(16deg);
+  }
+  to {
+    transform: rotate(30deg);
+  }
+}
+
+.lob-disco {
+  animation: lobster-pet-disco-sweep 6s linear infinite;
+}
+
+.lob-disco rect:nth-child(3n + 1) {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lobster-pet-twinkle 2.4s ease-in-out infinite;
+}
+
+.lob-disco rect:nth-child(3n + 4) {
+  animation-delay: 0.8s;
+}
+
+@keyframes lobster-pet-disco-sweep {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
 :root[data-theme-mode="light"] .lob-lumen {
   filter: none;
   opacity: 0.3;
@@ -330,6 +470,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
   animation:
     lobster-pet-breathe 3.4s ease-in-out infinite,
     lobster-pet-iridesce 8s linear infinite;
+  animation-delay: var(--lob-breathe-delay, 0s), 0s;
 }
 
 @keyframes lobster-pet-iridesce {
@@ -342,9 +483,12 @@ openclaw-lobster-pet[data-dex-complete]::after {
   }
 }
 
-/* Shiny: saturated sheen plus twinkling sparks. The filter skips retro so
-   the sticker-outline halo survives; sparkle spans carry the show there. */
-.lobster-pet--shiny:not(.lobster-pet--palette-retro) .lobster-pet__svg {
+/* Shiny: saturated sheen plus twinkling sparks. The filter skips both retro
+   palettes so their sticker-outline halos survive; sparkle spans carry the show. */
+.lobster-pet--shiny:not(.lobster-pet--palette-retro):not(.lobster-pet--palette-goldenretro):not(
+    .lobster-pet--palette-cryptid
+  )
+  .lobster-pet__svg {
   filter: saturate(1.3) brightness(1.07);
 }
 
@@ -376,12 +520,37 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 /* Retro: homage to the classic OpenClaw logo — white sticker outline around
    the whole sprite (the halo is two stacked 1px drop-shadows). */
-.lobster-pet--palette-retro .lobster-pet__svg {
+.lobster-pet--palette-retro .lobster-pet__svg,
+.lobster-pet--palette-goldenretro .lobster-pet__svg {
   filter: drop-shadow(0 0 1.2px #f5f7fa) drop-shadow(0 0 1.2px #f5f7fa)
     drop-shadow(0 0 1.2px #f5f7fa);
 }
 
-/* Split two-tone: the right body half (drawn in lobster-pet.ts) plus the
+.lobster-pet--palette-goldenretro .lobster-pet__svg {
+  animation:
+    lobster-pet-breathe 3.4s ease-in-out infinite,
+    lobster-pet-goldenretro-shimmer 4s ease-in-out infinite;
+  animation-delay: var(--lob-breathe-delay, 0s), 0s;
+}
+
+.lobster-pet--palette-goldenretro .lob-retro-claw-line {
+  stroke: #b8860b;
+}
+
+@keyframes lobster-pet-goldenretro-shimmer {
+  0%,
+  100% {
+    filter: saturate(1) brightness(1) drop-shadow(0 0 1.2px #f5f7fa) drop-shadow(0 0 1.2px #f5f7fa)
+      drop-shadow(0 0 1.2px #f5f7fa) drop-shadow(0 0 2px rgba(244, 184, 64, 0.75));
+  }
+  50% {
+    filter: saturate(1.25) brightness(1.12) drop-shadow(0 0 1.2px #f5f7fa)
+      drop-shadow(0 0 1.2px #f5f7fa) drop-shadow(0 0 1.2px #f5f7fa)
+      drop-shadow(0 0 2px rgba(244, 184, 64, 0.75));
+  }
+}
+
+/* Split two-tone: the right body half (drawn in lobster-pet-look.ts) plus the
    right claw and antenna wear the second shell color. */
 .lobster-pet--palette-split {
   --lob-shell2: #46536b;
@@ -393,6 +562,34 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 .lobster-pet--palette-split .lob-antennae path:last-of-type {
   stroke: var(--lob-shell2);
+}
+
+.lobster-pet--palette-notexture .lob-claw--l path {
+  fill: #ff00dc;
+}
+
+.lobster-pet--palette-notexture .lob-claw--r path {
+  fill: #111111;
+}
+
+.lobster-pet--palette-notexture .lob-antennae path:first-of-type {
+  stroke: #ff00dc;
+}
+
+.lobster-pet--palette-notexture .lob-antennae path:last-of-type {
+  stroke: #111111;
+}
+
+.lobster-pet--palette-chimera .lob-claw--l path {
+  fill: var(--lob-chimera-l);
+}
+
+.lobster-pet--palette-chimera .lob-claw--r path {
+  fill: var(--lob-chimera-r);
+}
+
+.lobster-pet--palette-chimera .lob-antennae path {
+  stroke: var(--lob-antennae-color);
 }
 
 /* Disconnected pets lose their eye glow; declared after the palette glints so
@@ -421,6 +618,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 .lobster-pet--offline.lobster-pet--palette-phosphor .lobster-pet__svg {
   animation: lobster-pet-breathe 3.4s ease-in-out infinite;
+  animation-delay: var(--lob-breathe-delay, 0s);
 }
 
 .lobster-pet--offline .lob-scanlines {
@@ -430,6 +628,10 @@ openclaw-lobster-pet[data-dex-complete]::after {
 .lobster-pet--offline .lob-led {
   animation: none;
   opacity: 0.2;
+}
+
+.lobster-pet--offline.lobster-pet--palette-eclipse .lobster-pet__svg {
+  filter: none;
 }
 
 .lobster-pet__body {
@@ -451,6 +653,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 :where(.lobster-pet) .lobster-pet__svg {
   animation: lobster-pet-breathe 3.4s ease-in-out infinite;
+  animation-delay: var(--lob-breathe-delay, 0s);
 }
 
 .lob-claw {
@@ -1043,7 +1246,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
     transform: rotate(2.5deg) scaleY(1);
   }
   55% {
-    transform: rotate(0deg) scaleY(0.8);
+    transform: rotate(0deg) scaleY(0.94);
   }
   70% {
     transform: rotate(0deg) scaleY(1.12);
@@ -1136,8 +1339,16 @@ openclaw-lobster-pet[data-dex-complete]::after {
   .lob-twinkle,
   .lob-glass-glints,
   .lob-heisenbug-frame,
+  .lob-cryptid-frame,
+  .lob-balloon-frame,
+  .lob-portal-ring,
+  .lob-skeleton__block,
   .lob-led,
   .lob-pixel-frame,
+  .lob-bee-wings ellipse,
+  .lob-disco,
+  .lob-disco rect,
+  .lobster-pet--palette-goldenretro .lobster-pet__svg,
   .lobster-pet--palette-phosphor .lobster-pet__svg {
     animation: none !important;
   }
@@ -1251,7 +1462,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
   height: 20px;
   transform: translateX(-50%);
   pointer-events: auto;
-  cursor: pointer;
+  cursor: var(--cursor-action);
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -1292,7 +1503,7 @@ openclaw-lobster-pet[data-dex-complete]::after {
   display: inline-block;
   position: relative;
   width: 26px;
-  height: 23px;
+  aspect-ratio: 120 / 105;
 }
 
 .lobsterdex__mini .lobster-pet__svg {
@@ -1337,158 +1548,4 @@ openclaw-lobster-pet[data-dex-complete]::after {
 
 .lobsterdex__tooltip span {
   color: var(--muted);
-}
-
-/* ---- Lobsterdex full-page collection ---- */
-
-.lobsterdex-page {
-  display: grid;
-  gap: 22px;
-}
-
-.lobsterdex-page__header {
-  position: relative;
-  display: flex;
-  gap: 20px;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 18px 20px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(
-      circle at 12% 0%,
-      color-mix(in srgb, var(--accent) 13%, transparent),
-      transparent 42%
-    ),
-    var(--card);
-}
-
-.lobsterdex-page__header::after {
-  position: absolute;
-  right: 18px;
-  bottom: 0;
-  left: 18px;
-  height: 2px;
-  content: "";
-  background: transparent;
-}
-
-.lobsterdex-page__header--complete::after {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #f4b840 30%,
-    #f9d47a 50%,
-    #f4b840 70%,
-    transparent
-  );
-  opacity: 0.7;
-}
-
-.lobsterdex-page__header h2,
-.lobsterdex-page__card h3,
-.lobsterdex-page__header p,
-.lobsterdex-page__card p {
-  margin: 0;
-}
-
-.lobsterdex-page__header h2 {
-  font-size: 24px;
-  letter-spacing: -0.025em;
-}
-
-.lobsterdex-page__header p {
-  margin-top: 4px;
-  color: var(--muted);
-}
-
-.lobsterdex-page__count {
-  flex: 0 0 auto;
-  padding: 5px 9px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  color: var(--muted);
-  background: color-mix(in srgb, var(--card) 75%, transparent);
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.lobsterdex-page__header--complete .lobsterdex-page__count {
-  border-color: color-mix(in srgb, #f4b840 55%, var(--border));
-  color: color-mix(in srgb, #f4b840 75%, var(--text));
-}
-
-.lobsterdex-page__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
-}
-
-.lobsterdex-page__card {
-  position: relative;
-  display: grid;
-  grid-template-rows: 94px auto minmax(42px, auto) 18px;
-  gap: 7px;
-  justify-items: center;
-  min-width: 0;
-  padding: 16px 13px 13px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 94%, white 6%), var(--card));
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.lobsterdex-page__card--unseen {
-  border-style: dashed;
-  box-shadow: none;
-}
-
-.lobsterdex-page__sprite.lobster-pet {
-  position: relative;
-  bottom: auto;
-  left: auto;
-  width: 90px;
-  height: 79px;
-  align-self: center;
-  transform: none;
-  pointer-events: none;
-}
-
-.lobsterdex-page__card h3 {
-  color: var(--text-strong);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.lobsterdex-page__lore {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.lobsterdex-page__date {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.lobsterdex-page__star {
-  top: -1px;
-  right: 1px;
-  font-size: 14px;
-  filter: drop-shadow(0 0 4px rgba(244, 184, 64, 0.4));
-}
-
-@media (max-width: 540px) {
-  .lobsterdex-page__header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .lobsterdex-page__grid {
-    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
-  }
 }

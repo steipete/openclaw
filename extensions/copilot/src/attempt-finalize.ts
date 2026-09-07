@@ -15,9 +15,11 @@ import type {
 } from "./attempt-types.js";
 import { attachEventBridge } from "./event-bridge.js";
 export async function completeCopilotAttempt(params: {
+  acceptedSessionSpawns: NonNullable<AgentHarnessAttemptResult["acceptedSessionSpawns"]>;
   aborted: boolean;
   attemptStartedAt: number;
   bridge: ReturnType<typeof attachEventBridge> | undefined;
+  codeModeEngaged: boolean | undefined;
   downgradedFromResume: boolean;
   externalAbort: boolean;
   hookContext: CopilotAgentEndHookParams["ctx"];
@@ -38,17 +40,19 @@ export async function completeCopilotAttempt(params: {
   resumeFailureRecovered: boolean;
   sdkSessionId: string | undefined;
   sentTurnStarted: boolean;
-  sessionIdUsed: string | undefined;
   settledFinalizationAssistantCompleted: boolean;
   settledToolFinalization: boolean;
   timedOut: boolean;
   timedOutDuringCompaction: boolean;
   yieldDetected: boolean;
+  yieldAcknowledgment?: string;
 }): Promise<AgentHarnessAttemptResult> {
   const {
+    acceptedSessionSpawns,
     aborted,
     attemptStartedAt,
     bridge,
+    codeModeEngaged,
     downgradedFromResume,
     externalAbort,
     hookContext,
@@ -65,12 +69,12 @@ export async function completeCopilotAttempt(params: {
     resumeFailureRecovered,
     sdkSessionId,
     sentTurnStarted,
-    sessionIdUsed,
     settledFinalizationAssistantCompleted,
     settledToolFinalization,
     timedOut,
     timedOutDuringCompaction,
     yieldDetected,
+    yieldAcknowledgment,
   } = params;
   const snap = bridge?.snapshot();
   const assistantTexts = bridge?.finalizeAssistantTexts() ?? [];
@@ -91,8 +95,10 @@ export async function completeCopilotAttempt(params: {
           currentRunUserKey,
         ));
   const result = createResult(input, {
+    acceptedSessionSpawns,
     aborted,
     assistantTexts,
+    codeModeEngaged,
     currentAttemptAssistant: lastAssistant,
     currentAttemptCompletedAssistant: settledFinalizationAssistantCompleted
       ? lastAssistant
@@ -118,17 +124,18 @@ export async function completeCopilotAttempt(params: {
     messagesSnapshot,
     assistantTranscriptOwned: transcript?.assistantTranscriptOwned,
     assistantTranscriptIdempotencyKey: transcript?.assistantTranscriptIdempotencyKey,
+    contextEngineTerminalAnchor: transcript?.terminalAnchor,
     nativeReplayInvalid: transcript?.replayInvalid === true || nativeSessionHistoryUnvalidated,
     now,
     promptError,
     resumeFailureRecovered,
     sdkSessionId,
-    sessionIdUsed,
     timedOut,
     timedOutDuringCompaction,
     toolMetas: snap ? [...snap.toolMetas] : [],
     usage: snap?.usage,
     yieldDetected,
+    yieldAcknowledgment,
   });
   if (sentTurnStarted && !settledToolFinalization && !transcriptJournal?.hasFailed()) {
     runAgentHarnessLlmOutputHook({

@@ -35,36 +35,32 @@ function parseTranscriptMessages(entries: unknown[]): unknown[] {
   });
 }
 
-async function loadBeforeResetTranscript(params: {
+export async function readBeforeResetMessages(params: {
   agentId?: string;
   sessionId?: string;
-  sessionFile?: string;
   sessionKey?: string;
   storePath?: string;
-}): Promise<{ sessionFile?: string; messages: unknown[] }> {
+}): Promise<unknown[]> {
   if (!params.sessionId || !params.sessionKey || !params.storePath) {
     logVerbose("before_reset: no session identity available, firing hook with empty messages");
-    return { sessionFile: params.sessionFile, messages: [] };
+    return [];
   }
   try {
-    return {
-      sessionFile: params.sessionFile,
-      messages: parseTranscriptMessages(
-        // before_reset snapshots the canonical pre-reset rows. sessionFile is
-        // hook metadata only and must not be treated as a readable path.
-        await loadTranscriptEvents({
-          ...(params.agentId ? { agentId: params.agentId } : {}),
-          sessionId: params.sessionId,
-          sessionKey: params.sessionKey,
-          storePath: params.storePath,
-        }),
-      ),
-    };
+    return parseTranscriptMessages(
+      // before_reset snapshots the canonical pre-reset rows. sessionFile is
+      // hook metadata only and must not be treated as a readable path.
+      await loadTranscriptEvents({
+        ...(params.agentId ? { agentId: params.agentId } : {}),
+        sessionId: params.sessionId,
+        sessionKey: params.sessionKey,
+        storePath: params.storePath,
+      }),
+    );
   } catch (err: unknown) {
     logVerbose(
       `before_reset: failed to read transcript identity ${params.sessionKey}/${params.sessionId}; firing hook with empty messages (${String(err)})`,
     );
-    return { sessionFile: params.sessionFile, messages: [] };
+    return [];
   }
 }
 
@@ -81,6 +77,9 @@ export async function emitResetCommandHooks(params: {
   storePath?: string;
   sessionEntry?: HandleCommandsParams["sessionEntry"];
   previousSessionEntry?: HandleCommandsParams["previousSessionEntry"];
+  previousSessionMemory?: HandleCommandsParams["previousSessionMemory"];
+  previousSessionResetMessages?: unknown[];
+  onObservedReplyDelivery?: () => Promise<void> | void;
   workspaceDir: string;
 }): Promise<{ routedReply: boolean }> {
   const hookAgentId =
@@ -99,6 +98,7 @@ export async function emitResetCommandHooks(params: {
     agentId: hookAgentId,
     sessionEntry: params.sessionEntry,
     previousSessionEntry: params.previousSessionEntry,
+    previousSessionMemory: params.previousSessionMemory,
     commandSource: params.command.surface,
     senderId: params.command.senderId,
     workspaceDir: params.workspaceDir,
@@ -114,10 +114,11 @@ export async function emitResetCommandHooks(params: {
     const to = params.ctx.OriginatingTo || params.command.from || params.command.to;
     if (channel && to) {
       const { routeReply } = await loadRouteReplyRuntime();
-      await routeReply({
+      const result = await routeReply({
         payload: { text: hookEvent.messages.join("\n\n") },
         channel,
         to,
+        agentId: hookAgentId,
         sessionKey: params.sessionKey,
         accountId: params.ctx.AccountId,
         requesterSenderId: params.command.senderId,
@@ -128,7 +129,10 @@ export async function emitResetCommandHooks(params: {
         cfg: params.cfg,
         replyKind: "final",
       });
-      routedReply = true;
+      if (result.delivered) {
+        await params.onObservedReplyDelivery?.();
+      }
+      routedReply = result.delivered || result.suppressed === true;
     }
   }
 
@@ -137,24 +141,22 @@ export async function emitResetCommandHooks(params: {
     const prevEntry = params.previousSessionEntry;
     const agentId = hookAgentId;
     const storePath = hookStorePath;
-    const beforeResetTranscript = await loadBeforeResetTranscript({
-      agentId,
-      sessionFile:
-        agentId && prevEntry?.sessionId && storePath
-          ? formatSqliteSessionFileMarker({
-              agentId,
-              sessionId: prevEntry.sessionId,
-              storePath,
-            })
-          : params.sessionKey,
-      sessionId: prevEntry?.sessionId,
-      sessionKey: params.sessionKey,
-      storePath,
-    });
+    const sessionFile =
+      agentId && prevEntry?.sessionId && storePath
+        ? formatSqliteSessionFileMarker({ agentId, sessionId: prevEntry.sessionId, storePath })
+        : params.sessionKey;
+    const messages =
+      params.previousSessionResetMessages ??
+      (await readBeforeResetMessages({
+        agentId,
+        sessionId: prevEntry?.sessionId,
+        sessionKey: params.sessionKey,
+        storePath,
+      }));
     void (async () => {
       try {
         await hookRunner.runBeforeReset(
-          { ...beforeResetTranscript, reason: params.action },
+          { sessionFile, messages, reason: params.action },
           {
             agentId,
             sessionKey: params.sessionKey,

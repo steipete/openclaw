@@ -31,6 +31,51 @@ function createSourceCheckoutPlugin(pluginId: string): {
 }
 
 describe("plugin install plan helpers", () => {
+  it.each([
+    "clawhub:",
+    "clawhub:demo@",
+    "clawhub:@scope/pkg@",
+    "CLAWHUB:",
+    "ClAwHuB:demo@",
+    " clawhub:demo@ ",
+  ])("rejects the malformed explicit ClawHub selector %s before npm fallback", (raw) => {
+    expect(resolvePluginInstallSourcePlan({ raw, mode: "install" })).toEqual({
+      ok: false,
+      error: `Unsupported ClawHub plugin spec: ${raw}`,
+    });
+  });
+
+  it.each(["clawhub:demo", "CLAWHUB:demo", "clawhub:@scope/pkg@1.2.3"])(
+    "keeps the valid explicit ClawHub selector %s on the ClawHub install path",
+    (raw) => {
+      expect(resolvePluginInstallSourcePlan({ raw, mode: "install" })).toMatchObject({
+        ok: true,
+        request: { source: "clawhub", spec: raw },
+      });
+    },
+  );
+
+  it.skipIf(process.platform === "win32")(
+    "keeps an existing ClawHub-prefixed local path on the local install path",
+    () => {
+      const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-plan-clawhub-"));
+      const localPath = path.join(tempRoot, "clawhub:demo@");
+      fs.mkdirSync(localPath);
+
+      try {
+        expect(resolvePluginInstallSourcePlan({ raw: localPath, mode: "install" })).toMatchObject({
+          ok: true,
+          request: {
+            source: "local",
+            path: localPath,
+          },
+        });
+      } finally {
+        fs.rmSync(tempRoot, { recursive: true, force: true });
+      }
+    },
+  );
+
   it("keeps explicit npm specs with local-looking suffixes on the registry path", () => {
     expect(resolvePluginInstallSourcePlan({ raw: "npm:plugin.js", mode: "install" })).toMatchObject(
       {
@@ -43,30 +88,50 @@ describe("plugin install plan helpers", () => {
   it("resolves exact official external plugin ids before npm fallback", () => {
     const result = resolveCatalogOfficialExternalInstallPlan("wecom-openclaw-plugin");
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       pluginId: "wecom-openclaw-plugin",
-      npmSpec: "@wecom/wecom-openclaw-plugin@2026.5.7",
-      expectedIntegrity:
-        "sha512-TCkP9as00WfEhgFWG8YL/rcmaWGIshAki2HQh83nTRccGfVBCoGjrEboTTqq3yDmK9koWTV11zi8u8A4dNtvug==",
+      spec: "@wecom/wecom-openclaw-plugin@2026.7.2",
+      installSources: [
+        expect.objectContaining({
+          source: "npm",
+          spec: "@wecom/wecom-openclaw-plugin@2026.7.2",
+          expectedIntegrity:
+            "sha512-7kqdBIOF3SgDDoBoFtO6jxnxofbYSgbKdxZDNabD0y0jg2xKcVqlXZOOJ9+XQho/QOtIFrnRH2IRnPukFEYwJg==",
+        }),
+      ],
     });
   });
+
+  it.each(["matrix@latest", "@openclaw/matrix@latest"])(
+    "uses declared sources and retains default intent for %s",
+    (rawSpec) => {
+      expect(resolveCatalogOfficialExternalInstallPlan(rawSpec)).toEqual({
+        pluginId: "matrix",
+        spec: "@openclaw/matrix@latest",
+        installSources: [
+          { source: "npm", spec: "@openclaw/matrix@latest" },
+          { source: "clawhub", spec: "clawhub:@openclaw/matrix@latest" },
+        ],
+      });
+    },
+  );
 
   it("skips official external plan for explicit npm selectors", () => {
     expect(resolveCatalogOfficialExternalInstallPlan("wecom-openclaw-plugin@beta")).toBeNull();
     expect(
-      resolveCatalogOfficialExternalInstallPlan("@wecom/wecom-openclaw-plugin@2026.5.7"),
+      resolveCatalogOfficialExternalInstallPlan("@wecom/wecom-openclaw-plugin@2026.7.2"),
     ).toBeNull();
   });
 
   it("trusts exact official external npm packages without remapping the spec", () => {
     const result = resolveCatalogOfficialExternalNpmPackageTrust(
-      "@wecom/wecom-openclaw-plugin@2026.5.7",
+      "@wecom/wecom-openclaw-plugin@2026.7.2",
     );
 
     expect(result).toEqual({
       pluginId: "wecom-openclaw-plugin",
       expectedIntegrity:
-        "sha512-TCkP9as00WfEhgFWG8YL/rcmaWGIshAki2HQh83nTRccGfVBCoGjrEboTTqq3yDmK9koWTV11zi8u8A4dNtvug==",
+        "sha512-7kqdBIOF3SgDDoBoFtO6jxnxofbYSgbKdxZDNabD0y0jg2xKcVqlXZOOJ9+XQho/QOtIFrnRH2IRnPukFEYwJg==",
       trustedSourceLinkedOfficialInstall: true,
     });
   });

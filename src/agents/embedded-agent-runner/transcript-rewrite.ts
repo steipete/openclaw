@@ -1,83 +1,19 @@
-import { withTranscriptWriteLock } from "../../config/sessions/session-accessor.js";
-/**
- * Rewrites transcript entries in session managers, states, and files.
- */
+/** Rewrites transcript entries by branching and re-appending the active suffix. */
+import { stripCompactionReplayCheckpoint } from "@openclaw/ai/transports";
+import { withSessionPendingInputRelocation } from "../../config/sessions/session-accessor.js";
 import type {
   TranscriptRewriteReplacement,
-  TranscriptRewriteRequest,
   TranscriptRewriteResult,
 } from "../../context-engine/types.js";
-import { formatErrorMessage } from "../../infra/errors.js";
-import { emitSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
 import type { AgentMessage } from "../runtime/index.js";
 import { getRawSessionAppendMessage } from "../session-raw-append-message.js";
 import { SessionManager } from "../sessions/index.js";
-import { log } from "./logger.js";
-import {
-  resolveRuntimeTranscriptReadTarget,
-  type RuntimeTranscriptScope,
-} from "./transcript-runtime-state.js";
 
 type SessionManagerLike = ReturnType<typeof SessionManager.open>;
 type SessionBranchEntry = ReturnType<SessionManagerLike["getBranch"]>[number];
 
-function isTranscriptEventRecord(event: unknown): event is {
-  id?: unknown;
-  message?: unknown;
-  type?: unknown;
-} {
-  return typeof event === "object" && event !== null && !Array.isArray(event);
-}
-
-async function rewriteSqliteRuntimeTranscript(params: {
-  target: Awaited<ReturnType<typeof resolveRuntimeTranscriptReadTarget>>;
-  request: TranscriptRewriteRequest;
-}): Promise<TranscriptRewriteResult> {
-  return await withTranscriptWriteLock(params.target, async (transcript) => {
-    const replacementsById = new Map(
-      params.request.replacements.map((replacement) => [replacement.entryId, replacement.message]),
-    );
-    let bytesFreed = 0;
-    let rewrittenEntries = 0;
-    const events = await transcript.readEvents();
-    const nextEvents = events.map((event) => {
-      if (!isTranscriptEventRecord(event)) {
-        return event;
-      }
-      const eventId = typeof event.id === "string" ? event.id : undefined;
-      const replacement = eventId ? replacementsById.get(eventId) : undefined;
-      if (!replacement || event.type !== "message") {
-        return event;
-      }
-      bytesFreed += Math.max(
-        0,
-        Buffer.byteLength(JSON.stringify(event.message), "utf8") -
-          Buffer.byteLength(JSON.stringify(replacement), "utf8"),
-      );
-      rewrittenEntries += 1;
-      return Object.assign({}, event, { message: replacement });
-    });
-    if (rewrittenEntries === 0) {
-      return {
-        changed: false,
-        bytesFreed: 0,
-        rewrittenEntries: 0,
-        reason: "no matching transcript entries",
-      };
-    }
-    await transcript.replaceEvents(nextEvents);
-    emitSessionTranscriptUpdate({
-      sessionKey: params.target.sessionKey,
-      agentId: params.target.agentId,
-      target: {
-        agentId: params.target.agentId,
-        sessionId: params.target.sessionId,
-        sessionKey: params.target.sessionKey,
-        storePath: params.target.storePath,
-      },
-    });
-    return { changed: true, bytesFreed, rewrittenEntries };
-  });
+function stripStalePrefixReplay(message: AgentMessage): AgentMessage {
+  return message.role === "assistant" ? stripCompactionReplayCheckpoint(message) : message;
 }
 
 function estimateMessageBytes(message: AgentMessage): number {
@@ -126,15 +62,21 @@ function appendBranchEntry(params: {
 }): string {
   const { sessionManager, entry, rewrittenEntryIds, appendMessage } = params;
   if (entry.type === "message") {
-    return appendMessage(entry.message as Parameters<typeof sessionManager.appendMessage>[0]);
+    const message = stripStalePrefixReplay(entry.message) as Parameters<
+      typeof sessionManager.appendMessage
+    >[0];
+    return withSessionPendingInputRelocation(entry.id, message, () => appendMessage(message));
   }
   if (entry.type === "compaction") {
+    const { __openclaw: identity } = entry;
     return sessionManager.appendCompaction(
       entry.summary,
       remapEntryId(entry.firstKeptEntryId, rewrittenEntryIds) ?? entry.firstKeptEntryId,
       entry.tokensBefore,
       entry.details,
       entry.fromHook,
+      // An unknown historical run must not inherit the rewriting run's identity.
+      { runId: identity?.runId, ...identity },
     );
   }
   if (entry.type === "reset") {
@@ -189,6 +131,8 @@ function appendBranchEntry(params: {
 export function rewriteTranscriptEntriesInSessionManager(params: {
   sessionManager: SessionManagerLike;
   replacements: TranscriptRewriteReplacement[];
+  /** Preserve a checkpoint freshly captured on an explicit replacement. */
+  preserveReplacementCompactionReplay?: boolean;
 }): TranscriptRewriteResult {
   const replacementsById = new Map(
     params.replacements
@@ -246,8 +190,12 @@ export function rewriteTranscriptEntriesInSessionManager(params: {
 
   // Maintenance rewrites should preserve the exact requested history without
   // re-running persistence hooks or size truncation on replayed messages.
-  const appendMessage = getRawSessionAppendMessage(params.sessionManager);
+  const rawAppendMessage = getRawSessionAppendMessage(params.sessionManager);
+  // Deliberate copies retain ingress keys without adopting their old branch entries.
+  const appendMessage: SessionManagerLike["appendMessage"] = (message) =>
+    rawAppendMessage(message, { idempotencyLookup: "caller-checked" });
   const rewrittenEntryIds = new Map<string, string>();
+  // Every re-appended message follows the rewritten prefix, so its prefix-bound checkpoint is stale.
   for (const entry of branch.slice(firstMatchedIndex)) {
     const replacement = entry.type === "message" ? replacementsById.get(entry.id) : undefined;
     const newEntryId =
@@ -258,7 +206,16 @@ export function rewriteTranscriptEntriesInSessionManager(params: {
             rewrittenEntryIds,
             appendMessage,
           })
-        : appendMessage(replacement as Parameters<typeof params.sessionManager.appendMessage>[0]);
+        : (() => {
+            const message = (
+              params.preserveReplacementCompactionReplay
+                ? replacement
+                : stripStalePrefixReplay(replacement)
+            ) as Parameters<typeof params.sessionManager.appendMessage>[0];
+            return withSessionPendingInputRelocation(entry.id, message, () =>
+              appendMessage(message),
+            );
+          })();
     rewrittenEntryIds.set(entry.id, newEntryId);
   }
 
@@ -267,30 +224,4 @@ export function rewriteTranscriptEntriesInSessionManager(params: {
     bytesFreed,
     rewrittenEntries: matchedIndices.length,
   };
-}
-
-/**
- * Rewrites message entries for a runtime transcript without using the
- * file-backed path as caller identity.
- */
-export async function rewriteTranscriptEntriesInRuntimeTranscript(params: {
-  scope: RuntimeTranscriptScope;
-  request: TranscriptRewriteRequest;
-}): Promise<TranscriptRewriteResult> {
-  try {
-    const target = await resolveRuntimeTranscriptReadTarget(params.scope);
-    return await rewriteSqliteRuntimeTranscript({
-      target,
-      request: params.request,
-    });
-  } catch (err) {
-    const reason = formatErrorMessage(err);
-    log.warn(`[transcript-rewrite] failed: ${reason}`);
-    return {
-      changed: false,
-      bytesFreed: 0,
-      rewrittenEntries: 0,
-      reason,
-    };
-  }
 }

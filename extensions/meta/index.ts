@@ -14,7 +14,7 @@ const PROVIDER_ID = "meta";
 export default defineSingleProviderPluginEntry({
   id: PROVIDER_ID,
   name: "Meta Provider",
-  description: "Bundled Meta provider plugin",
+  description: "Meta provider plugin",
   manifest,
   provider: {
     label: "Meta",
@@ -25,12 +25,14 @@ export default defineSingleProviderPluginEntry({
       noteTitle: "Meta",
     },
     catalog: {
+      discoveryMode: "strict",
       buildProvider: buildMetaProvider,
       buildStaticProvider: buildMetaProvider,
       liveModelDiscovery: true,
     },
     ...buildProviderReplayFamilyHooks({ family: "openai-compatible" }),
+    wrapSimpleCompletionStreamFn: wrapMetaProviderStream,
     wrapStreamFn: wrapMetaProviderStream,
-    resolveThinkingProfile: ({ modelId }) => resolveMetaThinkingProfile(modelId),
+    resolveThinkingProfile: resolveMetaThinkingProfile,
   },
 });

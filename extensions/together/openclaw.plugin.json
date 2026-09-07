@@ -40,6 +40,9 @@
     "videoGenerationProviders": ["together"]
   },
   "modelCatalog": {
+    "modelsDev": {
+      "together": "togetherai"
+    },
     "providers": {
       "together": {
         "baseUrl": "https://api.together.xyz/v1",
@@ -85,6 +88,9 @@
               "output": 3.48,
               "cacheRead": 0.2,
               "cacheWrite": 0
+            },
+            "compat": {
+              "codeMode": "capable"
             }
           },
           {
@@ -99,6 +105,9 @@
               "output": 4.4,
               "cacheRead": 0.26,
               "cacheWrite": 0
+            },
+            "compat": {
+              "codeMode": "capable"
             }
           }
         ]

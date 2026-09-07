@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { resolveArchiveKind } from "../infra/archive.js";
-import { parseClawHubPluginSpec } from "../infra/clawhub.js";
+import { parseClawHubPluginSpec } from "../infra/clawhub-spec.js";
 import { parseRegistryNpmSpec } from "../infra/npm-registry-spec.js";
 import { findBundledPluginSource, type BundledPluginSource } from "../plugins/bundled-sources.js";
 import { parseGitPluginSpec } from "../plugins/git-install.js";
@@ -11,7 +11,7 @@ import {
   type NonClawHubInstallSourceClass,
 } from "../plugins/install-provenance.js";
 import { PLUGIN_INSTALL_ERROR_CODE } from "../plugins/install.js";
-import type { ManagedPluginSourceInstallRequest } from "../plugins/management-service.js";
+import type { ManagedPluginSourceInstallRequest } from "../plugins/management-install.js";
 import { resolveCatalogOfficialExternalInstallPlan } from "../plugins/official-external-install-trust.js";
 import { resolveUserPath, shortenHomePath } from "../utils.js";
 import { looksLikeLocalInstallSpec } from "./install-spec.js";
@@ -70,6 +70,7 @@ export function resolvePluginInstallSourcePlan(params: {
         path: resolved,
         recordSource,
         mode: params.mode,
+        ...(bundled ? { bundledOrigin: true } : {}),
         ...(params.link ? { link: true } : {}),
       },
       params.raw,
@@ -94,8 +95,12 @@ export function resolvePluginInstallSourcePlan(params: {
       ? sourcePlan({ source: "git", spec: params.raw, mode: params.mode }, params.raw, "git")
       : { ok: false, error: `unsupported git: plugin spec: ${params.raw}` };
   }
-  if (parseClawHubPluginSpec(params.raw)) {
-    return sourcePlan({ source: "clawhub", spec: params.raw, mode: params.mode }, params.raw);
+  const clawhubPrefix = params.raw.trim().toLowerCase().startsWith("clawhub:");
+  const clawhub = parseClawHubPluginSpec(params.raw);
+  if (clawhubPrefix) {
+    return clawhub
+      ? sourcePlan({ source: "clawhub", spec: params.raw, mode: params.mode }, params.raw)
+      : { ok: false, error: `Unsupported ClawHub plugin spec: ${params.raw}` };
   }
   const explicitNpm = parseNpmPrefixSpec(params.raw);
   if (explicitNpm !== null && !explicitNpm) {
@@ -142,10 +147,11 @@ export function resolvePluginInstallSourcePlan(params: {
     return sourcePlan(
       {
         source: "official",
-        spec: official.npmSpec,
+        spec: official.spec,
+        installSources: official.installSources,
+        expectedPluginId: official.pluginId,
         pluginId: official.pluginId,
         mode: params.mode,
-        ...(official.expectedIntegrity ? { expectedIntegrity: official.expectedIntegrity } : {}),
         ...(params.pin ? { pin: true } : {}),
       },
       params.raw,

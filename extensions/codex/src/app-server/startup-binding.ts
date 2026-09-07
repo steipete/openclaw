@@ -7,16 +7,20 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import {
   embeddedAgentLog,
-  type EmbeddedRunAttemptParams,
+  type EmbeddedRunAttemptParamsV2 as EmbeddedRunAttemptParams,
 } from "openclaw/plugin-sdk/agent-harness-runtime";
-import { root as openSafeFilesystemRoot } from "openclaw/plugin-sdk/file-access-runtime";
+import {
+  isPathStrictlyInside,
+  root as openSafeFilesystemRoot,
+} from "openclaw/plugin-sdk/file-access-runtime";
 import { parseSqliteSessionFileMarker } from "openclaw/plugin-sdk/session-store-runtime";
 import { resolveCodexAppServerHomeDir } from "./auth-bridge.js";
 import { isJsonObject, type JsonValue } from "./protocol.js";
-import type {
-  CodexAppServerBindingIdentity,
-  CodexAppServerBindingStore,
-  CodexAppServerThreadBinding,
+import {
+  assertCodexBindingMayBeReplaced,
+  type CodexAppServerBindingIdentity,
+  type CodexAppServerBindingStore,
+  type CodexAppServerThreadBinding,
 } from "./session-binding.js";
 
 // Codex owns proactive auto-compaction, but OpenClaw must not resume a native
@@ -96,15 +100,7 @@ async function listCodexAppServerRolloutFilesForThread(
     path.join(path.dirname(resolvedAgentDir), "codex-home", "sessions"),
   ];
   const rolloutRoot = rolloutPath
-    ? roots.find((root) => {
-        const relativePath = path.relative(root, rolloutPath);
-        return (
-          relativePath !== "" &&
-          relativePath !== ".." &&
-          !relativePath.startsWith(`..${path.sep}`) &&
-          !path.isAbsolute(relativePath)
-        );
-      })
+    ? roots.find((root) => isPathStrictlyInside(root, rolloutPath))
     : undefined;
   if (
     rolloutPath &&
@@ -278,9 +274,11 @@ async function readCodexAppServerRolloutTokenSnapshot(
         bytesRead += result.bytesRead;
       }
       let lineEnd = bytesRead;
-      for (let index = bytesRead - 1; index >= 0; index -= 1) {
-        if (chunk[index] !== 0x0a) {
-          continue;
+      // Negative Buffer offsets wrap from the end, so stop when byte zero is consumed.
+      while (lineEnd > 0) {
+        const index = chunk.lastIndexOf(0x0a, lineEnd - 1);
+        if (index < 0) {
+          break;
         }
         const lineFragment = chunk.subarray(index + 1, lineEnd);
         const line =
@@ -412,6 +410,7 @@ function hasContextEngineThreadBootstrapProjection(binding: CodexAppServerThread
 
 /** Clears and drops a binding when the native Codex thread is too large to resume safely. */
 export async function rotateOversizedCodexAppServerStartupBinding(params: {
+  assertCurrent?: () => void;
   binding: CodexAppServerThreadBinding | undefined;
   bindingStore: CodexAppServerBindingStore;
   identity: CodexAppServerBindingIdentity;
@@ -421,15 +420,19 @@ export async function rotateOversizedCodexAppServerStartupBinding(params: {
   config: EmbeddedRunAttemptParams["config"] | undefined;
   contextEngineActive?: boolean;
   projectedTurnTokens?: number;
-}): Promise<CodexAppServerThreadBinding | undefined> {
+  expectedSessionRuntimeOwnership?: EmbeddedRunAttemptParams["expectedSessionRuntimeOwnership"];
+}): Promise<{
+  binding: CodexAppServerThreadBinding | undefined;
+  startupContextTokens?: number;
+}> {
   const binding = params.binding;
   if (!binding?.threadId) {
-    return binding;
+    return { binding };
   }
   // Native Codex owns compaction for supervised threads. Clearing this private
   // scope marker would silently move the next turn back to the agent runtime.
   if (binding.connectionScope === "supervision") {
-    return binding;
+    return { binding };
   }
   const sessionRecord = await readCodexSessionRecordForSessionFile(params.sessionFile);
   const rolloutFiles = await listCodexAppServerRolloutFilesForThread(
@@ -439,34 +442,51 @@ export async function rotateOversizedCodexAppServerStartupBinding(params: {
     binding.rolloutPath,
   );
   const compaction = readCompactionConfig(params.config);
+  const maxBytes = parseCodexAppServerByteLimit(compaction?.maxActiveTranscriptBytes);
   const shouldDeferByteGuard =
-    compaction?.truncateAfterCompaction === true &&
+    maxBytes !== undefined &&
     params.contextEngineActive === true &&
     hasContextEngineThreadBootstrapProjection(binding);
-  if (compaction?.truncateAfterCompaction === true && !shouldDeferByteGuard) {
-    const maxBytes = parseCodexAppServerByteLimit(compaction.maxActiveTranscriptBytes);
-    if (maxBytes !== undefined) {
-      const oversizedFiles = rolloutFiles.filter((file) => file.bytes >= maxBytes);
-      if (oversizedFiles.length > 0) {
-        await Promise.all(
-          rolloutFiles.map(async (file) => {
-            await file.handle?.close();
-          }),
-        );
-        embeddedAgentLog.warn(
-          "codex app-server native transcript exceeded active byte limit; starting a fresh thread",
-          {
-            threadId: binding.threadId,
-            maxBytes,
-            files: oversizedFiles.map((file) => ({ path: file.path, bytes: file.bytes })),
-          },
-        );
-        await params.bindingStore.mutate(params.identity, {
+  if (shouldDeferByteGuard) {
+    embeddedAgentLog.debug(
+      "codex app-server deferring native transcript byte guard for context-engine thread bootstrap",
+      {
+        threadId: binding.threadId,
+        engineId: binding.contextEngine?.engineId,
+        epoch: binding.contextEngine?.projection?.epoch,
+        fingerprint: binding.contextEngine?.projection?.fingerprint,
+      },
+    );
+  } else if (maxBytes !== undefined) {
+    const oversizedFiles = rolloutFiles.filter((file) => file.bytes >= maxBytes);
+    if (oversizedFiles.length > 0) {
+      await Promise.all(
+        rolloutFiles.map(async (file) => {
+          await file.handle?.close();
+        }),
+      );
+      assertCodexBindingMayBeReplaced(
+        binding,
+        "rotating an oversized native transcript",
+        params.expectedSessionRuntimeOwnership,
+      );
+      embeddedAgentLog.warn(
+        "codex app-server native transcript exceeded active byte limit; starting a fresh thread",
+        {
+          threadId: binding.threadId,
+          maxBytes,
+          files: oversizedFiles.map((file) => ({ path: file.path, bytes: file.bytes })),
+        },
+      );
+      await params.bindingStore.mutate(
+        params.identity,
+        {
           kind: "clear",
           threadId: binding.threadId,
-        });
-        return undefined;
-      }
+        },
+        params.assertCurrent,
+      );
+      return { binding: undefined };
     }
   }
   const nativeTokenSnapshots = await Promise.all(
@@ -487,19 +507,29 @@ export async function rotateOversizedCodexAppServerStartupBinding(params: {
       ? Math.floor(sessionRecord.contextTokens)
       : undefined;
   const reserveTokens = resolveCodexAppServerNativeThreadReserveTokens(params.config);
+  const rotationContextTokens = minFiniteNumber([
+    nativeModelContextWindow,
+    sessionModelContextWindow,
+  ]);
   const maxTokens = resolveCodexAppServerNativeThreadTokenFuse({
-    modelContextWindow: minFiniteNumber([nativeModelContextWindow, sessionModelContextWindow]),
+    modelContextWindow: rotationContextTokens,
     reserveTokens,
     projectedTurnTokens: params.projectedTurnTokens,
   });
   const sessionTokens =
-    sessionRecord?.totalTokensFresh !== false &&
+    sessionRecord?.totalTokensFresh === true &&
+    sessionRecord.totalTokensVersion === 1 &&
     typeof sessionRecord?.totalTokens === "number" &&
     Number.isFinite(sessionRecord.totalTokens)
       ? sessionRecord.totalTokens
       : undefined;
   const tokenCount = maxFiniteNumber([sessionTokens, nativeTokens]);
   if (tokenCount !== undefined && tokenCount >= maxTokens) {
+    assertCodexBindingMayBeReplaced(
+      binding,
+      "rotating a full native context",
+      params.expectedSessionRuntimeOwnership,
+    );
     embeddedAgentLog.warn(
       "codex app-server native transcript exceeded active token limit; starting a fresh thread",
       {
@@ -514,26 +544,21 @@ export async function rotateOversizedCodexAppServerStartupBinding(params: {
         projectedTurnTokens: params.projectedTurnTokens,
       },
     );
-    await params.bindingStore.mutate(params.identity, {
-      kind: "clear",
-      threadId: binding.threadId,
-    });
-    return undefined;
-  }
-  if (compaction?.truncateAfterCompaction !== true) {
-    return binding;
-  }
-  if (shouldDeferByteGuard) {
-    embeddedAgentLog.debug(
-      "codex app-server deferring native transcript byte guard for context-engine thread bootstrap",
+    await params.bindingStore.mutate(
+      params.identity,
       {
+        kind: "clear",
         threadId: binding.threadId,
-        engineId: binding.contextEngine?.engineId,
-        epoch: binding.contextEngine?.projection?.epoch,
-        fingerprint: binding.contextEngine?.projection?.fingerprint,
       },
+      params.assertCurrent,
     );
-    return binding;
+    return { binding: undefined };
   }
-  return binding;
+  // Session metadata has no source provenance and may contain a catalog fallback.
+  // Prefer the native rollout for result seeding; keep the minimum only for rotation safety.
+  const startupContextTokens = nativeModelContextWindow ?? sessionModelContextWindow;
+  return {
+    binding,
+    ...(startupContextTokens ? { startupContextTokens } : {}),
+  };
 }

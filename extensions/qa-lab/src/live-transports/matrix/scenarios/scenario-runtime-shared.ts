@@ -2,7 +2,11 @@
 import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import { createMatrixQaClient, type MatrixQaRoomObserver } from "../substrate/client.js";
 import type { MatrixQaObservedEvent } from "../substrate/events.js";
-import type { MatrixQaFaultProxyObserver } from "../substrate/fault-proxy.js";
+import type {
+  MatrixQaFaultProxyObserver,
+  MatrixQaFaultProxyRule,
+  MatrixQaFaultProxyRuleHandle,
+} from "../substrate/fault-proxy.js";
 import { createMatrixQaRoomObserver } from "../substrate/sync.js";
 import type { MatrixQaProvisionedTopology } from "../substrate/topology.js";
 import { resolveMatrixQaScenarioRoomId } from "./scenario-contract.js";
@@ -31,6 +35,7 @@ export type MatrixQaScenarioContext = {
   driverUserId: string;
   faultProxyObserver?: MatrixQaFaultProxyObserver;
   faultProxyTargetBaseUrl?: string;
+  installFaultRule?: (rule: MatrixQaFaultProxyRule) => MatrixQaFaultProxyRuleHandle;
   observedEvents: MatrixQaObservedEvent[];
   observerAccessToken: string;
   observerDeviceId?: string;
@@ -144,14 +149,6 @@ export function buildMatrixReplyArtifact(
     relatesTo: event.relatesTo,
     sender: event.sender,
     ...(token ? { tokenMatched: doesMatrixQaReplyBodyMatchToken(event, token) } : {}),
-  };
-}
-
-export function buildMatrixNoticeArtifact(event: MatrixQaObservedEvent) {
-  return {
-    bodyPreview: truncateMatrixQaPreview(event.body?.trim()),
-    eventId: event.eventId,
-    sender: event.sender,
   };
 }
 
@@ -641,6 +638,9 @@ export async function runNoReplyExpectedScenario(params: {
         ...buildMatrixReplyDetails("unexpected reply", unexpectedReply),
       ].join("\n"),
     );
+  }
+  if (!observedTriggerEvent) {
+    throw new Error("Matrix no-reply observation did not observe the trigger event");
   }
   advanceMatrixQaActorCursor({
     actorId: params.actorId,

@@ -1,21 +1,11 @@
 import type { ConfigUiHints } from "../shared/config-ui-hints-types.js";
-import { asSchemaObject } from "./schema.shared.js";
-
-type JsonSchemaObject = Record<string, unknown> & {
-  type?: string | string[];
-  properties?: Record<string, JsonSchemaObject>;
-  additionalProperties?: JsonSchemaObject | boolean;
-  items?: JsonSchemaObject | JsonSchemaObject[];
-  anyOf?: JsonSchemaObject[];
-  oneOf?: JsonSchemaObject[];
-  allOf?: JsonSchemaObject[];
-};
+import { asSchemaObject, type ConfigJsonSchemaObject } from "./schema.shared.js";
 
 const ROOT_TIER_PATHS = `
 accessGroups acp agents approvals attachments auth bindings broadcast browser channels
-cloudWorkers commands cron diagnostics discovery env gateway hooks logging mcp memory messages
-meta models nodeHost plugins proxy secrets security session skills surfaces talk tools transcripts
-tts ui update wizard
+cloudWorkers commands cron desktop diagnostics discovery env gateway hooks logging mcp memory messages
+meta models nodeHost plugins proxy secrets security session skills surfaces talk telemetry tools transcripts
+tts ui update wizard worktreeRoot
 `
   .trim()
   .split(/\s+/);
@@ -43,7 +33,7 @@ agents.defaults.subagents.model agents.defaults.subagents.model.primary
 agents.defaults.sandbox.ssh.workspaceRoot
 agents.defaults.sandbox.workspaceRoot
 agents.defaults.thinkingDefault agents.defaults.userTimezone agents.defaults.voiceModel.primary
-agents.defaults.workspace agents.entries.*.default agents.entries.*.groupChat.mentionPatterns
+agents.defaults.workspace agents.entries.*.groupChat.mentionPatterns
 agents.entries.*.groupChat.unmentionedInbound agents.entries.*.identity
 agents.entries.*.memory.search.enabled agents.entries.*.memory.search.provider
 agents.entries.*.memory.search.rememberAcrossConversations agents.entries.*.memory.search.model
@@ -53,6 +43,7 @@ agents.entries.*.runtime.acp.agent agents.entries.*.runtime.type
 agents.entries.*.sandbox.ssh.workspaceRoot agents.entries.*.sandbox.workspaceRoot
 agents.entries.*.subagents.model agents.entries.*.subagents.model.primary agents.entries.*.workspace
 agents.entries.*.tools.alsoAllow agents.entries.*.tools.deny
+agents.entries.*.tools.github
 agents.entries.*.tools.exec.applyPatch.workspaceOnly agents.entries.*.tools.exec.host
 agents.entries.*.tools.exec.mode agents.entries.*.tools.exec.strictInlineEval
 agents.entries.*.tools.exec.reviewer.model agents.entries.*.tools.exec.reviewer.model.primary
@@ -132,7 +123,7 @@ gateway.auth.trustedProxy.allowUsers gateway.auth.trustedProxy.userHeader gatewa
 gateway.controlUi.allowedOrigins gateway.http.endpoints.chatCompletions.images.urlAllowlist
 gateway.http.endpoints.responses.files.urlAllowlist
 gateway.http.endpoints.responses.images.urlAllowlist gateway.mode gateway.nodes.allowSkills
-gateway.nodes.pairing.autoApproveCidrs gateway.nodes.pluginTools.enabled gateway.port
+gateway.nodes.pairing.autoApproveCidrs gateway.nodes.pairing.autoApproveLocal gateway.nodes.pluginTools.enabled gateway.port
 gateway.remote.password gateway.remote.sshTarget gateway.remote.tlsFingerprint
 gateway.remote.token gateway.remote.transport gateway.remote.url gateway.tailscale.mode
 gateway.trustedProxies hooks.allowedAgentIds hooks.enabled hooks.gmail.account hooks.gmail.label
@@ -142,8 +133,7 @@ hooks.mappings.*.agentId hooks.mappings.*.model hooks.token
 mcp.apps.enabled mcp.servers.*.args mcp.servers.*.auth mcp.servers.*.command
 mcp.servers.*.cwd mcp.servers.*.enabled mcp.servers.*.env mcp.servers.*.headers
 mcp.servers.*.oauth.authProfileId mcp.servers.*.transport mcp.servers.*.url
-memory.qmd.scope.default memory.qmd.scope.rules.*.action memory.search.enabled
-memory.search.model memory.search.provider memory.search.rememberAcrossConversations
+memory.search.enabled memory.search.model memory.search.provider memory.search.rememberAcrossConversations
 memory.search.remote.apiKey
 memory.search.sources models.providers.*.api models.providers.*.apiKey
 models.providers.*.auth models.providers.*.baseUrl models.providers.*.models.*.id
@@ -158,17 +148,18 @@ secrets.providers.*.path secrets.providers.*.source skills.allowBundled
 skills.entries.*.apiKey skills.entries.*.config skills.entries.*.enabled
 skills.entries.*.env skills.install.allowUploadedArchives skills.install.nodeManager
 skills.load.allowSymlinkTargets skills.load.extraDirs skills.workshop.approvalPolicy
-skills.workshop.autonomous.enabled talk.provider talk.providers.*.apiKey
+skills.workshop.autonomous.mode talk.provider talk.providers.*.apiKey
 talk.realtime.brain talk.realtime.mode talk.realtime.provider
 talk.realtime.model talk.realtime.providers.*.apiKey talk.realtime.speakerVoice talk.speechLocale
 tools.alsoAllow tools.deny tools.exec
+tools.github
 tools.fs tools.media.audio tools.media.image tools.media.video tools.message
 tools.exec.reviewer.model.primary tools.media.models.*.model
 tools.media.models.*.request.auth.token tools.profile tools.sessions
 tools.web transcripts.enabled
 tts.auto tts.persona tts.personas.*.providers.*.apiKey tts.provider
 tts.providers.* tts.providers.*.apiKey
-ui.assistant.avatar ui.assistant.name ui.prefs.chatFollowUpMode
+ui.prefs.accent ui.prefs.chatFollowUpMode
 ui.prefs.chatPersistCommentary ui.prefs.chatSendShortcut ui.prefs.chatShowThinking
 ui.prefs.chatShowToolCalls ui.prefs.locale
 ui.prefs.theme ui.prefs.themeMode update.auto.enabled update.channel
@@ -177,7 +168,10 @@ wizard.accessMode wizard.appRecommendations
   .trim()
   .split(/\s+/);
 
-const ADVANCED_TUNING_PATHS = new Set(["agents.defaults.heartbeat.every"]);
+const ADVANCED_TUNING_PATHS = new Set([
+  "agents.defaults.heartbeat.every",
+  "session.maintenance.preserveRecent",
+]);
 const CHANNEL_KERNEL_TIER_PREFIXES = ["channels.defaults", "channels.modelByChannel"] as const;
 
 function isPluginOwnedChannelTierPath(path: string): boolean {
@@ -198,11 +192,10 @@ function splitPath(path: string): string[] {
 }
 
 function createTierMatcher(hints: ConfigUiHints): (path: string) => boolean | undefined {
+  type TierRule = { parts: string[]; advanced: boolean; wildcardCount: number; order: number };
   const exact = new Map<string, boolean>();
-  const wildcardByLength = new Map<
-    number,
-    Array<{ parts: string[]; advanced: boolean; wildcardCount: number }>
-  >();
+  const wildcardsByPrefix = new Map<string, TierRule[]>();
+  let order = 0;
   for (const [hintPath, hint] of Object.entries(hints)) {
     if (typeof hint.advanced !== "boolean") {
       continue;
@@ -213,47 +206,100 @@ function createTierMatcher(hints: ConfigUiHints): (path: string) => boolean | un
       exact.set(parts.join("."), hint.advanced);
       continue;
     }
-    const bucket = wildcardByLength.get(parts.length) ?? [];
-    bucket.push({ parts, advanced: hint.advanced, wildcardCount });
-    wildcardByLength.set(parts.length, bucket);
+    const prefix = parts.slice(0, parts.indexOf("*")).join(".");
+    const key = `${parts.length}:${prefix}`;
+    const bucket = wildcardsByPrefix.get(key) ?? [];
+    bucket.push({ parts, advanced: hint.advanced, wildcardCount, order: order++ });
+    wildcardsByPrefix.set(key, bucket);
   }
-  for (const bucket of wildcardByLength.values()) {
+  for (const bucket of wildcardsByPrefix.values()) {
     bucket.sort((left, right) => left.wildcardCount - right.wildcardCount);
   }
   return (path) => {
+    const canonical = exact.get(path);
+    if (canonical !== undefined) {
+      return canonical;
+    }
     const parts = splitPath(path);
     const direct = exact.get(parts.join("."));
     if (direct !== undefined) {
       return direct;
     }
-    for (const candidate of wildcardByLength.get(parts.length) ?? []) {
-      if (candidate.parts.every((part, index) => part === "*" || part === parts[index])) {
-        return candidate.advanced;
+    let best: TierRule | undefined;
+    let prefix = parts.slice(0, -1).join(".");
+    // Prefixes narrow the search; specificity and authored order still decide
+    // precedence across buckets, including the empty prefix for leading wildcards.
+    for (;;) {
+      const candidate = wildcardsByPrefix
+        .get(`${parts.length}:${prefix}`)
+        ?.find((rule) => rule.parts.every((part, index) => part === "*" || part === parts[index]));
+      if (
+        candidate &&
+        (!best ||
+          candidate.wildcardCount < best.wildcardCount ||
+          (candidate.wildcardCount === best.wildcardCount && candidate.order < best.order))
+      ) {
+        best = candidate;
       }
+      if (!prefix) {
+        break;
+      }
+      prefix = prefix.slice(0, Math.max(0, prefix.lastIndexOf(".")));
     }
-    return undefined;
+    return best?.advanced;
   };
 }
 
-function isNumericSchema(schema: JsonSchemaObject): boolean {
+function isNumericSchema(schema: ConfigJsonSchemaObject): boolean {
   const types = Array.isArray(schema.type) ? schema.type : [schema.type];
   return types.includes("number") || types.includes("integer");
 }
 
-function isNumericCommonException(path: string): boolean {
-  return splitPath(path).at(-1) === "port";
-}
-
-function resolveTier(params: { inheritedTier: boolean; ownTier: boolean | undefined }): boolean {
-  if (params.ownTier !== undefined) {
-    return params.ownTier;
-  }
-  return params.inheritedTier;
-}
-
 function mergeTierHint(hints: ConfigUiHints, path: string, advanced: boolean): void {
   const current = hints[path];
-  hints[path] = current ? { ...current, advanced } : { advanced };
+  if (current?.advanced !== advanced) {
+    hints[path] = current ? { ...current, advanced } : { advanced };
+  }
+}
+
+function visitSchemaNodes<T>(
+  schema: unknown,
+  initialState: T,
+  visit: (node: ConfigJsonSchemaObject, path: string, state: T) => T,
+): void {
+  const visited = new WeakMap<object, Set<string>>();
+  const walk = (value: unknown, path: string, state: T): void => {
+    const node = asSchemaObject(value);
+    if (!node) {
+      return;
+    }
+    const previousPaths = visited.get(node);
+    if (previousPaths?.has(path)) {
+      return;
+    }
+    if (previousPaths) {
+      previousPaths.add(path);
+    } else {
+      visited.set(node, new Set([path]));
+    }
+    const nextState = visit(node, path, state);
+    for (const [key, child] of Object.entries(node.properties ?? {})) {
+      walk(child, path ? `${path}.${key}` : key, nextState);
+    }
+    if (node.additionalProperties && typeof node.additionalProperties === "object") {
+      walk(node.additionalProperties, path ? `${path}.*` : "*", nextState);
+    }
+    const items = Array.isArray(node.items) ? node.items : node.items ? [node.items] : [];
+    for (const item of items) {
+      walk(item, path ? `${path}.*` : "*", nextState);
+    }
+    for (const branches of [node.anyOf, node.oneOf, node.allOf]) {
+      for (const branch of branches ?? []) {
+        walk(branch, path, nextState);
+      }
+    }
+  };
+  walk(schema, "", initialState);
 }
 
 /** Add authored common/advanced tier boundaries to the base hint map. */
@@ -277,105 +323,34 @@ export function applyConfigTierHints(
   return next;
 }
 
-function applyNumericTuningTierHints(
-  schema: Record<string, unknown>,
-  hints: ConfigUiHints,
-): ConfigUiHints {
-  const next = { ...hints };
-  const authoredTier = createTierMatcher(hints);
-  const visited = new WeakMap<object, Set<string>>();
-  const visit = (value: unknown, path: string): void => {
-    const node = asSchemaObject(value) as JsonSchemaObject | null;
-    if (!node) {
-      return;
-    }
-    const prior = visited.get(node);
-    if (prior?.has(path)) {
-      return;
-    }
-    if (prior) {
-      prior.add(path);
-    } else {
-      visited.set(node, new Set([path]));
-    }
-    if (
-      path &&
-      isNumericSchema(node) &&
-      !isNumericCommonException(path) &&
-      authoredTier(path) === undefined
-    ) {
-      mergeTierHint(next, path, true);
-    }
-    for (const [key, child] of Object.entries(node.properties ?? {})) {
-      visit(child, path ? `${path}.${key}` : key);
-    }
-    if (node.additionalProperties && typeof node.additionalProperties === "object") {
-      visit(node.additionalProperties, path ? `${path}.*` : "*");
-    }
-    const items = Array.isArray(node.items) ? node.items : node.items ? [node.items] : [];
-    for (const item of items) {
-      visit(item, path ? `${path}.*` : "*");
-    }
-    for (const branches of [node.anyOf, node.oneOf, node.allOf]) {
-      for (const branch of branches ?? []) {
-        visit(branch, path);
-      }
-    }
-  };
-  visit(schema, "");
-  return next;
-}
-
 /** Materialize the resolved tier on every schema path for RPC/UI consumers. */
 export function applyResolvedConfigTierHints(
   schema: Record<string, unknown>,
   hints: ConfigUiHints,
 ): ConfigUiHints {
-  const tierHints = applyNumericTuningTierHints(schema, hints);
-  const next = { ...tierHints };
-  const matchTier = createTierMatcher(tierHints);
-  const visited = new WeakMap<object, Set<string>>();
+  const next = { ...hints };
+  const authoredTier = createTierMatcher(hints);
+  // Discover numeric defaults across every composition branch before resolving
+  // inheritance; generated wildcard hints participate in normal tier precedence.
+  visitSchemaNodes(schema, undefined, (node, path) => {
+    if (
+      path &&
+      isNumericSchema(node) &&
+      splitPath(path).at(-1) !== "port" &&
+      authoredTier(path) === undefined
+    ) {
+      mergeTierHint(next, path, true);
+    }
+    return undefined;
+  });
+  const matchTier = createTierMatcher(next);
 
-  const visit = (value: unknown, path: string, inheritedTier: boolean): void => {
-    const node = asSchemaObject(value) as JsonSchemaObject | null;
-    if (!node) {
-      return;
-    }
-    const previousPaths = visited.get(node);
-    if (previousPaths?.has(path)) {
-      return;
-    }
-    if (previousPaths) {
-      previousPaths.add(path);
-    } else {
-      visited.set(node, new Set([path]));
-    }
-    const advanced = path
-      ? resolveTier({
-          inheritedTier,
-          ownTier: matchTier(path),
-        })
-      : inheritedTier;
+  visitSchemaNodes(schema, true, (_node, path, inheritedTier) => {
+    const advanced = path ? (matchTier(path) ?? inheritedTier) : inheritedTier;
     if (path) {
       mergeTierHint(next, path, advanced);
     }
-    for (const [key, child] of Object.entries(node.properties ?? {})) {
-      visit(child, path ? `${path}.${key}` : key, advanced);
-    }
-    if (node.additionalProperties && typeof node.additionalProperties === "object") {
-      visit(node.additionalProperties, path ? `${path}.*` : "*", advanced);
-    }
-    const items = Array.isArray(node.items) ? node.items : node.items ? [node.items] : [];
-    for (const item of items) {
-      visit(item, path ? `${path}.*` : "*", advanced);
-    }
-    for (const branches of [node.anyOf, node.oneOf, node.allOf]) {
-      for (const branch of branches ?? []) {
-        visit(branch, path, advanced);
-      }
-    }
-  };
-
-  visit(schema, "", true);
+    return advanced;
+  });
   return next;
 }

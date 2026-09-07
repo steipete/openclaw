@@ -3,20 +3,78 @@ import { describe, expect, it, vi } from "vitest";
 import { tryHandlePrecomputedCommandHelpFastPath, tryHandleRootHelpFastPath } from "./entry.js";
 
 describe("entry root help fast path", () => {
+  it.each([
+    { name: "long root help", argv: ["node", "openclaw", "--help"] },
+    { name: "short root help", argv: ["node", "openclaw", "-h"] },
+    {
+      name: "profile-prefixed root help",
+      argv: ["node", "openclaw", "--profile", "work", "--help"],
+    },
+    {
+      name: "no-color-prefixed root help",
+      argv: ["node", "openclaw", "--no-color", "--help"],
+    },
+  ])("respects the startup help fast path kill switch for $name", async ({ argv }) => {
+    const outputPrecomputedRootHelpText = vi.fn(() => true);
+    const outputRootHelp = vi.fn();
+    const loadRootHelpRenderOptionsForConfigSensitivePlugins = vi.fn(async () => null);
+
+    await expect(
+      tryHandleRootHelpFastPath(argv, {
+        env: { OPENCLAW_DISABLE_CLI_STARTUP_HELP_FAST_PATH: "1" },
+        outputPrecomputedRootHelpText,
+        outputRootHelp,
+        loadRootHelpRenderOptionsForConfigSensitivePlugins,
+      }),
+    ).resolves.toBe(false);
+
+    expect(loadRootHelpRenderOptionsForConfigSensitivePlugins).not.toHaveBeenCalled();
+    expect(outputPrecomputedRootHelpText).not.toHaveBeenCalled();
+    expect(outputRootHelp).not.toHaveBeenCalled();
+  });
+
+  it("respects the process env startup help fast path kill switch", async () => {
+    const original = process.env.OPENCLAW_DISABLE_CLI_STARTUP_HELP_FAST_PATH;
+    const outputPrecomputedRootHelpText = vi.fn(() => true);
+    const outputRootHelp = vi.fn();
+    const loadRootHelpRenderOptionsForConfigSensitivePlugins = vi.fn(async () => null);
+    process.env.OPENCLAW_DISABLE_CLI_STARTUP_HELP_FAST_PATH = "1";
+
+    try {
+      await expect(
+        tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
+          outputPrecomputedRootHelpText,
+          outputRootHelp,
+          loadRootHelpRenderOptionsForConfigSensitivePlugins,
+        }),
+      ).resolves.toBe(false);
+
+      expect(loadRootHelpRenderOptionsForConfigSensitivePlugins).not.toHaveBeenCalled();
+      expect(outputPrecomputedRootHelpText).not.toHaveBeenCalled();
+      expect(outputRootHelp).not.toHaveBeenCalled();
+    } finally {
+      if (original === undefined) {
+        delete process.env.OPENCLAW_DISABLE_CLI_STARTUP_HELP_FAST_PATH;
+      } else {
+        process.env.OPENCLAW_DISABLE_CLI_STARTUP_HELP_FAST_PATH = original;
+      }
+    }
+  });
+
   it("prefers precomputed root help text when available", async () => {
-    let outputPrecomputedRootHelpTextCalls = 0;
+    const outputPrecomputedRootHelpText = vi.fn(() => true);
+    const outputRootHelp = vi.fn();
 
     const handled = await tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
       env: {},
-      outputPrecomputedRootHelpText: () => {
-        outputPrecomputedRootHelpTextCalls += 1;
-        return true;
-      },
+      outputPrecomputedRootHelpText,
+      outputRootHelp,
       loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
     });
 
     expect(handled).toBe(true);
-    expect(outputPrecomputedRootHelpTextCalls).toBe(1);
+    expect(outputPrecomputedRootHelpText).toHaveBeenCalledOnce();
+    expect(outputRootHelp).not.toHaveBeenCalled();
   });
 
   it("renders root help without importing the full program", async () => {
@@ -68,12 +126,10 @@ describe("entry root help fast path", () => {
   it("structures root help rendering failures for JSON console style", async () => {
     const logging = await import("./logging.js");
     logging.setLoggerOverride({ level: "silent", consoleLevel: "info", consoleStyle: "json" });
-    const stderrSpy = vi
-      .spyOn(process.stderr, "write")
-      .mockImplementation(() => true as unknown as ReturnType<typeof process.stderr.write>);
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
+    const stderrSpy = vi.spyOn(process.stderr, "write").mockReturnValue(true);
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation((code) => {
       throw new Error(`exit ${String(code)}`);
-    }) as typeof process.exit);
+    });
 
     try {
       await expect(
@@ -190,7 +246,7 @@ describe("entry precomputed command help fast path", () => {
     expect(outputPrecomputedNodesHelpTextCalls).toBe(1);
   });
 
-  it.each(["doctor", "gateway", "plugins", "sessions", "tasks"])(
+  it.each(["config", "doctor", "gateway", "plugins", "sessions", "tasks"])(
     "renders precomputed %s help from startup metadata without importing the full program",
     async (commandName) => {
       const outputPrecomputedSubcommandHelpTextCalls: string[] = [];

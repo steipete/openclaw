@@ -1,13 +1,21 @@
 import { getRootOptionAwareCommandPath } from "openclaw/plugin-sdk/cli-argv";
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 
-/** Every Zoom meetings action emits one JSON result on stdout. */
-function isZoomMeetingsMachineOutput(params: { argv: readonly string[] }): boolean {
-  return getRootOptionAwareCommandPath(params.argv, 2).length === 2;
-}
-
-export const ZOOM_MEETINGS_CLI_DESCRIPTOR = {
+// Metadata discovery for unrelated commands must not load the meeting runtime.
+const descriptor = {
   name: "zoommeetings",
   description: "Join and manage Zoom meeting guests",
   hasSubcommands: true,
-  machineOutput: isZoomMeetingsMachineOutput,
+  machineOutput: ({ argv }: { argv: readonly string[] }) =>
+    getRootOptionAwareCommandPath(argv, 2).length === 2,
 } as const;
+
+export const ZOOM_MEETINGS_CLI_METADATA = {
+  id: "zoom-meetings",
+  name: "Zoom meetings",
+  description: "Zoom meetings CLI metadata",
+  descriptor,
+  register(api: OpenClawPluginApi) {
+    api.registerCli(() => {}, { descriptors: [descriptor] });
+  },
+};

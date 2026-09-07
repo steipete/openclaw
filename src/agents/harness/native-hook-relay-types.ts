@@ -4,7 +4,20 @@ import type { PluginHookToolRequesterContext } from "../../plugins/hook-types.js
 import type {
   BeforeToolCallFailureDisposition,
   DeferredPluginToolApproval,
+  HookContext,
 } from "../agent-tools.before-tool-call.js";
+import type { CodexMcpServersConfig } from "../codex-mcp-config.types.js";
+import type { AgentHarnessHostCapabilities } from "./host-capability-types.js";
+
+type NativeHookRelayApprovalContext = Pick<
+  HookContext,
+  | "approvalReviewerDeviceId"
+  | "trigger"
+  | "turnSourceAccountId"
+  | "turnSourceChannel"
+  | "turnSourceThreadId"
+  | "turnSourceTo"
+>;
 
 export type JsonValue =
   | null
@@ -64,12 +77,18 @@ export type NativeHookRelayRegistration = {
   sessionId: string;
   sessionKey?: string;
   config?: OpenClawConfig;
+  deferMcpToolApprovals?: boolean;
   runId: string;
   channelId?: string;
   requester?: PluginHookToolRequesterContext;
+  approvalContext?: NativeHookRelayApprovalContext;
   allowedEvents: readonly NativeHookRelayEvent[];
   expiresAtMs: number;
   signal?: AbortSignal;
+  /** Exact host policy capability for authority-bearing native callbacks. */
+  runBeforeToolCall?: AgentHarnessHostCapabilities["runBeforeToolCall"];
+  /** Revalidates the exact admitted owner after authority-bearing awaits. */
+  assertActive?: AgentHarnessHostCapabilities["assertActive"];
   onPreToolUseFailure?: (failure: {
     toolName: string;
     toolCallId: string;
@@ -81,6 +100,7 @@ export type NativeHookRelayRegistration = {
 export type NativeHookRelayRegistrationHandle = NativeHookRelayRegistration & {
   generation?: string;
   shouldRelayEvent: (event: NativeHookRelayEvent) => boolean;
+  toolMatcherForEvent: (event: NativeHookRelayEvent) => readonly string[] | undefined;
   commandForEvent: (
     event: NativeHookRelayEvent,
     options?: NativeHookRelayCommandForEventOptions,
@@ -98,15 +118,20 @@ export type RegisterNativeHookRelayParams = {
   sessionId: string;
   sessionKey?: string;
   config?: OpenClawConfig;
+  autoApproveMcpTools?: boolean;
+  projectedMcpServers?: CodexMcpServersConfig;
   runId: string;
   channelId?: string;
   requester?: PluginHookToolRequesterContext;
+  approvalContext?: NativeHookRelayApprovalContext;
   allowedEvents?: readonly NativeHookRelayEvent[];
   /** Whether this relay should run OpenClaw loop detection from native PreToolUse hooks. */
   preToolUseLoopDetection?: boolean;
   ttlMs?: number;
   command?: NativeHookRelayCommandOptions;
   signal?: AbortSignal;
+  runBeforeToolCall?: NativeHookRelayRegistration["runBeforeToolCall"];
+  assertActive?: NativeHookRelayRegistration["assertActive"];
   onPreToolUseFailure?: NativeHookRelayRegistration["onPreToolUseFailure"];
 };
 
@@ -174,6 +199,7 @@ export type NativeHookRelayProviderAdapter = {
 export type NativeHookRelayPermissionApprovalResult =
   | NativeHookRelayPermissionDecision
   | "allow-always"
+  | "timed-out"
   | "defer";
 
 export type ActiveNativeHookRelayRegistration = NativeHookRelayRegistration & {
@@ -236,5 +262,5 @@ export type NativeHookRelaySharedState = {
   pendingPermissionApprovals: Map<string, Promise<NativeHookRelayPermissionApprovalResult>>;
   pendingPreToolUseApprovals: Map<string, NativeHookRelayPreToolUseApproval>;
   permissionApprovalWindows: Map<string, number[]>;
-  permissionAllowAlwaysApprovals: Map<string, { expiresAtMs: number }>;
+  permissionAllowAlwaysApprovals: Map<string, { relayId: string; expiresAtMs?: number }>;
 };

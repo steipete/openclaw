@@ -54,7 +54,7 @@ openclaw setup
 openclaw setup --json
 openclaw setup --message "models"
 openclaw setup --message "validate config"
-openclaw setup --message "setup workspace ~/Projects/work" --yes
+openclaw setup --message "setup workspace ~/path/to/work" --yes
 openclaw setup --message "set default model openai/gpt-5.6" --yes
 openclaw onboard --modern
 ```
@@ -67,13 +67,15 @@ health
 doctor
 validate config
 setup
-setup workspace ~/Projects/work
+setup workspace ~/path/to/work
 config set gateway.port 19001
 config set-ref gateway.auth.token env OPENCLAW_GATEWAY_TOKEN
 gateway status
+configure gateway
+open gateway wizard
 restart gateway
 agents
-create agent work workspace ~/Projects/work
+create agent work workspace ~/path/to/work
 models
 configure model provider
 set default model openai/gpt-5.6
@@ -81,11 +83,15 @@ channels
 channel info slack
 connect slack
 open channel wizard for slack
+configure skills
+configure web search
+open search wizard
+import memory
 plugins list
 plugins search slack
 plugin install clawhub:openclaw-codex-app-server
 talk to work agent
-talk to agent for ~/Projects/work
+talk to agent for ~/path/to/work
 audit
 quit
 ```
@@ -96,9 +102,45 @@ OpenClaw uses typed operations instead of editing config ad hoc.
 
 Read-only operations run immediately: show overview, list agents, list installed plugins, search ClawHub plugins, show model/backend status, run status/health checks, check Gateway reachability, run doctor without interactive fixes, validate config, show the audit-log path.
 
-Starting guided channel setup (`connect telegram`) also runs immediately. Its wizard collects explicit answers and owns the resulting writes.
+Starting a guided setup flow also runs immediately: channel setup (`connect telegram`), workspace skills setup (`configure skills`), web-search provider setup (`configure web search`), and local Gateway setup (`configure gateway`). Each config-backed hosted wizard collects explicit answers and owns the resulting writes; completions append audit entries and re-validate config. A web-search provider that needs a plugin install writes config only after the install succeeds — a failed or timed-out install stops setup and reports it instead of claiming the provider is configured.
 
-Persistent operations require conversational approval (or `--yes` for a direct command): write config, `config set`, `config set-ref`, setup/onboarding bootstrap, change the default model, start/stop/restart the Gateway, create agents, and install plugins.
+`configure gateway` guides you through the local Gateway's port, bind address, token or password auth, and Tailscale exposure. It saves config without applying it to the running Gateway, because changing the active address or credential could disconnect the setup chat. Say `restart gateway` after chat setup, or run `openclaw gateway restart` after a terminal-wizard handoff. Remote mode is guidance-only: use `openclaw onboard` for a fresh setup or `openclaw configure` to change the mode.
+
+`import memory` is copy-only rather than a config write. It detects supported local agent homes, lets you choose the available sources, and copies new memory files into the existing default agent workspace without importing config, credentials, or skills. It requires completed onboarding and reports confirmed imports, nothing-to-import results, provider failures, and failures where some files may already have been copied. No Gateway restart is needed. Use the Control UI's [Import Memory page](/web/control-ui/settings#import-assistant-memory) when you need to target another agent or replace an existing import.
+
+In direct OpenClaw chat, persistent operations require conversational approval (or `--yes` for a one-shot command): write config, `config set`, `config set-ref`, setup/onboarding bootstrap, change the default model, start/stop/restart the Gateway, create agents, and install plugins.
+
+Changes delegated by a regular agent, including requests from messaging channels,
+follow the requesting run's effective [session permission policy](/gateway/permission-modes).
+Full Access applies the exact proposed operation automatically, including when
+Full Access comes from the configured default rather than an explicit session
+mode. Restricted runs still require approval in the OpenClaw operator UI. Replying
+"yes" in the delegated chat cannot authorize a change. When approval is required,
+run `openclaw dashboard` on the Gateway host to review it, or run the change
+directly with `openclaw setup` there. Independent filesystem and sandbox boundaries,
+tool policy, and the operation restrictions below still apply. The host also checks
+that the requesting run and verified inference route remain valid. Interactive
+setup and agent handoffs still require a direct operator session; delegated chat
+cannot start a wizard, even when a model proposes it.
+
+While a human reviews the proposal, the requesting tool stays open. **Allow once**
+applies the exact proposal and returns its application outcome; **Deny** or expiry
+returns a non-applied outcome instead of leaving the agent reporting a pending
+change. Stopping the requesting run cancels its approval. A late approval cannot
+restart a closed run: request the change again from an active run if still needed.
+
+Configured agents can ask OpenClaw to create another agent through their
+`openclaw` tool. The request enters the same typed create-agent operation and
+host authorization flow; any approval summary names the requesting agent.
+OpenClaw remains the executor, and authorized creation records that requesting
+agent as the new agent's creator.
+
+Delegated creation remains tied to the requesting run. If that run ends or loses
+authority during preparation, OpenClaw stops before starting the next persistent
+write. A write already in progress may finish, and workspace files created earlier
+are not automatically removed. Check `openclaw agents list` before retrying from
+an active run; an agent whose creation already completed is not removed when its
+requesting run ends.
 
 Doctor repairs are unavailable inside OpenClaw because they can rewrite the provider, authentication, or default-agent inference route powering the session. Exit OpenClaw and run `openclaw doctor --fix` in a terminal. Read-only `doctor` remains available inside OpenClaw.
 
@@ -142,24 +184,37 @@ Discovery and read-only operations are not included. Secrets never appear in
 change history; config journal records contain changed paths rather than config
 values, and value comparison uses protected fingerprints.
 
-Channel setup can run as a hosted conversation until it reaches a secret. The
-local OpenClaw TUI does not accept sensitive wizard answers because terminal
-chat input is visible. It offers `open channel wizard` immediately, carrying
-the selected channel into the masked terminal wizard; you can also run
-`openclaw channels add --channel <channel>` later.
+Config-write records retain the writer's origin label when supplied. Automatic
+startup config repairs record `origin: "doctor"` even when console output and
+runtime snapshot refresh are suppressed. Existing unlabeled records are not
+backfilled.
 
-### Switching to masked channel setup
+Channel, web-search, and local Gateway setup can run as hosted conversations
+until they reach a secret. The local OpenClaw TUI does not accept sensitive wizard answers
+because terminal chat input is visible. It offers `open channel wizard`
+(carrying the selected channel), `open search wizard`, or `open gateway wizard`
+immediately, handing off to the masked terminal wizard; you can also run
+`openclaw channels add --channel <channel>` or
+`openclaw configure --section web` or `openclaw configure --section gateway`
+later.
 
-The local chat can hand control to the masked channel wizard:
+### Switching to a masked terminal wizard
+
+The local chat can hand control to a masked terminal wizard:
 
 ```text
 open channel wizard for slack
 channel info slack
+open search wizard
+open gateway wizard
 ```
 
 `open channel wizard for <channel>` opens masked channel setup after the chat
 TUI closes. Use `channel info <channel>` first for the channel label, setup
-state, prerequisites summary, and docs link.
+state, prerequisites summary, and docs link. `open search wizard` works the
+same way for web-search provider setup, opening the masked search wizard after
+the chat TUI closes. `open gateway wizard` opens masked local Gateway setup;
+when it finishes, run `openclaw gateway restart` to apply the saved settings.
 
 OpenClaw never changes provider/auth access from inside its own session: the
 session already depends on that inference route. For model-provider setup or
@@ -174,11 +229,21 @@ completes a real live turn. Start OpenClaw again after onboarding succeeds.
 
 ```text
 setup
-setup workspace ~/Projects/work
+setup workspace ~/path/to/work
 ```
 
 `setup` preserves the verified effective model. It does not configure or
 replace inference.
+
+Delegated setup remains tied to the requesting run through configuration,
+workspace, and session preparation. If that run ends or loses authority,
+OpenClaw stops before starting the next persistent effect. Earlier completed
+effects remain, including an agent whose creation already finished; setup may
+still be incomplete. Check `openclaw agents list` and `status`, then request
+setup again from an active run and approve the new request, or finish directly
+with `openclaw setup` on the Gateway host. If cancellation deferred legacy
+history migration for a newly named agent, the next Gateway startup retries it;
+use `openclaw doctor --fix` on the same state/config to finish it sooner.
 
 If inference is missing or its live check fails, leave OpenClaw and run `openclaw onboard`. Guided onboarding tries the configured model first, then authenticated subscription CLIs, API keys, and remaining supported CLIs; it asks each candidate for a real reply and persists only a passing route. OpenClaw starts immediately after that boundary and can then configure the workspace, Gateway, channels, agents, plugins, and other optional features.
 
@@ -204,6 +269,9 @@ supervision opt-outs remain untouched during inference setup.
 
 Interactive OpenClaw's free-form conversation runs through the same agent loop as regular OpenClaw agents, restricted to one ring-zero OpenClaw authority tool, `openclaw`, that wraps the typed operations. Read actions run freely, mutations require your conversational approval for that exact operation (see Operations and approval), and every applied write is audited and re-validated. The agent session persists, so OpenClaw has real multi-turn memory. If the verified inference route later stops working, return to `openclaw onboard` and repair it before continuing.
 
+A failed or timed-out turn ends that setup conversation with a visible error.
+Retrying starts a fresh conversation and live-checks the inference route again.
+
 The host does not parse natural-language requests into operations. Free-form
 messages — including command-looking text and questions such as "why did my
 gateway stop?" — go to the AI, which can map the request to a typed operation
@@ -225,10 +293,9 @@ Message-channel rescue mode never uses the model-assisted planner. Remote rescue
 Embedded runtimes and the Codex app-server harness enforce the ring-zero
 restriction directly: the run carries an OpenClaw tool allow-list with only
 the `openclaw` tool. For Codex, OpenClaw also disables environments, native
-execution, multi-agent, goal, app/plugin, skill/MCP, web-search, and
-`request_user_input` surfaces for that run. Codex still injects its inert native `update_plan`
-utility; it can update the model's temporary checklist but cannot write files
-or OpenClaw configuration. CLI harnesses do not consume OpenClaw's allow-list,
+execution, multi-agent, goal, app/plugin, skill/MCP, web-search,
+`request_user_input`, and its native planning utility for that run. CLI
+harnesses do not consume OpenClaw's allow-list,
 so OpenClaw admits only backends whose own tool-selection contract can prove
 the same restriction:
 
@@ -247,8 +314,10 @@ a single OpenClaw authority tool plus the inert native planning utility. In all
 three cases, setup writes remain confined to OpenClaw's audited approval
 contract.
 
-Gemini CLI remains available for normal agents, but it cannot enforce the
-tool-free probe required by the inference gate, so it cannot host OpenClaw.
+Gemini CLI remains available as an explicitly configured runtime for normal
+agents, but Gemini CLI and Antigravity are not inference-gate setup routes.
+Use AI Studio API-key or Vertex AI for the inference gate. The optional Gemini
+CLI runtime specifically requires an AI Studio API-key profile.
 
 ## Switching to an agent
 
@@ -289,8 +358,8 @@ OpenClaw: Applied. Audit entry written.
 Agent creation can also be queued locally or via rescue:
 
 ```text
-create agent work workspace ~/Projects/work model openai/gpt-5.6-sol
-/openclaw create agent work workspace ~/Projects/work
+create agent work workspace ~/path/to/work model openai/gpt-5.6-sol
+/openclaw create agent work workspace ~/path/to/work
 ```
 
 Agent creation may name only the current live-verified default model. Omit the

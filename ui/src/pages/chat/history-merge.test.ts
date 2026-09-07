@@ -1,613 +1,744 @@
 // @vitest-environment node
-// Control UI tests cover history merge behavior.
+import {
+  reduceSessionProjection,
+  reduceSessionProjectionRunEvent,
+  type SessionProjectionScope,
+} from "@openclaw/gateway-client/browser";
+import { expectDefined } from "@openclaw/normalization-core";
 import { describe, expect, it } from "vitest";
-import { preserveOptimisticTailMessages } from "./history-merge.ts";
+import { createChatSubmissions } from "../../app/chat-submissions.ts";
+import {
+  admitChatSubmission,
+  getChatRunOwner,
+  getChatSessionProjection,
+  readChatSessionProjectionScope,
+  reduceChatSessionProjection,
+  setChatRunOwner,
+  publishChatSessionProjection,
+  publishChatSessionProjectionMessages,
+} from "./history-merge.ts";
+import type { CompactionStatus } from "./tool-stream-contract.ts";
+import { buildInitialChatSubmission } from "./user-message-content.ts";
+
+const imageDataUrl = "data:image/png;base64,iVBORw0KGgo=";
 
 function createHistoryMessage(
   role: "assistant" | "user",
   text: string,
   metadata?: Record<string, unknown>,
-  timestamp?: number,
 ) {
   return {
     role,
     content: [{ type: "text", text }],
-    ...(timestamp === undefined ? {} : { timestamp }),
     ...(metadata === undefined ? {} : { __openclaw: metadata }),
   };
 }
 
-describe("preserveOptimisticTailMessages", () => {
-  it("keeps optimistic tail messages while history is stale", () => {
-    const persistedUser = createHistoryMessage("user", "first", { seq: 1 });
-    const optimisticUser = createHistoryMessage("user", "latest ask", undefined, 10);
-    const optimisticAssistant = createHistoryMessage("assistant", "latest answer", undefined, 11);
-
-    expect(
-      preserveOptimisticTailMessages(
-        [persistedUser],
-        [persistedUser, optimisticUser, optimisticAssistant],
-      ),
-    ).toEqual([persistedUser, optimisticUser, optimisticAssistant]);
+function projectLiveMessage(
+  owner: { sessionKey: string; chatMessages: unknown[] },
+  message: unknown,
+  scope: SessionProjectionScope,
+) {
+  const projection = reduceSessionProjection(getChatSessionProjection(owner, scope), {
+    type: "messagePersisted",
+    message,
+    scope,
   });
+  publishChatSessionProjection(owner, projection);
+  return projection;
+}
 
-  it("keeps a new same-text user turn while history still ends at the earlier turn", () => {
-    const persistedUser = createHistoryMessage(
-      "user",
-      "continue",
+function createInitialHandoffFixture() {
+  const sessionKey = "agent:main:initial-image";
+  const client = {};
+  const chatSubmissions = createChatSubmissions();
+  const owner = {
+    sessionKey,
+    client,
+    chatSubmissions,
+    chatMessages: [] as unknown[],
+    currentSessionId: "initial-session",
+  };
+  chatSubmissions.retain(
+    buildInitialChatSubmission(
+      sessionKey,
       {
-        id: "first-user-message",
-        idempotencyKey: "first-run:user",
-        seq: 1,
+        text: "inspect this image",
+        attachments: [
+          {
+            id: "image-1",
+            mimeType: "image/png",
+            fileName: "image.png",
+            sizeBytes: 68,
+            dataUrl: imageDataUrl,
+          },
+        ],
+        createdAt: 123,
+        sender: {
+          id: "local",
+          name: "Local",
+          identity: { type: "profile", id: "local" },
+          profileAvatarUrl: "/api/users/local/avatar",
+        },
       },
-      10,
-    );
-    const optimisticUser = createHistoryMessage(
-      "user",
-      "continue",
-      { idempotencyKey: "second-run:user" },
-      20,
-    );
+      client,
+      "initial-run",
+    ),
+  );
+  return { client, chatSubmissions, owner, sessionKey };
+}
 
-    expect(
-      preserveOptimisticTailMessages([persistedUser], [persistedUser, optimisticUser]),
-    ).toEqual([persistedUser, optimisticUser]);
-  });
+function createAuthoritativeInitialMessage(sequence = 1) {
+  return {
+    role: "user",
+    content: "Inspect this persisted image",
+    timestamp: 456,
+    serverField: "authoritative",
+    __openclaw: {
+      id: "persisted-initial-user",
+      idempotencyKey: "initial-run:user",
+      runId: "initial-execution",
+      seq: sequence,
+      media: [{ url: "media://inbound/image-1.png", contentType: "image/png" }],
+      mediaImageLayout: { slots: [{ kind: "inline", factIndex: 0 }] },
+    },
+  };
+}
 
-  it("finds an earlier authoritative duplicate before preserving a distinct pending turn", () => {
-    const firstRepeatedUser = createHistoryMessage("user", "continue", { seq: 1 });
-    const secondRepeatedUser = createHistoryMessage("user", "continue", { seq: 2 });
-    const optimisticUser = createHistoryMessage("user", "a distinct pending turn", {
-      idempotencyKey: "third-run:user",
+describe("pane-owned canonical session projection", () => {
+  it.each(["reset", "session", "branch"] as const)(
+    "retires the compaction marker's live state on %s changes",
+    (change) => {
+      const owner = {
+        sessionKey: "agent:main:one",
+        chatMessages: [] as unknown[],
+        compactionStatus: null as CompactionStatus | null,
+      };
+      const scope = { sessionKey: owner.sessionKey, activeLeafEntryId: "first" };
+      getChatSessionProjection(owner, scope);
+      owner.compactionStatus = {
+        phase: "complete",
+        runId: "compact-one",
+        startedAt: 1_000,
+        completedAt: 2_000,
+      };
+      reduceChatSessionProjection(
+        owner,
+        change === "reset" ? { type: "sessionReset" } : { type: "snapshotLoaded", messages: [] },
+        {
+          scope: {
+            ...scope,
+            ...(change === "session" ? { sessionKey: "agent:main:two" } : {}),
+            ...(change === "branch" ? { activeLeafEntryId: "other" } : {}),
+          },
+        },
+      );
+      expect(owner.compactionStatus).toBeNull();
+    },
+  );
+
+  it("publishes run-only events without traversing the unchanged transcript", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const initial = reduceChatSessionProjection(owner, {
+      type: "snapshotLoaded",
+      messages: [createHistoryMessage("user", "persisted", { id: "user", seq: 1 })],
     });
+    let rowReads = 0;
+    const messages = new Proxy(owner.chatMessages, {
+      get(target, key, receiver) {
+        if (typeof key === "string" && /^\d+$/u.test(key)) {
+          rowReads += 1;
+        }
+        return Reflect.get(target, key, receiver);
+      },
+    });
+    owner.chatMessages = messages;
+    setChatRunOwner(owner, "running");
+    const next = expectDefined(
+      reduceSessionProjectionRunEvent(initial, { state: "delta", runId: "running" }, initial.scope),
+      "run-only projection transition",
+    );
+    publishChatSessionProjection(owner, next.projection);
 
-    expect(
-      preserveOptimisticTailMessages(
-        [firstRepeatedUser, secondRepeatedUser],
-        [firstRepeatedUser, optimisticUser],
-      ),
-    ).toEqual([firstRepeatedUser, secondRepeatedUser, optimisticUser]);
+    expect(rowReads).toBe(0);
+    expect(owner.chatMessages).toBe(messages);
+    expect(getChatRunOwner(owner)).toBe("running");
+    expect(getChatSessionProjection(owner).runs.running?.status).toBe("streaming");
+    reduceChatSessionProjection(owner, { type: "sessionReset" });
+    expect(getChatRunOwner(owner)).toBeUndefined();
+    expect(owner.chatMessages).toEqual([]);
   });
 
-  it("does not revive an unmatched pending turn beyond unrelated authoritative history", () => {
-    const sharedUser = createHistoryMessage("user", "shared earlier turn", {
+  it.each(["messagePersisted", "snapshotLoaded"] as const)(
+    "sender provenance does not survive authoritative omission in %s",
+    (type) => {
+      const { owner, chatSubmissions, client, sessionKey } = createInitialHandoffFixture();
+      const handoff = chatSubmissions.readInitial(sessionKey, client)!;
+      expect(handoff.message["__openclaw"]).toHaveProperty("senderIdentity", {
+        type: "profile",
+        id: "local",
+      });
+      admitChatSubmission(owner);
+      const authoritative = createAuthoritativeInitialMessage();
+      reduceChatSessionProjection(
+        owner,
+        type === "messagePersisted"
+          ? { type, message: authoritative }
+          : { type, messages: [authoritative] },
+      );
+      const metadata = (owner.chatMessages[0] as { __openclaw: Record<string, unknown> })[
+        "__openclaw"
+      ];
+      expect(metadata).not.toHaveProperty("senderIdentity");
+      expect(metadata).not.toHaveProperty("senderId");
+      expect(metadata).not.toHaveProperty("senderProfileAvatarUrl");
+    },
+  );
+
+  it("uses one canonical identity for an explicitly unbranched pane", () => {
+    const owner = {
+      sessionKey: "agent:main:shared",
+      currentSessionId: "shared-session",
+      chatDisplayedLeafEntryId: undefined,
+      chatMessages: [],
+    };
+
+    expect(readChatSessionProjectionScope(owner)).toEqual({
+      sessionKey: "agent:main:shared",
+      sessionId: "shared-session",
+      activeLeafEntryId: null,
+    });
+    expect(
+      readChatSessionProjectionScope(owner, {
+        agentId: "main",
+        sessionId: null,
+        activeLeafEntryId: "selected-leaf",
+      }),
+    ).toEqual({
+      sessionKey: "agent:main:shared",
+      agentId: "main",
+      activeLeafEntryId: "selected-leaf",
+    });
+  });
+
+  it("publishes each pane reducer transition and displayed transcript together", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const liveUser = createHistoryMessage("user", "shared prompt", {
       id: "shared-user",
       seq: 1,
     });
-    const laterUser = createHistoryMessage("user", "different authoritative turn", {
-      id: "later-user",
-      seq: 2,
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
+
+    const projection = reduceChatSessionProjection(owner, {
+      type: "messagePersisted",
+      message: liveUser,
     });
 
-    expect(
-      preserveOptimisticTailMessages([sharedUser, laterUser], [sharedUser, optimisticUser]),
-    ).toEqual([sharedUser, laterUser]);
+    expect(owner.chatMessages).toEqual([liveUser]);
+    expect(getChatSessionProjection(owner, projection.scope)).toBe(projection);
+    // A renderer's temporary copy cannot silently replace the authoritative projection.
+    owner.chatMessages = [];
+    expect(getChatSessionProjection(owner)).toBe(projection);
+    publishChatSessionProjectionMessages(owner, [liveUser, liveUser]);
+    const composed = getChatSessionProjection(owner);
+    expect(owner.chatMessages).toEqual([liveUser, liveUser]);
+    expect(composed.entries[0]).toBe(projection.entries[0]);
+    expect(composed.entries[1]?.message).toBe(liveUser);
+    expect(composed.entries[1]?.live).toBe(false);
+    publishChatSessionProjectionMessages(owner, [liveUser, liveUser]);
+    expect(getChatSessionProjection(owner).entries).toEqual(composed.entries);
   });
 
-  it("does not anchor a native transcript to a colliding imported source-local id", () => {
-    const nativeUser = createHistoryMessage("user", "native transcript", { id: "source-local-id" });
-    const importedUser = createHistoryMessage("user", "imported transcript", {
-      id: "source-local-id",
-      externalId: "source-local-id",
-      importedFrom: "claude-cli",
-      cliSessionId: "imported-session",
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
+  it.each([
+    {
+      name: "live-first active adoption",
+      admitFirst: true,
+      cached: false,
+      eventType: "messagePersisted" as const,
+    },
+    {
+      name: "history-first terminal adoption",
+      admitFirst: false,
+      cached: false,
+      eventType: "snapshotLoaded" as const,
+    },
+    {
+      name: "cached initial seed adoption",
+      admitFirst: true,
+      cached: true,
+      eventType: "messagePersisted" as const,
+    },
+  ])("owns $name in one projection publication", ({ admitFirst, cached, eventType }) => {
+    const { client, chatSubmissions, owner, sessionKey } = createInitialHandoffFixture();
+    const handoff = chatSubmissions.readInitial(sessionKey, client);
+    expect(handoff).not.toBeNull();
+    if (!handoff) {
+      throw new Error("expected initial prompt handoff");
+    }
+    if (admitFirst) {
+      if (cached) {
+        owner.chatMessages = [handoff.message];
+      }
+      expect(admitChatSubmission(owner)).toBe(!cached);
+      expect(getChatSessionProjection(owner).entries[0]?.pending).toBe(true);
+      const admittedMessage = owner.chatMessages[0];
+      reduceChatSessionProjection(owner, { type: "sessionReset" });
+      expect(admitChatSubmission(owner)).toBe(true);
+      expect(owner.chatMessages).toEqual([admittedMessage]);
+      reduceChatSessionProjection(owner, { type: "sessionReset" });
+      const reboundScope = readChatSessionProjectionScope(owner, {
+        sessionId: "rebound-session",
+      });
+      reduceChatSessionProjection(
+        owner,
+        { type: "snapshotLoaded", messages: [] },
+        { scope: reboundScope },
+      );
+      expect(owner.chatMessages).toEqual([admittedMessage]);
+      owner.currentSessionId = "rebound-session";
+    }
+    if (admitFirst) {
+      const previousUser = {
+        ...createHistoryMessage("user", "Earlier prompt", { id: "earlier-user", seq: 1 }),
+        timestamp: 120,
+      };
+      const previousReply = {
+        ...createHistoryMessage("assistant", "Earlier reply", { id: "earlier-reply", seq: 2 }),
+        timestamp: 121,
+      };
+      const output = {
+        ...createHistoryMessage("assistant", "Preparing the first reply", {
+          id: "early-output",
+          seq: 3,
+        }),
+        timestamp: 124,
+      };
+      reduceChatSessionProjection(
+        owner,
+        { type: "snapshotLoaded", messages: [previousUser, previousReply, output] },
+        { runActive: true },
+      );
+      expect(owner.chatMessages).toEqual([previousUser, previousReply, handoff.message, output]);
+      reduceChatSessionProjection(
+        owner,
+        { type: "snapshotLoaded", messages: [] },
+        { runActive: true },
+      );
+      expect(owner.chatMessages).toEqual([handoff.message]);
+    }
+    const authoritative = createAuthoritativeInitialMessage();
+    const event =
+      eventType === "messagePersisted"
+        ? ({ type: eventType, message: authoritative } as const)
+        : ({ type: eventType, messages: [authoritative] } as const);
+    const projection = reduceChatSessionProjection(owner, event, { runActive: admitFirst });
 
-    expect(
-      preserveOptimisticTailMessages([nativeUser, importedUser], [nativeUser, optimisticUser]),
-    ).toEqual([nativeUser, importedUser]);
+    expect(owner.chatMessages).toEqual([authoritative]);
+    expect(projection.messages[0]).toBe(authoritative);
+
+    if (admitFirst) {
+      expect(chatSubmissions.readInitial(sessionKey, client)).not.toBeNull();
+      reduceChatSessionProjection(owner, { type: "sessionReset" });
+      expect(admitChatSubmission(owner)).toBe(false);
+      expect(owner.chatMessages).toEqual([]);
+      reduceChatSessionProjection(
+        owner,
+        { type: "snapshotLoaded", messages: [authoritative] },
+        { runActive: false },
+      );
+      expect(chatSubmissions.readInitial(sessionKey, client)).toBeNull();
+    } else {
+      expect(chatSubmissions.readInitial(sessionKey, client)).toBeNull();
+      expect(admitChatSubmission(owner)).toBe(false);
+    }
   });
 
-  it("does not invent an imported source identity from an incomplete source tuple", () => {
-    const firstImportedUser = createHistoryMessage("user", "repeated imported turn", {
-      id: "source-local-id",
-      externalId: "source-local-id",
-      importedFrom: "claude-cli",
-    });
-    const secondImportedUser = createHistoryMessage("user", "repeated imported turn", {
-      id: "source-local-id",
-      externalId: "source-local-id",
-      importedFrom: "claude-cli",
-    });
-    const previousImportedUser = createHistoryMessage("user", "repeated imported turn", {
-      id: "source-local-id",
-      externalId: "source-local-id",
-      importedFrom: "claude-cli",
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages(
-        [firstImportedUser, secondImportedUser],
-        [previousImportedUser, optimisticUser],
-      ),
-    ).toEqual([firstImportedUser, secondImportedUser]);
-  });
-
-  it("does not substitute a different same-sequence projection for a missing canonical id", () => {
-    const unrelatedProjection = createHistoryMessage("user", "different sequence projection", {
-      seq: 7,
-    });
-    const previousProjection = createHistoryMessage("user", "original sequence projection", {
-      id: "missing-canonical-id",
-      seq: 7,
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages([unrelatedProjection], [previousProjection, optimisticUser]),
-    ).toEqual([unrelatedProjection]);
-  });
-
-  it("keeps import provenance without an external id out of native identity", () => {
-    const nativeUser = createHistoryMessage("user", "native transcript", { id: "source-local-id" });
-    const importedUser = createHistoryMessage("user", "imported transcript", {
-      id: "source-local-id",
-      importedFrom: "claude-cli",
-      cliSessionId: "imported-session",
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages([nativeUser, importedUser], [nativeUser, optimisticUser]),
-    ).toEqual([nativeUser, importedUser]);
-  });
-
-  it("does not use display text as authority for an incomplete imported identity", () => {
-    const previousImportedUser = createHistoryMessage("user", "repeated imported turn", {
-      externalId: "first-import",
-      importedFrom: "claude-cli",
-    });
-    const otherImportedUser = createHistoryMessage("user", "repeated imported turn", {
-      externalId: "different-import",
-      importedFrom: "claude-cli",
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages([otherImportedUser], [previousImportedUser, optimisticUser]),
-    ).toEqual([otherImportedUser]);
-  });
-
-  it("does not discard a canonical id when a sequence has the same visible text", () => {
-    const unrelatedProjection = createHistoryMessage("user", "repeated projection", { seq: 7 });
-    const previousProjection = createHistoryMessage("user", "repeated projection", {
-      id: "missing-canonical-id",
-      seq: 7,
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages([unrelatedProjection], [previousProjection, optimisticUser]),
-    ).toEqual([unrelatedProjection]);
-  });
-
-  it("does not revive an identity-free tail past a distinct same-text history turn", () => {
-    const firstUser = createHistoryMessage("user", "continue", { id: "first-user", seq: 1 });
-    const secondUser = createHistoryMessage("user", "continue", { id: "second-user", seq: 2 });
-    const identityFreeTail = createHistoryMessage("user", "identity-free pending turn");
-
-    expect(
-      preserveOptimisticTailMessages([firstUser, secondUser], [firstUser, identityFreeTail]),
-    ).toEqual([firstUser, secondUser]);
-  });
-
-  it("does not display-match a native legacy row to an imported transcript", () => {
-    const previousNativeUser = createHistoryMessage("user", "same visible turn", {
-      senderId: "native-user",
-    });
-    const importedUser = createHistoryMessage("user", "same visible turn", {
-      externalId: "external-user",
-      importedFrom: "claude-cli",
-      cliSessionId: "external-session",
-    });
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages([importedUser], [previousNativeUser, optimisticUser]),
-    ).toEqual([importedUser]);
-  });
-
-  it("does not replay a send that history already persisted before its current anchor", () => {
-    const persistedUser = createHistoryMessage("user", "already persisted prompt", {
-      id: "persisted-user",
-      seq: 1,
-      idempotencyKey: "persisted-run:user",
-    });
-    const persistedAssistant = createHistoryMessage("assistant", "already persisted answer", {
-      id: "persisted-assistant",
-      seq: 2,
-    });
-    const staleOptimisticUser = createHistoryMessage("user", "already persisted prompt", {
-      idempotencyKey: "persisted-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages(
-        [persistedUser, persistedAssistant],
-        [persistedUser, persistedAssistant, staleOptimisticUser],
-      ),
-    ).toEqual([persistedUser, persistedAssistant]);
-  });
-
-  it("does not cross visible history markers with no display signature", () => {
-    const firstMarker = {
-      content: [{ type: "status", value: "first marker" }],
-      __openclaw: { id: "first-marker", seq: 1 },
-    };
-    const laterMarker = {
-      content: [{ type: "status", value: "different marker" }],
-      __openclaw: { id: "later-marker", seq: 2 },
-    };
-    const optimisticUser = createHistoryMessage("user", "unmatched pending turn", {
-      idempotencyKey: "pending-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages([firstMarker, laterMarker], [firstMarker, optimisticUser]),
-    ).toEqual([firstMarker, laterMarker]);
-  });
-
-  it("does not duplicate a repeated turn whose persisted row has no send identity", () => {
-    const firstUser = createHistoryMessage("user", "continue", { id: "first-user", seq: 1 });
-    const persistedRepeatedUser = createHistoryMessage("user", "continue", {
-      id: "persisted-repeated-user",
-      seq: 2,
-    });
-    const optimisticRepeatedUser = createHistoryMessage("user", "continue", {
-      idempotencyKey: "repeated-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages(
-        [firstUser, persistedRepeatedUser],
-        [firstUser, optimisticRepeatedUser],
-      ),
-    ).toEqual([firstUser, persistedRepeatedUser]);
-  });
-
-  it("does not replay an assistant tail after consuming its already-persisted user", () => {
-    const persistedUser = createHistoryMessage("user", "already persisted prompt", {
-      id: "persisted-user",
-      seq: 1,
-      idempotencyKey: "persisted-run:user",
-    });
-    const persistedAssistant = createHistoryMessage("assistant", "already persisted answer", {
-      id: "persisted-assistant",
-      seq: 2,
-    });
-    const staleOptimisticUser = createHistoryMessage("user", "already persisted prompt", {
-      idempotencyKey: "persisted-run:user",
-    });
-    const staleOptimisticAssistant = createHistoryMessage("assistant", "stale streamed assistant");
-
-    expect(
-      preserveOptimisticTailMessages(
-        [persistedUser, persistedAssistant],
-        [persistedUser, persistedAssistant, staleOptimisticUser, staleOptimisticAssistant],
-      ),
-    ).toEqual([persistedUser, persistedAssistant]);
-  });
-
-  it("preserves a distinct keyed repeated turn after an anchor with different text", () => {
-    const setupUser = createHistoryMessage("user", "setup", {
-      id: "setup-user",
-      seq: 1,
-      idempotencyKey: "setup-run:user",
-    });
-    const secondUser = createHistoryMessage("user", "continue", {
-      id: "second-user",
-      seq: 2,
-      idempotencyKey: "second-run:user",
-    });
-    const thirdUser = createHistoryMessage("user", "continue", {
-      idempotencyKey: "third-run:user",
-    });
-
-    expect(preserveOptimisticTailMessages([setupUser, secondUser], [setupUser, thirdUser])).toEqual(
-      [setupUser, secondUser, thirdUser],
+  it("adopts the exact submission at its actual committed position", () => {
+    const { client, chatSubmissions, owner, sessionKey } = createInitialHandoffFixture();
+    admitChatSubmission(owner);
+    const authoritative = createAuthoritativeInitialMessage(4);
+    reduceChatSessionProjection(
+      owner,
+      { type: "snapshotLoaded", messages: [authoritative] },
+      { runActive: false },
     );
+    expect(owner.chatMessages).toEqual([authoritative]);
+    expect(chatSubmissions.readInitial(sessionKey, client)).toBeNull();
   });
 
-  it("anchors an updated display projection by its authoritative transcript id", () => {
-    const previousUser = createHistoryMessage("user", "original projection", {
-      id: "persisted-user",
-      seq: 3,
-    });
-    const authoritativeUser = createHistoryMessage("user", "updated projection", {
-      id: "persisted-user",
-      seq: 3,
-    });
-    const optimisticUser = createHistoryMessage("user", "still pending", {
-      idempotencyKey: "pending-run:user",
+  it("keeps each split pane's live projection independent", () => {
+    const scope = { sessionKey: "agent:main:shared", sessionId: "shared-session" };
+    const firstPane = { sessionKey: scope.sessionKey, chatMessages: [] as unknown[] };
+    const secondPane = { sessionKey: scope.sessionKey, chatMessages: [] as unknown[] };
+    const liveUser = createHistoryMessage("user", "first pane", {
+      id: "first-user",
+      seq: 1,
     });
 
-    expect(
-      preserveOptimisticTailMessages([authoritativeUser], [previousUser, optimisticUser]),
-    ).toEqual([authoritativeUser, optimisticUser]);
+    projectLiveMessage(firstPane, liveUser, scope);
+
+    expect(getChatSessionProjection(firstPane, scope).messages).toEqual([liveUser]);
+    expect(getChatSessionProjection(secondPane, scope).messages).toEqual([]);
   });
 
-  it("distinguishes same-sequence projections by their authoritative transcript ids", () => {
-    const firstProjection = createHistoryMessage("user", "continue", {
-      id: "first-projection",
-      seq: 7,
+  it("binds learned session and branch identity without reclassifying live runs", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const initialScope = { sessionKey: "agent:main:shared" };
+    const liveUser = createHistoryMessage("user", "same live turn", {
+      id: "same-live-user",
+      seq: 1,
     });
-    const persistedSecondProjection = createHistoryMessage("user", "continue", {
-      id: "second-projection",
-      idempotencyKey: "second-run:user",
-      seq: 7,
+    const liveProjection = projectLiveMessage(owner, liveUser, initialScope);
+    const runningProjection = reduceSessionProjection(liveProjection, {
+      type: "runDelta",
+      runId: "same-live-run",
+      scope: initialScope,
     });
-    const optimisticSecondProjection = createHistoryMessage("user", "continue", {
-      idempotencyKey: "second-run:user",
-    });
-
-    expect(
-      preserveOptimisticTailMessages(
-        [firstProjection, persistedSecondProjection],
-        [firstProjection, optimisticSecondProjection],
-      ),
-    ).toEqual([firstProjection, persistedSecondProjection]);
-  });
-
-  it("keeps transcript projections with the same entry identity in their own roles", () => {
-    const persistedUser = createHistoryMessage("user", "show the source reply", {
-      id: "shared-transcript-entry",
-      seq: 7,
-    });
-    const persistedAssistantMirror = createHistoryMessage("assistant", "source reply", {
-      id: "shared-transcript-entry",
-      seq: 7,
-    });
-    const optimisticAssistant = createHistoryMessage("assistant", "source reply");
-
-    expect(
-      preserveOptimisticTailMessages(
-        [persistedUser, persistedAssistantMirror],
-        [persistedUser, optimisticAssistant],
-      ),
-    ).toEqual([persistedUser, persistedAssistantMirror]);
-  });
-
-  it("scopes imported external identities to their provider and CLI session", () => {
-    const firstImportedUser = createHistoryMessage("user", "continue", {
-      id: "shared-external-id",
-      externalId: "shared-external-id",
-      importedFrom: "claude-cli",
-      cliSessionId: "first-session",
-    });
-    const secondImportedUser = createHistoryMessage("user", "continue", {
-      id: "shared-external-id",
-      externalId: "shared-external-id",
-      importedFrom: "claude-cli",
-      cliSessionId: "second-session",
-    });
-    const optimisticSecondUser = createHistoryMessage("user", "continue");
-
-    expect(
-      preserveOptimisticTailMessages(
-        [firstImportedUser, secondImportedUser],
-        [firstImportedUser, optimisticSecondUser],
-      ),
-    ).toEqual([firstImportedUser, secondImportedUser]);
-  });
-
-  it("anchors updated imported messages by their source-scoped external identity", () => {
-    const metadata = {
-      id: "external-user",
-      externalId: "external-user",
-      importedFrom: "claude-cli",
-      cliSessionId: "cli-session",
+    publishChatSessionProjection(owner, runningProjection);
+    setChatRunOwner(owner, "same-live-run");
+    const learnedScope = {
+      ...initialScope,
+      sessionId: "learned-session",
+      activeLeafEntryId: "learned-leaf",
     };
-    const previousImportedUser = createHistoryMessage("user", "original imported text", metadata);
-    const authoritativeImportedUser = createHistoryMessage("user", "updated imported text", {
-      ...metadata,
-    });
-    const optimisticUser = createHistoryMessage("user", "pending after import", {
-      idempotencyKey: "pending-run:user",
-    });
 
-    expect(
-      preserveOptimisticTailMessages(
-        [authoritativeImportedUser],
-        [previousImportedUser, optimisticUser],
-      ),
-    ).toEqual([authoritativeImportedUser, optimisticUser]);
+    const projection = getChatSessionProjection(owner, learnedScope);
+
+    expect(projection.scope).toEqual(learnedScope);
+    expect(projection.entries).toBe(runningProjection.entries);
+    expect(projection.entries[0]?.live).toBe(true);
+    expect(projection.runs).toBe(runningProjection.runs);
+    expect(projection.runs["same-live-run"]?.status).toBe("streaming");
+    expect(getChatRunOwner(owner)).toBe("same-live-run");
+    expect(getChatRunOwner({})).toBeUndefined();
   });
 
-  it("does not guess between repeated history rows without authoritative identity", () => {
-    const firstLegacyUser = createHistoryMessage("user", "continue", { senderId: "alice" });
-    const secondLegacyUser = createHistoryMessage("user", "continue", { senderId: "alice" });
-    const previousLegacyUser = createHistoryMessage("user", "continue", { senderId: "alice" });
-    const optimisticUser = createHistoryMessage("user", "unproven pending turn", {
-      idempotencyKey: "pending-run:user",
+  it.each([
+    {
+      name: "session",
+      previous: { sessionKey: "agent:main:previous", sessionId: "previous-session" },
+      next: { sessionKey: "agent:main:next", sessionId: "next-session" },
+    },
+    {
+      name: "active branch",
+      previous: {
+        sessionKey: "agent:main:shared",
+        sessionId: "shared-session",
+        activeLeafEntryId: "previous-leaf",
+      },
+      next: {
+        sessionKey: "agent:main:shared",
+        sessionId: "shared-session",
+        activeLeafEntryId: "next-leaf",
+      },
+    },
+    {
+      name: "cleared branch",
+      previous: {
+        sessionKey: "agent:main:shared",
+        sessionId: "shared-session",
+        activeLeafEntryId: "previous-leaf",
+      },
+      next: {
+        sessionKey: "agent:main:shared",
+        sessionId: "shared-session",
+        activeLeafEntryId: null,
+      },
+    },
+    {
+      name: "lifecycle",
+      previous: { sessionKey: "agent:main:shared", lifecycleRevision: 1 },
+      next: { sessionKey: "agent:main:shared", lifecycleRevision: 2 },
+    },
+    {
+      name: "agent",
+      previous: { sessionKey: "main", agentId: "first" },
+      next: { sessionKey: "main", agentId: "second" },
+    },
+  ])("drops stale live and run provenance when the $name changes", ({ previous, next }) => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const liveUser = createHistoryMessage("user", "obsolete turn", {
+      id: "obsolete-user",
+      seq: 1,
     });
+    const running = reduceSessionProjection(projectLiveMessage(owner, liveUser, previous), {
+      type: "runDelta",
+      runId: "obsolete-run",
+      scope: previous,
+    });
+    publishChatSessionProjection(owner, running);
+    setChatRunOwner(owner, "obsolete-run");
 
-    expect(
-      preserveOptimisticTailMessages(
-        [firstLegacyUser, secondLegacyUser],
-        [previousLegacyUser, optimisticUser],
-      ),
-    ).toEqual([firstLegacyUser, secondLegacyUser]);
+    const projection = reduceChatSessionProjection(
+      owner,
+      { type: "snapshotLoaded", messages: [] },
+      { scope: next },
+    );
+
+    expect(projection.messages).toEqual([]);
+    expect(projection.runs).toEqual({});
+    expect(projection.scope).toEqual(next);
+    expect(getChatRunOwner(owner)).toBeUndefined();
   });
 
-  it("uses an unambiguous display match when transcript identity is unavailable", () => {
-    const previousLegacyUser = createHistoryMessage("user", "unique legacy message", {
-      senderId: "alice",
-    });
-    const authoritativeLegacyUser = createHistoryMessage("user", "unique legacy message", {
-      senderId: "alice",
-    });
-    const optimisticUser = createHistoryMessage("user", "pending after legacy history", {
-      idempotencyKey: "pending-run:user",
-    });
+  it("retires run display ownership when the same session is reset", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    reduceChatSessionProjection(owner, { type: "runDelta", runId: "before-reset" });
+    setChatRunOwner(owner, "before-reset");
 
-    expect(
-      preserveOptimisticTailMessages(
-        [authoritativeLegacyUser],
-        [previousLegacyUser, optimisticUser],
-      ),
-    ).toEqual([authoritativeLegacyUser, optimisticUser]);
+    reduceChatSessionProjection(owner, { type: "sessionReset" });
+
+    expect(getChatRunOwner(owner)).toBeUndefined();
+    expect(getChatSessionProjection(owner).runs).toEqual({});
   });
 
-  it("preserves a repeated optimistic prompt distinguished by its send identity", () => {
-    const firstUser = createHistoryMessage("user", "continue", {
+  it("retains a proven live branch when another consumer omits optional scope", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = {
+      sessionKey: "agent:main:shared",
+      sessionId: "shared-session",
+      activeLeafEntryId: "current-leaf",
+    };
+    const liveUser = createHistoryMessage("user", "same branch", { id: "live-user", seq: 1 });
+    const projection = projectLiveMessage(owner, liveUser, scope);
+
+    expect(
+      getChatSessionProjection(owner, {
+        sessionKey: scope.sessionKey,
+        sessionId: scope.sessionId,
+      }),
+    ).toBe(projection);
+  });
+
+  it("binds an explicit unbranched transcript before resetting for a selected leaf", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const initialScope = { sessionKey: "agent:main:shared" };
+    const liveUser = createHistoryMessage("user", "unbranched turn", {
+      id: "unbranched-user",
+      seq: 1,
+    });
+    projectLiveMessage(owner, liveUser, initialScope);
+
+    expect(
+      getChatSessionProjection(owner, {
+        ...initialScope,
+        activeLeafEntryId: null,
+      }).scope,
+    ).toEqual({ ...initialScope, activeLeafEntryId: null });
+    expect(
+      getChatSessionProjection(owner, {
+        ...initialScope,
+        activeLeafEntryId: "selected-leaf",
+      }).messages,
+    ).toEqual([]);
+  });
+
+  it("lets the shared reducer mark and adopt a newly materialized pending send", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared", sessionId: "shared-session" };
+    const firstUser = createHistoryMessage("user", "first persisted prompt", {
       id: "first-user",
       idempotencyKey: "first-run:user",
       seq: 1,
     });
-    const secondUser = createHistoryMessage("user", "continue", {
+    const pendingUser = createHistoryMessage("user", "second prompt", {
+      idempotencyKey: "second-run:user",
+    });
+    const persistedUser = createHistoryMessage("user", "second prompt", {
       id: "second-user",
       idempotencyKey: "second-run:user",
       seq: 2,
     });
-    const optimisticThirdUser = createHistoryMessage("user", "continue", {
-      idempotencyKey: "third-run:user",
+    publishChatSessionProjectionMessages(owner, [firstUser], { scope });
+
+    const pending = publishChatSessionProjectionMessages(owner, [firstUser, pendingUser], {
+      scope,
     });
 
-    expect(
-      preserveOptimisticTailMessages([firstUser, secondUser], [firstUser, optimisticThirdUser]),
-    ).toEqual([firstUser, secondUser, optimisticThirdUser]);
+    expect(pending.entries[0]?.pending).toBe(false);
+    expect(pending.entries[1]).toMatchObject({ pending: true, pendingRunId: "second-run" });
+    const adopted = reduceSessionProjection(pending, {
+      type: "snapshotLoaded",
+      messages: [firstUser, persistedUser],
+      scope,
+    });
+    expect(adopted.messages).toEqual([firstUser, persistedUser]);
+    expect(adopted.entries[1]).toMatchObject({
+      pending: false,
+      identity: { id: "second-user", runId: "second-run" },
+    });
   });
 
-  it("does not revive a pending tail from an unrelated older history snapshot", () => {
-    const olderHistoryUser = createHistoryMessage("user", "older snapshot", {
-      id: "older-user",
-      seq: 1,
-    });
-    const currentHistoryUser = createHistoryMessage("user", "current snapshot", {
-      id: "current-user",
-      seq: 2,
-    });
-    const optimisticUser = createHistoryMessage("user", "pending on the current snapshot", {
+  it("retires every materialized local assistant when its pending send fails", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const pendingUser = createHistoryMessage("user", "prompt", {
       idempotencyKey: "pending-run:user",
     });
-
-    expect(
-      preserveOptimisticTailMessages([olderHistoryUser], [currentHistoryUser, optimisticUser]),
-    ).toEqual([olderHistoryUser]);
-  });
-
-  it("never preserves a hidden optimistic tail", () => {
-    const persistedUser = createHistoryMessage("user", "visible prompt", {
-      id: "visible-user",
+    const first = createHistoryMessage("assistant", "first part");
+    const second = createHistoryMessage("assistant", "second part");
+    const canonical = createHistoryMessage("assistant", "persisted boundary", {
+      id: "reply",
       seq: 1,
     });
-    const hiddenAssistant = createHistoryMessage("assistant", "NO_REPLY");
+    const afterBoundary = createHistoryMessage("assistant", "after boundary");
+    publishChatSessionProjectionMessages(owner, [pendingUser, first]);
+    publishChatSessionProjectionMessages(owner, [
+      pendingUser,
+      first,
+      second,
+      canonical,
+      afterBoundary,
+    ]);
 
-    expect(
-      preserveOptimisticTailMessages(
-        [persistedUser],
-        [persistedUser, hiddenAssistant],
-        (message) => message === hiddenAssistant,
-      ),
-    ).toEqual([persistedUser]);
+    reduceChatSessionProjection(owner, { type: "sendFailed", runId: "pending-run" });
+
+    expect(owner.chatMessages).toEqual([canonical, afterBoundary]);
   });
 
-  it("keeps a repeated user turn after the previous persisted assistant reply", () => {
-    const persistedUser = createHistoryMessage("user", "continue", {
-      id: "first-user-message",
+  it("keeps a retained live prefix across a later empty snapshot", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const prefix = createHistoryMessage("assistant", "causal prefix", { runId: "same-run" });
+    const tail = createHistoryMessage("assistant", "terminal tail", { runId: "same-run" });
+    reduceChatSessionProjection(owner, { type: "messagePersisted", message: prefix });
+    publishChatSessionProjectionMessages(owner, [prefix, tail], {
+      event: { type: "messagePersisted", message: tail },
+    });
+
+    reduceChatSessionProjection(owner, { type: "snapshotLoaded", messages: [] });
+
+    expect(owner.chatMessages).toEqual([prefix, tail]);
+  });
+
+  it("does not classify later authoritative rows as optimistic sends", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared" };
+    const first = createHistoryMessage("user", "first", {
+      id: "first-user",
       idempotencyKey: "first-run:user",
       seq: 1,
     });
-    const persistedAssistant = createHistoryMessage("assistant", "first answer", {
-      id: "first-assistant-message",
+    const second = createHistoryMessage("user", "second", {
+      id: "second-user",
+      idempotencyKey: "second-run:user",
       seq: 2,
     });
-    const optimisticUser = createHistoryMessage(
-      "user",
-      "continue",
-      { idempotencyKey: "second-run:user" },
-      20,
-    );
+    publishChatSessionProjectionMessages(owner, [first], { scope });
 
     expect(
-      preserveOptimisticTailMessages(
-        [persistedUser, persistedAssistant],
-        [persistedUser, persistedAssistant, optimisticUser],
-      ),
-    ).toEqual([persistedUser, persistedAssistant, optimisticUser]);
+      publishChatSessionProjectionMessages(owner, [first, second], { scope }).entries,
+    ).toMatchObject([{ pending: false }, { pending: false }]);
   });
 
-  it("does not duplicate a repeated user turn after its own history entry arrives", () => {
-    const persistedFirstUser = createHistoryMessage("user", "continue", {
-      id: "first-user-message",
+  it("never resurrects an ordinary historical row removed by a snapshot", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared" };
+    const removed = createHistoryMessage("user", "removed prompt", {
+      id: "removed-user",
+      seq: 1,
+    });
+    const reply = createHistoryMessage("assistant", "remaining reply", {
+      id: "remaining-reply",
+      seq: 2,
+    });
+    const projection = publishChatSessionProjectionMessages(owner, [removed, reply], { scope });
+
+    expect(
+      reduceSessionProjection(projection, {
+        type: "snapshotLoaded",
+        messages: [reply],
+        scope,
+      }).messages,
+    ).toEqual([reply]);
+  });
+
+  it("does not restore a hidden live message into the displayed transcript", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared" };
+    const hidden = createHistoryMessage("user", "hidden prompt", {
+      id: "hidden-user",
+      seq: 1,
+    });
+
+    expect(
+      reduceSessionProjection(projectLiveMessage(owner, hidden, scope), {
+        type: "snapshotLoaded",
+        messages: [],
+        scope,
+        options: { shouldIncludeMessage: (message) => message !== hidden },
+      }).messages,
+    ).toEqual([]);
+  });
+
+  it("preserves distinct same-text prompts by canonical message identity", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared" };
+    const first = createHistoryMessage("user", "continue", {
+      id: "first-user",
       idempotencyKey: "first-run:user",
       seq: 1,
     });
-    const optimisticSecondUser = createHistoryMessage(
-      "user",
-      "continue",
-      { idempotencyKey: "second-run:user" },
-      20,
-    );
-    const persistedSecondUser = createHistoryMessage(
-      "user",
-      "continue",
-      {
-        id: "second-user-message",
-        idempotencyKey: "second-run:user",
-        seq: 2,
+    const second = createHistoryMessage("user", "continue", {
+      id: "second-user",
+      idempotencyKey: "second-run:user",
+      seq: 2,
+    });
+    const projection = reduceSessionProjection(projectLiveMessage(owner, first, scope), {
+      type: "messagePersisted",
+      message: second,
+      scope,
+    });
+
+    expect(projection.messages).toEqual([first, second]);
+  });
+
+  it("keeps colliding native and imported provider identities separate", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared" };
+    const native = createHistoryMessage("user", "native", {
+      id: "provider-local",
+      seq: 1,
+    });
+    const imported = createHistoryMessage("user", "imported", {
+      id: "provider-local",
+      importedFrom: "claude-cli",
+      cliSessionId: "cli-session",
+      externalId: "provider-local",
+      seq: 2,
+    });
+
+    expect(
+      reduceSessionProjection(projectLiveMessage(owner, native, scope), {
+        type: "messagePersisted",
+        message: imported,
+        scope,
+      }).messages,
+    ).toEqual([native, imported]);
+  });
+
+  it("adopts an attachment-only pending turn by its run identity", () => {
+    const owner = { sessionKey: "agent:main:shared", chatMessages: [] as unknown[] };
+    const scope = { sessionKey: "agent:main:shared" };
+    const pending = {
+      role: "user",
+      content: "",
+      __openclaw: { idempotencyKey: "attachment-run:user" },
+    };
+    const persisted = {
+      role: "user",
+      content: "",
+      __openclaw: {
+        id: "attachment-user",
+        idempotencyKey: "attachment-run:user",
+        seq: 4,
+        media: [{ mimeType: "application/pdf", fileName: "brief.pdf" }],
       },
-      20,
-    );
+    };
 
     expect(
-      preserveOptimisticTailMessages(
-        [persistedFirstUser, persistedSecondUser],
-        [persistedFirstUser, optimisticSecondUser],
-      ),
-    ).toEqual([persistedFirstUser, persistedSecondUser]);
-  });
-
-  it("drops streamed assistant tail when final history has caught up past the shared user", () => {
-    const persistedUser = createHistoryMessage("user", "latest ask", { seq: 1 });
-    const streamedAssistant = createHistoryMessage(
-      "assistant",
-      "partial streamed answer",
-      undefined,
-      10,
-    );
-    const historyAssistant = createHistoryMessage("assistant", "complete persisted answer", {
-      seq: 2,
-    });
-
-    expect(
-      preserveOptimisticTailMessages(
-        [persistedUser, historyAssistant],
-        [persistedUser, streamedAssistant],
-      ),
-    ).toEqual([persistedUser, historyAssistant]);
-  });
-
-  it("keeps an idempotency-marked queued turn while history is stale", () => {
-    const persistedUser = createHistoryMessage("user", "first", { seq: 1 });
-    const materializedQueuedUser = createHistoryMessage(
-      "user",
-      "steered follow-up",
-      { idempotencyKey: "steer-run:user" },
-      10,
-    );
-
-    expect(
-      preserveOptimisticTailMessages([persistedUser], [persistedUser, materializedQueuedUser]),
-    ).toEqual([persistedUser, materializedQueuedUser]);
+      reduceSessionProjection(publishChatSessionProjectionMessages(owner, [pending], { scope }), {
+        type: "snapshotLoaded",
+        messages: [persisted],
+        scope,
+      }).messages,
+    ).toEqual([persisted]);
   });
 });

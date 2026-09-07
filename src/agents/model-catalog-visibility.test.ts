@@ -9,6 +9,7 @@ import {
   resolveLogicalVisibleModelCatalog,
 } from "./model-catalog-visibility.js";
 import type { ModelCatalogEntry } from "./model-catalog.types.js";
+import { createModelVisibilityPolicy } from "./model-visibility-policy.js";
 import { openAIModelCatalogRoutePolicy } from "./openai-model-routes.js";
 
 describe("resolveLogicalVisibleModelCatalog", () => {
@@ -39,9 +40,8 @@ describe("resolveLogicalVisibleModelCatalog", () => {
     input: ["text"],
   };
 
-  const evaluateAvailableEntry = async (entry: ModelCatalogEntry) =>
+  const evaluateAvailableEntry = async () =>
     resolveLogicalModelCatalogEntryState({
-      entry,
       evaluation: { availability: true, routeResolution: null },
       routePolicy: openAIModelCatalogRoutePolicy,
     });
@@ -86,6 +86,39 @@ describe("resolveLogicalVisibleModelCatalog", () => {
     expect(result.map((entry) => entry.id)).toEqual(["off", "old"]);
   });
 
+  it("preserves provider-owned strongest-first order through route projection", async () => {
+    const catalog: ModelCatalogEntry[] = [
+      { provider: "openai", id: "gpt-5.4", name: "GPT-5.4", providerOrder: 3 },
+      { provider: "openai", id: "gpt-5.6-luna", name: "GPT-5.6 Luna", providerOrder: 2 },
+      { provider: "openai", id: "gpt-5.6-sol", name: "GPT-5.6 Sol", providerOrder: 0 },
+      { provider: "openai", id: "gpt-5.6-terra", name: "GPT-5.6 Terra", providerOrder: 1 },
+    ];
+
+    const result = await resolveLogicalVisibleModelCatalog({
+      cfg: {} as OpenClawConfig,
+      catalog,
+      defaultProvider: "openai",
+      view: "all",
+      routePolicy: openAIModelCatalogRoutePolicy,
+      evaluateEntry: async () =>
+        resolveLogicalModelCatalogEntryState({
+          evaluation: {
+            availability: true,
+            routeResolution: { kind: "routes", routes: [selectedRoute] },
+            selectedRoute,
+          },
+          routePolicy: openAIModelCatalogRoutePolicy,
+        }),
+    });
+
+    expect(result.map((entry) => entry.id)).toEqual([
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-5.6-luna",
+      "gpt-5.4",
+    ]);
+  });
+
   it("keeps deprecated configured primary and alias-key rows visible", async () => {
     const catalog: ModelCatalogEntry[] = [
       { provider: "demo", id: "primary", name: "Primary", status: "deprecated" },
@@ -100,6 +133,16 @@ describe("resolveLogicalVisibleModelCatalog", () => {
         },
       },
     } as OpenClawConfig;
+    // This unit test covers configured-row retention, not runtime plugin
+    // discovery. Keep fake provider refs on the deterministic static path.
+    const policy = createModelVisibilityPolicy({
+      cfg,
+      catalog,
+      defaultProvider: "demo",
+      defaultModel: "primary",
+      allowManifestNormalization: false,
+      allowPluginNormalization: false,
+    });
 
     const result = await resolveLogicalVisibleModelCatalog({
       cfg,
@@ -107,6 +150,7 @@ describe("resolveLogicalVisibleModelCatalog", () => {
       defaultProvider: "demo",
       defaultModel: "primary",
       view: "configured",
+      policy,
       routePolicy: openAIModelCatalogRoutePolicy,
       evaluateEntry: evaluateAvailableEntry,
     });
@@ -114,39 +158,45 @@ describe("resolveLogicalVisibleModelCatalog", () => {
     expect(result.map((entry) => entry.id)).toEqual(["alias-key", "primary"]);
   });
 
-  it("dedupes physical routes after selected-route projection", async () => {
-    const catalog = [platform, chatGPT];
-    const result = await resolveLogicalVisibleModelCatalog({
-      cfg: {} as OpenClawConfig,
-      catalog,
-      defaultProvider: "openai",
-      view: "all",
-      routePolicy: openAIModelCatalogRoutePolicy,
-      evaluateEntry: async (entry) =>
-        resolveLogicalModelCatalogEntryState({
-          entry,
-          evaluation: {
-            availability: true,
-            routeResolution: { kind: "routes", routes: [selectedRoute] },
-            selectedRoute,
-          },
-          routePolicy: openAIModelCatalogRoutePolicy,
-        }),
-    });
+  it.each(["all", "default", "configured"] as const)(
+    "dedupes physical routes after selected-route projection in the %s view",
+    async (view) => {
+      const catalog = [
+        { ...platform, alias: "platform" },
+        { ...chatGPT, alias: "selected" },
+      ];
+      const result = await resolveLogicalVisibleModelCatalog({
+        cfg: {} as OpenClawConfig,
+        catalog,
+        defaultProvider: "openai",
+        view,
+        routePolicy: openAIModelCatalogRoutePolicy,
+        evaluateEntry: async () =>
+          resolveLogicalModelCatalogEntryState({
+            evaluation: {
+              availability: true,
+              routeResolution: { kind: "routes", routes: [selectedRoute] },
+              selectedRoute,
+            },
+            routePolicy: openAIModelCatalogRoutePolicy,
+          }),
+      });
 
-    expect(result).toEqual([
-      {
-        provider: "openai",
-        id: "gpt-5.5",
-        name: "ChatGPT GPT-5.5",
-        api: "openai-chatgpt-responses",
-        baseUrl: "https://chatgpt.com/backend-api/codex",
-        contextWindow: 400_000,
-        reasoning: false,
-        input: ["text"],
-      },
-    ]);
-  });
+      expect(result).toEqual([
+        {
+          provider: "openai",
+          id: "gpt-5.5",
+          name: "ChatGPT GPT-5.5",
+          alias: view === "all" ? "platform" : "selected",
+          api: "openai-chatgpt-responses",
+          baseUrl: "https://chatgpt.com/backend-api/codex",
+          contextWindow: 400_000,
+          reasoning: false,
+          input: ["text"],
+        },
+      ]);
+    },
+  );
 
   it.each([
     ["deprecated", []],
@@ -161,9 +211,8 @@ describe("resolveLogicalVisibleModelCatalog", () => {
       routeVariants: catalog,
       defaultProvider: "openai",
       routePolicy: openAIModelCatalogRoutePolicy,
-      evaluateEntry: async (entry) =>
+      evaluateEntry: async () =>
         resolveLogicalModelCatalogEntryState({
-          entry,
           evaluation: {
             availability: true,
             routeResolution: { kind: "routes", routes: [selectedRoute] },
@@ -183,9 +232,8 @@ describe("resolveLogicalVisibleModelCatalog", () => {
       defaultProvider: "openai",
       view: "all",
       routePolicy: openAIModelCatalogRoutePolicy,
-      evaluateEntry: async (entry) =>
+      evaluateEntry: async () =>
         resolveLogicalModelCatalogEntryState({
-          entry,
           evaluation: {
             availability: false,
             routeResolution: { kind: "indeterminate", defaultRuntimeId: "codex" },
@@ -212,9 +260,8 @@ describe("resolveLogicalVisibleModelCatalog", () => {
       };
       const routeVariants = reverse ? [platformNano, chatGPTNano] : [chatGPTNano, platformNano];
       const evaluateEntry = vi.fn(
-        async (entry: ModelCatalogEntry, _variants: readonly ModelCatalogEntry[]) =>
+        async (_entry: ModelCatalogEntry, _variants: readonly ModelCatalogEntry[]) =>
           resolveLogicalModelCatalogEntryState({
-            entry,
             evaluation: {
               availability: true,
               routeResolution: { kind: "routes", routes: [selectedRoute] },

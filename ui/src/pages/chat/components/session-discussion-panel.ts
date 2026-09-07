@@ -1,12 +1,17 @@
+import { initialState, Task, TaskStatus } from "@lit/task";
 import { html, nothing, type TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
 import type {
   SessionDiscussionInfo,
   SessionDiscussionState,
 } from "../../../../../packages/gateway-protocol/src/index.js";
+import { icons } from "../../../components/icons.ts";
+import { renderPanelEmptyState } from "../../../components/panel-empty-state.ts";
+import { renderPanelLoadingSkeleton } from "../../../components/panel-loading-skeleton.ts";
 import { t } from "../../../i18n/index.ts";
+import { formatUiError } from "../../../lib/format-error.ts";
+import { buildWidgetThemeMessage, postWidgetTheme } from "../../../lib/widget-theme.ts";
 import { OpenClawLightDomElement } from "../../../lit/openclaw-element.ts";
-import { buildWidgetThemeMessage, postWidgetTheme } from "./widget-theme.ts";
 
 type SessionDiscussionInfoLoader = (sessionKey: string) => Promise<SessionDiscussionInfo>;
 type SessionDiscussionOpener = (sessionKey: string) => Promise<SessionDiscussionInfo>;
@@ -15,6 +20,19 @@ type SessionDiscussionStateListener = (
   discussionState: SessionDiscussionState,
   openUrl: string | null,
 ) => void;
+
+type SessionDiscussionTaskResult = {
+  sessionKey: string;
+  info: SessionDiscussionInfo;
+};
+
+type OpeningDiscussion = {
+  sessionKey: string;
+  loader: SessionDiscussionInfoLoader;
+  opener: SessionDiscussionOpener | null;
+  sourceGeneration: number;
+  canOpen: boolean;
+};
 
 export type SessionDiscussionPanelConfig = {
   sessionKey: string;
@@ -80,13 +98,69 @@ class SessionDiscussionPanel extends OpenClawLightDomElement {
   @property({ type: Boolean }) canOpen = true;
   @property({ type: Number }) sourceGeneration = 0;
 
-  @state() private info: SessionDiscussionInfo | null = null;
-  @state() private loading = false;
-  @state() private opening = false;
-  @state() private error: string | null = null;
-
-  private requestVersion = 0;
+  @state() private openingDiscussion: OpeningDiscussion | null = null;
   private themeObserver: MutationObserver | null = null;
+
+  private readonly discussionTask = new Task(this, {
+    args: () =>
+      [
+        this.sessionKey.trim(),
+        this.loadInfo,
+        this.openDiscussion,
+        this.sourceGeneration,
+        this.canOpen,
+      ] as const,
+    task: async ([sessionKey, loader, opener, _sourceGeneration, canOpen], { signal }) => {
+      if (!loader || !sessionKey) {
+        return null;
+      }
+      const loaded = await loader(sessionKey);
+      signal.throwIfAborted();
+      const opening = {
+        sessionKey,
+        loader,
+        opener,
+        sourceGeneration: _sourceGeneration,
+        canOpen,
+      };
+      if (!this.isOpeningCurrent(opening)) {
+        return initialState;
+      }
+      let info = loaded;
+      if (loaded.state === "available" && canOpen && opener) {
+        this.openingDiscussion = opening;
+        this.publish(sessionKey, loaded);
+        if (!this.isOpeningCurrent(opening)) {
+          return initialState;
+        }
+        info = (await opener(sessionKey)) ?? loaded;
+      }
+      signal.throwIfAborted();
+      if (!this.isOpeningCurrent(opening)) {
+        return initialState;
+      }
+      return { sessionKey, info } satisfies SessionDiscussionTaskResult;
+    },
+    onComplete: (result) => {
+      this.openingDiscussion = null;
+      if (result) {
+        this.publish(result.sessionKey, result.info);
+      }
+    },
+    onError: () => {
+      this.openingDiscussion = null;
+    },
+  });
+
+  private isOpeningCurrent(opening: OpeningDiscussion): boolean {
+    return (
+      opening.sessionKey === this.sessionKey.trim() &&
+      opening.loader === this.loadInfo &&
+      opening.opener === this.openDiscussion &&
+      opening.sourceGeneration === this.sourceGeneration &&
+      opening.canOpen === this.canOpen
+    );
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -122,87 +196,14 @@ class SessionDiscussionPanel extends OpenClawLightDomElement {
     postWidgetTheme(frame, new URL(frame.src).origin);
   }
 
-  private isCurrentRequest(sessionKey: string, version: number): boolean {
-    return version === this.requestVersion && sessionKey === this.sessionKey.trim();
-  }
-
-  protected override updated(changed: Map<string, unknown>) {
-    if (changed.has("sessionKey") || changed.has("loadInfo") || changed.has("sourceGeneration")) {
-      void this.refresh();
-      return;
-    }
-    // Gaining write access after an available discussion resolved must still
-    // open it: refresh() already ran, and without the removed manual button
-    // nothing else would ever call the opener.
-    if (changed.has("canOpen") && this.canOpen && this.info?.state === "available") {
-      void this.open(this.sessionKey.trim(), this.requestVersion);
-    }
-  }
-
   // requestKey is the key the request was issued for; the sessionKey property
-  // may already name the next session while an old result resolves, and a
-  // stale result must not be attributed to (or close the panel of) the new one.
+  // may already name the next session while an old result resolves. Task only
+  // calls onComplete for the latest args, so stale results never publish.
   private publish(requestKey: string, info: SessionDiscussionInfo): void {
     if (requestKey !== this.sessionKey.trim()) {
       return;
     }
-    this.info = info;
     this.onStateChange?.(requestKey, info.state, resolveDiscussionUrl(info.openUrl));
-  }
-
-  private async refresh(): Promise<void> {
-    const loader = this.loadInfo;
-    const sessionKey = this.sessionKey.trim();
-    const version = ++this.requestVersion;
-    this.info = null;
-    this.error = null;
-    this.opening = false;
-    if (!loader || !sessionKey) {
-      this.loading = false;
-      return;
-    }
-    this.loading = true;
-    try {
-      const info = await loader(sessionKey);
-      if (this.isCurrentRequest(sessionKey, version)) {
-        this.publish(sessionKey, info);
-        this.loading = false;
-        if (info.state === "available" && this.canOpen) {
-          await this.open(sessionKey, version);
-        }
-      }
-    } catch (error) {
-      if (this.isCurrentRequest(sessionKey, version)) {
-        this.error = error instanceof Error ? error.message : String(error);
-      }
-    } finally {
-      if (this.isCurrentRequest(sessionKey, version)) {
-        this.loading = false;
-      }
-    }
-  }
-
-  private async open(sessionKey: string, version: number): Promise<void> {
-    const opener = this.openDiscussion;
-    if (!opener || !sessionKey || this.opening || !this.isCurrentRequest(sessionKey, version)) {
-      return;
-    }
-    this.opening = true;
-    this.error = null;
-    try {
-      const info = await opener(sessionKey);
-      if (this.isCurrentRequest(sessionKey, version)) {
-        this.publish(sessionKey, info);
-      }
-    } catch (error) {
-      if (this.isCurrentRequest(sessionKey, version)) {
-        this.error = error instanceof Error ? error.message : String(error);
-      }
-    } finally {
-      if (this.isCurrentRequest(sessionKey, version)) {
-        this.opening = false;
-      }
-    }
   }
 
   // The iframe sandbox must include allow-same-origin: without it the frame
@@ -213,50 +214,70 @@ class SessionDiscussionPanel extends OpenClawLightDomElement {
     const openUrl = resolveDiscussionUrl(info.openUrl);
     return html`
       <div class="session-discussion__open">
-        ${embedUrl
-          ? html`
-              <iframe
-                class="session-discussion__frame"
-                src=${embedUrl}
-                title=${t("chat.sessionDiscussion.frameTitle")}
-                sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                @load=${this.handleDiscussionFrameLoad}
-              ></iframe>
-            `
-          : html`<div class="session-discussion__empty">
-              <span>${t("chat.sessionDiscussion.unavailable")}</span>
-              ${openUrl
-                ? html`<a class="session-link" href=${openUrl} target="_blank" rel="noopener">
-                    ${t("chat.sessionDiscussion.openExternal")}
-                  </a>`
-                : nothing}
-            </div>`}
+        ${
+          embedUrl
+            ? html`
+                <iframe
+                  class="session-discussion__frame"
+                  src=${embedUrl}
+                  title=${t("chat.sessionDiscussion.frameTitle")}
+                  sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                  @load=${this.handleDiscussionFrameLoad}
+                ></iframe>
+              `
+            : renderPanelEmptyState({
+                icon: icons.messageSquare,
+                heading: t("chat.sidePanel.discussion"),
+                description: t("chat.sessionDiscussion.unavailable"),
+                action: openUrl
+                  ? html`<a class="session-link" href=${openUrl} target="_blank" rel="noopener">
+                      ${t("chat.sessionDiscussion.openExternal")}
+                    </a>`
+                  : nothing,
+              })
+        }
       </div>
     `;
   }
 
   override render() {
-    if (this.error) {
+    if (this.discussionTask.status === TaskStatus.ERROR) {
+      const error = this.discussionTask.error;
       return html`<div class="session-discussion__empty">
-        <div class="callout danger">${this.error}</div>
+        <div class="callout danger">${formatUiError(error)}</div>
       </div>`;
     }
-    if (this.loading || !this.info) {
-      return html`<div class="session-discussion__empty">
-        ${t("chat.sessionDiscussion.loading")}
-      </div>`;
+    const value = this.discussionTask.value;
+    const loading =
+      Boolean(this.loadInfo && this.sessionKey.trim()) &&
+      this.discussionTask.status === TaskStatus.PENDING;
+    if (loading && this.openingDiscussion && this.isOpeningCurrent(this.openingDiscussion)) {
+      return renderPanelLoadingSkeleton("discussion", t("chat.sessionDiscussion.opening"));
     }
-    if (this.info.state === "none") {
+    if (loading) {
+      return renderPanelLoadingSkeleton("discussion", t("chat.sessionDiscussion.loading"));
+    }
+    if (this.discussionTask.status !== TaskStatus.COMPLETE || !value) {
       return nothing;
     }
-    if (this.info.state === "available") {
-      return html`<div class="session-discussion__empty">
-        ${this.canOpen
-          ? t("chat.sessionDiscussion.opening")
-          : t("chat.sessionDiscussion.requiresWriteAccess")}
-      </div>`;
+    const { info } = value;
+    if (info.state === "none") {
+      return nothing;
     }
-    return this.renderOpen(this.info);
+    if (info.state === "available") {
+      return this.canOpen
+        ? renderPanelEmptyState({
+            icon: icons.messageSquare,
+            heading: t("chat.sidePanel.discussion"),
+            description: t("chat.sessionDiscussion.unavailable"),
+          })
+        : renderPanelEmptyState({
+            icon: icons.messageSquare,
+            heading: t("chat.sidePanel.discussion"),
+            description: t("chat.sessionDiscussion.requiresWriteAccess"),
+          });
+    }
+    return this.renderOpen(info);
   }
 }
 

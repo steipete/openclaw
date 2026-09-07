@@ -2,6 +2,7 @@
 import {
   resolveAgentModelFallbackValues,
   resolveAgentModelPrimaryValue,
+  type ModelProviderConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   createConfigWithFallbacks,
@@ -9,13 +10,20 @@ import {
   EXPECTED_FALLBACKS,
 } from "openclaw/plugin-sdk/provider-test-contracts";
 import { describe, expect, it } from "vitest";
-import { applyXaiConfig, applyXaiProviderConfig, XAI_DEFAULT_MODEL_REF } from "./onboard.js";
+import {
+  applyXaiConfig,
+  applyXaiOAuthConfig,
+  applyXaiProviderConfig,
+  XAI_DEFAULT_MODEL_REF,
+  XAI_OAUTH_DEFAULT_MODEL_REF,
+} from "./onboard.js";
 
 describe("xai onboard", () => {
   it("adds xAI provider with correct settings", () => {
     const cfg = applyXaiConfig({});
     expect(cfg.models?.providers?.xai?.baseUrl).toBe("https://api.x.ai/v1");
     expect(cfg.models?.providers?.xai?.api).toBe("openai-responses");
+    expect(XAI_DEFAULT_MODEL_REF).toBe("xai/grok-4.3");
     expect(resolveAgentModelPrimaryValue(cfg.agents?.defaults?.model)).toBe(XAI_DEFAULT_MODEL_REF);
   });
 
@@ -70,6 +78,7 @@ describe("xai onboard", () => {
       "grok-3",
       "grok-code-fast-1",
       "grok-4.20-beta-latest-reasoning",
+      "grok-4.6",
       "grok-4.5",
       "grok-build-0.1",
       "grok-4.3",
@@ -89,6 +98,7 @@ describe("xai onboard", () => {
     expect(cfg.models?.providers?.xai?.baseUrl).toBe("https://api.x.ai/v1");
     expect(cfg.models?.providers?.xai?.api).toBe("openai-responses");
     expect(cfg.models?.providers?.xai?.models.map((m) => m.id)).toEqual([
+      "grok-4.6",
       "grok-4.5",
       "grok-build-0.1",
       "grok-4.3",
@@ -100,6 +110,21 @@ describe("xai onboard", () => {
   it("adds expected alias for the default model", () => {
     const cfg = applyXaiProviderConfig({});
     expect(cfg.agents?.defaults?.models?.[XAI_DEFAULT_MODEL_REF]?.alias).toBe("Grok");
+  });
+
+  it("persists the provider-owned auto ref for OAuth setup", () => {
+    const provider: ModelProviderConfig = {
+      api: "openai-responses",
+      auth: "oauth",
+      baseUrl: "https://cli-chat-proxy.grok.com/v1",
+      models: [],
+    };
+    const cfg = applyXaiOAuthConfig({}, provider);
+    expect(cfg.models?.providers?.xai).toMatchObject(provider);
+
+    expect(XAI_OAUTH_DEFAULT_MODEL_REF).toBe("xai/auto");
+    expect(resolveAgentModelPrimaryValue(cfg.agents?.defaults?.model)).toBe("xai/auto");
+    expect(cfg.agents?.defaults?.models?.["xai/auto"]?.alias).toBe("Grok");
   });
 
   it("preserves existing model fallbacks", () => {

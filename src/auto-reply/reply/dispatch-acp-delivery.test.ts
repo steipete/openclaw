@@ -6,7 +6,10 @@ import { createAcpDispatchDeliveryCoordinator } from "./dispatch-acp-delivery.js
 import { createReplyDispatcher } from "./reply-dispatcher.js";
 import type { ReplyDispatcher } from "./reply-dispatcher.types.js";
 import { buildTestCtx } from "./test-ctx.js";
-import { createAcpTestConfig } from "./test-fixtures/acp-runtime.js";
+import {
+  createAcpTestConfig,
+  createAcpTestReplyDispatcher as createDispatcher,
+} from "./test-fixtures/acp-runtime.js";
 
 const ttsMocks = vi.hoisted(() => ({
   maybeApplyTtsToPayload: vi.fn(async (paramsUnknown: unknown) => {
@@ -21,10 +24,12 @@ const deliveryMocks = vi.hoisted(() => ({
       _params: unknown,
     ): Promise<{
       ok: boolean;
+      delivered: boolean;
       messageId?: string;
       suppressed?: boolean;
       reason?: string;
-    }> => ({ ok: true, messageId: "mock-message" }),
+      error?: string;
+    }> => ({ ok: true, delivered: true, messageId: "mock-message" }),
   ),
   runMessageAction: vi.fn(async (_params: unknown) => ({ ok: true as const })),
 }));
@@ -75,7 +80,7 @@ const channelPluginMocks = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock("./dispatch-acp-tts.runtime.js", () => ({
+vi.mock("../../tts/tts.runtime.js", () => ({
   maybeApplyTtsToPayload: (params: unknown) => ttsMocks.maybeApplyTtsToPayload(params),
 }));
 
@@ -91,18 +96,6 @@ vi.mock("../../channels/plugins/index.js", () => ({
 vi.mock("../../infra/outbound/message-action-runner.js", () => ({
   runMessageAction: (params: unknown) => deliveryMocks.runMessageAction(params),
 }));
-
-function createDispatcher(): ReplyDispatcher {
-  return {
-    sendToolResult: vi.fn(() => true),
-    sendBlockReply: vi.fn(() => true),
-    sendFinalReply: vi.fn(() => true),
-    waitForIdle: vi.fn(async () => {}),
-    getQueuedCounts: vi.fn(() => ({ tool: 0, block: 0, final: 0 })),
-    getFailedCounts: vi.fn(() => ({ tool: 0, block: 0, final: 0 })),
-    markComplete: vi.fn(),
-  };
-}
 
 function createCoordinator(onReplyStart?: (...args: unknown[]) => Promise<void>) {
   return createAcpDispatchDeliveryCoordinator({
@@ -139,7 +132,10 @@ async function raceWithTimeoutResult<T>(
   }
 }
 
-function createVisibleChatAcpCoordinator(cfg: OpenClawConfig) {
+function createVisibleChatAcpCoordinator(
+  cfg: OpenClawConfig,
+  dispatcher: ReplyDispatcher = createDispatcher(),
+) {
   return createAcpDispatchDeliveryCoordinator({
     cfg,
     ctx: buildTestCtx({
@@ -147,7 +143,7 @@ function createVisibleChatAcpCoordinator(cfg: OpenClawConfig) {
       Surface: "visiblechat",
       SessionKey: "agent:codex-acp:session-1",
     }),
-    dispatcher: createDispatcher(),
+    dispatcher,
     inboundAudio: false,
     shouldRouteToOriginating: true,
     originatingChannel: "visiblechat",
@@ -180,7 +176,11 @@ async function expectVisibleChatBlockRoutesToAccount(
 describe("createAcpDispatchDeliveryCoordinator", () => {
   beforeEach(() => {
     deliveryMocks.routeReply.mockClear();
-    deliveryMocks.routeReply.mockResolvedValue({ ok: true, messageId: "mock-message" });
+    deliveryMocks.routeReply.mockResolvedValue({
+      ok: true,
+      delivered: true,
+      messageId: "mock-message",
+    });
     deliveryMocks.runMessageAction.mockClear();
     deliveryMocks.runMessageAction.mockResolvedValue({ ok: true as const });
     channelPluginMocks.getChannelPlugin.mockClear();
@@ -236,10 +236,10 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
 
     const notice = { text: "Model Fallback: openai/gpt-5.5", isFallbackNotice: true };
     await coordinator.deliver("final", notice);
-    await coordinator.settleVisibleText();
 
     expect(ttsMocks.maybeApplyTtsToPayload).not.toHaveBeenCalled();
     expect(dispatcher.sendFinalReply).toHaveBeenCalledWith(notice);
+    expect(coordinator.hasDeliveredAnswerFinalToUser()).toBe(false);
   });
 
   it("tracks successful final delivery separately from routed counters", async () => {
@@ -567,9 +567,8 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
       isFallbackNotice: true,
     });
     expect(dispatcher.sendBlockReply).toHaveBeenNthCalledWith(2, { text: "Visible answer" });
-    expect(coordinator.getAccumulatedBlockText()).toBe("Visible answer");
+    expect(coordinator.getAccumulatedTranscriptText()).toBe("Visible answer");
     expect(coordinator.getAccumulatedBlockTtsText()).toBe("Visible answer");
-    expect(coordinator.getBlockCount()).toBe(1);
   });
 
   it("keeps final fallback notices out of ACP transcript accumulation", async () => {
@@ -596,7 +595,7 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
       text: "Model Fallback: openai/gpt-5.5",
       isFallbackNotice: true,
     });
-    expect(coordinator.getAccumulatedFinalText()).toBe("");
+    expect(coordinator.getAccumulatedTranscriptText()).toBe("");
   });
 
   it("prefers provider over surface when detecting direct channel visibility", async () => {
@@ -826,7 +825,7 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
     expect(finalDelivered).toBe(false);
     expect(dispatcher.sendBlockReply).not.toHaveBeenCalled();
     expect(dispatcher.sendFinalReply).not.toHaveBeenCalled();
-    expect(coordinator.getAccumulatedBlockText()).toBe("working on it");
+    expect(coordinator.getAccumulatedTranscriptText()).toBe("done");
     expect(coordinator.hasDeliveredVisibleText()).toBe(false);
   });
 
@@ -1042,8 +1041,8 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
     deliveryMocks.routeReply.mockImplementationOnce(async (paramsUnknown: unknown) => {
       const params = paramsUnknown as { abortSignal?: AbortSignal };
       return params.abortSignal?.aborted
-        ? { ok: false, error: "Reply routing aborted" }
-        : { ok: true, messageId: "unexpected" };
+        ? { ok: false, delivered: false, error: "Reply routing aborted" }
+        : { ok: true, delivered: true, messageId: "unexpected" };
     });
     const coordinator = createAcpDispatchDeliveryCoordinator({
       cfg: createAcpTestConfig(),
@@ -1073,6 +1072,7 @@ describe("createAcpDispatchDeliveryCoordinator", () => {
   it("treats hook-suppressed routed ACP block text as handled", async () => {
     deliveryMocks.routeReply.mockResolvedValueOnce({
       ok: true,
+      delivered: false,
       suppressed: true,
       reason: "cancelled_by_reply_payload_sending_hook",
     });

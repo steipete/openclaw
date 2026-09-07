@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { clampNumber } from "../utils.js";
-import { toCodeModeJsonSafe } from "./code-mode-json.js";
+import { createCodeModeCatalogProjection } from "./code-mode-catalog.js";
+import { awaitCodeModeDeadline } from "./code-mode-deadline.js";
+import { CodeModeOutputState, toCodeModeJsonSafe } from "./code-mode-json.js";
 import {
   createCodeModeNamespaceRuntime,
   type CodeModeNamespaceDescriptor,
@@ -15,10 +17,6 @@ import {
   codeModeFailureCode,
   codeModeFailureMessage,
   createCodeModeApiFilesForRun,
-  enforceOutputLimit,
-  enforceResultLimit,
-  enforceSnapshotPayloadLimits,
-  prepareSource,
   readPositiveInteger,
   resolveCodeModeHeadlessConfig,
   toToolSearchConfig,
@@ -29,6 +27,9 @@ import {
 } from "./code-mode-runtime.js";
 import {
   cancelPendingBridgeStates,
+  cancelPendingBridgeStatesById,
+  createCodeModeBridgeDispatchState,
+  createCodeModeRunOwner,
   createPendingBridgeStates,
   pendingBridgeStatesForSettlement,
   settledBridgeRequestsInCompletionOrder,
@@ -38,26 +39,42 @@ import {
 import {
   CodeModeHeadlessAbortError,
   CodeModeHeadlessTimeoutError,
-  normalizeCodeModeWorkerResult,
   runCodeModeWorker,
 } from "./code-mode-worker.js";
-import { ToolSearchRuntime, type ToolSearchToolContext } from "./tool-search.js";
+import { ToolSearchRuntime } from "./tool-search-runtime.js";
+import type { ToolSearchToolContext } from "./tool-search-types.js";
 import { ToolInputError } from "./tools/common.js";
 
-export function createHeadlessAbortScope(
+/** Each invocation owns a deadline, including callers that prepare tools before starting a guest. */
+export function createHeadlessDeadlineScope(
   signal: AbortSignal | undefined,
   wallClockMs: number,
-): { signal: AbortSignal; cleanup: () => void } {
+  label?: string,
+) {
   const controller = new AbortController();
-  const onAbort = () => controller.abort(signal?.reason);
+  const onAbort = () =>
+    controller.abort(label ? new CodeModeHeadlessAbortError(`${label} aborted`) : signal?.reason);
   signal?.addEventListener("abort", onAbort, { once: true });
   if (signal?.aborted) {
     onAbort();
   }
-  const timer = setTimeout(() => controller.abort(new CodeModeHeadlessTimeoutError()), wallClockMs);
+  const timeoutError = () =>
+    new CodeModeHeadlessTimeoutError(label ? `${label} timed out` : undefined);
+  const timer = setTimeout(() => controller.abort(timeoutError()), wallClockMs);
+  const deadline = performance.now() + wallClockMs;
   return {
+    deadline,
     signal: controller.signal,
+    wait: <T>(promise: Promise<T>) =>
+      awaitCodeModeDeadline({
+        operation: () => promise,
+        remainingMs: Math.ceil(deadline - performance.now()),
+        signal: controller.signal,
+        createTimeoutError: timeoutError,
+        createAbortError: headlessAbortError,
+      }),
     cleanup: () => {
+      controller.abort(new CodeModeHeadlessAbortError());
       clearTimeout(timer);
       signal?.removeEventListener("abort", onAbort);
     },
@@ -77,49 +94,23 @@ function headlessAbortError(
 function headlessFailure(params: {
   code: CodeModeFailureCode | "tool_budget_exceeded";
   error: string;
-  output: unknown[];
+  output: CodeModeOutputState;
   toolCallCount: number;
 }): CodeModeHeadlessResult {
-  return { status: "failed", ...params };
+  return {
+    status: "failed",
+    code: params.code,
+    toolCallCount: params.toolCallCount,
+    ...params.output.take({ error: params.error }),
+  };
 }
 
 function remainingHeadlessMs(deadline: number): number {
-  const remaining = deadline - Date.now();
+  const remaining = Math.ceil(deadline - performance.now());
   if (remaining <= 0) {
     throw new CodeModeHeadlessTimeoutError();
   }
   return remaining;
-}
-
-async function awaitHeadlessDeadline<T>(params: {
-  promise: Promise<T>;
-  deadline: number;
-  signal?: AbortSignal;
-}): Promise<T> {
-  const remainingMs = remainingHeadlessMs(params.deadline);
-  if (params.signal?.aborted) {
-    throw headlessAbortError(params.signal);
-  }
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  let onAbort: (() => void) | undefined;
-  try {
-    const timeout = new Promise<never>((_resolve, reject) => {
-      timer = setTimeout(() => reject(new CodeModeHeadlessTimeoutError()), remainingMs);
-      const signal = params.signal;
-      if (signal) {
-        onAbort = () => reject(headlessAbortError(signal));
-        signal.addEventListener("abort", onAbort, { once: true });
-      }
-    });
-    return await Promise.race([params.promise, timeout]);
-  } finally {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    if (params.signal && onAbort) {
-      params.signal.removeEventListener("abort", onAbort);
-    }
-  }
 }
 
 async function runHeadlessWorkerLeg(params: {
@@ -129,14 +120,17 @@ async function runHeadlessWorkerLeg(params: {
   signal: AbortSignal;
 }): Promise<CodeModeWorkerResult> {
   const remainingMs = remainingHeadlessMs(params.deadline);
-  const timeoutMs = Math.max(1, Math.min(params.config.timeoutMs, remainingMs));
-  const workerTimeoutMs = Math.max(
-    1,
-    Math.min(remainingMs, timeoutMs + CODE_MODE_WORKER_WATCHDOG_GRACE_MS),
-  );
+  const executionTimeoutMs = Math.max(1, Math.min(params.config.timeoutMs, remainingMs));
+  // Initial source preparation uses the wall-clock allowance; the guest keeps
+  // its separate CPU budget after compilation. Resumes need no preparation.
+  const timeoutMs = params.input.kind === "exec" ? remainingMs : executionTimeoutMs;
+  // Let the headless abort scope own the wall-clock deadline. Capping the host
+  // watchdog to the same deadline makes its internal timeout message race the scope.
+  const workerTimeoutMs = timeoutMs + CODE_MODE_WORKER_WATCHDOG_GRACE_MS;
   return await runCodeModeWorker(
     {
       ...params.input,
+      executionTimeoutMs,
       config: { ...params.config, timeoutMs },
     },
     workerTimeoutMs,
@@ -239,52 +233,57 @@ export async function runCodeModeScriptHeadless(params: {
     1,
     MAX_HEADLESS_TOOL_CALLS,
   );
-  const deadline = Date.now() + wallClockMs;
-  const abortScope = createHeadlessAbortScope(params.signal, wallClockMs);
-  const output: unknown[] = [];
+  const owner = createCodeModeRunOwner(params.ctx);
+  const abortScope = createHeadlessDeadlineScope(owner.bindCall(params.signal), wallClockMs);
+  const deadline = abortScope.deadline;
+  const output = new CodeModeOutputState(config.maxOutputBytes);
   let pending: PendingBridgeState[] = [];
   let toolCallCount = 0;
   try {
     // Headless runs publish no resumable snapshot/handle, so collector globals stay unavailable.
     const swarmEnabled = false;
     const codeModeRunId = `cm_headless_${randomUUID()}`;
-    const runtime = new ToolSearchRuntime(params.ctx, toToolSearchConfig(config));
-    const catalog = runtime.all({ includeMcp: false });
+    const runtime = new ToolSearchRuntime(params.ctx, toToolSearchConfig(config), {
+      prepareInput: true,
+      validateInput: true,
+    });
+    const bridgeDispatch = createCodeModeBridgeDispatchState();
     const namespaceCatalog = runtime.namespaceEntries();
     const namespaceRuntime = createCodeModeNamespaceRuntime(namespaceCatalog);
-    const preparedSource = await awaitHeadlessDeadline({
-      promise: prepareSource({ code: params.code, language: params.language, config }),
-      deadline,
-      signal: abortScope.signal,
-    });
     const namespaces = mergeHeadlessNamespaces(
       namespaceRuntime.descriptors,
       params.extraNamespaces ?? [],
     );
-    const source = `${headlessNamespaceFreezePrelude(namespaces)}${preparedSource}`;
+    const catalogProjection = createCodeModeCatalogProjection(runtime.all({ includeMcp: false }), {
+      reservedNames: namespaces.map((descriptor) => descriptor.globalName),
+    });
     const parentToolCallId = `headless:${randomUUID()}`;
-    let result = normalizeCodeModeWorkerResult(
-      await runHeadlessWorkerLeg({
-        input: {
-          kind: "exec",
-          source,
-          catalog,
-          apiFiles: createCodeModeApiFilesForRun(namespaceCatalog, swarmEnabled),
-          namespaces,
-          swarmEnabled,
-        },
-        config,
-        deadline,
-        signal: abortScope.signal,
-      }),
-    );
+    let result = await runHeadlessWorkerLeg({
+      input: {
+        kind: "exec",
+        source: params.code,
+        language: params.language,
+        prelude: headlessNamespaceFreezePrelude(namespaces),
+        catalog: catalogProjection.guestBindings,
+        apiFiles: createCodeModeApiFilesForRun(namespaceRuntime, swarmEnabled),
+        namespaces,
+        swarmEnabled,
+      },
+      config,
+      deadline,
+      signal: abortScope.signal,
+    });
 
     while (true) {
-      output.push(...result.output);
-      enforceOutputLimit(output, config);
+      output.append(result.output);
       if (result.status === "completed") {
-        enforceResultLimit({ output, value: result.value, config });
-        return { status: "completed", value: result.value, output, toolCallCount };
+        const bounded = output.take({ value: result.value });
+        return {
+          status: "completed",
+          value: bounded.value,
+          output: bounded.output,
+          toolCallCount,
+        };
       }
       if (result.status === "failed") {
         return headlessFailure({
@@ -295,14 +294,13 @@ export async function runCodeModeScriptHeadless(params: {
         });
       }
 
-      enforceSnapshotPayloadLimits({ snapshotBytes: result.snapshotBytes, config, output });
+      cancelPendingBridgeStatesById(pending, result.canceledRequestIds);
       const pendingIds = new Set(pending.map((entry) => entry.id));
       const newRequests = result.pendingRequests.filter((request) => !pendingIds.has(request.id));
       // Node discovery invokes the generic nodes tool for live status too;
       // excluding list/get would bypass the same headless tool-call budget.
       const requestedToolCalls = newRequests.filter(
         (request) =>
-          request.method === "call" ||
           request.method === "callValue" ||
           request.method === "nodes" ||
           request.method === "namespace",
@@ -318,17 +316,23 @@ export async function runCodeModeScriptHeadless(params: {
       }
 
       pending.push(
-        ...createPendingBridgeStates({
-          pendingRequests: newRequests,
+        ...createPendingBridgeStates(newRequests, {
+          config,
           runtime,
+          catalogProjection,
           namespaceRuntime,
           parentToolCallId,
           codeModeRunId,
+          remainingMs: remainingHeadlessMs(deadline),
           ctx: params.ctx,
           signal: abortScope.signal,
+          bridgeDispatch,
         }),
       );
-      const frontierPending = pendingBridgeStatesForSettlement(pending, result.settlementMode);
+      // Preserve the waiting frontier before the lazy deadline callback;
+      // later worker legs replace the discriminated result entirely.
+      const settlementMode = result.settlementMode;
+      const frontierPending = pendingBridgeStatesForSettlement(pending, settlementMode);
       if (frontierPending.length === 0) {
         return headlessFailure({
           code: "internal_error",
@@ -337,26 +341,20 @@ export async function runCodeModeScriptHeadless(params: {
           toolCallCount,
         });
       }
-      await awaitHeadlessDeadline({
-        promise: waitForPendingBridgeSettlement(pending, result.settlementMode),
+      await abortScope.wait(waitForPendingBridgeSettlement(pending, settlementMode));
+      const settledRequests = settledBridgeRequestsInCompletionOrder(pending);
+      pending = pending.filter((entry) => !entry.settled);
+      result = await runHeadlessWorkerLeg({
+        input: {
+          kind: "resume",
+          snapshot: result.snapshot,
+          settledRequests,
+          pendingRequests: pending.map(({ id, method, args }) => ({ id, method, args })),
+        },
+        config,
         deadline,
         signal: abortScope.signal,
       });
-      const settledRequests = settledBridgeRequestsInCompletionOrder(pending);
-      pending = pending.filter((entry) => !entry.settled);
-      result = normalizeCodeModeWorkerResult(
-        await runHeadlessWorkerLeg({
-          input: {
-            kind: "resume",
-            snapshotBytes: result.snapshotBytes,
-            settledRequests,
-            pendingRequests: pending.map(({ id, method, args }) => ({ id, method, args })),
-          },
-          config,
-          deadline,
-          signal: abortScope.signal,
-        }),
-      );
     }
   } catch (error) {
     const timedOut = error instanceof CodeModeHeadlessTimeoutError;
@@ -370,5 +368,6 @@ export async function runCodeModeScriptHeadless(params: {
   } finally {
     cancelPendingBridgeStates(pending);
     abortScope.cleanup();
+    owner.close();
   }
 }
