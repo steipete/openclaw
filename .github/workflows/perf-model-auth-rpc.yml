@@ -1,0 +1,61 @@
+name: Model auth RPC baseline proof
+on:
+  push:
+    branches: [codex/proof-model-auth-125900]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact reviewed proof tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+          sparse-checkout: |
+            .github/proof/model-auth-125900
+            .github/workflows/perf-model-auth-rpc.yml
+          sparse-checkout-cone-mode: false
+      - name: Check out immutable trusted baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: 0cd1ca7552a005a405dea7311036c063dc9635d0
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+      - name: Build and passively observe the owned Gateway and Chromium
+        env:
+          TOOLING_HEAD: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/model-auth-bootstrap"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/model-auth-bootstrap" \
+            bash "$GITHUB_WORKSPACE/tooling/.github/proof/model-auth-125900/run.sh" \
+            "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/model-auth-125900" "$TOOLING_HEAD"
+      - name: Retain source-bound synthetic proof and failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: model-auth-rpc-baseline
+          path: |
+            ${{ runner.temp }}/model-auth-125900/artifacts/source-head.txt
+            ${{ runner.temp }}/model-auth-125900/artifacts/source-tree.txt
+            ${{ runner.temp }}/model-auth-125900/artifacts/tooling-head.txt
+            ${{ runner.temp }}/model-auth-125900/artifacts/source-inputs.sha256
+            ${{ runner.temp }}/model-auth-125900/artifacts/changed-paths.txt
+            ${{ runner.temp }}/model-auth-125900/artifacts/registry.patch
+            ${{ runner.temp }}/model-auth-125900/artifacts/driver.e2e.test.ts
+            ${{ runner.temp }}/model-auth-125900/artifacts/observation-exit.txt
+            ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/auth-rpc-observation.json
+            ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/provider-http.json
+            ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/visible-status.json
+            ${{ runner.temp }}/model-auth-125900/artifacts/browser/**/model-providers-synthetic.png
+          if-no-files-found: error
+          retention-days: 7
