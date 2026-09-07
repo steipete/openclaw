@@ -1,0 +1,43 @@
+{
+  "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+  "nativeHead": "7705c3140090fea7a818341deb6f7d6b845238a0",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "productionNet": 0,
+  "testNet": 62,
+  "baselineSource": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+  "baselineRuns": [
+    34078660938,
+    34082447285
+  ],
+  "nativeProxyline": "0.3.7",
+  "baselineProxyline": "0.3.11",
+  "files": {
+    "run.sh": "8100b80e21a263f3f51ec9cda9710fc6d11cfd5e858b3f0005cb96b15cb94cf1",
+    "packaged-telemetry.mjs": "c6370862ace2b4efeb2f25e710ae1c2a5f671fe1ae92793feb84aaf3434268db",
+    "verify-tests.mjs": "ad7a00cb8dbe5b004204b325b3621176e0e2ddb09b3633f1ed25499da3056d4c",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "production.patch": "073a876ad225658331c43983ad93146ae3889308c045d5e341f3cbd4df149213",
+    "tests.patch": "3b75af5bb624b25d516de64cad0a1cd0a22f2c584c3f1bb1c1a1f3d882516769",
+    "baseline-files.sha256": "70453c1ecfe41b672b6da33a0bec7cd2e71c02dd60cd51cc5c7bb46a3d14b28f",
+    "unchanged-owner-files.sha256": "a3029427e958926a5e13ea5322dd3b37d4eeee7d22981aabf7baffd172952c79",
+    "candidate-files.sha256": "ebf7f1da14cae5c260016b359c4ac7b2b53a035a8804c71ca06e77eb6840baed"
+  },
+  "steps": [
+    "native-base test-only exact exit1 vs0 regression",
+    "full6 owner/sibling suites with original first-attempt/join/replay checks and no skips",
+    "canonical candidate pack/install + all13 real CLI cases; bare stdout/no banner/exit0",
+    "explicit-base changed gates and source hashes/full diff"
+  ],
+  "status": "frozen for independent packet review; no target execution",
+  "controllerIntegration": {
+    "changes": {
+      "verify-tests.mjs": {
+        "original": "2ac36a3949beb2edb8be70765a5e0257a9c5fd1e7ccc3c538c6dbc708936668d",
+        "copied": "ad7a00cb8dbe5b004204b325b3621176e0e2ddb09b3633f1ed25499da3056d4c"
+      }
+    },
+    "note": "Trusted oxfmt0.65 normalization; telemetry reader additionally rejects known unfinished JSON-report warning. Original bytes retained outside checkout."
+  }
+}

@@ -1,22 +1,22 @@
 [
   {
-    "id": "setup-error-reporting-types-green",
-    "directory": "setup-error-reporting-types-green",
-    "mode": "green",
-    "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+    "id": "telemetry-packaged-green",
+    "directory": "telemetry-packaged-green",
+    "runner": "ubuntu-24.04",
+    "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "variant": "remaining-types",
-    "runner": "ubuntu-24.04"
+    "mode": "green",
+    "variant": "native-packaged"
   },
   {
-    "id": "sidebar-label-140125-red",
-    "directory": "sidebar-label-140125-red",
+    "id": "gateway-repair-load-red",
+    "directory": "gateway-repair-load-red",
     "runner": "ubuntu-24.04",
-    "source": "608b9ba2437d22188bac854a012458880ff55211",
+    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "browser"
+    "variant": "repair-load"
   }
 ]
