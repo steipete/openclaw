@@ -1,0 +1,10 @@
+{
+  "id": "plugin-source-build-139075-baseline",
+  "directory": "plugin-source-build-139075-baseline",
+  "runner": "ubuntu-24.04",
+  "source": "2d58961f33fd48b94b48bf569b65fb1c6ad2d954",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "baseline",
+  "variant": "source-and-packaged-builds"
+}

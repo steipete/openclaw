@@ -1,0 +1,77 @@
+diff --git a/src/cli/daemon-cli/start-repair.test.ts b/src/cli/daemon-cli/start-repair.test.ts
+index 35a6423e58b..d5c00798db3 100644
+--- a/src/cli/daemon-cli/start-repair.test.ts
++++ b/src/cli/daemon-cli/start-repair.test.ts
+@@ -569,4 +569,53 @@ describe("repairLoadedGatewayServiceForStart", () => {
+     expect(installMock).not.toHaveBeenCalled();
+     expect(buildGatewayInstallPlanMock).not.toHaveBeenCalled();
+   });
++
++  it.each([
++    { action: "start", probe: "throws" },
++    { action: "restart", probe: "throws" },
++    { action: "start", probe: "returns false" },
++    { action: "restart", probe: "returns false" },
++  ] as const)(
++    "fails $action repair when the post-install probe $probe",
++    async ({ action, probe }) => {
++      const error = new Error("systemd show failed");
++      const service = {
++        install: vi.fn(async () => {}),
++        isLoaded: vi.fn(async () => {
++          if (probe === "throws") {
++            throw error;
++          }
++          return false;
++        }),
++      };
++      const state: GatewayServiceState = {
++        installed: true,
++        loadState: { status: "loaded" },
++        running: false,
++        env: {},
++        command: {
++          programArguments: ["/usr/bin/openclaw", "gateway", "run"],
++          environment: { HOME: "/home/openclaw" },
++        },
++      };
++      const params = {
++        service,
++        state,
++        issues: [{ code: "port-mismatch" as const, message: "old port" }],
++        json: true,
++        stdout: process.stdout,
++      };
++      const repair =
++        action === "restart"
++          ? repairLoadedGatewayServiceForStart({ ...params, action })
++          : repairLoadedGatewayServiceForStart(params);
++
++      if (probe === "throws") {
++        await expect(repair).rejects.toBe(error);
++      } else {
++        await expect(repair).rejects.toThrow("Gateway service is not loaded after repair.");
++      }
++      expect(service.install).toHaveBeenCalledTimes(1);
++    },
++  );
+ });
+diff --git a/src/cli/daemon-cli/start-repair.ts b/src/cli/daemon-cli/start-repair.ts
+index dc39b791879..597c666d7b4 100644
+--- a/src/cli/daemon-cli/start-repair.ts
++++ b/src/cli/daemon-cli/start-repair.ts
+@@ -244,11 +244,9 @@ export async function repairLoadedGatewayServiceForStart(
+     environmentValueSources,
+   });
+ 
+-  let loaded;
+-  try {
+-    loaded = await params.service.isLoaded({ env: installEnv });
+-  } catch {
+-    loaded = true;
++  const loaded = await params.service.isLoaded({ env: installEnv });
++  if (!loaded) {
++    throw new Error("Gateway service is not loaded after repair.");
+   }
+ 
+   return {

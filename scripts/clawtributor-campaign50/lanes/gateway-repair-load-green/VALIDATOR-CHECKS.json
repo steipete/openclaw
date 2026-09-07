@@ -1,0 +1,105 @@
+{
+  "scope": "inert JSON/log/process-receipt fixtures only; no OpenClaw code or runtime execution",
+  "validators": {
+    "validate.py": "d5eee61b1d4a2eff5cc40aba1ab8ddb71b924973163269720a26ec0c7813113f",
+    "validate-tests.mjs": "776f34b0ac40af787f36361758bbae90aeb9a8ea6763326bfaccbd2fd6790699",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19"
+  },
+  "checks": [
+    {
+      "name": "six synthetic candidate outcomes accepted",
+      "expectedAcceptance": true,
+      "passed": true
+    },
+    {
+      "name": "reported semantic violation rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "missing case rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "false success rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "unhealthy Gateway rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "unjoined Gateway rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "timed out CLI rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "wrong raw JSON rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "new success projection on error rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "missing native post-install probes rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "four exact synthetic unit reds accepted",
+      "expectedAcceptance": true,
+      "passed": true
+    },
+    {
+      "name": "five complete synthetic green suites accepted",
+      "expectedAcceptance": true,
+      "passed": true
+    },
+    {
+      "name": "Vitest still-running warning rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "global unhandled error rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "missing completed summary rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "wrong red exception rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "pending green test rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "missing exact regression title rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    },
+    {
+      "name": "errored suite rejected",
+      "expectedAcceptance": false,
+      "passed": true
+    }
+  ]
+}

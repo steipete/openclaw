@@ -1,12 +1,22 @@
 [
   {
-    "id": "telemetry-packaged-green-lint-remaining",
-    "directory": "telemetry-packaged-green-lint-remaining",
+    "id": "gateway-repair-load-green",
+    "directory": "gateway-repair-load-green",
     "runner": "ubuntu-24.04",
-    "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+    "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "lint-remaining"
+    "variant": "native-repair"
+  },
+  {
+    "id": "plugin-source-build-139075-baseline",
+    "directory": "plugin-source-build-139075-baseline",
+    "runner": "ubuntu-24.04",
+    "source": "2d58961f33fd48b94b48bf569b65fb1c6ad2d954",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "baseline",
+    "variant": "source-and-packaged-builds"
   }
 ]

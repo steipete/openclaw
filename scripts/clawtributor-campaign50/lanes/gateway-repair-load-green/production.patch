@@ -1,0 +1,19 @@
+diff --git a/src/cli/daemon-cli/start-repair.ts b/src/cli/daemon-cli/start-repair.ts
+index dc39b791879..597c666d7b4 100644
+--- a/src/cli/daemon-cli/start-repair.ts
++++ b/src/cli/daemon-cli/start-repair.ts
+@@ -244,11 +244,9 @@ export async function repairLoadedGatewayServiceForStart(
+     environmentValueSources,
+   });
+ 
+-  let loaded;
+-  try {
+-    loaded = await params.service.isLoaded({ env: installEnv });
+-  } catch {
+-    loaded = true;
++  const loaded = await params.service.isLoaded({ env: installEnv });
++  if (!loaded) {
++    throw new Error("Gateway service is not loaded after repair.");
+   }
+ 
+   return {
