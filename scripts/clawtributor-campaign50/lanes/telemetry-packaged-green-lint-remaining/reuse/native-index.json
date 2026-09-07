@@ -1,0 +1,108 @@
+{
+  "requested": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json",
+  "complete": true,
+  "entries": [
+    {
+      "invocation": 1,
+      "config": "test/vitest/vitest.unit-fast.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.unit-fast.config.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/cli/argv.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json.reports-ttQZPu/1/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json.reports-ttQZPu/1/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    },
+    {
+      "invocation": 2,
+      "config": "test/vitest/vitest.infra.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.infra.config.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/infra/telemetry.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json.reports-ttQZPu/2/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json.reports-ttQZPu/2/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    },
+    {
+      "invocation": 3,
+      "config": "test/vitest/vitest.cli.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.cli.config.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/cli/telemetry-cli.test.ts",
+        "src/cli/program/parent-default-help.test.ts",
+        "src/cli/program/preaction.test.ts",
+        "src/cli/cli-utils.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json.reports-ttQZPu/3/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json.reports-ttQZPu/3/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    }
+  ],
+  "error": "",
+  "aggregate": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-green.json",
+  "publication": "",
+  "merge": {
+    "code": 0,
+    "noOutputTimedOut": false,
+    "signal": null,
+    "groupJoined": true
+  }
+}

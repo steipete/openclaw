@@ -1,0 +1,22 @@
+{
+  "name": "install",
+  "command": "npm",
+  "args": [
+    "install",
+    "--global",
+    "--prefix",
+    "/tmp/telemetry-140283-lYmvVE/install",
+    "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package/openclaw-telemetry-140283.tgz",
+    "--no-fund",
+    "--no-audit"
+  ],
+  "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+  "startedAt": "2026-09-07T07:21:56.720Z",
+  "exitCode": 0,
+  "signal": null,
+  "processError": null,
+  "timedOut": false,
+  "outputLimit": false,
+  "residualGroup": false,
+  "finishedAt": "2026-09-07T07:22:23.055Z"
+}

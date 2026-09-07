@@ -1,0 +1,136 @@
+[check:changed] lanes=core, coreTests
+[check:changed] src/cli/telemetry-cli.test.ts: core test
+[check:changed] src/cli/telemetry-cli.ts: core production
+
+[check:changed] conflict markers
+Downloading the pnpm 12.3.4 binary for linux-x64...
+$ node scripts/check-no-conflict-markers.mjs
+
+[check:changed] max-lines suppression ratchet
+$ node --import ./scripts/tsx.mjs scripts/check-max-lines-ratchet.mts --base b8cbece8fb8de577d9ff33cedf8d8250585c55e4
+max-lines ratchet OK: 846 grandfathered suppressions.
+OPENCLAW_* count 494/494
+
+[check:changed] assertion SAFETY comment ratchet
+$ node --import ./scripts/tsx.mjs scripts/check-assertion-safety-ratchet.mts --base b8cbece8fb8de577d9ff33cedf8d8250585c55e4
+assertion SAFETY ratchet OK: 3999 files, 11958 grandfathered assertions.
+
+[check:changed] changelog attributions
+$ node --import ./scripts/tsx.mjs scripts/check-changelog-attributions.mts
+
+[check:changed] doctor deprecation registry
+$ node --import ./scripts/tsx.mjs scripts/check-doctor-deprecation-registry.ts
+[doctor-deprecation-registry] OK as of 2026-09-07
+
+[check:changed] guarded extension wildcard re-exports
+$ node --import ./scripts/tsx.mjs scripts/check-extension-wildcard-reexports.mts
+No guarded extension wildcard re-exports found.
+
+[check:changed] plugin-sdk wildcard re-exports
+$ node --import ./scripts/tsx.mjs scripts/check-plugin-sdk-wildcard-reexports.mts
+No plugin-sdk wildcard re-exports found in extension API barrels.
+
+[check:changed] duplicate scan target coverage
+$ node scripts/check-duplicates.mjs --coverage
+[dup:check] target coverage ok
+
+[check:changed] dependency pin guard
+$ node --import ./scripts/tsx.mjs scripts/check-dependency-pins.mts
+PASS direct dependency pin guard: checked 665 directly declared dependency specs across 181 tracked package manifests; 0 violations.
+
+[check:changed] format changed files
+$ oxfmt --check --no-error-on-unmatched-pattern -- src/cli/telemetry-cli.test.ts src/cli/telemetry-cli.ts
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 2ms on 2 files using 4 threads.
+
+[check:changed] plugin boundaries
+$ node --import ./scripts/tsx.mjs scripts/plugin-boundary-report.ts --summary --fail-on-eligible-compat
+Plugin Boundary Report
+
+compat deprecated=19 eligibleForRemoval=0 removalPending=8 removalPendingDue=0
+  removal-pending 2026-09-30 plugin-sdk-media-understanding-public-demotion due=false blocker=`api.registerMediaUnderstandingProvider(...)` with provider-owned request helpers and types from `openclaw/plugin-sdk/plugin-entry`; retain the public subpath through the 2026-09-30 window while official plugin consumers migrate readerRefs=46 readers=extensions/anthropic/media-understanding-provider.ts,extensions/browser/src/browser/vision.ts,extensions/browser/src/cli/browser-cli-extension.test.ts,extensions/browser/src/cli/browser-cli.test.ts,extensions/browser/src/sdk-setup-tools.ts
+  removal-pending 2026-09-30 plugin-sdk-memory-host-core-public-demotion due=false blocker=host-prepared memory prompts via `openclaw/plugin-sdk/core` and memory capability registration through the injected plugin API; retain the facade through the 2026-09-30 window and until a focused public-artifact read seam exists readerRefs=27 readers=extensions/active-memory/index.test.ts,extensions/active-memory/index.ts,extensions/codex/src/app-server/attempt-context.test.ts,extensions/memory-core/src/memory-get-corpus.test.ts,extensions/memory-core/src/public-artifacts.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-lifecycle-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound`; retain until supported external plugin migration is verified readerRefs=1 readers=src/plugins/contracts/plugin-sdk-subpaths.test.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-message-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound` and `openclaw/plugin-sdk/channel-inbound`; retain until supported external plugin migration is verified readerRefs=3 readers=src/plugin-sdk/channel-message.test.ts,src/plugins/plugin-sdk-native-resolver.test.ts,test/scripts/check-deprecated-api-usage.test.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-reply-pipeline-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound`; retain until supported external plugin migration is verified readerRefs=3 readers=src/plugin-sdk/channel-message.test.ts,src/plugins/contracts/plugin-sdk-subpaths.test.ts,test/scripts/check-deprecated-api-usage.test.ts
+  removal-pending 2026-10-01 plugin-sdk-config-runtime-subpath due=false blocker=`api.pluginConfig`, `openclaw/plugin-sdk/config-mutation`, `openclaw/plugin-sdk/runtime-config-snapshot`, and `openclaw/plugin-sdk/config-contracts`; retain until supported external plugin migration is verified readerRefs=3 readers=scripts/check-no-monolithic-plugin-sdk-entry-imports.ts,scripts/lib/config-boundary-guard.mts,src/plugins/contracts/config-boundary-guard.test.ts
+  removal-pending 2026-10-01 plugin-sdk-infra-runtime-subpath due=false blocker=focused subpaths including `openclaw/plugin-sdk/delivery-queue-runtime`, `openclaw/plugin-sdk/diagnostic-runtime`, `openclaw/plugin-sdk/error-runtime`, `openclaw/plugin-sdk/exec-approvals-runtime`, `openclaw/plugin-sdk/fetch-runtime`, and `openclaw/plugin-sdk/ssrf-runtime`; retain until supported external plugin migration is verified and system-event snapshot inspection and consumption have a modern public replacement readerRefs=1 readers=scripts/check-no-monolithic-plugin-sdk-entry-imports.ts
+  removal-pending 2026-12-01 plugin-sdk-plugin-config-runtime-public-demotion due=false blocker=`api.pluginConfig`, runtime tool context config, and focused `config-contracts`, `runtime-config-snapshot`, or `config-mutation` subpaths; retain the public subpath through the 2026-12-01 window while official plugin consumers migrate readerRefs=62 readers=extensions/active-memory/index.ts,extensions/active-memory/session-policy.ts,extensions/amazon-bedrock-mantle/register.sync.runtime.ts,extensions/amazon-bedrock/register.sync.runtime.ts,extensions/browser/src/sdk-config.ts
+plugin-sdk entrypoints=357 supportedBundledFacade=2 publicPluginOwned=1
+memory-host-sdk implementation=private-package-core-integrated private=true exports=10 sourceBridgeFiles=0 coreReferenceFiles=17
+
+[check:changed] wrapper shadowing
+$ node --import ./scripts/tsx.mjs scripts/check-wrapper-shadowing.mts
+wrapper shadowing guard passed.
+
+[check:changed] package patch guard
+$ node --import ./scripts/tsx.mjs scripts/check-package-patches.mts
+PASS package patch guard: no new pnpm patches; 6 approved patches allowlisted.
+
+[check:changed] test temp creation report (warning-only)
+No new test temp-directory migration warnings found.
+
+[check:changed] core tsgo graph boundary
+$ node --import ./scripts/tsx.mjs scripts/check-tsgo-core-boundary.mts
+
+[check:changed] typecheck core
+$ node scripts/run-tsgo.mjs -p tsconfig.core.json --incremental --tsBuildInfoFile .artifacts/tsgo-cache/core.tsbuildinfo
+
+[check:changed] typecheck core tests
+$ node scripts/run-tsgo-core-test-shards.mjs
+
+[check:changed] coercion helper declaration guard
+$ node --import ./scripts/tsx.mjs scripts/check-coercion-helper-declarations.mts
+Coercion helper declaration guard passed (111 allowlisted declarations).
+
+[check:changed] deprecated API usage
+$ node --import ./scripts/tsx.mjs scripts/check-deprecated-api-usage.mts
+deprecated API usage guard passed
+
+[check:changed] dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)
+[deadcode] Knip script unused-export scan passed with 0 entries.
+[deadcode] Knip production unused-export scan still running after 60s.
+[deadcode] Knip full-tree unused-export scan still running after 60s.
+[deadcode] Knip production unused-export scan passed with 0 entries.
+[deadcode] Knip full-tree unused-export scan passed with 0 entries.
+
+[check:changed] lint core changed files
+
+  [38;2;225;80;80;1m×[0m [38;2;225;80;80;1mtypescript(no-unnecessary-type-conversion): This type conversion does not change the type or value of the expression.[0m
+     ╭─[[38;2;92;157;255;1msrc/cli/telemetry-cli.test.ts[0m:201:20]
+ [2m200[0m │         await program.parseAsync(["telemetry"], { from: "user" });
+ [2m201[0m │         exitCode = Number(process.exitCode ?? 0);
+     · [38;2;246;87;248m                   ──────[0m[38;2;30;201;212m ──────────┬──────────[0m
+     ·                       [38;2;246;87;248m│[0m             [38;2;30;201;212m╰── [38;2;30;201;212mThis expression already has type '0'.[0m[0m
+ [2m202[0m │       } catch (error) {
+     ╰────
+
+Found 0 warnings and 1 error.
+Finished in 35.9s on 2 files with 263 rules using 1 threads.
+[oxlint] FAILED (exit 1)
+
+[check:changed] summary
+   1.59s  ok         conflict markers
+  28.97s  ok         max-lines suppression ratchet
+  14.49s  ok         assertion SAFETY comment ratchet
+   310ms  ok         changelog attributions
+   276ms  ok         doctor deprecation registry
+   373ms  ok         guarded extension wildcard re-exports
+   328ms  ok         plugin-sdk wildcard re-exports
+   458ms  ok         duplicate scan target coverage
+   389ms  ok         dependency pin guard
+   183ms  ok         format changed files
+   2.77s  ok         plugin boundaries
+   9.95s  ok         wrapper shadowing
+   830ms  ok         package patch guard
+   802ms  ok         test temp creation report (warning-only)
+  61.50s  ok         core tsgo graph boundary
+  49.19s  ok         typecheck core
+ 841.16s  ok         typecheck core tests
+  20.47s  ok         coercion helper declaration guard
+  11.33s  ok         deprecated API usage
+  77.68s  ok         dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)
+  36.25s  failed:1   lint core changed files
+[check:changed] FAILED (exit 1)

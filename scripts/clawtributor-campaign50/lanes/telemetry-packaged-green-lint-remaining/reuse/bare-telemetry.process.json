@@ -1,0 +1,16 @@
+{
+  "name": "bare-telemetry",
+  "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+  "args": [
+    "telemetry"
+  ],
+  "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+  "startedAt": "2026-09-07T07:22:39.085Z",
+  "exitCode": 0,
+  "signal": null,
+  "processError": null,
+  "timedOut": false,
+  "outputLimit": false,
+  "residualGroup": false,
+  "finishedAt": "2026-09-07T07:22:40.304Z"
+}

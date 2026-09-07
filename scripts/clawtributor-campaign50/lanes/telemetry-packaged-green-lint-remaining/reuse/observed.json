@@ -1,0 +1,358 @@
+{
+  "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+  "mode": "green",
+  "phase": "green-confirmed",
+  "processes": [
+    {
+      "name": "pack",
+      "command": "/opt/hostedtoolcache/node/24.20.0/x64/bin/node",
+      "args": [
+        "/home/runner/work/openclaw/openclaw/target/scripts/package-openclaw-for-docker.mjs",
+        "--output-dir",
+        "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package",
+        "--output-name",
+        "openclaw-telemetry-140283.tgz",
+        "--pack-json",
+        "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/pack.json",
+        "--allow-unreleased-changelog"
+      ],
+      "cwd": "/home/runner/work/openclaw/openclaw/target",
+      "startedAt": "2026-09-07T07:13:09.683Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:21:56.529Z"
+    },
+    {
+      "name": "install",
+      "command": "npm",
+      "args": [
+        "install",
+        "--global",
+        "--prefix",
+        "/tmp/telemetry-140283-lYmvVE/install",
+        "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package/openclaw-telemetry-140283.tgz",
+        "--no-fund",
+        "--no-audit"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:21:56.720Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:23.055Z"
+    },
+    {
+      "name": "installed-dependencies",
+      "command": "npm",
+      "args": [
+        "ls",
+        "--global",
+        "--prefix",
+        "/tmp/telemetry-140283-lYmvVE/install",
+        "--all",
+        "--json"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:23.056Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:23.508Z"
+    },
+    {
+      "name": "archive-openclaw.mjs",
+      "command": "tar",
+      "args": [
+        "-xOf",
+        "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package/openclaw-telemetry-140283.tgz",
+        "package/openclaw.mjs"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:23.511Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:24.583Z"
+    },
+    {
+      "name": "archive-build-info.json",
+      "command": "tar",
+      "args": [
+        "-xOf",
+        "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package/openclaw-telemetry-140283.tgz",
+        "package/dist/build-info.json"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:24.583Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:25.637Z"
+    },
+    {
+      "name": "version",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "--version"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:25.637Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:25.675Z"
+    },
+    {
+      "name": "explicit-help",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "--help"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:25.676Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:26.843Z"
+    },
+    {
+      "name": "help-command",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "help"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:26.844Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:27.698Z"
+    },
+    {
+      "name": "show-help",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "show",
+        "--help"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:27.699Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:28.535Z"
+    },
+    {
+      "name": "help-show",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "help",
+        "show"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:28.535Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:29.370Z"
+    },
+    {
+      "name": "unknown-flag",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "--not-a-real-option"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:29.371Z",
+      "exitCode": 1,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:30.574Z"
+    },
+    {
+      "name": "unknown-command",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "not-a-real-command"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:30.575Z",
+      "exitCode": 1,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:31.784Z"
+    },
+    {
+      "name": "show-before",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "show",
+        "--json"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:31.784Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:33.288Z"
+    },
+    {
+      "name": "consent-on",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "on"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:33.288Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:34.850Z"
+    },
+    {
+      "name": "show-after-on",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "show",
+        "--json"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:34.850Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:36.189Z"
+    },
+    {
+      "name": "consent-off",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "off"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:36.190Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:37.743Z"
+    },
+    {
+      "name": "show-after-off",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry",
+        "show",
+        "--json"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:37.744Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:39.084Z"
+    },
+    {
+      "name": "bare-telemetry",
+      "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+      "args": [
+        "telemetry"
+      ],
+      "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+      "startedAt": "2026-09-07T07:22:39.085Z",
+      "exitCode": 0,
+      "signal": null,
+      "processError": null,
+      "timedOut": false,
+      "outputLimit": false,
+      "residualGroup": false,
+      "finishedAt": "2026-09-07T07:22:40.304Z"
+    }
+  ],
+  "cleanupFailures": [],
+  "tarball": {
+    "path": "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package/openclaw-telemetry-140283.tgz",
+    "sha256": "2345325f1c9ee3fd2d7630cd1afba968e1d2e7eadb803d56fb566c645332fa01",
+    "integrity": "sha512-gGF9DZeScUuflMFj5ECK6ZxjIrhwfZTn3AUKe6jyskgEICmExs8UMy2/Vu7Itq9zvquFm+dh0Gj2cZruwBPzeQ==",
+    "entryCount": 10216
+  },
+  "nativeBaseDifference": "This candidate is built from native parent b8c with proxyline0.3.7; the accepted baseline package was0a55 with proxyline0.3.11. Telemetry policy bypasses proxy lifecycle in both.",
+  "installed": {
+    "prefix": "/tmp/telemetry-140283-lYmvVE/install",
+    "root": "/tmp/telemetry-140283-lYmvVE/install/lib/node_modules/openclaw",
+    "bin": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+    "manifestVersion": "2026.9.2",
+    "buildInfo": {
+      "version": "2026.9.2",
+      "commit": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+      "builtAt": "2026-09-07T07:13:10.381Z",
+      "buildId": "2026.9.2-b8cbece8fb8d-2026-09-07T07-13-10.381Z"
+    },
+    "fileHashes": {
+      "openclaw.mjs": "4f4d29770da4f86dbd0e07cbd4d46deab785905dd89ac719033fcfd866fb5d17",
+      "dist/build-info.json": "53f96535704c82dd4933028b01e275c8e5c2e3325374601fe1c5ea5e0f933476"
+    }
+  },
+  "cleanupFailureCount": 0
+}

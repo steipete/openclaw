@@ -1,0 +1,17 @@
+{
+  "name": "unknown-flag",
+  "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+  "args": [
+    "telemetry",
+    "--not-a-real-option"
+  ],
+  "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+  "startedAt": "2026-09-07T07:22:29.371Z",
+  "exitCode": 1,
+  "signal": null,
+  "processError": null,
+  "timedOut": false,
+  "outputLimit": false,
+  "residualGroup": false,
+  "finishedAt": "2026-09-07T07:22:30.574Z"
+}

@@ -1,0 +1,31 @@
+{
+  "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "green",
+  "lane": "telemetry-packaged-green-lint-remaining",
+  "oldRun": 34094232133,
+  "oldJob": 101654153564,
+  "oldHarness": "ae090ea36f087591e798c86a771252a98275f25e",
+  "oldJobConclusion": "failure",
+  "scope": "Remove only Number wrapper in test; production unchanged. Reuse completed historical290tests/package/install/13CLI+20earliergates. Newly run13affectedtests,format/failedlint and8unrun tailgates; finish73baseline/71unchanged+2candidate before/after binding. No pack/build/290siblings replay.",
+  "candidateProduction": "6a706b7e0d9b3d47e83c3e1cf7120e98f5acb35a65f371cba05b00e7afa28487",
+  "candidateTest": "c2f5843b247b871169aa201286f1f1cdb44c91e292bd73058e1ec81561c110b9",
+  "baselineOwners": 73,
+  "unchangedOwners": 71,
+  "reuseFiles": 94,
+  "reuseBytes": 379733,
+  "files": {
+    "baseline-files.sha256": "b9853da7fb8aa68bd59e3e0ee14fde2089e36eb15f0b7a59e6682793753928f9",
+    "candidate-files.sha256": "fe6238343d3428406b0e6f217fdabcc346ab423af9cf405c30c4c6c8af0684b9",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "correction.patch": "f14047a588474c3c61cdb7ca19b0e0c6d1832a81212f651ddccec30b8b25e0f7",
+    "production.patch": "073a876ad225658331c43983ad93146ae3889308c045d5e341f3cbd4df149213",
+    "run.sh": "815c30d9b5b43cd987fbc271962456cbc4e877651495c793940b8bb36c67d432",
+    "tests.patch": "394b47669053e9fa26ca295676217ac9ae90e2d8b83d642200d6c7498b87cf55",
+    "unchanged-owner-files.sha256": "f98e9689922292f5412bba404d8e3b98c21101bdb25f3a4fa01befe04f2efa08",
+    "verify.mjs": "70f5f3dc629a272ad641236e753c64adc767dfbc127773d95155d4761d232877"
+  },
+  "reuseLineageSha256": "ae8d599cf1e05c5c6a024fd8c5fd431bb5300ceb1773e5ba9b9a7fbfa3f10fc3",
+  "status": "Frozen for independent review; no target execution"
+}

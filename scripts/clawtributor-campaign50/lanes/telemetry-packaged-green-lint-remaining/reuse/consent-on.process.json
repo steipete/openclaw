@@ -1,0 +1,17 @@
+{
+  "name": "consent-on",
+  "command": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+  "args": [
+    "telemetry",
+    "on"
+  ],
+  "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+  "startedAt": "2026-09-07T07:22:33.288Z",
+  "exitCode": 0,
+  "signal": null,
+  "processError": null,
+  "timedOut": false,
+  "outputLimit": false,
+  "residualGroup": false,
+  "finishedAt": "2026-09-07T07:22:34.850Z"
+}

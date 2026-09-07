@@ -1,0 +1,123 @@
+diff --git a/src/cli/telemetry-cli.test.ts b/src/cli/telemetry-cli.test.ts
+index 3b6c4027..cff0e538 100644
+--- a/src/cli/telemetry-cli.test.ts
++++ b/src/cli/telemetry-cli.test.ts
+@@ -1,4 +1,4 @@
+-import { Command } from "commander";
++import { Command, CommanderError } from "commander";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import type { OpenClawConfig } from "../config/types.openclaw.js";
+ import { registerTelemetryCli } from "./telemetry-cli.js";
+@@ -43,9 +43,22 @@ const payload = {
+   },
+ };
+ 
+-async function runTelemetryCli(args: string[]): Promise<void> {
+-  const program = new Command().exitOverride();
++function createTelemetryProgram() {
++  const stdout: string[] = [];
++  const stderr: string[] = [];
++  const program = new Command()
++    .name("openclaw")
++    .exitOverride()
++    .configureOutput({
++      writeOut: (text) => stdout.push(text),
++      writeErr: (text) => stderr.push(text),
++    });
+   registerTelemetryCli(program);
++  return { program, stdout, stderr };
++}
++
++async function runTelemetryCli(args: string[]): Promise<void> {
++  const { program } = createTelemetryProgram();
+   await program.parseAsync(["telemetry", ...args], { from: "user" });
+ }
+ 
+@@ -175,4 +188,53 @@ describe("telemetry cli", () => {
+       );
+     },
+   );
++
++  it("prints parent help with a successful exit when no subcommand is given", async () => {
++    const previousExitCode = process.exitCode;
++    process.exitCode = undefined;
++    const { program, stdout, stderr } = createTelemetryProgram();
++
++    try {
++      let exitCode: number;
++      try {
++        await program.parseAsync(["telemetry"], { from: "user" });
++        exitCode = Number(process.exitCode ?? 0);
++      } catch (error) {
++        if (!(error instanceof CommanderError) || error.code !== "commander.help") {
++          throw error;
++        }
++        exitCode = error.exitCode;
++      }
++
++      expect(exitCode).toEqual(0);
++      expect(stdout.join("")).toContain("Usage: openclaw telemetry [options] [command]");
++      expect(stdout.join("")).toContain("Inspect and manage anonymous usage telemetry");
++      expect(stderr).toEqual([]);
++      expect(mocks.getRuntimeConfig).not.toHaveBeenCalled();
++      expect(mocks.transformConfigFileWithRetry).not.toHaveBeenCalled();
++    } finally {
++      process.exitCode = previousExitCode;
++    }
++  });
++
++  it.each([
++    { name: "explicit help", args: ["--help"], usage: "telemetry [options] [command]" },
++    { name: "implicit help", args: ["help"], usage: "telemetry [options] [command]" },
++    { name: "nested help", args: ["help", "show"], usage: "telemetry show [options]" },
++  ])("preserves $name without reading or changing telemetry", async ({ args, usage }) => {
++    const previousExitCode = process.exitCode;
++    process.exitCode = undefined;
++    const { program, stdout, stderr } = createTelemetryProgram();
++    try {
++      await expect(
++        program.parseAsync(["telemetry", ...args], { from: "user" }),
++      ).rejects.toMatchObject({ exitCode: 0 });
++      expect(stdout.join("")).toContain(`Usage: openclaw ${usage}`);
++      expect(stderr).toEqual([]);
++      expect(mocks.getRuntimeConfig).not.toHaveBeenCalled();
++      expect(mocks.transformConfigFileWithRetry).not.toHaveBeenCalled();
++    } finally {
++      process.exitCode = previousExitCode;
++    }
++  });
+ });
+diff --git a/src/cli/telemetry-cli.ts b/src/cli/telemetry-cli.ts
+index ee897be9..707521bb 100644
+--- a/src/cli/telemetry-cli.ts
++++ b/src/cli/telemetry-cli.ts
+@@ -7,6 +7,7 @@ import {
+ } from "../infra/telemetry.js";
+ import { defaultRuntime } from "../runtime.js";
+ import { runCommandWithRuntime } from "./cli-utils.js";
++import { applyParentDefaultHelpAction } from "./program/parent-default-help.js";
+ 
+ const TELEMETRY_REASON_LABELS = {
+   enabled: "enabled in configuration",
+@@ -92,13 +93,12 @@ export function registerTelemetryCli(program: Command): void {
+       runCommandWithRuntime(defaultRuntime, () => showTelemetry(options)),
+     );
+ 
+-  telemetry
+-    .command("on")
+-    .description("Enable anonymous feature statistics")
+-    .action(async () => runCommandWithRuntime(defaultRuntime, () => setTelemetryEnabled(true)));
+-
+-  telemetry
+-    .command("off")
+-    .description("Disable anonymous feature statistics")
+-    .action(async () => runCommandWithRuntime(defaultRuntime, () => setTelemetryEnabled(false)));
++  for (const [name, enabled] of Object.entries({ on: true, off: false })) {
++    telemetry
++      .command(name)
++      .description(`${enabled ? "Enable" : "Disable"} anonymous feature statistics`)
++      .action(() => runCommandWithRuntime(defaultRuntime, () => setTelemetryEnabled(enabled)));
++  }
++  // Preserve the shipped help subcommand when adding a parent action.
++  applyParentDefaultHelpAction(telemetry.helpCommand(true));
+ }

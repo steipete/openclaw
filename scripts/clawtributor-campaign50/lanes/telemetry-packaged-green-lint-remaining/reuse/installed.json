@@ -1,0 +1,16 @@
+{
+  "prefix": "/tmp/telemetry-140283-lYmvVE/install",
+  "root": "/tmp/telemetry-140283-lYmvVE/install/lib/node_modules/openclaw",
+  "bin": "/tmp/telemetry-140283-lYmvVE/install/bin/openclaw",
+  "manifestVersion": "2026.9.2",
+  "buildInfo": {
+    "version": "2026.9.2",
+    "commit": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+    "builtAt": "2026-09-07T07:13:10.381Z",
+    "buildId": "2026.9.2-b8cbece8fb8d-2026-09-07T07-13-10.381Z"
+  },
+  "fileHashes": {
+    "openclaw.mjs": "4f4d29770da4f86dbd0e07cbd4d46deab785905dd89ac719033fcfd866fb5d17",
+    "dist/build-info.json": "53f96535704c82dd4933028b01e275c8e5c2e3325374601fe1c5ea5e0f933476"
+  }
+}

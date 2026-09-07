@@ -1,0 +1,2 @@
+OpenClaw does not recognize option "--not-a-real-option".
+Try: openclaw telemetry --help

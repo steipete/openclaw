@@ -1,0 +1,10 @@
+
+OpenClaw 2026.9.2 (b8cbece) — All your chats, one OpenClaw.
+
+Usage: openclaw telemetry show [options]
+
+Show exactly what the daily update request sends
+
+Options:
+  -h, --help  Display help for command
+  --json      Print the request and payload as JSON

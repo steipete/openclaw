@@ -1,0 +1,23 @@
+{
+  "name": "pack",
+  "command": "/opt/hostedtoolcache/node/24.20.0/x64/bin/node",
+  "args": [
+    "/home/runner/work/openclaw/openclaw/target/scripts/package-openclaw-for-docker.mjs",
+    "--output-dir",
+    "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/package",
+    "--output-name",
+    "openclaw-telemetry-140283.tgz",
+    "--pack-json",
+    "/home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/pack.json",
+    "--allow-unreleased-changelog"
+  ],
+  "cwd": "/home/runner/work/openclaw/openclaw/target",
+  "startedAt": "2026-09-07T07:13:09.683Z",
+  "exitCode": 0,
+  "signal": null,
+  "processError": null,
+  "timedOut": false,
+  "outputLimit": false,
+  "residualGroup": false,
+  "finishedAt": "2026-09-07T07:21:56.529Z"
+}

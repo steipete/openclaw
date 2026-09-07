@@ -1,0 +1,15 @@
+
+OpenClaw 2026.9.2 (b8cbece) — All your chats, one OpenClaw.
+
+Usage: openclaw telemetry [options] [command]
+
+Inspect and manage anonymous usage telemetry
+
+Options:
+  -h, --help  Display help for command
+
+Commands:
+  help        Display help for command
+  off         Disable anonymous feature statistics
+  on          Enable anonymous feature statistics
+  show        Show exactly what the daily update request sends

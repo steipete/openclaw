@@ -1,0 +1,11 @@
+--- a/src/cli/telemetry-cli.test.ts
++++ b/src/cli/telemetry-cli.test.ts
+@@ -198,7 +198,7 @@
+       let exitCode: number;
+       try {
+         await program.parseAsync(["telemetry"], { from: "user" });
+-        exitCode = Number(process.exitCode ?? 0);
++        exitCode = process.exitCode ?? 0;
+       } catch (error) {
+         if (!(error instanceof CommanderError) || error.code !== "commander.help") {
+           throw error;

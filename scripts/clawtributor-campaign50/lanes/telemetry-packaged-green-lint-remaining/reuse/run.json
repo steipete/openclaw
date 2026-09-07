@@ -1,0 +1,27 @@
+{
+  "databaseId": 34094232133,
+  "headSha": "ae090ea36f087591e798c86a771252a98275f25e",
+  "status": "completed",
+  "conclusion": "failure",
+  "url": "https://github.com/steipete/openclaw/actions/runs/34094232133",
+  "jobs": [
+    {
+      "databaseId": 101654153564,
+      "name": "proof (telemetry-packaged-green)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-09-07T07:11:23Z",
+      "completedAt": "2026-09-07T07:42:10Z"
+    },
+    {
+      "databaseId": 101654153590,
+      "name": "proof (gateway-repair-load-red)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-09-07T07:11:22Z",
+      "completedAt": "2026-09-07T07:15:59Z"
+    }
+  ],
+  "metadataSource": "Controller observed exact gh run view --json databaseId,headSha,status,conclusion,jobs,url; selected fields preserved without requery",
+  "savedAt": "2026-09-07T08:34:48.164599+00:00"
+}

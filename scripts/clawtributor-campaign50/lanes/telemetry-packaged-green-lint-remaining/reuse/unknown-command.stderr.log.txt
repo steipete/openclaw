@@ -1,0 +1,3 @@
+OpenClaw telemetry has no command "not-a-real-command".
+Try: openclaw telemetry --help
+Docs: https://docs.openclaw.ai/cli

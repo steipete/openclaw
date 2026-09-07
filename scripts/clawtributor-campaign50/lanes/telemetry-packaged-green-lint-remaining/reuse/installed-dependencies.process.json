@@ -1,0 +1,21 @@
+{
+  "name": "installed-dependencies",
+  "command": "npm",
+  "args": [
+    "ls",
+    "--global",
+    "--prefix",
+    "/tmp/telemetry-140283-lYmvVE/install",
+    "--all",
+    "--json"
+  ],
+  "cwd": "/tmp/telemetry-140283-lYmvVE/work",
+  "startedAt": "2026-09-07T07:22:23.056Z",
+  "exitCode": 0,
+  "signal": null,
+  "processError": null,
+  "timedOut": false,
+  "outputLimit": false,
+  "residualGroup": false,
+  "finishedAt": "2026-09-07T07:22:23.508Z"
+}

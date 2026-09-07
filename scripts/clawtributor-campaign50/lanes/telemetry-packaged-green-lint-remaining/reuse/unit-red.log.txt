@@ -1,0 +1,47 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mprints exactly the canonical payload when feature statistics are enabled
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mreports the same state and canonical payload as one JSON document
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mreports the same request in JSON and text for never-asked
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mreports the same request in JSON and text for config-disabled
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mreports the same request in JSON and text for do-not-track
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mreports the same request in JSON and text for update-disabled
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mreports the same request in JSON and text for automated-environment
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mrecords operator consent when turning feature statistics on
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mrecords operator consent when turning feature statistics off
+ [31m×[39m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mprints parent help with a successful exit when no subcommand is given[32m 148[2mms[22m[39m
+[31m   → expected 1 to deeply equal +0[39m
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mpreserves explicit help without reading or changing telemetry
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mpreserves implicit help without reading or changing telemetry
+ [2m[90m↓[39m[22m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mpreserves nested help without reading or changing telemetry
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m cli [49m[39m src/cli/telemetry-cli.test.ts[2m > [22mtelemetry cli[2m > [22mprints parent help with a successful exit when no subcommand is given
+[31m[1mAssertionError[22m: expected 1 to deeply equal +0[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+[36m [2m❯[22m src/cli/telemetry-cli.test.ts:[2m209:24[22m[39m
+    [90m207|[39m       }
+    [90m208|[39m
+    [90m209|[39m       expect(exitCode).toEqual(0);
+    [90m   |[39m                        [31m^[39m
+    [90m210|[39m       expect(stdout.join("")).toContain("Usage: openclaw telemetry [op…
+    [90m211|[39m       expect(stdout.join("")).toContain("Inspect and manage anonymous …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m12 skipped[39m[90m (13)[39m
+[2m   Start at [22m 07:12:33
+[2m   Duration [22m 1.75s[2m (worker 50%, transform 33%, tests 10%, setup 5%, import 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/telemetry-packaged-green/unit-red.json
+[test] FAILED (exit 1)

@@ -1,0 +1,1 @@
+{"featureStatsEnabled":false,"reason":"automated-environment","endpoint":"https://telemetry.openclaw.ai/api/latest-version","lastPingAt":null,"request":null}

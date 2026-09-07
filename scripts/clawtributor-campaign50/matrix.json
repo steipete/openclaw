@@ -1,12 +1,12 @@
 [
   {
-    "id": "service-label-composed-green",
-    "directory": "service-label-composed-green",
+    "id": "telemetry-packaged-green-lint-remaining",
+    "directory": "telemetry-packaged-green-lint-remaining",
     "runner": "ubuntu-24.04",
-    "source": "72913f02470db00da7cf00cf6f0470bf23269b6d",
+    "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "composed"
+    "variant": "lint-remaining"
   }
 ]
