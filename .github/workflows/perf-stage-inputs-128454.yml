@@ -27,14 +27,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: openclaw/openclaw
-          ref: 149e97d4dbcadfaf2eda0c463aa7c7815da393d3
+          ref: 5f661669b2c2979f2a61e23d4addb3bdd4545469
           path: baseline
           persist-credentials: false
       - name: Check out exact reviewed narrowed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: steipete/openclaw
-          ref: f4742065da14544c3ee0d9e1036221cd27b19ddd
+          ref: e8d7ab3b4f0544e91e021edad028e261925b1215
           path: candidate
           fetch-depth: 2
           persist-credentials: false
