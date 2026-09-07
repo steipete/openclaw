@@ -1,22 +1,22 @@
 [
   {
-    "id": "peekaboo-released-parser-red",
-    "directory": "peekaboo-released-parser-red",
-    "runner": "macos-26",
-    "source": "6adfb69831b86e93bcd3fd365e11a22700fb37bb",
+    "id": "setup-error-reporting-types-green",
+    "directory": "setup-error-reporting-types-green",
+    "mode": "green",
+    "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "variant": "remaining-types",
+    "runner": "ubuntu-24.04"
+  },
+  {
+    "id": "sidebar-label-140125-red",
+    "directory": "sidebar-label-140125-red",
+    "runner": "ubuntu-24.04",
+    "source": "608b9ba2437d22188bac854a012458880ff55211",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "released-cli-parser"
-  },
-  {
-    "id": "service-label-green",
-    "directory": "service-label-green",
-    "runner": "ubuntu-24.04",
-    "source": "b57c5f25a9142ac8e1195e8552c54c268c2e03f8",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "diagnostic-role-candidate"
+    "variant": "browser"
   }
 ]

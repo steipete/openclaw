@@ -1,0 +1,10 @@
+{
+  "id": "sidebar-label-140125-red",
+  "directory": "sidebar-label-140125-red",
+  "runner": "run.sh",
+  "source": "608b9ba2437d22188bac854a012458880ff55211",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "red",
+  "variant": "browser"
+}

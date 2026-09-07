@@ -1,0 +1,42 @@
+{
+  "status": "DRAFT_FOR_INDEPENDENT_REVIEW_NO_DISPATCH_AUTHORITY",
+  "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "row": {
+    "id": "setup-error-reporting-types-green",
+    "directory": "setup-error-reporting-types-green",
+    "mode": "green"
+  },
+  "files": {
+    "run.sh": "5233f44b4f09a987e165a2ddb13cd6111c4b36c2163299752f0dceb0484f4c10",
+    "candidate.patch": "17e95d08ce30515dfa448d54cd4152bc64cfd0bd7950db0746463a7eb192fd8d",
+    "error-reporting.test.ts": "b3f3507b73f3b3e5e6409b5872dec9558e15c9678f9cafaa0f906f788ec01d1a",
+    "verify-regression.mjs": "91d4a1807cff5574d1936b1c5c656bd52723faf65563b3bd9a3b8167321129cd",
+    "completed-report.mjs": "eac849f61a9142ee9077620e923d5aa1c720ede766d4308b528619a237669a19",
+    "source-before.sha256": "5cdb2016d3d25f27260fc168311d5f2a154fc2153986eba78ca903a9569842c6",
+    "source-after.sha256": "94698b946f5700110abb1fedb685bb9a6c173173fdbad8574a91f87565568323"
+  },
+  "production": {
+    "additions": 8,
+    "deletions": 10,
+    "net": -2
+  },
+  "regressionTests": 9,
+  "fullOwnerSuites": 0,
+  "caseReceipts": 8,
+  "sourceHashesBefore": 29,
+  "sourceHashesAfter": 30,
+  "proofKind": "real verifier to one-shot command function via existing synthetic dependency fixtures/captured RuntimeEnv ports; no built CLI process, Gateway socket, live provider or reporter Codex diagnosis",
+  "checkChanged": "Exact previously failed node scripts/run-tsgo-core-test-shards.mjs; targeted formatting for corrected test; targeted lint for four changed TS paths (not reached in prior check-changed). Prior passed production/static gates reused by exact hashes.",
+  "targetCodeExecutedLocally": false,
+  "baselineTestDifference": "Structural logging fixture restored to original; required synthetic durationMs0 and canonical expectDefined after existing length1 assertions; all cause/masking/lifecycle assertions preserved.",
+  "reusedBehaviorEvidence": {
+    "run": 34084842082,
+    "job": 101626833548,
+    "ownerTests": 369,
+    "coreAndPriorCheckChangedGates": "passed",
+    "wholeJob": "FAILURE"
+  },
+  "completionReceipt": "verdict.json records runtime regressions only; type-completion.json and final marker are emitted after formatting, lint, core-test types, final hashes and index checks pass"
+}

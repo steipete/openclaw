@@ -1,0 +1,12 @@
+{
+  "PROOF.md": "5914a094cf63727f497631e36daa6dad018a30cfc4e0ce80179b4d7c9ae8adf1",
+  "run.sh": "ae8bdf83cd67254e924d61250a1f00a4fa2e19123aee72680ba5d75554e3a227",
+  "validate.mjs": "c8d37756ec58c9f02eebffcaecb7026560766de1d878faeeba7f37de04f30df1",
+  "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+  "sidebar-interactions.e2e.test.ts": "ad412f61d122d15588786e2e11fa7b33593dfe48768bcd9433aaf970986b3d56",
+  "regression.patch": "59b30f9e518dadfde9b4f14d475bc1442abe2a0e99d6030c4406137d678faaaa",
+  "row.json": "c060dc274695d390de579883b86db96106da542572fdc10267f8bd9a605e6415",
+  "product.sha256": "b1e294a8cf323af7f03844d1709658e77a57be388e18d39e6feb3b503d4876fc",
+  "unchanged.sha256": "661c5676a4ec5ea17c9b80f765934fbf338222ddedc9f0289d91f0aa6bdb50b5",
+  "test.sha256": "6a95a4dd3d031df7f74faca4e183024c5215bb8863f1a063f6d34f7717d812db"
+}
