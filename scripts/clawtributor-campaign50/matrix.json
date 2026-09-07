@@ -1,12 +1,12 @@
 [
   {
-    "id": "download-filename-141311-green",
-    "directory": "download-filename-141311-green",
+    "id": "progress-width-red",
+    "directory": "progress-width-red",
     "runner": "ubuntu-24.04",
-    "source": "608f2774b0b3df7e64ca34dd6c8754eb3b5494b3",
+    "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "native-browser-green"
+    "mode": "red",
+    "variant": "ordinary-pty-rendering"
   }
 ]

@@ -21,6 +21,13 @@ assert.deepEqual(
   processes.records.map((row) => row.id),
   cases.map((row) => row.id),
 );
+assert.equal(processes.inspections.length, cases.length);
+assert.equal(new Set(processes.inspections.map((entry) => entry.observerPid)).size, cases.length);
+assert.ok(
+  processes.inspections.every(
+    (entry) => !processes.records.some((record) => record.pid === entry.observerPid),
+  ),
+);
 const results = [];
 const esc = "\x1b";
 function replay(raw, columns, allowedOsc) {
@@ -61,7 +68,56 @@ for (const [index, cell] of cases.entries()) {
   const process = JSON.parse(readFileSync(`${evidence}/${cell.id}/process.json`, "utf8"));
   assert.deepEqual(process, processes.records[index]);
   assert.equal(process.exitCode, 0);
-  for (const field of ["spawned", "joined", "groupGone", "eof"]) assert.equal(process[field], true);
+  for (const field of ["spawned", "joined", "eof"]) assert.equal(process[field], true);
+  assert.equal(process.groupState, "dead");
+  const inspection = JSON.parse(
+    readFileSync(`${evidence}/${cell.id}/inspection-normal.json`, "utf8"),
+  );
+  assert.deepEqual(inspection, processes.inspections[index]);
+  assert.equal(inspection.phase, "normal");
+  assert.equal(inspection.targetPid, process.pid);
+  assert.equal(inspection.targetExitCode, 0);
+  assert.equal(inspection.canonicalState, "dead");
+  for (const field of ["spawned", "reaped", "pipeEOF", "kernelGroupAbsent"])
+    assert.equal(inspection[field], true);
+  assert.equal(inspection.exitCode, 0);
+  assert.deepEqual(inspection.forcedSignals, []);
+  assert.equal(inspection.error, undefined);
+  const observerStdout = readFileSync(`${evidence}/${cell.id}/inspection-normal.stdout`);
+  const observerStderr = readFileSync(`${evidence}/${cell.id}/inspection-normal.stderr`);
+  assert.equal(observerStdout.length, inspection.bytes.stdout);
+  assert.equal(observerStderr.length, inspection.bytes.stderr);
+  assert.equal(observerStderr.length, 0);
+  const observation = JSON.parse(observerStdout.toString("utf8"));
+  assert.deepEqual(observation, inspection.observation);
+  assert.equal(observation.pid, process.pid);
+  assert.equal(observation.exitCode, 0);
+  assert.equal(observation.observerPid, inspection.observerPid);
+  assert.equal(observation.policy, "indeterminate");
+  assert.equal(observation.canonicalState, "dead");
+  assert.equal(observation.observationValid, true);
+  assert.equal(observation.builtinBindingsRestored, true);
+  assert.ok(
+    ["kernel", "kernel,ps", "kernel,ps,kernel"].includes(
+      observation.observations.map((entry) => entry.kind).join(","),
+    ),
+  );
+  for (const entry of observation.observations) {
+    if (entry.kind === "kernel") {
+      assert.equal(entry.pid, -process.pid);
+      assert.equal(entry.signal, 0);
+    } else {
+      assert.equal(entry.command, "ps");
+      assert.deepEqual(entry.argv, ["-s", String(process.pid), "-L", "-o", "pgid=,state="]);
+      assert.deepEqual(entry.options, {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+        timeout: 5000,
+        killSignal: "SIGKILL",
+      });
+      assert.equal(entry.truncated, false);
+    }
+  }
   assert.equal(process.forced, false);
   assert.equal(process.error, undefined);
   const bytes = readFileSync(`${evidence}/${cell.id}/raw.ansi`);

@@ -6,7 +6,9 @@
   ],
   "nodeCheck": [
     "child.mts",
-    "check.mts"
+    "check.mts",
+    "inspect-group.mjs",
+    "check-observation.mjs"
   ],
   "bashSyntax": [
     "run.sh"

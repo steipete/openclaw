@@ -1,0 +1,49 @@
+{
+  "originalRun": 34154144688,
+  "originalJobStatus": "FAILURE",
+  "originalHarness": "9b8cff2a33c832917d396dedc90bd7d72be3c11a",
+  "childByteIdentical": true,
+  "changes": {
+    "HARNESS-CHECKS.json": {
+      "executedWave57": "9bc2ba9af9dcf95936522244dcf3914806a3e886d2174086322e8910b31a0303",
+      "corrected": "2da16fa4374d378a2a29dbcd59ac47d46dabc02fe2fe7a034965835329aeb5b1"
+    },
+    "NATIVE-SYNTAX.json": {
+      "executedWave57": null,
+      "corrected": "f9e8a1ab0ae75ac24b2ec16332894255e824570993797b6f7e3b8965e61cb7b4"
+    },
+    "OBSERVATION-CHECKS.json": {
+      "executedWave57": null,
+      "corrected": "28a870413e44abb9eadefbad3ca7ade00efce1e0a103a37082402b6e7bc5bbde"
+    },
+    "PROOF-DESIGN.md": {
+      "executedWave57": "0702356a919d3f2b2e0bfb2c8e5abf35c4a72967994c00481bcb6e252813d753",
+      "corrected": "fd77bbb7349dc677e10cac6c987c99d308bd9aec2750ebe138ffc1e21d56ddd3"
+    },
+    "SYNTAX.json": {
+      "executedWave57": "8698e4ceb757ce93fe94b8f90eaa9d98ae9bc038c7c2f9b779f1eb13523093f4",
+      "corrected": "ec22f6332f4aac2f422fea62b4a7dddbb6b2c3f95bb427e3b272a90e74d91331"
+    },
+    "check-observation.mjs": {
+      "executedWave57": null,
+      "corrected": "5091de2f36ad9b9b35e340b4991842870102d7aaffc6f30413eee1c3ccc7dfe6"
+    },
+    "check.mts": {
+      "executedWave57": "c9e55ed4d92bbd94b73b2331a97d429b47076c5fb48550086b8a7d0ce247159e",
+      "corrected": "a30a4e68c30b5c764560bcfcf1b9946bb4c623ed66711097e80bca69e5e87cb5"
+    },
+    "driver.py": {
+      "executedWave57": "de39d9df65250db5e0584d5f59c40186428136e7c688c2731949c2ee1ce986c8",
+      "corrected": "f943322a163b7d252cf208dd305f71412cca8894878a3c38b6cb554e5d9df38e"
+    },
+    "inspect-group.mjs": {
+      "executedWave57": null,
+      "corrected": "c992a1a217da34968b15e67d75439c4f6c80b4f5e4ec0fe36a29eee72ae956fe"
+    },
+    "source.sha256": {
+      "executedWave57": "f2213b1ceaefaf0488624cc448d3d8292d010d0d7652a390bf31847583b81758",
+      "corrected": "9680e9b59975f4b89880f04f745677de1fb431dd4f88971445cb63ce89e38c9a"
+    }
+  },
+  "targetExecution": false
+}

@@ -1,0 +1,91 @@
+{
+  "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "parseHost": "v26.8.1",
+  "scope": "read-only built-in TS syntax stripping/AST parsing; no target import or execution",
+  "files": [
+    {
+      "path": "scripts/lib/managed-child-process.mts",
+      "sha256": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
+      "nodeKinds": [
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "FunctionDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration"
+      ],
+      "nativeErasableSyntax": true
+    },
+    {
+      "path": "scripts/lib/vitest-resource-ownership.mts",
+      "sha256": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+      "nodeKinds": [
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "ImportDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration"
+      ],
+      "nativeErasableSyntax": true
+    },
+    {
+      "path": "scripts/windows-cmd-helpers.mjs",
+      "sha256": "a2a52f2cbc6e890dee15ca7f514f0ebacd0479f1d58785b6c3fccccc0720b24b",
+      "nodeKinds": [
+        "ImportDeclaration",
+        "VariableDeclaration",
+        "VariableDeclaration",
+        "FunctionDeclaration",
+        "FunctionDeclaration",
+        "ExportNamedDeclaration",
+        "FunctionDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration",
+        "FunctionDeclaration",
+        "ExportNamedDeclaration"
+      ],
+      "nativeErasableSyntax": true
+    },
+    {
+      "path": "scripts/lib/windows-taskkill.mjs",
+      "sha256": "9100b4bda17e716e721a44132641190e8346a77260dc2194304bfee20fa1958d",
+      "nodeKinds": [
+        "ImportDeclaration",
+        "ExportNamedDeclaration",
+        "ExportNamedDeclaration"
+      ],
+      "nativeErasableSyntax": true
+    }
+  ]
+}
