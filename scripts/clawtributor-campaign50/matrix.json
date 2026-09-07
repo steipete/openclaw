@@ -1,22 +1,22 @@
 [
   {
-    "id": "prepared-catalog-green-remaining",
-    "directory": "prepared-catalog-green-remaining",
+    "id": "prepared-catalog-green-lint-remaining",
+    "directory": "prepared-catalog-green-lint-remaining",
     "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "remaining",
+    "variant": "lint-build-flow-remaining",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
   {
-    "id": "ios-focus-ordered-diagnostic",
-    "directory": "ios-focus-ordered-diagnostic",
-    "source": "a1707cb38032c6d94e3a3c49d0de4e68f62539b9",
+    "id": "gpt-live-diagnostic-137699-baseline",
+    "directory": "gpt-live-diagnostic-137699-baseline",
+    "runner": "ubuntu-24.04",
+    "source": "b3d67aa9b80bd95ff696332ec8cc8c25e40a191d",
+    "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "baseline",
-    "variant": "ordered-setup-diagnostic",
-    "runner": "macos-26",
-    "node": "24.20.0"
+    "variant": "ordinary-controller-error"
   }
 ]

@@ -1,0 +1,496 @@
+[check:changed] lanes=core, coreTests
+[check:changed] src/agents/context.opencode-go.test.ts: core test
+[check:changed] src/auto-reply/reply/agent-runner-memory.test.ts: core test
+[check:changed] src/auto-reply/reply/agent-runner-memory.ts: core production
+[check:changed] src/auto-reply/reply/memory-flush.test.ts: core test
+[check:changed] src/auto-reply/reply/memory-flush.ts: core production
+[check:changed] src/auto-reply/reply/reply-state.test.ts: core test
+
+[check:changed] conflict markers
+Downloading the pnpm 12.3.4 binary for linux-x64...
+$ node scripts/check-no-conflict-markers.mjs
+
+[check:changed] max-lines suppression ratchet
+$ node --import ./scripts/tsx.mjs scripts/check-max-lines-ratchet.mts --base f63095668169ea0260f5f7b6479dafc85cc5226c
+max-lines ratchet OK: 844 grandfathered suppressions.
+OPENCLAW_* count 494/494
+
+[check:changed] assertion SAFETY comment ratchet
+$ node --import ./scripts/tsx.mjs scripts/check-assertion-safety-ratchet.mts --base f63095668169ea0260f5f7b6479dafc85cc5226c
+assertion SAFETY ratchet OK: 3995 files, 11929 grandfathered assertions.
+
+[check:changed] changelog attributions
+$ node --import ./scripts/tsx.mjs scripts/check-changelog-attributions.mts
+
+[check:changed] doctor deprecation registry
+$ node --import ./scripts/tsx.mjs scripts/check-doctor-deprecation-registry.ts
+[doctor-deprecation-registry] OK as of 2026-09-07
+
+[check:changed] guarded extension wildcard re-exports
+$ node --import ./scripts/tsx.mjs scripts/check-extension-wildcard-reexports.mts
+No guarded extension wildcard re-exports found.
+
+[check:changed] plugin-sdk wildcard re-exports
+$ node --import ./scripts/tsx.mjs scripts/check-plugin-sdk-wildcard-reexports.mts
+No plugin-sdk wildcard re-exports found in extension API barrels.
+
+[check:changed] duplicate scan target coverage
+$ node scripts/check-duplicates.mjs --coverage
+[dup:check] target coverage ok
+
+[check:changed] dependency pin guard
+$ node --import ./scripts/tsx.mjs scripts/check-dependency-pins.mts
+PASS direct dependency pin guard: checked 665 directly declared dependency specs across 181 tracked package manifests; 0 violations.
+
+[check:changed] format changed files
+$ oxfmt --check --no-error-on-unmatched-pattern -- src/agents/context.opencode-go.test.ts src/auto-reply/reply/agent-runner-memory.test.ts src/auto-reply/reply/agent-runner-memory.ts src/auto-reply/reply/memory-flush.test.ts src/auto-reply/reply/memory-flush.ts src/auto-reply/reply/reply-state.test.ts
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 9ms on 6 files using 4 threads.
+
+[check:changed] plugin boundaries
+$ node --import ./scripts/tsx.mjs scripts/plugin-boundary-report.ts --summary --fail-on-eligible-compat
+Plugin Boundary Report
+
+compat deprecated=19 eligibleForRemoval=0 removalPending=8 removalPendingDue=0
+  removal-pending 2026-09-30 plugin-sdk-media-understanding-public-demotion due=false blocker=`api.registerMediaUnderstandingProvider(...)` with provider-owned request helpers and types from `openclaw/plugin-sdk/plugin-entry`; retain the public subpath through the 2026-09-30 window while official plugin consumers migrate readerRefs=46 readers=extensions/anthropic/media-understanding-provider.ts,extensions/browser/src/browser/vision.ts,extensions/browser/src/cli/browser-cli-extension.test.ts,extensions/browser/src/cli/browser-cli.test.ts,extensions/browser/src/sdk-setup-tools.ts
+  removal-pending 2026-09-30 plugin-sdk-memory-host-core-public-demotion due=false blocker=host-prepared memory prompts via `openclaw/plugin-sdk/core` and memory capability registration through the injected plugin API; retain the facade through the 2026-09-30 window and until a focused public-artifact read seam exists readerRefs=27 readers=extensions/active-memory/index.test.ts,extensions/active-memory/index.ts,extensions/codex/src/app-server/attempt-context.test.ts,extensions/memory-core/src/memory-get-corpus.test.ts,extensions/memory-core/src/public-artifacts.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-lifecycle-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound`; retain until supported external plugin migration is verified readerRefs=1 readers=src/plugins/contracts/plugin-sdk-subpaths.test.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-message-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound` and `openclaw/plugin-sdk/channel-inbound`; retain until supported external plugin migration is verified readerRefs=3 readers=src/plugin-sdk/channel-message.test.ts,src/plugins/plugin-sdk-native-resolver.test.ts,test/scripts/check-deprecated-api-usage.test.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-reply-pipeline-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound`; retain until supported external plugin migration is verified readerRefs=3 readers=src/plugin-sdk/channel-message.test.ts,src/plugins/contracts/plugin-sdk-subpaths.test.ts,test/scripts/check-deprecated-api-usage.test.ts
+  removal-pending 2026-10-01 plugin-sdk-config-runtime-subpath due=false blocker=`api.pluginConfig`, `openclaw/plugin-sdk/config-mutation`, `openclaw/plugin-sdk/runtime-config-snapshot`, and `openclaw/plugin-sdk/config-contracts`; retain until supported external plugin migration is verified readerRefs=3 readers=scripts/check-no-monolithic-plugin-sdk-entry-imports.ts,scripts/lib/config-boundary-guard.mts,src/plugins/contracts/config-boundary-guard.test.ts
+  removal-pending 2026-10-01 plugin-sdk-infra-runtime-subpath due=false blocker=focused subpaths including `openclaw/plugin-sdk/delivery-queue-runtime`, `openclaw/plugin-sdk/diagnostic-runtime`, `openclaw/plugin-sdk/error-runtime`, `openclaw/plugin-sdk/exec-approvals-runtime`, `openclaw/plugin-sdk/fetch-runtime`, and `openclaw/plugin-sdk/ssrf-runtime`; retain until supported external plugin migration is verified and system-event snapshot inspection and consumption have a modern public replacement readerRefs=1 readers=scripts/check-no-monolithic-plugin-sdk-entry-imports.ts
+  removal-pending 2026-12-01 plugin-sdk-plugin-config-runtime-public-demotion due=false blocker=`api.pluginConfig`, runtime tool context config, and focused `config-contracts`, `runtime-config-snapshot`, or `config-mutation` subpaths; retain the public subpath through the 2026-12-01 window while official plugin consumers migrate readerRefs=62 readers=extensions/active-memory/index.ts,extensions/active-memory/session-policy.ts,extensions/amazon-bedrock-mantle/register.sync.runtime.ts,extensions/amazon-bedrock/register.sync.runtime.ts,extensions/browser/src/sdk-config.ts
+plugin-sdk entrypoints=357 supportedBundledFacade=2 publicPluginOwned=1
+memory-host-sdk implementation=private-package-core-integrated private=true exports=10 sourceBridgeFiles=0 coreReferenceFiles=17
+
+[check:changed] wrapper shadowing
+$ node --import ./scripts/tsx.mjs scripts/check-wrapper-shadowing.mts
+wrapper shadowing guard passed.
+
+[check:changed] package patch guard
+$ node --import ./scripts/tsx.mjs scripts/check-package-patches.mts
+PASS package patch guard: no new pnpm patches; 6 approved patches allowlisted.
+
+[check:changed] test temp creation report (warning-only)
+No new test temp-directory migration warnings found.
+
+[check:changed] core tsgo graph boundary
+$ node --import ./scripts/tsx.mjs scripts/check-tsgo-core-boundary.mts
+
+[check:changed] typecheck core
+$ node scripts/run-tsgo.mjs -p tsconfig.core.json --incremental --tsBuildInfoFile .artifacts/tsgo-cache/core.tsbuildinfo
+
+[check:changed] typecheck core tests
+$ node scripts/run-tsgo-core-test-shards.mjs
+
+[check:changed] coercion helper declaration guard
+$ node --import ./scripts/tsx.mjs scripts/check-coercion-helper-declarations.mts
+Coercion helper declaration guard passed (111 allowlisted declarations).
+
+[check:changed] deprecated API usage
+$ node --import ./scripts/tsx.mjs scripts/check-deprecated-api-usage.mts
+deprecated API usage guard passed
+
+[check:changed] dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)
+[deadcode] Knip script unused-export scan passed with 0 entries.
+[deadcode] Knip production unused-export scan still running after 60s.
+[deadcode] Knip full-tree unused-export scan still running after 60s.
+[deadcode] Knip production unused-export scan passed with 0 entries.
+[deadcode] Knip full-tree unused-export scan passed with 0 entries.
+
+[check:changed] lint core changed files
+
+  [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-shadow): 'model' is already declared in the upper scope.[0m
+      ╭─[[38;2;92;157;255;1msrc/auto-reply/reply/agent-runner-memory.ts[0m:1305:9]
+ [2m1304[0m │     recordMemoryFlushFailure(error, params, activeSessionEntry);
+ [2m1305[0m │   const model = findModelInCatalog(
+      · [38;2;246;87;248m        ──┬──[0m
+      ·           [38;2;246;87;248m╰── [38;2;246;87;248mshadowed declaration is here[0m[0m
+ [2m1306[0m │     params.followupRun.run.thinkingCatalog ?? [],
+ [2m1307[0m │     params.followupRun.run.provider,
+ [2m1308[0m │     params.followupRun.run.model ?? params.defaultModel,
+ [2m1309[0m │   );
+ [2m1310[0m │   const contextWindowTokens = resolveContextTokens({
+ [2m1311[0m │     cfg: params.cfg,
+ [2m1312[0m │     provider: resolveContextConfigProviderForRuntime({
+ [2m1313[0m │       provider: params.followupRun.run.provider,
+ [2m1314[0m │       runtimeId,
+ [2m1315[0m │       config: params.cfg,
+ [2m1316[0m │     }),
+ [2m1317[0m │     model: params.followupRun.run.model ?? params.defaultModel,
+ [2m1318[0m │     modelContextWindow: model?.contextWindow,
+ [2m1319[0m │     modelContextTokens: model?.contextTokens,
+ [2m1320[0m │   });
+ [2m1321[0m │   let memoryFlushPlan: MemoryFlushPlan | null;
+ [2m1322[0m │   try {
+ [2m1323[0m │     memoryFlushPlan = resolveMemoryFlushPlan({ cfg: params.cfg, contextWindowTokens });
+ [2m1324[0m │   } catch (error) {
+ [2m1325[0m │     return await recordFailure(error);
+ [2m1326[0m │   }
+ [2m1327[0m │   if (!memoryFlushPlan) {
+ [2m1328[0m │     return { sessionEntry: activeSessionEntry, outcome: "skipped" };
+ [2m1329[0m │   }
+ [2m1330[0m │ 
+ [2m1331[0m │   const promptTokenEstimate = estimatePromptTokensForMemoryFlush(
+ [2m1332[0m │     params.promptForEstimate ?? params.followupRun.prompt,
+ [2m1333[0m │   );
+ [2m1334[0m │   const persistedPromptTokens = resolveFreshSessionTotalTokens(entry);
+ [2m1335[0m │   const hasFreshPersistedPromptTokens = persistedPromptTokens !== undefined;
+ [2m1336[0m │ 
+ [2m1337[0m │   // The soft margin belongs only to early flushing, leaving room before blocking compaction.
+ [2m1338[0m │   const flushThreshold = Math.max(
+ [2m1339[0m │     0,
+ [2m1340[0m │     resolveCompactionThreshold({
+ [2m1341[0m │       contextWindowTokens,
+ [2m1342[0m │       reserveTokensFloor: memoryFlushPlan.reserveTokensFloor,
+ [2m1343[0m │     }) - Math.max(0, Math.floor(memoryFlushPlan.softThresholdTokens)),
+ [2m1344[0m │   );
+ [2m1345[0m │ 
+ [2m1346[0m │   // When totals are stale/unknown, derive prompt + last output from transcript so memory
+ [2m1347[0m │   // flush can still be evaluated against projected next-input size.
+ [2m1348[0m │   //
+ [2m1349[0m │   // When totals are fresh, only read the transcript when we're close enough to the
+ [2m1350[0m │   // threshold that missing the last output tokens could flip the decision.
+ [2m1351[0m │   const shouldReadTranscriptForOutput =
+ [2m1352[0m │     entry &&
+ [2m1353[0m │     hasFreshPersistedPromptTokens &&
+ [2m1354[0m │     typeof promptTokenEstimate === "number" &&
+ [2m1355[0m │     Number.isFinite(promptTokenEstimate) &&
+ [2m1356[0m │     flushThreshold > 0 &&
+ [2m1357[0m │     (persistedPromptTokens ?? 0) + promptTokenEstimate >=
+ [2m1358[0m │       flushThreshold - TRANSCRIPT_OUTPUT_READ_BUFFER_TOKENS;
+ [2m1359[0m │ 
+ [2m1360[0m │   const shouldReadTranscript = Boolean(
+ [2m1361[0m │     entry && (!hasFreshPersistedPromptTokens || shouldReadTranscriptForOutput),
+ [2m1362[0m │   );
+ [2m1363[0m │ 
+ [2m1364[0m │   const forceFlushTranscriptBytes = memoryFlushPlan.forceFlushTranscriptBytes;
+ [2m1365[0m │   const shouldCheckTranscriptSizeForForcedFlush = Boolean(
+ [2m1366[0m │     entry && Number.isFinite(forceFlushTranscriptBytes) && forceFlushTranscriptBytes > 0,
+ [2m1367[0m │   );
+ [2m1368[0m │   const shouldReadTurnTaint = Boolean(entry);
+ [2m1369[0m │   const shouldReadSessionLog =
+ [2m1370[0m │     shouldReadTranscript || shouldCheckTranscriptSizeForForcedFlush || shouldReadTurnTaint;
+ [2m1371[0m │   const sessionLogSnapshot = shouldReadSessionLog
+ [2m1372[0m │     ? readSessionLogSnapshot({
+ [2m1373[0m │         agentId: params.followupRun.run.agentId,
+ [2m1374[0m │         sessionId: params.followupRun.run.sessionId,
+ [2m1375[0m │         sessionKey: params.sessionKey ?? params.followupRun.run.sessionKey,
+ [2m1376[0m │         storePath: params.storePath,
+ [2m1377[0m │         includeByteSize: shouldCheckTranscriptSizeForForcedFlush,
+ [2m1378[0m │         includeTurnTaint: shouldReadTurnTaint,
+ [2m1379[0m │         includeUsage: shouldReadTranscript,
+ [2m1380[0m │       })
+ [2m1381[0m │     : undefined;
+ [2m1382[0m │   const transcriptByteSize = sessionLogSnapshot?.byteSize;
+ [2m1383[0m │   const shouldForceFlushByTranscriptSize =
+ [2m1384[0m │     typeof transcriptByteSize === "number" && transcriptByteSize >= forceFlushTranscriptBytes;
+ [2m1385[0m │ 
+ [2m1386[0m │   const transcriptUsageSnapshot = sessionLogSnapshot?.usage;
+ [2m1387[0m │   const transcriptOutputTokens = transcriptUsageSnapshot?.outputTokens;
+ [2m1388[0m │   const transcriptPromptTokens = hasUsableProviderPromptUsage(transcriptUsageSnapshot)
+ [2m1389[0m │     ? await estimateProviderPromptTokens(
+ [2m1390[0m │         transcriptUsageSnapshot.trailingMessages,
+ [2m1391[0m │         contextWindowTokens,
+ [2m1392[0m │         transcriptUsageSnapshot.promptTokens,
+ [2m1393[0m │       )
+ [2m1394[0m │     : undefined;
+ [2m1395[0m │   const hasReliableTranscriptPromptTokens = typeof transcriptPromptTokens === "number";
+ [2m1396[0m │   const shouldPersistTranscriptPromptTokens =
+ [2m1397[0m │     hasReliableTranscriptPromptTokens &&
+ [2m1398[0m │     (!hasFreshPersistedPromptTokens ||
+ [2m1399[0m │       (transcriptPromptTokens ?? 0) > (persistedPromptTokens ?? 0));
+ [2m1400[0m │ 
+ [2m1401[0m │   if (entry && shouldPersistTranscriptPromptTokens) {
+ [2m1402[0m │     const nextEntry = {
+ [2m1403[0m │       ...entry,
+ [2m1404[0m │       totalTokens: transcriptPromptTokens,
+ [2m1405[0m │       totalTokensFresh: true,
+ [2m1406[0m │       totalTokensVersion: SESSION_TOTAL_TOKENS_VERSION,
+ [2m1407[0m │     };
+ [2m1408[0m │     entry = nextEntry;
+ [2m1409[0m │     if (params.sessionKey && params.sessionStore) {
+ [2m1410[0m │       params.sessionStore[params.sessionKey] = nextEntry;
+ [2m1411[0m │     }
+ [2m1412[0m │     if (params.storePath && params.sessionKey) {
+ [2m1413[0m │       try {
+ [2m1414[0m │         const updatedEntry = await updateSessionEntry(
+ [2m1415[0m │           {
+ [2m1416[0m │             storePath: params.storePath,
+ [2m1417[0m │             sessionKey: params.sessionKey,
+ [2m1418[0m │           },
+ [2m1419[0m │           () => ({
+ [2m1420[0m │             totalTokens: transcriptPromptTokens,
+ [2m1421[0m │             totalTokensFresh: true,
+ [2m1422[0m │             totalTokensVersion: SESSION_TOTAL_TOKENS_VERSION,
+ [2m1423[0m │           }),
+ [2m1424[0m │           {
+ [2m1425[0m │             skipMaintenance: true,
+ [2m1426[0m │             takeCacheOwnership: true,
+ [2m1427[0m │           },
+ [2m1428[0m │         );
+ [2m1429[0m │         if (updatedEntry) {
+ [2m1430[0m │           entry = updatedEntry;
+ [2m1431[0m │           if (params.sessionStore) {
+ [2m1432[0m │             params.sessionStore[params.sessionKey] = updatedEntry;
+ [2m1433[0m │           }
+ [2m1434[0m │         }
+ [2m1435[0m │       } catch (err) {
+ [2m1436[0m │         logVerbose(`failed to persist derived prompt totalTokens: ${String(err)}`);
+ [2m1437[0m │       }
+ [2m1438[0m │     }
+ [2m1439[0m │   }
+ [2m1440[0m │ 
+ [2m1441[0m │   const promptTokensSnapshot = Math.max(
+ [2m1442[0m │     hasFreshPersistedPromptTokens ? (persistedPromptTokens ?? 0) : 0,
+ [2m1443[0m │     hasReliableTranscriptPromptTokens ? (transcriptPromptTokens ?? 0) : 0,
+ [2m1444[0m │   );
+ [2m1445[0m │   const projectedTokenCount =
+ [2m1446[0m │     promptTokensSnapshot > 0
+ [2m1447[0m │       ? resolveEffectivePromptTokens(
+ [2m1448[0m │           promptTokensSnapshot,
+ [2m1449[0m │           transcriptOutputTokens,
+ [2m1450[0m │           promptTokenEstimate,
+ [2m1451[0m │         )
+ [2m1452[0m │       : undefined;
+ [2m1453[0m │   const tokenCountForFlush =
+ [2m1454[0m │     typeof projectedTokenCount === "number" &&
+ [2m1455[0m │     Number.isFinite(projectedTokenCount) &&
+ [2m1456[0m │     projectedTokenCount > 0
+ [2m1457[0m │       ? projectedTokenCount
+ [2m1458[0m │       : undefined;
+ [2m1459[0m │ 
+ [2m1460[0m │   // Diagnostic logging to understand why memory flush may not trigger.
+ [2m1461[0m │   logVerbose(
+ [2m1462[0m │     `memoryFlush check: sessionKey=${params.sessionKey} ` +
+ [2m1463[0m │       `tokenCount=${tokenCountForFlush ?? "undefined"} ` +
+ [2m1464[0m │       `contextWindow=${contextWindowTokens} threshold=${flushThreshold} ` +
+ [2m1465[0m │       `isHeartbeat=${params.isHeartbeat} isCli=${isCli} memoryFlushWritable=${memoryFlushWritable} ` +
+ [2m1466[0m │       `compactionCount=${entry?.compactionCount ?? 0} memoryFlushCompactionCount=${entry?.memoryFlush?.compactionCount ?? "undefined"} ` +
+ [2m1467[0m │       `persistedPromptTokens=${persistedPromptTokens ?? "undefined"} persistedFresh=${entry?.totalTokensFresh === true} ` +
+ [2m1468[0m │       `promptTokensEst=${promptTokenEstimate ?? "undefined"} transcriptPromptTokens=${transcriptPromptTokens ?? "undefined"} transcriptOutputTokens=${transcriptOutputTokens ?? "undefined"} ` +
+ [2m1469[0m │       `projectedTokenCount=${projectedTokenCount ?? "undefined"} transcriptBytes=${transcriptByteSize ?? "undefined"} ` +
+ [2m1470[0m │       `forceFlushTranscriptBytes=${forceFlushTranscriptBytes} forceFlushByTranscriptSize=${shouldForceFlushByTranscriptSize}`,
+ [2m1471[0m │   );
+ [2m1472[0m │ 
+ [2m1473[0m │   const shouldFlushMemory =
+ [2m1474[0m │     shouldRunMemoryFlush({
+ [2m1475[0m │       entry,
+ [2m1476[0m │       tokenCount: tokenCountForFlush,
+ [2m1477[0m │       threshold: flushThreshold,
+ [2m1478[0m │     }) ||
+ [2m1479[0m │     (shouldForceFlushByTranscriptSize &&
+ [2m1480[0m │       entry != null &&
+ [2m1481[0m │       !hasAlreadyFlushedForCurrentCompaction(entry));
+ [2m1482[0m │ 
+ [2m1483[0m │   if (!shouldFlushMemory) {
+ [2m1484[0m │     return { sessionEntry: entry ?? params.sessionEntry, outcome: "skipped" };
+ [2m1485[0m │   }
+ [2m1486[0m │ 
+ [2m1487[0m │   logVerbose(
+ [2m1488[0m │     `memoryFlush triggered: sessionKey=${params.sessionKey} tokenCount=${tokenCountForFlush ?? "undefined"} threshold=${flushThreshold}`,
+ [2m1489[0m │   );
+ [2m1490[0m │ 
+ [2m1491[0m │   activeSessionEntry = entry ?? params.sessionEntry;
+ [2m1492[0m │   params.replyOperation?.setPhase("memory_flushing");
+ [2m1493[0m │   let bootstrapPromptWarningSignaturesSeen = resolveBootstrapWarningSignaturesSeen(
+ [2m1494[0m │     activeSessionEntry?.systemPromptReport ??
+ [2m1495[0m │       (params.sessionKey
+ [2m1496[0m │         ? params.sessionStore?.[params.sessionKey]?.systemPromptReport
+ [2m1497[0m │         : undefined),
+ [2m1498[0m │   );
+ [2m1499[0m │   const prepareMemoryFlushAttempt = async () => {
+ [2m1500[0m │     const plan = resolveMemoryFlushPlan({
+ [2m1501[0m │       cfg: params.cfg,
+ [2m1502[0m │       nowMs: Date.now(),
+ [2m1503[0m │       contextWindowTokens,
+ [2m1504[0m │     });
+ [2m1505[0m │     if (!plan) {
+ [2m1506[0m │       return null;
+ [2m1507[0m │     }
+ [2m1508[0m │     const writePath = plan.relativePath;
+ [2m1509[0m │     if (!params.sessionKey || !activeSessionEntry) {
+ [2m1510[0m │       throw new Error("Memory flush has no current transcript target.");
+ [2m1511[0m │     }
+ [2m1512[0m │     const agentId = params.followupRun.run.agentId ?? resolveDefaultAgentId(params.cfg);
+ [2m1513[0m │     const runtime = await memoryFlushSessionRuntimeLoader.load();
+ [2m1514[0m │     const memorySession = await runtime.prepareMemoryFlushSession({
+ [2m1515[0m │       admission: params.preflightAdmission,
+ [2m1516[0m │       source: {
+ [2m1517[0m │         agentId,
+ [2m1518[0m │         sessionId: activeSessionEntry.sessionId,
+ [2m1519[0m │         sessionKey: params.sessionKey,
+ [2m1520[0m │         storePath: resolveSessionStorePathForScope(
+ [2m1521[0m │           { agentId, sessionKey: params.sessionKey, storePath: params.storePath },
+ [2m1522[0m │           params.cfg,
+ [2m1523[0m │         ),
+ [2m1524[0m │       },
+ [2m1525[0m │       runId: flushRunId,
+ [2m1526[0m │       workspaceDir: params.followupRun.run.workspaceDir,
+ [2m1527[0m │       signal: abortSignal,
+ [2m1528[0m │     });
+ [2m1529[0m │     await ensureMemoryFlushTargetFile({
+ [2m1530[0m │       workspaceDir: params.followupRun.run.workspaceDir,
+ [2m1531[0m │       relativePath: writePath,
+ [2m1532[0m │     });
+ [2m1533[0m │     const systemPrompt = [params.followupRun.run.extraSystemPrompt, plan.systemPrompt]
+ [2m1534[0m │       .filter(Boolean)
+ [2m1535[0m │       .join("\n\n");
+ [2m1536[0m │     const selection = resolveMemoryFlushModelFallbackOptions(
+ [2m1537[0m │       params.followupRun.run,
+ [2m1538[0m │       plan.model,
+ [2m1539[0m │       params.cfg,
+ [2m1540[0m │     );
+ [2m1541[0m │     abortSignal?.throwIfAborted();
+ [2m1542[0m │     const preparedRunAdmission = prepareSystemAgentRunAdmission(
+ [2m1543[0m │       params.cfg,
+ [2m1544[0m │       flushRunId,
+ [2m1545[0m │       params.followupRun.run.agentId,
+ [2m1546[0m │       "auto-reply.memory-flush",
+ [2m1547[0m │     );
+ [2m1548[0m │     return {
+ [2m1549[0m │       plan,
+ [2m1550[0m │       writePath,
+ [2m1551[0m │       systemPrompt,
+ [2m1552[0m │       selection,
+ [2m1553[0m │       preparedRunAdmission,
+ [2m1554[0m │       memorySession,
+ [2m1555[0m │     };
+ [2m1556[0m │   };
+ [2m1557[0m │   let preparedAttempt: Awaited<ReturnType<typeof prepareMemoryFlushAttempt>>;
+ [2m1558[0m │   try {
+ [2m1559[0m │     preparedAttempt = await prepareMemoryFlushAttempt();
+ [2m1560[0m │   } catch (error) {
+ [2m1561[0m │     return await recordFailure(error);
+ [2m1562[0m │   }
+ [2m1563[0m │   if (!preparedAttempt) {
+ [2m1564[0m │     return { sessionEntry: activeSessionEntry, outcome: "skipped" };
+ [2m1565[0m │   }
+ [2m1566[0m │   const {
+ [2m1567[0m │     plan: activeMemoryFlushPlan,
+ [2m1568[0m │     writePath: memoryFlushWritePath,
+ [2m1569[0m │     systemPrompt: flushSystemPrompt,
+ [2m1570[0m │     selection,
+ [2m1571[0m │     preparedRunAdmission,
+ [2m1572[0m │     memorySession,
+ [2m1573[0m │   } = preparedAttempt;
+ [2m1574[0m │   const sourcePolicySessionKey =
+ [2m1575[0m │     params.runtimePolicySessionKey ??
+ [2m1576[0m │     params.followupRun.run.runtimePolicySessionKey ??
+ [2m1577[0m │     params.sessionKey ??
+ [2m1578[0m │     params.followupRun.run.sessionKey;
+ [2m1579[0m │   const maintenanceRun = createSessionMaintenanceFollowup({
+ [2m1580[0m │     run: params.followupRun.run,
+ [2m1581[0m │     sessionEntry: { sessionId: memorySession.sessionId, updatedAt: Date.now() },
+ [2m1582[0m │     cfg: params.cfg,
+ [2m1583[0m │     sessionKey: memorySession.sessionKey,
+ [2m1584[0m │     runtimePolicySessionKey: sourcePolicySessionKey,
+ [2m1585[0m │     provider: selection.provider,
+ [2m1586[0m │     model: selection.model,
+ [2m1587[0m │     auth: params.followupRun.run,
+ [2m1588[0m │   }).run;
+ [2m1589[0m │   const deferredLifecycle = createDeferredEmbeddedRunLifecycleManager({
+ [2m1590[0m │     runId: flushRunId,
+ [2m1591[0m │     sessionId: memorySession.sessionId,
+ [2m1592[0m │     sessionKey: memorySession.sessionKey,
+ [2m1593[0m │     sessionFile: memorySession.sessionFile,
+ [2m1594[0m │     abortSignal,
+ [2m1595[0m │   });
+ [2m1596[0m │   const flushedCompactionCount = activeSessionEntry?.compactionCount ?? 0;
+ [2m1597[0m │   let visibleErrorPayloads: ReplyPayload[] = [];
+ [2m1598[0m │   // Only runnable maintenance owns a run context. The matching finally is
+ [2m1599[0m │   // the sole cleanup path so setup, execution, and persistence exits cannot orphan it.
+ [2m1600[0m │   try {
+ [2m1601[0m │     if (params.sessionKey) {
+ [2m1602[0m │       registerAgentRunContext(flushRunId, {
+ [2m1603[0m │         sessionKey: memorySession.sessionKey,
+ [2m1604[0m │         sessionId: memorySession.sessionId,
+ [2m1605[0m │         verboseLevel: params.resolvedVerboseLevel,
+ [2m1606[0m │         isControlUiVisible: false,
+ [2m1607[0m │         projectSessionActive: false,
+ [2m1608[0m │         projectSessionLifecycle: false,
+ [2m1609[0m │         projectSessionMessages: false,
+ [2m1610[0m │       });
+ [2m1611[0m │       flushRunRegistered = true;
+ [2m1612[0m │     }
+ [2m1613[0m │     memoryFlushLog.debug("memory flush dispatched", {
+ [2m1614[0m │       event: "memory_flush_dispatched",
+ [2m1615[0m │       runId: flushRunId,
+ [2m1616[0m │       sessionKey: memorySession.sessionKey,
+ [2m1617[0m │       sessionId: memorySession.sessionId,
+ [2m1618[0m │       sourceSessionKey: params.sessionKey,
+ [2m1619[0m │       sourceSessionId: activeSessionEntry?.sessionId,
+ [2m1620[0m │     });
+ [2m1621[0m │     await runEmbeddedAgentEntry({
+ [2m1622[0m │       selection: {
+ [2m1623[0m │         cfg: selection.cfg,
+ [2m1624[0m │         provider: selection.provider,
+ [2m1625[0m │         model: selection.model,
+ [2m1626[0m │         requestedRouteResolution: selection.requestedRouteResolution,
+ [2m1627[0m │         agentDir: selection.agentDir,
+ [2m1628[0m │         fallbacksOverride: selection.fallbacksOverride,
+ [2m1629[0m │         userLockedAuthProfileId:
+ [2m1630[0m │           params.followupRun.run.authProfileIdSource === "user"
+ [2m1631[0m │             ? params.followupRun.run.authProfileId
+ [2m1632[0m │             : undefined,
+ [2m1633[0m │       },
+ [2m1634[0m │       identity: {
+ [2m1635[0m │         runId: flushRunId,
+ [2m1636[0m │         agentId: params.followupRun.run.agentId,
+ [2m1637[0m │         sessionId: memorySession.sessionId,
+ [2m1638[0m │         sessionKey: memorySession.sessionKey,
+ [2m1639[0m │         lane: CommandLane.Main,
+ [2m1640[0m │       },
+ [2m1641[0m │       harness: {
+ [2m1642[0m │         workspaceDir: params.followupRun.run.workspaceDir,
+ [2m1643[0m │         sessionKey:
+ [2m1644[0m │           params.runtimePolicySessionKey ??
+ [2m1645[0m │           params.followupRun.run.runtimePolicySessionKey ??
+ [2m1646[0m │           params.sessionKey,
+ [2m1647[0m │         preparation: { kind: "direct" },
+ [2m1648[0m │         resolveRuntimeOverride: (provider) =>
+ [2m1649[0m │           resolveSessionRuntimeOverrideForProvider({
+ [2m1650[0m │             provider,
+ [2m1651[0m │             entry: activeSessionEntry,
+ [2m1652[0m │             cfg: params.cfg,
+ [2m1653[0m │           }),
+ [2m1654[0m │       },
+ [2m1655[0m │       behavior: { kind: "maintenance" },
+ [2m1656[0m │       sessionOverride: { kind: "preserve" },
+ [2m1657[0m │       abortSignal: deferredLifecycle.signal,
+ [2m1658[0m │       runCandidate: async (provider, model, runOptions) => {
+      · [38;2;30;201;212m                                     ──┬──[0m
+      ·                                        [38;2;30;201;212m╰── [38;2;30;201;212m'model' is declared here[0m[0m
+ [2m1659[0m │         const sessionRuntimeOverride = resolveSessionRuntimeOverrideForProvider({
+      ╰────
+[38;2;106;159;181m  help: [0mConsider renaming 'model' to avoid shadowing the variable from the outer scope.
+
+Found 0 warnings and 1 error.
+Finished in 26.7s on 6 files with 263 rules using 1 threads.
+[oxlint] FAILED (exit 1)
+
+[check:changed] summary
+   1.42s  ok         conflict markers
+  23.29s  ok         max-lines suppression ratchet
+  10.93s  ok         assertion SAFETY comment ratchet
+   253ms  ok         changelog attributions
+   220ms  ok         doctor deprecation registry
+   275ms  ok         guarded extension wildcard re-exports
+   248ms  ok         plugin-sdk wildcard re-exports
+   356ms  ok         duplicate scan target coverage
+   301ms  ok         dependency pin guard
+   167ms  ok         format changed files
+   2.13s  ok         plugin boundaries
+   6.94s  ok         wrapper shadowing
+   617ms  ok         package patch guard
+   617ms  ok         test temp creation report (warning-only)
+  44.78s  ok         core tsgo graph boundary
+  40.97s  ok         typecheck core
+ 678.59s  ok         typecheck core tests
+  16.73s  ok         coercion helper declaration guard
+   8.71s  ok         deprecated API usage
+  75.60s  ok         dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)
+  27.05s  failed:1   lint core changed files
+[check:changed] FAILED (exit 1)

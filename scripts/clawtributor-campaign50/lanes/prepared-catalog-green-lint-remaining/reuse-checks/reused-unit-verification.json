@@ -1,0 +1,12 @@
+{
+  "status": "qualified-reused-unit-green",
+  "run": 34067314611,
+  "job": 101578264433,
+  "harness": "f35646704bdfafd0e8a5368c11c945f1dd59b8f8",
+  "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
+  "candidate": "1a42e4917dfda234bd3a4e32dfcd365a06baf4cf3271497fbda544fcc6f3704b",
+  "files": 5,
+  "tests": 261,
+  "firstAttempts": 3,
+  "targetTestsExecuted": false
+}

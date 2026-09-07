@@ -1,0 +1,42 @@
+--- a/src/auto-reply/reply/agent-runner-memory.ts
++++ b/src/auto-reply/reply/agent-runner-memory.ts
+@@ -757,7 +757,7 @@
+     storePath: compactionStorePath,
+   };
+ 
+-  const model = findModelInCatalog(
++  const catalogModel = findModelInCatalog(
+     params.followupRun.run.thinkingCatalog ?? [],
+     params.followupRun.run.provider,
+     params.followupRun.run.model ?? params.defaultModel,
+@@ -770,8 +770,8 @@
+       config: params.cfg,
+     }),
+     model: params.followupRun.run.model ?? params.defaultModel,
+-    modelContextWindow: model?.contextWindow,
+-    modelContextTokens: model?.contextTokens,
++    modelContextWindow: catalogModel?.contextWindow,
++    modelContextTokens: catalogModel?.contextTokens,
+   });
+   const memoryFlushPlan = resolveMemoryFlushPlan({ cfg: params.cfg, contextWindowTokens });
+   const reserveTokensFloor =
+@@ -1302,7 +1302,7 @@
+   let activeSessionEntry = entry ?? params.sessionEntry;
+   const recordFailure = (error: unknown) =>
+     recordMemoryFlushFailure(error, params, activeSessionEntry);
+-  const model = findModelInCatalog(
++  const catalogModel = findModelInCatalog(
+     params.followupRun.run.thinkingCatalog ?? [],
+     params.followupRun.run.provider,
+     params.followupRun.run.model ?? params.defaultModel,
+@@ -1315,8 +1315,8 @@
+       config: params.cfg,
+     }),
+     model: params.followupRun.run.model ?? params.defaultModel,
+-    modelContextWindow: model?.contextWindow,
+-    modelContextTokens: model?.contextTokens,
++    modelContextWindow: catalogModel?.contextWindow,
++    modelContextTokens: catalogModel?.contextTokens,
+   });
+   let memoryFlushPlan: MemoryFlushPlan | null;
+   try {

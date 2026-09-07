@@ -1,0 +1,10 @@
+{
+  "id": "gpt-live-diagnostic-137699-baseline",
+  "directory": "gpt-live-diagnostic-137699-baseline",
+  "runner": "ubuntu-24.04",
+  "source": "b3d67aa9b80bd95ff696332ec8cc8c25e40a191d",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "baseline",
+  "variant": "ordinary-controller-error"
+}

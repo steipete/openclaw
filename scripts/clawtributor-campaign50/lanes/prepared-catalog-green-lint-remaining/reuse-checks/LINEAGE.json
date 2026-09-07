@@ -1,0 +1,55 @@
+{
+  "run": 34071194087,
+  "job": 101588756678,
+  "harness": "8c848224d255ccc6971ac769d673b3453d1ad3e4",
+  "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
+  "executedCandidate": "1a42e4917dfda234bd3a4e32dfcd365a06baf4cf3271497fbda544fcc6f3704b",
+  "currentCandidate": "e922e214813934dca1467b052828bbcff18130ff61752f99ba6780950c408b30",
+  "passedChecks": 20,
+  "failedCheck": "lint core changed files",
+  "failure": "eslint(no-shadow): 'model' is already declared in the upper scope.",
+  "artifacts": [
+    {
+      "artifactPath": "source.json",
+      "transportPath": "source.json",
+      "sha256": "d2a6e5dc62310ea079039e5d8e13cdcb791f8ed94fc5739333856403ca366992",
+      "bytes": 393
+    },
+    {
+      "artifactPath": "unchanged-source.sha256",
+      "transportPath": "unchanged-source.sha256",
+      "sha256": "3cd4b0e9a4437b9699a9a27254032bf8a65a6668819134272d7d8ae0e0f0e9a9",
+      "bytes": 2912
+    },
+    {
+      "artifactPath": "final-working-tree.patch",
+      "transportPath": "final-working-tree.patch",
+      "sha256": "c6b750e8101656b90ebc9659d49a395a7fc4c65ebd6b486b5a010c6c32e18106",
+      "bytes": 16897
+    },
+    {
+      "artifactPath": "reused-unit-verification.json",
+      "transportPath": "reused-unit-verification.json",
+      "sha256": "61879def06c0c18f4fb123830c283710a7b285812190545d81df946ba549e059",
+      "bytes": 371
+    },
+    {
+      "artifactPath": "exit-code.txt",
+      "transportPath": "exit-code.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "artifactPath": "check-changed.log",
+      "transportPath": "check-changed.log.txt",
+      "sha256": "0ad629b09e2210b67a0f9cf652f425fa0aeb4aa5a039bb54a91a2ac0717d8419",
+      "bytes": 30248
+    },
+    {
+      "artifactPath": "run.json (controller cache)",
+      "transportPath": "run.json",
+      "sha256": "863e095353e8a9ef10e414b2ec03f299390acdcccf3796e8a166cd8126b293c3",
+      "bytes": 9769
+    }
+  ]
+}
