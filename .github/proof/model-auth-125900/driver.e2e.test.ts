@@ -29,6 +29,7 @@ const providerRequests: Array<{ method: string; path: string }> = [];
 type AuthRead = {
   id: string;
   connection: number;
+  invalidationGeneration: number;
   phase: string;
   agentId: string;
   refresh: boolean;
@@ -205,6 +206,12 @@ suite.define(() => {
         const url = new URL(controlUiSessionPath(selectedKey), suite.server.baseUrl);
         url.hash = new URL(String(handoff.browserUrl)).hash;
         const reads: AuthRead[] = [];
+        const invalidations: Array<{
+          connection: number;
+          generation: number;
+          event: "config.changed" | "chat.metadata.changed";
+          receivedMs: number;
+        }> = [];
         const visible: Array<{ phase: string; mainChat: boolean; home: boolean }> = [];
         let phase = "cold-chat";
         let connection = 0;
@@ -220,6 +227,7 @@ suite.define(() => {
             async ({ page }) => {
               page.on("websocket", (socket) => {
                 const socketId = ++connection;
+                let invalidationGeneration = 0;
                 const pending = new Map<string, AuthRead>();
                 socket.on("close", () => {
                   for (const read of pending.values()) {
@@ -243,6 +251,7 @@ suite.define(() => {
                   const read: AuthRead = {
                     id: frame.id,
                     connection: socketId,
+                    invalidationGeneration,
                     phase,
                     agentId,
                     refresh,
@@ -256,6 +265,20 @@ suite.define(() => {
                 });
                 socket.on("framereceived", ({ payload }) => {
                   const frame: unknown = JSON.parse(payload.toString());
+                  if (
+                    isRecord(frame) &&
+                    frame.type === "event" &&
+                    (frame.event === "config.changed" || frame.event === "chat.metadata.changed")
+                  ) {
+                    // These events retire the current shared metadata owner; retain names only.
+                    invalidations.push({
+                      connection: socketId,
+                      generation: ++invalidationGeneration,
+                      event: frame.event,
+                      receivedMs: performance.now(),
+                    });
+                    return;
+                  }
                   if (!isRecord(frame) || frame.type !== "res" || typeof frame.id !== "string") {
                     return;
                   }
@@ -378,6 +401,23 @@ suite.define(() => {
             contextClosed &&
             unfinished.length === 0 &&
             closedWithoutResponse.length === 0;
+          const successfulOverlap = (sameGeneration: boolean) =>
+            reads.some(
+              (read) =>
+                read.ok &&
+                !read.unavailable &&
+                read.overlappingIds.some((id) =>
+                  reads.some(
+                    (prior) =>
+                      prior.id === id &&
+                      prior.connection === read.connection &&
+                      prior.ok &&
+                      !prior.unavailable &&
+                      (!sameGeneration ||
+                        prior.invalidationGeneration === read.invalidationGeneration),
+                  ),
+                ),
+            );
           await writeFile(
             path.join(suite.artifactDir, "auth-rpc-observation.json"),
             JSON.stringify(
@@ -399,21 +439,10 @@ suite.define(() => {
                   phase: read.phase,
                 })),
                 naturalOverlapObserved: reads.some((read) => read.overlappingIds.length > 0),
-                successfulOverlapObserved: observationComplete
-                  ? reads.some(
-                      (read) =>
-                        read.ok &&
-                        !read.unavailable &&
-                        read.overlappingIds.some((id) =>
-                          reads.some(
-                            (prior) =>
-                              prior.id === id &&
-                              prior.connection === read.connection &&
-                              prior.ok &&
-                              !prior.unavailable,
-                          ),
-                        ),
-                    )
+                invalidations,
+                successfulOverlapObserved: observationComplete ? successfulOverlap(false) : null,
+                successfulSameGenerationOverlapObserved: observationComplete
+                  ? successfulOverlap(true)
                   : null,
                 interpretation:
                   "Synthetic static-provider configuration through real production-built Gateway and Chromium. Incomplete observations have no absence verdict. No provider latency or cache-hit claim.",
