@@ -1,0 +1,110 @@
+{
+  "scope": "Synthetic ABI/log parser checks only; no Swift or target execution",
+  "cases": [
+    {
+      "case": "synthetic four green flows",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "case": "actual baseline issues rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "native failure rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "missing observation rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "fixture cleanup failure rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "wrong selection rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "flow incomplete rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "retained flow resources rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "synthetic complete owner functions and parameter cases",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "case": "unit native failure rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "unit incomplete rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "issueRecorded rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "testSkipped rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "testCancelled rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "testCaseCancelled rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "unjoined parameter case rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "missing update parameter cases rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "unexpected owner file rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "impossible nonparameter case rejected",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "case": "unit retention rejected",
+      "expected": "reject",
+      "passed": true
+    }
+  ],
+  "validatorHashes": {
+    "validate-proof.py": "45dc4c2ffd3495632635f3e1ae66b1474a8dcd52d8c9a75bce4d314767ab5058",
+    "validate-units.py": "00b08bc2c3551dbf53827d92c4ba48106fd67bba8623f2bd1ef781c7259291cc",
+    "check-validators.py": "df2b3817e4288bcbbda3deefd26af0951ca28aa8234a67ddd26d44c176776a75"
+  }
+}

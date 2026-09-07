@@ -1,0 +1,56 @@
+{
+  "source": "0bec2710f6836388b58974c3a8310dfcbc21890e",
+  "originalContributorHead": "94342e97638e5fbcda27421d478ce41df63a5863",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "sourceHashes": {
+    "extensions/feishu/src/reply-dispatcher.ts": "acd6bd4ba1bf26462f5b36e2907244990657c731ab6710040d87f6f4677e54ff",
+    "extensions/feishu/src/delivery-trace.test.ts": "2f9f44527b11169734760abdf15cc901d37c579e3d1b900f7b78e03ffae32670",
+    "extensions/feishu/src/streaming-card.ts": "7c4c5e122a80ef4f0dd0c62d93d3d8e50b3f75745555b9a76fd2438aff366973",
+    "extensions/feishu/src/reply-delivery-result.ts": "0fa28c84a0e347a3de958b8547226b7c9a10974e609634df2d160792298bf958",
+    "extensions/feishu/src/bot.ts": "2da991aaabed3a2ba0c4050a8b70cade0277d6c64070997be3fa9546d71aa7ee",
+    "extensions/feishu/src/presentation-card.ts": "681534b0c1ff2fa6261e3bb8d97ba864e411ea1b1af9cd9929725ebb964632e6",
+    "extensions/feishu/src/__traces__/streaming-happy.trace.jsonl": "baaa9da91516ee08fe8f498e4d7833e2e397c80878e2aaae26db782f126c8457",
+    "extensions/feishu/src/__traces__/final-only.trace.jsonl": "9592088e47edb9baf5109b75123a423b5cb0c52a7a11b7b93cea08feeff59fac",
+    "src/channels/plugins/contracts/trace/delivery-trace.ts": "3cb7ee546b8dd1d1f25979d228fe75bb201863bbe76559ff446170968bdbe27f",
+    "src/plugin-sdk/channel-contract-testing.ts": "39450b1270923a0ab9642739555dc84038b9dcadf14c07f90effb2d6347d980c",
+    "package.json": "abb4690e3a57d2d6c2741ce285dc95b13f85420d686c34fd11795e84b29c9822",
+    "pnpm-lock.yaml": "d3d8e893b57884420f2916e98d92b595f0b9648096e47c511dd140cec9493aee",
+    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
+    "scripts/lib/vitest-report-capture.mts": "efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
+    "scripts/run-vitest-child.mts": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+    "scripts/run-oxlint.mjs": "01d9d4c196c38962590420f090c1ed611bea8bafeffda7d2647ef3d0d49edf11",
+    "scripts/run-tsgo.mjs": "ecd0ca7da4c6ce5ce4d0a7a35f5f72c5928451861099509dc38c7579a482ad87",
+    "scripts/check-changed.mjs": "8f3a65590bd58f2395e33294ef0d6d406cdb94170799a48d407f652eaaddb382",
+    "scripts/check-changed.mts": "bd73503b1f523f540529b84c0b24a3d0fe516d0113959674c38dc301c8b30dcc",
+    "extensions/tsconfig.json": "76b3187c3beb694090ba48eabe55794f9247299b0ec64322ceaf04b1ccd4c494",
+    "tsconfig.extensions.json": "26f1594747121353a59b11168ab2dde10b0e3d7ca6f2cde37770ed208f4fcda3",
+    "test/tsconfig/tsconfig.extensions.test.json": "acce87c19f82ed839a26d62c0b669fed62d4d5cb3e42d3783b633f6e72b3c15e",
+    ".oxlintrc.json": "8bcc5a2e0f91d0dcd53ba9c38b6df90e6c9ef8e76773fa43d98d62507bee045c",
+    ".oxfmtrc.jsonc": "14b80d5a4adf7197e58a96d3824affa437555b815c498f53e38f302972c0ed70",
+    "test/vitest/vitest.extension-feishu.config.ts": "f36dc5fa8b0ab441dac09e4a650486a6cfd4b9e04510545acb7643db75749aaa"
+  },
+  "candidateHashes": {
+    "extensions/feishu/src/reply-dispatcher.ts": "41d279c3ef0cb8ba940b8c85acf142371aa9f9e5da590d7a60364efff9726d9e",
+    "extensions/feishu/src/delivery-trace.test.ts": "53fb2d64b271e907b68b8fa75ef36df85dd76671de3874401d1fb8a30bcdc008"
+  },
+  "candidateFiles": {
+    "extensions/feishu/src/reply-dispatcher.ts": "candidate/reply-dispatcher.ts",
+    "extensions/feishu/src/delivery-trace.test.ts": "candidate/delivery-trace.test.ts"
+  },
+  "files": {
+    "run.sh": "4a4d2ae71945e3f8953148b705a4b19e78f733a381556818fb0855bfca19dd7d",
+    "proof.mjs": "4e55d5f0e5c571c48f4da9078887ebda79b635d79f58b3b90310029f39c4e215",
+    "validate.mjs": "5e6735f1be48a1e16cbb4f97ccf02e8669ae6ccecc38e5fdd316c6e1270b558d",
+    "PROOF.md": "5579bff1cdc94f9abea48dbe23a9300c77f1f354f046e63f48899251ce2aab4e",
+    "row.json": "3ea482860b260c7e2ab1c919c38dcda52fdb9ada60b9c9b42cb390311032d37e",
+    "candidate/reply-dispatcher.ts": "41d279c3ef0cb8ba940b8c85acf142371aa9f9e5da590d7a60364efff9726d9e",
+    "candidate/delivery-trace.test.ts": "53fb2d64b271e907b68b8fa75ef36df85dd76671de3874401d1fb8a30bcdc008"
+  },
+  "scope": "ordinary repaired-implementation checks only",
+  "targetExecuted": false,
+  "pausedScenarios": "not-executed-or-claimed-fixed",
+  "gatewayIngress": "not-run",
+  "credentialedFeishu": false
+}

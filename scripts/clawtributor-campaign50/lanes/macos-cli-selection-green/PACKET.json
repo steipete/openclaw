@@ -1,0 +1,69 @@
+{
+  "pr": 140131,
+  "base": "0ad318398e906aa710af94d61231dfe65946c02d",
+  "authorHead": "26236284165e3b172a3299588f940634ff3ec66e",
+  "mode": "green",
+  "lane": "macos-cli-selection-green",
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "sourceFiles": {
+    "apps/macos/Sources/OpenClaw/CLIInstaller.swift": "036f657abce23db3e6bc204deb655d9890d192033669c35a8cca57ea4d7639a5",
+    "apps/macos/Sources/OpenClaw/CommandResolver.swift": "8e8615c83b3d0b1f2ce71d10a81e9d441e32e59566ac55f70cb050569a4fdf70",
+    "apps/macos/Sources/OpenClaw/CLIInstallPrompter.swift": "3d98102c7f21a5c3f808ea9b29959f9da16f4991d72ffe3a3139f8894d7b1732",
+    "apps/macos/Sources/OpenClaw/PostUpdate.swift": "dafd8046c4b7292ee5f5f40ce534fc08f292d20dbfdc35f75ba2c37634c69c86",
+    "apps/macos/Sources/OpenClaw/AppProfile.swift": "5e3afacd23f6968c2b38ff6a36bedd1e471a8a766a5242a27d6bc8cb9127abfc",
+    "apps/macos/Tests/OpenClawIPCTests/TestIsolation.swift": "2a97afcab2c21639df71a0a0fdef98da5f22e4f860f955e70d93c9440f77d923",
+    "scripts/test-macos-native.mts": "58f79c0d94e6890cb1e1f5e10380b021a8149b7e3b67cc1df3ecf38d5b56d05f",
+    "apps/macos/Package.swift": "39247a1c98b21acd8c472e4f7f0cb1290adccc349fca06792d5ed67139bbf16e",
+    "apps/macos/Package.resolved": "6041ee40156d8269b547d38c04bbee073b33b5aff3f62e05b7d29701042fd4e3",
+    "apps/macos/Sources/OpenClawIPC/MacControlProfile.swift": "ebdcb5155edd1c718eb291d0ad0ec35d13e54b4ffed4e5e407f534ad101e56a3",
+    "apps/macos/Sources/OpenClaw/RuntimeLocator.swift": "16f3acfd6d34c4435c642374e448a9f42a283e3114b13a555f86425085a00ec5",
+    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
+    "scripts/check-changed.mjs": "8f3a65590bd58f2395e33294ef0d6d406cdb94170799a48d407f652eaaddb382",
+    "scripts/check-changed.mts": "bd73503b1f523f540529b84c0b24a3d0fe516d0113959674c38dc301c8b30dcc",
+    "scripts/changed-lanes.mts": "6dbd85651ae3402854dbb7c85ba1c4cf86fa34629630f0c280a502e20eea0e6e",
+    "scripts/install-swift-tools.sh": "646ef4541a39b44edd357ca2823e0ceec05b700e8ba487760dcddf60401f35d9",
+    "scripts/check-swift-tools.sh": "a9fe9cd3a1640f0c40c2f27fdf6d102e7f4bba04dc783ad17fd1c4cf18700bf2",
+    "scripts/lint-swift.sh": "424ffd1364a70cef381ea4ee51f62696fb2805077e7e4bdb6ae3566118cb1bc2",
+    "scripts/format-swift.sh": "5bfc4a7f05cde52c53fb3e4b39bb51a617b2325c8640a45a828f838c39e3f88b",
+    "config/swiftformat": "01b3ddd6a15a05ade8bbae35f9f7d9681fe8bbf8a7e89ccfd51f38d8f61adeb4",
+    "config/swiftlint.yml": "727fa9892ea37b8cafbd5a506668a50a15246818ab5d6a79d74fd3654f0c5b79",
+    "package.json": "abb4690e3a57d2d6c2741ce285dc95b13f85420d686c34fd11795e84b29c9822",
+    "pnpm-lock.yaml": "d3d8e893b57884420f2916e98d92b595f0b9648096e47c511dd140cec9493aee",
+    "apps/macos/Tests/OpenClawIPCTests/CLIInstallerTests.swift": "18e7a0496b901d0b120efe52c3f71966dc39c6da87b41581019fc91b30a1d9cc",
+    "apps/macos/Tests/OpenClawIPCTests/CommandResolverTests.swift": "68ed5a2506c3ab7fd8f81d16da83b8db6a3ad223c3deb1db78c0ef3a5a5a1369",
+    "apps/macos/Tests/OpenClawIPCTests/AppProfileTests.swift": "395129a1f4c9273fe94c85f8cff614eb48da251f8d78b9662d43f00f2184b387",
+    "apps/macos/Tests/OpenClawIPCTests/RuntimeLocatorTests.swift": "74210b147c08525c68461173230790e4e56cafe9ec4eda0f2aaa4bc79fb73502"
+  },
+  "candidateFiles": {
+    "apps/macos/Sources/OpenClaw/CLIInstaller.swift": "d215c9a5efdea89292c41101881bc9fe0f9a7cf5c537e3277157cdad3c0774c2",
+    "apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionTests.swift": "f6846658c8e286a78320baa13860cd84520158faddccc691eae3d66a7f1d721d"
+  },
+  "proofFiles": {
+    "apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionProofTests.swift": "619cba60b54520548625d458c544a7515035f7a1325d6b255dd55767c2679ca3"
+  },
+  "artifacts": {
+    "run.sh": "d9999defa1e89e235cacc4f02a26d3048dfffeb3be3d1aa92cefdde0dc221a67",
+    "validate-proof.py": "45dc4c2ffd3495632635f3e1ae66b1474a8dcd52d8c9a75bce4d314767ab5058",
+    "validate-units.py": "00b08bc2c3551dbf53827d92c4ba48106fd67bba8623f2bd1ef781c7259291cc",
+    "candidate.patch": "e213b3f25face766480a347f7c0a036678ca723f6828307f083a446f14c807c2",
+    "proof-fixture.patch": "49c64a8c2183b8a4c59e29a6c74ffc6c6977f8b4d26fb54d8e6829b6662d0258",
+    "CLIInstallerSelectionProofTests.swift": "619cba60b54520548625d458c544a7515035f7a1325d6b255dd55767c2679ca3",
+    "check-validators.py": "df2b3817e4288bcbbda3deefd26af0951ca28aa8234a67ddd26d44c176776a75",
+    "validator-checks.json": "49e5ca30b05d9264479c72d6ed49818d2af770c1aedc9f51ed1eabe8d3766854"
+  },
+  "baseline": {
+    "run": 34153109025,
+    "job": 101839393123,
+    "base": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
+    "packetSha256": "6cca3bca5d2f950e7f530dd862039f9df1cdc91e54b934e37b983b4df4f40a53",
+    "verdict": "Two intended inspection defects and two passing update controls; not repeated"
+  },
+  "reporterContract": {
+    "abi": 0,
+    "sourceManifest": "abi-source/SOURCES.json",
+    "parameterCases": "Stable parent testID from event.testID; emitted only for parameterized functions. No opaque testID parsing or experimental _testCase fields."
+  },
+  "execution": "Disposable macos-swift only. Build once; separate canonical default-profile children for unchanged four-case observed flow and five current owner suites. Changed checks and format must pass. No package install/service/GUI claim.",
+  "publication": "Private candidate only; original contributor attribution is unresolved and blocks commit/publication."
+}

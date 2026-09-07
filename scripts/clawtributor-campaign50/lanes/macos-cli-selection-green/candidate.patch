@@ -1,0 +1,213 @@
+diff --git a/apps/macos/Sources/OpenClaw/CLIInstaller.swift b/apps/macos/Sources/OpenClaw/CLIInstaller.swift
+index 18d21a73f6a..3a9cb5ac81e 100644
+--- a/apps/macos/Sources/OpenClaw/CLIInstaller.swift
++++ b/apps/macos/Sources/OpenClaw/CLIInstaller.swift
+@@ -223,14 +223,10 @@ enum CLIInstaller {
+         }
+ 
+         let preferredPaths = await CommandResolver.preferredPathsAsync()
+-        let status = await self.status(
++        return await self.status(
+             location: location,
+             expectedVersion: expectedVersion,
+             preferredPaths: preferredPaths)
+-        if status.isReady {
+-            self.rememberValidated(status, defaults: AppDefaults.standard)
+-        }
+-        return status
+     }
+ 
+     static func status(location: String) async -> Status {
+@@ -381,6 +377,7 @@ enum CLIInstaller {
+                 await statusHandler("Install failed: \(error.localizedDescription)")
+                 return false
+             }
++            self.rememberValidated(managedStatus, defaults: AppDefaults.standard)
+             let parsed = self.parseInstallEvents(response.stdout)
+             let installedVersion = parsed.last { $0.event == "done" }?.version
+             let summary = installedVersion.map { "Installed openclaw \($0)." } ?? "Installed openclaw."
+@@ -570,6 +567,7 @@ enum CLIInstaller {
+             return .failure(message: message, details: managedStatus.message)
+         }
+ 
++        self.rememberValidated(managedStatus, defaults: AppDefaults.standard)
+         self.rememberInstallPolicy(.exact(targetVersion))
+         NotificationCenter.default.post(name: .openclawCLIInstalled, object: nil)
+         await statusHandler(String(
+diff --git a/apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionTests.swift b/apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionTests.swift
+new file mode 100644
+index 00000000000..b9a2051f757
+--- /dev/null
++++ b/apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionTests.swift
+@@ -0,0 +1,171 @@
++import Foundation
++import Testing
++@testable import OpenClaw
++
++@Suite(.serialized)
++@MainActor
++struct CLIInstallerSelectionTests {
++    @Test func `managed inspection preserves the external CLI selected by discovery`() async throws {
++        try await self.withCLIInstallations { external, managed in
++            let selected = await CLIInstaller.status()
++            #expect(selected == .ready(location: external.path, version: "2026.9.2"))
++
++            // Startup performs discovery followed by managed inspection before deciding ownership.
++            let inspected = await CLIInstaller.managedStatus()
++            #expect(inspected == .ready(location: managed.path, version: "2026.9.1"))
++            #expect(AppDefaults.standard.string(forKey: cliValidatedExecutableKey) == external.path)
++            #expect(AppDefaults.standard.string(forKey: cliValidatedVersionKey) == "2026.9.2")
++            #expect(CommandResolver.openclawExecutable() == external.path)
++        }
++    }
++
++    @Test func `managed inspection does not select a CLI when no selection exists`() async throws {
++        try await self.withCLIInstallations { _, managed in
++            AppDefaults.standard.removeObject(forKey: cliValidatedExecutableKey)
++            AppDefaults.standard.removeObject(forKey: cliValidatedVersionKey)
++
++            #expect(await CLIInstaller.managedStatus() == .ready(location: managed.path, version: "2026.9.1"))
++            #expect(AppDefaults.standard.string(forKey: cliValidatedExecutableKey) == nil)
++            #expect(AppDefaults.standard.string(forKey: cliValidatedVersionKey) == nil)
++        }
++    }
++
++    @Test(arguments: [true, false])
++    func `managed update selects its CLI only after successful verification`(_ succeeds: Bool) async throws {
++        try await self.withCLIInstallations { external, managed in
++            let targetVersion = succeeds ? "2026.9.1" : "2026.9.2"
++            let outcome = await CLIInstaller.updateManaged(
++                targetVersion: targetVersion,
++                restartGateway: false,
++                statusHandler: { _ in })
++
++            if succeeds {
++                #expect(outcome == .success(fromVersion: "2026.8.1", toVersion: "2026.9.1"))
++                #expect(AppDefaults.standard.string(forKey: cliValidatedExecutableKey) == managed.path)
++                #expect(AppDefaults.standard.string(forKey: cliValidatedVersionKey) == "2026.9.1")
++                #expect(CommandResolver.openclawExecutable() == managed.path)
++            } else {
++                guard case .failure = outcome else {
++                    Issue.record("An updater success response must not override failed version verification")
++                    return
++                }
++                #expect(AppDefaults.standard.string(forKey: cliValidatedExecutableKey) == external.path)
++                #expect(AppDefaults.standard.string(forKey: cliValidatedVersionKey) == "2026.9.2")
++                #expect(CommandResolver.openclawExecutable() == external.path)
++            }
++        }
++    }
++
++    private enum FixtureError: Error {
++        case invalid(String)
++    }
++
++    private func withCLIInstallations(
++        _ body: (URL, URL) async throws -> Void) async throws
++    {
++        try await TestIsolation.withIsolatedState(defaults: [
++            cliValidatedExecutableKey: nil,
++            cliValidatedVersionKey: nil,
++            cliInstallPolicyKey: nil,
++            "openclaw.gatewayProjectRootPath": nil,
++        ]) {
++            let env = ProcessInfo.processInfo.environment
++            let launcherHome = try URL(fileURLWithPath: #require(env["CFFIXED_USER_HOME"]))
++            let launcherRoot = launcherHome.deletingLastPathComponent()
++            let fileManager = FileManager.default
++            let home = fileManager.homeDirectoryForCurrentUser
++            let resolvedHome = home.resolvingSymlinksInPath()
++            let canonicalTmp = URL(fileURLWithPath: "/tmp").resolvingSymlinksInPath()
++            try #require(env["CI"] == "true")
++            try #require(env["HOME"] == env["CFFIXED_USER_HOME"])
++            try #require(launcherHome.lastPathComponent == "home")
++            try #require(launcherRoot.deletingLastPathComponent().resolvingSymlinksInPath().path == canonicalTmp.path)
++            try #require(launcherRoot.lastPathComponent.hasPrefix("oc-test-"))
++            try #require(env["OPENCLAW_PROFILE"] == "default")
++            try #require(env["OPENCLAW_STATE_DIR"] == launcherRoot.appendingPathComponent("state").path)
++            try #require(env["OPENCLAW_CONFIG_PATH"] == launcherRoot.appendingPathComponent("state/openclaw.json").path)
++            try #require(env["TMP"] == launcherRoot.appendingPathComponent("tmp").path)
++            var isHomeDirectory: ObjCBool = false
++            try #require(fileManager.fileExists(atPath: home.path, isDirectory: &isHomeDirectory))
++            try #require(isHomeDirectory.boolValue)
++            try #require(resolvedHome.path == launcherHome.resolvingSymlinksInPath().path)
++            try #require(GatewayEnvironment.expectedGatewayVersionString() == nil)
++            let external = home.appendingPathComponent("cli-selection-\(UUID().uuidString)/bin/openclaw")
++            let managed = URL(fileURLWithPath: CLIInstaller.managedExecutableLocation())
++            try #require(managed.path.hasPrefix(home.path + "/"))
++            var files: [URL] = []
++            var directories: [URL] = []
++
++            func createParent(_ directory: URL) throws {
++                guard directory.path.hasPrefix(home.path + "/") else {
++                    throw FixtureError.invalid("parent escaped disposable home")
++                }
++                if !fileManager.fileExists(atPath: directory.path) {
++                    let parent = directory.deletingLastPathComponent()
++                    if parent.path != home.path { try createParent(parent) }
++                    try fileManager.createDirectory(at: directory, withIntermediateDirectories: false)
++                    directories.append(directory)
++                }
++                var isDirectory: ObjCBool = false
++                guard fileManager.fileExists(atPath: directory.path, isDirectory: &isDirectory),
++                      isDirectory.boolValue,
++                      directory.resolvingSymlinksInPath().path.hasPrefix(resolvedHome.path + "/")
++                else {
++                    throw FixtureError.invalid("fixture parent is not an owned directory")
++                }
++            }
++
++            func createCLI(_ url: URL, version: String) throws {
++                let parent = url.deletingLastPathComponent()
++                try createParent(parent)
++                guard try !(fileManager.contentsOfDirectory(atPath: parent.path)).contains(url.lastPathComponent) else {
++                    throw FixtureError.invalid("refusing existing fixture executable")
++                }
++                let script = """
++                #!/bin/sh
++                if [ "$1" = "--version" ]; then
++                  printf 'OpenClaw \(version)\\n'
++                else
++                  printf '{"status":"ok","before":{"version":"2026.8.1"}}\\n'
++                fi
++
++                """
++                try script.write(to: url, atomically: true, encoding: .utf8)
++                files.append(url)
++                try fileManager.setAttributes([.posixPermissions: 0o700], ofItemAtPath: url.path)
++            }
++
++            func cleanup() throws {
++                var errors: [String] = []
++                for file in files.reversed() {
++                    do { try fileManager.removeItem(at: file) } catch { errors.append(String(describing: error)) }
++                }
++                for directory in directories.reversed() {
++                    do {
++                        guard try fileManager.contentsOfDirectory(atPath: directory.path).isEmpty else {
++                            throw FixtureError.invalid("fixture directory contains unowned paths")
++                        }
++                        try fileManager.removeItem(at: directory)
++                    } catch { errors.append(String(describing: error)) }
++                }
++                guard errors.isEmpty else {
++                    throw FixtureError.invalid("fixture cleanup failed: \(errors.joined(separator: "; "))")
++                }
++            }
++
++            var bodyError: Error?
++            do {
++                try createCLI(external, version: "2026.9.2")
++                try createCLI(managed, version: "2026.9.1")
++                AppDefaults.standard.set(external.path, forKey: cliValidatedExecutableKey)
++                AppDefaults.standard.set("2026.9.2", forKey: cliValidatedVersionKey)
++                AppDefaults.standard.set(home.path, forKey: "openclaw.gatewayProjectRootPath")
++                try await body(external, managed)
++            } catch {
++                bodyError = error
++            }
++            try cleanup()
++            if let bodyError { throw bodyError }
++        }
++    }
++}

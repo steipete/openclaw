@@ -1,0 +1,15 @@
+# #103928 ordinary post-fix packet
+
+Draft, unexecuted. Source review, independent packet review and root execution grant remain required. No reproduction or comparison against an old implementation is included. Parked failure-sequence fixtures and their evidence readers are absent from this packet and must not be added or invoked.
+
+The source base is inspected current main0bec2710f6836388b58974c3a8310dfcbc21890e. Two candidate files reproduce the actual resolved native index: production-neutral dispatcher simplification and one ordinary successful-final control. The original contributor94342 remains a parent of that pending native composition. This packet changes no dependency, configuration, provider API or timing constant.
+
+Only three ordinary tests are selected in delivery-trace.test.ts: normal final-result/identity, the existing streaming-happy trace and final-only trace. The existing successful streaming sequence uses ordinary complete text and the existing timer progression; there is no held request, fault injection or intentionally failing sequence. The other eight existing cases are explicitly filtered. Native JSON and capture must show exactly the selected three full names passed, eight filtered, one completed module, no suite/global errors, no timeout, no ignored errors and no report replay/retry. Existing goldens remain unchanged; an unexpected mismatch fails for source review rather than automatic refresh.
+
+These tests establish ordinary repaired-implementation functionality only. They do not establish that paused scenarios were fixed. The added control checks returned finalization, the complete ordinary answer/card identity, one reply/settings pair and cleanup, using the existing real dispatcher/session and synthetic recording SDK/fetch fixture. It does not create a Gateway or send to a real Feishu account.
+
+After the functional checks, run pinned formatting, targeted lint, production/test type checks and the changed-lane dry-run only. The dry-run is retained for root review and does not authorize broader runtime tests. Required CI/landing gates remain separate. Any failed/unrun check stays failed/unrun; no broad rerun or test/golden relaxation is supplied.
+
+The source-owned managed runner supervises every command with strict process-tree/pipe retirement, bounded output, actual child exit/signal capture and an isolated command HOME/state. Normal return0/nullsignal and successful owned-state cleanup are required. Timeout, signal, capture or cleanup failure fails the packet even if the child later retires. Unjoined work retains source/inputs/state and stops later target reads. Candidate source remains materialized in the disposable target and is hash-checked after permitted checks; no commit or public mutation occurs.
+
+Source/input hashes, exact two-file delta and current native file identities must be reverified before dispatch. Node24.20.0/pnpm12.3.4 match the source manifest and lock. No live credentials, Gateway ingress, real tenant timing or native Feishu rendering result is claimed. Root must explicitly review these limitations before any landing decision.
