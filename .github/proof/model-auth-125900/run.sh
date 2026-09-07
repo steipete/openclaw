@@ -8,12 +8,12 @@ tooling_root=$(cd "$(dirname "$0")/../../.." && pwd)
 phase=$4
 case "$phase" in
   baseline)
-    source_head=fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc
-    source_tree=30cf40bb426f2c70d1a3c8f3d064914049d5d4f3
+    source_head=b392c6080f7c12782a2c808c742eb93b25cd5979
+    source_tree=1b2108d00d24aefae81b9d8bd81e4be6186d24ca
     ;;
   candidate)
-    source_head=1667c547e83ddfd79fa85a7312348859ce45da95
-    source_tree=7ba5acf4e58fb27aaaadf060c819c60f3a15d7e0
+    source_head=c9ac2e0b2431f8939a93c1e41cb1db24e9e5af19
+    source_tree=e82805419822e6acf64f9c9c944cc008fab17b23
     ;;
   *) exit 2 ;;
 esac
@@ -43,9 +43,9 @@ test "$(git -C "$tooling_root" rev-parse HEAD)" = "$tooling_head"
 test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
 test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
 if [[ "$phase" == candidate ]]; then
-  test "$(git -C "$source_dir" rev-parse 'HEAD^1')" = efddff09bfd96a10d64cb0604858c164d685cd2b
-  test "$(git -C "$source_dir" rev-parse 'HEAD^1^2')" = fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc
-  git -C "$source_dir" merge-base --is-ancestor fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc HEAD
+  test "$(git -C "$source_dir" rev-parse 'HEAD^1')" = 1667c547e83ddfd79fa85a7312348859ce45da95
+  test "$(git -C "$source_dir" rev-parse 'HEAD^2')" = b392c6080f7c12782a2c808c742eb93b25cd5979
+  git -C "$source_dir" merge-base --is-ancestor b392c6080f7c12782a2c808c742eb93b25cd5979 HEAD
 fi
 git -C "$source_dir" diff --exit-code
 cd "$source_dir"
@@ -205,7 +205,7 @@ JS
   # Measure the canonical budget after the real browser exits. Its normalized
   # build identity must never be served by the live Gateway's normal bundle.
   set +e
-  clean_run pnpm ui:check-performance:base fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc \
+  clean_run pnpm ui:check-performance:base b392c6080f7c12782a2c808c742eb93b25cd5979 \
     2>&1 | tee "$proof_dir/artifacts/startup-check.log"
   startup_exit=${PIPESTATUS[0]}
   set -e

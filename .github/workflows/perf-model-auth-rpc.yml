@@ -13,10 +13,10 @@ jobs:
         include:
           - phase: baseline
             repository: openclaw/openclaw
-            source: fd67ed8fbaff6c4d047e0a89c6e8267b1da65acc
+            source: b392c6080f7c12782a2c808c742eb93b25cd5979
           - phase: candidate
             repository: steipete/openclaw
-            source: 1667c547e83ddfd79fa85a7312348859ce45da95
+            source: c9ac2e0b2431f8939a93c1e41cb1db24e9e5af19
     if: github.repository == 'steipete/openclaw'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
