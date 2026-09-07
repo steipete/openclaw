@@ -32,13 +32,13 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: openclaw/openclaw
-          ref: 5f661669b2c2979f2a61e23d4addb3bdd4545469
+          ref: 599762504579943ae1b04dd1de6f2e15dddf4b8a
           path: baseline
           persist-credentials: false
       - name: Checkout frozen candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: 94ce6288f3606ef2f5d47b5680458c1f434d8009
+          ref: fca1eeed22b4ad0a072a36aa1b58e18037926809
           path: candidate
           persist-credentials: false
       - name: Setup exact Node runtime

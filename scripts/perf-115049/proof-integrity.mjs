@@ -7,12 +7,12 @@ import path from "node:path";
 
 export const PINS = {
   baseline: {
-    commit: "5f661669b2c2979f2a61e23d4addb3bdd4545469",
-    tree: "edf08c934a1a371e06128814106ae325600d3b57",
+    commit: "599762504579943ae1b04dd1de6f2e15dddf4b8a",
+    tree: "ee654d032e4cc6f96ee1e98d2db9df75fc294b6c",
   },
   candidate: {
-    commit: "94ce6288f3606ef2f5d47b5680458c1f434d8009",
-    tree: "b28b7f6269b70f1988c52a0266ccc4eaf6445fdf",
+    commit: "fca1eeed22b4ad0a072a36aa1b58e18037926809",
+    tree: "0054d113664f90e658b4580544b2a3d375207eed",
   },
 };
 export const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");

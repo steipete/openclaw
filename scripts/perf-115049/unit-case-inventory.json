@@ -1,219 +1,219 @@
 {
-  "source": "94ce6288f3606ef2f5d47b5680458c1f434d8009",
+  "source": "fca1eeed22b4ad0a072a36aa1b58e18037926809",
   "parser": "TypeScript6.0.3 createSourceFile; source parsing only; no test evaluation",
   "files": {
     "extensions/codex/src/app-server/run-attempt.context-engine.test.ts": {
-      "sha256": "1fce00b018f20115474535377b9f814a1e6668e68d5b6834776e0656429b85ec",
+      "sha256": "726213628bfb3ecdf4e1e26f76ce6e64334ffa5cfd3bc66c3bde8d82c16db59d",
       "tests": [
         {
           "name": "keeps the fixture thread persistent while denying web search",
-          "line": 264,
+          "line": 267,
           "column": 3,
-          "titleEndLine": 264
+          "titleEndLine": 267
         },
         {
           "name": "bootstraps and assembles non-legacy context before the Codex turn starts (%s summary)",
-          "line": 275,
+          "line": 278,
           "column": 3,
-          "titleEndLine": 276
+          "titleEndLine": 279
         },
         {
           "name": "starts a fresh turn before the post-start mirror records admission",
-          "line": 378,
+          "line": 381,
           "column": 3,
-          "titleEndLine": 378
+          "titleEndLine": 381
         },
         {
           "name": "keeps context-engine history bound to the run session when sandbox key differs",
-          "line": 411,
+          "line": 414,
           "column": 3,
-          "titleEndLine": 411
+          "titleEndLine": 414
         },
         {
           "name": "uses the runtime token budget for large Codex context-engine projections",
-          "line": 445,
+          "line": 448,
           "column": 3,
-          "titleEndLine": 445
+          "titleEndLine": 448
         },
         {
           "name": "bounds active context-engine projections when prompt hooks append context",
-          "line": 473,
+          "line": 476,
           "column": 3,
-          "titleEndLine": 473
+          "titleEndLine": 476
         },
         {
           "name": "bounds hook-appended prompts without an active context engine",
-          "line": 519,
+          "line": 522,
           "column": 3,
-          "titleEndLine": 519
+          "titleEndLine": 522
         },
         {
           "name": "bounds hook-appended prompts after delivery metadata is relocated",
-          "line": 546,
+          "line": 549,
           "column": 3,
-          "titleEndLine": 546
+          "titleEndLine": 549
         },
         {
           "name": "bounds hook-appended output for an empty prompt without an active context engine",
-          "line": 573,
+          "line": 576,
           "column": 3,
-          "titleEndLine": 573
+          "titleEndLine": 576
         },
         {
           "name": "projects thread-bootstrap context only once for a matching context-engine epoch",
-          "line": 601,
+          "line": 604,
           "column": 3,
-          "titleEndLine": 601
+          "titleEndLine": 604
         },
         {
           "name": "resumes a matching thread-bootstrap binding even when the bootstrap turn exceeded the opt-in native byte guard",
-          "line": 691,
+          "line": 694,
           "column": 3,
-          "titleEndLine": 691
+          "titleEndLine": 694
         },
         {
           "name": "starts a fresh thread instead of resuming a token-pressured thread-bootstrap binding",
-          "line": 782,
+          "line": 785,
           "column": 3,
-          "titleEndLine": 782
+          "titleEndLine": 785
         },
         {
           "name": "does not inject mirrored history when a stale thread-bootstrap binding has no active context engine",
-          "line": 865,
+          "line": 868,
           "column": 3,
-          "titleEndLine": 865
+          "titleEndLine": 868
         },
         {
           "name": "keeps mirrored history when an inactive per-turn context-engine binding starts fresh",
-          "line": 959,
+          "line": 962,
           "column": 3,
-          "titleEndLine": 959
+          "titleEndLine": 962
         },
         {
           "name": "starts a fresh Codex thread and reprojects when context-engine epoch changes",
-          "line": 1009,
+          "line": 1012,
           "column": 3,
-          "titleEndLine": 1009
+          "titleEndLine": 1012
         },
         {
           "name": "reprojects thread-bootstrap context when context-engine policy changes",
-          "line": 1099,
+          "line": 1102,
           "column": 3,
-          "titleEndLine": 1099
+          "titleEndLine": 1102
         },
         {
           "name": "reprojects thread-bootstrap context for native-disabled transient Codex threads",
-          "line": 1163,
+          "line": 1166,
           "column": 3,
-          "titleEndLine": 1163
+          "titleEndLine": 1166
         },
         {
           "name": "starts a fresh Codex thread when thread-bootstrap projection falls back to per-turn projection",
-          "line": 1271,
+          "line": 1274,
           "column": 3,
-          "titleEndLine": 1271
+          "titleEndLine": 1274
         },
         {
           "name": "retries resumed context overflow only with host model ownership (expected native: %s)",
-          "line": 1340,
+          "line": 1343,
           "column": 3,
-          "titleEndLine": 1341
+          "titleEndLine": 1344
         },
         {
           "name": "returns a replay-safe recovery result when the executable owner changes during overflow retry",
-          "line": 1494,
+          "line": 1497,
           "column": 3,
-          "titleEndLine": 1494
+          "titleEndLine": 1497
         },
         {
           "name": "preserves a newer context-engine binding when a stale resumed thread overflows",
-          "line": 1581,
+          "line": 1584,
           "column": 3,
-          "titleEndLine": 1581
+          "titleEndLine": 1584
         },
         {
           "name": "preserves native ownership through terminal overflow (expected native: %s)",
-          "line": 1662,
+          "line": 1665,
           "column": 3,
-          "titleEndLine": 1663
+          "titleEndLine": 1666
         },
         {
           "name": "does not pre-compact over-budget rendered context-engine prompts before Codex turn/start",
-          "line": 1770,
+          "line": 1773,
           "column": 3,
-          "titleEndLine": 1770
+          "titleEndLine": 1773
         },
         {
           "name": "fails first-turn Codex context overflow instead of falling back to OpenClaw compaction",
-          "line": 1817,
+          "line": 1820,
           "column": 3,
-          "titleEndLine": 1817
+          "titleEndLine": 1820
         },
         {
           "name": "does not call hung owning context-engine compaction during Codex overflow recovery",
-          "line": 1856,
+          "line": 1859,
           "column": 3,
-          "titleEndLine": 1856
+          "titleEndLine": 1859
         },
         {
           "name": "keeps current inbound context at the front of the Codex context-engine prompt",
-          "line": 1948,
+          "line": 1951,
           "column": 3,
-          "titleEndLine": 1948
+          "titleEndLine": 1951
         },
         {
           "name": "returns an exact terminal anchor for $name turns without finalizing inside Codex",
-          "line": 1979,
+          "line": 1982,
           "column": 3,
-          "titleEndLine": 1986
+          "titleEndLine": 1989
         },
         {
           "name": "returns the terminal anchor needed by the outer fallback owner",
-          "line": 2021,
+          "line": 2024,
           "column": 3,
-          "titleEndLine": 2021
+          "titleEndLine": 2024
         },
         {
           "name": "persists the admitted user prompt before an async item buffered during turn startup",
-          "line": 2045,
+          "line": 2048,
           "column": 3,
-          "titleEndLine": 2045
+          "titleEndLine": 2048
         },
         {
           "name": "assembles current SQLite history after $mutation bootstrap (admitted=$admitted)",
-          "line": 2097,
+          "line": 2095,
           "column": 3,
-          "titleEndLine": 2105
+          "titleEndLine": 2103
         },
         {
           "name": "keeps the first SQLite history when a changed transcript cannot be reread",
-          "line": 2175,
+          "line": 2180,
           "column": 3,
-          "titleEndLine": 2175
+          "titleEndLine": 2180
         },
         {
           "name": "stops before assembly and native turn start when bootstrap is cancelled",
-          "line": 2210,
+          "line": 2215,
           "column": 3,
-          "titleEndLine": 2210
+          "titleEndLine": 2215
         },
         {
           "name": "reloads mirrored history after bootstrap mutates the session transcript",
-          "line": 2234,
+          "line": 2239,
           "column": 3,
-          "titleEndLine": 2234
+          "titleEndLine": 2239
         },
         {
           "name": "logs assemble failures as a formatted message instead of the raw error object",
-          "line": 2276,
+          "line": 2281,
           "column": 3,
-          "titleEndLine": 2276
+          "titleEndLine": 2281
         },
         {
           "name": "does not advance context-engine state on prompt failure",
-          "line": 2330,
+          "line": 2335,
           "column": 3,
-          "titleEndLine": 2330
+          "titleEndLine": 2335
         }
       ]
     },
@@ -440,6 +440,83 @@
           "line": 854,
           "column": 3,
           "titleEndLine": 854
+        }
+      ]
+    },
+    "src/agents/embedded-agent-runner/transcript-rewrite.test.ts": {
+      "sha256": "4daa87c2f550ae8a5ef385b91af4a69b1e922d90342e098b7e38de2b2cbd8cdb",
+      "tests": [
+        {
+          "name": "preserves admitted input custody through repeated history rewrites ($collected, $excludeFromContext)",
+          "line": 164,
+          "column": 3,
+          "titleEndLine": 170
+        },
+        {
+          "name": "branches from the first replaced message and re-appends the remaining suffix",
+          "line": 369,
+          "column": 3,
+          "titleEndLine": 369
+        },
+        {
+          "name": "preserves active-branch labels after rewritten entries are re-appended",
+          "line": 402,
+          "column": 3,
+          "titleEndLine": 402
+        },
+        {
+          "name": "preserves compaction identity %j when rewriting keep markers",
+          "line": 432,
+          "column": 3,
+          "titleEndLine": 433
+        },
+        {
+          "name": "bypasses persistence hooks when replaying rewritten messages",
+          "line": 489,
+          "column": 3,
+          "titleEndLine": 489
+        },
+        {
+          "name": "keeps one active suffix after repeated successful rewrites (reset=%s)",
+          "line": 530,
+          "column": 3,
+          "titleEndLine": 531
+        },
+        {
+          "name": "preserves original SQLite rows and the rewritten $variant branch (bounded=$bounded)",
+          "line": 664,
+          "column": 3,
+          "titleEndLine": 669
+        },
+        {
+          "name": "rejects stale loaded suffix bytes even when persisted entry ids are unchanged",
+          "line": 783,
+          "column": 3,
+          "titleEndLine": 783
+        },
+        {
+          "name": "rejects a view loaded before an opaque navigation $mutation (bounded=$bounded)",
+          "line": 813,
+          "column": 3,
+          "titleEndLine": 818
+        },
+        {
+          "name": "preserves the selected logical parent across a rewrite (maxEvents=%s)",
+          "line": 869,
+          "column": 3,
+          "titleEndLine": 870
+        },
+        {
+          "name": "keeps an unhydrated prefix when rewriting bounded entry %i",
+          "line": 908,
+          "column": 3,
+          "titleEndLine": 909
+        },
+        {
+          "name": "keeps the complete active branch when suffix replay is interrupted (reset=$reset, finalLeaf=$finalLeaf)",
+          "line": 953,
+          "column": 3,
+          "titleEndLine": 958
         }
       ]
     }

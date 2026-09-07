@@ -16,6 +16,7 @@ const files = [
   ownerTest,
   "src/agents/sessions/session-manager-model-context.test.ts",
   "extensions/codex/src/app-server/session-history.test.ts",
+  "src/agents/embedded-agent-runner/transcript-rewrite.test.ts",
 ];
 const bindings = {};
 for (const [variant, repo] of [
@@ -180,6 +181,9 @@ const cases = report.testResults.flatMap((suite) => {
   return suite.assertionResults.map((test) => test.title);
 });
 const critical = [
+  ...[false, true].map(
+    (reset) => `keeps one active suffix after repeated successful rewrites (reset=${reset})`,
+  ),
   ...[
     ["stable", false],
     ["stable", true],

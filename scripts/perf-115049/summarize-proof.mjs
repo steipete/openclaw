@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { PINS } from "./proof-integrity.mjs";
 const root = path.resolve(process.argv[2]);
 const read = async (name) => JSON.parse(await fs.readFile(path.join(root, name), "utf8"));
 const baseline = await read("baseline-uninstrumented.json");
@@ -26,7 +27,8 @@ for (const value of [baseline, candidate, before, after]) {
 }
 assert.equal(before.sourceCommit, baseline.sourceCommit);
 assert.equal(after.sourceCommit, candidate.sourceCommit);
-assert.equal(baseline.sourceCommit, "5f661669b2c2979f2a61e23d4addb3bdd4545469");
+assert.equal(baseline.sourceCommit, PINS.baseline.commit);
+assert.equal(candidate.sourceCommit, PINS.candidate.commit);
 assert.equal(before.measuredFullReads / before.measuredTurns, 2);
 assert.equal(after.measuredFullReads / after.measuredTurns, 1);
 assert.equal(units.baselineFailedStableReadAssertions, 2);

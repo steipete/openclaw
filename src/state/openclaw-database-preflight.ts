@@ -34,6 +34,7 @@ import {
   assertOpenClawStateDatabaseOwner,
   assertOpenClawStateDatabaseForMaintenance,
 } from "./openclaw-state-db-maintenance.js";
+import { readStateSchemaContentVersion } from "./openclaw-state-db-schema-version.js";
 import type { DB as OpenClawStateKyselyDatabase } from "./openclaw-state-db.generated.js";
 import {
   resolveOpenClawRegisteredAgentDatabasePath,
@@ -50,10 +51,7 @@ import {
   OPENCLAW_STATE_MAINTENANCE_SCHEMA_COMPATIBILITY,
   STATE_PERSISTENT_SCHEMA_COMPATIBILITY,
 } from "./openclaw-state-schema-compatibility.js";
-import {
-  readStateSchemaContentVersion,
-  readStateSchemaPublicationBlocker,
-} from "./openclaw-state-schema-publication.js";
+import { readStateSchemaPublicationBlocker } from "./openclaw-state-schema-publication.js";
 import { OPENCLAW_STATE_SCHEMA_SQL } from "./openclaw-state-schema.js";
 
 export { OPENCLAW_DATABASE_SCHEMA_DOCS_URL } from "./openclaw-state-db.js";
@@ -387,6 +385,7 @@ export async function preflightOpenClawStateDatabasePath(
 /** Read schema headers and optionally verify current schema shape without repairing it. */
 export async function preflightOpenClawDatabaseSchemas(options: {
   env: NodeJS.ProcessEnv;
+  scope?: "state";
   signal?: AbortSignal;
   supportedVersions: OpenClawSchemaVersions;
   verifyCurrentSchemaShape?: boolean;
@@ -481,6 +480,9 @@ export async function preflightOpenClawDatabaseSchemas(options: {
         }
       }
 
+      if (options.scope === "state") {
+        return result;
+      }
       try {
         registeredDatabases = readRegisteredAgentDatabases(stateDatabase, statePath);
       } catch (error) {
@@ -513,6 +515,9 @@ export async function preflightOpenClawDatabaseSchemas(options: {
     } finally {
       stateSnapshot?.cleanup();
     }
+  }
+  if (options.scope === "state") {
+    return result;
   }
   let agentTargets = registeredDatabases;
   if (options.configuredAgentDatabaseTargets !== undefined) {
