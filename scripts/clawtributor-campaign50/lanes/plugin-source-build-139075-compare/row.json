@@ -1,0 +1,10 @@
+{
+  "id": "plugin-source-build-139075-compare",
+  "directory": "plugin-source-build-139075-compare",
+  "runner": "ubuntu-24.04",
+  "source": "e831b5e425880278fdf5ca11365f503aab60e44f",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "compare",
+  "variant": "composed-source-and-packaged-builds"
+}
