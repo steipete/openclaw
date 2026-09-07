@@ -1,22 +1,12 @@
 [
   {
-    "id": "setup-error-reporting-lint-types-green",
-    "directory": "setup-error-reporting-lint-types-green",
+    "id": "service-label-composed-green",
+    "directory": "service-label-composed-green",
     "runner": "ubuntu-24.04",
-    "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+    "source": "72913f02470db00da7cf00cf6f0470bf23269b6d",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "static-completion"
-  },
-  {
-    "id": "sidebar-label-140125-red-continuation",
-    "directory": "sidebar-label-140125-continuation",
-    "runner": "ubuntu-24.04",
-    "source": "608b9ba2437d22188bac854a012458880ff55211",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "browser"
+    "variant": "composed"
   }
 ]

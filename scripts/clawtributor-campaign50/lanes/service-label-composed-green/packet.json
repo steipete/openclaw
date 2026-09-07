@@ -1,0 +1,40 @@
+{
+  "source": "72913f02470db00da7cf00cf6f0470bf23269b6d",
+  "pendingParents": [
+    "7845cc45612651c7823954633c2892dea4d1ea75",
+    "72913f02470db00da7cf00cf6f0470bf23269b6d"
+  ],
+  "humanAncestor": "832718fbb11e928004d0c66ee095943bfbe99b6d",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "baselineOwners": 40,
+  "unchangedOwners": 38,
+  "productionNet": -4,
+  "testNet": 75,
+  "previousProof": {
+    "actualRedRun": 34079510737,
+    "fourUnitRedAndOriginalCandidateGreenRun": 34087458272,
+    "oldCandidate": "7845cc45612651c7823954633c2892dea4d1ea75",
+    "reuse": "Historical proof only; no old result is claimed for this composed tree. No old baseline execution replay."
+  },
+  "reason": "Two actual main-composition conflicts resolved while preserving shared JSON projector/immutability assertions and upstream probe/read-only owners.",
+  "steps": [
+    "Verify exact main source and40baseline hashes; apply only two reviewed overlays",
+    "Run full6 current owner/sibling suites; require first-attempt native captures and joined replay, no global/suite errors and only2named platform skips",
+    "One normal build and same4 realCLI no-probe calls on fresh HOME, absent/stopped/unknown qualifier+JSON/config checks and cleanup",
+    "Explicit-base changed gates,2candidate+38unchanged before/after hashes, complete final diff"
+  ],
+  "files": {
+    "baseline-files.sha256": "8753390749a8f6954f1c5f8461e247029e68e512681518307a7575e421486887",
+    "candidate-files.sha256": "18440d9c5508e45a6b3467c9ee0399e06f117385c8c781a248b87af605c52e44",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "diagnostic-service.mjs": "3188d8aadc7d3626ab3ea2dad0c59ca3e9c91804200f442a644fee10ed8e10a3",
+    "production.patch": "3f6ab7d2934290f548568973a7911a85a2c0083ef1fa82608b24ba10b6a10a6b",
+    "run.sh": "466799bcaa6cf5cf99f36127cbaaab4572476f874141b7de67df576ab52e75ee",
+    "tests.patch": "73bfb64a309596515e48e3b524d3720628145a89d78af67ed99d89bad7e3def1",
+    "unchanged-owner-files.sha256": "8e66db1fb3457638d5191aad1eb3f9fdfe63e05a3c5b93b5f52d0919f9f412b9",
+    "verify-tests.mjs": "0094015340a783a91b54ceacad2ca0f19cdac6cdc3c8c4c7d1e6480450050d79"
+  },
+  "status": "Frozen for independent review; no target execution"
+}
