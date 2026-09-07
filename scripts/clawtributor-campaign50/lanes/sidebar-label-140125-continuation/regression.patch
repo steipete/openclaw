@@ -1,0 +1,482 @@
+--- a/ui/src/e2e/sidebar-interactions.e2e.test.ts
++++ b/ui/src/e2e/sidebar-interactions.e2e.test.ts
+@@ -1,4 +1,6 @@
+-import type { Page } from "playwright";
++import { writeFile } from "node:fs/promises";
++import path from "node:path";
++import type { Locator, Page } from "playwright";
+ import { expect, it } from "vitest";
+ import { CONTROL_UI_BOOTSTRAP_CONFIG_PATH } from "../../../src/gateway/control-ui-bootstrap-contract.js";
+ import {
+@@ -397,21 +399,31 @@
+       locale: "en-US",
+       serviceWorkers: "block",
+       viewport: { height: 900, width: 1440 },
++      reducedMotion: "reduce",
++      recordVideo: { dir: suite.artifactDir, size: { width: 1440, height: 900 } },
+     });
+     const page = await context.newPage();
++    const video = page.video();
++    if (!video) throw new Error("Agent proof recording is missing");
++    await writeFile(
++      path.join(suite.artifactDir, "page-videos.json"),
++      JSON.stringify([{ page: "agent-main", file: path.basename(await video.path()) }], null, 2),
++    );
++    const agentName = "Scheduled Automations";
++    const geometry: Array<Record<string, unknown>> = [];
+     const agentsList = {
+       agents: [{ id: "main" }, { id: "research" }, { id: "forge" }],
+       defaultId: "main",
+       mainKey: "main",
+       scope: "agent",
+     };
+-    await installMockGateway(page, {
++    const gateway = await installMockGateway(page, {
+       methodResponses: {
+         "agent.identity.get": {
+           cases: [
+             {
+               match: { agentId: "main" },
+-              response: { agentId: "main", avatar: "", emoji: "🦞", name: "Main" },
++              response: { agentId: "main", avatar: "", emoji: "🦞", name: agentName },
+             },
+             {
+               match: { agentId: "research" },
+@@ -444,7 +456,7 @@
+       const sidebar = page.locator("openclaw-app-sidebar");
+       await sidebar.getByRole("button", { name: /Switch agent/ }).click();
+       const menu = sidebar.locator("wa-dropdown.sidebar-agent-menu");
+-      const mainSwitch = menu.getByRole("menuitemradio", { name: "Main" });
++      const mainSwitch = menu.getByRole("menuitemradio", { name: agentName });
+       const researchSwitch = menu.getByRole("menuitemradio", { name: "Research" });
+       await expect
+         .poll(() =>
+@@ -489,7 +501,60 @@
+       expect(new Set(gridLayout.widths).size).toBe(1);
+       expect(gridLayout.avatarOffsets).toEqual([0, 0, 0]);
+       expect(gridLayout.labelOffsets).toEqual([0, 0, 0]);
++      const capabilities = menu.getByRole("menuitem", {
++        name: `What can ${agentName} do?`,
++        exact: true,
++      });
++      await page.evaluate(() => document.fonts.ready);
++      for (const direction of ["ltr", "rtl"] as const) {
++        for (const scale of [1, 1.4]) {
++          await page.evaluate(
++            ({ direction, scale }) => {
++              document.documentElement.dir = direction;
++              document.documentElement.style.setProperty("--control-ui-text-scale", String(scale));
++            },
++            { direction, scale },
++          );
++          const sample = await capabilities.evaluate((item) => {
++            const label = item.querySelector<HTMLElement>(".sidebar-customize-menu__text");
++            const surface = item
++              .closest("wa-dropdown")
++              ?.shadowRoot?.querySelector('[part~="menu"]');
++            if (!label || !surface) throw new Error("Missing real agent label/menu surface");
++            const rect = label.getBoundingClientRect();
++            const boundary = item.getBoundingClientRect();
++            const menuRect = surface.getBoundingClientRect();
++            const style = getComputedStyle(label);
++            return {
++              labelLeft: rect.left,
++              labelRight: rect.right,
++              labelWidth: rect.width,
++              itemLeft: boundary.left,
++              itemRight: boundary.right,
++              menuWidth: menuRect.width,
++              clientWidth: label.clientWidth,
++              scrollWidth: label.scrollWidth,
++              display: style.display,
++              overflow: style.overflowX,
++              textOverflow: style.textOverflow,
++              text: label.textContent?.trim(),
++              direction: getComputedStyle(item).direction,
++            };
++          });
++          expect(sample.labelWidth).toBeGreaterThan(0);
++          expect(sample.menuWidth).toBe(264);
++          expect(sample.text).toBe(`What can ${agentName} do?`);
++          expect(sample.direction).toBe(direction);
++          geometry.push({ ...sample, scale });
++          await captureSidebarUiProof(suite, page, `long-label-${direction}-${scale}.png`);
++        }
++      }
++      await writeFile(
++        path.join(suite.artifactDir, "label-geometry.json"),
++        JSON.stringify(geometry, null, 2),
++      );
+       await page.evaluate(() => {
++        document.documentElement.dir = "ltr";
+         document.documentElement.style.setProperty("--control-ui-text-scale", "1.4");
+       });
+       await expect
+@@ -512,6 +577,25 @@
+       await expect
+         .poll(() => mainSwitch.evaluate((element) => element === document.activeElement))
+         .toBe(true);
++      await capabilities.click();
++      await expect.poll(() => menu.count()).toBe(0);
++      const composer = page.locator(".agent-chat__composer-combobox > textarea");
++      await expect
++        .poll(() =>
++          composer.evaluate((element: HTMLTextAreaElement) => ({
++            value: element.value,
++            focused: element === document.activeElement,
++          })),
++        )
++        .toEqual({ value: "What can you do?", focused: true });
++      expect(new URL(page.url()).pathname).toBe(controlUiSessionPath("agent:main:main"));
++      expect(await gateway.getRequests("chat.send")).toHaveLength(0);
++      expect(await gateway.getRequests("sessions.create")).toHaveLength(0);
++      await captureSidebarUiProof(suite, page, "capabilities-unsent-focused.png");
++      await sidebar.getByRole("button", { name: /Switch agent/ }).click();
++      await expect
++        .poll(() => mainSwitch.evaluate((element) => element === document.activeElement))
++        .toBe(true);
+       await page.keyboard.press("End");
+       await expect
+         .poll(() =>
+@@ -538,6 +622,341 @@
+       await expect
+         .poll(() => new URL(page.url()).pathname)
+         .toBe(controlUiSessionPath("agent:research:main"));
++      expect(await gateway.getRequests("chat.send")).toHaveLength(0);
++      expect(await gateway.getRequests("sessions.create")).toHaveLength(0);
++      await writeFile(
++        path.join(suite.artifactDir, "label-controls.json"),
++        JSON.stringify(
++          {
++            capabilitiesDraft: "What can you do?",
++            focusedBeforeSwitch: true,
++            menuClosedAfterAction: true,
++            selectedPath: new URL(page.url()).pathname,
++            chatSends: 0,
++            sessionCreates: 0,
++            keyboardAndGrid: "passed",
++            samples: geometry.length,
++          },
++          null,
++          2,
++        ),
++      );
++      const overflow = geometry.filter(
++        (sample) =>
++          Number(sample.labelLeft) < Number(sample.itemLeft) - 0.5 ||
++          Number(sample.labelRight) > Number(sample.itemRight) + 0.5,
++      );
++      if (overflow.length > 0) {
++        throw new Error(
++          "SIDEBAR_LABEL_OVERFLOW_140125: complete action label escapes its menu item",
++        );
++      }
++    } finally {
++      await suite.closeBrowserContext(context);
++    }
++  });
++
++  it("preserves nested sidebar hyperlink layout and actions in both directions", async () => {
++    const context = await suite.newBrowserContext({
++      locale: "en-US",
++      reducedMotion: "reduce",
++      serviceWorkers: "block",
++      viewport: { height: 900, width: 1440 },
++      recordVideo: { dir: suite.artifactDir, size: { width: 1440, height: 900 } },
++    });
++    await context.route("https://docs.openclaw.ai/**", (route) =>
++      route.fulfill({
++        contentType: "text/html",
++        body: "<!doctype html><title>Synthetic documentation destination</title>",
++      }),
++    );
++    const page = await context.newPage();
++    const mainVideo = page.video();
++    if (!mainVideo) throw new Error("Link proof recording is missing");
++    const videos = [{ page: "links-main", file: path.basename(await mainVideo.path()) }];
++    const saveVideos = () =>
++      writeFile(path.join(suite.artifactDir, "page-videos.json"), JSON.stringify(videos, null, 2));
++    await saveVideos();
++    const gateway = await installMockGateway(page);
++    const observations: unknown[] = [];
++    const menuSettlements: unknown[] = [];
++    const submenuSettlements: unknown[] = [];
++    const saveGeometry = () =>
++      writeFile(
++        path.join(suite.artifactDir, "nested-link-geometry.json"),
++        JSON.stringify(
++          {
++            observations,
++            menuSettlements,
++            submenuSettlements,
++          },
++          null,
++          2,
++        ),
++      );
++    const openDropdown = async (trigger: Locator, selector: string) => {
++      const gate = await page.evaluateHandle((selector) => {
++        const state = { completed: false, scale: "", transform: "" };
++        const onShown = (event: Event) => {
++          if (!(event.target instanceof HTMLElement) || !event.target.matches(selector)) return;
++          const surface = event.target.shadowRoot?.querySelector('[part~="menu"]');
++          if (!(surface instanceof HTMLElement)) return;
++          const style = getComputedStyle(surface);
++          Object.assign(state, { completed: true, scale: style.scale, transform: style.transform });
++          document.removeEventListener("wa-after-show", onShown, true);
++        };
++        document.addEventListener("wa-after-show", onShown, true);
++        return {
++          state,
++          dispose: () => document.removeEventListener("wa-after-show", onShown, true),
++        };
++      }, selector);
++      try {
++        await trigger.click();
++        await expect.poll(() => gate.evaluate((owner) => owner.state.completed)).toBe(true);
++      } finally {
++        const state = await gate.evaluate((owner) => {
++          owner.dispose();
++          return owner.state;
++        });
++        await gate.dispose();
++        menuSettlements.push({ selector, ...state });
++        await saveGeometry();
++      }
++    };
++    const openHelpSubmenu = async (help: Locator, direction: string, scale: number) => {
++      const submenu = help.locator('[part="submenu"]');
++      await submenu.waitFor({ state: "attached" });
++      const gate = await submenu.evaluateHandle((surface) => {
++        if (
++          !(surface instanceof HTMLElement) ||
++          !surface.hidden ||
++          surface.classList.contains("show")
++        ) {
++          throw new Error("Help submenu must be closed before observing its opening");
++        }
++        const state = {
++          seenShow: false,
++          completed: false,
++          stages: [] as Array<Record<string, unknown>>,
++        };
++        const observer = new MutationObserver((records) => {
++          state.seenShow ||=
++            surface.classList.contains("show") ||
++            records.some((record) => (record.oldValue ?? "").split(/\s+/).includes("show"));
++          const root = surface.getRootNode();
++          const open =
++            root instanceof ShadowRoot && root.host.getAttribute("aria-expanded") === "true";
++          const style = getComputedStyle(surface);
++          const rect = surface.getBoundingClientRect();
++          state.stages.push({
++            className: surface.className,
++            hidden: surface.hidden,
++            open,
++            scale: style.scale,
++            transform: style.transform,
++            width: rect.width,
++            layoutWidth: surface.offsetWidth,
++            animations: surface.getAnimations().map((animation) => animation.playState),
++          });
++          if (
++            state.seenShow &&
++            open &&
++            !surface.hidden &&
++            surface.hasAttribute("data-visible") &&
++            !surface.classList.contains("show") &&
++            !surface.classList.contains("hide")
++          ) {
++            state.completed = true;
++            observer.disconnect();
++          }
++        });
++        observer.observe(surface, {
++          attributes: true,
++          attributeFilter: ["class"],
++          attributeOldValue: true,
++        });
++        return { state, dispose: () => observer.disconnect() };
++      });
++      try {
++        await help.hover();
++        await expect.poll(() => gate.evaluate((owner) => owner.state.completed)).toBe(true);
++        await submenu.waitFor({ state: "visible" });
++      } finally {
++        const state = await gate.evaluate((owner) => {
++          owner.dispose();
++          return owner.state;
++        });
++        await gate.dispose();
++        submenuSettlements.push({ direction, scale, ...state });
++        await saveGeometry();
++      }
++    };
++    let completedLinkActions = 0;
++    const measureLink = async (link: Locator) =>
++      link.evaluate((anchor) => {
++        const label = anchor.querySelector<HTMLElement>(".sidebar-customize-menu__text");
++        const icon = anchor.querySelector<HTMLElement>(".nav-item__icon");
++        const item = anchor.closest("wa-dropdown-item");
++        if (!label || !icon || !item) throw new Error("Missing real nested sidebar hyperlink");
++        const a = anchor.getBoundingClientRect();
++        const l = label.getBoundingClientRect();
++        const i = icon.getBoundingClientRect();
++        const row = item.getBoundingClientRect();
++        const style = getComputedStyle(label);
++        const dropdown = anchor.closest("wa-dropdown");
++        const submenuOwner = item.getAttribute("slot") === "submenu" ? item.parentElement : null;
++        const surface =
++          submenuOwner?.shadowRoot?.querySelector('[part="submenu"]') ??
++          dropdown?.shadowRoot?.querySelector('[part~="menu"]');
++        if (!(surface instanceof HTMLElement)) throw new Error("Missing rendered link surface");
++        const surfaceStyle = getComputedStyle(surface);
++        return {
++          surfaceScale: surfaceStyle.scale,
++          surfaceTransform: surfaceStyle.transform,
++          surfaceWidth: surface.getBoundingClientRect().width,
++          surfaceLayoutWidth: surface.offsetWidth,
++          surfaceAnimations: surface.getAnimations().map((animation) => animation.playState),
++          anchorScale: getComputedStyle(anchor).scale,
++          anchorTransform: getComputedStyle(anchor).transform,
++          anchorGap: getComputedStyle(anchor).gap,
++          href: anchor.getAttribute("href"),
++          text: label.textContent?.trim(),
++          anchorLeft: a.left,
++          anchorRight: a.right,
++          anchorWidth: a.width,
++          anchorHeight: a.height,
++          labelLeft: l.left,
++          labelRight: l.right,
++          labelWidth: l.width,
++          iconWidth: i.width,
++          iconCenter: i.top + i.height / 2,
++          labelCenter: l.top + l.height / 2,
++          itemLeft: row.left,
++          itemRight: row.right,
++          flexGrow: style.flexGrow,
++          flexShrink: style.flexShrink,
++          overflow: style.overflowX,
++          textOverflow: style.textOverflow,
++          textDecoration: getComputedStyle(anchor).textDecorationLine,
++          anchorDirection: getComputedStyle(anchor).direction,
++          itemDirection: getComputedStyle(item).direction,
++        };
++      });
++    const checkLinks = async (links: Locator, direction: string, scale: number, family: string) => {
++      const count = await links.count();
++      expect(count).toBeGreaterThan(0);
++      for (let index = 0; index < count; index++) {
++        const sample = await measureLink(links.nth(index));
++        observations.push({ direction, scale, family, ...sample });
++        await saveGeometry();
++        expect(sample.surfaceAnimations).toEqual([]);
++        expect(["none", "1"]).toContain(sample.surfaceScale);
++        expect(sample.anchorDirection).toBe(direction);
++        expect(sample.itemDirection).toBe(direction);
++        expect(sample.anchorWidth).toBeGreaterThan(80);
++        expect(sample.anchorHeight).toBeGreaterThan(0);
++        expect(sample.labelWidth).toBeGreaterThan(0);
++        expect(sample.labelLeft).toBeGreaterThanOrEqual(sample.anchorLeft - 0.5);
++        expect(sample.labelRight).toBeLessThanOrEqual(sample.anchorRight + 0.5);
++        expect(sample.anchorLeft).toBeGreaterThanOrEqual(sample.itemLeft - 0.5);
++        expect(sample.anchorRight).toBeLessThanOrEqual(sample.itemRight + 0.5);
++        expect(Math.abs(sample.iconCenter - sample.labelCenter)).toBeLessThanOrEqual(0.5);
++        expect(
++          Math.abs(sample.anchorWidth - sample.iconWidth - sample.labelWidth - 8),
++        ).toBeLessThanOrEqual(0.5);
++        expect(sample.overflow).toBe("hidden");
++        expect(sample.textOverflow).toBe("ellipsis");
++        expect(sample.textDecoration).toBe("none");
++      }
++    };
++    try {
++      for (const direction of ["ltr", "rtl"] as const) {
++        for (const scale of [1, 1.4]) {
++          await page.goto(`${suite.server.baseUrl}chat`);
++          const sidebar = page.locator("openclaw-app-sidebar");
++          await sidebar.locator(".sidebar-identity-card").waitFor({ state: "visible" });
++          await page.evaluate(
++            ({ direction, scale }) => {
++              document.documentElement.dir = direction;
++              document.documentElement.style.setProperty("--control-ui-text-scale", String(scale));
++            },
++            { direction, scale },
++          );
++          await page.evaluate(() => document.fonts.ready);
++          await openDropdown(
++            sidebar.locator(".sidebar-identity-card"),
++            "wa-dropdown.sidebar-identity-menu",
++          );
++          const identity = sidebar.locator("wa-dropdown.sidebar-identity-menu");
++          const help = identity.locator('wa-dropdown-item[value="command:help"]');
++          await openHelpSubmenu(help, direction, scale);
++          const links = help.locator('wa-dropdown-item[slot="submenu"] > a');
++          await checkLinks(links, direction, scale, "identity-help");
++          expect(await identity.locator("a.sidebar-customize-menu__item").count()).toBe(0);
++          await captureSidebarUiProof(suite, page, `identity-links-${direction}-${scale}.png`);
++          const docs = links.first();
++          const href = await docs.getAttribute("href");
++          const box = await docs.boundingBox();
++          if (!box || !href) throw new Error("Documentation link is not rendered");
++          const [popup] = await Promise.all([
++            context.waitForEvent("page"),
++            docs.click({ position: { x: box.width - 2, y: box.height / 2 } }),
++          ]);
++          const popupVideo = popup.video();
++          if (!popupVideo) throw new Error("Documentation popup recording is missing");
++          videos.push({
++            page: `docs-${direction}-${scale}`,
++            file: path.basename(await popupVideo.path()),
++          });
++          await saveVideos();
++          try {
++            await popup.waitForURL(new URL(href).href);
++            expect(await popup.title()).toBe("Synthetic documentation destination");
++          } finally {
++            await popup.close();
++          }
++          await expect.poll(() => identity.count()).toBe(0);
++          await openDropdown(
++            sidebar.locator(".sidebar-nav__head-action"),
++            "wa-dropdown.sidebar-more-menu",
++          );
++          const more = sidebar.locator("wa-dropdown.sidebar-more-menu");
++          const routes = more.locator("wa-dropdown-item > a");
++          await checkLinks(routes, direction, scale, "more-routes");
++          expect(await more.locator("a.sidebar-customize-menu__item").count()).toBe(0);
++          await captureSidebarUiProof(suite, page, `more-links-${direction}-${scale}.png`);
++          const route = routes.first();
++          const routeHref = await route.getAttribute("href");
++          const routeBox = await route.boundingBox();
++          if (!routeHref || !routeBox) throw new Error("More route link is not rendered");
++          const destination = new URL(routeHref, page.url());
++          await route.click({ position: { x: routeBox.width - 2, y: routeBox.height / 2 } });
++          await expect.poll(() => new URL(page.url()).pathname).toBe(destination.pathname);
++          await expect.poll(() => more.count()).toBe(0);
++          expect(context.pages()).toHaveLength(1);
++          expect(await gateway.getRequests("chat.send")).toHaveLength(0);
++          expect(await gateway.getRequests("sessions.create")).toHaveLength(0);
++          completedLinkActions += 2;
++        }
++      }
++      expect(await gateway.getRequests("chat.send")).toHaveLength(0);
++      expect(await gateway.getRequests("sessions.create")).toHaveLength(0);
++      await writeFile(
++        path.join(suite.artifactDir, "nested-link-controls.json"),
++        JSON.stringify(
++          {
++            observations,
++            configurations: 4,
++            externalDestinationsIntercepted: true,
++            linkActions: completedLinkActions,
++            chatSends: 0,
++            sessionCreates: 0,
++          },
++          null,
++          2,
++        ),
++      );
+     } finally {
+       await suite.closeBrowserContext(context);
+     }

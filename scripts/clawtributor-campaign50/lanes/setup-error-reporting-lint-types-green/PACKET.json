@@ -1,0 +1,29 @@
+{
+  "status": "DRAFT_AWAITING_FINAL_INDEPENDENT_ACCEPTANCE",
+  "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "row": {
+    "id": "setup-error-reporting-lint-types-green",
+    "directory": "setup-error-reporting-lint-types-green",
+    "mode": "green"
+  },
+  "files": {
+    "run.sh": "150895b09aed659eec315136573883fa8a12a79504c5221f4c5d1084c9e153ec",
+    "candidate.patch": "87eb9aca021d99acf3fb192b1efe9ff2dd3f83f56ddeca659e7857a6d59997c1",
+    "error-reporting.test.ts": "79230f1eb168d9fb46ca78ae08b702e3a177a0dd2154ef3982e6f55f8d6d09e6",
+    "source-before.sha256": "5cdb2016d3d25f27260fc168311d5f2a154fc2153986eba78ca903a9569842c6",
+    "source-after.sha256": "ebfb6e2e52564ba2a41ed23efe241ab579f2a4693b2f7dc9aa5c8be0d2fcdd04"
+  },
+  "scope": "corrected-test format, fourTS canonicallint, exact failed/unrun core-testtype command, all30 finalhashes; no runtime rerun",
+  "reusedBehavior": {
+    "regressionRun": 34090441998,
+    "regressionTests": 9,
+    "receipts": 8,
+    "siblingRun": 34084842082,
+    "siblingTests": 369,
+    "bothOriginalJobs": "FAILURE"
+  },
+  "productionNet": -2,
+  "sourceExecutionLocal": false
+}

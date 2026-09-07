@@ -1,22 +1,22 @@
 [
   {
-    "id": "telemetry-packaged-green",
-    "directory": "telemetry-packaged-green",
+    "id": "setup-error-reporting-lint-types-green",
+    "directory": "setup-error-reporting-lint-types-green",
     "runner": "ubuntu-24.04",
-    "source": "b8cbece8fb8de577d9ff33cedf8d8250585c55e4",
+    "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "native-packaged"
+    "variant": "static-completion"
   },
   {
-    "id": "gateway-repair-load-red",
-    "directory": "gateway-repair-load-red",
+    "id": "sidebar-label-140125-red-continuation",
+    "directory": "sidebar-label-140125-continuation",
     "runner": "ubuntu-24.04",
-    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
+    "source": "608b9ba2437d22188bac854a012458880ff55211",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "repair-load"
+    "variant": "browser"
   }
 ]

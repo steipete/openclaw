@@ -1,0 +1,22 @@
+{
+  "webawesome-dropdown-owner.js": {
+    "url": "https://unpkg.com/@awesome.me/webawesome@3.12.0/dist/chunks/chunk.KZJTFPDQ.js",
+    "sha256": "42ad469c7c9049ab51a34bd9aa0b39964c0b2de06e6aa409f3e85ba9f62f956e"
+  },
+  "webawesome-after-show-event.js": {
+    "url": "https://unpkg.com/@awesome.me/webawesome@3.12.0/dist/chunks/chunk.PX3HMKF7.js",
+    "sha256": "b4f2db19cb68c65d7a16a5f863cc7745b50186332129eaaf53994b0f01961ce2"
+  },
+  "webawesome-animation-owner.js": {
+    "url": "https://unpkg.com/@awesome.me/webawesome@3.12.0/dist/chunks/chunk.L6CIKOFQ.js",
+    "sha256": "1e426869dee8e765fc800dad41835a4e60b2b8a2b674740b9535138f95598e6a"
+  },
+  "webawesome-dropdown-item-owner.js": {
+    "url": "https://unpkg.com/@awesome.me/webawesome@3.12.0/dist/chunks/chunk.JZGJWX35.js",
+    "sha256": "9ce4d3fbdcd7d7fa2766d9e40a07fd8809bff9cfb587a91173bed3bcd8681c05"
+  },
+  "webawesome-dropdown-item-styles.js": {
+    "url": "https://unpkg.com/@awesome.me/webawesome@3.12.0/dist/chunks/chunk.YCTNB6J5.js",
+    "sha256": "00074686b2571d3dd0db3f3c79ef38a7902d0580a76ca72d3cec8f46d44047f6"
+  }
+}

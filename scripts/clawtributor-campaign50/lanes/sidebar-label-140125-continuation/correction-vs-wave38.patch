@@ -1,0 +1,193 @@
+--- wave38/sidebar-interactions.e2e.test.ts
++++ continuation/sidebar-interactions.e2e.test.ts
+@@ -679,6 +679,119 @@
+     await saveVideos();
+     const gateway = await installMockGateway(page);
+     const observations: unknown[] = [];
++    const menuSettlements: unknown[] = [];
++    const submenuSettlements: unknown[] = [];
++    const saveGeometry = () =>
++      writeFile(
++        path.join(suite.artifactDir, "nested-link-geometry.json"),
++        JSON.stringify(
++          {
++            observations,
++            menuSettlements,
++            submenuSettlements,
++          },
++          null,
++          2,
++        ),
++      );
++    const openDropdown = async (trigger: Locator, selector: string) => {
++      const gate = await page.evaluateHandle((selector) => {
++        const state = { completed: false, scale: "", transform: "" };
++        const onShown = (event: Event) => {
++          if (!(event.target instanceof HTMLElement) || !event.target.matches(selector)) return;
++          const surface = event.target.shadowRoot?.querySelector('[part~="menu"]');
++          if (!(surface instanceof HTMLElement)) return;
++          const style = getComputedStyle(surface);
++          Object.assign(state, { completed: true, scale: style.scale, transform: style.transform });
++          document.removeEventListener("wa-after-show", onShown, true);
++        };
++        document.addEventListener("wa-after-show", onShown, true);
++        return {
++          state,
++          dispose: () => document.removeEventListener("wa-after-show", onShown, true),
++        };
++      }, selector);
++      try {
++        await trigger.click();
++        await expect.poll(() => gate.evaluate((owner) => owner.state.completed)).toBe(true);
++      } finally {
++        const state = await gate.evaluate((owner) => {
++          owner.dispose();
++          return owner.state;
++        });
++        await gate.dispose();
++        menuSettlements.push({ selector, ...state });
++        await saveGeometry();
++      }
++    };
++    const openHelpSubmenu = async (help: Locator, direction: string, scale: number) => {
++      const submenu = help.locator('[part="submenu"]');
++      await submenu.waitFor({ state: "attached" });
++      const gate = await submenu.evaluateHandle((surface) => {
++        if (
++          !(surface instanceof HTMLElement) ||
++          !surface.hidden ||
++          surface.classList.contains("show")
++        ) {
++          throw new Error("Help submenu must be closed before observing its opening");
++        }
++        const state = {
++          seenShow: false,
++          completed: false,
++          stages: [] as Array<Record<string, unknown>>,
++        };
++        const observer = new MutationObserver((records) => {
++          state.seenShow ||=
++            surface.classList.contains("show") ||
++            records.some((record) => (record.oldValue ?? "").split(/\s+/).includes("show"));
++          const root = surface.getRootNode();
++          const open =
++            root instanceof ShadowRoot && root.host.getAttribute("aria-expanded") === "true";
++          const style = getComputedStyle(surface);
++          const rect = surface.getBoundingClientRect();
++          state.stages.push({
++            className: surface.className,
++            hidden: surface.hidden,
++            open,
++            scale: style.scale,
++            transform: style.transform,
++            width: rect.width,
++            layoutWidth: surface.offsetWidth,
++            animations: surface.getAnimations().map((animation) => animation.playState),
++          });
++          if (
++            state.seenShow &&
++            open &&
++            !surface.hidden &&
++            surface.hasAttribute("data-visible") &&
++            !surface.classList.contains("show") &&
++            !surface.classList.contains("hide")
++          ) {
++            state.completed = true;
++            observer.disconnect();
++          }
++        });
++        observer.observe(surface, {
++          attributes: true,
++          attributeFilter: ["class"],
++          attributeOldValue: true,
++        });
++        return { state, dispose: () => observer.disconnect() };
++      });
++      try {
++        await help.hover();
++        await expect.poll(() => gate.evaluate((owner) => owner.state.completed)).toBe(true);
++        await submenu.waitFor({ state: "visible" });
++      } finally {
++        const state = await gate.evaluate((owner) => {
++          owner.dispose();
++          return owner.state;
++        });
++        await gate.dispose();
++        submenuSettlements.push({ direction, scale, ...state });
++        await saveGeometry();
++      }
++    };
+     let completedLinkActions = 0;
+     const measureLink = async (link: Locator) =>
+       link.evaluate((anchor) => {
+@@ -691,7 +804,22 @@
+         const i = icon.getBoundingClientRect();
+         const row = item.getBoundingClientRect();
+         const style = getComputedStyle(label);
++        const dropdown = anchor.closest("wa-dropdown");
++        const submenuOwner = item.getAttribute("slot") === "submenu" ? item.parentElement : null;
++        const surface =
++          submenuOwner?.shadowRoot?.querySelector('[part="submenu"]') ??
++          dropdown?.shadowRoot?.querySelector('[part~="menu"]');
++        if (!(surface instanceof HTMLElement)) throw new Error("Missing rendered link surface");
++        const surfaceStyle = getComputedStyle(surface);
+         return {
++          surfaceScale: surfaceStyle.scale,
++          surfaceTransform: surfaceStyle.transform,
++          surfaceWidth: surface.getBoundingClientRect().width,
++          surfaceLayoutWidth: surface.offsetWidth,
++          surfaceAnimations: surface.getAnimations().map((animation) => animation.playState),
++          anchorScale: getComputedStyle(anchor).scale,
++          anchorTransform: getComputedStyle(anchor).transform,
++          anchorGap: getComputedStyle(anchor).gap,
+           href: anchor.getAttribute("href"),
+           text: label.textContent?.trim(),
+           anchorLeft: a.left,
+@@ -720,6 +848,10 @@
+       expect(count).toBeGreaterThan(0);
+       for (let index = 0; index < count; index++) {
+         const sample = await measureLink(links.nth(index));
++        observations.push({ direction, scale, family, ...sample });
++        await saveGeometry();
++        expect(sample.surfaceAnimations).toEqual([]);
++        expect(["none", "1"]).toContain(sample.surfaceScale);
+         expect(sample.anchorDirection).toBe(direction);
+         expect(sample.itemDirection).toBe(direction);
+         expect(sample.anchorWidth).toBeGreaterThan(80);
+@@ -736,7 +868,6 @@
+         expect(sample.overflow).toBe("hidden");
+         expect(sample.textOverflow).toBe("ellipsis");
+         expect(sample.textDecoration).toBe("none");
+-        observations.push({ direction, scale, family, ...sample });
+       }
+     };
+     try {
+@@ -753,11 +884,13 @@
+             { direction, scale },
+           );
+           await page.evaluate(() => document.fonts.ready);
+-          await sidebar.locator(".sidebar-identity-card").click();
++          await openDropdown(
++            sidebar.locator(".sidebar-identity-card"),
++            "wa-dropdown.sidebar-identity-menu",
++          );
+           const identity = sidebar.locator("wa-dropdown.sidebar-identity-menu");
+           const help = identity.locator('wa-dropdown-item[value="command:help"]');
+-          await help.hover();
+-          await help.locator('[part="submenu"]').waitFor({ state: "visible" });
++          await openHelpSubmenu(help, direction, scale);
+           const links = help.locator('wa-dropdown-item[slot="submenu"] > a');
+           await checkLinks(links, direction, scale, "identity-help");
+           expect(await identity.locator("a.sidebar-customize-menu__item").count()).toBe(0);
+@@ -784,7 +917,10 @@
+             await popup.close();
+           }
+           await expect.poll(() => identity.count()).toBe(0);
+-          await sidebar.locator(".sidebar-nav__head-action").click();
++          await openDropdown(
++            sidebar.locator(".sidebar-nav__head-action"),
++            "wa-dropdown.sidebar-more-menu",
++          );
+           const more = sidebar.locator("wa-dropdown.sidebar-more-menu");
+           const routes = more.locator("wa-dropdown-item > a");
+           await checkLinks(routes, direction, scale, "more-routes");
