@@ -1,22 +1,22 @@
 [
   {
-    "id": "blank-status-logs-red",
-    "directory": "blank-status-logs-red",
+    "id": "plugin-source-build-139075-baseline",
+    "directory": "plugin-source-build-139075-baseline-cwd",
     "runner": "ubuntu-24.04",
-    "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "source": "2d58961f33fd48b94b48bf569b65fb1c6ad2d954",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "baseline",
-    "variant": "baseline"
+    "variant": "source-and-packaged-builds"
   },
   {
-    "id": "automation-docs-command-contract",
-    "directory": "automation-docs-command-contract",
+    "id": "setup-error-installed-pair",
+    "directory": "setup-error-installed-pair",
+    "mode": "green",
     "runner": "ubuntu-24.04",
-    "source": "1d694c876d2b74efeee0f1aed2ca22d9bb28ef3f",
+    "source": "5520a73e9115be31d5f710da23e9bd93ecff291f",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "baseline"
+    "variant": "installed-pair"
   }
 ]

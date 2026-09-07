@@ -1,0 +1,52 @@
+{
+  "status": "REBOUND_PENDING_5520_COMPOSITION_FOR_INDEPENDENT_REVIEW_NO_EXECUTION",
+  "source": "5520a73e9115be31d5f710da23e9bd93ecff291f",
+  "candidateCommit": null,
+  "node": "24.20.0",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "row": {
+    "id": "setup-error-installed-pair",
+    "directory": "setup-error-installed-pair",
+    "mode": "green"
+  },
+  "files": {
+    "run.sh": "ec8a8c2f1f6b31778e218e6984331441c1725a3e513ad388e32d7a7266c1c83b",
+    "proof.mjs": "7fda16d94e8d85b8fee39294919bded1e5fe02e06402eaf155ea571953538112",
+    "candidate.patch": "87eb9aca021d99acf3fb192b1efe9ff2dd3f83f56ddeca659e7857a6d59997c1",
+    "source-before.sha256": "d07e7485dfc19aa01916923ba01295644ff6045628961c0874d652c87e4e9687",
+    "source-after.sha256": "836ec2e6a75309bd3acb4fed39c15cc1e22bb1c199da6c86880038901bbcf910"
+  },
+  "sourceHashesBefore": 61,
+  "sourceHashesAfter": 62,
+  "processOwner": "pinned repository runManagedCommand/hasUnjoinedWork; strict process+pipe join for package/install/git/CLI; all owned inputs retained on unjoined outcome",
+  "output": "exact text stderr block+newline and empty stdout; complete semantic JSON stdout with empty stderr; no warning allowlist/suppression override",
+  "cases": {
+    "baseline": [
+      "setup-text",
+      "setup-json"
+    ],
+    "candidate": [
+      "setup-text",
+      "setup-json"
+    ]
+  },
+  "fault": "ordinary same-UID EACCES on owned auxiliary regular file, no races/symlinks/guard overrides",
+  "network": "passive trace rejects IPv4/IPv6 socket/connection operations in CLI children",
+  "cleanup": "one orchestration owner; original and cleanup failures aggregated; complete only after owned scratch removal",
+  "proofScope": "installed first capture catch/defaultRuntime only; later post-success owner/callback coverage remains synthetic and original Codex issue undiagnosed",
+  "localValidation": [
+    "Bash syntax",
+    "Node syntax",
+    "trusted Oxfmt"
+  ],
+  "targetExecutionLocal": false,
+  "aggregateBudget": "45 minutes under existing 60-minute proof job; each managed command uses remaining budget",
+  "postinstall": "normal postinstall prunes existing dist and removes pending lifecycle marker before auxiliary file creation; no lifecycle bypass",
+  "candidateComposition": {
+    "preservedParent": "7594dc9e58a076f60964b1af6d5a1b24754d887e",
+    "mergeHead": "5520a73e9115be31d5f710da23e9bd93ecff291f",
+    "patchSha256": "87eb9aca021d99acf3fb192b1efe9ff2dd3f83f56ddeca659e7857a6d59997c1"
+  },
+  "preservedPacketSha256": "bf8aecbc064f1b3a8e11cf9fbc9f72c69835279b59e69a2ab3e5eb38c06a5f2a",
+  "dependencyVersion": "@openclaw/fs-safe@0.8.3"
+}
