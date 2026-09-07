@@ -5,8 +5,10 @@ source_dir=$1
 proof_dir=$2
 tooling_head=$3
 tooling_root=$(cd "$(dirname "$0")/../../.." && pwd)
-source_head=3f22e84d4e5da068a2c619ec8786aac038ef534c
-source_tree=593960f1a7be49c0707814dd69803b958d350ef6
+source_head=fea93117677b54350218956b0c25634a1a318117
+source_tree=8a59db133cf4c0501a6d5c5b21216c371df54ff7
+source_base=3f22e84d4e5da068a2c619ec8786aac038ef534c
+source_base_tree=593960f1a7be49c0707814dd69803b958d350ef6
 node_bin=$(dirname "$(command -v node)")
 clean_path="$proof_dir/tools/node_modules/.bin:$node_bin:/usr/local/bin:/usr/bin:/bin"
 mkdir -p "$proof_dir"/{home,config,cache,state,tmp,artifacts,tools}
@@ -19,17 +21,11 @@ clean_run() {
 verify_source() {
   test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
   test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
+  test "$(git -C "$source_dir" rev-parse "$source_base^{tree}")" = "$source_base_tree"
+  git -C "$source_dir" merge-base --is-ancestor "$source_base" "$source_head"
   git -C "$source_dir" diff --cached --exit-code
-  git -C "$source_dir" diff --no-ext-diff --no-textconv --name-only > "$proof_dir/current-source-paths.txt"
-  test -z "$(git -C "$source_dir" ls-files --others --exclude-standard)"
-  if [[ -f "$proof_dir/regression-transplanted" ]]; then
-    printf '%s\n' 'extensions/memory-core/src/session-ingestion.test.ts' > "$proof_dir/expected-source-paths.txt"
-    cmp "$proof_dir/current-source-paths.txt" "$proof_dir/expected-source-paths.txt"
-    cmp "$source_dir/extensions/memory-core/src/session-ingestion.test.ts" \
-      "$tooling_root/.github/proof/session-ingestion-119367/scanner.test.ts"
-  else
-    test ! -s "$proof_dir/current-source-paths.txt"
-  fi
+  git -C "$source_dir" diff --exit-code
+  test -z "$(git -C "$source_dir" status --porcelain)"
 }
 test "$(git -C "$tooling_root" rev-parse HEAD)" = "$tooling_head"
 test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
@@ -60,7 +56,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-const expectedHead = '3f22e84d4e5da068a2c619ec8786aac038ef534c';
+const expectedHead = 'fea93117677b54350218956b0c25634a1a318117';
 for (const stamp of ['dist/.buildstamp', 'dist/.runtime-postbuildstamp']) {
   assert.equal(JSON.parse(readFileSync(stamp, 'utf8')).head, expectedHead);
 }
@@ -74,13 +70,17 @@ for (const file of required) {
 }
 writeFileSync(path.join(process.env.TMPDIR, '../artifacts/built-runtime.json'), JSON.stringify({ head: expectedHead, hashes }));
 JS
-# Transplant only the frozen scanner test; production and SDK helpers stay at baseline.
+# The driver invokes the actual built CLI; no Vitest mocks or checkpoint seeding.
 set +e
-clean_run node "$tooling_root/.github/proof/session-ingestion-119367/run-red.mjs" \
-  "$source_dir" "$proof_dir" 2>&1 | tee "$proof_dir/artifacts/driver.log"
+clean_run node "$tooling_root/.github/proof/session-ingestion-119367/driver.mjs" \
+  "$source_dir" "$proof_dir" candidate 2>&1 | tee "$proof_dir/artifacts/driver.log"
 proof_exit=${PIPESTATUS[0]}
 set -e
 printf '%s\n' "$proof_exit" > "$proof_dir/artifacts/driver-exit.txt"
+test "$proof_exit" = 0
+verify_source
+clean_run node "$tooling_root/.github/proof/session-ingestion-119367/run-green.mjs" \
+  "$source_dir" "$proof_dir" 2>&1 | tee "$proof_dir/checks.log"
 verify_source
 sha256sum --check "$proof_dir/artifacts/source-inputs.sha256"
 clean_run node --input-type=module <<'JS'

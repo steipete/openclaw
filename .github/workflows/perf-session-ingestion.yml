@@ -1,14 +1,14 @@
-name: Session ingestion scanner regression baseline
+name: Session ingestion candidate proof
 on:
   push:
     branches: [codex/proof-session-ingestion-119367]
 permissions:
   contents: read
 jobs:
-  baseline:
+  candidate:
     if: github.repository == 'steipete/openclaw'
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - name: Check out exact reviewed proof tooling
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -20,17 +20,18 @@ jobs:
             .github/proof/session-ingestion-119367
             .github/workflows/perf-session-ingestion.yml
           sparse-checkout-cone-mode: false
-      - name: Check out immutable trusted baseline
+      - name: Check out exact reviewed candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          repository: openclaw/openclaw
-          ref: 3f22e84d4e5da068a2c619ec8786aac038ef534c
+          repository: steipete/openclaw
+          ref: fea93117677b54350218956b0c25634a1a318117
           path: source
+          fetch-depth: 2
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.20.0
-      - name: Prove the scanner regressions fail on unchanged baseline
+      - name: Build and observe ordinary owner ingestion through the CLI
         env:
           TOOLING_HEAD: ${{ github.sha }}
         run: |
@@ -43,7 +44,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: session-ingestion-scanner-baseline
+          name: session-ingestion-candidate
           path: |
             ${{ runner.temp }}/session-ingestion-119367/artifacts/source-head.txt
             ${{ runner.temp }}/session-ingestion-119367/artifacts/source-tree.txt
@@ -51,7 +52,9 @@ jobs:
             ${{ runner.temp }}/session-ingestion-119367/artifacts/source-inputs.sha256
             ${{ runner.temp }}/session-ingestion-119367/artifacts/tooling-files.sha256
             ${{ runner.temp }}/session-ingestion-119367/artifacts/built-runtime.json
-            ${{ runner.temp }}/session-ingestion-119367/artifacts/expected-scanner-failures.json
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/observations.json
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/producer-message-data.json
             ${{ runner.temp }}/session-ingestion-119367/artifacts/driver-exit.txt
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/candidate-checks.json
           if-no-files-found: error
           retention-days: 7
