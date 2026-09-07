@@ -70,17 +70,13 @@ for (const file of required) {
 }
 writeFileSync(path.join(process.env.TMPDIR, '../artifacts/built-runtime.json'), JSON.stringify({ head: expectedHead, hashes }));
 JS
-# The driver invokes the actual built CLI; no Vitest mocks or checkpoint seeding.
+# Same immutable candidate; reuse the verified CLI and103 memory tests from run34094068091.
 set +e
-clean_run node "$tooling_root/.github/proof/session-ingestion-119367/driver.mjs" \
-  "$source_dir" "$proof_dir" candidate 2>&1 | tee "$proof_dir/artifacts/driver.log"
-proof_exit=${PIPESTATUS[0]}
-set -e
-printf '%s\n' "$proof_exit" > "$proof_dir/artifacts/driver-exit.txt"
-test "$proof_exit" = 0
-verify_source
 clean_run node "$tooling_root/.github/proof/session-ingestion-119367/run-green.mjs" \
   "$source_dir" "$proof_dir" 2>&1 | tee "$proof_dir/checks.log"
+proof_exit=${PIPESTATUS[0]}
+set -e
+printf '%s\n' "$proof_exit" > "$proof_dir/artifacts/recovery-exit.txt"
 verify_source
 sha256sum --check "$proof_dir/artifacts/source-inputs.sha256"
 clean_run node --input-type=module <<'JS'

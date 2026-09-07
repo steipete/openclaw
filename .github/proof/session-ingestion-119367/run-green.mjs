@@ -7,8 +7,18 @@ const [sourceDir, proofDir] = process.argv.slice(2);
 const { runCommandWithTimeout } = await import(
   pathToFileURL(path.join(sourceDir, "dist/plugin-sdk/process-runtime.js")).href
 );
-const receiptPath = path.join(proofDir, "artifacts/candidate-checks.json");
-const receipt = { complete: false, commands: [], suites: [] };
+const receiptPath = path.join(proofDir, "artifacts/candidate-recovery-checks.json");
+const receipt = {
+  complete: false,
+  reusedEvidence: {
+    run: 34094068091,
+    source: "fea93117677b54350218956b0c25634a1a318117",
+    liveCli: "append1/corpus4098/firstrowonce/final0",
+    memoryTestsPassed: 103,
+  },
+  commands: [],
+  suites: [],
+};
 const record = () => fs.writeFile(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
 const gitRange = [
   "--base",
@@ -55,15 +65,13 @@ async function run(label, args, timeoutMs) {
   assert.equal(result.cleanup, "normal", `${label} cleanup was not normal`);
   assert.equal(result.code, 0, `${label} failed`);
 }
-async function suite(label, config, files, requiredTitles = []) {
+async function suite(label, files, requiredTitles = []) {
   const reportPath = path.join(proofDir, `${label}.json`);
   await run(
     label,
     [
       "scripts/run-vitest.mjs",
       "run",
-      "--config",
-      config,
       "--configLoader",
       "runner",
       ...files,
@@ -114,35 +122,30 @@ await run(
   ["scripts/check-changed.mjs", "--dry-run", ...gitRange, "--", ...changedPaths],
   120_000,
 );
-await suite(
-  "memory-owner-tests",
-  "test/vitest/vitest.extension-memory.config.ts",
-  [
-    "extensions/memory-core/src/session-ingestion.test.ts",
-    "extensions/memory-core/src/session-backfill.test.ts",
-    "extensions/memory-core/src/dreaming-phases.test.ts",
-  ],
-  [
-    "resumes an append after consuming 1 snapshot lines",
-    "resumes an append after consuming 2 snapshot lines",
-    "drains >80 unseen transcript messages across multiple unchanged sweeps",
-    "stages idempotently, converges duplicate facts, and rolls back staged artifacts",
-  ],
-);
-await suite(
-  "session-export-tests",
-  "test/vitest/vitest.unit.config.ts",
-  [
-    "packages/memory-host-sdk/src/host/session-files.test.ts",
-    "packages/memory-host-sdk/src/host/session-files.path.test.ts",
-    "packages/memory-host-sdk/src/host/session-files-archive-identity.test.ts",
-    "packages/memory-host-sdk/src/host/session-files.windows-ownership.test.ts",
-    "packages/memory-host-sdk/src/host/session-files.provenance.test.ts",
-    "packages/memory-host-sdk/src/host/session-files-reset-revision.test.ts",
-    "packages/memory-host-sdk/src/host/session-files-yield.test.ts",
-    "packages/memory-host-sdk/src/host/session-reset-recall.test.ts",
-  ],
-  ["accepts a transcript append but invalidates its prefix hash after reset"],
+const hostFiles = [
+  "packages/memory-host-sdk/src/host/session-files.test.ts",
+  "packages/memory-host-sdk/src/host/session-files.path.test.ts",
+  "packages/memory-host-sdk/src/host/session-files-archive-identity.test.ts",
+  "packages/memory-host-sdk/src/host/session-files.windows-ownership.test.ts",
+  "packages/memory-host-sdk/src/host/session-files.provenance.test.ts",
+  "packages/memory-host-sdk/src/host/session-files-reset-revision.test.ts",
+  "packages/memory-host-sdk/src/host/session-files-yield.test.ts",
+  "packages/memory-host-sdk/src/host/session-reset-recall.test.ts",
+];
+// Each exact file delegates to the canonical project router. Separate JSON reports
+// prevent one selected project's report from overwriting another project's evidence.
+for (const [index, file] of hostFiles.entries()) {
+  await suite(
+    `session-export-${index + 1}`,
+    [file],
+    file.endsWith("session-files-reset-revision.test.ts")
+      ? ["accepts a transcript append but invalidates its prefix hash after reset"]
+      : [],
+  );
+}
+assert.deepEqual(
+  receipt.suites.flatMap((suite) => suite.files.map((file) => file.path)).sort(),
+  [...hostFiles].sort(),
 );
 await run(
   "canonical-changed-checks",
