@@ -1,0 +1,9 @@
+{
+  "name": "download-filename-141311-red",
+  "sourceSha": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+  "mode": "red",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "expectation": "7 existing owner controls pass; both complete real browser cases fail only their final filename assertion after7downloads each",
+  "testSha256": "0ba5f1f1fc5e2ad235ed0ea168ed48104041e4f238dfddb0161d9bbc180a6696"
+}

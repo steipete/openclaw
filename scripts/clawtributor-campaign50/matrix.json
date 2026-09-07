@@ -1,22 +1,52 @@
 [
   {
-    "id": "feishu-coalescing-103928-baseline",
-    "directory": "feishu-coalescing-103928-baseline",
+    "id": "fetch-docs-command-contract",
+    "directory": "fetch-docs-command-contract",
     "runner": "ubuntu-24.04",
-    "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+    "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "baseline",
-    "variant": "combined-owner-delayed-response"
+    "variant": "docs-existing-contract"
   },
   {
-    "id": "plugin-source-build-139075-continue",
-    "directory": "plugin-source-build-139075-continue",
+    "id": "doctor-bootstrap-docs-contract",
+    "directory": "doctor-bootstrap-docs-contract",
     "runner": "ubuntu-24.04",
-    "source": "e831b5e425880278fdf5ca11365f503aab60e44f",
+    "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "candidate-only-after-wave52"
+    "mode": "baseline",
+    "variant": "docs-existing-contract"
+  },
+  {
+    "id": "blank-status-logs-green",
+    "directory": "blank-status-logs-green",
+    "runner": "ubuntu-24.04",
+    "source": "b7ec235a5cc05ae9577095498de5cfd6b8e2d293",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "green",
+    "variant": "native-candidate"
+  },
+  {
+    "id": "download-filename-141311-red",
+    "directory": "download-filename-141311-red",
+    "runner": "ubuntu-24.04",
+    "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "browser-download-filename"
+  },
+  {
+    "id": "macos-cli-selection-red",
+    "directory": "macos-cli-selection-red",
+    "runner": "macos-26",
+    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "native-selection"
   }
 ]

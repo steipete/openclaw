@@ -1,0 +1,11 @@
+{
+  "url": "https://files.pythonhosted.org/packages/5a/2d/c8d2e50796d6e3c77fa1932b9b010df36168edb5f5387c98a524ef77f110/mcp_server_fetch-2026.8.18-py3-none-any.whl",
+  "filename": "mcp_server_fetch-2026.8.18-py3-none-any.whl",
+  "sha256": "6642df733a1032e7f37d0f13849af8a944d46c02420d2c070cc14e0948f8fcc2",
+  "readOnlyEntries": [
+    "mcp_server_fetch/__init__.py",
+    "mcp_server_fetch/__main__.py",
+    "mcp_server_fetch-2026.8.18.dist-info/entry_points.txt"
+  ],
+  "executed": false
+}

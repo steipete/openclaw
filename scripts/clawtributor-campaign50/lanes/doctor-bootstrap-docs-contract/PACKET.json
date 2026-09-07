@@ -1,0 +1,27 @@
+{
+  "pr": 137347,
+  "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+  "lane": "doctor-bootstrap-docs-contract",
+  "mode": "baseline",
+  "files": {
+    "PROOF.md": "47d76c6ce447afb68ddf9c233525b0dbefd76186147b43501f182a232dc4aaba",
+    "SOURCE-PINS.json": "aa2ced142286fb083a41a12e9519e090475af480c407b4a86ec5aefd10e40562",
+    "STATIC-VALIDATION.json": "83698c4325cac3aaa97c63e91fae4adf90805f173e1e3488d321e64ff4aaec14",
+    "check-artifact.py": "c73cc58f0dbfd688409a914873f872b9db35ba605101201870411d180ac1c45c",
+    "doctor-case.mts": "f3f9a70796629ccabe903b0bebae1ba266732fac6418505db88b1d2a3eb87ca1",
+    "driver.py": "96187bf3103d0399410c2b1c5d45e9a6a6417e21c961fc8a6ed61ec722b59ded",
+    "process_capture.py": "42368817fc339e997e4e408f4a44f2836dbaa5d691ae99a28adf922c79615e7b",
+    "row.json": "d043b5b028012b65b49aa8e1e4f10e744605bf0116e0ccc41abb41951424d6af",
+    "run.sh": "8d58e2f758d24bd4ce29b7a53d1cb26036eca167c62c0dae0fad70b6d9247889",
+    "source.sha256": "13e5f5578f9b21e451bd9a94ec65776875d999bbc4071d87dde32ae78cec8a25",
+    "verify-inputs.py": "616dc7ec0ee89aea8d0480f2222cb7157ff54a3500ad6f4f322e97c25a8fbc3f"
+  },
+  "sourcePins": 28,
+  "status": "FROZEN_PENDING_INDEPENDENT_REREVIEW",
+  "targetCodeExecuted": false,
+  "executionGrant": false,
+  "productionDelta": 0,
+  "testDelta": 0,
+  "revision": 2,
+  "replacesPacketSha256": "5c421fffd275fc3ef9591b8c44e5d6457a65d07ebf9c0c68a86f736b55481a3e"
+}

@@ -20,38 +20,48 @@ struct CLIInstallerSelectionProofTests {
 
     private func check(_ scenario: Scenario) async throws {
         let env = ProcessInfo.processInfo.environment
-        let home = try URL(fileURLWithPath: #require(env["CFFIXED_USER_HOME"]))
-            .resolvingSymlinksInPath()
-        let launcherRoot = home.deletingLastPathComponent()
+        let launcherHome = try URL(fileURLWithPath: #require(env["CFFIXED_USER_HOME"]))
+        let launcherRoot = launcherHome.deletingLastPathComponent()
+        let fileManager = FileManager.default
+        let home = fileManager.homeDirectoryForCurrentUser
+        let resolvedHome = home.resolvingSymlinksInPath()
         let canonicalTmp = URL(fileURLWithPath: "/tmp").resolvingSymlinksInPath()
         try #require(env["CI"] == "true")
         try #require(env["HOME"] == env["CFFIXED_USER_HOME"])
-        try #require(home.lastPathComponent == "home")
-        try #require(launcherRoot.deletingLastPathComponent().path == canonicalTmp.path)
+        try #require(launcherHome.lastPathComponent == "home")
+        try #require(launcherRoot.deletingLastPathComponent().resolvingSymlinksInPath().path == canonicalTmp.path)
         try #require(launcherRoot.lastPathComponent.hasPrefix("oc-test-"))
         try #require(env["OPENCLAW_PROFILE"] == "default")
         try #require(env["OPENCLAW_STATE_DIR"] == launcherRoot.appendingPathComponent("state").path)
         try #require(env["OPENCLAW_CONFIG_PATH"] == launcherRoot.appendingPathComponent("state/openclaw.json").path)
         try #require(env["TMP"] == launcherRoot.appendingPathComponent("tmp").path)
-        try #require(FileManager().homeDirectoryForCurrentUser.resolvingSymlinksInPath().path == home.path)
+        var isHomeDirectory: ObjCBool = false
+        try #require(fileManager.fileExists(atPath: home.path, isDirectory: &isHomeDirectory))
+        try #require(isHomeDirectory.boolValue)
+        try #require(resolvedHome.path == launcherHome.resolvingSymlinksInPath().path)
         try #require(GatewayEnvironment.expectedGatewayVersionString() == nil)
         let external = home.appendingPathComponent("campaign140131-external/bin/openclaw")
         let managed = URL(fileURLWithPath: CLIInstaller.managedExecutableLocation())
         try #require(managed.path.hasPrefix(home.path + "/"))
-        let fileManager = FileManager.default
         var files: [URL] = []
         var directories: [URL] = []
 
         func createParent(_ directory: URL) throws {
-            guard directory.path.hasPrefix(home.path + "/"),
-                  directory.resolvingSymlinksInPath().path.hasPrefix(home.path + "/") else {
+            guard directory.path.hasPrefix(home.path + "/") else {
                 throw ProofError.invalidFixture("parent escaped disposable home")
             }
-            if fileManager.fileExists(atPath: directory.path) { return }
-            let parent = directory.deletingLastPathComponent()
-            if parent.path != home.path { try createParent(parent) }
-            try fileManager.createDirectory(at: directory, withIntermediateDirectories: false)
-            directories.append(directory)
+            if !fileManager.fileExists(atPath: directory.path) {
+                let parent = directory.deletingLastPathComponent()
+                if parent.path != home.path { try createParent(parent) }
+                try fileManager.createDirectory(at: directory, withIntermediateDirectories: false)
+                directories.append(directory)
+            }
+            var isDirectory: ObjCBool = false
+            guard fileManager.fileExists(atPath: directory.path, isDirectory: &isDirectory),
+                  isDirectory.boolValue,
+                  directory.resolvingSymlinksInPath().path.hasPrefix(resolvedHome.path + "/") else {
+                throw ProofError.invalidFixture("fixture parent is not an owned directory")
+            }
         }
 
         func createCLI(_ url: URL, version: String) throws {

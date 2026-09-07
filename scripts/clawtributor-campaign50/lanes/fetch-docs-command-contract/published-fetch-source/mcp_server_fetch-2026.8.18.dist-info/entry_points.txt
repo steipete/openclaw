@@ -1,0 +1,2 @@
+[console_scripts]
+mcp-server-fetch = mcp_server_fetch:main

@@ -1,0 +1,8 @@
+{
+  "observedDate": "2026-09-07",
+  "endpoint": "https://registry.npmjs.org/@modelcontextprotocol%2fserver-fetch",
+  "httpStatus": 404,
+  "evidence": "curl --write-out HTTP status observed in discovery tool output, body retained",
+  "bodySha256": "c8d3eae160a892e32837db3dcae515e843e5383fef52b8141940c8bcf8b6d59f",
+  "targetCodeExecuted": false
+}

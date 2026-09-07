@@ -1,0 +1,13 @@
+{
+  "url": "https://files.pythonhosted.org/packages/01/c8/248b201f6d753d69fd5d6506011abbb35a946d9142b2ae311a948fd0be3d/mcp-1.29.0-py3-none-any.whl",
+  "wheelSha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+  "version": "1.29.0",
+  "files": {
+    "mcp/client/stdio/__init__.py": "a23227cfe1e3456f16ab41311486a399cf547fcc6b645399bf9bf3a6dc6cf654",
+    "mcp/client/session.py": "92f812af17983f5a36b4703b065216cc49252fc59dbd04b753286fa78580b07a",
+    "mcp/server/stdio.py": "1469644bfc9afc3a230933fe2fbad8846ec5f2dc13f6392826bcb060e8c94141",
+    "mcp/types.py": "6824109cd1eabaf43c5dab829a83015b1b88ec9ae149765e6814afaf23f9bde5",
+    "mcp/shared/version.py": "18ac0ce561c0c1dd839ababb4f2ac01c41968533bff54289254982efdd4970c9"
+  },
+  "executed": false
+}

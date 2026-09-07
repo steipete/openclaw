@@ -1,0 +1,179 @@
+diff --git a/src/commands/channels/logs.ts b/src/commands/channels/logs.ts
+--- a/src/commands/channels/logs.ts
++++ b/src/commands/channels/logs.ts
+@@ -80,7 +80,7 @@
+ }
+ 
+ function parseLinesOption(value: unknown): number {
+-  if (value === undefined || value === null || value === "") {
++  if (value === undefined || value === null) {
+     return DEFAULT_LIMIT;
+   }
+   const parsed = parseStrictPositiveInteger(value);
+diff --git a/src/commands/models/list.status-command.ts b/src/commands/models/list.status-command.ts
+--- a/src/commands/models/list.status-command.ts
++++ b/src/commands/models/list.status-command.ts
+@@ -197,7 +197,7 @@
+     };
+ 
+ function parseOptionalPositiveFiniteOption(raw: unknown, label: string, fallback: number): number {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return fallback;
+   }
+   const parsed = parseStrictFiniteNumber(raw);
+@@ -208,7 +208,7 @@
+ }
+ 
+ function parseOptionalPositiveIntegerOption(raw: unknown, label: string, fallback: number): number {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return fallback;
+   }
+   const parsed = parseStrictPositiveInteger(raw);
+diff --git a/src/commands/channels.logs.test.ts b/src/commands/channels.logs.test.ts
+--- a/src/commands/channels.logs.test.ts
++++ b/src/commands/channels.logs.test.ts
+@@ -197,21 +197,28 @@
+     expect(JSON.stringify(payload)).not.toContain(fixtureCredential);
+   });
+ 
+-  it("preserves ordering and line limits for an explicit all filter", async () => {
+-    await fs.writeFile(
+-      logPath,
+-      [
+-        logLine({ module: "gateway/channels/slack/send", message: "first" }),
+-        logLine({ module: "gateway/channels/external-chat/send", message: "second" }),
+-        logLine({ module: "gateway/channels/slack/send", message: "third" }),
+-      ].join(""),
+-    );
+-
+-    await channelsLogsCommand({ channel: "all", lines: 2, json: true }, runtime);
++  it.each([
++    { lines: undefined, count: 200 },
++    { lines: 2, count: 2 },
++  ])("preserves ordering with line limit $lines", async ({ lines, count }) => {
++    const messages = Array.from({ length: 205 }, (_, index) => `message-${index}`);
++    await fs.writeFile(
++      logPath,
++      messages
++        .map((message, index) =>
++          logLine({
++            module: `gateway/channels/${index % 2 ? "external-chat" : "slack"}/send`,
++            message,
++          }),
++        )
++        .join(""),
++    );
++
++    await channelsLogsCommand({ channel: "all", lines, json: true }, runtime);
+ 
+     const payload = readJsonPayload();
+     expect(payload.channel).toBe("all");
+-    expect(payload.lines.map((line) => line.message)).toEqual(["second", "third"]);
++    expect(payload.lines.map((line) => line.message)).toEqual(messages.slice(-count));
+   });
+ 
+   it("finds sparse channel records beyond the shared 5000-line cap", async () => {
+@@ -334,9 +341,10 @@
+     expect(payload.lines).toStrictEqual([]);
+   });
+ 
+-  it("rejects partial line limits", async () => {
+-    await expect(channelsLogsCommand({ lines: "2x", json: true }, runtime)).rejects.toThrow(
++  it.each(["2x", "", "   "])("rejects invalid line limit %j", async (lines) => {
++    await expect(channelsLogsCommand({ lines, json: true }, runtime)).rejects.toThrow(
+       "--lines must be a positive integer.",
+     );
++    expect(runtime.log).not.toHaveBeenCalled();
+   });
+ });
+diff --git a/src/commands/models/list.status.test.ts b/src/commands/models/list.status.test.ts
+--- a/src/commands/models/list.status.test.ts
++++ b/src/commands/models/list.status.test.ts
+@@ -159,6 +159,16 @@
+     }),
+     loadModelsConfigArgs: vi.fn(),
+     loadProviderUsageSummary: vi.fn().mockResolvedValue(undefined),
++    runAuthProbes: vi
++      .fn<typeof import("./list.probe.js").runAuthProbes>()
++      .mockImplementation(async ({ options }) => ({
++        startedAt: 0,
++        finishedAt: 0,
++        durationMs: 0,
++        totalTargets: 0,
++        options,
++        results: [],
++      })),
+     resolveRuntimeSyntheticAuthProviderRefs: vi.fn().mockReturnValue([]),
+     resolveProviderSyntheticAuthWithPlugin: vi.fn().mockReturnValue(undefined),
+     resolveAgentHarnessOwnerPluginIds: vi.fn().mockReturnValue(["codex"]),
+@@ -277,6 +287,7 @@
+   ...(await importOriginal<typeof import("../../config/config.js")>()),
+   createConfigIO: mocks.createConfigIO,
+ }));
++vi.mock("./list.probe.js", () => ({ runAuthProbes: mocks.runAuthProbes }));
+ vi.mock("./load-config.js", () => ({
+   loadModelsConfig: vi.fn(async (...args: unknown[]) => {
+     mocks.loadModelsConfigArgs(...args);
+@@ -734,10 +745,34 @@
+     [{ probeTimeout: "5000ms" }, "--probe-timeout"],
+     [{ probeConcurrency: "2.5" }, "--probe-concurrency"],
+     [{ probeMaxTokens: "64x" }, "--probe-max-tokens"],
+-  ])("rejects partial probe numeric option %s", async (opts, label) => {
++    [{ probeTimeout: "" }, "--probe-timeout"],
++    [{ probeTimeout: "   " }, "--probe-timeout"],
++    [{ probeConcurrency: "" }, "--probe-concurrency"],
++    [{ probeConcurrency: "   " }, "--probe-concurrency"],
++    [{ probeMaxTokens: "" }, "--probe-max-tokens"],
++    [{ probeMaxTokens: "   " }, "--probe-max-tokens"],
++  ])("rejects invalid probe numeric option %j", async (opts, label) => {
++    const localRuntime = createRuntime();
++    mocks.runAuthProbes.mockClear();
+     await expect(
+-      modelsStatusCommand({ json: true, ...opts }, createRuntime() as never),
++      modelsStatusCommand({ json: true, probe: true, ...opts }, localRuntime),
+     ).rejects.toThrow(label);
++    expect(mocks.runAuthProbes).not.toHaveBeenCalled();
++    expect(localRuntime.log).not.toHaveBeenCalled();
++  });
++
++  it.each([
++    [{}, { timeoutMs: 8000, concurrency: 2, maxTokens: 8 }],
++    [
++      { probeTimeout: "1.5", probeConcurrency: "1", probeMaxTokens: "1" },
++      { timeoutMs: 1.5, concurrency: 1, maxTokens: 1 },
++    ],
++  ])("forwards probe numeric options %j", async (opts, expected) => {
++    mocks.runAuthProbes.mockClear();
++    await modelsStatusCommand({ json: true, probe: true, ...opts }, createRuntime());
++    expect(mocks.runAuthProbes).toHaveBeenCalledExactlyOnceWith(
++      expect.objectContaining({ options: expect.objectContaining(expected) }),
++    );
+   });
+ 
+   it("includes masked auth sources in JSON output", async () => {
+diff --git a/docs/cli/channels.md b/docs/cli/channels.md
+--- a/docs/cli/channels.md
++++ b/docs/cli/channels.md
+@@ -60,6 +60,8 @@
+ - `channels resolve <entries...>`: `--channel <name>`, `--account <id>`, `--agent <id>`, `--kind <auto|user|group|channel>` (default `auto`), `--json`
+ - `channels logs`: `--channel <name|all>` (default `all`), `--lines <n>` (default `200`), `--json`
+ 
++`channels logs --lines` requires a positive integer. Omit `--lines` to use the default of `200`; explicitly empty values are rejected.
++
+ `channels logs --channel <name>` matches subsystem or module names rooted at `<name>`
+ or `gateway/channels/<name>`, including slash-separated descendants. Similar names
+ such as `discord-archive` do not match `discord`.
+diff --git a/docs/cli/models.md b/docs/cli/models.md
+--- a/docs/cli/models.md
++++ b/docs/cli/models.md
+@@ -61,6 +61,8 @@
+ | `--probe-max-tokens <n>`  | Probe max tokens (best effort).                                                                                                          |
+ | `--agent <id>`            | Configured agent id; overrides `OPENCLAW_AGENT_DIR`.                                                                                     |
+ 
++`--probe-timeout` requires a positive number; `--probe-concurrency` and `--probe-max-tokens` require positive integers. Omit these options to use their defaults (`8000`, `2`, and `8`, respectively); explicitly empty values are rejected.
++
+ Probe rows can come from auth profiles, env credentials, or `models.json`. Probe status buckets: `ok`, `auth`, `rate_limit`, `billing`, `timeout`, `format`, `unknown`, `no_model`.
+ 
+ Direct `models status --probe` runs create temporary internal sessions in the selected agent's canonical database, so the command requires exclusive ownership of the configured state directory. Stop a running Gateway with `openclaw gateway stop` before probing; the command removes its internal sessions and releases the state lock when it finishes or is interrupted.

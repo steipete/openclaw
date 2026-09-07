@@ -1,0 +1,48 @@
+{
+  "recordedAt": "2026-09-07T15:26:08.201722+00:00",
+  "sourceRef": "43bc88f6f78410b86548ac29ec3f13a762481ae9",
+  "stableRef": "v2026.9.2",
+  "qualification": "source-qualified discovery only; no target execution; not merge-ready",
+  "candidates": [
+    {
+      "pr": 141189,
+      "head": "e2d69b165a6ed8c56bc5501d065d03d2cf132387",
+      "author": "ly85206559",
+      "name": "Ben.Li",
+      "accountCreatedAt": "2015-05-20T09:18:38Z",
+      "permission": "read",
+      "state": "OPEN",
+      "assignees": [],
+      "productionDelta": 0,
+      "testDelta": 0,
+      "incomingDocsDelta": 21,
+      "defect": "unavailable npm package in shipped MCP Fetch example",
+      "observedNpmHTTP": 404,
+      "proofPending": "fresh secretless CLI/MCP stdio verification, docs gates, exact-head CI and ancestry"
+    },
+    {
+      "pr": 137347,
+      "head": "ec8349ba688d0dd67ada326c9c6801bccb89fe4f",
+      "author": "ylcn91",
+      "name": "Doksanbir",
+      "accountCreatedAt": "2014-04-10T09:55:31Z",
+      "permission": "read",
+      "state": "OPEN",
+      "assignees": [],
+      "productionDelta": 0,
+      "testDelta": 0,
+      "incomingDocsDelta": 0,
+      "defect": "doctor docs list CLAUDE.md although canonical bootstrap-size loader does not select it",
+      "proofPending": "real diagnostic/CLI synthetic file controls, docs gates, exact-head CI and ancestry"
+    }
+  ],
+  "mutations": {
+    "source": false,
+    "git": false,
+    "public": false,
+    "credentials": false
+  },
+  "targetCodeExecuted": false,
+  "freshMain": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+  "freshMainOwnerFilesUnchanged": 11
+}

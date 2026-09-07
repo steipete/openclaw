@@ -1,0 +1,8 @@
+{
+  "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+  "files": {
+    "docs/gateway/config-extensions.md": "680e324f14d5a6f73f2aaaa0f7ead21f35d6c0272a87ea8dea8eed2989cd637f",
+    "package.json": "a1709548644b7c634e90c1737683f19158494d656e544e1ffb054531c697662c",
+    "pnpm-lock.yaml": "d3d8e893b57884420f2916e98d92b595f0b9648096e47c511dd140cec9493aee"
+  }
+}

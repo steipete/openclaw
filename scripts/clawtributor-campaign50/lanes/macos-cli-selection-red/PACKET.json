@@ -17,12 +17,12 @@
     "apps/macos/Package.resolved": "6041ee40156d8269b547d38c04bbee073b33b5aff3f62e05b7d29701042fd4e3"
   },
   "testPath": "apps/macos/Tests/OpenClawIPCTests/CLIInstallerSelectionProofTests.swift",
-  "testSha256": "35c1b2f5d6cacc226cae2a861188e4007fe61f82219cf259db7a550178d51ff8",
+  "testSha256": "619cba60b54520548625d458c544a7515035f7a1325d6b255dd55767c2679ca3",
   "artifacts": {
     "run.sh": "278bb77e6ce20469114b82c8f5109abd3222b45a637172571e948bc795f6507b",
     "validate.py": "ce25ace5ad622a5e90b629a3b734942f12457bb47b80fdc7d2c7c2fd4ce0ced8",
-    "regression.patch": "fd3183e04a34ebdb34f2afb6a43e5e0fc564ce5ca7d2d4bb59b8ecffd8b6ca0a",
-    "CLIInstallerSelectionProofTests.swift": "35c1b2f5d6cacc226cae2a861188e4007fe61f82219cf259db7a550178d51ff8"
+    "regression.patch": "49c64a8c2183b8a4c59e29a6c74ffc6c6977f8b4d26fb54d8e6829b6662d0258",
+    "CLIInstallerSelectionProofTests.swift": "619cba60b54520548625d458c544a7515035f7a1325d6b255dd55767c2679ca3"
   },
   "reporterContract": {
     "abi": 0,
@@ -31,12 +31,21 @@
   },
   "execution": "disposable macos-swift only; canonical startup home/keychain owner; no production patch",
   "lane": "macos-cli-selection-red",
-  "priorSetupFailure": {
-    "run": 34114744042,
-    "job": 101721088513,
-    "packetSha256": "952a9718252d7fe33900a0547e0a82c6d86a09a2e159b111ef932eccc2bed2af",
-    "fixtureSha256": "961b942317d4375fc427e830d9d1c67f12f3995f6b1200edc99d7915e630261d",
-    "reason": "All4 cases failed before scenarios at URLstring equality file:///tmp/ versusfile:///tmp; fullnative build passed. No selection observation or intendedred."
-  },
-  "correction": "Only3 fixture URL comparisons now use resolved filesystem .path identity. Existing roots, exactenv, containment, cleanup and scenario oracles unchanged."
+  "correction": "Full fixture path contract: raw launcher namespace for exact environment guards; raw Foundation/product paths for selection strings; existing resolved filesystem identity for equivalence/containment and parent-first creation. All four behavior oracles, defaults restoration, cleanup suffix, runner and validator unchanged.",
+  "priorSetupFailures": [
+    {
+      "run": 34114744042,
+      "job": 101721088513,
+      "packetSha256": "952a9718252d7fe33900a0547e0a82c6d86a09a2e159b111ef932eccc2bed2af",
+      "fixtureSha256": "961b942317d4375fc427e830d9d1c67f12f3995f6b1200edc99d7915e630261d",
+      "reason": "All4 cases failed before scenarios at URLstring equality file:///tmp/ versusfile:///tmp; fullnative build passed. No selection observation or intendedred."
+    },
+    {
+      "run": 34142238289,
+      "job": 101806587500,
+      "packetSha256": "8c04b1ad1aec43c0d0b424d97bcf9e8bb643765b3ba49527ea718e5432e4e0eb",
+      "fixtureSha256": "35c1b2f5d6cacc226cae2a861188e4007fe61f82219cf259db7a550178d51ff8",
+      "reason": "All4cases stoppedatfixture33: rawlauncher/private/tmp state versusFoundation/tmp alias; fullbuild588.19s passed;0selectionobservations/intendedred."
+    }
+  ]
 }

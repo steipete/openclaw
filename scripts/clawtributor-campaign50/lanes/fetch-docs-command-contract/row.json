@@ -1,0 +1,10 @@
+{
+  "id": "fetch-docs-command-contract",
+  "directory": "fetch-docs-command-contract",
+  "runner": "ubuntu-24.04",
+  "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "baseline",
+  "variant": "docs-existing-contract"
+}

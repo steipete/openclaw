@@ -1,0 +1,7 @@
+{
+  "python": "stdlib ast.parse only",
+  "shell": "bash -n only",
+  "typescript": null,
+  "targetImports": false,
+  "targetExecution": false
+}
