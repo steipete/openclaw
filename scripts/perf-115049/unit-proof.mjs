@@ -6,6 +6,7 @@ import { stripVTControlCharacters } from "node:util";
 import { runPhase } from "./phase-runner.mjs";
 import { blobId, verifySource, verifyBuilt, runtimeManifest } from "./proof-integrity.mjs";
 import { createSnapshotProofEnvironment } from "./secretless-env.parts.mjs";
+import { writeUnitDiagnostic } from "./unit-diagnostic.mjs";
 assert.equal(process.env.CI, "true");
 const [baseline, candidate, publishRoot, scratch] = process.argv
   .slice(2)
@@ -101,21 +102,66 @@ try {
   }
 }
 const candidateReport = path.join(scratch, "candidate-owners.json");
-assert.equal(
-  await run(candidate, "candidate-owners", [
+const inventory = JSON.parse(
+  await fs.readFile(new URL("./unit-case-inventory.json", import.meta.url), "utf8"),
+);
+let code;
+let commandError;
+let candidateUnjoined = false;
+let sourceRuntimeVerified = false;
+let report;
+try {
+  code = await run(candidate, "candidate-owners", [
     ...files,
+    "--includeTaskLocation",
     "--reporter=json",
     `--outputFile=${candidateReport}`,
-  ]),
-  0,
-);
-for (const [variant, repo] of [
-  ["baseline", baseline],
-  ["candidate", candidate],
-]) {
-  await verifyBuilt(repo, variant, bindings[variant]);
+  ]);
+} catch (error) {
+  commandError = error;
+  candidateUnjoined = error?.unjoined === true;
+} finally {
+  // A nonzero test result still needs custody evidence; unsettled workers retain their inputs.
+  if (!candidateUnjoined) {
+    try {
+      for (const [variant, repo] of [
+        ["baseline", baseline],
+        ["candidate", candidate],
+      ]) {
+        await verifyBuilt(repo, variant, bindings[variant]);
+      }
+      sourceRuntimeVerified = true;
+    } catch {
+      sourceRuntimeVerified = false;
+    }
+  }
+  try {
+    report = await writeUnitDiagnostic({
+      repo: candidate,
+      reportFile: candidateReport,
+      outputFile: path.join(publishRoot, "candidate-unit-diagnostic.json"),
+      inventory,
+      sourceFiles: bindings.candidate.source.files,
+      exitCode: code,
+      unjoined: candidateUnjoined,
+      sourceRuntimeVerified,
+    });
+  } catch {
+    throw Object.assign(new Error("Could not finalize the safe candidate unit diagnostic"), {
+      unjoined: candidateUnjoined,
+    });
+  }
 }
-const report = JSON.parse(await fs.readFile(candidateReport, "utf8"));
+if (commandError) {
+  throw commandError;
+}
+assert.equal(
+  sourceRuntimeVerified,
+  true,
+  "source/runtime custody verification failed after candidate tests",
+);
+assert.equal(code, 0, "candidate owner tests failed; see the safe unit diagnostic");
+assert.ok(report, "candidate JSON report is missing or invalid; see the safe unit diagnostic");
 assert.equal(report.success, true);
 assert.equal(report.numFailedTests, 0);
 assert.deepEqual(

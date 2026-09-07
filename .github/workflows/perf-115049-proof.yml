@@ -138,6 +138,7 @@ jobs:
             publish/baseline-observed.json
             publish/candidate-observed.json
             publish/unit-proof.json
+            publish/candidate-unit-diagnostic.json
             publish/summary.json
           if-no-files-found: error
           retention-days: 7

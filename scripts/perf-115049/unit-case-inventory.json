@@ -1,0 +1,447 @@
+{
+  "source": "94ce6288f3606ef2f5d47b5680458c1f434d8009",
+  "parser": "TypeScript6.0.3 createSourceFile; source parsing only; no test evaluation",
+  "files": {
+    "extensions/codex/src/app-server/run-attempt.context-engine.test.ts": {
+      "sha256": "1fce00b018f20115474535377b9f814a1e6668e68d5b6834776e0656429b85ec",
+      "tests": [
+        {
+          "name": "keeps the fixture thread persistent while denying web search",
+          "line": 264,
+          "column": 3,
+          "titleEndLine": 264
+        },
+        {
+          "name": "bootstraps and assembles non-legacy context before the Codex turn starts (%s summary)",
+          "line": 275,
+          "column": 3,
+          "titleEndLine": 276
+        },
+        {
+          "name": "starts a fresh turn before the post-start mirror records admission",
+          "line": 378,
+          "column": 3,
+          "titleEndLine": 378
+        },
+        {
+          "name": "keeps context-engine history bound to the run session when sandbox key differs",
+          "line": 411,
+          "column": 3,
+          "titleEndLine": 411
+        },
+        {
+          "name": "uses the runtime token budget for large Codex context-engine projections",
+          "line": 445,
+          "column": 3,
+          "titleEndLine": 445
+        },
+        {
+          "name": "bounds active context-engine projections when prompt hooks append context",
+          "line": 473,
+          "column": 3,
+          "titleEndLine": 473
+        },
+        {
+          "name": "bounds hook-appended prompts without an active context engine",
+          "line": 519,
+          "column": 3,
+          "titleEndLine": 519
+        },
+        {
+          "name": "bounds hook-appended prompts after delivery metadata is relocated",
+          "line": 546,
+          "column": 3,
+          "titleEndLine": 546
+        },
+        {
+          "name": "bounds hook-appended output for an empty prompt without an active context engine",
+          "line": 573,
+          "column": 3,
+          "titleEndLine": 573
+        },
+        {
+          "name": "projects thread-bootstrap context only once for a matching context-engine epoch",
+          "line": 601,
+          "column": 3,
+          "titleEndLine": 601
+        },
+        {
+          "name": "resumes a matching thread-bootstrap binding even when the bootstrap turn exceeded the opt-in native byte guard",
+          "line": 691,
+          "column": 3,
+          "titleEndLine": 691
+        },
+        {
+          "name": "starts a fresh thread instead of resuming a token-pressured thread-bootstrap binding",
+          "line": 782,
+          "column": 3,
+          "titleEndLine": 782
+        },
+        {
+          "name": "does not inject mirrored history when a stale thread-bootstrap binding has no active context engine",
+          "line": 865,
+          "column": 3,
+          "titleEndLine": 865
+        },
+        {
+          "name": "keeps mirrored history when an inactive per-turn context-engine binding starts fresh",
+          "line": 959,
+          "column": 3,
+          "titleEndLine": 959
+        },
+        {
+          "name": "starts a fresh Codex thread and reprojects when context-engine epoch changes",
+          "line": 1009,
+          "column": 3,
+          "titleEndLine": 1009
+        },
+        {
+          "name": "reprojects thread-bootstrap context when context-engine policy changes",
+          "line": 1099,
+          "column": 3,
+          "titleEndLine": 1099
+        },
+        {
+          "name": "reprojects thread-bootstrap context for native-disabled transient Codex threads",
+          "line": 1163,
+          "column": 3,
+          "titleEndLine": 1163
+        },
+        {
+          "name": "starts a fresh Codex thread when thread-bootstrap projection falls back to per-turn projection",
+          "line": 1271,
+          "column": 3,
+          "titleEndLine": 1271
+        },
+        {
+          "name": "retries resumed context overflow only with host model ownership (expected native: %s)",
+          "line": 1340,
+          "column": 3,
+          "titleEndLine": 1341
+        },
+        {
+          "name": "returns a replay-safe recovery result when the executable owner changes during overflow retry",
+          "line": 1494,
+          "column": 3,
+          "titleEndLine": 1494
+        },
+        {
+          "name": "preserves a newer context-engine binding when a stale resumed thread overflows",
+          "line": 1581,
+          "column": 3,
+          "titleEndLine": 1581
+        },
+        {
+          "name": "preserves native ownership through terminal overflow (expected native: %s)",
+          "line": 1662,
+          "column": 3,
+          "titleEndLine": 1663
+        },
+        {
+          "name": "does not pre-compact over-budget rendered context-engine prompts before Codex turn/start",
+          "line": 1770,
+          "column": 3,
+          "titleEndLine": 1770
+        },
+        {
+          "name": "fails first-turn Codex context overflow instead of falling back to OpenClaw compaction",
+          "line": 1817,
+          "column": 3,
+          "titleEndLine": 1817
+        },
+        {
+          "name": "does not call hung owning context-engine compaction during Codex overflow recovery",
+          "line": 1856,
+          "column": 3,
+          "titleEndLine": 1856
+        },
+        {
+          "name": "keeps current inbound context at the front of the Codex context-engine prompt",
+          "line": 1948,
+          "column": 3,
+          "titleEndLine": 1948
+        },
+        {
+          "name": "returns an exact terminal anchor for $name turns without finalizing inside Codex",
+          "line": 1979,
+          "column": 3,
+          "titleEndLine": 1986
+        },
+        {
+          "name": "returns the terminal anchor needed by the outer fallback owner",
+          "line": 2021,
+          "column": 3,
+          "titleEndLine": 2021
+        },
+        {
+          "name": "persists the admitted user prompt before an async item buffered during turn startup",
+          "line": 2045,
+          "column": 3,
+          "titleEndLine": 2045
+        },
+        {
+          "name": "assembles current SQLite history after $mutation bootstrap (admitted=$admitted)",
+          "line": 2097,
+          "column": 3,
+          "titleEndLine": 2105
+        },
+        {
+          "name": "keeps the first SQLite history when a changed transcript cannot be reread",
+          "line": 2175,
+          "column": 3,
+          "titleEndLine": 2175
+        },
+        {
+          "name": "stops before assembly and native turn start when bootstrap is cancelled",
+          "line": 2210,
+          "column": 3,
+          "titleEndLine": 2210
+        },
+        {
+          "name": "reloads mirrored history after bootstrap mutates the session transcript",
+          "line": 2234,
+          "column": 3,
+          "titleEndLine": 2234
+        },
+        {
+          "name": "logs assemble failures as a formatted message instead of the raw error object",
+          "line": 2276,
+          "column": 3,
+          "titleEndLine": 2276
+        },
+        {
+          "name": "does not advance context-engine state on prompt failure",
+          "line": 2330,
+          "column": 3,
+          "titleEndLine": 2330
+        }
+      ]
+    },
+    "src/agents/sessions/session-manager-model-context.test.ts": {
+      "sha256": "85df767fa0ee3d938110ce521c5ad53df9ef577b1386bfb984a75d4a24b4eb57",
+      "tests": [
+        {
+          "name": "acquires a long sparse context with bounded queries and preserved message order",
+          "line": 19,
+          "column": 1,
+          "titleEndLine": 19
+        },
+        {
+          "name": "acquires detached %s context without native payloads or changing stored evidence",
+          "line": 65,
+          "column": 1,
+          "titleEndLine": 66
+        },
+        {
+          "name": "preserves excluded $role payload selection across $boundary",
+          "line": 323,
+          "column": 1,
+          "titleEndLine": 327
+        },
+        {
+          "name": "keeps model reads non-persisting (incognito=%s)",
+          "line": 419,
+          "column": 1,
+          "titleEndLine": 419
+        },
+        {
+          "name": "releases aborted context reads before the next read (incognito=%s)",
+          "line": 490,
+          "column": 1,
+          "titleEndLine": 491
+        },
+        {
+          "name": "validates admission before accepting context (incognito=$incognito mutation=$mutation)",
+          "line": 527,
+          "column": 1,
+          "titleEndLine": 532
+        },
+        {
+          "name": "validates unadmitted context before acceptance (incognito=$incognito mutation=$mutation)",
+          "line": 602,
+          "column": 1,
+          "titleEndLine": 607
+        },
+        {
+          "name": "closes lazy context without acquiring unread payloads (rejected=%s)",
+          "line": 676,
+          "column": 1,
+          "titleEndLine": 677
+        },
+        {
+          "name": "keeps the real result when reset retention replaces a synthetic missing result",
+          "line": 730,
+          "column": 1,
+          "titleEndLine": 730
+        },
+        {
+          "name": "does not acquire checkpoints invalidated by %s",
+          "line": 792,
+          "column": 1,
+          "titleEndLine": 793
+        }
+      ]
+    },
+    "extensions/codex/src/app-server/session-history.test.ts": {
+      "sha256": "eca2a38fea32018c4f034a598aaf78c14d45b908636f07faa0db0d34bbb25267",
+      "tests": [
+        {
+          "name": "sanitizes unknown consumer failures without classifying their text (%s)",
+          "line": 189,
+          "column": 3,
+          "titleEndLine": 193
+        },
+        {
+          "name": "retains $reason in capture diagnostics (incognito=$incognito)",
+          "line": 204,
+          "column": 3,
+          "titleEndLine": 210
+        },
+        {
+          "name": "projects native evidence within its budget ($oversized, incognito=$incognito)",
+          "line": 246,
+          "column": 3,
+          "titleEndLine": 251
+        },
+        {
+          "name": "revalidates before reporting projection rejection ($mutation, oversized=$oversized)",
+          "line": 320,
+          "column": 3,
+          "titleEndLine": 328
+        },
+        {
+          "name": "reads incognito native history from the process-held SQLite store",
+          "line": 415,
+          "column": 3,
+          "titleEndLine": 415
+        },
+        {
+          "name": "preserves native prompt evidence across explicit model-only reads",
+          "line": 429,
+          "column": 3,
+          "titleEndLine": 429
+        },
+        {
+          "name": "treats a missing mirrored session file as empty history",
+          "line": 467,
+          "column": 3,
+          "titleEndLine": 467
+        },
+        {
+          "name": "sanitizes consumer rejection after a missing file is read as empty history",
+          "line": 477,
+          "column": 3,
+          "titleEndLine": 477
+        },
+        {
+          "name": "reports an admission for another session without exposing its identifiers",
+          "line": 487,
+          "column": 3,
+          "titleEndLine": 487
+        },
+        {
+          "name": "does not create a database for a missing explicit SQLite session key",
+          "line": 509,
+          "column": 3,
+          "titleEndLine": 509
+        },
+        {
+          "name": "returns [] for transcripts that do not open with a Codex session marker",
+          "line": 526,
+          "column": 3,
+          "titleEndLine": 526
+        },
+        {
+          "name": "returns undefined for a session header without a string id",
+          "line": 539,
+          "column": 3,
+          "titleEndLine": 539
+        },
+        {
+          "name": "rejects a legacy transcript whose session header belongs to another session",
+          "line": 558,
+          "column": 3,
+          "titleEndLine": 558
+        },
+        {
+          "name": "replays SQLite marker history by session identity",
+          "line": 576,
+          "column": 3,
+          "titleEndLine": 576
+        },
+        {
+          "name": "replays SQLite history from the canonical typed session target",
+          "line": 592,
+          "column": 3,
+          "titleEndLine": 592
+        },
+        {
+          "name": "fails closed when the typed target has a mismatched %s",
+          "line": 611,
+          "column": 3,
+          "titleEndLine": 615
+        },
+        {
+          "name": "fails closed when the typed session target is incomplete",
+          "line": 629,
+          "column": 3,
+          "titleEndLine": 629
+        },
+        {
+          "name": "resolves SQLite marker history when the caller has no session key",
+          "line": 643,
+          "column": 3,
+          "titleEndLine": 643
+        },
+        {
+          "name": "falls back from an unregistered requested key to the marker's verified session key",
+          "line": 658,
+          "column": 3,
+          "titleEndLine": 658
+        },
+        {
+          "name": "resolves synthesized SQLite markers for stale file-backed session metadata",
+          "line": 675,
+          "column": 3,
+          "titleEndLine": 675
+        },
+        {
+          "name": "applies the admission fence when session metadata still points to a legacy file",
+          "line": 692,
+          "column": 3,
+          "titleEndLine": 692
+        },
+        {
+          "name": "replays only the branch selected by a leaf control",
+          "line": 733,
+          "column": 3,
+          "titleEndLine": 733
+        },
+        {
+          "name": "projects private shell rows out of mirrored history without rewriting persisted bytes",
+          "line": 764,
+          "column": 3,
+          "titleEndLine": 764
+        },
+        {
+          "name": "honors explicit navigation to an empty branch",
+          "line": 800,
+          "column": 3,
+          "titleEndLine": 800
+        },
+        {
+          "name": "keeps visible history when continuation rows use a disjoint append cursor",
+          "line": 817,
+          "column": 3,
+          "titleEndLine": 817
+        },
+        {
+          "name": "keeps visible history when a continuation references the leaf marker",
+          "line": 854,
+          "column": 3,
+          "titleEndLine": 854
+        }
+      ]
+    }
+  }
+}
