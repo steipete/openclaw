@@ -1,3 +1,5 @@
 46626e1c2f77bb48836fad693e7d1d7bd5a20392814b2a2858c972beeca3051d  driver.mjs
-41ecf478a8b42aa3f3a239cd87566f9056bfe27ac9623b2f479c41e348b03377  run.sh
-ac27484d522262b33334c65837f9c79b0cc668428829a81dbab4e8ea4d5861a2  ../../workflows/perf-session-ingestion.yml
+beb4f10e4c2ffb60c231ada6061ce4e118bd418d99bb4abcc480bc456ec4bc2c  run.sh
+9d2faea3266a657e1475565e4e06bb8defe850def38928153a0f14a1cfe7262d  run-red.mjs
+0d65263d894be07cf56a64d9ed5f88d9b98c4d06a29abae2ca2700a17be6b431  scanner.test.ts
+b7fa0315e2c00b0043b5cd7eba9257a47278e275fd365c034198fade3b18b6a7  ../../workflows/perf-session-ingestion.yml

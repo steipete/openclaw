@@ -16,14 +16,28 @@ clean_run() {
     TMPDIR="$proof_dir/tmp" LANG=C.UTF-8 LC_ALL=C.UTF-8 CI=1 \
     OPENCLAW_STATE_DIR="$proof_dir/state" "$@"
 }
+verify_source() {
+  test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
+  test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
+  git -C "$source_dir" diff --cached --exit-code
+  git -C "$source_dir" diff --no-ext-diff --no-textconv --name-only > "$proof_dir/current-source-paths.txt"
+  test -z "$(git -C "$source_dir" ls-files --others --exclude-standard)"
+  if [[ -f "$proof_dir/regression-transplanted" ]]; then
+    printf '%s\n' 'extensions/memory-core/src/session-ingestion.test.ts' > "$proof_dir/expected-source-paths.txt"
+    cmp "$proof_dir/current-source-paths.txt" "$proof_dir/expected-source-paths.txt"
+    cmp "$source_dir/extensions/memory-core/src/session-ingestion.test.ts" \
+      "$tooling_root/.github/proof/session-ingestion-119367/scanner.test.ts"
+  else
+    test ! -s "$proof_dir/current-source-paths.txt"
+  fi
+}
 test "$(git -C "$tooling_root" rev-parse HEAD)" = "$tooling_head"
 test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
 test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
 cd "$tooling_root/.github/proof/session-ingestion-119367"
 sha256sum --check files.sha256
 cd "$source_dir"
-git diff --exit-code
-test -z "$(git status --porcelain)"
+verify_source
 clean_run node --input-type=module <<'JS'
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -39,8 +53,7 @@ clean_run npm install --prefix "$proof_dir/tools" --no-audit --no-fund pnpm@12.3
 [[ "$(clean_run pnpm --version)" == 12.3.4 ]]
 clean_run pnpm install --frozen-lockfile 2>&1 | tee "$proof_dir/artifacts/install.log"
 clean_run pnpm build qaRuntime 2>&1 | tee "$proof_dir/artifacts/build.log"
-git diff --exit-code
-test -z "$(git status --porcelain)"
+verify_source
 sha256sum --check "$proof_dir/artifacts/source-inputs.sha256"
 clean_run node --input-type=module <<'JS'
 import assert from 'node:assert/strict';
@@ -61,15 +74,14 @@ for (const file of required) {
 }
 writeFileSync(path.join(process.env.TMPDIR, '../artifacts/built-runtime.json'), JSON.stringify({ head: expectedHead, hashes }));
 JS
-# The driver invokes the actual built CLI; no Vitest mocks or checkpoint seeding.
+# Transplant only the frozen scanner test; production and SDK helpers stay at baseline.
 set +e
-clean_run node "$tooling_root/.github/proof/session-ingestion-119367/driver.mjs" \
-  "$source_dir" "$proof_dir" baseline 2>&1 | tee "$proof_dir/artifacts/driver.log"
+clean_run node "$tooling_root/.github/proof/session-ingestion-119367/run-red.mjs" \
+  "$source_dir" "$proof_dir" 2>&1 | tee "$proof_dir/artifacts/driver.log"
 proof_exit=${PIPESTATUS[0]}
 set -e
 printf '%s\n' "$proof_exit" > "$proof_dir/artifacts/driver-exit.txt"
-git diff --exit-code
-test -z "$(git status --porcelain)"
+verify_source
 sha256sum --check "$proof_dir/artifacts/source-inputs.sha256"
 clean_run node --input-type=module <<'JS'
 import assert from 'node:assert/strict';

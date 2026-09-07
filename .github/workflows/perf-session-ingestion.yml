@@ -1,4 +1,4 @@
-name: Session ingestion baseline proof
+name: Session ingestion scanner regression baseline
 on:
   push:
     branches: [codex/proof-session-ingestion-119367]
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.20.0
-      - name: Build and observe ordinary owner ingestion through the CLI
+      - name: Prove the scanner regressions fail on unchanged baseline
         env:
           TOOLING_HEAD: ${{ github.sha }}
         run: |
@@ -43,7 +43,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: session-ingestion-baseline
+          name: session-ingestion-scanner-baseline
           path: |
             ${{ runner.temp }}/session-ingestion-119367/artifacts/source-head.txt
             ${{ runner.temp }}/session-ingestion-119367/artifacts/source-tree.txt
@@ -51,8 +51,7 @@ jobs:
             ${{ runner.temp }}/session-ingestion-119367/artifacts/source-inputs.sha256
             ${{ runner.temp }}/session-ingestion-119367/artifacts/tooling-files.sha256
             ${{ runner.temp }}/session-ingestion-119367/artifacts/built-runtime.json
-            ${{ runner.temp }}/session-ingestion-119367/artifacts/observations.json
-            ${{ runner.temp }}/session-ingestion-119367/artifacts/producer-message-data.json
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/expected-scanner-failures.json
             ${{ runner.temp }}/session-ingestion-119367/artifacts/driver-exit.txt
           if-no-files-found: error
           retention-days: 7
