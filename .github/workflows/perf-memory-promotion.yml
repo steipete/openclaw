@@ -1,0 +1,61 @@
+name: Memory promotion CLI baseline proof
+on:
+  push:
+    branches: [codex/proof-memory-promotion-121287]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact reviewed proof tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+          sparse-checkout: |
+            .github/proof/memory-promotion-121287
+            .github/workflows/perf-memory-promotion.yml
+          sparse-checkout-cone-mode: false
+      - name: Check out immutable trusted baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: ea376be52530c68d196ce8614fbd7f986dea3963
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+      - name: Build and observe real memory promotion CLI
+        env:
+          TOOLING_HEAD: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/memory-promotion-bootstrap"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/memory-promotion-bootstrap" \
+            bash "$GITHUB_WORKSPACE/tooling/.github/proof/memory-promotion-121287/run.sh" \
+            "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/memory-promotion-121287" "$TOOLING_HEAD"
+      - name: Retain source-bound synthetic observations
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: memory-promotion-cli-baseline
+          path: |
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/source-head.txt
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/source-tree.txt
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/tooling-head.txt
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/source-inputs.sha256
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/node-version.txt
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/runtime-after-build.json
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/runtime-after-flow.json
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/untracked-source.txt
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/observations.json
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/observation-exit.txt
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/observed-regression.patch
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/expected-regression-failure.json
+          if-no-files-found: error
+          retention-days: 7
