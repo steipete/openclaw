@@ -9,8 +9,11 @@ const { parse } = createRequire(path.join(candidate, "package.json"))("acorn");
 const { runUtf8CommandWithTimeout } = await import(
   pathToFileURL(path.join(baseline, "dist/plugin-sdk/process-runtime.js"))
 );
-const bundle = realpathSync(path.join(candidate, "dist/native-hook-relay"));
-const queue = [path.join(bundle, "entry.js")];
+const bundle = realpathSync(path.join(candidate, "dist"));
+const entry = path.join(bundle, "native-hook-relay/entry.js");
+const entryRelative = path.relative(bundle, entry);
+const queue = [entry];
+const fileBytes = new Map();
 const seen = new Set();
 const result = {
   kind: "emitted-native-relay-closure",
@@ -27,7 +30,9 @@ try {
     }
     assert.ok(realpathSync(file).startsWith(`${bundle}${path.sep}`));
     seen.add(file);
-    const source = readFileSync(file, "utf8");
+    const bytes = readFileSync(file);
+    const source = bytes.toString("utf8");
+    fileBytes.set(path.relative(bundle, file), bytes.length);
     const nodes = [parse(source, { ecmaVersion: "latest", sourceType: "module", locations: true })];
     for (const node of nodes) {
       if (!node || typeof node !== "object") {
@@ -81,16 +86,45 @@ try {
       }
     }
   }
-  // Confirm any emitted SQL reader's actual module-load outcome, without a Gateway RPC.
-  // This cannot claim that a real legacy Gateway fallback succeeded.
-  for (const file of new Set(result.schemaReaders.map((row) => row.file))) {
+  const coldFiles = new Set();
+  const coldQueue = [entryRelative];
+  for (const file of coldQueue) {
+    if (coldFiles.has(file)) {
+      continue;
+    }
+    coldFiles.add(file);
+    coldQueue.push(
+      ...result.edges.filter((edge) => edge.from === file && !edge.dynamic).map((edge) => edge.to),
+    );
+  }
+  result.coldClosure = {
+    files: [...coldFiles].sort(),
+    fileCount: coldFiles.size,
+    bytes: [...coldFiles].reduce((sum, file) => sum + fileBytes.get(file), 0),
+  };
+  assert.ok(
+    result.coldClosure.bytes <= 512 * 1024,
+    "Cold relay closure exceeds unchanged512KiB budget",
+  );
+
+  // Always load the actual lazy boundary, including after SQL readers are inlined away.
+  // This is a module-load check, not a claim that a legacy Gateway RPC succeeded.
+  const lazyEntrypoints = result.edges
+    .filter((edge) => coldFiles.has(edge.from) && edge.dynamic)
+    .map((edge) => edge.to);
+  assert.ok(lazyEntrypoints.length > 0, "Emitted relay lost its lazy fallback boundary");
+  for (const file of new Set([
+    ...lazyEntrypoints,
+    ...result.schemaReaders.map((row) => row.file),
+  ])) {
     const url = pathToFileURL(path.join(bundle, file)).href;
     const probe = await runUtf8CommandWithTimeout(
       [
         process.execPath,
         "--input-type=module",
         "--eval",
-        "try { await import(process.argv[1]); console.log(JSON.stringify({loaded:true})); } catch (error) { console.log(JSON.stringify({loaded:false,code:error.code,message:error.message})); process.exitCode=1; }",
+        "try { await import(process.argv[2]); console.log(JSON.stringify({loaded:true})); } catch (error) { console.log(JSON.stringify({loaded:false,code:error.code,message:error.message})); process.exitCode=1; }",
+        "native-relay-import-proof",
         url,
       ],
       {
@@ -121,6 +155,9 @@ try {
     ),
     "Emitted relay schema reader failed to load",
   );
+  for (const { probe } of result.imports) {
+    assert.deepEqual(JSON.parse(probe.stdout), { loaded: true });
+  }
   result.complete = true;
 } catch (error) {
   result.error = { name: error.name, message: error.message };
