@@ -310,7 +310,7 @@ suite.define(() => {
               }
               phase = "model-providers";
               const settingsUrl = new URL("settings/model-providers", suite.server.baseUrl);
-              settingsUrl.hash = url.hash;
+              // Pairing fragments are single-use; later documents reuse the paired browser identity.
               await page.goto(settingsUrl.toString());
               await waitForControlUiGatewayReady(page);
               const providerCard = page.locator('[data-provider-id="fixture"]');
