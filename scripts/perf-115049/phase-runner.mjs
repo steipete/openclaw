@@ -16,6 +16,7 @@ export async function runPhase({
   timeoutMs,
   publishRoot,
   sourceOverlays = {},
+  privateOutputFile,
 }) {
   assert.match(label, /^[a-z0-9-]+$/u);
   await verifySource(baseline, "baseline", sourceOverlays);
@@ -95,6 +96,9 @@ export async function runPhase({
   };
   // No child output, argv, environment, config, arbitrary errors or token-bearing state is exported.
   try {
+    if (privateOutputFile) {
+      await fs.writeFile(privateOutputFile, Buffer.concat(chunks), { mode: 0o600 });
+    }
     await fs.writeFile(
       path.join(publishRoot, `${label}-phase.json`),
       JSON.stringify(receipt, null, 2) + "\n",

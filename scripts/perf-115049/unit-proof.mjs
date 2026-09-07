@@ -43,6 +43,9 @@ async function run(repo, label, args, sourceOverlays = {}) {
       timeoutMs: 300_000,
       publishRoot,
       sourceOverlays,
+      ...(label === "candidate-owners"
+        ? { privateOutputFile: path.join(scratch, "candidate-runner.log") }
+        : {}),
     });
   } catch (error) {
     unjoined = error?.unjoined === true;
