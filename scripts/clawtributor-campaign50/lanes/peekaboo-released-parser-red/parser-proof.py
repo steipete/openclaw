@@ -124,7 +124,7 @@ try:
     receipt["archiveSha256"] = ARCHIVE_SHA
     receipt["payloadHashes"] = payload
     receipt["phase"] = "signature"
-    code, _, _ = run("signature", ["/usr/bin/codesign", "--verify", "--strict", "-R", REQUIREMENT, str(binary)])
+    code, _, _ = run("signature", ["/usr/bin/codesign", "--verify", "--strict", "-R", "=" + REQUIREMENT, str(binary)])
     assert code == 0
     code, _, signature = run("signature-details", ["/usr/bin/codesign", "-d", "--verbose=4", str(binary)])
     assert code == 0 and "TeamIdentifier=FWJYW4S8P8" in signature

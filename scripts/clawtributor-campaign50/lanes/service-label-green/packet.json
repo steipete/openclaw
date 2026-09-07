@@ -1,0 +1,30 @@
+{
+  "source": "b57c5f25a9142ac8e1195e8552c54c268c2e03f8",
+  "nativeHead": "832718fbb11e928004d0c66ee095943bfbe99b6d",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "green",
+  "actualRealCliBaseline": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+  "baselineOwners": 40,
+  "unchangedOwners": 38,
+  "productionNet": -4,
+  "testNet": 75,
+  "files": {
+    "run.sh": "0a0749506c09d091af3bb8b4d7a91343e4dc18d1c86c219deae4e2f2553ffb7d",
+    "diagnostic-service.mjs": "b77762f3b451123f7465cdeda9eb9ced683ff75e6af5794a65a0cb97864d4ef0",
+    "verify-tests.mjs": "0094015340a783a91b54ceacad2ca0f19cdac6cdc3c8c4c7d1e6480450050d79",
+    "completed-report.mjs": "17fc86a0600d27e40b732dfeae9ecf91642f73bb964f3af5b557e3593d17fe19",
+    "production.patch": "cdbeba987a80a89f76303630c782b8b36271ec0456c6fba2a169b7bc00ff0099",
+    "tests.patch": "c97d3a63f8c141f33d779a482d3a42004d66f62ded24da6a78bfe3642ad3e11b",
+    "baseline-files.sha256": "acc0ebd5b2c2ca45bbb87a18da38f41979166446af1d7f677f36d693e73627f0",
+    "unchanged-owner-files.sha256": "73cfa6277e1f9264e7345ef70280a3b9fc981829b0e51e47960c7dee154268fc",
+    "candidate-files.sha256": "a39bef89eef8bd680f0f0909b4e7915f3d609d5a1451fd2477ca998e9327604e"
+  },
+  "steps": [
+    "test-only overlay:4 exact diagnostic state unit reds",
+    "production overlay:full6 owner/sibling suites with only2 named pre-existing platform skips",
+    "one normal build + same4 real CLI calls with labels",
+    "explicit-base changed gates +2candidate/38unchanged hash checks"
+  ],
+  "status": "frozen for independent packet review; no target execution"
+}

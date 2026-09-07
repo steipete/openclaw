@@ -1,12 +1,22 @@
 [
   {
-    "id": "setup-error-reporting-green",
-    "directory": "setup-error-reporting-green",
-    "mode": "green",
-    "runner": "ubuntu-24.04",
-    "source": "3ffa84f3fe94d3efedd858315e27d79beebcfe1c",
+    "id": "peekaboo-released-parser-red",
+    "directory": "peekaboo-released-parser-red",
+    "runner": "macos-26",
+    "source": "6adfb69831b86e93bcd3fd365e11a22700fb37bb",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "variant": "owner-command-candidate"
+    "mode": "red",
+    "variant": "released-cli-parser"
+  },
+  {
+    "id": "service-label-green",
+    "directory": "service-label-green",
+    "runner": "ubuntu-24.04",
+    "source": "b57c5f25a9142ac8e1195e8552c54c268c2e03f8",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "green",
+    "variant": "diagnostic-role-candidate"
   }
 ]
