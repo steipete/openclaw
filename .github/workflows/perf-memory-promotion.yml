@@ -1,11 +1,11 @@
-name: Memory promotion CLI candidate proof
+name: Memory promotion owner checks recovery
 on:
   push:
     branches: [codex/proof-memory-promotion-121287]
 permissions:
   contents: read
 jobs:
-  candidate:
+  candidate-checks:
     if: github.repository == 'steipete/openclaw'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -24,14 +24,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: steipete/openclaw
-          ref: bb8295a2f69bb7232ee38d51c13becb1d2bf5e80
-          fetch-depth: 2
+          ref: 5553040e93a7902cc8ca999808ce20bad55ee249
+          fetch-depth: 3
           path: source
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.20.0
-      - name: Build and observe real memory promotion CLI
+      - name: Verify unchanged product and run owner suites and changed checks
         env:
           TOOLING_HEAD: ${{ github.sha }}
         run: |
@@ -44,7 +44,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: memory-promotion-cli-candidate
+          name: memory-promotion-owner-checks
           path: |
             ${{ runner.temp }}/memory-promotion-121287/artifacts/source-head.txt
             ${{ runner.temp }}/memory-promotion-121287/artifacts/source-tree.txt
@@ -52,10 +52,8 @@ jobs:
             ${{ runner.temp }}/memory-promotion-121287/artifacts/source-inputs.sha256
             ${{ runner.temp }}/memory-promotion-121287/artifacts/node-version.txt
             ${{ runner.temp }}/memory-promotion-121287/artifacts/runtime-after-build.json
-            ${{ runner.temp }}/memory-promotion-121287/artifacts/runtime-after-flow.json
+            ${{ runner.temp }}/memory-promotion-121287/artifacts/prior-live-binding.json
             ${{ runner.temp }}/memory-promotion-121287/artifacts/untracked-source.txt
-            ${{ runner.temp }}/memory-promotion-121287/artifacts/observations.json
-            ${{ runner.temp }}/memory-promotion-121287/artifacts/observation-exit.txt
             ${{ runner.temp }}/memory-promotion-121287/artifacts/owner-suites.json
             ${{ runner.temp }}/memory-promotion-121287/artifacts/owner-suites-exit.txt
             ${{ runner.temp }}/memory-promotion-121287/artifacts/check-plan.log

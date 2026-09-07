@@ -10,34 +10,39 @@ assert.ok(report.numPassedTests > 0);
 const expected = new Map([
   [
     "extensions/memory-core/src/short-term-promotion.test.ts",
-    "keeps blocked origins out of ranking before applying the candidate limit",
+    ["keeps blocked origins out of ranking before applying the candidate limit"],
   ],
   [
     "extensions/memory-core/src/cli.test.ts",
-    "keeps preview limits available and preserves mixed apply output order",
+    ["keeps preview limits available and preserves mixed apply output order"],
   ],
   [
     "extensions/memory-core/src/dreaming-phases.test.ts",
-    "keeps edited flush-quarantined daily files untrusted and out of ranking",
+    [
+      "keeps edited flush-quarantined daily files untrusted and out of ranking",
+      "checkpoints session transcript ingestion and skips unchanged transcripts",
+    ],
   ],
 ]);
 assert.equal(report.testResults.length, expected.size);
 const files = [];
-for (const [filePath, regressionTitle] of expected) {
+for (const [filePath, regressionTitles] of expected) {
   const matching = report.testResults.filter((file) => file.name.endsWith(filePath));
   assert.equal(matching.length, 1);
   const file = matching[0];
   assert.equal(file.status, "passed");
   assert.equal(file.message, "");
-  const regressions = file.assertionResults.filter((test) => test.title === regressionTitle);
-  assert.equal(regressions.length, 1);
-  assert.equal(regressions[0].status, "passed");
+  for (const regressionTitle of regressionTitles) {
+    const regressions = file.assertionResults.filter((test) => test.title === regressionTitle);
+    assert.equal(regressions.length, 1);
+    assert.equal(regressions[0].status, "passed");
+  }
   files.push({
     path: filePath,
     passed: file.assertionResults.filter((test) => test.status === "passed").length,
     skipped: file.assertionResults.filter((test) => test.status === "skipped").length,
-    regressionTitle,
-    regressionPassed: true,
+    regressionTitles,
+    regressionsPassed: true,
   });
 }
 await fs.writeFile(

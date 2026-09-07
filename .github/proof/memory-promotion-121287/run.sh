@@ -5,10 +5,10 @@ source_dir=$1
 proof_dir=$2
 tooling_head=$3
 tooling_root=$(cd "$(dirname "$0")/../../.." && pwd)
-source_head=bb8295a2f69bb7232ee38d51c13becb1d2bf5e80
-source_tree=aff804944b86fba6f70af72a1a84b5eb68d774f0
+source_head=5553040e93a7902cc8ca999808ce20bad55ee249
+source_tree=ab617a8e93a4a6bc60a94113e79381314d71c3da
 check_base=ea376be52530c68d196ce8614fbd7f986dea3963
-arm=candidate
+live_source=bb8295a2f69bb7232ee38d51c13becb1d2bf5e80
 node_bin=$(dirname "$(command -v node)")
 clean_path="$proof_dir/tools/node_modules/.bin:$node_bin:/usr/local/bin:/usr/bin:/bin"
 
@@ -25,7 +25,7 @@ test "$(git -C "$source_dir" rev-parse HEAD)" = "$source_head"
 test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$source_tree"
 test "$(git -C "$source_dir" rev-parse "$check_base^{tree}")" = 5d66a2a08fc8067d6ccde51ecddd8dcfa6008e43
 git -C "$source_dir" merge-base --is-ancestor "$check_base" "$source_head"
-test -x /usr/bin/time
+test "$(git -C "$source_dir" diff --name-only "$live_source" "$source_head")" = extensions/memory-core/src/dreaming-phases.test.ts
 git -C "$source_dir" diff --exit-code
 cd "$source_dir"
 clean_run node --input-type=module <<'JS'
@@ -40,6 +40,29 @@ printf '%s\n' "$source_head" > "$proof_dir/artifacts/source-head.txt"
 printf '%s\n' "$source_tree" > "$proof_dir/artifacts/source-tree.txt"
 printf '%s\n' "$tooling_head" > "$proof_dir/artifacts/tooling-head.txt"
 clean_run node --version > "$proof_dir/artifacts/node-version.txt"
+clean_run node --input-type=module - "$live_source" "$source_head" "$proof_dir/artifacts/prior-live-binding.json" <<'JS'
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+const [liveHead, checkedHead, output] = process.argv.slice(2);
+const paths = [
+  'extensions/memory-core/src/short-term-promotion.ts',
+  'extensions/memory-core/src/dreaming-consolidation-candidates.ts',
+  'extensions/memory-core/src/short-term-promotion-apply.ts',
+  'docs/cli/memory.md',
+];
+const blobs = Object.fromEntries(paths.map((file) => {
+  const live = execFileSync('git', ['rev-parse', `${liveHead}:${file}`], { encoding: 'utf8' }).trim();
+  const checked = execFileSync('git', ['rev-parse', `${checkedHead}:${file}`], { encoding: 'utf8' }).trim();
+  assert.equal(checked, live);
+  return [file, { live, checked }];
+}));
+writeFileSync(output, JSON.stringify({
+  priorLiveRun: 34093384183, liveHead, checkedHead,
+  onlyChangedPath: 'extensions/memory-core/src/dreaming-phases.test.ts',
+  cliRepeated: false, productionAndDocsUnchanged: true, blobs,
+}, null, 2) + '\n');
+JS
 cd "$tooling_root/.github/proof/memory-promotion-121287"
 sha256sum --check files.sha256
 cd "$source_dir"
@@ -75,7 +98,7 @@ const hashes = Object.fromEntries(files.map((file) => [file, createHash('sha256'
 writeFileSync(process.argv[3], JSON.stringify({
   sourceHead: process.argv[2], buildCommand: 'pnpm build qaRuntime',
   buildProfile: 'qaRuntime', profileEvidence: 'successful canonical build invocation; stamps contain head, not profile',
-  executionMode: 'normal pnpm repository CLI via run-node -> openclaw.mjs -> dist/entry.js; wrapper selects this checkout with OPENCLAW_DEV_SOURCE_ROOT',
+  executionMode: 'owner suites and canonical changed checks only; prior actual CLI is separately bound in prior-live-binding.json',
   installedPackageClaim: false, buildStamp, runtimeStamp, hashes,
 }, null, 2) + '\n');
 JS
@@ -96,19 +119,6 @@ verify_source
 clean_run pnpm build qaRuntime 2>&1 | tee "$proof_dir/build.log"
 verify_source
 runtime_binding "$proof_dir/artifacts/runtime-after-build.json"
-
-# Each real CLI invocation starts with only the driver's explicit synthetic state.
-set +e
-clean_run node --import ./scripts/tsx.mjs \
-  "$tooling_root/.github/proof/memory-promotion-121287/driver.mjs" \
-  "$source_dir" "$proof_dir" "$arm" 2>&1 | tee "$proof_dir/driver.log"
-proof_exit=${PIPESTATUS[0]}
-set -e
-verify_source
-runtime_binding "$proof_dir/artifacts/runtime-after-flow.json"
-cmp "$proof_dir/artifacts/runtime-after-build.json" "$proof_dir/artifacts/runtime-after-flow.json"
-printf '%s\n' "$proof_exit" > "$proof_dir/artifacts/observation-exit.txt"
-test "$proof_exit" = 0
 
 suite_paths=(
   extensions/memory-core/src/short-term-promotion.test.ts
