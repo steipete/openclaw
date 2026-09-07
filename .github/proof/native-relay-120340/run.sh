@@ -101,6 +101,21 @@ observe baseline auto baseline-before 20
 # Candidate build/runtime execution begins only after successful baseline receipts exist.
 if [[ "$proof_mode" == comparison ]]; then
   build_arm candidate
+  mkdir -p "$proof_dir/schema-state" "$proof_dir/test-state"
+  # A real emitted module-load failure stops qualification before any comparison.
+  clean_run env OPENCLAW_STATE_DIR="$proof_dir/schema-state" node "$script_dir/inspect-built-relay.mjs" \
+    "$source_parent/baseline" "$source_parent/candidate" "$proof_dir/artifacts/candidate-schema-closure.json"
+  cd "$source_parent/candidate"
+  set +e
+  clean_run env OPENCLAW_STATE_DIR="$proof_dir/test-state" node scripts/run-vitest.mjs \
+    src/agents/harness/native-hook-relay-command.test.ts src/cli/hooks-cli.process.test.ts \
+    src/cli/one-shot-exit.test.ts src/cli/native-hook-relay-cli.test.ts \
+    test/scripts/check-cli-bootstrap-imports.test.ts test/scripts/tsdown-runtime-config.test.ts \
+    2>&1 | tee "$proof_dir/candidate-focused-tests.log"
+  focused_exit=${PIPESTATUS[0]}
+  set -e
+  printf '%s\n' "$focused_exit" > "$proof_dir/artifacts/candidate-focused-exit.txt"
+  [[ "$focused_exit" == 0 ]]
   observe candidate auto candidate-sanity 1
   observe candidate general candidate-general-sanity 1
   # Alternating arm order reduces monotonic host-temperature/cache-order bias.

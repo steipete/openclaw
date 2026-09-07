@@ -76,6 +76,8 @@ jobs:
             ${{ runner.temp }}/native-relay-120340/artifacts/pnpm-integrity.json
             ${{ runner.temp }}/native-relay-120340/artifacts/baseline-build.json
             ${{ runner.temp }}/native-relay-120340/artifacts/candidate-build.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-schema-closure.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-focused-exit.txt
             ${{ runner.temp }}/native-relay-120340/artifacts/baseline-sanity.json
             ${{ runner.temp }}/native-relay-120340/artifacts/baseline-sanity-exit.txt
             ${{ runner.temp }}/native-relay-120340/artifacts/baseline-before.json
