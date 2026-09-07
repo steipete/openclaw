@@ -1,11 +1,11 @@
-name: Ordinary file logging baseline proof
+name: Ordinary file logging paired proof
 on:
   push:
     branches: [codex/proof-logging-128189]
 permissions:
   contents: read
 jobs:
-  baseline:
+  paired:
     if: github.repository == 'steipete/openclaw'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
@@ -25,12 +25,20 @@ jobs:
         with:
           repository: openclaw/openclaw
           ref: 44dbc50d172e9e7ec407b8e21e26aefa430cc933
-          path: source
+          path: sources/baseline
+          persist-credentials: false
+      - name: Check out immutable candidate source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: steipete/openclaw
+          ref: 88c1629b9e3e42c809d14dbc6417677c3487305c
+          path: sources/candidate
+          fetch-depth: 2
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.20.0
-      - name: Build runtime and observe ordinary file logging
+      - name: Build matched runtimes and compare ordinary file logging
         env:
           TOOLING_HEAD: ${{ github.sha }}
         run: |
@@ -38,20 +46,28 @@ jobs:
           mkdir -p "$RUNNER_TEMP/logging-bootstrap"
           env -i PATH="$PATH" HOME="$RUNNER_TEMP/logging-bootstrap" \
             bash "$GITHUB_WORKSPACE/tooling/.github/proof/logging-128189/run.sh" \
-            "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/logging-128189" "$TOOLING_HEAD" baseline
+            "$GITHUB_WORKSPACE/sources" "$RUNNER_TEMP/logging-128189" "$TOOLING_HEAD"
       - name: Retain source-bound component observations
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: logging-128189-baseline
+          name: logging-128189-paired
           path: |
-            ${{ runner.temp }}/logging-128189/artifacts/source-head.txt
-            ${{ runner.temp }}/logging-128189/artifacts/source-tree.txt
             ${{ runner.temp }}/logging-128189/artifacts/tooling-head.txt
-            ${{ runner.temp }}/logging-128189/artifacts/source-inputs.sha256
             ${{ runner.temp }}/logging-128189/artifacts/tooling-files.sha256
-            ${{ runner.temp }}/logging-128189/artifacts/built-runtime.json
             ${{ runner.temp }}/logging-128189/artifacts/observations.json
             ${{ runner.temp }}/logging-128189/artifacts/driver-exit.txt
+            ${{ runner.temp }}/logging-128189/artifacts/validation-summary.json
+            ${{ runner.temp }}/logging-128189/artifacts/tests-exit.txt
+            ${{ runner.temp }}/logging-128189/artifacts/collection-exit.txt
+            ${{ runner.temp }}/logging-128189/artifacts/changed-checks-exit.txt
+            ${{ runner.temp }}/logging-128189/artifacts/baseline/source-head.txt
+            ${{ runner.temp }}/logging-128189/artifacts/baseline/source-tree.txt
+            ${{ runner.temp }}/logging-128189/artifacts/baseline/source-inputs.sha256
+            ${{ runner.temp }}/logging-128189/artifacts/baseline/built-runtime.json
+            ${{ runner.temp }}/logging-128189/artifacts/candidate/source-head.txt
+            ${{ runner.temp }}/logging-128189/artifacts/candidate/source-tree.txt
+            ${{ runner.temp }}/logging-128189/artifacts/candidate/source-inputs.sha256
+            ${{ runner.temp }}/logging-128189/artifacts/candidate/built-runtime.json
           if-no-files-found: error
           retention-days: 7

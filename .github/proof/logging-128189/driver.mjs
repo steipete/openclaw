@@ -5,8 +5,8 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const [mode, sourceDir, proofDir, arm, sizeArg, countArg] = process.argv.slice(2);
-assert.ok(mode === "observe" || mode === "worker");
-assert.ok(arm === "baseline" || arm === "candidate");
+assert.ok(mode === "compare" || mode === "worker");
+assert.ok(mode === "compare" || arm === "baseline" || arm === "candidate");
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 const save = (name, value) =>
   fs.writeFileSync(path.join(proofDir, name), `${JSON.stringify(value, null, 2)}\n`);
@@ -89,11 +89,14 @@ if (mode === "worker") {
 } else {
   fs.mkdirSync(proofDir, { recursive: true });
   const fixtureRoot = fs.mkdtempSync(path.join(proofDir, "owned-logging-"));
+  const sources = {
+    baseline: path.join(sourceDir, "baseline"),
+    candidate: path.join(sourceDir, "candidate"),
+  };
   const { runCommandWithTimeout } = await import(
-    pathToFileURL(path.join(sourceDir, "dist/plugin-sdk/process-runtime.js")).href
+    pathToFileURL(path.join(sources.baseline, "dist/plugin-sdk/process-runtime.js")).href
   );
   const observations = {
-    arm,
     kind: "normal file-logging component; not Gateway throughput",
     runs: [],
     profiles: [],
@@ -103,112 +106,130 @@ if (mode === "worker") {
   try {
     for (const size of [8_192, 40_960, 131_072]) {
       for (let trial = 0; trial < 6; trial += 1) {
-        const profiled = trial === 5;
-        stage = `${size} bytes, trial ${trial}, ${profiled ? "profile" : "timing"}`;
-        const dir = path.join(fixtureRoot, `${size}-${trial}`);
-        for (const child of ["home", "config", "cache", "tmp", "state"]) {
-          fs.mkdirSync(path.join(dir, child), { recursive: true });
-        }
-        const args = [process.execPath];
-        if (profiled) {
-          args.push("--cpu-prof", `--cpu-prof-dir=${dir}`, "--cpu-prof-name=ordinary.cpuprofile");
-        }
-        args.push(
-          "--import",
-          path.join(sourceDir, "scripts/tsx.mjs"),
-          fileURLToPath(import.meta.url),
-          "worker",
-          sourceDir,
-          dir,
-          arm,
-          String(size),
-          profiled ? "128" : "64",
-        );
-        let result;
-        try {
-          result = await runCommandWithTimeout(args, {
-            cwd: sourceDir,
-            baseEnv: {},
-            env: {
-              PATH: process.env.PATH,
-              HOME: path.join(dir, "home"),
-              XDG_CONFIG_HOME: path.join(dir, "config"),
-              XDG_CACHE_HOME: path.join(dir, "cache"),
-              TMPDIR: path.join(dir, "tmp"),
-              OPENCLAW_STATE_DIR: path.join(dir, "state"),
-              LANG: "C.UTF-8",
-              LC_ALL: "C.UTF-8",
-            },
-            input: "",
-            timeoutMs: 120_000,
-            killProcessTree: true,
-            maxOutputBytes: 128 * 1024,
-            terminateOnOutputLimit: true,
-          });
-        } catch (error) {
-          cleanupConfirmed = ["normal", "cooperative", "forced"].includes(error?.cleanup);
-          throw error;
-        }
-        cleanupConfirmed = ["normal", "cooperative", "forced"].includes(result.cleanup);
-        assert.ok(cleanupConfirmed, "owned worker cleanup uncertain");
-        assert.equal(result.termination, "exit");
-        assert.equal(result.code, 0, "ordinary file logger worker failed");
-        assert.equal(result.stdoutTruncatedBytes, undefined);
-        const observation = {
-          trial,
-          profiled,
-          cleanup: result.cleanup,
-          ...JSON.parse(result.stdout),
-        };
-        observations.runs.push(observation);
-        save("observations.json", observations);
-        if (profiled) {
-          const profile = JSON.parse(
-            fs.readFileSync(path.join(dir, "ordinary.cpuprofile"), "utf8"),
-          );
-          const nodes = new Map(profile.nodes.map((node) => [node.id, node]));
-          const hitIds = new Set(
-            profile.nodes
-              .filter(
-                (node) =>
-                  node.callFrame.functionName === "replacePatternBounded" &&
-                  node.callFrame.url.includes("logging/redact-bounded"),
-              )
-              .map((node) => node.id),
-          );
-          const descendants = new Set(hitIds);
-          for (const id of descendants) {
-            for (const child of nodes.get(id)?.children ?? []) {
-              descendants.add(child);
-            }
+        const order = trial % 2 === 0 ? ["baseline", "candidate"] : ["candidate", "baseline"];
+        for (const arm of order) {
+          const runSourceDir = sources[arm];
+          const profiled = trial === 5;
+          stage = `${arm}, ${size} bytes, trial ${trial}, ${profiled ? "profile" : "timing"}`;
+          const dir = path.join(fixtureRoot, `${arm}-${size}-${trial}`);
+          for (const child of ["home", "config", "cache", "tmp", "state"]) {
+            fs.mkdirSync(path.join(dir, child), { recursive: true });
           }
-          const counts = (profile.samples ?? []).filter((id) => descendants.has(id)).length;
-          const observed = profile.nodes
-            .filter((node) => hitIds.has(node.id))
-            .map((node) => ({
-              functionName: node.callFrame.functionName,
-              source: "src/logging/redact-bounded.ts",
-              samples: (profile.samples ?? []).filter((id) => id === node.id).length,
-            }));
-          // A profile-node presence alone is not evidence that the affected code ran.
-          if (size > 32_768) {
-            assert.ok(
-              counts > 0,
-              "profile did not observe bounded replacement; no performance verdict",
-            );
+          const args = [process.execPath];
+          if (profiled) {
+            args.push("--cpu-prof", `--cpu-prof-dir=${dir}`, "--cpu-prof-name=ordinary.cpuprofile");
           }
-          observations.profiles.push({
-            size,
-            totalSamples: (profile.samples ?? []).length,
-            boundedInclusiveSamples: counts,
-            observed,
-          });
+          args.push(
+            "--import",
+            path.join(runSourceDir, "scripts/tsx.mjs"),
+            fileURLToPath(import.meta.url),
+            "worker",
+            runSourceDir,
+            dir,
+            arm,
+            String(size),
+            profiled ? "128" : "64",
+          );
+          let result;
+          try {
+            result = await runCommandWithTimeout(args, {
+              cwd: runSourceDir,
+              baseEnv: {},
+              env: {
+                PATH: process.env.PATH,
+                HOME: path.join(dir, "home"),
+                XDG_CONFIG_HOME: path.join(dir, "config"),
+                XDG_CACHE_HOME: path.join(dir, "cache"),
+                TMPDIR: path.join(dir, "tmp"),
+                OPENCLAW_STATE_DIR: path.join(dir, "state"),
+                LANG: "C.UTF-8",
+                LC_ALL: "C.UTF-8",
+              },
+              input: "",
+              timeoutMs: 120_000,
+              killProcessTree: true,
+              maxOutputBytes: 128 * 1024,
+              terminateOnOutputLimit: true,
+            });
+          } catch (error) {
+            cleanupConfirmed = ["normal", "cooperative", "forced"].includes(error?.cleanup);
+            throw error;
+          }
+          cleanupConfirmed = ["normal", "cooperative", "forced"].includes(result.cleanup);
+          assert.ok(cleanupConfirmed, "owned worker cleanup uncertain");
+          assert.equal(result.termination, "exit");
+          assert.equal(result.code, 0, "ordinary file logger worker failed");
+          assert.equal(result.stdoutTruncatedBytes, undefined);
+          const observation = {
+            trial,
+            profiled,
+            cleanup: result.cleanup,
+            ...JSON.parse(result.stdout),
+          };
+          assert.equal(observation.arm, arm);
+          observations.runs.push(observation);
           save("observations.json", observations);
+          if (profiled) {
+            const profile = JSON.parse(
+              fs.readFileSync(path.join(dir, "ordinary.cpuprofile"), "utf8"),
+            );
+            const nodes = new Map(profile.nodes.map((node) => [node.id, node]));
+            const hitIds = new Set(
+              profile.nodes
+                .filter(
+                  (node) =>
+                    node.callFrame.functionName === "replacePatternBounded" &&
+                    node.callFrame.url.includes("logging/redact-bounded"),
+                )
+                .map((node) => node.id),
+            );
+            const descendants = new Set(hitIds);
+            for (const id of descendants) {
+              for (const child of nodes.get(id)?.children ?? []) {
+                descendants.add(child);
+              }
+            }
+            const counts = (profile.samples ?? []).filter((id) => descendants.has(id)).length;
+            const observed = profile.nodes
+              .filter((node) => hitIds.has(node.id))
+              .map((node) => ({
+                functionName: node.callFrame.functionName,
+                source: "src/logging/redact-bounded.ts",
+                samples: (profile.samples ?? []).filter((id) => id === node.id).length,
+              }));
+            // A profile-node presence alone is not evidence that the affected code ran.
+            if (size > 32_768) {
+              assert.ok(
+                counts > 0,
+                "profile did not observe bounded replacement; no performance verdict",
+              );
+            }
+            observations.profiles.push({
+              arm,
+              size,
+              totalSamples: (profile.samples ?? []).length,
+              boundedInclusiveSamples: counts,
+              observed,
+            });
+            save("observations.json", observations);
+          }
         }
+        const pair = observations.runs.filter(
+          (run) => run.requestedBytes === size && run.trial === trial,
+        );
+        assert.equal(pair.length, 2);
+        assert.equal(pair[0].records, pair[1].records);
+        assert.equal(pair[0].actualMessageBytes, pair[1].actualMessageBytes);
+        assert.equal(
+          pair[0].contentSha256,
+          pair[1].contentSha256,
+          "paired complete log output differs",
+        );
       }
     }
     for (const size of [8_192, 40_960, 131_072]) {
       const runs = observations.runs.filter((run) => run.requestedBytes === size && !run.profiled);
+      assert.equal(runs.length, 10);
       assert.equal(new Set(runs.map((run) => run.contentSha256)).size, 1);
     }
   } catch (error) {
