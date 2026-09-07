@@ -1,0 +1,69 @@
+name: Ordinary staged-input preparation qualification
+on:
+  push:
+    branches: [codex/proof-stage-inputs-128454]
+permissions:
+  contents: read
+concurrency:
+  group: stage-inputs-128454-proof
+  cancel-in-progress: false
+jobs:
+  qualify:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact reviewed proof tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+          sparse-checkout: |
+            .github/proof/stage-inputs-128454
+            .github/workflows/perf-stage-inputs-128454.yml
+          sparse-checkout-cone-mode: false
+      - name: Check out immutable trusted baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: 149e97d4dbcadfaf2eda0c463aa7c7815da393d3
+          path: baseline
+          persist-credentials: false
+      - name: Check out exact reviewed narrowed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: steipete/openclaw
+          ref: f4742065da14544c3ee0d9e1036221cd27b19ddd
+          path: candidate
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+      - name: Compare real staging and image hydration with small owned files
+        env:
+          TOOLING_HEAD: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/staging-proof-bootstrap"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/staging-proof-bootstrap" \
+            bash "$GITHUB_WORKSPACE/tooling/.github/proof/stage-inputs-128454/run.sh" \
+            "$GITHUB_WORKSPACE/baseline" "$GITHUB_WORKSPACE/candidate" \
+            "$RUNNER_TEMP/stage-inputs-128454" "$TOOLING_HEAD"
+      - name: Retain exact-source synthetic qualification receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: staged-inputs-128454-qualification
+          path: |
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/tooling-head.txt
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/source-changed-paths.txt
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/*/source-head.txt
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/*/source-tree.txt
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/*/source-inputs.sha256
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/*/ordinary-staging.json
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/*/accepted-proof.json
+            ${{ runner.temp }}/stage-inputs-128454/artifacts/candidate/regressions.json
+          if-no-files-found: error
+          retention-days: 7
