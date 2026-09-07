@@ -1,0 +1,32 @@
+{
+  "pr": 141401,
+  "revision": 3,
+  "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "lane": "progress-width-red",
+  "mode": "red",
+  "runtime": {
+    "node": "24.20.0",
+    "pnpm": "12.3.4"
+  },
+  "status": "frozen for independent review; no execution grant",
+  "sourcePins": 23,
+  "original57Baseline": "unqualified failure; unchanged",
+  "files": {
+    "run.sh": "bb0abfa92b3bf0d826f3f2d5b7d69f3ddabd34df724ac2448c9da6bd25eba492",
+    "driver.py": "f943322a163b7d252cf208dd305f71412cca8894878a3c38b6cb554e5d9df38e",
+    "child.mts": "b62c57a4150c8c409ab374db0a073611170f9ddd2d457f66e7407b70a27d75b4",
+    "check.mts": "a30a4e68c30b5c764560bcfcf1b9946bb4c623ed66711097e80bca69e5e87cb5",
+    "verify-inputs.py": "ee7dcd99155e81f250a2dde2c4d062872cc20f1757b442a16272483ab8c30863",
+    "cases.json": "b8060f44e7ea0adcf9fc50df65dbb83aae2bb205e752778796062c0f000ad8d6",
+    "source.sha256": "9680e9b59975f4b89880f04f745677de1fb431dd4f88971445cb63ce89e38c9a",
+    "PROOF-DESIGN.md": "fd77bbb7349dc677e10cac6c987c99d308bd9aec2750ebe138ffc1e21d56ddd3",
+    "SYNTAX.json": "ec22f6332f4aac2f422fea62b4a7dddbb6b2c3f95bb427e3b272a90e74d91331",
+    "check-harness.py": "ede885ec6314db4f866f66ede83c78048f332ae394fbf2084655709d4636769b",
+    "HARNESS-CHECKS.json": "2da16fa4374d378a2a29dbcd59ac47d46dabc02fe2fe7a034965835329aeb5b1",
+    "inspect-group.mjs": "c992a1a217da34968b15e67d75439c4f6c80b4f5e4ec0fe36a29eee72ae956fe",
+    "check-observation.mjs": "5091de2f36ad9b9b35e340b4991842870102d7aaffc6f30413eee1c3ccc7dfe6",
+    "OBSERVATION-CHECKS.json": "28a870413e44abb9eadefbad3ca7ade00efce1e0a103a37082402b6e7bc5bbde",
+    "NATIVE-SYNTAX.json": "f9e8a1ab0ae75ac24b2ec16332894255e824570993797b6f7e3b8965e61cb7b4",
+    "REVISION3-DELTA.json": "9fba79442a56f5c9ca4e9ead1bf712f82c1259e13bdb145ed416817ad98b800b"
+  }
+}

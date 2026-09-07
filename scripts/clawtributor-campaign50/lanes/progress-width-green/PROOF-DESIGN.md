@@ -1,0 +1,35 @@
+# #141401 candidate green: shared core and wizard progress
+
+This candidate-only packet is unexecuted. It binds base6aa09cbadb594c3d46d5bd49a28c514df1b256b0, Node24.20.0, pnpm12.3.4, Clack1.7.0 and the independently reviewed four-file candidate df792475. Production is77added/77deleted; tests have net growth53 (native Git alignment120added/67deleted). No native branch or production checkout was changed while authoring.
+
+## Reused before evidence and expanded scope
+
+The original successful baseline is run34159820010/job101861029380, immutable harness8eb7c9aef934a8f8acadc8211e3c9d4d877342b1 and packet617cead2. Its nine actual PTY cases proved the four named failures and existing controls, with18 natural rendering/observer process lifecycles, full OSC, source checks and owned cleanup. The original wizard6 case was labeled a preservation control, but its captured20active/19stopped rows are real evidence of another flood in the same renderer. Root explicitly expanded the repair to cover it. Those original outcomes are retained byte-for-byte; the old true preservation flag is not rewritten into a fabricated old test failure. `verify-reuse.py` rechecks90 exact already-public raw/metadata copies, including process/observer/raw frame/OSC/source/screen joins, before candidate execution. Ignored .log files are transported as .log.txt with an explicit unchanged-byte mapping. No baseline is rerun.
+
+Earlier failed wave57 remains unqualified and its group-member state unknown. Neither the corrected baseline nor this packet claims that its cause was a zombie or compiler helper.
+
+## Candidate owner
+
+One shared helper owns width bounding, resize behavior and completion. Core reserves7 decoration columns; wizard preserves its existing10-column budget and custom frame/options selection. Both suppress animation when that budget cannot fit. Resize only clears animation; it does not finish the logical reporter. The blank-animation divergence is removed.
+
+A direct stop method retains the finished guard required by the real onboarding-plugin-install double-stop caller. It clears the native spinner and emits an explicitly supplied completion through public Clack log.message with a single already-prefixed array element, symbol("submit"), spacing0 and withGuidefalse. This keeps complete nonempty/multiline/empty final text and the native submit symbol without restarting a suppressed spinner or introducing continuation framing. Core passes an explicit empty string to preserve its completion marker; wizard undefined remains silent. Full logical labels continue through the existing OSC owner. Native clear releases raw/cursor state before final logging, so whole terminal-control byte identity is not claimed.
+
+## Candidate checks
+
+First, run the two revised suites with the native test runner:15core+35wizard=50 tests. The source-audited literal tables establish those counts; strict completed-report/JSON validation requires every test passed, no skipped/todo/global errors or earlier retry/no-output-timeout/OOM diagnostics, and exact critical regression/control titles. There is no new unit-red claim or baseline repetition. The original actual PTY before evidence establishes the defects.
+
+Core unit fixtures now use a real event-capable Writable, following the existing Clack migration prompt fixture pattern, rather than plain objects without on/off. Partial Clack imports preserve real log/symbol; wizard's partial progress import preserves the actual shared helper while mocking only its existing OSC collaborator. Existing raw input, line/log fallback, nested ownership, delayed cancellation and repeated-done coverage remains. Tiny undefined/empty/multiline/repeated-stop and resize-retirement completion controls exercise the newly shared owner. Removed native stop mocks were obsolete after the completion owner rewrite.
+
+Then run12 actual PTY cases: the original nine flows with the new tiny-wizard correctness expectation, plus tiny multiline completion, tiny explicit-empty completion and normal multiline completion. All wizard cases call stop a second time with a distinct unwanted message; the final text and screen must contain only the first outcome. There is zero expected animation in core6, wizard6 and the two new tiny completion cells. Normal cells require at least26 actual frames and exactly the guide plus one animated row.
+
+The unchanged parent readiness protocol waits for real first/26th frames through the owned pipe. Suppression is admitted only in explicitly designated tiny cases and only after observing unchanged public Clack listener identities; all other missing animation fails. The child records that actual suppression and repeat-stop path. The checker retains the exact full initial/update/clear OSC sequence, phase order, raw acknowledgement offsets and fixed-width screen projections. It additionally checks the entire completion text, normalizing PTY CRLF only, and compares final rows against the existing fixed-width screen owner fed the expected guide/final message. This protects full text, explicit-empty spacing, single completion and no stale or erased rows; no custom terminal or reflow implementation is added.
+
+Finally run explicit-base check-changed on the four candidate files and diff whitespace checks. All23 source/dependency pins and the four final candidate hashes are checked after execution, with the complete final diff retained. No full build, release packaging or installed CLI claim is made for this internal renderer change; exact-head normal CI remains a later landing gate.
+
+## Lifecycle, limits and scope
+
+The previously accepted lifecycle owner is unchanged: each rendering child has an owned session/PTY and narrow empty-home environment; its native observer imports the exact maintained inspectManagedProcessGroup owner with built-in Node stripping, not tsx. Exact canonical dead is required under indeterminate policy, with transparent actual kernel/thread-ps observations. The observer itself must naturally exit/reap/EOF and have direct kernel group absence. No recursive certification or copied process-state classifier. Original18second cell bounds and the shared existing cleanup ceiling remain; forced/error/unknown states cannot pass or delete unconfirmed fixtures. No newly added retry or blind observation sleep.
+
+The proof remains real source-owner rendering through withProgress/createClackPrompter, not a full channel probe command. It includes a physical resize before delayed first animation. Active terminal shrink/growth reflow is unproven; the source screen has fixed columns and is never reset to pretend it reflowed history. Unit resize-state controls are not relabeled as physical reflow proof. Synthetic HTML views are projections of actual PTY bytes, not native screenshots; inspected before/after picture capture is still required before final visual PR publication.
+
+No target code ran during authoring. Only trusted formatting, syntax/AST inspection and authored data-only guard checks ran locally. Root/controller must authorize and execute the reviewed candidate packet.

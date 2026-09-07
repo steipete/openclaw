@@ -1,0 +1,25 @@
+{
+  "id": "wizard-clear",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 1,
+      "offset": 167
+    },
+    {
+      "byte": "A",
+      "frames": 26,
+      "offset": 2296
+    }
+  ],
+  "pid": 3582,
+  "exitCode": 0,
+  "rawBytes": 2443,
+  "rawSha256": "7e1f9c946b8cc60867183bd5b7f1e0892edb242092220de2bbc9d7c5dd682181"
+}

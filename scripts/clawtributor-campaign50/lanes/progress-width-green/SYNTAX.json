@@ -1,0 +1,22 @@
+{
+  "pythonAST": [
+    "check-harness.py",
+    "check-unit-validator.py",
+    "driver.py",
+    "verify-inputs.py",
+    "verify-reuse.py"
+  ],
+  "nodeCheck": [
+    "check-observation.mjs",
+    "check.mts",
+    "child.mts",
+    "completed-report.mjs",
+    "inspect-group.mjs",
+    "validate-tests.mjs"
+  ],
+  "bashSyntax": [
+    "run.sh"
+  ],
+  "targetImports": false,
+  "targetExecution": false
+}

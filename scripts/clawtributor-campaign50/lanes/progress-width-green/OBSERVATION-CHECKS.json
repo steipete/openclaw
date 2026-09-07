@@ -1,0 +1,14 @@
+{
+  "observerSha256": "c992a1a217da34968b15e67d75439c4f6c80b4f5e4ec0fe36a29eee72ae956fe",
+  "checks": [
+    "arguments/options/receiver unchanged",
+    "return object identity unchanged",
+    "kernel result unchanged",
+    "kernel and spawn thrown error identities unchanged",
+    "bounded diagnostic truncation flagged",
+    "builtin identities restored"
+  ],
+  "targetImports": false,
+  "targetExecution": false,
+  "processActions": false
+}

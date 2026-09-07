@@ -1,22 +1,12 @@
 [
   {
-    "id": "macos-cli-selection-green",
-    "directory": "macos-cli-selection-green",
-    "runner": "macos-26",
-    "source": "0ad318398e906aa710af94d61231dfe65946c02d",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "native-selection-green"
-  },
-  {
-    "id": "feishu-103928-ordinary-postfix",
-    "directory": "feishu-103928-ordinary-postfix",
+    "id": "progress-width-green",
+    "directory": "progress-width-green",
     "runner": "ubuntu-24.04",
-    "source": "0bec2710f6836388b58974c3a8310dfcbc21890e",
+    "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "ordinary-output-and-finalization"
+    "variant": "ordinary-pty-candidate"
   }
 ]

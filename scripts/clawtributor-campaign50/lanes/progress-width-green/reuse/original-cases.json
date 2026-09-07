@@ -1,0 +1,59 @@
+[
+  {
+    "id": "core-32",
+    "kind": "core",
+    "columns": 32,
+    "expectedBaseline": "rows"
+  },
+  {
+    "id": "core-36",
+    "kind": "core",
+    "columns": 36,
+    "expectedBaseline": "rows"
+  },
+  {
+    "id": "core-80",
+    "kind": "core",
+    "columns": 80,
+    "expectedBaseline": "pass"
+  },
+  {
+    "id": "core-6",
+    "kind": "core",
+    "columns": 6,
+    "expectedBaseline": "tiny-animation"
+  },
+  {
+    "id": "core-delayed-shrink",
+    "kind": "delayed",
+    "columns": 80,
+    "finalColumns": 32,
+    "expectedBaseline": "rows"
+  },
+  {
+    "id": "wizard-clear",
+    "kind": "wizard",
+    "columns": 32,
+    "expectedBaseline": "pass"
+  },
+  {
+    "id": "wizard-final",
+    "kind": "wizard",
+    "columns": 32,
+    "finalMessage": "FINAL: original wizard completion message is not clipped",
+    "expectedBaseline": "pass"
+  },
+  {
+    "id": "wizard-tiny",
+    "kind": "wizard",
+    "columns": 6,
+    "expectedBaseline": "pass"
+  },
+  {
+    "id": "wizard-unicode",
+    "kind": "wizard",
+    "columns": 32,
+    "label": "Scanning \ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d\udc66 \u4e2d\u6587 workspace documents",
+    "expectedBaseline": "pass"
+  }
+]

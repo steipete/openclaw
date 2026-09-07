@@ -1,0 +1,38 @@
+{
+  "phase": "normal",
+  "targetPid": 3470,
+  "targetExitCode": 0,
+  "spawned": true,
+  "reaped": true,
+  "pipeEOF": true,
+  "kernelGroupAbsent": true,
+  "forcedSignals": [],
+  "canonicalState": "dead",
+  "observerPid": 3492,
+  "exitCode": 0,
+  "observation": {
+    "pid": 3470,
+    "exitCode": 0,
+    "observerPid": 3492,
+    "canonicalState": "dead",
+    "policy": "indeterminate",
+    "observationValid": true,
+    "observations": [
+      {
+        "kind": "kernel",
+        "pid": -3470,
+        "signal": 0,
+        "error": {
+          "name": "Error",
+          "code": "ESRCH",
+          "message": "kill ESRCH"
+        }
+      }
+    ],
+    "builtinBindingsRestored": true
+  },
+  "bytes": {
+    "stdout": 270,
+    "stderr": 0
+  }
+}

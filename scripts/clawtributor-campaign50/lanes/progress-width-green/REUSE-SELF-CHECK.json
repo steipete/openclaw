@@ -1,0 +1,19 @@
+{
+  "acceptedOriginalBaseline": true,
+  "run": 34159820010,
+  "job": 101861029380,
+  "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "originalNamedViolations": [
+    "core-32",
+    "core-36",
+    "core-6",
+    "core-delayed-shrink"
+  ],
+  "originalWizardTinyClassification": "preservation control",
+  "observedWizardTinyRows": {
+    "active": 20,
+    "stopped": 19
+  },
+  "baselineRerun": false,
+  "originalRecordsEdited": false
+}

@@ -1,0 +1,26 @@
+{
+  "id": "core-delayed-shrink",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": true,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 1,
+      "offset": 200
+    },
+    {
+      "byte": "A",
+      "frames": 26,
+      "offset": 2254
+    }
+  ],
+  "pid": 3554,
+  "resizeByteOffset": 63,
+  "exitCode": 0,
+  "rawBytes": 2418,
+  "rawSha256": "edd46bb29dde8ec0b76c962741abdb28b6696066afc8f2bd2461f1262f64ecc9"
+}

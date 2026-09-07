@@ -1,0 +1,99 @@
+[
+  {
+    "id": "core-32",
+    "kind": "core",
+    "columns": 32,
+    "expectSuppressed": false,
+    "baselineDisposition": "observed-row-flood"
+  },
+  {
+    "id": "core-36",
+    "kind": "core",
+    "columns": 36,
+    "expectSuppressed": false,
+    "baselineDisposition": "observed-row-flood"
+  },
+  {
+    "id": "core-80",
+    "kind": "core",
+    "columns": 80,
+    "expectSuppressed": false,
+    "baselineDisposition": "observed-control"
+  },
+  {
+    "id": "core-6",
+    "kind": "core",
+    "columns": 6,
+    "expectSuppressed": true,
+    "baselineDisposition": "observed-row-flood"
+  },
+  {
+    "id": "core-delayed-shrink",
+    "kind": "delayed",
+    "columns": 80,
+    "finalColumns": 32,
+    "expectSuppressed": false,
+    "baselineDisposition": "observed-row-flood"
+  },
+  {
+    "id": "wizard-clear",
+    "kind": "wizard",
+    "columns": 32,
+    "expectSuppressed": false,
+    "repeatStop": true,
+    "baselineDisposition": "observed-control"
+  },
+  {
+    "id": "wizard-final",
+    "kind": "wizard",
+    "columns": 32,
+    "finalMessage": "FINAL: original wizard completion message is not clipped",
+    "expectSuppressed": false,
+    "repeatStop": true,
+    "baselineDisposition": "observed-control"
+  },
+  {
+    "id": "wizard-tiny",
+    "kind": "wizard",
+    "columns": 6,
+    "expectSuppressed": true,
+    "repeatStop": true,
+    "baselineDisposition": "observed-row-flood"
+  },
+  {
+    "id": "wizard-unicode",
+    "kind": "wizard",
+    "columns": 32,
+    "label": "Scanning \ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d\udc66 \u4e2d\u6587 workspace documents",
+    "expectSuppressed": false,
+    "repeatStop": true,
+    "baselineDisposition": "observed-control"
+  },
+  {
+    "id": "wizard-tiny-final",
+    "kind": "wizard",
+    "columns": 6,
+    "finalMessage": "FINAL: first line\nSecond line",
+    "repeatStop": true,
+    "expectSuppressed": true,
+    "baselineDisposition": "new-completion-control"
+  },
+  {
+    "id": "wizard-tiny-empty",
+    "kind": "wizard",
+    "columns": 6,
+    "finalMessage": "",
+    "repeatStop": true,
+    "expectSuppressed": true,
+    "baselineDisposition": "new-completion-control"
+  },
+  {
+    "id": "wizard-multiline",
+    "kind": "wizard",
+    "columns": 32,
+    "finalMessage": "FINAL: first line\nSecond line",
+    "repeatStop": true,
+    "expectSuppressed": false,
+    "baselineDisposition": "new-completion-control"
+  }
+]

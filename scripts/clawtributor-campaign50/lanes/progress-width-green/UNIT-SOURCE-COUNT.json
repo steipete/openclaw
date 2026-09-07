@@ -1,0 +1,16 @@
+{
+  "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "method": "read-only TS syntax stripping plus bundled Acorn traversal of literal it and it.each registration nodes; no test callbacks executed",
+  "files": {
+    "src/cli/progress.test.ts": {
+      "count": 15,
+      "sha256": "d27c02d677070edccf671f68ee6edeb94c3d7c8b26f606c2fb4073417f94745c"
+    },
+    "src/wizard/clack-prompter.test.ts": {
+      "count": 35,
+      "sha256": "4f50ae8ff9bde6f0acf727d6a9b58d6600c66f3d37acba6c335dd7c63d5fe458"
+    }
+  },
+  "total": 50,
+  "targetExecution": false
+}

@@ -1,0 +1,45 @@
+{
+  "targetExecution": false,
+  "checks": [
+    {
+      "case": "valid",
+      "accepted": true
+    },
+    {
+      "case": "global-error",
+      "accepted": false
+    },
+    {
+      "case": "unfinished-report",
+      "accepted": false
+    },
+    {
+      "case": "missing-duration",
+      "accepted": false
+    },
+    {
+      "case": "missing-tiny-case",
+      "accepted": false
+    },
+    {
+      "case": "pending-test",
+      "accepted": false
+    },
+    {
+      "case": "failed-test",
+      "accepted": false
+    },
+    {
+      "case": "wrong-file",
+      "accepted": false
+    },
+    {
+      "case": "retry-after-timeout",
+      "accepted": false
+    },
+    {
+      "case": "fatal-oom",
+      "accepted": false
+    }
+  ]
+}

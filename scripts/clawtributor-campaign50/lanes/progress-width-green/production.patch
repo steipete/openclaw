@@ -1,0 +1,241 @@
+--- a/src/cli/progress.ts
++++ b/src/cli/progress.ts
+@@ -1,6 +1,7 @@
+ // Terminal progress reporter used by long-running CLI commands.
+-import { spinner } from "@clack/prompts";
++import { log, spinner, symbol } from "@clack/prompts";
+ import { resolveTimerTimeoutMs } from "@openclaw/normalization-core/number-coercion";
++import { truncateToVisibleWidth, visibleWidth } from "../../packages/terminal-core/src/ansi.js";
+ import {
+   createOscProgressController,
+   supportsOscProgress,
+@@ -11,6 +12,66 @@
+   unregisterActiveProgressLine,
+ } from "../../packages/terminal-core/src/progress-line.js";
+ import { theme } from "../../packages/terminal-core/src/theme.js";
++
++/** Keep animated labels inside Clack's captured erase width. */
++export function createProgressSpinner(
++  options: Parameters<typeof spinner>[0] & { output: NodeJS.WriteStream },
++  decorationColumns: number,
++) {
++  const { output } = options;
++  const readColumns = () =>
++    Number.isFinite(output.columns) && output.columns > 0 ? Math.floor(output.columns) : undefined;
++  let columns = readColumns();
++  let label = "";
++  let finished = false;
++  const spin = spinner(options);
++  const render = (message: string) => {
++    label = message;
++    const width = columns === undefined ? undefined : columns - decorationColumns;
++    return theme.accent(
++      width === undefined || visibleWidth(label) <= width
++        ? label
++        : width <= 0
++          ? ""
++          : `${truncateToVisibleWidth(label, width - 1)}…`,
++    );
++  };
++  const resize = () => {
++    const next = readColumns();
++    if (columns === undefined || next === undefined || next >= columns) {
++      return;
++    }
++    columns = next;
++    if (columns <= decorationColumns) {
++      spin.clear();
++    } else {
++      spin.message(render(label));
++    }
++  };
++  return {
++    start: (message: string) => {
++      resize();
++      if (columns === undefined || columns > decorationColumns) {
++        if (columns !== undefined) {
++          output.on("resize", resize);
++        }
++        spin.start(render(message));
++      }
++    },
++    message: (message: string) => spin.message(render(message)),
++    stop: (message?: string) => {
++      if (finished) {
++        return;
++      }
++      finished = true;
++      output.off("resize", resize);
++      spin.clear();
++      if (message !== undefined) {
++        log.message([`${symbol("submit")}  ${message}`], { output, spacing: 0, withGuide: false });
++      }
++    },
++  };
++}
+ 
+ const DEFAULT_DELAY_MS = 0;
+ // Only one active progress renderer may own the terminal line at a time.
+@@ -110,7 +171,7 @@
+       })
+     : null;
+ 
+-  const spin = allowSpinner ? spinner({ output: stream }) : null;
++  const spin = allowSpinner ? createProgressSpinner({ output: stream }, 7) : null;
+   const renderLine = allowLine
+     ? () => {
+         if (!started) {
+@@ -155,9 +216,7 @@
+         controller.setPercent(label, percent);
+       }
+     }
+-    if (spin) {
+-      spin.message(theme.accent(label));
+-    }
++    spin?.message(label);
+     if (renderLine) {
+       renderLine();
+     }
+@@ -171,9 +230,7 @@
+       return;
+     }
+     started = true;
+-    if (spin) {
+-      spin.start(theme.accent(label));
+-    }
++    spin?.start(label);
+     applyState();
+   };
+ 
+@@ -223,9 +280,7 @@
+     if (controller) {
+       controller.clear();
+     }
+-    if (spin) {
+-      spin.stop();
+-    }
++    spin?.stop("");
+     clearActiveProgressLine();
+     if (isTty) {
+       unregisterActiveProgressLine(stream);
+--- a/src/wizard/clack-prompter.ts
++++ b/src/wizard/clack-prompter.ts
+@@ -12,15 +12,10 @@
+   password,
+   select,
+   settings,
+-  spinner,
+   text,
+ } from "@clack/prompts";
+ import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
+-import {
+-  stripAnsi,
+-  truncateToVisibleWidth,
+-  visibleWidth,
+-} from "../../packages/terminal-core/src/ansi.js";
++import { stripAnsi } from "../../packages/terminal-core/src/ansi.js";
+ import { noteToStream as emitNote } from "../../packages/terminal-core/src/note.js";
+ import { styleSelectParams } from "../../packages/terminal-core/src/prompt-select-styled-params.js";
+ import {
+@@ -28,7 +23,7 @@
+   stylePromptTitle,
+ } from "../../packages/terminal-core/src/prompt-style.js";
+ import { isRich, theme } from "../../packages/terminal-core/src/theme.js";
+-import { createCliProgress } from "../cli/progress.js";
++import { createCliProgress, createProgressSpinner } from "../cli/progress.js";
+ import {
+   autocompleteMultiselectWithNavigationFooter,
+   autocompleteWithNavigationFooter,
+@@ -44,30 +39,6 @@
+ // Same species as the pixel-mascot banner, compressed into a four-column
+ // spinner for long-running wizard steps.
+ const CLAW_SPINNER_FRAMES = ["(\\/)", "(||)", "(--)", "(||)"];
+-const SPINNER_DECORATION_COLUMNS = 10;
+-
+-function readProgressColumns(output: NodeJS.WriteStream): number | undefined {
+-  const columns = output.columns;
+-  if (typeof columns !== "number" || !Number.isFinite(columns) || columns <= 0) {
+-    return undefined;
+-  }
+-  return columns;
+-}
+-
+-function clampProgressLabel(label: string, columns: number | undefined): string {
+-  if (columns === undefined) {
+-    return label;
+-  }
+-  const maxLabelWidth = columns - SPINNER_DECORATION_COLUMNS;
+-  if (maxLabelWidth <= 0) {
+-    return "";
+-  }
+-  if (visibleWidth(label) <= maxLabelWidth) {
+-    return label;
+-  }
+-  return `${truncateToVisibleWidth(label, maxLabelWidth - 1)}…`;
+-}
+-
+ // Clack-backed WizardPrompter implementation for interactive CLI setup. It
+ // converts the generic wizard prompt contract into styled Clack prompts.
+ function guardCancel<T>(value: T | symbol, output: NodeJS.WriteStream, signal?: AbortSignal): T {
+@@ -421,33 +392,13 @@
+       ),
+     progress: (label: string): WizardProgress => {
+       const useClawSpinner = output.isTTY && isRich() && !process.env.CI && !process.env.VITEST;
+-      const spin = useClawSpinner
+-        ? spinner({
+-            frames: CLAW_SPINNER_FRAMES,
+-            delay: 120,
+-            styleFrame: theme.accent,
+-            output,
+-          })
+-        : spinner({ output });
+-      let currentLabel = label;
+-      let maxColumns = readProgressColumns(output);
+-      const renderLabel = () => theme.accent(clampProgressLabel(currentLabel, maxColumns));
+-      const handleResize = () => {
+-        const columns = readProgressColumns(output);
+-        if (maxColumns === undefined || columns === undefined || columns >= maxColumns) {
+-          return;
+-        }
+-        // Clack snapshots its erase width when the spinner is created. Only
+-        // tighten our label budget so later terminal growth cannot exceed it.
+-        maxColumns = columns;
+-        spin.message(renderLabel());
+-      };
+-      if (maxColumns !== undefined) {
+-        output.on("resize", handleResize);
+-      }
+-      // Clack erases using bare-message wrapping but writes the frame and dots too.
+-      // Keeping animated labels to one row prevents long scans from leaking a line each tick.
+-      spin.start(renderLabel());
++      const spin = createProgressSpinner(
++        useClawSpinner
++          ? { frames: CLAW_SPINNER_FRAMES, delay: 120, styleFrame: theme.accent, output }
++          : { output },
++        10,
++      );
++      spin.start(label);
+       const osc = createCliProgress({
+         label,
+         indeterminate: true,
+@@ -459,18 +410,12 @@
+       // display command progress outside the prompt line.
+       return {
+         update: (message) => {
+-          currentLabel = message;
+-          spin.message(renderLabel());
++          spin.message(message);
+           osc.setLabel(message);
+         },
+         stop: (message) => {
+-          output.off("resize", handleResize);
+           osc.done();
+-          if (message === undefined) {
+-            spin.clear();
+-          } else {
+-            spin.stop(message);
+-          }
++          spin.stop(message);
+         },
+       };
+     },

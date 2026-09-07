@@ -1,0 +1,25 @@
+{
+  "id": "wizard-final",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 1,
+      "offset": 167
+    },
+    {
+      "byte": "A",
+      "frames": 26,
+      "offset": 2296
+    }
+  ],
+  "pid": 3616,
+  "exitCode": 0,
+  "rawBytes": 2516,
+  "rawSha256": "a8f26aa25a539409a2b3e100586446d5d62ec599650c1b9d0d201b3c31b40987"
+}
