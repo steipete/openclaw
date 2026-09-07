@@ -19,7 +19,7 @@ import { waitForControlUiGatewayReady } from "../test-helpers/control-ui-e2e-rea
 import { controlUiSessionPath } from "../test-helpers/control-ui-e2e.ts";
 import { createControlUiE2eSuite } from "./control-ui-e2e-suite.test-support.ts";
 
-const sourceHead = "0cd1ca7552a005a405dea7311036c063dc9635d0";
+const sourceHead = process.env.MODEL_AUTH_PROOF_SOURCE_HEAD;
 const selectedKey = "agent:main:auth-status-observation";
 const homeKey = "agent:main:main";
 let instance: OpenClawTestInstance | undefined;
