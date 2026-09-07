@@ -1,0 +1,255 @@
+{
+  "status": "expected-two-filename-defects",
+  "tests": 2,
+  "downloads": [
+    {
+      "flow": "widget",
+      "id": "short",
+      "suggestedFilename": "Quarterly-📊.png",
+      "expectedFilename": "Quarterly-📊.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "0895cace1c47aedb6869251fa75ef80c2930097e42343e99c8624b01d9cce99a"
+    },
+    {
+      "flow": "widget",
+      "id": "ascii120",
+      "suggestedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "expectedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "flow": "widget",
+      "id": "pair-fit",
+      "suggestedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa📊.png",
+      "expectedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa📊.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "flow": "widget",
+      "id": "pair-split",
+      "suggestedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa�.png",
+      "expectedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "flow": "widget",
+      "id": "sanitize",
+      "suggestedFilename": "Quarterly-status-Q3.png",
+      "expectedFilename": "Quarterly-status-Q3.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "flow": "widget",
+      "id": "fallback",
+      "suggestedFilename": "widget.png",
+      "expectedFilename": "widget.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "flow": "widget",
+      "id": "extension",
+      "suggestedFilename": "report.jpg.png",
+      "expectedFilename": "report.jpg.png",
+      "bytes": 7273,
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208",
+      "screenshotSha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "flow": "image",
+      "id": "short",
+      "suggestedFilename": "Quarterly 📊.png",
+      "expectedFilename": "Quarterly 📊.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "flow": "image",
+      "id": "ascii120",
+      "suggestedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "expectedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "254185800203498418df02dc5d831a74003b0a28775f4b261cca7895261639f5"
+    },
+    {
+      "flow": "image",
+      "id": "pair-fit",
+      "suggestedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa📊.png",
+      "expectedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa📊.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "flow": "image",
+      "id": "pair-split",
+      "suggestedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa�.png",
+      "expectedFilename": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "flow": "image",
+      "id": "sanitize",
+      "suggestedFilename": "Quarterly - status- Q3.png",
+      "expectedFilename": "Quarterly - status- Q3.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "flow": "image",
+      "id": "fallback",
+      "suggestedFilename": "generated-image.png",
+      "expectedFilename": "generated-image.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "flow": "image",
+      "id": "extension",
+      "suggestedFilename": "report.png",
+      "expectedFilename": "report.png",
+      "bytes": 127437,
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b",
+      "screenshotSha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    }
+  ],
+  "captureInspection": "pending independent full-image inspection",
+  "artifactInventory": [
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/ascii120.png",
+      "sha256": "254185800203498418df02dc5d831a74003b0a28775f4b261cca7895261639f5"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/ascii120.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/extension.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/fallback.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/pair-fit.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/pair-split.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/sanitize.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/downloads/short.png",
+      "sha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/extension.png",
+      "sha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/fallback.png",
+      "sha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/pair-fit.png",
+      "sha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/pair-split.png",
+      "sha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/receipts.json",
+      "sha256": "0554bef0676a182cc25a26a4b5210349f82ce6059f55309806fca5dfd3b86ff2"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/sanitize.png",
+      "sha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-Guq74b/image/short.png",
+      "sha256": "123da2ccd0149ab9f9e0924737eeb060ce7bd5cc2fd4f6c51aa278247ca6c947"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/ascii120.png",
+      "sha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/ascii120.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/extension.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/fallback.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/pair-fit.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/pair-split.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/sanitize.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/downloads/short.png",
+      "sha256": "3fba157f4eb2947edce4cc13deb8feba0e6726c62b1af3ca5fb931ca1634f208"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/extension.png",
+      "sha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/fallback.png",
+      "sha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/pair-fit.png",
+      "sha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/pair-split.png",
+      "sha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/receipts.json",
+      "sha256": "de70788e25a15ac1226c5df3a03a282eb60d98a9bd2a506584e57031dd671e82"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/sanitize.png",
+      "sha256": "1d09bc2b98766b9001fa8257bbd638f9f34f631e1343412aef62a8dc7a7dba06"
+    },
+    {
+      "path": "browser/control-ui-download-filename-utf16-boundary-qOfayK/widget/short.png",
+      "sha256": "0895cace1c47aedb6869251fa75ef80c2930097e42343e99c8624b01d9cce99a"
+    }
+  ]
+}

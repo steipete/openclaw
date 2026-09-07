@@ -1,0 +1,115 @@
+diff --git a/ui/src/e2e/managed-image-actions.e2e.test.ts b/ui/src/e2e/managed-image-actions.e2e.test.ts
+index 9d92e29951a4c50c8e7778e31d2871a77e174a66..b78ea6a2132ecd23b154a9592d8171ba3b3e4c7a 100644
+--- a/ui/src/e2e/managed-image-actions.e2e.test.ts
++++ b/ui/src/e2e/managed-image-actions.e2e.test.ts
+@@ -20,6 +20,8 @@ beforeEach(() => {
+ 
+ suite.define(() => {
+   it("previews, downloads, and opens a ticketed generated image", async () => {
++    const filenamePrefix = "a".repeat(119);
++    const imageTitle = `${filenamePrefix}📊`;
+     const context = await suite.newBrowserContext(createControlUiE2eContextOptions());
+     const page = await context.newPage();
+     const attachmentId = crypto.randomUUID();
+@@ -50,7 +52,7 @@ suite.define(() => {
+               type: "image",
+               artifactId,
+               url: imageUrl,
+-              alt: "Ticketed generated image",
++              alt: imageTitle,
+               mimeType: "image/png",
+               width: 1280,
+               height: 358,
+@@ -64,7 +66,7 @@ suite.define(() => {
+           artifact: {
+             id: artifactId,
+             type: "image",
+-            title: "Ticketed generated image",
++            title: imageTitle,
+             mimeType: "image/png",
+             download: { mode: "url" },
+           },
+@@ -76,7 +78,7 @@ suite.define(() => {
+ 
+     try {
+       await page.goto(`${suite.server.baseUrl}${controlUiBasePath.slice(1)}/chat`);
+-      const image = page.getByAltText("Ticketed generated image");
++      const image = page.getByAltText(imageTitle);
+       await image.waitFor({ state: "visible", timeout: 10_000 });
+       await expect
+         .poll(() =>
+@@ -98,9 +100,7 @@ suite.define(() => {
+       const imageActions = imageFrame.locator(".chat-image-actions");
+       await expect.poll(() => imageActions.getByRole("button").count()).toBe(2);
+       await expect
+-        .poll(() =>
+-          imageActions.getByRole("button", { name: "Open image Ticketed generated image" }).count(),
+-        )
++        .poll(() => imageActions.getByRole("button", { name: `Open image ${imageTitle}` }).count())
+         .toBe(0);
+       const downloadButton = imageActions.getByRole("button", { name: "Download image" });
+       await expect
+@@ -124,11 +124,11 @@ suite.define(() => {
+         .toMatchObject({ hit: true, pointerEvents: "auto" });
+       const download = page.waitForEvent("download");
+       await downloadButton.click();
+-      expect((await download).suggestedFilename()).toBe("Ticketed generated image.png");
++      expect((await download).suggestedFilename()).toBe(`${filenamePrefix}.png`);
+ 
+-      await page.getByRole("button", { name: "Open image Ticketed generated image" }).click();
++      await page.getByRole("button", { name: `Open image ${imageTitle}` }).click();
+       await page
+-        .getByRole("dialog", { name: "Image preview: Ticketed generated image" })
++        .getByRole("dialog", { name: `Image preview: ${imageTitle}` })
+         .waitFor({ state: "visible" });
+       expect(requestedVariants).toEqual(["thumbnail", "full"]);
+       expect(await gateway.getRequests("artifacts.download")).toHaveLength(2);
+diff --git a/ui/src/pages/chat/components/widget-export.test.ts b/ui/src/pages/chat/components/widget-export.test.ts
+index 96afb6867144c2bca6acc0b70a9d2c95f66181bf..3eae07e240641033eb49a0db22fa181138e4bf34 100644
+--- a/ui/src/pages/chat/components/widget-export.test.ts
++++ b/ui/src/pages/chat/components/widget-export.test.ts
+@@ -141,37 +141,18 @@ describe("widget export", () => {
+     expect(fetchDocument).not.toHaveBeenCalled();
+   });
+ 
+-  it("sanitizes PNG download filenames and falls back to widget", async () => {
++  it.each([
++    ["  Quarterly / status: Q3?  ", "Quarterly-status-Q3.png"],
++    ["... <> ", "widget.png"],
++    [`${"a".repeat(119)}📊`, `${"a".repeat(119)}.png`],
++  ])("sanitizes PNG download filename %s", async (title, filename) => {
+     const frame = createWidgetFrame();
+     const download = vi.fn();
+-    await exportWidget("download", frame, "  Quarterly / status: Q3?  ", {
++    await exportWidget("download", frame, title, {
+       requestSnapshot: () => Promise.resolve(PNG_DATA_URL),
+       download,
+     });
+-    await exportWidget("download", frame, "... <> ", {
+-      requestSnapshot: () => Promise.resolve(PNG_DATA_URL),
+-      download,
+-    });
+-    expect(download.mock.calls).toEqual([
+-      [PNG_DATA_URL, "Quarterly-status-Q3.png"],
+-      [PNG_DATA_URL, "widget.png"],
+-    ]);
+-  });
+-
+-  it("does not split a supplementary-plane character in PNG download filenames", async () => {
+-    const frame = createWidgetFrame();
+-    const names: string[] = [];
+-    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(
+-      function clickDownload(this: HTMLAnchorElement) {
+-        if (this.download) {
+-          names.push(this.download);
+-        }
+-      },
+-    );
+-    await exportWidget("download", frame, `a${"📊".repeat(61)}`, {
+-      requestSnapshot: () => Promise.resolve(PNG_DATA_URL),
+-    });
+-    expect(names).toEqual([`a${"📊".repeat(59)}.png`]);
++    expect(download.mock.calls).toEqual([[PNG_DATA_URL, filename]]);
+   });
+ 
+   it("rejects non-PNG and oversized snapshot replies", async () => {

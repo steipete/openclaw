@@ -1,22 +1,12 @@
 [
   {
-    "id": "blank-status-logs-remaining",
-    "directory": "blank-status-logs-remaining",
+    "id": "download-filename-141311-green",
+    "directory": "download-filename-141311-green",
     "runner": "ubuntu-24.04",
-    "source": "b7ec235a5cc05ae9577095498de5cfd6b8e2d293",
+    "source": "608f2774b0b3df7e64ca34dd6c8754eb3b5494b3",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "remaining-gates-build-cli"
-  },
-  {
-    "id": "feishu-coalescing-103928-discard",
-    "directory": "feishu-coalescing-103928-discard",
-    "runner": "ubuntu-24.04",
-    "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "remaining-discard-control"
+    "variant": "native-browser-green"
   }
 ]

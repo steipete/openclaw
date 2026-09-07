@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+target_dir=$1
+lane_dir=$2
+evidence_dir=$3
+[[ "$4" == green ]]
+mkdir -p "$evidence_dir"
+cd "$target_dir"
+[[ "$(git rev-parse HEAD)" == 608f2774b0b3df7e64ca34dd6c8754eb3b5494b3 ]]
+[[ "$SOURCE_SHA" == 608f2774b0b3df7e64ca34dd6c8754eb3b5494b3 ]]
+[[ "$(node --version)" == v24.20.0 ]]
+[[ "$(pnpm --version)" == 12.3.4 ]]
+[[ "${OPENCLAW_UI_E2E_ALLOW_MISSING_CHROMIUM:-}" != 1 ]]
+git cat-file -e 8dde3559a5516073694517043cc81efed41737bf^{commit} 2>/dev/null || \
+  git fetch --no-tags --depth=2 origin "$SOURCE_SHA"
+[[ "$(git rev-parse HEAD^)" == 8dde3559a5516073694517043cc81efed41737bf ]]
+proof_file=ui/src/e2e/download-filename-utf16.e2e.test.ts
+[[ ! -e "$proof_file" ]]
+retain_state() {
+  git diff --binary --full-index > "$evidence_dir/final-working-tree.patch"
+  git diff --binary --full-index 8dde3559a5516073694517043cc81efed41737bf > "$evidence_dir/final-pr.patch"
+  git status --porcelain > "$evidence_dir/final-status.txt"
+}
+trap retain_state EXIT
+sha256sum -c "$lane_dir/product.sha256" > "$evidence_dir/source-check.log"
+git apply --check "$lane_dir/candidate-tests.patch"
+git apply "$lane_dir/candidate-tests.patch"
+sha256sum -c "$lane_dir/candidate.sha256" > "$evidence_dir/candidate-check.log"
+printf '%s\n' owner-controls > "$evidence_dir/phase.txt"
+node scripts/run-vitest.mjs ui/src/pages/chat/components/widget-export.test.ts \
+  --reporter=verbose --reporter=json --outputFile="$evidence_dir/owner.json" \
+  > "$evidence_dir/owner.log" 2>&1
+node "$lane_dir/validate.mjs" "$evidence_dir" owner
+cp "$lane_dir/download-filename-utf16.e2e.test.ts" "$proof_file"
+sha256sum -c "$lane_dir/proof.sha256" > "$evidence_dir/proof-check.log"
+pnpm exec playwright install --with-deps chromium > "$evidence_dir/chromium-install.log" 2>&1
+printf '%s\n' browser-green > "$evidence_dir/phase.txt"
+OPENCLAW_CAPTURE_UI_PROOF=1 OPENCLAW_UI_E2E_ARTIFACT_DIR="$evidence_dir/browser" \
+  node scripts/run-vitest.mjs run --config test/vitest/vitest.ui-e2e.config.ts --configLoader runner \
+  "$proof_file" ui/src/e2e/managed-image-actions.e2e.test.ts \
+  --reporter=verbose --reporter=json --outputFile="$evidence_dir/vitest.json" \
+  > "$evidence_dir/browser.log" 2>&1
+node "$lane_dir/validate.mjs" "$evidence_dir" browser
+sha256sum -c "$lane_dir/proof.sha256" > "$evidence_dir/proof-check-after.log"
+sha256sum -c "$lane_dir/unchanged.sha256" > "$evidence_dir/unchanged-after.log"
+sha256sum -c "$lane_dir/candidate.sha256" > "$evidence_dir/candidate-check-after.log"
+rm -- "$proof_file"
+printf '%s\n' changed-gate > "$evidence_dir/phase.txt"
+node scripts/check-changed.mjs --base 8dde3559a5516073694517043cc81efed41737bf -- \
+  ui/src/pages/chat/components/widget-export.ts \
+  ui/src/pages/chat/components/chat-message-images.ts \
+  ui/src/pages/chat/components/widget-export.test.ts \
+  ui/src/e2e/managed-image-actions.e2e.test.ts > "$evidence_dir/changed-check.log" 2>&1
+sha256sum -c "$lane_dir/unchanged.sha256" > "$evidence_dir/unchanged-final.log"
+sha256sum -c "$lane_dir/candidate.sha256" > "$evidence_dir/candidate-check-final.log"
+git diff --check
+printf '%s\n' complete > "$evidence_dir/phase.txt"

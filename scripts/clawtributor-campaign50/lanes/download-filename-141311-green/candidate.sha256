@@ -1,0 +1,4 @@
+678e973f118ba5e8bf75f89db8c235555f434d12f26c1b7c6b51f43276e8ae9b  ui/src/pages/chat/components/widget-export.ts
+bdff0c9a96e451a07e92fa3dc10669d59368aa98a4b422db151ffbedae9f2533  ui/src/pages/chat/components/chat-message-images.ts
+b0d4dc5541f9e6ece711011c7c806c725d493ac20a9fe22da648381631fae651  ui/src/pages/chat/components/widget-export.test.ts
+d9bb3864ce09084f53b57bec4160ce17893b3c9a2d65ae792d939c04ab92396c  ui/src/e2e/managed-image-actions.e2e.test.ts
