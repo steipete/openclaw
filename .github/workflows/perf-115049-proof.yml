@@ -1,0 +1,143 @@
+# Inert diagnostic workflow; source and proof publication require final review.
+name: Codex snapshot reuse proof
+on:
+  push:
+    branches: [codex/perf-115049-proof]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: perf-115049-proof
+  cancel-in-progress: false
+jobs:
+  proof:
+    if: github.repository == 'steipete/openclaw' && github.ref == 'refs/heads/codex/perf-115049-proof'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      CI: "true"
+    steps:
+      - name: Checkout reviewed proof harness
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: harness
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/perf-115049/
+            /test/e2e/qa-lab/runtime/perf-115049-driver.ts
+            /test/e2e/qa-lab/runtime/perf-115049-native.ts
+      - name: Checkout frozen baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: openclaw/openclaw
+          ref: 5f661669b2c2979f2a61e23d4addb3bdd4545469
+          path: baseline
+          persist-credentials: false
+      - name: Checkout frozen candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 94ce6288f3606ef2f5d47b5680458c1f434d8009
+          path: candidate
+          persist-credentials: false
+      - name: Setup exact Node runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.20.0"
+      - name: Verify exact source heads trees and every tracked byte
+        run: node harness/scripts/perf-115049/preflight.mjs
+      - name: Setup manifest-pinned pnpm without shared cache writes
+        uses: ./baseline/.github/actions/setup-pnpm-store-cache
+        with:
+          package-manager-file: baseline/package.json
+          lockfile-path: baseline/pnpm-lock.yaml
+          node-version: "24.20.0"
+          cache-mode: "off"
+      - name: Prepare private scratch and immutable package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir publish
+          scratch="$RUNNER_TEMP/perf-115049-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -m 700 "$scratch"
+          printf 'PROOF_SCRATCH=%s\n' "$scratch" >> "$GITHUB_ENV"
+          curl --fail --silent --show-error --location --max-time 60 \
+            https://registry.npmjs.org/@martian-engineering/lossless-claw/-/lossless-claw-1.0.0.tgz \
+            --output "$scratch/lcm-1.0.0.tgz"
+          printf '%s  %s\n' 58d7b1effb77236457dc7432d83c6a2662f1fbcbaf399bedd534c174a7f7da37 "$scratch/lcm-1.0.0.tgz" | sha256sum --check --status
+      - name: Create private run configurations
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import { PINS } from './harness/scripts/perf-115049/proof-integrity.mjs';
+          const scratchRoot = process.env.PROOF_SCRATCH;
+          for (const variant of ['baseline', 'candidate']) {
+            for (const mode of ['uninstrumented', 'observed']) {
+              const config = {
+                variant, mode, sourceCommit: PINS[variant].commit,
+                repoRoot: path.resolve(variant), baselineRoot: path.resolve('baseline'),
+                publishRoot: path.resolve('publish'), scratchRoot,
+                lcmArchive: path.join(scratchRoot, 'lcm-1.0.0.tgz'),
+              };
+              fs.writeFileSync(path.join(scratchRoot, `${variant}-${mode}-config.json`), JSON.stringify(config), { mode: 0o600 });
+            }
+          }
+          NODE
+      - name: Install and build paired sources with joined phase deadlines
+        run: node harness/scripts/perf-115049/prepare-workspaces.mjs baseline candidate publish "$PROOF_SCRATCH"
+      - name: Prove exact baseline failure and candidate case collection
+        run: node harness/scripts/perf-115049/unit-proof.mjs baseline candidate publish "$PROOF_SCRATCH"
+      - name: Run uninstrumented native Gateway and LCM turns
+        shell: bash
+        run: |
+          set -euo pipefail
+          for variant in baseline candidate; do
+            node harness/scripts/perf-115049/launch-proof.mjs "$PROOF_SCRATCH/$variant-uninstrumented-config.json"
+          done
+      - name: Observe full reads in separate native runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for variant in baseline candidate; do
+            node harness/scripts/perf-115049/launch-proof.mjs "$PROOF_SCRATCH/$variant-observed-config.json"
+          done
+      - name: Compare observed semantics and independent timing samples
+        run: node harness/scripts/perf-115049/summarize-proof.mjs publish
+      - name: Remove completed private proof scratch
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import path from 'node:path';
+          import assert from 'node:assert/strict';
+          const scratch = process.env.PROOF_SCRATCH;
+          assert.equal(scratch, path.join(process.env.RUNNER_TEMP, `perf-115049-${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`));
+          await fs.rm(scratch, { recursive: true });
+          NODE
+      - name: Preserve only synthetic verdicts and bounded structured diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: perf-115049-proof
+          path: |
+            publish/baseline-source.json
+            publish/candidate-source.json
+            publish/baseline-install-phase.json
+            publish/candidate-install-phase.json
+            publish/baseline-build-phase.json
+            publish/candidate-build-phase.json
+            publish/baseline-regression-phase.json
+            publish/candidate-owners-phase.json
+            publish/baseline-uninstrumented-phase.json
+            publish/candidate-uninstrumented-phase.json
+            publish/baseline-observed-phase.json
+            publish/candidate-observed-phase.json
+            publish/baseline-uninstrumented.json
+            publish/candidate-uninstrumented.json
+            publish/baseline-observed.json
+            publish/candidate-observed.json
+            publish/unit-proof.json
+            publish/summary.json
+          if-no-files-found: error
+          retention-days: 7
