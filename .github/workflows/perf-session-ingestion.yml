@@ -1,0 +1,58 @@
+name: Session ingestion baseline proof
+on:
+  push:
+    branches: [codex/proof-session-ingestion-119367]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Check out exact reviewed proof tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+          sparse-checkout: |
+            .github/proof/session-ingestion-119367
+            .github/workflows/perf-session-ingestion.yml
+          sparse-checkout-cone-mode: false
+      - name: Check out immutable trusted baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: 3f22e84d4e5da068a2c619ec8786aac038ef534c
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+      - name: Build and observe ordinary owner ingestion through the CLI
+        env:
+          TOOLING_HEAD: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/session-ingestion-bootstrap"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/session-ingestion-bootstrap" \
+            bash "$GITHUB_WORKSPACE/tooling/.github/proof/session-ingestion-119367/run.sh" \
+            "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/session-ingestion-119367" "$TOOLING_HEAD"
+      - name: Retain source-bound synthetic proof and failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: session-ingestion-baseline
+          path: |
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/source-head.txt
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/source-tree.txt
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/tooling-head.txt
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/source-inputs.sha256
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/tooling-files.sha256
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/built-runtime.json
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/observations.json
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/producer-message-data.json
+            ${{ runner.temp }}/session-ingestion-119367/artifacts/driver-exit.txt
+          if-no-files-found: error
+          retention-days: 7
