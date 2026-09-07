@@ -1,0 +1,106 @@
+name: Native relay ordinary startup proof
+on:
+  push:
+    branches: [codex/proof-native-relay-120340]
+permissions:
+  contents: read
+jobs:
+  proof:
+    if: github.repository == 'steipete/openclaw'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out exact reviewed tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+          sparse-checkout: |
+            .github/proof/native-relay-120340
+            .github/workflows/perf-native-relay.yml
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.20.0
+      - name: Read reviewed immutable source pins
+        id: pins
+        run: |
+          env -i PATH="$PATH" node --input-type=module - "$GITHUB_WORKSPACE/tooling/.github/proof/native-relay-120340/pins.json" >> "$GITHUB_OUTPUT" <<'JS'
+          import assert from 'node:assert/strict';
+          import { readFileSync } from 'node:fs';
+          const pins = JSON.parse(readFileSync(process.argv[2], 'utf8'));
+          for (const pin of [pins.baseline, pins.candidate].filter(Boolean)) {
+            assert.match(pin.head, /^[a-f0-9]{40}$/);
+            assert.match(pin.tree, /^[a-f0-9]{40}$/);
+          }
+          assert.ok(pins.baseline);
+          console.log(`baseline=${pins.baseline.head}`);
+          console.log(`candidate=${pins.candidate?.head ?? ''}`);
+          console.log(`mode=${pins.candidate ? 'comparison' : 'baseline'}`);
+          JS
+      - name: Check out immutable trusted baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: openclaw/openclaw
+          ref: ${{ steps.pins.outputs.baseline }}
+          path: source/baseline
+          persist-credentials: false
+      - name: Check out immutable reviewed candidate
+        if: steps.pins.outputs.candidate != ''
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: steipete/openclaw
+          ref: ${{ steps.pins.outputs.candidate }}
+          path: source/candidate
+          persist-credentials: false
+      - name: Build and observe ordinary native relay subprocesses
+        env:
+          TOOLING_HEAD: ${{ github.sha }}
+          PROOF_MODE: ${{ steps.pins.outputs.mode }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/native-relay-bootstrap"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/native-relay-bootstrap" \
+            bash "$GITHUB_WORKSPACE/tooling/.github/proof/native-relay-120340/run.sh" \
+            "$GITHUB_WORKSPACE/source" "$RUNNER_TEMP/native-relay-120340" "$TOOLING_HEAD" "$PROOF_MODE"
+      - name: Retain synthetic observations and exact source bindings
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: native-relay-120340-proof
+          path: |
+            ${{ runner.temp }}/native-relay-120340/artifacts/tooling-head.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/tooling-files.sha256
+            ${{ runner.temp }}/native-relay-120340/artifacts/source-pins.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/pnpm-integrity.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/baseline-build.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-build.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/baseline-sanity.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/baseline-sanity-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/baseline-before.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/baseline-before-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-sanity.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-sanity-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-general-sanity.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/candidate-general-sanity-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round1-baseline.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round1-baseline-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round1-candidate.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round1-candidate-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round1-general.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round1-general-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round2-baseline.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round2-baseline-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round2-candidate.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round2-candidate-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round2-general.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round2-general-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round3-baseline.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round3-baseline-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round3-candidate.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round3-candidate-exit.txt
+            ${{ runner.temp }}/native-relay-120340/artifacts/round3-general.json
+            ${{ runner.temp }}/native-relay-120340/artifacts/round3-general-exit.txt
+          if-no-files-found: error
+          retention-days: 7
