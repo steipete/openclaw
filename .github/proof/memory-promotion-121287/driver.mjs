@@ -80,7 +80,16 @@ async function run(label, caseDir, command, args, expectedExit = 0) {
   assert.ok(!controller.signal.aborted, `${label}: output overflow`);
   const usageLines = (await fs.readFile(usagePath, "utf8")).trim().split("\n");
   const usage = JSON.parse(usageLines.at(-1));
-  observations.commands.push({ label, exitCode, elapsedMs: performance.now() - started, ...usage });
+  observations.commands.push({
+    label,
+    exitCode,
+    elapsedMs: performance.now() - started,
+    ...usage,
+    runtimeSyncReasons: Array.from(
+      stderr.matchAll(/\[openclaw\] Syncing runtime artifacts \(([a-z_]+) -/g),
+      ([, reason]) => reason,
+    ),
+  });
   await fs.writeFile(path.join(caseDir, `${label}.stdout`), stdout);
   await fs.writeFile(path.join(caseDir, `${label}.stderr`), stderr);
   assert.equal(

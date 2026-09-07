@@ -81,8 +81,8 @@ const files = [
 ];
 const hashes = Object.fromEntries(files.map((file) => [file, createHash('sha256').update(readFileSync(file)).digest('hex')]));
 writeFileSync(process.argv[3], JSON.stringify({
-  sourceHead: process.argv[2], buildCommand: 'pnpm build cliStartup',
-  buildProfile: 'cliStartup', profileEvidence: 'successful canonical build invocation; stamps contain head, not profile',
+  sourceHead: process.argv[2], buildCommand: 'pnpm build qaRuntime',
+  buildProfile: 'qaRuntime', profileEvidence: 'successful canonical build invocation; stamps contain head, not profile',
   executionMode: 'normal pnpm repository CLI via run-node -> openclaw.mjs -> dist/entry.js; wrapper selects this checkout with OPENCLAW_DEV_SOURCE_ROOT',
   installedPackageClaim: false, buildStamp, runtimeStamp, hashes,
 }, null, 2) + '\n');
@@ -101,7 +101,7 @@ assert.equal(installed.integrity, 'sha512-' + Buffer.from(pkg.packageManager.spl
 JS
 clean_run pnpm install --frozen-lockfile 2>&1 | tee "$proof_dir/install.log"
 verify_source
-clean_run pnpm build cliStartup 2>&1 | tee "$proof_dir/build.log"
+clean_run pnpm build qaRuntime 2>&1 | tee "$proof_dir/build.log"
 verify_source
 runtime_binding "$proof_dir/artifacts/runtime-after-build.json"
 
