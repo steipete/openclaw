@@ -45,6 +45,9 @@ try {
   const { hydratePromptMediaMessages } = await import(
     pathToFileURL(path.join(sourceDir, "src/agents/embedded-agent-runner/run/images.ts")).href
   );
+  const { normalizeMediaFacts } = await import(
+    pathToFileURL(path.join(sourceDir, "src/media/media-facts.ts")).href
+  );
   for (const [name, slots] of [
     ["missing-only", ["missing"]],
     ["success", ["valid"]],
@@ -62,9 +65,9 @@ try {
       if (kind === "missing") await fs.unlink(sourcePath);
       media.push({ path: sourcePath, kind: "image", contentType: "image/png" });
     }
-    const original = structuredClone(media);
-    const ctx = { media };
-    const sessionCtx = { media: structuredClone(media) };
+    const ctx = { media: normalizeMediaFacts(media) };
+    const original = structuredClone(ctx.media);
+    const sessionCtx = { media: structuredClone(ctx.media) };
     const cfg = {
       agents: {
         defaults: { workspace: workspaceDir, sandbox: { mode: "off" } },

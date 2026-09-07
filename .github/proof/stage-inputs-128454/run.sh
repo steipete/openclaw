@@ -10,7 +10,7 @@ baseline_head=149e97d4dbcadfaf2eda0c463aa7c7815da393d3
 baseline_tree=cfa412019b0156d4e7cfeaa1120b7fcc88aa6344
 candidate_head=f4742065da14544c3ee0d9e1036221cd27b19ddd
 candidate_tree=4b107fbccb081ef9bd8a928c5b46ed581bc31457
-driver_sha256=1d559430578c6d416ec098f5adc9dbe0697e460347dea0d4c7a39d1e9459b5ca
+driver_sha256=8d9deaf151d292686f88211076eb91d916be7e59f5231a017bd9085d4c27a6a2
 node_bin=$(dirname "$(command -v node)")
 clean_path="$proof_dir/tools/node_modules/.bin:$node_bin:/usr/local/bin:/usr/bin:/bin"
 
