@@ -111,6 +111,8 @@ if [[ "$proof_mode" == comparison ]]; then
     src/agents/harness/native-hook-relay-command.test.ts src/cli/hooks-cli.process.test.ts \
     src/cli/one-shot-exit.test.ts src/cli/native-hook-relay-cli.test.ts \
     test/scripts/check-cli-bootstrap-imports.test.ts test/scripts/tsdown-runtime-config.test.ts \
+    src/state/openclaw-state-db-schema-migration-required.test.ts \
+    src/state/openclaw-database-preflight.test.ts \
     2>&1 | tee "$proof_dir/candidate-focused-tests.log"
   focused_exit=${PIPESTATUS[0]}
   set -e
