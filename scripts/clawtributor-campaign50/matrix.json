@@ -1,22 +1,22 @@
 [
   {
-    "id": "prepared-catalog-green-lint-remaining",
-    "directory": "prepared-catalog-green-lint-remaining",
-    "source": "f63095668169ea0260f5f7b6479dafc85cc5226c",
+    "id": "setup-error-reporting-red",
+    "directory": "setup-error-reporting",
+    "source": "6df7c32f477a458950f01a541119944b5bd85557",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "lint-build-flow-remaining",
+    "mode": "red",
+    "variant": "verifier-command-errors",
     "runner": "ubuntu-24.04",
     "node": "24.20.0"
   },
   {
-    "id": "gpt-live-diagnostic-137699-baseline",
-    "directory": "gpt-live-diagnostic-137699-baseline",
-    "runner": "ubuntu-24.04",
-    "source": "b3d67aa9b80bd95ff696332ec8cc8c25e40a191d",
-    "node": "24.20.0",
+    "id": "telemetry-packaged-red",
+    "directory": "telemetry-packaged-red",
+    "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "ordinary-controller-error"
+    "mode": "red",
+    "variant": "installed-parent-help",
+    "runner": "ubuntu-24.04",
+    "node": "24.20.0"
   }
 ]

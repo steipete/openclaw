@@ -1,0 +1,21 @@
+{
+  "source": "0a55c7c0d199da69e343ddf10115cb2dcba71b16",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "red",
+  "productionOverlay": false,
+  "files": {
+    "run.sh": "1500b5b82563ad85219c7840fbd526903e8318f32f4dc288b8ce9674819353b7",
+    "packaged-telemetry.mjs": "6940a08637738fe4fe42a101d138ca02e33149a5810856ef5522a6617c23894d",
+    "source-files.sha256": "902dd05904ea17b4a1dad896cbdc104f7f9b38a90f9d47b875d24101233e7d89",
+    "BASELINE-DESIGN.md": "f711144d056018e04b9f55797419105c52cc732307d48ce34c900aa7e527c85d"
+  },
+  "sourceOwnerCount": 49,
+  "status": "frozen for independent executable review; no dispatch acceptance yet",
+  "syntaxOnly": [
+    "node --check packaged-telemetry.mjs",
+    "bash -n run.sh"
+  ],
+  "formatter": "trusted oxfmt0.65.0 artifact-only",
+  "failureDisposition": "SIGTERM to active owner, bounded10s grace before force; every abnormal process event fails and retains owned roots as cleanup unproven; no descendant census"
+}
