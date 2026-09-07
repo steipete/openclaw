@@ -1,0 +1,80 @@
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mloads channel-specific add options only for channels add invocations[32m 92[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters dead-letter inspection and resubmission commands[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a parent --account to dead-letters list[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a parent --account to dead-letters resubmit[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a leaf --account to dead-letters list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a leaf --account to dead-letters resubmit[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a leaf precedence --account to dead-letters list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a leaf precedence --account to dead-letters resubmit[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a blank parent --account to dead-letters list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a blank parent --account to dead-letters resubmit[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a blank leaf --account to dead-letters list[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpasses a blank leaf --account to dead-letters resubmit[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mdistinguishes an omitted channels logs filter[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mdistinguishes an explicit all channels logs filter[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the supported auto resolve target kind[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the supported user resolve target kind[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the supported group resolve target kind[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the supported channel resolve target kind[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the parent --agent option to channels add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the leaf --agent option to channels add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the both --agent option to channels add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the parent --agent option to channels capabilities[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the leaf --agent option to channels capabilities[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the both --agent option to channels capabilities[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the parent --agent option to channels login[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the leaf --agent option to channels login[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the both --agent option to channels login[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the parent --agent option to channels logout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the leaf --agent option to channels logout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the both --agent option to channels logout[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the parent --agent option to channels remove[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the leaf --agent option to channels remove[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the both --agent option to channels remove[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the parent --agent option to channels resolve[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the leaf --agent option to channels resolve[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards the both --agent option to channels resolve[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mrejects unsupported resolve target kinds before dispatching[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters ClickClack setup options before an external channel plugin is installed[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters setup options from a non-bundled catalog channel[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mdedupes options by switch identity across differing value placeholders[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mprefers the selected channel's declaration for a shared switch[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mprojects channel-owned setup fields into Commander options[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters only the positional channel setup options[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps generic add help via --help limited to the shared control envelope[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps generic add help via -h limited to the shared control envelope[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters add help when channels reuse a long flag with different placeholders[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mforwards only explicitly supplied setup options[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mpreserves selected legacy channel defaults[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22muses caller argv instead of raw process argv for channel-specific add options[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mcan force channel-specific add options for completion generation[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mnormalizes Windows launcher argv before channel-specific add option gating[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps selection-only positional channel adds on the guided path[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps selection-only --channel channel adds on the guided path[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps explicit token inputs on the direct path[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps explicit token file inputs on the direct path[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps explicit environment inputs on the direct path[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps explicit account inputs on the direct path[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters selected-channel options before Commander parses option-first argv[32m 12[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters setup flags after parent owner options [ '--agent', 'add' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mregisters setup flags after parent owner options [ '--agent=add' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mprefers modern contract options when a channel also publishes cliAddOptions[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mresolves a positional channel after a value-taking channel option[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mresolves a positional channel after a boolean channel option[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps an all-channel-unknown flag before a positional channel ambiguous[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mkeeps conflicting all-channel flag arities before a positional channel ambiguous[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mfinds a positional channel after shared option-value pairs[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mlets an explicit channel override the positional channel during option registration[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/channels-cli.test.ts[2m > [22mregisterChannelsCli[2m > [22mtreats plugin-provided config flags as direct automation inputs[32m 2[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m68 passed[39m[22m[90m (68)[39m
+[2m   Start at [22m 18:54:01
+[2m   Duration [22m 1.81s[2m (worker 45%, transform 34%, tests 14%, setup 4%, import 3%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-status-logs-green/tests/candidate-channels-registration.json
+[test] passed 1 Vitest shard in 3.15s

@@ -1,0 +1,33 @@
+diff --git a/src/commands/channels/logs.ts b/src/commands/channels/logs.ts
+--- a/src/commands/channels/logs.ts
++++ b/src/commands/channels/logs.ts
+@@ -80,7 +80,7 @@
+ }
+ 
+ function parseLinesOption(value: unknown): number {
+-  if (value === undefined || value === null || value === "") {
++  if (value === undefined || value === null) {
+     return DEFAULT_LIMIT;
+   }
+   const parsed = parseStrictPositiveInteger(value);
+diff --git a/src/commands/models/list.status-command.ts b/src/commands/models/list.status-command.ts
+--- a/src/commands/models/list.status-command.ts
++++ b/src/commands/models/list.status-command.ts
+@@ -197,7 +197,7 @@
+     };
+ 
+ function parseOptionalPositiveFiniteOption(raw: unknown, label: string, fallback: number): number {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return fallback;
+   }
+   const parsed = parseStrictFiniteNumber(raw);
+@@ -208,7 +208,7 @@
+ }
+ 
+ function parseOptionalPositiveIntegerOption(raw: unknown, label: string, fallback: number): number {
+-  if (raw === undefined || raw === null || raw === "") {
++  if (raw === undefined || raw === null) {
+     return fallback;
+   }
+   const parsed = parseStrictPositiveInteger(raw);

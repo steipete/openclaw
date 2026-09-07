@@ -1,0 +1,40 @@
+{
+  "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+  "hashes": {
+    "extensions/feishu/src/reply-dispatcher.ts": "acd6bd4ba1bf26462f5b36e2907244990657c731ab6710040d87f6f4677e54ff",
+    "extensions/feishu/src/streaming-card.ts": "7c4c5e122a80ef4f0dd0c62d93d3d8e50b3f75745555b9a76fd2438aff366973",
+    "extensions/feishu/src/delivery-trace.test.ts": "0969e8211085e5047e199f2bf020c570a6b342ddedd280e2546d891cefe889b1",
+    "extensions/feishu/src/bot.ts": "2da991aaabed3a2ba0c4050a8b70cade0277d6c64070997be3fa9546d71aa7ee",
+    "extensions/feishu/src/reply-delivery-result.ts": "0fa28c84a0e347a3de958b8547226b7c9a10974e609634df2d160792298bf958",
+    "extensions/feishu/src/monitor.transport.ts": "97fa92a860afaa0d6be3db4246489f761cab3ab6a8688ee3bafa73c00e10dce1",
+    "extensions/feishu/src/client.ts": "c5a5d9d0e80880c99d1736e3193b2eb5ecdc0059f3e655c6b9c87df2a36cd357",
+    "extensions/feishu/src/config-schema.ts": "2e4985c84444e86e3193f6f28b989f52001b0162b0eddcc3c2e0bd5e6d617299",
+    "extensions/feishu/src/streaming-card-send-mode.ts": "94a0a90b3125a5e844fe60a206734b9c28485d72caf952fad6010ca9c43d7b2a",
+    "extensions/feishu/src/reply-dispatcher-state.ts": "24a499eb1a03abbb46fa48c6a4270b48dd63ccd3048823557dade99def69bf4a",
+    "extensions/feishu/package.json": "f4d6b3fb47fa0ab8b2bcb8b1875523ca6ce7fd1ead7615dec14cf7caaa0d4d6d",
+    "docs/channels/feishu.md": "151297ca0fc1f7b3fb425448940fde2ff744ef8d1be9af6ba76ec89af787492a",
+    "package.json": "a1709548644b7c634e90c1737683f19158494d656e544e1ffb054531c697662c",
+    "pnpm-lock.yaml": "d3d8e893b57884420f2916e98d92b595f0b9648096e47c511dd140cec9493aee",
+    "src/plugin-sdk/channel-contract-testing.ts": "39450b1270923a0ab9642739555dc84038b9dcadf14c07f90effb2d6347d980c",
+    "src/channels/plugins/contracts/trace/delivery-trace.ts": "3cb7ee546b8dd1d1f25979d228fe75bb201863bbe76559ff446170968bdbe27f",
+    "src/channels/turn/types.ts": "411abcc2d2920feef0b1ee9d95ddf424afe89c895bab6d778076ca2e5f0fec90",
+    "packages/normalization-core/src/expect.ts": "1f35605065875a944903e57c1a147637b4500f9a364aff6403454d9a15378f62",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest-child.mts": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
+    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
+    "scripts/lib/vitest-resource-ownership.mts": "d4d3c644afdc4b20580b5c145f0860ac9b0c3358512e122bdcd7e3a256293659",
+    "scripts/lib/vitest-report-owner.mts": "5cd760dc4f748e1e613d812ae010a4bbd1557c678be79f0cdd982f70cb7fdf5d",
+    "scripts/lib/vitest-report-capture.mts": "efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2",
+    "scripts/lib/tsx-cli-shim.mjs": "a6660e6d6828b1887e182a24381b1550d9cc8272dc80f1929f475ba325e5491c",
+    "scripts/tsx.mjs": "e726c78d5a5a274215d9fe292ac91e4acf601c4554d68fbd57ff3b932573f9e6",
+    "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
+    "extensions/feishu/src/presentation-card.ts": "681534b0c1ff2fa6261e3bb8d97ba864e411ea1b1af9cd9929725ebb964632e6",
+    "src/interactive/payload.ts": "ab78d66b24e99b667bb09d07f28e0c7dd3f00547428ce7b4b45267ee0d4ff202",
+    "src/interactive/payload.test.ts": "dd6f2dee5c585ea7ee232fb98b602dabee60e6f32b8fb063346d96db19319303",
+    "src/channels/plugins/outbound/presentation-delivery.ts": "38114603729fdd69c5d463670deb600b09989cf46f67701edbb280a76344ff21",
+    "docs/plugins/message-presentation.md": "f912626d04c7d397f5e0b451ccb6ddbe0c2dc4fa20ca3c8d9f0f35ec6d44fbfb"
+  },
+  "changed": [
+    "extensions/feishu/src/delivery-trace.test.ts"
+  ]
+}

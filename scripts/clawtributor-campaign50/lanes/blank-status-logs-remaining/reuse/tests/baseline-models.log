@@ -1,0 +1,92 @@
+[test] starting test/vitest/vitest.commands-light.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[vitest-workers] prepared 8f398e0cd8e5 in 8908ms (8539 inputs, 4271 outputs)
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mshows cooldown reasons and recovery guidance in JSON and text output
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mshows exact WHAM classification and canonical reason in status JSON
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mroutes legacy Gemini CLI cooldowns to supported Google API-key setup
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mkeeps status metadata scoped while another operation publishes metadata
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeTimeout":"5000ms"}[33m 914[2mms[22m[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeConcurrency":"2.5"}[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeMaxTokens":"64x"}[32m 4[2mms[22m[39m
+ [31m×[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeTimeout":""}[32m 38[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeTimeout":"   "}[32m 3[2mms[22m[39m
+ [31m×[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeConcurrency":""}[32m 3[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeConcurrency":"   "}[32m 2[2mms[22m[39m
+ [31m×[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeMaxTokens":""}[32m 3[2mms[22m[39m
+[31m   → promise resolved "undefined" instead of rejecting[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeMaxTokens":"   "}[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mforwards probe numeric options {}[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mforwards probe numeric options {"probeTimeout":"1.5","probeConcurrency":"1","probeMaxTokens":"1"}[32m 2[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mincludes masked auth sources in JSON output
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mexpands nested wildcard policy entries to the models they actually allow
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mpreserves a restrictive wildcard when the current catalog has no match
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mreports the resolved utility model in JSON output
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mhonors OPENCLAW_AGENT_DIR when no --agent override is provided
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mhonors deprecated PI_CODING_AGENT_DIR when OPENCLAW_AGENT_DIR is unset
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22muses agent overrides and reports sources
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mresolves a selected agent's bare alias from that agent's model scope
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mprefers a per-agent alias row over the same alias in defaults
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mkeeps unscoped status on global defaults when no agent is selected
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22muses system-agent storage without changing unscoped model output
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects API-key auth for subscription-only Codex Spark
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mreports usable Codex auth as unavailable when its harness plugin is quarantined
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mevaluates mixed primary and fallback OpenAI routes independently
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mflags a utility model whose route needs api-key auth despite an OAuth-healthy primary
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mreports incompatible model routes separately in JSON and text
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mreports missing static transport observation as indeterminate
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22muses static catalog transport observation for route readiness
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mselects ChatGPT nano from grouped physical routes with ChatGPT first
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mselects ChatGPT nano from grouped physical routes with Platform first
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mkeeps model status independent of Writer routes
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mkeeps model status independent of rEaDeR routes
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mkeeps API-key SecretRef profiles usable for a concrete OpenAI route
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mreports unresolved API-key SecretRef profiles as indeterminate
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mpreserves configured AWS SDK profiles for non-OpenAI providers
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mhandles cli backend and exact provider auth summaries
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mtreats plugin-owned synthetic auth as usable for models in use
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mpasses the canonical merged provider config to synthetic auth plugins
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mdoes not treat declared but unresolved synthetic auth as usable
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mincludes auth-evidence-only providers in the auth overview
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mreports defaults source when --agent has no overrides
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mthrows when agent id is unknown
+ [2m[90m↓[39m[22m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mexits non-zero when auth is missing
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeTimeout":""}
+[41m[1m FAIL [22m[49m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeConcurrency":""}
+[41m[1m FAIL [22m[49m [30m[42m commands-light [49m[39m src/commands/models/list.status.test.ts[2m > [22mmodelsStatusCommand auth overview[2m > [22mrejects invalid probe numeric option {"probeMaxTokens":""}
+[31m[1mAssertionError[22m: promise resolved "undefined" instead of rejecting[39m
+
+[32m- Expected:[39m
+Error {
+  "message": "rejected promise",
+}
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/commands/models/list.status.test.ts:[2m759:6[22m[39m
+    [90m757|[39m     await expect(
+    [90m758|[39m       modelsStatusCommand({ json: true, probe: true, ...opts }, localR…
+    [90m759|[39m     ).rejects.toThrow(label);
+    [90m   |[39m      [31m^[39m
+    [90m760|[39m     expect(mocks.runAuthProbes).not.toHaveBeenCalled();
+    [90m761|[39m     expect(localRuntime.log).not.toHaveBeenCalled();
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[2m | [22m[33m37 skipped[39m[90m (48)[39m
+[2m   Start at [22m 18:53:18
+[2m   Duration [22m 19.21s[2m (transform 82%, import 8%, tests 5%, worker 5%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-status-logs-green/tests/baseline-models.json
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 21.74s
+[test] FAILED (exit 1)

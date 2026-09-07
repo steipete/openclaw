@@ -1,0 +1,48 @@
+{
+  "run": 34154144688,
+  "job": 101842367013,
+  "harness": "9b8cff2a33c832917d396dedc90bd7d72be3c11a",
+  "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+  "packet": "b1ba9394f2724c3611776563d23ebf8ec5740e58d6c3edf479bca0e0382cb356",
+  "overlay": "0969e8211085e5047e199f2bf020c570a6b342ddedd280e2546d891cefe889b1",
+  "conclusion": "FAILURE",
+  "classification": "HARNESS_SELECTOR_MATCHED_ZERO_TESTS",
+  "passed": 0,
+  "failed": 0,
+  "filtered": 16,
+  "newControlExecuted": false,
+  "normalManagedExit": 0,
+  "childSignal": null,
+  "sourceRestored": true,
+  "commandStateRemoved": true,
+  "cachedEvidence": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/proof-infra/runs/34154144688/campaign50-feishu-coalescing-103928-discard-1/evidence/feishu-coalescing-103928-discard",
+  "sha256": {
+    "tests.json": "e381ccb9fea877a1e1a58e138395ebd79240fc0ee8d6b53788a05d248b0e5708",
+    "tests.log": "6215b8d7237a21255674e25b6b226e8fc6533ebdefc5a325162630e2335cbffe",
+    "tests.json.capture.json": "c73c54bfdbbe0ec1c19a9590841f3c7a12244c7e2c1738d17668f39da64e4ec1",
+    "managed-command.json": "6e0de11dcba0737bc87a29e4fca81ac91e1033c8f9005e5d0beaaa839fec9cc4",
+    "verdict.json": "9e95008cf70151fd94cbc50b71799d361ce0d65b449a61ddbfab982d88cd9d2c",
+    "source-before.json": "68c737d30058f97c55d3b08bb17dd2f24c18981600fc030100318334ce310e1f",
+    "overlay-before.json": "9aa012e1a4e3bff983710931c15838bc1a76fbb0a1b38852b2fe88c1fbfb6536",
+    "overlay-after.json": "9aa012e1a4e3bff983710931c15838bc1a76fbb0a1b38852b2fe88c1fbfb6536",
+    "source-after.json": "68c737d30058f97c55d3b08bb17dd2f24c18981600fc030100318334ce310e1f",
+    "test-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "retained-validation.json": "e0522709886a9da90a93929611cbcef5d57a5e1f7a36131066434c2bb936d9a0"
+  },
+  "vitestContract": {
+    "version": "5.0.0",
+    "root": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/tools/native-merge-credit/runner/node_modules/vitest",
+    "integrity": "sha512-gpsMNoRhMjMktVxPtstOH4/PJuPyovVaMDr4oDilXaGH1EcqM2OE96SoHT2VIQ6fTGtTjqmHDrEu2X9RQiXf8Q==",
+    "sourceHashes": {
+      "package.json": "a4f269c689b346c33446feaa8adea6bc1c1bd35a21e12c9ffac74198687b0fbc",
+      "dist/task-utils.js": "097dbd558f47a0661fda1020baab60b2139da2bca1dde30e373bb7ecff37b415",
+      "dist/chunks/run.CQOUYP-x.js": "8aa94c491fc34a880fdcaaea493fdba5d05affd8e5be68bb7a70c6ebe74ddf63",
+      "dist/chunks/index.B89dZ0-N.js": "7ae1406d3a808a5a2915895eede01e4e79fac5838f5a6457adbffd78df1bf56d"
+    },
+    "filterSeparator": " > ",
+    "jsonFullNameSeparator": " "
+  },
+  "priorWave55": "unchanged failed; red and four completed controls retained",
+  "retryPerformed": false,
+  "productionEdited": false
+}

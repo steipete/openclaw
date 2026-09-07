@@ -1,0 +1,14 @@
+{
+  "run": 34151405952,
+  "originalConclusion": "FAILURE",
+  "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+  "retainedDefect": "stale-middle",
+  "retainedCompletedControls": [
+    "delayed-start",
+    "preview-error",
+    "final-error",
+    "settings-error"
+  ],
+  "incompleteOriginalControl": "discard-controls",
+  "sourceAndCleanupVerified": true
+}

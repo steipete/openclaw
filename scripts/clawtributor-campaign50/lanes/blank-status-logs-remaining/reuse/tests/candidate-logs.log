@@ -1,0 +1,32 @@
+[test] starting test/vitest/vitest.commands.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mfilters external plugin channel logs from the persisted manifest registry[32m 96[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mmatches channel boundaries and excludes a shadow subsystem[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mmatches channel boundaries and excludes a shadow module[32m 41[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mmatches channel boundaries and excludes a shadow nested subsystem[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mmatches channel boundaries and excludes a shadow nested module[32m 23[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mrejects an unknown explicit channel without widening output (json=false)[32m 22[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mrejects an unknown explicit channel without widening output (json=true)[32m 21[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mredacts credential-bearing channel lines in text output[32m 10[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mredacts credential-bearing channel lines in JSON output[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mpreserves ordering with line limit undefined[32m 8[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mpreserves ordering with line limit 2[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mfinds sparse channel records beyond the shared 5000-line cap[32m 22[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mreports when the byte window omits all matching channel records[32m 11[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mtreats an omitted channel filter as all[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mfalls back to the latest rolling log when the configured rolling file is missing[32m 23[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mreads the active writer file instead of a newer stale configured rolling log[32m 41[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mdoes not fall back to rolling logs for a missing custom log file[32m 20[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mrejects invalid line limit "2x"[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mrejects invalid line limit ""[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m commands [49m[39m src/commands/channels.logs.test.ts[2m > [22mchannelsLogsCommand[2m > [22mrejects invalid line limit "   "[32m 2[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m20 passed[39m[22m[90m (20)[39m
+[2m   Start at [22m 18:53:41
+[2m   Duration [22m 979ms[2m (tests 43%, worker 35%, transform 13%, setup 8%, import 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-status-logs-green/tests/candidate-logs.json
+[test] passed 1 Vitest shard in 2.23s

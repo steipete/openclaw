@@ -1,0 +1,103 @@
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares --json as machine output[32m 77[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares --status-json as machine output[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not apply the parent status alias to a child action[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not treat required provider value --plain as a model output flag[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not treat required provider value --json as a model output flag[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mclassifies an ignored parent status alias and a JS… by its actual Commander role[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mclassifies a real JSON flag after a status-alias-l… by its actual Commander role[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mclassifies a real JSON flag before a plain-looking… by its actual Commander role[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares aliases list --plain as plain machine output owning stdout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares fallbacks list --plain as plain machine output owning stdout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares image-fallbacks list --plain as plain machine output owning stdout[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares list --plain as plain machine output owning stdout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares status --plain as plain machine output owning stdout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares parent --status-plain as plain machine output owning stdout[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare list (no flag) as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare status --json as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare parent --status-json as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare aliases list as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare logs --plain as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare secrets store list --plain as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare secrets store get --plain as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not declare plain after argv terminator as plain machine output[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not turn plain output into JSON failure envelope[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mforwards bare --json to the default status report[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mregisters github-copilot login command[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdeclares --agent on every agent-aware auth leaf command[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses --agent to models status (status flag)[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses --agent to models status (parent flag)[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses --agent to models list (list flag)[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses --agent to models list (parent flag)[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth login[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth logout[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth setup-token[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth paste-token[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth paste-api-key[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses parent --agent to models auth login-github-copilot[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth list[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth login[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth logout[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth setup-token[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth paste-token[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth paste-api-key[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth login-github-copilot[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth order get[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth order set[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses leaf --agent to models auth order clear[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mprefers leaf --agent when both models auth forms are present[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses --method through models auth login[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mmaps --device-code to the provider device-code auth method[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mpasses list-specific --agent and --json to models auth list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models set[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models set[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models set-image[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models set-image[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models aliases list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models aliases list[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models aliases add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models aliases add[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models aliases remove[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models aliases remove[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models scan[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models scan[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent 'poe' for models refresh[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects parent --agent '' for models refresh[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models set without --agent[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models set-image without --agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models aliases list without --agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models aliases add without --agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models aliases remove without --agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models scan without --agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mstill runs models refresh without --agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mshows help for models auth without error exit[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options before [ 'list', '--cursor', 'after-account' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options after [ 'list', '--cursor', 'after-account' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options before [ 'login', 'openai' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options after [ 'login', 'openai' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options before [ 'use', 'personal-account' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options after [ 'use', 'personal-account' ][32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options before [ 'clear-default', 'anthropic' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mresolves personal-account Gateway options after [ 'clear-default', 'anthropic' ][32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects agent identity for personal-account [ 'list', '--cursor', 'after-account' ][32m 6[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects agent identity for personal-account [ 'login', 'openai' ][32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects agent identity for personal-account [ 'use', 'personal-account' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mrejects agent identity for personal-account [ 'clear-default', 'anthropic' ][32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mlets explicit leaf options override the account group and inherits models JSON[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not accept personal secret or identity option --token[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not accept personal secret or identity option --redirect-input[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/models-cli.test.ts[2m > [22mmodels cli[2m > [22mdoes not accept personal secret or identity option --profile-id[32m 2[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m91 passed[39m[22m[90m (91)[39m
+[2m   Start at [22m 18:54:05
+[2m   Duration [22m 1.05s[2m (worker 34%, tests 29%, transform 26%, setup 7%, import 5%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-status-logs-green/tests/candidate-models-registration.json
+[test] passed 1 Vitest shard in 2.35s

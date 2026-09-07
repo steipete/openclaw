@@ -119,7 +119,7 @@ try {
         "scripts/run-vitest.mjs",
         tracePath,
         "-t",
-        "^Feishu combined-owner coalescing proof joins the held preview before replacing it with controls$",
+        "joins the held preview before replacing it with controls$",
         "--reporter=verbose",
         "--reporter=json",
         "--reporter=./scripts/lib/vitest-report-capture.mts",

@@ -1,0 +1,31 @@
+[test] starting test/vitest/vitest.extension-feishu.config.ts
+
+ RUN  v5.0.0 /home/runner/work/openclaw/openclaw/target
+
+[vitest-workers] prepared 71da597f1bef in 9130ms (8593 inputs, 4300 outputs)
+[vitest] still running with no output for 30000ms.
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:441 > feishu delivery trace goldens > updates the accepted card without a duplicate send when its message receipt is absent
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:467 > feishu delivery trace goldens > preserves caption visibility when outbound voice-looking media resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:467 > feishu delivery trace goldens > preserves caption visibility when dispatcher voice-looking media resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:545 > feishu delivery trace goldens > does not repeat visible TTS text when inferred native voice resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:545 > feishu delivery trace goldens > does not repeat visible TTS text when explicit voice intent resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records streaming-happy
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records final-only
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records cancel-mid-stream
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records rate-limit-during-preview
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records overflow-pagination
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:786 > Feishu combined-owner coalescing proof > omits the stale middle wire snapshot while joining finalization
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:819 > Feishu combined-owner coalescing proof > retains the latest partial when startup and idle overlap
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:842 > Feishu combined-owner coalescing proof > joins the held preview before replacing it with controls
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:890 > Feishu combined-owner coalescing proof > records a failed preview and settles the successful final
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:914 > Feishu combined-owner coalescing proof > preserves accepted content when final finalization fails
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:914 > Feishu combined-owner coalescing proof > preserves accepted content when settings finalization fails
+
+ Test Files  1 skipped (1)
+      Tests  16 skipped (16)
+   Start at  19:06:54
+   Duration  35.20s (transform 87%, import 11%, worker 2%)
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/feishu-coalescing-103928-discard/tests.json
+[vitest-workers] verifying completed generation before cleanup
+[test] passed 1 Vitest shard in 37.64s

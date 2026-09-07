@@ -1,0 +1,42 @@
+[test] starting test/vitest/vitest.unit.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22masFiniteNumber accepts only finite numbers[32m 89[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22msigned finite helpers preserve finite fractional values[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22masFiniteNumberInRange enforces inclusive and exclusive bounds[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22masSafeIntegerInRange accepts only safe integers inside inclusive bounds[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseFiniteNumber accepts finite numbers and numeric strings[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseStrictInteger accepts only safe integer tokens[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseStrictFiniteNumber rejects partial numeric strings[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mstrict integer range helpers enforce sign[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mtimer timeout helpers centralize Node-safe bounds[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mseconds helpers reject unsafe millisecond values[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mtimestamp ISO helper rejects Date-invalid timestamps[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateStringTimestampMs parses 0[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateStringTimestampMs parses 2026[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateStringTimestampMs parses 2026-07-13T10:00:00.000Z[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateStringTimestampMs parses 0[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateStringTimestampMs parses 123ms[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateStringTimestampMs parses +275761-01-01T00:00:00.000Z[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses 0[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses 1700000000000[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses 0[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses 2026[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses Infinity[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses 8640000000000001[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mparseDateFirstTimestampMs parses true[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mfuture timestamp helper rejects invalid Date timestamps[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mtimestamp fallback helpers resolve Date-invalid timestamps[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mexpiry helpers resolve safe absolute timestamps[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22mmixed expiry helper handles relative seconds, epoch seconds, and absolute milliseconds[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22minteger option helpers floor finite values and fall back for non-finite values[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m unit [49m[39m packages/normalization-core/src/number-coercion.test.ts[2m > [22mnumber-coercion[2m > [22moptional integer option helper rejects non-finite values[32m 1[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m30 passed[39m[22m[90m (30)[39m
+[2m   Start at [22m 18:54:08
+[2m   Duration [22m 1.50s[2m (worker 55%, transform 29%, tests 10%, setup 5%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/blank-status-logs-green/tests/candidate-coercion.json
+[test] passed 1 Vitest shard in 2.71s

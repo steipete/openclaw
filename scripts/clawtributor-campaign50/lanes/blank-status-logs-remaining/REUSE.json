@@ -1,0 +1,103 @@
+{
+  "run": 34153109025,
+  "job": 101839393124,
+  "harness": "79daf18779b55400fab70d7f4244135444968998",
+  "source": "b7ec235a5cc05ae9577095498de5cfd6b8e2d293",
+  "packetSha256": "303c6b8b09107f546046cc6616c8682027f53e9dc7410ba71dc572477d0a0af4",
+  "candidate": "e207785b1bf35f7ea7b60740f72eb5efa7d368222d00098b3c50e774bafe173a",
+  "reports": [
+    {
+      "phase": "baseline",
+      "owner": "logs",
+      "stem": "baseline-logs",
+      "file": "src/commands/channels.logs.test.ts"
+    },
+    {
+      "phase": "baseline",
+      "owner": "models",
+      "stem": "baseline-models",
+      "file": "src/commands/models/list.status.test.ts"
+    },
+    {
+      "phase": "candidate",
+      "owner": "logs",
+      "stem": "candidate-logs",
+      "file": "src/commands/channels.logs.test.ts"
+    },
+    {
+      "phase": "candidate",
+      "owner": "models",
+      "stem": "candidate-models",
+      "file": "src/commands/models/list.status.test.ts"
+    },
+    {
+      "phase": "candidate",
+      "owner": "sibling",
+      "stem": "candidate-channels-registration",
+      "file": "src/cli/channels-cli.test.ts"
+    },
+    {
+      "phase": "candidate",
+      "owner": "sibling",
+      "stem": "candidate-models-registration",
+      "file": "src/cli/models-cli.test.ts"
+    },
+    {
+      "phase": "candidate",
+      "owner": "sibling",
+      "stem": "candidate-coercion",
+      "file": "packages/normalization-core/src/number-coercion.test.ts"
+    }
+  ],
+  "files": {
+    "tests/baseline-logs.json": "e544deff457d39143a05ee2c901c8d818c635ea40c76f2614d2131521b7bbbc2",
+    "tests/baseline-logs.log": "34b0db3bd217fda763f47ce6d27a25c2e97eb502905b292325a97d3f16202bc4",
+    "tests/baseline-logs.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "tests/baseline-models.json": "a2f178550b9c45c509306952aa40174cf2276d86de96f1713e56eadf82d88d07",
+    "tests/baseline-models.log": "a8bb5edafb3ac7c2dcbf3e0189ea4ead9cc79aeca8a4204af71f9eb56fb07b1d",
+    "tests/baseline-models.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "tests/candidate-logs.json": "69bcd9526ce55f685a431df34f3d8cb36201d0ac2f79bba52336e7a98e85f82e",
+    "tests/candidate-logs.log": "a032ea4d181598a5ff4bcc542c41da84a2c3763298a996c9408cf39162b4871f",
+    "tests/candidate-logs.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/candidate-models.json": "a2414dcd0f6f24f073b022f80f08e9ff423baabb3c8b862bc3816d261204036e",
+    "tests/candidate-models.log": "a689632a8e2a54c3d40959b7982c81c25b75b9ee23679c855c74e1eca81d8d58",
+    "tests/candidate-models.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/candidate-channels-registration.json": "443c7fe594778e33551454ab607c4c885a152c1ca1ac464f26960a4f260a1713",
+    "tests/candidate-channels-registration.log": "0c100f050a11fa742eab786c1e2e65a62b956b5bc592e52c34306b30a64b7af3",
+    "tests/candidate-channels-registration.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/candidate-models-registration.json": "921bac2884ee12c6876ec11ad522ed655538b1248c4c94da26e4506b5703b60b",
+    "tests/candidate-models-registration.log": "1913e332e6bfa3be8e57da2015b6848e069af6d00805401a9d1e75375a0c2e28",
+    "tests/candidate-models-registration.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/candidate-coercion.json": "e660f3ecb496398fde0f488cbfb7280b23e4a646437f9a55954625e114cb6208",
+    "tests/candidate-coercion.log": "7dc490e883e584e1edf31c82c332f7bb9bcaa8efd8118691ff25d0f7fb8cad92",
+    "tests/candidate-coercion.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "packet.json": "303c6b8b09107f546046cc6616c8682027f53e9dc7410ba71dc572477d0a0af4",
+    "source.json": "73060bbe8e15531c32dbbe77b967ef375841c395d71be0c6af104c7ea3dd58b6",
+    "source-clean.json": "8a73882fbebd10f55425dfe666e4e4e4d044c686699d128bf8f1e8b81240d164",
+    "source-unit-baseline.json": "4679c419222932fdee2b9c78d28188bddd6be36193ace59587cc13856653df90",
+    "source-after-unit-baseline.json": "4679c419222932fdee2b9c78d28188bddd6be36193ace59587cc13856653df90",
+    "source-candidate.json": "f444cb161dc9798731394c08bfac1b4b982159634cc1cbd139829e0138c3343f",
+    "source-final.json": "f444cb161dc9798731394c08bfac1b4b982159634cc1cbd139829e0138c3343f",
+    "source-final.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-final.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "candidate.patch": "e207785b1bf35f7ea7b60740f72eb5efa7d368222d00098b3c50e774bafe173a",
+    "candidate-source/src/commands/channels/logs.ts.txt": "435b371573f2d915652f7c50d25418e711ccf16f153711a14c6cec2d920069e1",
+    "candidate-source/src/commands/models/list.status-command.ts.txt": "773a53e09e32b95519b7a1ab099a379de2cb1a66b547841ff48ca6acb6c60dc7",
+    "candidate-source/src/commands/channels.logs.test.ts.txt": "bd4544b700e23aa53c4741e8bacd55a14260d05c92361b343f3e5665f0008577",
+    "candidate-source/src/commands/models/list.status.test.ts.txt": "9799abc78f0e295cf08fd6d6d004439dd2a65b6c3caba84468342d0c334399f9",
+    "candidate-source/docs/cli/channels.md.txt": "b5337e1dde1c1c7c807f37296712504e6a1ef43c258c08884a6678bfd56eadab",
+    "candidate-source/docs/cli/models.md.txt": "4fccb52a7f790676e548835bea731f0f615d67c46a79dcb56d53300695bb3fe3",
+    "executed-lane/PROOF-DESIGN.md.txt": "357f5a78b4729b8518849fd646ea2279d2fb97e9f4a7d872320ed0877cc99367",
+    "executed-lane/candidate.patch.txt": "e207785b1bf35f7ea7b60740f72eb5efa7d368222d00098b3c50e774bafe173a",
+    "executed-lane/cases.json.txt": "86f5875499af08c8d1b4cc726ce9b26e4c3dc7b9837f7bca82e65de0173294b6",
+    "executed-lane/cli-proof.mjs.txt": "0c7f32b620fdce6ea540b453d06d7e8c7fb663a1200187c7c3df23180049c878",
+    "executed-lane/completed-report.mjs.txt": "b7cc7d09f1d4e880ab2b7a31ec9ee4f77b3a1f30aad7d4c456b359e0b5e94d5b",
+    "executed-lane/docs.patch.txt": "7f511f798fb292167cfff2d640cb5260fe4c09a0289c9fa38b60d0bc3ddc6c16",
+    "executed-lane/production.patch.txt": "6184a2a5f5d5de2a29e7dec2ea757ee8d4888ba4ec0e3b86939fc77548eb605f",
+    "executed-lane/run.sh.txt": "f1db4be18f2b8fdf4539b1888b3f3ac4a3200c01f63dc6a813d5168789ebdc22",
+    "executed-lane/tests.patch.txt": "bf0e460b3324666567edefe0fa25ebb51e7e4fe6da38991e2095af958296a017",
+    "executed-lane/verify-source.mjs.txt": "fb9a8427956eab7ef24535cb02b6cc7a7f68e6187f45fc72ca4c9ab2d5c16eee",
+    "executed-lane/verify-tests.mjs.txt": "025da600090739562d443fe26557da6e833d39765e83e0b3881a1b77cfe904bb"
+  },
+  "scope": "Immutable raw4intendedunitreds+12controls and257candidate passes; originalfailedreader preserved, no changedchecks/build/CLI result existed."
+}

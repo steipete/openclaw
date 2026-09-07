@@ -1,0 +1,42 @@
+{
+  "completed": false,
+  "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+  "packetHash": "b1ba9394f2724c3611776563d23ebf8ec5740e58d6c3edf479bca0e0382cb356",
+  "unjoinedWork": false,
+  "overlayActive": false,
+  "command": {
+    "normalManagedReturn": true,
+    "captureBytes": 3257,
+    "childExit": 0,
+    "childSignal": null,
+    "childExitObserved": true,
+    "signals": [],
+    "pid": 3538,
+    "exit": 0,
+    "ownedStateRemoved": true
+  },
+  "failure": {
+    "message": "Expected values to be strictly equal:\n\n0 !== 1\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at validate (file:///home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/feishu-coalescing-103928-discard/validate.mjs:12:10)\n    at async <anonymous> (/home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/feishu-coalescing-103928-discard/proof.mjs:178:3)"
+  },
+  "gatewayIngress": "not-run",
+  "credentialedFeishu": false,
+  "originalWave": {
+    "run": 34151405952,
+    "conclusion": "FAILURE"
+  },
+  "retained": {
+    "run": 34151405952,
+    "originalConclusion": "FAILURE",
+    "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+    "retainedDefect": "stale-middle",
+    "retainedCompletedControls": [
+      "delayed-start",
+      "preview-error",
+      "final-error",
+      "settings-error"
+    ],
+    "incompleteOriginalControl": "discard-controls",
+    "sourceAndCleanupVerified": true
+  }
+}

@@ -1,23 +1,13 @@
 [
   {
-    "id": "setup-error-installed-pair",
-    "directory": "setup-error-installed-pair",
+    "id": "blank-status-logs-remaining",
+    "directory": "blank-status-logs-remaining",
     "runner": "ubuntu-24.04",
-    "source": "fae6778b125c51e1a3ca765b01d487b6d8300f80",
+    "source": "b7ec235a5cc05ae9577095498de5cfd6b8e2d293",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "installed-error-pair"
-  },
-  {
-    "id": "progress-width-red",
-    "directory": "progress-width-red",
-    "runner": "ubuntu-24.04",
-    "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "ordinary-pty-rendering"
+    "variant": "remaining-gates-build-cli"
   },
   {
     "id": "feishu-coalescing-103928-discard",
