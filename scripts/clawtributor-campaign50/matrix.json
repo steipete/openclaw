@@ -1,52 +1,32 @@
 [
   {
-    "id": "fetch-docs-command-contract",
-    "directory": "fetch-docs-command-contract",
+    "id": "setup-error-installed-pair",
+    "directory": "setup-error-installed-pair",
     "runner": "ubuntu-24.04",
-    "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "docs-existing-contract"
-  },
-  {
-    "id": "doctor-bootstrap-docs-contract",
-    "directory": "doctor-bootstrap-docs-contract",
-    "runner": "ubuntu-24.04",
-    "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "docs-existing-contract"
-  },
-  {
-    "id": "blank-status-logs-green",
-    "directory": "blank-status-logs-green",
-    "runner": "ubuntu-24.04",
-    "source": "b7ec235a5cc05ae9577095498de5cfd6b8e2d293",
+    "source": "fae6778b125c51e1a3ca765b01d487b6d8300f80",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "native-candidate"
+    "variant": "installed-error-pair"
   },
   {
-    "id": "download-filename-141311-red",
-    "directory": "download-filename-141311-red",
+    "id": "progress-width-red",
+    "directory": "progress-width-red",
     "runner": "ubuntu-24.04",
-    "source": "9d64ec1e5dc611cfa60cb67f843b2f641ab23c8b",
+    "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "red",
-    "variant": "browser-download-filename"
+    "variant": "ordinary-pty-rendering"
   },
   {
-    "id": "macos-cli-selection-red",
-    "directory": "macos-cli-selection-red",
-    "runner": "macos-26",
-    "source": "4c075b020ce1ec3f5130e362c4092af9a0a06c3c",
+    "id": "feishu-coalescing-103928-discard",
+    "directory": "feishu-coalescing-103928-discard",
+    "runner": "ubuntu-24.04",
+    "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "native-selection"
+    "mode": "baseline",
+    "variant": "remaining-discard-control"
   }
 ]

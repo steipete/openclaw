@@ -1,0 +1,10 @@
+{
+  "id": "feishu-coalescing-103928-discard",
+  "directory": "feishu-coalescing-103928-discard",
+  "runner": "ubuntu-24.04",
+  "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "mode": "baseline",
+  "variant": "remaining-discard-control"
+}

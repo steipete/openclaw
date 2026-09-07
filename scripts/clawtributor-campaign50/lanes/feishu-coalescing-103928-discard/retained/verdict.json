@@ -1,0 +1,24 @@
+{
+  "completed": false,
+  "source": "9060e16b7d136813b920d7b68f095b1206c341d2",
+  "packetHash": "14184726a27725dbca58c98129379e16aa07a3051bb2594c6f516d7790c1e0dc",
+  "unjoinedWork": false,
+  "overlayActive": false,
+  "command": {
+    "normalManagedReturn": true,
+    "captureBytes": 6116,
+    "childExit": 1,
+    "childSignal": null,
+    "childExitObserved": true,
+    "signals": [],
+    "pid": 3398,
+    "exit": 1,
+    "ownedStateRemoved": true
+  },
+  "failure": {
+    "message": "Expected values to be strictly equal:\n\n2 !== 1\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n2 !== 1\n\n    at validate (file:///home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/feishu-coalescing-103928-baseline/validate.mjs:13:10)\n    at async <anonymous> (/home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/feishu-coalescing-103928-baseline/proof.mjs:175:3)"
+  },
+  "gatewayIngress": "not-run",
+  "credentialedFeishu": false
+}

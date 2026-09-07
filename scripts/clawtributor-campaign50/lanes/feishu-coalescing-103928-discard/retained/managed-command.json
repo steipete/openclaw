@@ -1,0 +1,11 @@
+{
+  "normalManagedReturn": true,
+  "captureBytes": 6116,
+  "childExit": 1,
+  "childSignal": null,
+  "childExitObserved": true,
+  "signals": [],
+  "pid": 3398,
+  "exit": 1,
+  "ownedStateRemoved": true
+}

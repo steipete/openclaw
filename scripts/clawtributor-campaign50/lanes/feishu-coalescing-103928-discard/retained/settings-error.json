@@ -1,0 +1,356 @@
+{
+  "id": "settings-error",
+  "wire": [
+    {
+      "phase": "request",
+      "path": "/auth/v3/tenant_access_token/internal",
+      "method": "POST"
+    },
+    {
+      "phase": "response",
+      "path": "/auth/v3/tenant_access_token/internal",
+      "status": 200
+    },
+    {
+      "phase": "request",
+      "path": "/cardkit/v1/cards",
+      "method": "POST",
+      "body": {
+        "type": "card_json",
+        "data": "{\"schema\":\"2.0\",\"config\":{\"streaming_mode\":true,\"summary\":{\"content\":\"[Generating...]\"},\"streaming_config\":{\"print_frequency_ms\":{\"default\":50},\"print_step\":{\"default\":1}}},\"body\":{\"elements\":[{\"tag\":\"markdown\",\"content\":\"\",\"element_id\":\"content\"},{\"tag\":\"hr\"},{\"tag\":\"markdown\",\"content\":\"<font color='grey'>Agent: agent</font>\",\"element_id\":\"note\"}]},\"header\":{\"title\":{\"tag\":\"plain_text\",\"content\":\"agent\"},\"template\":\"blue\"}}"
+      }
+    },
+    {
+      "phase": "response",
+      "path": "/cardkit/v1/cards",
+      "status": 200
+    },
+    {
+      "phase": "request",
+      "path": "/cardkit/v1/cards/card-1/elements/content/content",
+      "method": "PUT",
+      "body": {
+        "content": "First complete snapshot with ordinary text.",
+        "sequence": 2,
+        "uuid": "s_card-1_2"
+      }
+    },
+    {
+      "phase": "response",
+      "path": "/cardkit/v1/cards/card-1/elements/content/content",
+      "status": 200
+    },
+    {
+      "phase": "request",
+      "path": "/cardkit/v1/cards/card-1/elements/content/content",
+      "method": "PUT",
+      "body": {
+        "content": "First complete snapshot with ordinary text. Middle snapshot that becomes stale. Latest complete answer retained.",
+        "sequence": 3,
+        "uuid": "s_card-1_3"
+      }
+    },
+    {
+      "phase": "response",
+      "path": "/cardkit/v1/cards/card-1/elements/content/content",
+      "status": 200
+    },
+    {
+      "phase": "request",
+      "path": "/cardkit/v1/cards/card-1/elements/note/content",
+      "method": "PUT",
+      "body": {
+        "content": "<font color='grey'>Agent: agent</font>",
+        "sequence": 4,
+        "uuid": "n_card-1_4"
+      }
+    },
+    {
+      "phase": "response",
+      "path": "/cardkit/v1/cards/card-1/elements/note/content",
+      "status": 200
+    },
+    {
+      "phase": "request",
+      "path": "/cardkit/v1/cards/card-1/settings",
+      "method": "PATCH",
+      "body": {
+        "settings": "{\"config\":{\"streaming_mode\":false,\"summary\":{\"content\":\"First complete snapshot with ordinary text. Mid...\"}}}",
+        "sequence": 5,
+        "uuid": "c_card-1_5"
+      }
+    },
+    {
+      "phase": "response",
+      "path": "/cardkit/v1/cards/card-1/settings",
+      "status": 503
+    }
+  ],
+  "logs": [
+    "feishu[main] Started streaming: cardId=card-1, messageId=om-1",
+    "feishu[main] Close failed: Error: Close streaming card failed with HTTP 503",
+    "feishu[main] Closed streaming: cardId=card-1"
+  ],
+  "outcomes": [
+    {
+      "name": "start",
+      "status": "fulfilled"
+    },
+    {
+      "name": "delivery",
+      "status": "fulfilled",
+      "value": {
+        "visibleReplySent": false,
+        "finalization": {}
+      }
+    },
+    {
+      "name": "finalization",
+      "status": "rejected",
+      "error": "Error: Close streaming card failed with HTTP 503"
+    },
+    {
+      "name": "idle",
+      "status": "rejected",
+      "error": "Error: Close streaming card failed with HTTP 503"
+    },
+    {
+      "name": "cleanup-idle",
+      "status": "fulfilled"
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "at": 1,
+      "dir": "out",
+      "kind": "im.messageReaction.create",
+      "data": {
+        "target": "om-inbound",
+        "payload": {
+          "emoji_type": "Typing"
+        },
+        "result": {
+          "reaction_id": "reaction-1"
+        }
+      }
+    },
+    {
+      "seq": 2,
+      "at": 69,
+      "dir": "out",
+      "kind": "POST /auth/v3/tenant_access_token/internal",
+      "data": {
+        "result": {
+          "code": 0
+        }
+      }
+    },
+    {
+      "seq": 3,
+      "at": 69,
+      "dir": "in",
+      "kind": "coalescing-http-response",
+      "data": {
+        "path": "/auth/v3/tenant_access_token/internal",
+        "status": 200
+      }
+    },
+    {
+      "seq": 4,
+      "at": 76,
+      "dir": "out",
+      "kind": "POST /cardkit/v1/cards",
+      "data": {
+        "payload": {
+          "type": "card_json",
+          "card": {
+            "schema": "2.0",
+            "config": {
+              "streaming_mode": true,
+              "summary": {
+                "content": "[Generating...]"
+              },
+              "streaming_config": {
+                "print_frequency_ms": {
+                  "default": 50
+                },
+                "print_step": {
+                  "default": 1
+                }
+              }
+            },
+            "body": {
+              "elements": [
+                {
+                  "tag": "markdown",
+                  "content": "",
+                  "element_id": "content"
+                },
+                {
+                  "tag": "hr"
+                },
+                {
+                  "tag": "markdown",
+                  "content": "<font color='grey'>Agent: agent</font>",
+                  "element_id": "note"
+                }
+              ]
+            },
+            "header": {
+              "title": {
+                "tag": "plain_text",
+                "content": "agent"
+              },
+              "template": "blue"
+            }
+          }
+        },
+        "result": {
+          "code": 0,
+          "card_id": "card-1"
+        }
+      }
+    },
+    {
+      "seq": 5,
+      "at": 76,
+      "dir": "in",
+      "kind": "coalescing-http-response",
+      "data": {
+        "path": "/cardkit/v1/cards",
+        "status": 200
+      }
+    },
+    {
+      "seq": 6,
+      "at": 76,
+      "dir": "out",
+      "kind": "im.message.reply",
+      "data": {
+        "target": "om-inbound",
+        "payload": {
+          "msg_type": "interactive",
+          "content": {
+            "type": "card",
+            "data": {
+              "card_id": "card-1"
+            }
+          }
+        },
+        "result": {
+          "message_id": "om-1"
+        }
+      }
+    },
+    {
+      "seq": 7,
+      "at": 102,
+      "dir": "out",
+      "kind": "PUT /cardkit/v1/cards/card-1/elements/content/content",
+      "data": {
+        "payload": {
+          "content": "First complete snapshot with ordinary text.",
+          "sequence": 2,
+          "uuid": "s_card-1_2"
+        },
+        "result": {
+          "code": 0
+        }
+      }
+    },
+    {
+      "seq": 8,
+      "at": 102,
+      "dir": "in",
+      "kind": "coalescing-http-response",
+      "data": {
+        "path": "/cardkit/v1/cards/card-1/elements/content/content",
+        "status": 200
+      }
+    },
+    {
+      "seq": 9,
+      "at": 105,
+      "dir": "out",
+      "kind": "PUT /cardkit/v1/cards/card-1/elements/content/content",
+      "data": {
+        "payload": {
+          "content": "First complete snapshot with ordinary text. Middle snapshot that becomes stale. Latest complete answer retained.",
+          "sequence": 3,
+          "uuid": "s_card-1_3"
+        },
+        "result": {
+          "code": 0
+        }
+      }
+    },
+    {
+      "seq": 10,
+      "at": 105,
+      "dir": "in",
+      "kind": "coalescing-http-response",
+      "data": {
+        "path": "/cardkit/v1/cards/card-1/elements/content/content",
+        "status": 200
+      }
+    },
+    {
+      "seq": 11,
+      "at": 108,
+      "dir": "out",
+      "kind": "PUT /cardkit/v1/cards/card-1/elements/note/content",
+      "data": {
+        "payload": {
+          "content": "<font color='grey'>Agent: agent</font>",
+          "sequence": 4,
+          "uuid": "n_card-1_4"
+        },
+        "result": {
+          "code": 0
+        }
+      }
+    },
+    {
+      "seq": 12,
+      "at": 108,
+      "dir": "in",
+      "kind": "coalescing-http-response",
+      "data": {
+        "path": "/cardkit/v1/cards/card-1/elements/note/content",
+        "status": 200
+      }
+    },
+    {
+      "seq": 13,
+      "at": 110,
+      "dir": "in",
+      "kind": "coalescing-http-response",
+      "data": {
+        "path": "/cardkit/v1/cards/card-1/settings",
+        "status": 503
+      }
+    },
+    {
+      "seq": 14,
+      "at": 111,
+      "dir": "out",
+      "kind": "im.messageReaction.delete",
+      "data": {
+        "target": "om-inbound",
+        "payload": {
+          "reaction_id": "reaction-1"
+        },
+        "result": {
+          "code": 0
+        }
+      }
+    }
+  ],
+  "joined": 5,
+  "pending": 5,
+  "visible": {
+    "visibleReplySent": true,
+    "skippedFinalReason": null
+  }
+}

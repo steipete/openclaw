@@ -1,0 +1,25 @@
+{
+  "pr": 141401,
+  "revision": 2,
+  "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "lane": "progress-width-red",
+  "mode": "red",
+  "runtime": {
+    "node": "24.20.0",
+    "pnpm": "12.3.4"
+  },
+  "status": "frozen for independent review; no execution grant",
+  "files": {
+    "run.sh": "bb0abfa92b3bf0d826f3f2d5b7d69f3ddabd34df724ac2448c9da6bd25eba492",
+    "driver.py": "de39d9df65250db5e0584d5f59c40186428136e7c688c2731949c2ee1ce986c8",
+    "child.mts": "b62c57a4150c8c409ab374db0a073611170f9ddd2d457f66e7407b70a27d75b4",
+    "check.mts": "c9e55ed4d92bbd94b73b2331a97d429b47076c5fb48550086b8a7d0ce247159e",
+    "verify-inputs.py": "ee7dcd99155e81f250a2dde2c4d062872cc20f1757b442a16272483ab8c30863",
+    "cases.json": "b8060f44e7ea0adcf9fc50df65dbb83aae2bb205e752778796062c0f000ad8d6",
+    "source.sha256": "f2213b1ceaefaf0488624cc448d3d8292d010d0d7652a390bf31847583b81758",
+    "PROOF-DESIGN.md": "0702356a919d3f2b2e0bfb2c8e5abf35c4a72967994c00481bcb6e252813d753",
+    "SYNTAX.json": "8698e4ceb757ce93fe94b8f90eaa9d98ae9bc038c7c2f9b779f1eb13523093f4",
+    "check-harness.py": "ede885ec6314db4f866f66ede83c78048f332ae394fbf2084655709d4636769b",
+    "HARNESS-CHECKS.json": "9bc2ba9af9dcf95936522244dcf3914806a3e886d2174086322e8910b31a0303"
+  }
+}

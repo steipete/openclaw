@@ -1,0 +1,16 @@
+{
+  "pythonAST": [
+    "driver.py",
+    "verify-inputs.py",
+    "check-harness.py"
+  ],
+  "nodeCheck": [
+    "child.mts",
+    "check.mts"
+  ],
+  "bashSyntax": [
+    "run.sh"
+  ],
+  "targetImports": false,
+  "targetExecution": false
+}

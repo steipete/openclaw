@@ -9,7 +9,7 @@ mode=$4
 [[ "$(node --version)" == v24.20.0 && "$(pnpm --version)" == 12.3.4 ]] || exit 66
 mkdir -p "$evidence_dir"
 cd "$target_dir"
-[[ "$(git rev-parse HEAD)" == 5520a73e9115be31d5f710da23e9bd93ecff291f ]] || exit 67
+[[ "$(git rev-parse HEAD)" == fae6778b125c51e1a3ca765b01d487b6d8300f80 ]] || exit 67
 git diff --quiet
 git diff --cached --quiet
 sha256sum --check "$lane_dir/source-before.sha256" > "$evidence_dir/source-before.log"

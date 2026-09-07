@@ -1,6 +1,6 @@
 {
-  "status": "REBOUND_PENDING_5520_COMPOSITION_FOR_INDEPENDENT_REVIEW_NO_EXECUTION",
-  "source": "5520a73e9115be31d5f710da23e9bd93ecff291f",
+  "status": "MINIMAL_FAE_REBIND_FOR_INDEPENDENT_REVIEW_NO_EXECUTION",
+  "source": "fae6778b125c51e1a3ca765b01d487b6d8300f80",
   "candidateCommit": null,
   "node": "24.20.0",
   "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
@@ -10,14 +10,14 @@
     "mode": "green"
   },
   "files": {
-    "run.sh": "ec8a8c2f1f6b31778e218e6984331441c1725a3e513ad388e32d7a7266c1c83b",
-    "proof.mjs": "7fda16d94e8d85b8fee39294919bded1e5fe02e06402eaf155ea571953538112",
+    "run.sh": "2201273e7c783076367f552cf9cb0276155b909db3edd5322f75e16fee991a02",
+    "proof.mjs": "3ea34d38a2ca63913de6eb75f4c6cb31c122d8ef42f904b5b3772e70b51872e0",
     "candidate.patch": "87eb9aca021d99acf3fb192b1efe9ff2dd3f83f56ddeca659e7857a6d59997c1",
-    "source-before.sha256": "d07e7485dfc19aa01916923ba01295644ff6045628961c0874d652c87e4e9687",
-    "source-after.sha256": "836ec2e6a75309bd3acb4fed39c15cc1e22bb1c199da6c86880038901bbcf910"
+    "source-before.sha256": "617c0ebd211422839a23ee772b3c4b52cd5bdaef8064e7b7969a1f6d30bb1ab1",
+    "source-after.sha256": "8fc230832c55e2b1c4a5a898cf63e07dc62b66bbfe8926568f6d8f19755c2ec5"
   },
-  "sourceHashesBefore": 61,
-  "sourceHashesAfter": 62,
+  "sourceHashesBefore": 66,
+  "sourceHashesAfter": 67,
   "processOwner": "pinned repository runManagedCommand/hasUnjoinedWork; strict process+pipe join for package/install/git/CLI; all owned inputs retained on unjoined outcome",
   "output": "exact text stderr block+newline and empty stdout; complete semantic JSON stdout with empty stderr; no warning allowlist/suppression override",
   "cases": {
@@ -43,10 +43,17 @@
   "aggregateBudget": "45 minutes under existing 60-minute proof job; each managed command uses remaining budget",
   "postinstall": "normal postinstall prunes existing dist and removes pending lifecycle marker before auxiliary file creation; no lifecycle bypass",
   "candidateComposition": {
-    "preservedParent": "7594dc9e58a076f60964b1af6d5a1b24754d887e",
-    "mergeHead": "5520a73e9115be31d5f710da23e9bd93ecff291f",
+    "preservedParent": "c4e0b443f45a6600998c94e7bbf098ea2beb3ade",
+    "mergeHead": "fae6778b125c51e1a3ca765b01d487b6d8300f80",
     "patchSha256": "87eb9aca021d99acf3fb192b1efe9ff2dd3f83f56ddeca659e7857a6d59997c1"
   },
-  "preservedPacketSha256": "bf8aecbc064f1b3a8e11cf9fbc9f72c69835279b59e69a2ab3e5eb38c06a5f2a",
-  "dependencyVersion": "@openclaw/fs-safe@0.8.3"
+  "preservedPacketSha256": "b9811bf9cd9dcd6a7e6fa62a26057f93c1db6d72a59ce52ac975e6ec9a91e7c9",
+  "dependencyVersion": "@openclaw/fs-safe@0.8.5",
+  "previousRun": {
+    "run": 34130454281,
+    "job": 101769818985,
+    "result": "FAILURE before intended verifier path; no accepted cases"
+  },
+  "correction": "Remove only forbidden entries.main.default:true; retain explicit ownership, sole main, model/runtime/paths and every behavior assertion. Save raw synthetic config before each CLI invocation; bind five schema/owner files.",
+  "rebind": "Only baseline/candidate provenance, four baseline/candidate source hashes and installed fs-safe version change; file-open dependency hashes and all behavior/assertions unchanged."
 }

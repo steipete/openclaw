@@ -1,0 +1,11 @@
+--- historical/extensions/feishu/src/delivery-trace.test.ts
++++ corrected/extensions/feishu/src/delivery-trace.test.ts
+@@ -864,7 +864,7 @@
+       proof.release();
+       await expect(delivery).resolves.toMatchObject({
+         visibleReplySent: true,
+-        content: "Open the result.",
++        content: "Open the result.\n\n- Result: https://example.com/result",
+       });
+       await proof.idle();
+       const events = proof.recorder.finish();

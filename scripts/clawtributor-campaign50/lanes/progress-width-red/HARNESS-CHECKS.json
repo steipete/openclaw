@@ -1,0 +1,45 @@
+{
+  "driverSha256": "de39d9df65250db5e0584d5f59c40186428136e7c688c2731949c2ee1ce986c8",
+  "targetImports": false,
+  "targetExecution": false,
+  "checks": [
+    {
+      "kind": "wizard",
+      "inputSha256": "82a9fb7438e277a0b12b68ba0fe11d32987dd6c779461f309f9d5ad8a1b60189",
+      "count": 1
+    },
+    {
+      "kind": "wizard",
+      "inputSha256": "22c287b6bc8eede09dfcc6e8167ea4a2cc1c1279c06a73b118513168781ee8a3",
+      "count": 1
+    },
+    {
+      "kind": "wizard",
+      "inputSha256": "5341d78ca43d8ed7ed22f7699679e227b35e3d3634207cd5fd3412871e3709c4",
+      "count": 0
+    },
+    {
+      "kind": "wizard",
+      "inputSha256": "a1d6743a0b41affddf4fa5f37b427186a8e4a937bd970266de215fd8133686f6",
+      "count": 1
+    },
+    {
+      "kind": "wizard",
+      "inputSha256": "be73028bf1403501fb744f423d95efbe2f04bce3c1cfef1707c787fd324e1260",
+      "count": 0
+    },
+    {
+      "kind": "core",
+      "inputSha256": "07c2f2fc638ba45c9fd2e9d4a559902135f40a3178f2847239d9452fc46067de",
+      "count": 1
+    },
+    {
+      "kind": "core",
+      "inputSha256": "f1e84507cbe671ec09b5b3ddd98de69efdf49c183bb51d37bccb7ddb6fac4587",
+      "count": 0
+    },
+    {
+      "cancellation": "first signal interrupts; repeated signals during cleanup are latched without interruption"
+    }
+  ]
+}

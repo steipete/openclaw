@@ -50,10 +50,10 @@ const { runManagedCommand, hasUnjoinedWork } = await import(
   pathToFileURL(path.join(targetDir, "scripts/lib/managed-child-process.mts"))
 );
 const proof = {
-  source: "5520a73e9115be31d5f710da23e9bd93ecff291f",
+  source: "fae6778b125c51e1a3ca765b01d487b6d8300f80",
   candidate: {
-    preservedParent: "7594dc9e58a076f60964b1af6d5a1b24754d887e",
-    base: "5520a73e9115be31d5f710da23e9bd93ecff291f",
+    preservedParent: "c4e0b443f45a6600998c94e7bbf098ea2beb3ade",
+    base: "fae6778b125c51e1a3ca765b01d487b6d8300f80",
     patchSha256: "87eb9aca021d99acf3fb192b1efe9ff2dd3f83f56ddeca659e7857a6d59997c1",
   },
   processes: [],
@@ -250,7 +250,7 @@ async function installedPhase(tarball, phase) {
   );
   assert.ok(fs.realpathSync(fsSafeRoot).startsWith(prefix + path.sep));
   const fsSafePackage = JSON.parse(fs.readFileSync(path.join(fsSafeRoot, "package.json"), "utf8"));
-  assert.equal(fsSafePackage.version, "0.8.3");
+  assert.equal(fsSafePackage.version, "0.8.5");
   const dependencyFiles = {
     "root-file.js": "cc920bdeb8fd900ad0acb1324f1368f5f0e0fcf7cb1edf3182bae5d74bb95f57",
     "pinned-open.js": "e2c8a146aa5145f4d0accae495676dda94b095a0a8947552ceb52f3fc5c755eb",
@@ -325,7 +325,7 @@ async function installedPhase(tarball, phase) {
     const config = {
       agents: {
         ownership: "explicit",
-        entries: { main: { default: true, workspace, agentDir } },
+        entries: { main: { workspace, agentDir } },
         defaults: {
           model: "openai/gpt-5.5",
           models: { "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } } },
@@ -334,6 +334,7 @@ async function installedPhase(tarball, phase) {
     };
     const configBytes = JSON.stringify(config, null, 2) + "\n";
     fs.writeFileSync(configPath, configBytes, { mode: 0o600 });
+    save(`${phase}/${name}.config.json`, configBytes);
     assert.throws(
       () => fs.readFileSync(unreadable),
       (error) => error.code === "EACCES",

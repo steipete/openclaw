@@ -1,0 +1,98 @@
+[test] starting test/vitest/vitest.extension-feishu.config.ts
+
+ RUN  v5.0.0 /home/runner/work/openclaw/openclaw/target
+
+[vitest-workers] prepared 887a7c6b7c7b in 9598ms (8593 inputs, 4300 outputs)
+[vitest] still running with no output for 30000ms.
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:441 > feishu delivery trace goldens > updates the accepted card without a duplicate send when its message receipt is absent
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:467 > feishu delivery trace goldens > preserves caption visibility when outbound voice-looking media resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:467 > feishu delivery trace goldens > preserves caption visibility when dispatcher voice-looking media resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:545 > feishu delivery trace goldens > does not repeat visible TTS text when inferred native voice resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:545 > feishu delivery trace goldens > does not repeat visible TTS text when explicit voice intent resolves to a PDF
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records streaming-happy
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records final-only
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records cancel-mid-stream
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records rate-limit-during-preview
+ ↓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:595 > feishu delivery trace goldens > records overflow-pagination
+ × |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:786 > Feishu combined-owner coalescing proof > omits the stale middle wire snapshot while joining finalization 1001ms
+   → STALE_MIDDLE_WIRE_SNAPSHOT: expected [ { …(3) }, { …(3) }, { …(3) } ] to not deep equally contain ObjectContaining{…}
+ ✓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:819 > Feishu combined-owner coalescing proof > retains the latest partial when startup and idle overlap 408ms
+ × |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:842 > Feishu combined-owner coalescing proof > joins the held preview before replacing it with controls 65ms
+   → expected [ 'cleanup-idle', 'delivery', 'start' ] to deeply equal [ 'cleanup-idle', 'delivery', …(2) ]
+ ✓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:890 > Feishu combined-owner coalescing proof > records a failed preview and settles the successful final 60ms
+ ✓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:914 > Feishu combined-owner coalescing proof > preserves accepted content when final finalization fails 712ms
+ ✓ |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:914 > Feishu combined-owner coalescing proof > preserves accepted content when settings finalization fails 113ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:786 > Feishu combined-owner coalescing proof > omits the stale middle wire snapshot while joining finalization
+AssertionError: STALE_MIDDLE_WIRE_SNAPSHOT: expected [ { …(3) }, { …(3) }, { …(3) } ] to not deep equally contain ObjectContaining{…}
+
+- Expected:
+ObjectContaining {
+  "content": "First complete snapshot with ordinary text. Middle snapshot that becomes stale.",
+}
+
++ Received:
+[
+  {
+    "content": "First complete snapshot with ordinary text.",
+    "sequence": 2,
+    "uuid": "s_card-1_2",
+  },
+  {
+    "content": "First complete snapshot with ordinary text. Middle snapshot that becomes stale.",
+    "sequence": 3,
+    "uuid": "s_card-1_3",
+  },
+  {
+    "content": "First complete snapshot with ordinary text. Middle snapshot that becomes stale. Latest complete answer retained.",
+    "sequence": 4,
+    "uuid": "s_card-1_4",
+  },
+]
+
+ ❯ extensions/feishu/src/delivery-trace.test.ts:810:71
+    808|       expect(proof.contentBodies().at(-1)).toMatchObject({ content: CO…
+    809|       // This assertion must fail on the unchanged dispatcher for the …
+    810|       expect(proof.contentBodies(), "STALE_MIDDLE_WIRE_SNAPSHOT").not.…
+       |                                                                       ^
+    811|         expect.objectContaining({ content: COALESCING_MIDDLE }),
+    812|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |extension-feishu| extensions/feishu/src/delivery-trace.test.ts:842 > Feishu combined-owner coalescing proof > joins the held preview before replacing it with controls
+AssertionError: expected [ 'cleanup-idle', 'delivery', 'start' ] to deeply equal [ 'cleanup-idle', 'delivery', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "cleanup-idle",
+    "delivery",
+-   "idle",
+    "start",
+  ]
+
+ ❯ Object.cleanup extensions/feishu/src/delivery-trace.test.ts:764:54
+    762|             ? ["start", "delivery", "idle", "cleanup-idle"]
+    763|             : ["start", "delivery", "finalization", "idle", "cleanup-i…
+    764|       expect(outcomes.map((row) => row.name).sort()).toEqual(names.sor…
+       |                                                      ^
+    765|       for (const row of outcomes) {
+    766|         const rejected =
+ ❯ extensions/feishu/src/delivery-trace.test.ts:886:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed | 10 skipped (16)
+   Start at  18:24:26
+   Duration  40.71s (transform 77%, tests 12%, import 10%, worker 2%)
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/feishu-coalescing-103928-baseline/tests.json
+[vitest-workers] verifying completed generation before cleanup
+[test] failed 1 Vitest shard in 43.22s
+[test] FAILED (exit 1)
