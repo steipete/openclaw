@@ -1,12 +1,12 @@
 [
   {
-    "id": "tui-composed-static",
-    "directory": "tui-composed-static",
-    "runner": "ubuntu-24.04",
-    "source": "d3a596d97eca4b66a907d936adc5fc7a9b73a9b4",
-    "node": "24.20.0",
+    "source": "c86263abc9c816466eb1dd7abc57bacd25cefedd",
+    "node": "24.19.0",
     "pnpm": "12.3.4",
-    "mode": "candidate",
-    "variant": "types-helper-lint"
+    "mode": "green",
+    "variant": "tui-helper-inventory",
+    "id": "tui-helper-inventory",
+    "directory": "tui-helper-inventory",
+    "runner": "ubuntu-24.04"
   }
 ]
