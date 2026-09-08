@@ -181,14 +181,15 @@ def main():
                 Path(case_env['APPDATA']).mkdir(parents=True);Path(case_env['LOCALAPPDATA']).mkdir(parents=True)
             else:(case_home/'.bashrc').write_text('# retain unrelated profile content\n')
             bin_dir=case_home/'.local/bin';bin_dir.mkdir(parents=True)
-            sibling=bin_dir/'unrelated.txt';sibling.write_text('retain-shared-bin\n');sibling_before=digest(sibling)
+            sibling=bin_dir/'unrelated.txt';sibling.write_bytes(b'retain-shared-bin\n');sibling_before=digest(sibling)
             if os.name=='nt':
                 # The real producer may add this exact task-owned path to the disposable guest user PATH.
-                windows_path_added=str(bin_dir)
+                windows_path_added=str(case_home)+r'\.local\\bin'
                 windows_path_receipt=owned/'user-path-before.json'
                 cleanup_env=case_env
-                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','capture','-Entry',bin_dir,'-Receipt',windows_path_receipt],owned,case_env,'windows-path-capture')
+                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','capture','-Entry',windows_path_added,'-Receipt',windows_path_receipt,'-Diagnostic',evidence/'windows-path-state.json'],owned,case_env,'windows-path-capture')
                 shutil.copyfile(windows_path_receipt,evidence/'windows-path-before.json')
+                assert json.loads(windows_path_receipt.read_text(encoding='utf-8-sig'))['entry']==windows_path_added
                 run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'owner-windows.ps1','-LaneDir',LANE,'-RepoDir',repo,'-SourceSha',SOURCE],repo,case_env,'windows-owner')
                 wrapper=bin_dir/'openclaw.cmd'
             else:
@@ -248,7 +249,7 @@ def main():
         path_restored = windows_path_added is None
         if windows_path_added and not collector.pending:
             try:
-                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','restore','-Entry',windows_path_added,'-Receipt',windows_path_receipt],owned,cleanup_env,'windows-path-restore')
+                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','restore','-Entry',windows_path_added,'-Receipt',windows_path_receipt,'-Diagnostic',evidence/'windows-path-state.json'],owned,cleanup_env,'windows-path-restore')
                 path_restored = True
             except BaseException as cleanup_error:
                 error = (error or '') + '; PATH restore: ' + str(cleanup_error)

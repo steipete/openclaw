@@ -1,0 +1,33 @@
+{
+  "checks": [
+    {
+      "path": "driver.py",
+      "sha256": "d50d8978c0653485141ae4c77aff1019bd792a0dcae821ab1847178cd8333ecb",
+      "check": "Python AST only",
+      "passed": true
+    },
+    {
+      "path": "check-artifact.py",
+      "sha256": "856b4f3ce2a9b7521cac6b5acd2384f9c8a18545066055f5d7c7ce1ac3e3b67f",
+      "check": "Python AST only",
+      "passed": true
+    },
+    {
+      "check": "reviewed producer and helper exact doubled-separator child literal; no path normalization",
+      "passed": true
+    },
+    {
+      "check": "explicit marker bytes equal all three accepted Linux sibling marker hashes; old Windows CRLF differs",
+      "linuxSha256": "493846117dde91d2ff898711ddacb74a07c646a4d4b6c43944e8607cb7060fa8",
+      "oldWindowsSha256": "4cea618721ad5a9232b1c40a77bf5735f5c54f6191b0bcc308e0ec71559e27c2",
+      "passed": true
+    },
+    {
+      "check": "four exact inert official API/tool-source copies match hashes and lengths",
+      "passed": true
+    }
+  ],
+  "powershellParsingOrExecution": false,
+  "targetOrControlsExecuted": false,
+  "installerOrRegistryMutation": false
+}

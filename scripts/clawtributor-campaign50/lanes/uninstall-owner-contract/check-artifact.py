@@ -147,8 +147,36 @@ assert resolver_row['argv'][3:]==[native['name'],native['version']]
 assert version_row['argv']==[str(package_base/path_type(native['binary'])),'--version']
 assert output('pnpm-version').decode().strip()==pnpm['version']
 if host=='windows':
-    assert load('windows-path-before.json')['entry']==cleanup['windowsPathAdded']
-    restored=json.loads(output('windows-path-restore'));assert restored['restored'] and restored['exactOriginal']
+    before=load('windows-path-before.json');state=load('windows-path-state.json')
+    entry=str(PureWindowsPath(cases[0]['checkout']).parent/'home')+'\\.local\\\\bin'
+    assert before['entry']==cleanup['windowsPathAdded']==state['entry']==entry
+    original=before['beforeState']
+    assert original['supported'] is True and before['before']==original['expanded']
+    if original['present']:
+        assert original['kind'] in ['String','ExpandString']
+        assert isinstance(original['raw'],str) and isinstance(original['expanded'],str)
+        assert len(original['raw'])<=32767 and len(original['expanded'])<=32767
+        if original['kind']=='String':assert original['raw']==original['expanded']
+    else:
+        assert original['present'] is False
+        assert original['kind'] is None and original['raw'] is None and original['expanded'] is None
+    expected_text=entry if before['before'] is None or not before['before'].strip() else before['before']+';'+entry
+    expected_state={'present':True,'supported':True,'kind':'String','raw':expected_text,'expanded':expected_text}
+    assert state['phase']=='restored' and state['exactOriginal'] is True
+    assert state['original']==state['restored']==original
+    assert state['expected']==state['current']==expected_state
+    assert before['runtime']==state['runtime'] and state['runtime']['powershell']==tools['powershell']
+    assert re.fullmatch(r'\d+\.\d+\.\d+(?:\.\d+)?',state['runtime']['runtimeVersion'])
+    assert state['runtime']['framework'].startswith('.NET ')
+    capture=[row for row in rows if row['name'].endswith('-windows-path-capture')]
+    restore=[row for row in rows if row['name'].endswith('-windows-path-restore')]
+    assert len(capture)==len(restore)==1
+    for row in [*capture,*restore]:
+        assert '-Diagnostic' in row['argv']
+        assert PureWindowsPath(row['argv'][row['argv'].index('-Diagnostic')+1]).name=='windows-path-state.json'
+    assert restore[0]['argv'][restore[0]['argv'].index('-Entry')+1]==entry
+    restored=json.loads(output('windows-path-restore'))
+    assert restored=={'entry':entry,'restored':True,'exactOriginal':True,'rawValueKindAndPresenceRestored':True}
 print(json.dumps({'passed':True,'host':host,'cases':expected,'joinedChildren':len(rows),
                   'actualInstallerProducers':True,'syntheticTargets':True,'fullOpenClawInstallProof':False,
                   'wrongGlobalOwnerLeavesGitPrefixLaunchers':True,'correctOwnerRemovalAndPreservation':True,'processContainmentScope':'inherited foreground command group/job; no generic daemon/detach claim',

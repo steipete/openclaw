@@ -1,6 +1,6 @@
 {
-  "commit": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
-  "priorCommit": "d08ba196072a37a0e28774859f64b37271d541f1",
+  "commit": "df8f924aa7e0ce974a4222547d52888a8faa15af",
+  "priorCommit": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
   "files": [
     {
       "path": ".github/workflows/clawtributor-campaign50-proof.yml",

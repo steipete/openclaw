@@ -1,0 +1,204 @@
+--- a/path-state.ps1
++++ b/path-state.ps1
+@@ -1,25 +1,78 @@
+ param(
+   [Parameter(Mandatory=$true)][ValidateSet('capture','restore')][string]$Operation,
+   [Parameter(Mandatory=$true)][string]$Entry,
+-  [Parameter(Mandatory=$true)][string]$Receipt
++  [Parameter(Mandatory=$true)][string]$Receipt,
++  [Parameter(Mandatory=$true)][string]$Diagnostic
+ )
+ $ErrorActionPreference = 'Stop'
+ if (-not $IsWindows -or $env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
+   throw 'User PATH fixture is confined to the admitted disposable hosted Windows guest'
+ }
+-$current = [Environment]::GetEnvironmentVariable('Path','User')
+-if ($Operation -eq 'capture') {
+-  if (@($current -split ';' | Where-Object { $_ -ieq $Entry }).Count) { throw 'Fresh fixture path already existed in user PATH' }
+-  @{ before=$current; entry=$Entry } | ConvertTo-Json | Set-Content -LiteralPath $Receipt -Encoding utf8
+-  Write-Output '127254_USER_PATH_CAPTURED'
+-  exit 0
++# Exact spelling produced by the pinned Install-OpenClawFromGit, including its doubled separator.
++$producerEntry = Join-Path $env:USERPROFILE '.local\\bin'
++if ($Entry -cne $producerEntry) {
++  throw 'PATH fixture directory differs from the pinned Git producer destination'
+ }
+-$old = Get-Content -LiteralPath $Receipt -Raw | ConvertFrom-Json
+-if ($old.entry -cne $Entry) { throw 'User PATH receipt entry mismatch' }
+-$expected = if ([string]::IsNullOrWhiteSpace($old.before)) { $Entry } else { "$($old.before);$Entry" }
+-if ($current -cne $expected) {
+-  throw 'Guest user PATH changed beyond the real producer addition; preserve it and retain fixture'
++$runtime = @{
++  powershell=$PSVersionTable.PSVersion.ToString()
++  runtimeVersion=[Environment]::Version.ToString()
++  framework=[System.Runtime.InteropServices.RuntimeInformation]::FrameworkDescription
+ }
+-[Environment]::SetEnvironmentVariable('Path',$old.before,'User')
+-if ([Environment]::GetEnvironmentVariable('Path','User') -cne $old.before) { throw 'Guest PATH restoration was not observed' }
+-@{ entry=$Entry; restored=$true; exactOriginal=$true } | ConvertTo-Json
++$key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', ($Operation -eq 'restore'))
++if ($null -eq $key) { throw 'Existing guest user Environment key is required' }
++function Read-PathState {
++  $present = @($key.GetValueNames()) -icontains 'Path'
++  if (-not $present) { return @{ present=$false; supported=$true; kind=$null; raw=$null; expanded=$null } }
++  $kind = $key.GetValueKind('Path').ToString()
++  if ($kind -notin @('String','ExpandString')) {
++    return @{ present=$true; supported=$false; kind=$kind; raw=$null; expanded=$null }
++  }
++  $raw = $key.GetValue('Path', $null, [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
++  $expanded = [Environment]::GetEnvironmentVariable('Path','User')
++  if ($raw -isnot [string] -or $expanded -isnot [string] -or $raw.Length -gt 32767 -or $expanded.Length -gt 32767) {
++    return @{ present=$true; supported=$false; kind=$kind; raw=$null; expanded=$null }
++  }
++  return @{ present=$true; supported=$true; kind=$kind; raw=$raw; expanded=$expanded }
++}
++function Same-PathState($Left, $Right) {
++  return $Left.present -eq $Right.present -and $Left.supported -eq $Right.supported -and $Left.kind -ceq $Right.kind -and
++    $Left.raw -ceq $Right.raw -and $Left.expanded -ceq $Right.expanded
++}
++try {
++  $current = Read-PathState
++  if ($Operation -eq 'capture') {
++    if (-not $current.supported) { throw 'Guest user PATH is not a bounded supported string value' }
++    if (@($current.expanded -split ';' | Where-Object { $_ -ieq $Entry }).Count) {
++      throw 'Fresh fixture path already existed in user PATH'
++    }
++    @{ before=$current.expanded; beforeState=$current; entry=$Entry; runtime=$runtime } |
++      ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Receipt -Encoding utf8
++    @{ phase='captured'; original=$current; entry=$Entry; runtime=$runtime } |
++      ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Diagnostic -Encoding utf8
++    Write-Output '127254_USER_PATH_CAPTURED'
++    exit 0
++  }
++  $old = Get-Content -LiteralPath $Receipt -Raw | ConvertFrom-Json
++  if ($old.entry -cne $Entry) { throw 'User PATH receipt entry mismatch' }
++  $expectedText = if ([string]::IsNullOrWhiteSpace($old.before)) { $Entry } else { "$($old.before);$Entry" }
++  $expected = @{ present=$true; supported=$true; kind='String'; raw=$expectedText; expanded=$expectedText }
++  $pathFacts = @{ phase='restore-check'; original=$old.beforeState; current=$current; expected=$expected; entry=$Entry; runtime=$runtime }
++  $pathFacts | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Diagnostic -Encoding utf8
++  if (-not (Same-PathState $current $expected)) {
++    throw 'Guest user PATH differs from the exact producer append/type; preserve it and retain fixture'
++  }
++  if ($old.beforeState.present) {
++    $key.SetValue('Path', $old.beforeState.raw, [Microsoft.Win32.RegistryValueKind]$old.beforeState.kind)
++  } else {
++    $key.DeleteValue('Path', $true)
++  }
++  $restored = Read-PathState
++  $pathFacts.phase = 'restored'
++  $pathFacts.restored = $restored
++  $pathFacts.exactOriginal = Same-PathState $restored $old.beforeState
++  $pathFacts | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Diagnostic -Encoding utf8
++  if (-not $pathFacts.exactOriginal) { throw 'Original guest PATH value/type/presence restoration was not observed' }
++  @{ entry=$Entry; restored=$true; exactOriginal=$true; rawValueKindAndPresenceRestored=$true } | ConvertTo-Json
++} finally {
++  $key.Dispose()
++}
+--- a/driver.py
++++ b/driver.py
+@@ -181,14 +181,15 @@
+                 Path(case_env['APPDATA']).mkdir(parents=True);Path(case_env['LOCALAPPDATA']).mkdir(parents=True)
+             else:(case_home/'.bashrc').write_text('# retain unrelated profile content\n')
+             bin_dir=case_home/'.local/bin';bin_dir.mkdir(parents=True)
+-            sibling=bin_dir/'unrelated.txt';sibling.write_text('retain-shared-bin\n');sibling_before=digest(sibling)
++            sibling=bin_dir/'unrelated.txt';sibling.write_bytes(b'retain-shared-bin\n');sibling_before=digest(sibling)
+             if os.name=='nt':
+                 # The real producer may add this exact task-owned path to the disposable guest user PATH.
+-                windows_path_added=str(bin_dir)
++                windows_path_added=str(case_home)+r'\.local\\bin'
+                 windows_path_receipt=owned/'user-path-before.json'
+                 cleanup_env=case_env
+-                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','capture','-Entry',bin_dir,'-Receipt',windows_path_receipt],owned,case_env,'windows-path-capture')
++                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','capture','-Entry',windows_path_added,'-Receipt',windows_path_receipt,'-Diagnostic',evidence/'windows-path-state.json'],owned,case_env,'windows-path-capture')
+                 shutil.copyfile(windows_path_receipt,evidence/'windows-path-before.json')
++                assert json.loads(windows_path_receipt.read_text(encoding='utf-8-sig'))['entry']==windows_path_added
+                 run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'owner-windows.ps1','-LaneDir',LANE,'-RepoDir',repo,'-SourceSha',SOURCE],repo,case_env,'windows-owner')
+                 wrapper=bin_dir/'openclaw.cmd'
+             else:
+@@ -248,7 +249,7 @@
+         path_restored = windows_path_added is None
+         if windows_path_added and not collector.pending:
+             try:
+-                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','restore','-Entry',windows_path_added,'-Receipt',windows_path_receipt],owned,cleanup_env,'windows-path-restore')
++                run([pwsh,'-NoProfile','-NonInteractive','-File',LANE/'path-state.ps1','-Operation','restore','-Entry',windows_path_added,'-Receipt',windows_path_receipt,'-Diagnostic',evidence/'windows-path-state.json'],owned,cleanup_env,'windows-path-restore')
+                 path_restored = True
+             except BaseException as cleanup_error:
+                 error = (error or '') + '; PATH restore: ' + str(cleanup_error)
+--- a/check-artifact.py
++++ b/check-artifact.py
+@@ -147,8 +147,36 @@
+ assert version_row['argv']==[str(package_base/path_type(native['binary'])),'--version']
+ assert output('pnpm-version').decode().strip()==pnpm['version']
+ if host=='windows':
+-    assert load('windows-path-before.json')['entry']==cleanup['windowsPathAdded']
+-    restored=json.loads(output('windows-path-restore'));assert restored['restored'] and restored['exactOriginal']
++    before=load('windows-path-before.json');state=load('windows-path-state.json')
++    entry=str(PureWindowsPath(cases[0]['checkout']).parent/'home')+'\\.local\\\\bin'
++    assert before['entry']==cleanup['windowsPathAdded']==state['entry']==entry
++    original=before['beforeState']
++    assert original['supported'] is True and before['before']==original['expanded']
++    if original['present']:
++        assert original['kind'] in ['String','ExpandString']
++        assert isinstance(original['raw'],str) and isinstance(original['expanded'],str)
++        assert len(original['raw'])<=32767 and len(original['expanded'])<=32767
++        if original['kind']=='String':assert original['raw']==original['expanded']
++    else:
++        assert original['present'] is False
++        assert original['kind'] is None and original['raw'] is None and original['expanded'] is None
++    expected_text=entry if before['before'] is None or not before['before'].strip() else before['before']+';'+entry
++    expected_state={'present':True,'supported':True,'kind':'String','raw':expected_text,'expanded':expected_text}
++    assert state['phase']=='restored' and state['exactOriginal'] is True
++    assert state['original']==state['restored']==original
++    assert state['expected']==state['current']==expected_state
++    assert before['runtime']==state['runtime'] and state['runtime']['powershell']==tools['powershell']
++    assert re.fullmatch(r'\d+\.\d+\.\d+(?:\.\d+)?',state['runtime']['runtimeVersion'])
++    assert state['runtime']['framework'].startswith('.NET ')
++    capture=[row for row in rows if row['name'].endswith('-windows-path-capture')]
++    restore=[row for row in rows if row['name'].endswith('-windows-path-restore')]
++    assert len(capture)==len(restore)==1
++    for row in [*capture,*restore]:
++        assert '-Diagnostic' in row['argv']
++        assert PureWindowsPath(row['argv'][row['argv'].index('-Diagnostic')+1]).name=='windows-path-state.json'
++    assert restore[0]['argv'][restore[0]['argv'].index('-Entry')+1]==entry
++    restored=json.loads(output('windows-path-restore'))
++    assert restored=={'entry':entry,'restored':True,'exactOriginal':True,'rawValueKindAndPresenceRestored':True}
+ print(json.dumps({'passed':True,'host':host,'cases':expected,'joinedChildren':len(rows),
+                   'actualInstallerProducers':True,'syntheticTargets':True,'fullOpenClawInstallProof':False,
+                   'wrongGlobalOwnerLeavesGitPrefixLaunchers':True,'correctOwnerRemovalAndPreservation':True,'processContainmentScope':'inherited foreground command group/job; no generic daemon/detach claim',
+--- a/matrix-proposal.json
++++ b/matrix-proposal.json
+@@ -1,14 +1,4 @@
+ [
+-  {
+-    "id": "uninstall-owner-posix",
+-    "directory": "uninstall-owner-contract",
+-    "runner": "ubuntu-24.04",
+-    "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
+-    "node": "24.20.0",
+-    "pnpm": "12.3.4",
+-    "mode": "baseline",
+-    "variant": "installer-ownership"
+-  },
+   {
+     "id": "uninstall-owner-windows",
+     "directory": "uninstall-owner-contract",
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # #127254 executable ownership-proof candidate
+ 
+-This successor packet is FILE-ONLY and has not executed. Its predecessor139b ran as docs80 and failed before owner cases on both platforms; see LAYOUT-PROPOSAL.md for exact completed scope and limits. Root must grant any new execution after independent executable/tool/backend/controller review. Source/preservation proposal95a17445 and canonical parser acceptance are separate completed evidence. Do not infer execution authorization from a local packet's stage field.
++This successor packet is FILE-ONLY and has not executed. WINDOWS-RESTORATION.md owns the current Windows-only continuation and docs82 actual qualification; earlier layout/backend sections are retained design history. Its predecessor139b ran as docs80 and failed before owner cases on both platforms; see LAYOUT-PROPOSAL.md for exact completed scope and limits. Root must grant any new execution after independent executable/tool/backend/controller review. Source/preservation proposal95a17445 and canonical parser acceptance are separate completed evidence. Do not infer execution authorization from a local packet's stage field.
+ 
+ The invariant is installation ownership: real global npm removal must remove its package control but leave independently owned Git/prefix launchers callable; removing the actual recorded owner must eliminate that launcher while preserving the named synthetic data and shared tools. The credible failure is following the existing uninstall guide's universal npm instruction, or deleting a checkout/prefix while leaving its launcher or deleting unrelated files.
+ 
+--- a/BACKEND-DESIGN.md
++++ b/BACKEND-DESIGN.md
+@@ -1,6 +1,6 @@
+ # #127254 exact backend and execution gate proposal
+ 
+-This successor is file-only authoring, not a dispatch grant. The historical design below predates docs80; LAYOUT-PROPOSAL.md records that failed actual run and the current correction. No owner case ran, while Linux inert controls and four admission commands did run. The source/preservation proposal is independently accepted at95a17445 after the canonical parser fixed the old anchors. No installer owner, package-removal case, registry write or Git fixture commit ran in docs80. Windows failed in its outer command lookup; the Linux hosted admission stopped before owner cases.
++This successor is file-only authoring, not a dispatch grant. WINDOWS-RESTORATION.md supersedes historical pending/actual-state statements below: docs82 Linux is accepted, Windows restoration failed, and only Windows is proposed next. The historical design below predates docs80; LAYOUT-PROPOSAL.md records that failed actual run and the current correction. No owner case ran, while Linux inert controls and four admission commands did run. The source/preservation proposal is independently accepted at95a17445 after the canonical parser fixed the old anchors. No installer owner, package-removal case, registry write or Git fixture commit ran in docs80. Windows failed in its outer command lookup; the Linux hosted admission stopped before owner cases.
+ 
+ ## Existing route personally inspected
+ 

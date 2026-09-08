@@ -1,0 +1,29 @@
+{
+  "scope": "official API source contract; not exact hosted dotnet binary identity or actual registry state",
+  "sources": [
+    {
+      "path": "powershell-global.json.txt",
+      "url": "https://raw.githubusercontent.com/PowerShell/PowerShell/v7.6.5/global.json",
+      "bytes": 45,
+      "sha256": "9fd15310b34b66edc15b505efe7b66c6ff984af79d831aa7d9a7d15ad9e20003"
+    },
+    {
+      "path": "dotnet-environment-win32.cs.txt",
+      "url": "https://raw.githubusercontent.com/dotnet/runtime/v10.0.0/src/libraries/System.Private.CoreLib/src/System/Environment.Win32.cs",
+      "bytes": 17891,
+      "sha256": "ebf32c314a4d8261f23bbdb41ecf05c15f0bfe448674619081a538df709d6e11"
+    },
+    {
+      "path": "dotnet-internal-registry-key.cs.txt",
+      "url": "https://raw.githubusercontent.com/dotnet/runtime/v10.0.0/src/libraries/System.Private.CoreLib/src/Internal/Win32/RegistryKey.cs",
+      "bytes": 19077,
+      "sha256": "ce5a0086c6a40a0fb677093ae50d747eff6a890ef817b8e711492b46ca24e164"
+    },
+    {
+      "path": "dotnet-public-registry-key.cs.txt",
+      "url": "https://raw.githubusercontent.com/dotnet/runtime/v10.0.0/src/libraries/Microsoft.Win32.Registry/src/Microsoft/Win32/RegistryKey.cs",
+      "bytes": 67836,
+      "sha256": "945a9bc7e20472aee334214776ca0f91129afd80f686a723156e432da856b1ec"
+    }
+  ]
+}

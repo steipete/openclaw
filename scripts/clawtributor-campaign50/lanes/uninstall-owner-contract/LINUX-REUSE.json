@@ -1,0 +1,29 @@
+{
+  "run": 34236357229,
+  "job": 102095025717,
+  "harness": "df8f924aa7e0ce974a4222547d52888a8faa15af",
+  "packet": "23c3e8042a648f8a3c44a2b62fe3daa418985a1e53cdbeed654c69701a99019f",
+  "actualCases": 4,
+  "joinedCommands": 49,
+  "originalActualAccepted": true,
+  "sourceDeltaReuseRequiresReview": true,
+  "changedLinuxMarkerOutput": "write_bytes emits exactly previously observed LF ASCII bytes",
+  "linuxDispatchProposed": false,
+  "references": [
+    {
+      "path": "verify-127254/ACTUAL-34236357229/OWNER-AUDIT.json",
+      "sha256": "fd0aa70efca9a43a88faed4820b56c5d0cb1538afa0ecd47d6cc39f2b8e20faa",
+      "bytes": 4217
+    },
+    {
+      "path": "verify-127254/ACTUAL-34236357229/LINUX-DATA-CHECKER.json",
+      "sha256": "241c4398ce607a947bbee4453dbafb679d6aa7f8d4b217de8d663e982b5f1de6",
+      "bytes": 518
+    },
+    {
+      "path": "verify-127254/ACTUAL-34236357229-QUALIFICATION.json",
+      "sha256": "dea6a22dad97e86c9b88dcc4f27d0632630e048f5dd186e08bb5fb40762f71d6",
+      "bytes": 3584
+    }
+  ]
+}

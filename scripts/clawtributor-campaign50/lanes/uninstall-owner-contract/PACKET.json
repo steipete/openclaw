@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-08T13:20:18.358421+00:00",
+  "at": "2026-09-08T14:49:10.284107+00:00",
   "stage": "frozen-executable-candidate",
   "pr": 127254,
   "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
@@ -30,12 +30,12 @@
   "files": [
     {
       "path": "BACKEND-DESIGN.md",
-      "sha256": "07e3409ee387cf24e0a6cbf5cb1e709c15650b037947faa3539764f8523c3f8f",
-      "bytes": 10198
+      "sha256": "4cb06b9dd75b3748f536737d78167752f73e53b1b5f7f5d7b1b94b6e14c39106",
+      "bytes": 10371
     },
     {
       "path": "CONTROLLER-PINS.json",
-      "sha256": "a2de526f681b250791f33425c0bb82778e789aa669c53162b2ffe1982a1f106b",
+      "sha256": "e02dbc164d4f45d9a93a46aca4f426d903473c6d209efa6f093b053ddade7c76",
       "bytes": 1082
     },
     {
@@ -54,9 +54,14 @@
       "bytes": 21100
     },
     {
+      "path": "LINUX-REUSE.json",
+      "sha256": "3e5fe14215ecc5ab4e6599a3db79458b10290b3dd8c3fb2322ba4ee3c881b834",
+      "bytes": 1015
+    },
+    {
       "path": "README.md",
-      "sha256": "a74cb71529da1bcc5b057986616ea67aa1b6ff1d499b60dcc9efd11b4cf65c41",
-      "bytes": 4175
+      "sha256": "e86f6911b39a6b47131b504fe86e905313122d2c1e0c8adc9a01e96dbe2b503c",
+      "bytes": 4335
     },
     {
       "path": "REPAIR-PROPOSAL.md",
@@ -84,6 +89,21 @@
       "bytes": 2567
     },
     {
+      "path": "WINDOWS-RESTORATION.md",
+      "sha256": "0420d1f164a9e9ad38a67622ffb2b8a64ae70e14e9c652443907d0849270f626",
+      "bytes": 7100
+    },
+    {
+      "path": "WINDOWS-RESTORATION.patch",
+      "sha256": "4c06a2b37dd3f59f380c6e95c64d12e525ab71d82b97ef251604cbd27e2460a4",
+      "bytes": 14913
+    },
+    {
+      "path": "WINDOWS-STATIC.json",
+      "sha256": "0e387bde86e9e8ce9dd353d5827b7e203e08ee74fabc7f6931f8c4fb1d5711d8",
+      "bytes": 1109
+    },
+    {
       "path": "bootstrap-linux.sh",
       "sha256": "a7ba02abd60bcb59c1d1008b6904f10d056a8e8538512199121c093dc6e3c4a0",
       "bytes": 1189
@@ -105,8 +125,8 @@
     },
     {
       "path": "check-artifact.py",
-      "sha256": "adf56003a265fc3e16822ac0a1676814cf4abb071063864dd402ddd825869b68",
-      "bytes": 11326
+      "sha256": "856b4f3ce2a9b7521cac6b5acd2384f9c8a18545066055f5d7c7ce1ac3e3b67f",
+      "bytes": 13308
     },
     {
       "path": "controller-workflow.patch",
@@ -115,8 +135,8 @@
     },
     {
       "path": "driver.py",
-      "sha256": "afd548e48561f500e379afc5b76f82a29a54c4e0914630ff21d38a1792431aaa",
-      "bytes": 17956
+      "sha256": "d50d8978c0653485141ae4c77aff1019bd792a0dcae821ab1847178cd8333ecb",
+      "bytes": 18202
     },
     {
       "path": "fixture/fixture-build.mjs",
@@ -175,8 +195,8 @@
     },
     {
       "path": "matrix-proposal.json",
-      "sha256": "86c71908aefb152d2cb27a712b827e2dd318e3cf8e66127e69f18dcac4b034c6",
-      "bytes": 571
+      "sha256": "38f10b9785eab89e6b43c16dd80c1fae95c382fdf996253dd8bd54dce3385d58",
+      "bytes": 288
     },
     {
       "path": "owned_cleanup.py",
@@ -194,9 +214,34 @@
       "bytes": 836
     },
     {
+      "path": "path-source/SOURCE-PINS.json",
+      "sha256": "65f41d14b1dc666deec861ecdcd49404315e146b4038018562763184bed575ef",
+      "bytes": 1321
+    },
+    {
+      "path": "path-source/dotnet-environment-win32.cs.txt",
+      "sha256": "ebf32c314a4d8261f23bbdb41ecf05c15f0bfe448674619081a538df709d6e11",
+      "bytes": 17891
+    },
+    {
+      "path": "path-source/dotnet-internal-registry-key.cs.txt",
+      "sha256": "ce5a0086c6a40a0fb677093ae50d747eff6a890ef817b8e711492b46ca24e164",
+      "bytes": 19077
+    },
+    {
+      "path": "path-source/dotnet-public-registry-key.cs.txt",
+      "sha256": "945a9bc7e20472aee334214776ca0f91129afd80f686a723156e432da856b1ec",
+      "bytes": 67836
+    },
+    {
+      "path": "path-source/powershell-global.json.txt",
+      "sha256": "9fd15310b34b66edc15b505efe7b66c6ff984af79d831aa7d9a7d15ad9e20003",
+      "bytes": 45
+    },
+    {
       "path": "path-state.ps1",
-      "sha256": "f81ac29adc7f6514bdb00b3e94ead4f5fc29ea07afb1c70797eebc472c326f12",
-      "bytes": 1437
+      "sha256": "a7a2fdf9c488163124f681573b25f64f3cb01c236a4d1b86cb5912beecf09852",
+      "bytes": 4381
     },
     {
       "path": "process_capture.py",
@@ -366,7 +411,7 @@
   ],
   "executed": false,
   "executionGrant": false,
-  "controllerCommit": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
+  "controllerCommit": "df8f924aa7e0ce974a4222547d52888a8faa15af",
   "actualCases": {
     "linux": [
       "global-control",
@@ -387,38 +432,36 @@
     "windows": 900
   },
   "remainingGates": [
-    "independent combined packet/controller reacceptance",
-    "normal full managed review and exact commit/publication gates",
-    "root execution grant for this exact combined wave",
-    "actual tool admission, owner outputs and cleanup qualification"
+    "independent Windows PATH owner/API/receipt/fixture delta review and Linux source-delta reuse",
+    "current-controller Windows-only composition and managed review",
+    "root grant for Windows-only execution",
+    "actual Windows owner/guard/raw-restoration/cleanup qualification"
   ],
-  "revision": 6,
-  "previousPacket": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/docs-refill-round4/127254-proof-repaired/PACKET.json",
-  "previousPacketSha256": "139b602f38e49196049ee78b5ed7d0252e49c224ad8b93a08f45cdc3279ed503",
+  "revision": 7,
+  "previousPacket": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/proof-checkout/scripts/clawtributor-campaign50/lanes/uninstall-owner-contract/PACKET.json",
+  "previousPacketSha256": "23c3e8042a648f8a3c44a2b62fe3daa418985a1e53cdbeed654c69701a99019f",
   "revisionReason": [
-    "Resolve pnpm native dependency through the archive-verified upstream resolver and declared package metadata; verify the exact selected native archive before any execution",
-    "Retain safe relative partial archive-member diagnostics and bind resolver/package/binary admissions in the independent artifact checker",
-    "Preserve docs80 failures and the unknown first missing member; no runtime, owner cases or Windows lookup changes",
-    "Compose independently accepted two-site Windows Python scalar resolution and rebind current published controller metadata; no tool/source/fixture/process-limit change"
+    "Bind the exact pinned Windows producer PATH entry spelling; require expected expanded append and REG_SZ before restoring original raw value/kind/presence",
+    "Retain before/current/expected/restored diagnostics plus actual runtime facts and exact independent checker joins",
+    "Write explicit synthetic marker LF bytes; preserve accepted Linux output and propose only the Windows row"
   ],
   "containmentLimit": "Inherited foreground tool/fixture group/job; no generic daemon or detach containment claim; no cgroup or privileged helper added",
   "changedInputs": [
     "BACKEND-DESIGN.md",
-    "CONTROLLER-PINS.json",
-    "LAYOUT-PROPOSAL.md",
-    "LAYOUT-STATIC.json",
-    "LAYOUT.patch",
+    "LINUX-REUSE.json",
     "README.md",
-    "bootstrap-windows.ps1",
+    "WINDOWS-RESTORATION.md",
+    "WINDOWS-RESTORATION.patch",
+    "WINDOWS-STATIC.json",
     "check-artifact.py",
     "driver.py",
-    "layout-source/SOURCE-PINS.json",
-    "layout-source/arborist-index.js.txt",
-    "layout-source/arborist-package.json.txt",
-    "layout-source/arborist-place-dep.js.txt",
-    "resolve-pnpm-native.mjs",
-    "run.ps1",
-    "tooling.py"
+    "matrix-proposal.json",
+    "path-source/SOURCE-PINS.json",
+    "path-source/dotnet-environment-win32.cs.txt",
+    "path-source/dotnet-internal-registry-key.cs.txt",
+    "path-source/dotnet-public-registry-key.cs.txt",
+    "path-source/powershell-global.json.txt",
+    "path-state.ps1"
   ],
   "inertControlSeconds": [
     15,
@@ -452,20 +495,29 @@
   },
   "requiresIndependentReacceptance": true,
   "actualPredecessor": {
-    "run": 34227513302,
-    "harness": "886c8ef0f991a8c0c6c8e46d4a55f9ba9346ca79",
+    "run": 34236357229,
+    "harness": "df8f924aa7e0ce974a4222547d52888a8faa15af",
     "conclusion": "failure",
-    "linuxJob": 102065241216,
-    "windowsJob": 102065241117,
-    "ownerCasesStarted": 0,
-    "firstMissingMemberKnown": false,
-    "linuxOwnedRootRetained": true
+    "linuxJob": 102095025717,
+    "linuxConclusion": "success",
+    "linuxCasesAccepted": 4,
+    "windowsJob": 102095025769,
+    "windowsConclusion": "failure",
+    "windowsPathRestored": false,
+    "windowsAfterPathRecorded": false,
+    "windowsRootsRetained": true
   },
   "windowsPythonCorrectionIncluded": true,
   "composition": {
     "linuxPacketSha256": "fb859a66e795a00ba8d270120292d2d86df2754551c59c5e94649040910b4dbb",
     "windowsPatchSha256": "d12235afeec117991556a1ea7f9dc383a05cadfd6f98830503958b947e309c68",
-    "publishedController": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
+    "publishedController": "df8f924aa7e0ce974a4222547d52888a8faa15af",
     "workflowRoute": "Already published and byte-bound; controller-workflow.patch is retained initial-route evidence"
-  }
+  },
+  "previousHarness": "df8f924aa7e0ce974a4222547d52888a8faa15af",
+  "proposedDispatch": [
+    "uninstall-owner-windows"
+  ],
+  "linuxRerunProposed": false,
+  "linuxOriginalActualReuse": "LINUX-REUSE.json"
 }
