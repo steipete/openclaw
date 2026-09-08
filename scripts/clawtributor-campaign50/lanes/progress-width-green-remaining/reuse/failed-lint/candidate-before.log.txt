@@ -1,0 +1,4 @@
+src/cli/progress.test.ts: OK
+src/cli/progress.ts: OK
+src/wizard/clack-prompter.test.ts: OK
+src/wizard/clack-prompter.ts: OK

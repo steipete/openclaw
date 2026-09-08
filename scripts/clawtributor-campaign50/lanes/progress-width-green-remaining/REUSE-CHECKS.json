@@ -38,6 +38,14 @@
       "rejected": true
     },
     {
+      "name": "later failed job relabeled green",
+      "rejected": true
+    },
+    {
+      "name": "later checks falsely complete",
+      "rejected": true
+    },
+    {
       "name": "source equivalence changed",
       "rejected": true
     }

@@ -174,10 +174,10 @@ describe("tokenizedOptionFilter", () => {
 });
 
 describe("createClackPrompter", () => {
-  let stdoutWriteSpy: MockInstance<typeof process.stdout.write>;
+  let write: MockInstance<typeof process.stdout.write>;
 
   beforeEach(() => {
-    stdoutWriteSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    write = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
   it("clamps long progress labels by display width without splitting grapheme clusters", () => {
     stubStdoutColumns(20);
@@ -265,9 +265,9 @@ describe("createClackPrompter", () => {
       progress.update("Still loading");
       progress.stop(message);
       const expected = message === undefined ? [] : [[`${symbol("submit")}  ${message}\n`]];
-      expect(stdoutWriteSpy.mock.calls).toEqual(expected);
+      expect(write.mock.calls).toEqual(expected);
       progress.stop("Unexpected second completion");
-      expect(stdoutWriteSpy.mock.calls).toEqual(expected);
+      expect(write.mock.calls).toEqual(expected);
       expect(process.stdout.listeners("resize")).toEqual(initialSuiteResizeListeners);
     },
   );
@@ -286,7 +286,7 @@ describe("createClackPrompter", () => {
     expect(spin.start).toHaveBeenCalledTimes(1);
 
     progress.stop("Finished after resize");
-    expect(stdoutWriteSpy).toHaveBeenCalledWith(`${symbol("submit")}  Finished after resize\n`);
+    expect(write).toHaveBeenCalledWith(`${symbol("submit")}  Finished after resize\n`);
   });
 
   it("uses the claw spinner on rich interactive terminals", () => {

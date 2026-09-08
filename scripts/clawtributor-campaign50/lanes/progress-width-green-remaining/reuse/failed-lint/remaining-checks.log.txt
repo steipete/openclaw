@@ -1,0 +1,41 @@
+[remaining] lint core changed files
+
+  [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-shadow): 'write' is already declared in the upper scope.[0m
+     ╭─[[38;2;92;157;255;1msrc/wizard/clack-prompter.test.ts[0m:177:7]
+ [2m176[0m │ describe("createClackPrompter", () => {
+ [2m177[0m │   let write: MockInstance<typeof process.stdout.write>;
+     · [38;2;246;87;248m      ──┬──[0m
+     ·         [38;2;246;87;248m╰── [38;2;246;87;248mshadowed declaration is here[0m[0m
+ [2m178[0m │ 
+     ╰────
+     ╭─[[38;2;92;157;255;1msrc/wizard/clack-prompter.test.ts[0m:357:11]
+ [2m356[0m │   it("prints plain output without note framing", async () => {
+ [2m357[0m │     const write = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+     · [38;2;30;201;212m          ──┬──[0m
+     ·             [38;2;30;201;212m╰── [38;2;30;201;212m'write' is declared here[0m[0m
+ [2m358[0m │     const prompter = createClackPrompter();
+     ╰────
+[38;2;106;159;181m  help: [0mConsider renaming 'write' to avoid shadowing the variable from the outer scope.
+
+Found 0 warnings and 1 error.
+Finished in 32.1s on 4 files with 263 rules using 1 threads.
+[oxlint] FAILED (exit 1)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+1 !== 0
+
+    at <anonymous> (/home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/progress-width-green-remaining/remaining-checks.mjs:92:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

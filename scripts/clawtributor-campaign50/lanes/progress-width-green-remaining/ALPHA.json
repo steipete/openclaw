@@ -1,0 +1,38 @@
+{
+  "beforeSha256": "9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e",
+  "afterSha256": "653df35a3985f70bb2413354748e0a3e5c71e076818ed17581f1e39206af6427",
+  "boundEdits": [
+    {
+      "start": 5543,
+      "end": 5548,
+      "line": 177
+    },
+    {
+      "start": 5619,
+      "end": 5624,
+      "line": 180
+    },
+    {
+      "start": 9094,
+      "end": 9099,
+      "line": 268
+    },
+    {
+      "start": 9197,
+      "end": 9202,
+      "line": 270
+    },
+    {
+      "start": 9900,
+      "end": 9905,
+      "line": 289
+    }
+  ],
+  "sourceCompiler": "6.0.3",
+  "noResolve": true,
+  "noLib": true,
+  "newName": "stdoutWriteSpy",
+  "existingLocalWriteUntouched": true,
+  "assertionsSemanticallyUnchanged": true,
+  "targetExecuted": false
+}

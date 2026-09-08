@@ -1,0 +1,131 @@
+{
+  "base": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "sourceCandidate": "b1657c66dc5c398a811830ba8f57044707b20f4a915a469a5fa7a25b5a234b51",
+  "reusedRun": 34169880359,
+  "reusedCommandNames": [
+    "conflict markers",
+    "max-lines suppression ratchet",
+    "assertion SAFETY comment ratchet",
+    "changelog attributions",
+    "doctor deprecation registry",
+    "guarded extension wildcard re-exports",
+    "plugin-sdk wildcard re-exports",
+    "duplicate scan target coverage",
+    "dependency pin guard",
+    "format changed files",
+    "plugin boundaries",
+    "wrapper shadowing",
+    "package patch guard",
+    "test temp creation report (warning-only)",
+    "core tsgo graph boundary",
+    "typecheck core",
+    "typecheck core tests",
+    "coercion helper declaration guard",
+    "deprecated API usage",
+    "dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)"
+  ],
+  "planned": [
+    {
+      "name": "lint core changed files",
+      "bin": "node",
+      "args": [
+        "scripts/run-oxlint.mjs",
+        "--tsconfig",
+        "config/tsconfig/oxlint.core.json",
+        "src/cli/progress.test.ts",
+        "src/cli/progress.ts",
+        "src/wizard/clack-prompter.test.ts",
+        "src/wizard/clack-prompter.ts"
+      ]
+    },
+    {
+      "name": "native state schema version guard",
+      "bin": "node",
+      "args": [
+        "scripts/check-native-state-schema-version.mjs"
+      ]
+    },
+    {
+      "name": "database-first legacy-store guard",
+      "bin": "pnpm",
+      "args": [
+        "check:database-first-legacy-stores"
+      ]
+    },
+    {
+      "name": "media download helper guard",
+      "bin": "pnpm",
+      "args": [
+        "check:media-download-helpers"
+      ]
+    },
+    {
+      "name": "runtime sidecar loader guard",
+      "bin": "pnpm",
+      "args": [
+        "check:runtime-sidecar-loaders"
+      ]
+    },
+    {
+      "name": "runtime import cycles",
+      "bin": "pnpm",
+      "args": [
+        "check:import-cycles"
+      ]
+    },
+    {
+      "name": "webhook body guard",
+      "bin": "pnpm",
+      "args": [
+        "lint:webhook:no-low-level-body-read"
+      ]
+    },
+    {
+      "name": "pairing store guard",
+      "bin": "pnpm",
+      "args": [
+        "lint:auth:no-pairing-store-group"
+      ]
+    },
+    {
+      "name": "pairing account guard",
+      "bin": "pnpm",
+      "args": [
+        "lint:auth:pairing-account-scope"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "name": "lint core changed files",
+      "bin": "node",
+      "args": [
+        "scripts/run-oxlint.mjs",
+        "--tsconfig",
+        "config/tsconfig/oxlint.core.json",
+        "src/cli/progress.test.ts",
+        "src/cli/progress.ts",
+        "src/wizard/clack-prompter.test.ts",
+        "src/wizard/clack-prompter.ts"
+      ],
+      "spawned": true,
+      "closed": true,
+      "signals": [],
+      "strictProcessTreeExit": true,
+      "pid": 3477,
+      "exitCode": 1,
+      "exitSignal": null,
+      "stdoutEnded": true,
+      "stderrEnded": true,
+      "status": 1
+    }
+  ],
+  "complete": false,
+  "error": {
+    "name": "AssertionError",
+    "message": "Expected values to be strictly equal:\n\n1 !== 0\n",
+    "code": "ERR_ASSERTION",
+    "unjoinedWork": false
+  },
+  "explicitShimCleanup": true
+}

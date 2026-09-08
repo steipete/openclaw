@@ -21,5 +21,7 @@ check('unconfirmed cleanup',lambda a:edit(a,'processes.json',lambda x:x.update(q
 check('forced child',lambda a:edit(a,'core-32/process.json',lambda x:x.update(forced=True)))
 check('observer live group',lambda a:edit(a,'core-32/inspection-normal.json',lambda x:x.update(kernelGroupAbsent=False)))
 check('missing repeated-stop control',lambda a:edit(a,'wizard-tiny-final/child.json',lambda x:x.update(repeatedStop=False)))
+check('later failed job relabeled green',lambda a:edit(a,'failed-lint/run.json',lambda x:x.update(conclusion='success')))
+check('later checks falsely complete',lambda a:edit(a,'failed-lint/remaining-checks.json',lambda x:x.update(complete=True)))
 check('source equivalence changed',lambda a:a.__setitem__(4,a[4]+b'\n'))
 (p/'REUSE-CHECKS.json').write_text(json.dumps({'dataOnly':True,'results':results},indent=2)+'\n');print(json.dumps({'accepted':True,'controls':len(results)}))

@@ -2,9 +2,9 @@
   "base": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
   "nativeHead": "514beeb72718770269a674ffa01a66be904e2f3b",
   "beforeWizardHash": "4f50ae8ff9bde6f0acf727d6a9b58d6600c66f3d37acba6c335dd7c63d5fe458",
-  "afterWizardHash": "9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e",
+  "afterWizardHash": "653df35a3985f70bb2413354748e0a3e5c71e076818ed17581f1e39206af6427",
   "repairPatchSha256": "c5461350cdc4c94cb12786c66e2627cb8c8f0d98765c8a92aa87668d0aa3b28a",
-  "fullCandidatePatchSha256": "b1657c66dc5c398a811830ba8f57044707b20f4a915a469a5fa7a25b5a234b51",
+  "fullCandidatePatchSha256": "dc7a669e1b22146c5bc6845079abd77bee7a799e312084c6072bc608f173967a",
   "counts": {
     "src/cli/progress.test.ts": {
       "added": 74,
@@ -19,7 +19,7 @@
     "src/wizard/clack-prompter.test.ts": {
       "added": 56,
       "deleted": 12,
-      "sha256": "9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e"
+      "sha256": "653df35a3985f70bb2413354748e0a3e5c71e076818ed17581f1e39206af6427"
     },
     "src/wizard/clack-prompter.ts": {
       "added": 11,
@@ -32,5 +32,8 @@
   "change": "Capture the existing beforeEach spy handle in a precisely typed suite-local variable; use it in the same unchanged assertions. No additional spy invocation or altered cleanup.",
   "equivalence": "Packed Vitest5 spyOn installs and returns the same mock; mockImplementation returns it; previous mocked(item) returns item unchanged. The hook assigns before each test; existing restoreAllMocks/clearAllMocks cleanup unchanged.",
   "evidenceReuse": "Original50 units/12 PTY and20 static passes remain attributed to old4f50 test/source; production1e4a/439d and other testd27c bytes unchanged. No functional rerun.",
-  "formatter": "Trusted standalone oxfmt0.65.0 with explicit exact6aa JSONC config, no target import/execution."
+  "formatter": "Trusted standalone oxfmt0.65.0 with explicit exact6aa JSONC config, no target import/execution.",
+  "intermediateWizardHash": "9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e",
+  "alphaPatchSha256": "949470a929566d57a4b984bb7e10ae7d9a9d9175fb0d2725944c272ae7e9dcdf",
+  "alphaRename": "Five new-suite bound identifiers now use stdoutWriteSpy; existing local write and all oracles unchanged."
 }

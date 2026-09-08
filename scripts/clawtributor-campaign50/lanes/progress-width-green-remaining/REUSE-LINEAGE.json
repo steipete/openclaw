@@ -564,6 +564,64 @@
     "unit-green.json.reports-V7rVpm/vitest.merge.config.mjs.txt": {
       "source": "artifact/unit-green.json.reports-V7rVpm/vitest.merge.config.mjs",
       "sha256": "cbde3733f13f7d865904908a3dc749debd8e0c0d39916a25e1e18727c443919c"
+    },
+    "failed-lint/remaining-checks.json": {
+      "source": "run34176842968/artifact/remaining-checks.json",
+      "sha256": "db76ce1621ce47f52fcf472840d59a5c2fdd3dfab93e4170921c489693bca3cc"
+    },
+    "failed-lint/remaining-checks.log.txt": {
+      "source": "run34176842968/artifact/remaining-checks.log",
+      "sha256": "4c33836055f9d2c908a9699d06030ea0ba05211e2058f852f7bee518e48843f6"
+    },
+    "failed-lint/source.json": {
+      "source": "run34176842968/artifact/source.json",
+      "sha256": "3a35bca59a423f7c49ec071c78d052dab77a90321922d419c1584e360fba4d99"
+    },
+    "failed-lint/input-before.json": {
+      "source": "run34176842968/artifact/input-before.json",
+      "sha256": "69c776926f4c3cc019751bb0b5130dbe71bc62fba259c0e2386eae5f39e35008"
+    },
+    "failed-lint/final-working-tree.patch": {
+      "source": "run34176842968/artifact/final-working-tree.patch",
+      "sha256": "b1657c66dc5c398a811830ba8f57044707b20f4a915a469a5fa7a25b5a234b51"
+    },
+    "failed-lint/reused-proof.json": {
+      "source": "run34176842968/artifact/reused-proof.json",
+      "sha256": "97ec42b3dbef2b3f779c267b2c69985d3b88bd60b3de0a747d1ac116c05fca30"
+    },
+    "failed-lint/source-before.log.txt": {
+      "source": "run34176842968/artifact/source-before.log",
+      "sha256": "ca7fce5a55392ee258f283fc46892bb038e8a709b38a01f3aff53d075836111a"
+    },
+    "failed-lint/static-source-before.log.txt": {
+      "source": "run34176842968/artifact/static-source-before.log",
+      "sha256": "2008f5c8389ea83abfa52962dcbe98d9ee87a761f1c812ff613a81e42c80f665"
+    },
+    "failed-lint/reused-candidate-source.log.txt": {
+      "source": "run34176842968/artifact/reused-candidate-source.log",
+      "sha256": "ca7fce5a55392ee258f283fc46892bb038e8a709b38a01f3aff53d075836111a"
+    },
+    "failed-lint/candidate-before.log.txt": {
+      "source": "run34176842968/artifact/candidate-before.log",
+      "sha256": "4bd5ce0b1f4ab57ee1fcf6f713af931b5be01ddd33842203a0b7223a7b83e17f"
+    },
+    "failed-lint/exit-code.txt": {
+      "source": "run34176842968/artifact/exit-code.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "failed-lint/run.json": {
+      "source": "run34176842968/metadata/run.json",
+      "sha256": "fbb5b48945ff213ab57ab054c5fc91288c8d0a1f1876e567372eeda5c4156af6"
+    },
+    "failed-lint/PACKET.json": {
+      "source": "run34176842968/harness/PACKET.json",
+      "sha256": "aa1263c5581649afbca6c45abc8a97aadf3097dea552f30b2e44c49ecc5b8065"
     }
+  },
+  "laterFailedAttempt": {
+    "run": 34176842968,
+    "job": 101907852106,
+    "harness": "189860c76a48016f1caa371fe17ec93542d84254",
+    "packetSha256": "aa1263c5581649afbca6c45abc8a97aadf3097dea552f30b2e44c49ecc5b8065"
   }
 }

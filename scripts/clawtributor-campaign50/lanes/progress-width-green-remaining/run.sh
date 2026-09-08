@@ -24,6 +24,10 @@ sha256sum --check "$lane_dir/candidate-before.sha256" > "$evidence_dir/reused-ca
 git apply --reverse --check "$lane_dir/reuse/final-working-tree.patch"
 git apply --check "$lane_dir/test-handle-repair.patch"
 git apply "$lane_dir/test-handle-repair.patch"
+sha256sum --check "$lane_dir/candidate-intermediate.sha256" > "$evidence_dir/intermediate-candidate.log"
+git apply --reverse --check "$lane_dir/reuse/failed-lint/final-working-tree.patch"
+git apply --check "$lane_dir/alpha-rename.patch"
+git apply "$lane_dir/alpha-rename.patch"
 sha256sum --check "$lane_dir/candidate-source.sha256" > "$evidence_dir/candidate-before.log"
 node --import "$target_dir/scripts/tsx.mjs" "$lane_dir/remaining-checks.mjs" "$target_dir" "$lane_dir" "$evidence_dir" > "$evidence_dir/remaining-checks.log" 2>&1
 git diff --check

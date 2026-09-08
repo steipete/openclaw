@@ -1,0 +1,22 @@
+{
+  "tool": "Oxlint1.80.0 existing trusted standalone cache",
+  "runtime": "bundled Node24.19.0; source parsing only",
+  "configSha256": "8bcc5a2e0f91d0dcd53ba9c38b6df90e6c9ef8e76773fa43d98d62507bee045c",
+  "testSha256": "653df35a3985f70bb2413354748e0a3e5c71e076818ed17581f1e39206af6427",
+  "exitCode": 0,
+  "report": {
+    "diagnostics": [],
+    "number_of_files": 1,
+    "number_of_rules": 230,
+    "threads_count": 32,
+    "start_time": 0.0799155
+  },
+  "scope": "230 syntax/import rules on exact data-only test copy with unchanged repository JSON config and matching relative path. Includes no-shadow; not a native263-rule/type-aware gate.",
+  "fullTypeAwareUnavailable": "Existing standalone cache has no oxlint-tsgolint7.0.2001 peer; no installation or target wrapper execution attempted.",
+  "nativeTypeAwareRemainsPending": true,
+  "initialDefaultOutput": "Initial default-format invocation exited0 with empty log; not used as evidence. Explicit JSON report is authoritative for this preflight.",
+  "formatter": "oxfmt0.65.0 exactconfig check passed without changes",
+  "alphaPatchSha256": "949470a929566d57a4b984bb7e10ae7d9a9d9175fb0d2725944c272ae7e9dcdf",
+  "fullCandidatePatchSha256": "dc7a669e1b22146c5bc6845079abd77bee7a799e312084c6072bc608f173967a",
+  "targetExecuted": false
+}

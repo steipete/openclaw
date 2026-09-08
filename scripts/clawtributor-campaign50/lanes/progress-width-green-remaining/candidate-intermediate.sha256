@@ -1,4 +1,4 @@
 d27c02d677070edccf671f68ee6edeb94c3d7c8b26f606c2fb4073417f94745c  src/cli/progress.test.ts
 1e4a85feeb0c02cd90df5cee4a42174a476ae7780ed9d32b3e2cf8658094b6da  src/cli/progress.ts
-653df35a3985f70bb2413354748e0a3e5c71e076818ed17581f1e39206af6427  src/wizard/clack-prompter.test.ts
+9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e  src/wizard/clack-prompter.test.ts
 439d3dc611e6265973e1824635eb6dc4cb7e6433c1a90b0c9dcae5f2f94da266  src/wizard/clack-prompter.ts

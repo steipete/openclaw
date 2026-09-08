@@ -1,0 +1,36 @@
+--- a/src/wizard/clack-prompter.test.ts
++++ b/src/wizard/clack-prompter.test.ts
+@@ -174,10 +174,10 @@
+ });
+ 
+ describe("createClackPrompter", () => {
+-  let write: MockInstance<typeof process.stdout.write>;
++  let stdoutWriteSpy: MockInstance<typeof process.stdout.write>;
+ 
+   beforeEach(() => {
+-    write = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
++    stdoutWriteSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+   });
+   it("clamps long progress labels by display width without splitting grapheme clusters", () => {
+     stubStdoutColumns(20);
+@@ -265,9 +265,9 @@
+       progress.update("Still loading");
+       progress.stop(message);
+       const expected = message === undefined ? [] : [[`${symbol("submit")}  ${message}\n`]];
+-      expect(write.mock.calls).toEqual(expected);
++      expect(stdoutWriteSpy.mock.calls).toEqual(expected);
+       progress.stop("Unexpected second completion");
+-      expect(write.mock.calls).toEqual(expected);
++      expect(stdoutWriteSpy.mock.calls).toEqual(expected);
+       expect(process.stdout.listeners("resize")).toEqual(initialSuiteResizeListeners);
+     },
+   );
+@@ -286,7 +286,7 @@
+     expect(spin.start).toHaveBeenCalledTimes(1);
+ 
+     progress.stop("Finished after resize");
+-    expect(write).toHaveBeenCalledWith(`${symbol("submit")}  Finished after resize\n`);
++    expect(stdoutWriteSpy).toHaveBeenCalledWith(`${symbol("submit")}  Finished after resize\n`);
+   });
+ 
+   it("uses the claw spinner on rich interactive terminals", () => {
