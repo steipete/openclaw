@@ -1,0 +1,36 @@
+{
+  "file": "src/commands/uninstall.test.ts",
+  "config": "test/vitest/vitest.commands.config.ts",
+  "pattern": "preserves user data when gateway (inspection fails|stop fails|service removal fails)$",
+  "activeNames": [
+    "uninstallCommand preserves user data when gateway inspection fails",
+    "uninstallCommand preserves user data when gateway stop fails",
+    "uninstallCommand preserves user data when gateway service removal fails"
+  ],
+  "allNames": [
+    "uninstallCommand defaults bare interactive uninstall to gateway service only",
+    "uninstallCommand preserves user data when gateway inspection fails",
+    "uninstallCommand preserves user data when gateway stop fails",
+    "uninstallCommand preserves user data when gateway service removal fails",
+    "uninstallCommand preserves user data when Nix owns service lifecycle",
+    "uninstallCommand still removes service registration after a failed gateway stop",
+    "uninstallCommand removes requested data after successful gateway teardown",
+    "uninstallCommand attempts app cleanup when service teardown blocks local data",
+    "uninstallCommand removes an unloaded service definition before deleting user data",
+    "uninstallCommand recommends creating a backup before removing state or workspaces",
+    "uninstallCommand does not recommend backup for service-only uninstall",
+    "uninstallCommand preserves workspace dirs during state-only uninstall",
+    "uninstallCommand cleans retired workspace state without removing state-only workspaces",
+    "uninstallCommand does not preserve workspace dirs when workspace removal is selected",
+    "uninstallCommand removes workspace state rows during workspace-only uninstall",
+    "uninstallCommand does not reopen workspace state after state and workspace uninstall",
+    "uninstallCommand removes workspace rows when combined state removal fails",
+    "uninstallCommand continues state and app cleanup when retired workspace cleanup returns failures",
+    "uninstallCommand continues state and app cleanup when retired workspace cleanup throws",
+    "uninstallCommand fails when workspace cleanup returns failures",
+    "uninstallCommand blocks workspace cleanup after a thrown state ownership failure",
+    "uninstallCommand reports app cleanup failure and non-macOS inapplicability"
+  ],
+  "expectedPassed": 3,
+  "expectedSkipped": 19
+}

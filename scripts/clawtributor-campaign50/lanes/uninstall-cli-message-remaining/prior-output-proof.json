@@ -1,0 +1,14 @@
+{
+  "referenceOnly": true,
+  "notReexecutedOrRevalidatedByThisRunner": true,
+  "run": 34271071455,
+  "job": 102212556663,
+  "harness": "808c1ffe6edb85137ef037f80b7e59e7891c51c4",
+  "source": "d3a2fb0296673d93f6e6e795b0e267c0a22a1f34",
+  "candidateTree": "a53a08b2b3bde72d867972d47c42aeed21797c79",
+  "packet": "d66e573128101200f6c6b893d4b40119f532d1f14b5a3564e88bba2498ab5327",
+  "candidatePatch": "f237eef6bb3c792d65af16b2bdfa5825797184efc96377a1d79eb161b8bcba64",
+  "ownerReceiptSha256": "05addf6b24a43dcb3a5ab3ac696a826ddce9d699b030cc9c579d51b1a5ce621a",
+  "independentReceiptSha256": "28941c6d8d61981833d801d23f8678fa14f5b4be7d148eafceab82462e5ba5b0",
+  "scope": "Two builds and six actual CLI output observations previously accepted; this packet executes only remaining unit/check gates."
+}
