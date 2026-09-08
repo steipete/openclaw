@@ -1,0 +1,84 @@
+[
+  {
+    "id": "normal-owner",
+    "kind": "owner",
+    "argv": ["message", "send", "--target", "synthetic-target", "--message", "synthetic message"],
+    "profile": null
+  },
+  {
+    "id": "dry-run-owner",
+    "kind": "owner",
+    "argv": [
+      "message",
+      "send",
+      "--target",
+      "synthetic-target",
+      "--message",
+      "synthetic message",
+      "--dry-run"
+    ],
+    "profile": null
+  },
+  {
+    "id": "profile-owner",
+    "kind": "owner",
+    "argv": [
+      "--profile",
+      "proof",
+      "message",
+      "send",
+      "--target",
+      "synthetic-target",
+      "--message",
+      "synthetic message",
+      "--dry-run"
+    ],
+    "profile": "proof"
+  },
+  {
+    "id": "root-help",
+    "kind": "help",
+    "argv": ["--help"],
+    "usage": "Usage: openclaw [options] [command]"
+  },
+  {
+    "id": "message-help",
+    "kind": "help",
+    "argv": ["message", "--help"],
+    "usage": "Usage: openclaw message [options] [command]"
+  },
+  {
+    "id": "send-help",
+    "kind": "help",
+    "argv": ["message", "send", "--help"],
+    "usage": "Usage: openclaw message send [options]"
+  },
+  {
+    "id": "leaf-agent-rejected",
+    "kind": "unsupported",
+    "argv": [
+      "message",
+      "send",
+      "--target",
+      "synthetic-target",
+      "--message",
+      "synthetic message",
+      "--agent",
+      "ops"
+    ]
+  },
+  {
+    "id": "root-agent-rejected",
+    "kind": "unsupported",
+    "argv": [
+      "--agent",
+      "ops",
+      "message",
+      "send",
+      "--target",
+      "synthetic-target",
+      "--message",
+      "synthetic message"
+    ]
+  }
+]

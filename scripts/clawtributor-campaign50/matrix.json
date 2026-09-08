@@ -1,12 +1,12 @@
 [
   {
-    "id": "automation-defaults-141548",
-    "directory": "automation-defaults-captured-plan",
+    "id": "message-owner-hint-red",
+    "directory": "message-owner-hint-red",
     "runner": "ubuntu-24.04",
-    "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+    "source": "2e3d04b6c84c0dfccb6866d9e0868c60f86aad33",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "captured-static-plan"
+    "mode": "baseline",
+    "variant": "owner-diagnostic-controls"
   }
 ]
