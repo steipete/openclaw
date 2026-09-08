@@ -1,0 +1,44 @@
+{
+  "node": "24.20.0",
+  "npm": "11.19.0",
+  "pnpm": "12.3.4",
+  "corepack": "not exposed; actual installer npm fallback selected through an explicit Node/npm-only tool PATH",
+  "archives": {
+    "linux": {
+      "url": "https://nodejs.org/dist/v24.20.0/node-v24.20.0-linux-x64.tar.xz",
+      "sha256": "2f2c0da162318f0de47665410c7c8c2ed3d36c8f3105de4bbc61176c70a7cbf2",
+      "root": "node-v24.20.0-linux-x64"
+    },
+    "windows": {
+      "url": "https://nodejs.org/dist/v24.20.0/node-v24.20.0-win-x64.zip",
+      "sha256": "6cac9ffbca8f6a47091e4b5c772e0606049c3871cb67d900c0cedde630e545ba",
+      "root": "node-v24.20.0-win-x64"
+    }
+  },
+  "npmPackages": {
+    "pnpm": {
+      "name": "pnpm",
+      "version": "12.3.4",
+      "tarball": "https://registry.npmjs.org/pnpm/-/pnpm-12.3.4.tgz",
+      "integrity": "sha512-lhqkH7B32joEpEHZ+OFevAyW2o73ELLrZ7+e58sGEOq9SPH9hfUc/+c4RnhfoPh8VqOocqHYk/hEZ0G1zORUVw=="
+    },
+    "pnpmLinux": {
+      "name": "@pnpm/exe.linux-x64",
+      "version": "12.3.4",
+      "tarball": "https://registry.npmjs.org/@pnpm/exe.linux-x64/-/exe.linux-x64-12.3.4.tgz",
+      "integrity": "sha512-2ZqOlSPkfwX1h5cR+FPiWf8+F+2hZT/3TvhUK5sigHqwaQCIiq8R7CGxhndKs63JtcLi2a1Qpo+wX/EoyfjyJQ=="
+    },
+    "pnpmWindows": {
+      "name": "@pnpm/exe.win32-x64",
+      "version": "12.3.4",
+      "tarball": "https://registry.npmjs.org/@pnpm/exe.win32-x64/-/exe.win32-x64-12.3.4.tgz",
+      "integrity": "sha512-WH/KqBPY/hq2Tb7SgQltEZytimcjgKRaCRL/aM9CI0c67iKc5TVmHUhIiL3Ux9FB4bWn36i6XewUcScQI+zG8w=="
+    }
+  },
+  "platformTools": {
+    "Python": "provided CPython 3.12\u20133.14; record exact version, executable hash and subprocess source hash before target release",
+    "Git": "provided Git 2.x; record exact version/path/hash; only fixture init/add/commit/status/full-existing-SHA checkout, no remote operations",
+    "WindowsPowerShell": "provided pwsh 7.x; record exact version/path/hash and native Windows build; no host or desktop invocation",
+    "admission": "These platform ranges are proposed stable API constraints, not an assertion that exact current hosted versions are already admitted. Root/challenger must approve preflight inventory gate before execution."
+  }
+}

@@ -1,0 +1,412 @@
+{
+  "at": "2026-09-08T12:20:27.445187+00:00",
+  "stage": "frozen-executable-candidate",
+  "pr": 127254,
+  "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
+  "sourceProposalPacket": "../127254/PACKET.json",
+  "sourceProposalSha256": "95a17445c8a37a6e84b2249c9b27552c1b8a23c1c0dee5dbe3cb273f150c0f82",
+  "targetSources": [
+    {
+      "path": "scripts/install.sh",
+      "sha256": "130a3b32b1b6fe93990208d44647960eb2bad7ac42af3c4710078b79ecc88b76"
+    },
+    {
+      "path": "scripts/install-cli.sh",
+      "sha256": "aa629bcc73e6464b6059e5f7ac23dbc750268b680a3aaf94ddaa8145cba7a672"
+    },
+    {
+      "path": "scripts/install.ps1",
+      "sha256": "45e7018560c5749d5b729ab7ec0609b41a30ad942d2a52b06901d91c9af2ce0f"
+    },
+    {
+      "path": "package.json",
+      "sha256": "002cca40a1651df707923f37a4efbe1c1ef95896df57b8ae0490e52121dcfd1c"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "423f646db6a70e906efd7173cb87d6438c9c78d3f39fedb1c7afb1c6023352d3"
+    }
+  ],
+  "files": [
+    {
+      "path": "BACKEND-DESIGN.md",
+      "sha256": "cff1c67d48bb63cdfb01d29ccbcea6ceac56f6b6a8939ea9506546e866cf357c",
+      "bytes": 9934
+    },
+    {
+      "path": "CONTROLLER-PINS.json",
+      "sha256": "7136f5f5b52e175ef2fd3be5ac780fa4c1626cd0c9f7598276af8c21b74ff617",
+      "bytes": 1082
+    },
+    {
+      "path": "README.md",
+      "sha256": "52eaa4329a2ea4dc15815a240aa109685d747aeddd3cacc765071b9aaca551bb",
+      "bytes": 4013
+    },
+    {
+      "path": "REPAIR-PROPOSAL.md",
+      "sha256": "caeebfd551fa5046cf26dd7d03eb8b9c83c53ea88bfeba9e17dd49c64dca2476",
+      "bytes": 3353
+    },
+    {
+      "path": "REPAIR.patch",
+      "sha256": "346efa7229d8c1d1e8eb8e6057a555aa6f134a0bfea79d94a57ad1836a445d55",
+      "bytes": 6429
+    },
+    {
+      "path": "STATIC-SYNTAX.json",
+      "sha256": "f673dad1eb7ccba2caa753c94b0ac0b619d182f6f2aec44d696144089dbd371c",
+      "bytes": 1391
+    },
+    {
+      "path": "TOOL-LOCK.json",
+      "sha256": "4a0e40d3f40e68078ddea9cc46bec5575d052da3fedaaa229147fd97861c2f6e",
+      "bytes": 2198
+    },
+    {
+      "path": "UTILITY-CLOSURE.md",
+      "sha256": "cbcf6449a190433368799badca0771ff1d443191c94e5b330e9e5d46fbb2b9d7",
+      "bytes": 2567
+    },
+    {
+      "path": "bootstrap-linux.sh",
+      "sha256": "a7ba02abd60bcb59c1d1008b6904f10d056a8e8538512199121c093dc6e3c4a0",
+      "bytes": 1189
+    },
+    {
+      "path": "bootstrap-runner.py",
+      "sha256": "d2a679e321864a12132489e61e061c746cdd27c5659bc2a5377e8f2757c53555",
+      "bytes": 1318
+    },
+    {
+      "path": "bootstrap-windows.ps1",
+      "sha256": "fe3b30d5372ba846cd6a3ad2d87e8fea1f1e4abb788f8828099e67085f901117",
+      "bytes": 4642
+    },
+    {
+      "path": "bridge.py",
+      "sha256": "5c953a03eecc4c3a45d0cc2892593033e5e511f4e1fe5c24f09efa584e16dedd",
+      "bytes": 709
+    },
+    {
+      "path": "check-artifact.py",
+      "sha256": "cc1151a87ba993226df4d8be73acc65954cb7621f3720450493cb1edf2a16870",
+      "bytes": 8213
+    },
+    {
+      "path": "controller-workflow.patch",
+      "sha256": "3d969426d9cbbbf13797059d211fb40207fcf9dd4c915272450baae61868e17d",
+      "bytes": 1502
+    },
+    {
+      "path": "driver.py",
+      "sha256": "0b65bae72e0325e24f5038fcf3007b86cc7188ebcef1de998a842c174e5e46bf",
+      "bytes": 17704
+    },
+    {
+      "path": "fixture/fixture-build.mjs",
+      "sha256": "ec7eccbc0cc207af96b9a19f73b8fabc495498a2d006c3455852c06416dbf4ff",
+      "bytes": 493
+    },
+    {
+      "path": "fixture/fixture-entry.mjs",
+      "sha256": "3eb37ce8c0ceb6811df9fcde8357f6808af4e56691736c11e1774f0c65b4b109",
+      "bytes": 267
+    },
+    {
+      "path": "fixture/package.json",
+      "sha256": "f53a46527e780988144d1be38d0163ec0198bd81b519bc9a67b1c8e1790f4cea",
+      "bytes": 556
+    },
+    {
+      "path": "fixture/pnpm-lock.yaml",
+      "sha256": "d0d9583b2a018304097bbbb5d88518483c0fd5d10b3bfb1bc05e476da730f946",
+      "bytes": 2891
+    },
+    {
+      "path": "fixture/pnpm-workspace.yaml",
+      "sha256": "f6d8f5308783c10a90c659faf8f63404200a087f86f4ed5177c818a9c8758fe8",
+      "bytes": 50
+    },
+    {
+      "path": "invoke-windows.ps1",
+      "sha256": "b2117185549a30a9879999f312b432429a27269d9e5fbce806cf7369801d46f4",
+      "bytes": 439
+    },
+    {
+      "path": "launch-driver.py",
+      "sha256": "af6b6f3d52b40c569628ab6fac96b19075ebbaa3ee845f56981751643448e778",
+      "bytes": 2006
+    },
+    {
+      "path": "matrix-proposal.json",
+      "sha256": "86c71908aefb152d2cb27a712b827e2dd318e3cf8e66127e69f18dcac4b034c6",
+      "bytes": 571
+    },
+    {
+      "path": "owned_cleanup.py",
+      "sha256": "c5c4d66f6b483d07d4f18b56ac536b4ff4c480dcadb320df4ae7476474fe1e26",
+      "bytes": 2535
+    },
+    {
+      "path": "owner-posix.sh",
+      "sha256": "d39da03593ea947d4ef9015936a7e023271b7d500805bd30e174d4b0f22e24df",
+      "bytes": 1417
+    },
+    {
+      "path": "owner-windows.ps1",
+      "sha256": "475e2e573b94b985286fb2f96e296cd742876824ba74826f8a5f7b9ac42fb8ab",
+      "bytes": 836
+    },
+    {
+      "path": "path-state.ps1",
+      "sha256": "f81ac29adc7f6514bdb00b3e94ead4f5fc29ea07afb1c70797eebc472c326f12",
+      "bytes": 1437
+    },
+    {
+      "path": "process_capture.py",
+      "sha256": "6bad0f4a331b3d275b2d74d27f53af6ce097a284f27d917f5e236b68f218839c",
+      "bytes": 8946
+    },
+    {
+      "path": "repair-source/PLATFORM-CONTRACTS.md",
+      "sha256": "28d7ab5de3a54348a8f35aaaa1cf8c87620094d26d34e14e651b46fa91858f4e",
+      "bytes": 1544
+    },
+    {
+      "path": "repair-source/SOURCE-PINS.json",
+      "sha256": "65bf1261281ca0dd3132cabde467075ffbf9cad1b52015835340f0106bdb80b0",
+      "bytes": 1792
+    },
+    {
+      "path": "repair-source/cpython-3.12.3-shutil.py.txt",
+      "sha256": "819e518cb7a539d09b2526138015541b34d2646afb9c2f6ae4ffd476d6a0fcf4",
+      "bytes": 58120
+    },
+    {
+      "path": "repair-source/cpython-3.13.0-shutil.py.txt",
+      "sha256": "850abe40403bd41a9b33ab3f0cda5a833bf053bd3cd3eee7006293ba1487fe99",
+      "bytes": 57493
+    },
+    {
+      "path": "repair-source/cpython-3.14.0-shutil.py.txt",
+      "sha256": "ab36f39f04e349020cdd13cf41b50905fc399150fb5e6a7cf73d69b22dd949cd",
+      "bytes": 60568
+    },
+    {
+      "path": "repair-source/git-windows-object-file.c.txt",
+      "sha256": "27d4d7c0646dd3be03282137a5e6dfa7ee2e8fcde61530f3cacb5d986c87d186",
+      "bytes": 42251
+    },
+    {
+      "path": "repair-source/npm-config-index.js.txt",
+      "sha256": "938b85a17fde9f2355497fd4befc9bac45d406fb4afacd8af63322796697ff06",
+      "bytes": 32085
+    },
+    {
+      "path": "repair-source/npm-config-package.json.txt",
+      "sha256": "17e999d89f983a3cc9f8149cffbf4c5e3dec7f4f505b81d072398286c39deaad",
+      "bytes": 1439
+    },
+    {
+      "path": "run.ps1",
+      "sha256": "0feb74b0accd2f374a1f1b60812191f881afa2700c252f1dfa79a1dc71cce775",
+      "bytes": 939
+    },
+    {
+      "path": "run.sh",
+      "sha256": "d698a7661eb8c7aaecb66a0d2254ddad6cee3460d75722d3a46c51c7c89b0fc5",
+      "bytes": 483
+    },
+    {
+      "path": "source/install-cli.sh",
+      "sha256": "aa629bcc73e6464b6059e5f7ac23dbc750268b680a3aaf94ddaa8145cba7a672",
+      "bytes": 60290
+    },
+    {
+      "path": "source/install.ps1",
+      "sha256": "45e7018560c5749d5b729ab7ec0609b41a30ad942d2a52b06901d91c9af2ce0f",
+      "bytes": 88006
+    },
+    {
+      "path": "source/install.sh",
+      "sha256": "130a3b32b1b6fe93990208d44647960eb2bad7ac42af3c4710078b79ecc88b76",
+      "bytes": 142169
+    },
+    {
+      "path": "supervisor-controls.py",
+      "sha256": "b75bb9d35eba58b3f4bb9c4083712490d6bd317ef26563a48752eb2fcf977865",
+      "bytes": 2439
+    },
+    {
+      "path": "tool-source/READ-RECEIPTS.json",
+      "sha256": "7ce560cb280652e2ccb2709ae89f192c4ec86dbd47274facecaf3c6c317a6fb4",
+      "bytes": 1082
+    },
+    {
+      "path": "tool-source/SOURCE-LOCK-AGREEMENT.json",
+      "sha256": "c84edb336c452c45770fd3576de33e0289028a3976cd9e8bbb8cbc1752b54728",
+      "bytes": 664
+    },
+    {
+      "path": "tool-source/SOURCE-SNAPSHOTS.json",
+      "sha256": "c0dd0431694ba379989726998db7fbfacb248f3656db17951cd47b455018b1d1",
+      "bytes": 3745
+    },
+    {
+      "path": "tool-source/node-SHASUMS256.txt",
+      "sha256": "c614a913a302d35d1c3a1348d07d84c52e28dceb0b97fd91e4ade05906ca2bd7",
+      "bytes": 3171
+    },
+    {
+      "path": "tool-source/node-npm-package.json",
+      "sha256": "09dfcf187178ce1ab3ea6194c80d3ae082ad2a86dc1269ac963f94429e718122",
+      "bytes": 6597
+    },
+    {
+      "path": "tool-source/npm-uninstall.js.txt",
+      "sha256": "eecb339bdeab4e20dbee6b94f97698a51233f3fd1c849b9dfb8785885585c1d3",
+      "bytes": 1714
+    },
+    {
+      "path": "tool-source/official-npm-npm.js.txt",
+      "sha256": "dd258b095bff5a0a16636bcc4cb457330624999485f64e1944d57424cbebebea",
+      "bytes": 17009
+    },
+    {
+      "path": "tool-source/official-npm-uninstall.js.txt",
+      "sha256": "eecb339bdeab4e20dbee6b94f97698a51233f3fd1c849b9dfb8785885585c1d3",
+      "bytes": 1714
+    },
+    {
+      "path": "tool-source/pnpm-install.js.txt",
+      "sha256": "de82aa5c43698c2cea2d92f3b65ea42b579225a0e97f5f39c1830e000dda4172",
+      "bytes": 5552
+    },
+    {
+      "path": "tool-source/pnpm-linux-registry.json",
+      "sha256": "dff4905e5642a808af656086cbb2621c4409458c753ac6fd4990d9652e690168",
+      "bytes": 1418
+    },
+    {
+      "path": "tool-source/pnpm-native-binary.mjs.txt",
+      "sha256": "c2f1f0d6e101ad42e788efd4078cde7a8d489b2200cc3d9216ef14fadf4562de",
+      "bytes": 4810
+    },
+    {
+      "path": "tool-source/pnpm-package.json",
+      "sha256": "ee8cd4b0cd50daf2ab3eacf2763a7c723d5906c696dd4162c748d365c7bcf55a",
+      "bytes": 1522
+    },
+    {
+      "path": "tool-source/pnpm-registry.json",
+      "sha256": "a183a093490bdd20b2931b078488ba351c3accd244a9c2a48a3f34802bb7b3f5",
+      "bytes": 2240
+    },
+    {
+      "path": "tool-source/pnpm-windows-registry.json",
+      "sha256": "201e45760884a4dcd8babe57c567e883532573e00c0f7b3398ecf66b1c4a2305",
+      "bytes": 1405
+    },
+    {
+      "path": "tooling.py",
+      "sha256": "b108950e5b943a52c38f15b3a69f63ad78eead31177c7e4ecc9788468efd49e5",
+      "bytes": 7552
+    },
+    {
+      "path": "verify-inputs.py",
+      "sha256": "5dbaf7e3d092e4e4ed12af6c90adb288761aba25773882c3f4c85b692f1fca6e",
+      "bytes": 1708
+    },
+    {
+      "path": "windows_job.py",
+      "sha256": "4019724795db459b920b2a67056505c59ef8761443a5e5f840671764d9bd1299",
+      "bytes": 3483
+    }
+  ],
+  "executed": false,
+  "executionGrant": false,
+  "controllerCommit": "d08ba196072a37a0e28774859f64b37271d541f1",
+  "actualCases": {
+    "linux": [
+      "global-control",
+      "posix-git",
+      "prefix-git",
+      "prefix-npm"
+    ],
+    "windows": [
+      "windows-git"
+    ]
+  },
+  "fullProductInstallProof": false,
+  "nativeMacOrWslProof": false,
+  "perCaseSeconds": 120,
+  "driverSeconds": 840,
+  "bootstrapSeconds": {
+    "linux": null,
+    "windows": 900
+  },
+  "remainingGates": [
+    "independent full executable/tool/containment review",
+    "root decision on observed hosted Python/Git/PowerShell version admission",
+    "exact controller/workflow/bootstrap composition review",
+    "root execution wave grant",
+    "actual output and cleanup qualification"
+  ],
+  "revision": 5,
+  "previousPacket": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/proof-infra/wave77-v1-frozen/scripts/clawtributor-campaign50/lanes/uninstall-owner-contract/PACKET.json",
+  "previousPacketSha256": "030ccb4ccc46f3cac3b217a437cf9cbc8e2f3434d5686dd9a1ecd4a8be9f090f",
+  "revisionReason": [
+    "Separate owned npm user/global configuration filenames while retaining explicit empty/global and offline/user layers",
+    "Share precisely owned Windows readonly regular-file cleanup across selective and outer owners; preserve ordinary Linux rmtree and all other errors",
+    "Retain exact official npm/config, GitWindows and CPython source proof as inert text; no target/control execution"
+  ],
+  "containmentLimit": "Inherited foreground tool/fixture group/job; no generic daemon or detach containment claim; no cgroup or privileged helper added",
+  "changedInputs": [
+    "REPAIR-PROPOSAL.md",
+    "REPAIR.patch",
+    "STATIC-SYNTAX.json",
+    "driver.py",
+    "launch-driver.py",
+    "owned_cleanup.py",
+    "repair-source/PLATFORM-CONTRACTS.md",
+    "repair-source/SOURCE-PINS.json",
+    "repair-source/cpython-3.12.3-shutil.py.txt",
+    "repair-source/cpython-3.13.0-shutil.py.txt",
+    "repair-source/cpython-3.14.0-shutil.py.txt",
+    "repair-source/git-windows-object-file.c.txt",
+    "repair-source/npm-config-index.js.txt",
+    "repair-source/npm-config-package.json.txt"
+  ],
+  "inertControlSeconds": [
+    15,
+    15,
+    5
+  ],
+  "transportOnlyRebind": false,
+  "removedTransportPaths": [
+    "tool-source/npm-uninstall.js",
+    "tool-source/official-npm-npm.js",
+    "tool-source/official-npm-uninstall.js",
+    "tool-source/pnpm-install.js",
+    "tool-source/pnpm-native-binary.mjs"
+  ],
+  "pendingMechanicalFixtureFormatting": false,
+  "mechanicalFixtureFormatting": [
+    {
+      "path": "fixture/fixture-build.mjs",
+      "before": "ffa8370e0674a1f13a96ed6ad9b5beb232f245d37d47dd664b11d17bfca178bc",
+      "after": "ec7eccbc0cc207af96b9a19f73b8fabc495498a2d006c3455852c06416dbf4ff"
+    },
+    {
+      "path": "fixture/fixture-entry.mjs",
+      "before": "af9a18fe755ba3b76da34d440dd60c2a7ceae30a1ede80719b0d246520961afa",
+      "after": "3eb37ce8c0ceb6811df9fcde8357f6808af4e56691736c11e1774f0c65b4b109"
+    }
+  ],
+  "managedReviewCorrections": {
+    "P1": "npm duplicate source filename",
+    "P2": "Windows readonly Git/cache file cleanup"
+  },
+  "requiresIndependentReacceptance": true
+}

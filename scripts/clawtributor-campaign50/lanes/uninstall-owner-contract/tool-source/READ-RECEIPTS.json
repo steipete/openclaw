@@ -1,0 +1,32 @@
+[
+  {
+    "file": "node-npm-package.json",
+    "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/package.json",
+    "sha256": "09dfcf187178ce1ab3ea6194c80d3ae082ad2a86dc1269ac963f94429e718122",
+    "bytes": 6597
+  },
+  {
+    "file": "node-SHASUMS256.txt",
+    "url": "https://nodejs.org/dist/v24.20.0/SHASUMS256.txt",
+    "sha256": "c614a913a302d35d1c3a1348d07d84c52e28dceb0b97fd91e4ade05906ca2bd7",
+    "bytes": 3171
+  },
+  {
+    "file": "pnpm-registry.json",
+    "url": "https://registry.npmjs.org/pnpm/12.3.4",
+    "sha256": "a183a093490bdd20b2931b078488ba351c3accd244a9c2a48a3f34802bb7b3f5",
+    "bytes": 2240
+  },
+  {
+    "file": "pnpm-linux-registry.json",
+    "url": "https://registry.npmjs.org/@pnpm%2fexe.linux-x64/12.3.4",
+    "sha256": "dff4905e5642a808af656086cbb2621c4409458c753ac6fd4990d9652e690168",
+    "bytes": 1418
+  },
+  {
+    "file": "pnpm-windows-registry.json",
+    "url": "https://registry.npmjs.org/@pnpm%2fexe.win32-x64/12.3.4",
+    "sha256": "201e45760884a4dcd8babe57c567e883532573e00c0f7b3398ecf66b1c4a2305",
+    "bytes": 1405
+  }
+]

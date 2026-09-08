@@ -1,0 +1,136 @@
+--- a/driver.py
++++ b/driver.py
+@@ -14,6 +14,7 @@
+ LANE = Path(__file__).resolve().parent
+ sys.path.insert(0, str(LANE))
+ from process_capture import Collector
++from owned_cleanup import remove_owned_tree
+ from tooling import obtain_runtime, verify_pnpm_archives
+ 
+ SOURCE = 'f5a30f8484671abdb422a9ea8b39837a668ed019'
+@@ -55,7 +56,9 @@
+         if path.is_symlink():
+             path.unlink()
+         elif path.is_dir():
+-            shutil.rmtree(path)
++            if collector.pending or any(not row.get('passed') or not row.get('commandJoined') for row in collector.records):
++                raise RuntimeError('selective cleanup requires normal command completion')
++            remove_owned_tree(path, owned)
+         elif path.exists():
+             path.unlink()
+     def run(argv, cwd, env, label, seconds=120, expected=0):
+@@ -76,11 +79,12 @@
+         home = owned/'home';home.mkdir()
+         temp = owned/'tmp';temp.mkdir()
+         cache = owned/'npm-cache';cache.mkdir()
+-        empty = owned/'empty.npmrc';empty.write_text('')
++        user_config = owned/'user.npmrc';user_config.write_text('')
++        global_config = owned/'global.npmrc';global_config.write_text('')
+         empty_git = owned/'empty.gitconfig';empty_git.write_text('')
+         env = {'PATH':tool_path,'HOME':str(home),'USERPROFILE':str(home),'CI':'1','LANG':'C.UTF-8','TZ':'UTC',
+                'TMPDIR':str(temp),'TMP':str(temp),'TEMP':str(temp),'NPM_CONFIG_CACHE':str(cache),
+-               'NPM_CONFIG_USERCONFIG':str(empty),'NPM_CONFIG_GLOBALCONFIG':str(empty),
++               'NPM_CONFIG_USERCONFIG':str(user_config),'NPM_CONFIG_GLOBALCONFIG':str(global_config),
+                'NPM_CONFIG_AUDIT':'false','NPM_CONFIG_FUND':'false','NPM_CONFIG_REGISTRY':'https://registry.npmjs.org',
+                'GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':str(empty_git),
+                'GIT_AUTHOR_NAME':'Synthetic ownership fixture','GIT_AUTHOR_EMAIL':'fixture@example.invalid',
+@@ -129,7 +133,7 @@
+             if manifest['name']!=expected['name'] or manifest['version']!=expected['version']:raise RuntimeError('pnpm package identity mismatch')
+             admitted.append({'name':name,'version':manifest['version'],'packageJsonSha256':digest(packages/name/'package.json')})
+         (evidence/'pnpm-admission.json').write_text(json.dumps({'packages':admitted,'nativeSha256':digest(native_bin),'version':actual_pnpm},indent=2)+'\n')
+-        empty.write_text('offline=true\nregistry=https://registry.npmjs.org\n')
++        user_config.write_text('offline=true\nregistry=https://registry.npmjs.org\n')
+         env['NPM_CONFIG_OFFLINE']='true';env['PNPM_CONFIG_OFFLINE']='true'
+         env['PNPM_CONFIG_STORE_DIR']=str(owned/'pnpm-store')
+         env['NPM_CONFIG_PREFIX']=str(owned/'ambient-global')
+--- a/launch-driver.py
++++ b/launch-driver.py
+@@ -2,13 +2,13 @@
+ import json
+ import os
+ from pathlib import Path
+-import shutil
+ import stat
+ import sys
+ import tempfile
+ lane=Path(__file__).resolve().parent
+ sys.path.insert(0,str(lane))
+ from process_capture import Collector
++from owned_cleanup import remove_owned_tree
+ 
+ target,evidence,host=sys.argv[1:]
+ evidence=Path(evidence)
+@@ -28,7 +28,7 @@
+     if not stat.S_ISDIR(current.st_mode) or (current.st_dev,current.st_ino)!=(identity.st_dev,identity.st_ino):
+         raise RuntimeError('registered fixture root identity changed')
+     # The driver has exited and its entire inherited group/job is observed empty.
+-    shutil.rmtree(owned)
++    remove_owned_tree(owned, owned)
+     cleanup.update(retained=False,absent=not os.path.lexists(owned),quiescent=True,
+                    windowsPathRestored=selective['windowsPathRestored'],windowsPathAdded=selective['windowsPathAdded'])
+ except BaseException as error:
+--- a/owned_cleanup.py
++++ b/owned_cleanup.py
+@@ -0,0 +1,62 @@
++"""Remove registered proof trees; handle only Windows readonly regular-file unlink errors."""
++import os
++from pathlib import Path
++import shutil
++import stat
++
++
++def remove_owned_tree(target, owned_root):
++    root = Path(os.path.abspath(owned_root))
++    tree = Path(os.path.abspath(target))
++    root_info = root.lstat()
++    tree_info = tree.lstat()
++    reparse = getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0)
++    for path, info in [(root, root_info), (tree, tree_info)]:
++        if not stat.S_ISDIR(info.st_mode) or getattr(info, 'st_file_attributes', 0) & reparse:
++            raise RuntimeError('cleanup requires an owned regular directory: ' + str(path))
++    if not tree.is_relative_to(root) or tree.resolve() != tree or root.resolve() != root:
++        raise RuntimeError('cleanup tree is outside the registered root or passes through an alias')
++    root_identity = (root_info.st_dev, root_info.st_ino)
++
++    def onexc(function, failed_path, error):
++        if (
++            os.name != 'nt'
++            or function is not os.unlink
++            or not isinstance(error, PermissionError)
++            or getattr(error, 'winerror', None) != 5
++        ):
++            raise error
++        candidate = Path(os.path.abspath(failed_path))
++        if (
++            candidate == tree
++            or not candidate.is_relative_to(tree)
++            or not candidate.parent.resolve().is_relative_to(tree)
++        ):
++            raise error
++        current_root = root.lstat()
++        if (current_root.st_dev, current_root.st_ino) != root_identity:
++            raise error
++        before = candidate.lstat()
++        if (
++            not stat.S_ISREG(before.st_mode)
++            or before.st_nlink != 1
++            or before.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
++            or not before.st_file_attributes & stat.FILE_ATTRIBUTE_READONLY
++        ):
++            raise error
++        # Only this known readonly regular file changes; ACLs, directories and other errors stay untouched.
++        os.chmod(candidate, stat.S_IMODE(before.st_mode) | stat.S_IWRITE)
++        after = candidate.lstat()
++        if (
++            (after.st_dev, after.st_ino) != (before.st_dev, before.st_ino)
++            or not stat.S_ISREG(after.st_mode)
++            or after.st_nlink != 1
++            or after.st_file_attributes & (stat.FILE_ATTRIBUTE_REPARSE_POINT | stat.FILE_ATTRIBUTE_READONLY)
++        ):
++            raise error
++        function(candidate)
++
++    if os.name == 'nt':
++        shutil.rmtree(tree, onexc=onexc)
++    else:
++        shutil.rmtree(tree)

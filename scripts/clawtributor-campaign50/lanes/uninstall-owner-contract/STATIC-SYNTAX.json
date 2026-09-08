@@ -1,0 +1,72 @@
+[
+  {
+    "path": "bootstrap-runner.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "bridge.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "check-artifact.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "driver.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "launch-driver.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "owned_cleanup.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "process_capture.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "supervisor-controls.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "tooling.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "verify-inputs.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "windows_job.py",
+    "check": "Python AST parse only",
+    "passed": true
+  },
+  {
+    "path": "bootstrap-linux.sh",
+    "check": "bash -n only; no script execution",
+    "passed": true
+  },
+  {
+    "path": "owner-posix.sh",
+    "check": "bash -n only; no script execution",
+    "passed": true
+  },
+  {
+    "path": "run.sh",
+    "check": "bash -n only; no script execution",
+    "passed": true
+  }
+]

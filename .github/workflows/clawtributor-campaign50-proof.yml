@@ -130,12 +130,18 @@ jobs:
           [[ "$RUNNER_ENVIRONMENT" == github-hosted ]]
           evidence="$GITHUB_WORKSPACE/evidence/$PROOF_LANE"
           mkdir -p "$evidence"
+          bootstrap="$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/bootstrap.sh"
+          if [[ "$PROOF_VARIANT" == installer-ownership ]]; then
+            [[ "$PROOF_LANE" == uninstall-owner-posix && "$PROOF_DIRECTORY" == uninstall-owner-contract && "$PROOF_MODE" == baseline ]]
+            [[ "$SOURCE_SHA" == f5a30f8484671abdb422a9ea8b39837a668ed019 && "$NODE_VERSION" == 24.20.0 && "$PNPM_VERSION" == 12.3.4 ]]
+            bootstrap="$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/lanes/$PROOF_DIRECTORY/bootstrap-linux.sh"
+          fi
           env -i PATH="$PATH" HOME="$RUNNER_TEMP/campaign50-$PROOF_LANE-home" \
             CI=1 LANG=C.UTF-8 TZ=UTC \
             PROOF_LANE="$PROOF_LANE" PROOF_MODE="$PROOF_MODE" PROOF_VARIANT="$PROOF_VARIANT" \
             SOURCE_SHA="$SOURCE_SHA" NODE_VERSION="$NODE_VERSION" PNPM_VERSION="$PNPM_VERSION" \
             OPENCLAW_VITEST_MAX_WORKERS=2 \
-            bash "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/bootstrap.sh" \
+            bash "$bootstrap" \
             "$GITHUB_WORKSPACE/target" \
             "$GITHUB_WORKSPACE/proof/scripts/clawtributor-campaign50/lanes/$PROOF_DIRECTORY" \
             "$evidence"

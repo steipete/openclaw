@@ -1,0 +1,82 @@
+{
+  "purpose": "Transport inspected upstream code byte-identically as inert text so canonical formatting does not rewrite it. Runtime code and source pins are unchanged.",
+  "snapshots": [
+    {
+      "originalTransportPath": "tool-source/npm-uninstall.js",
+      "transportPath": "tool-source/npm-uninstall.js.txt",
+      "logicalSourcePath": "lib/commands/uninstall.js",
+      "sha256": "eecb339bdeab4e20dbee6b94f97698a51233f3fd1c849b9dfb8785885585c1d3",
+      "bytes": 1714,
+      "role": "inert inspected upstream source; not imported or executed from this packet",
+      "source": {
+        "package": "npm",
+        "version": "11.19.0",
+        "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/lib/commands/uninstall.js",
+        "nodeRelease": "v24.20.0",
+        "npmMetadata": "tool-source/node-npm-package.json"
+      }
+    },
+    {
+      "originalTransportPath": "tool-source/official-npm-npm.js",
+      "transportPath": "tool-source/official-npm-npm.js.txt",
+      "logicalSourcePath": "lib/npm.js",
+      "sha256": "dd258b095bff5a0a16636bcc4cb457330624999485f64e1944d57424cbebebea",
+      "bytes": 17009,
+      "role": "inert inspected upstream source; not imported or executed from this packet",
+      "source": {
+        "package": "npm",
+        "version": "11.19.0",
+        "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/lib/npm.js",
+        "nodeRelease": "v24.20.0",
+        "npmMetadata": "tool-source/node-npm-package.json"
+      }
+    },
+    {
+      "originalTransportPath": "tool-source/official-npm-uninstall.js",
+      "transportPath": "tool-source/official-npm-uninstall.js.txt",
+      "logicalSourcePath": "lib/commands/uninstall.js",
+      "sha256": "eecb339bdeab4e20dbee6b94f97698a51233f3fd1c849b9dfb8785885585c1d3",
+      "bytes": 1714,
+      "role": "inert inspected upstream source; not imported or executed from this packet",
+      "source": {
+        "package": "npm",
+        "version": "11.19.0",
+        "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/lib/commands/uninstall.js",
+        "nodeRelease": "v24.20.0",
+        "npmMetadata": "tool-source/node-npm-package.json"
+      }
+    },
+    {
+      "originalTransportPath": "tool-source/pnpm-install.js",
+      "transportPath": "tool-source/pnpm-install.js.txt",
+      "logicalSourcePath": "install.js",
+      "sha256": "de82aa5c43698c2cea2d92f3b65ea42b579225a0e97f5f39c1830e000dda4172",
+      "bytes": 5552,
+      "role": "inert inspected upstream source; not imported or executed from this packet",
+      "source": {
+        "package": "pnpm",
+        "version": "12.3.4",
+        "url": "https://registry.npmjs.org/pnpm/-/pnpm-12.3.4.tgz",
+        "archiveMember": "package/install.js",
+        "archiveIntegrity": "sha512-lhqkH7B32joEpEHZ+OFevAyW2o73ELLrZ7+e58sGEOq9SPH9hfUc/+c4RnhfoPh8VqOocqHYk/hEZ0G1zORUVw==",
+        "registryMetadata": "tool-source/pnpm-registry.json"
+      }
+    },
+    {
+      "originalTransportPath": "tool-source/pnpm-native-binary.mjs",
+      "transportPath": "tool-source/pnpm-native-binary.mjs.txt",
+      "logicalSourcePath": "native-binary.mjs",
+      "sha256": "c2f1f0d6e101ad42e788efd4078cde7a8d489b2200cc3d9216ef14fadf4562de",
+      "bytes": 4810,
+      "role": "inert inspected upstream source; not imported or executed from this packet",
+      "source": {
+        "package": "pnpm",
+        "version": "12.3.4",
+        "url": "https://registry.npmjs.org/pnpm/-/pnpm-12.3.4.tgz",
+        "archiveMember": "package/native-binary.mjs",
+        "archiveIntegrity": "sha512-lhqkH7B32joEpEHZ+OFevAyW2o73ELLrZ7+e58sGEOq9SPH9hfUc/+c4RnhfoPh8VqOocqHYk/hEZ0G1zORUVw==",
+        "registryMetadata": "tool-source/pnpm-registry.json"
+      }
+    }
+  ]
+}

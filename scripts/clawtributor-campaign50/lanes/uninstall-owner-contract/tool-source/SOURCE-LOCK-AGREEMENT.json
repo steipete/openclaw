@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
+  "packages": [
+    {
+      "name": "pnpm",
+      "version": "12.3.4",
+      "integrity": "sha512-lhqkH7B32joEpEHZ+OFevAyW2o73ELLrZ7+e58sGEOq9SPH9hfUc/+c4RnhfoPh8VqOocqHYk/hEZ0G1zORUVw=="
+    },
+    {
+      "name": "@pnpm/exe.linux-x64",
+      "version": "12.3.4",
+      "integrity": "sha512-2ZqOlSPkfwX1h5cR+FPiWf8+F+2hZT/3TvhUK5sigHqwaQCIiq8R7CGxhndKs63JtcLi2a1Qpo+wX/EoyfjyJQ=="
+    },
+    {
+      "name": "@pnpm/exe.win32-x64",
+      "version": "12.3.4",
+      "integrity": "sha512-WH/KqBPY/hq2Tb7SgQltEZytimcjgKRaCRL/aM9CI0c67iKc5TVmHUhIiL3Ux9FB4bWn36i6XewUcScQI+zG8w=="
+    }
+  ]
+}

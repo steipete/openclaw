@@ -1,0 +1,45 @@
+{
+  "npm": "11.19.0 bundled with Node24.20.0",
+  "npmConfig": "10.12.0",
+  "officialConfigMatchesInspectedLocalBytes": true,
+  "sources": [
+    {
+      "path": "npm-config-index.js.txt",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/node_modules/@npmcli/config/lib/index.js",
+      "bytes": 32085,
+      "sha256": "938b85a17fde9f2355497fd4befc9bac45d406fb4afacd8af63322796697ff06"
+    },
+    {
+      "path": "npm-config-package.json.txt",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/node_modules/@npmcli/config/package.json",
+      "bytes": 1439,
+      "sha256": "17e999d89f983a3cc9f8149cffbf4c5e3dec7f4f505b81d072398286c39deaad",
+      "logicalSourcePath": "package.json"
+    },
+    {
+      "path": "git-windows-object-file.c.txt",
+      "url": "https://raw.githubusercontent.com/git-for-windows/git/v2.51.0.windows.1/object-file.c",
+      "bytes": 42251,
+      "sha256": "27d4d7c0646dd3be03282137a5e6dfa7ee2e8fcde61530f3cacb5d986c87d186"
+    },
+    {
+      "path": "cpython-3.12.3-shutil.py.txt",
+      "url": "https://raw.githubusercontent.com/python/cpython/v3.12.3/Lib/shutil.py",
+      "bytes": 58120,
+      "sha256": "819e518cb7a539d09b2526138015541b34d2646afb9c2f6ae4ffd476d6a0fcf4"
+    },
+    {
+      "path": "cpython-3.13.0-shutil.py.txt",
+      "url": "https://raw.githubusercontent.com/python/cpython/v3.13.0/Lib/shutil.py",
+      "bytes": 57493,
+      "sha256": "850abe40403bd41a9b33ab3f0cda5a833bf053bd3cd3eee7006293ba1487fe99"
+    },
+    {
+      "path": "cpython-3.14.0-shutil.py.txt",
+      "url": "https://raw.githubusercontent.com/python/cpython/v3.14.0/Lib/shutil.py",
+      "bytes": 60568,
+      "sha256": "ab36f39f04e349020cdd13cf41b50905fc399150fb5e6a7cf73d69b22dd949cd"
+    }
+  ],
+  "executed": false
+}

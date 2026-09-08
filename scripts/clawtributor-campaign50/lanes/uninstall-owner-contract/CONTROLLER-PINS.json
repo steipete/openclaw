@@ -1,0 +1,27 @@
+{
+  "commit": "d08ba196072a37a0e28774859f64b37271d541f1",
+  "priorCommit": "dfa24553933a6dcc6283c98c8521a78c03dfe49e",
+  "files": [
+    {
+      "path": ".github/workflows/clawtributor-campaign50-proof.yml",
+      "sha256": "015bd9b2bff49d446bb3e3ef4e8af823c053344137bb6ed1fd5e6ab6481d21d6"
+    },
+    {
+      "path": "scripts/clawtributor-campaign50/select-matrix.py",
+      "sha256": "8c05fb3a95a9b36c0fed664daa115cee14ca9b758d90cc42c3a733c45dabf0bf"
+    },
+    {
+      "path": "scripts/clawtributor-campaign50/bootstrap.sh",
+      "sha256": "17514d8ec6542a1dfdc2b1daa5a5bb0afeb599a7f8912c7b0e49b608d110a8b5"
+    },
+    {
+      "path": "scripts/clawtributor-campaign50/README.md",
+      "sha256": "68925b9f30b1c62e619e894a33118f08ce65a17e75e8995c283d502f270fb157"
+    },
+    {
+      "path": "scripts/clawtributor-campaign50/lanes/windows/bootstrap-windows.ps1",
+      "sha256": "5a1b3c7c2619e73048f9c2b5caee0b9c123d732f857eadde334d6a972abe65c2"
+    }
+  ],
+  "artifactOwnership": "bootstraps write bootstrap-final-working-tree.patch; lanes retain their own sealed artifact names"
+}
