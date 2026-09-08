@@ -1,0 +1,476 @@
+diff --git a/ui/src/app/app-shell-view.test.ts b/ui/src/app/app-shell-view.test.ts
+deleted file mode 100644
+index 524e60b0c4f351e401061f21bbee9a9e3ad2ddf9..0000000000000000000000000000000000000000
+--- a/ui/src/app/app-shell-view.test.ts
++++ /dev/null
+@@ -1,154 +0,0 @@
+-/* @vitest-environment jsdom */
+-
+-import { render as renderLit, type TemplateResult } from "lit";
+-import { afterEach, describe, expect, it, vi } from "vitest";
+-import type { GatewayBrowserClient } from "../api/gateway.ts";
+-import type { GatewaySessionRow } from "../api/types.ts";
+-import { createStorageMock } from "../test-helpers/storage.ts";
+-import type { ShellRouteState } from "./app-host-route-state.ts";
+-import { resetAppHostTestGlobals } from "./app-host.test-support.ts";
+-// Settle sidebar so collapsed chrome can render without lazy-load races.
+-import "../components/app-sidebar.ts";
+-import "./app-host.ts";
+-import type { ApplicationRuntime } from "./bootstrap.ts";
+-import type { ApplicationContext } from "./context.ts";
+-import { loadSettings } from "./settings.ts";
+-
+-type ShellRenderState = {
+-  runtime: ApplicationRuntime;
+-  activeSessionKey: string;
+-  routeState: ShellRouteState;
+-  render: () => TemplateResult;
+-};
+-
+-afterEach(() => {
+-  resetAppHostTestGlobals();
+-});
+-
+-function renderCollapsedChrome(options: {
+-  environment: { label: string; color: "amber" } | null;
+-  assistantName: string;
+-}) {
+-  vi.stubGlobal("localStorage", createStorageMock());
+-  vi.stubGlobal(
+-    "matchMedia",
+-    vi.fn(() => ({ matches: false })),
+-  );
+-  const client = {} as GatewayBrowserClient;
+-  const context = {
+-    basePath: "",
+-    gateway: {
+-      snapshot: {
+-        phase: "connected",
+-        client,
+-        sessionKey: "agent:main:main",
+-        assistantAgentId: "main",
+-        hello: {
+-          auth: { role: "operator", scopes: ["operator.admin"] },
+-          features: {
+-            methods: ["openclaw.chat", "chat.history", "chat.send", "sessions.create"],
+-          },
+-        },
+-        lastError: null,
+-        offlineStable: false,
+-        selfUser: null,
+-      },
+-      connection: { gatewayUrl: "ws://gateway.test", token: "", password: "" },
+-      connect: vi.fn(),
+-    },
+-    agents: {
+-      state: {
+-        agentsList: {
+-          defaultId: "main",
+-          mainKey: "main",
+-          scope: "per-sender",
+-          agents: [{ id: "main" }],
+-        },
+-      },
+-    },
+-    agentSelection: { state: { selectedId: "main" } },
+-    config: {
+-      current: {
+-        terminalEnabled: true,
+-        serverVersion: null,
+-        devGitBranch: null,
+-        environment: options.environment,
+-        assistantIdentity: { name: options.assistantName, avatar: null },
+-      },
+-    },
+-    runtimeConfig: {
+-      state: { configSchema: null, configForm: null, configSnapshot: null, configUiHints: null },
+-    },
+-    sessions: {
+-      state: {
+-        agentId: "main",
+-        result: {
+-          count: 1,
+-          defaults: {},
+-          path: "",
+-          sessions: [
+-            { key: "agent:main:main", kind: "direct", updatedAt: 0 } satisfies GatewaySessionRow,
+-          ],
+-          ts: 0,
+-        },
+-      },
+-    },
+-    navigation: {
+-      snapshot: {
+-        navCollapsed: true,
+-        navWidth: 280,
+-        sidebarEntries: [],
+-        pinnedAgentIds: [],
+-      },
+-      update: vi.fn(),
+-    },
+-    overlays: {
+-      snapshot: {
+-        updateAvailable: null,
+-        updateRunning: false,
+-        updateStatusBanner: null,
+-        recordedUpdateAttempt: null,
+-        controlUiRefreshRequired: false,
+-        approvalQueue: [],
+-        approvalBusy: false,
+-        approvalErrors: new Map(),
+-        devicePairSetupOpen: false,
+-        devicePairSetupLifecycle: { phase: "selection", access: "full" },
+-        devicePairPendingCount: 0,
+-      },
+-      runUpdate: vi.fn(),
+-    },
+-    theme: { mode: "dark", settings: loadSettings() },
+-    preload: vi.fn(),
+-  } as unknown as ApplicationContext;
+-
+-  const shell = document.createElement("openclaw-app-shell") as unknown as ShellRenderState;
+-  shell.runtime = { context, router: {} } as unknown as ApplicationRuntime;
+-  shell.activeSessionKey = "agent:main:main";
+-  shell.routeState = { routeId: "chat" };
+-
+-  const container = document.createElement("div");
+-  renderLit(shell.render(), container);
+-  return container.querySelector<HTMLElement>(".shell-chrome-controls__nav-toggle");
+-}
+-
+-describe("OpenClaw shell collapsed chrome avatar", () => {
+-  it("sets data-env-avatar to a complete emoji grapheme when environment is set", () => {
+-    const toggle = renderCollapsedChrome({
+-      environment: { label: "edge", color: "amber" },
+-      assistantName: "😀Alice",
+-    });
+-
+-    expect(toggle?.getAttribute("data-env-avatar")).toBe("😀");
+-    expect(toggle?.getAttribute("data-env-avatar")).not.toBe("😀Alice".charAt(0));
+-  });
+-
+-  it("omits data-env-avatar when environment is set but the assistant name is empty", () => {
+-    const toggle = renderCollapsedChrome({
+-      environment: { label: "edge", color: "amber" },
+-      assistantName: "",
+-    });
+-
+-    expect(toggle?.hasAttribute("data-env-avatar")).toBe(false);
+-  });
+-});
+diff --git a/ui/src/app/app-shell-view.ts b/ui/src/app/app-shell-view.ts
+index a974e204c08fa682bea8ff130ec8d0673f91c9d0..5bca7622f7eb3ce44e538fc6f1650ad5821569cb 100644
+--- a/ui/src/app/app-shell-view.ts
++++ b/ui/src/app/app-shell-view.ts
+@@ -12,8 +12,8 @@ import {
+ } from "../components/settings-sidebar-lazy.ts";
+ import type { ThemeModeChangeDetail } from "../components/theme-mode-toggle.ts";
+ import { t } from "../i18n/index.ts";
+-import { deriveAvatarInitial } from "../lib/avatar.ts";
+ import { canCallGatewayMethod } from "../lib/gateway-methods.ts";
++import { takeGraphemes } from "../lib/graphemes.ts";
+ import {
+   formatKeyboardShortcutCombo,
+   KEYBOARD_SHORTCUT_COMBOS,
+@@ -462,9 +462,7 @@ export function renderApplicationShell(host: ShellViewHost) {
+                     aria-label=${t("nav.expand")}
+                     aria-expanded="false"
+                     data-env-avatar=${
+-                      config.environment
+-                        ? deriveAvatarInitial(config.assistantIdentity.name) || nothing
+-                        : nothing
++                      config.environment ? takeGraphemes(config.assistantIdentity.name, 1) : nothing
+                     }
+                     @click=${() => host.toggleNavigationSurface()}
+                   >
+diff --git a/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts b/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts
+index 34fbe4eb5eff512370dcde6099d5394f83f505d1..f21badb72044ad2548005f17840b25d30d728a8b 100644
+--- a/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts
++++ b/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts
+@@ -1,10 +1,5 @@
+-// Control UI E2E: dashboard author avatars and collapsed-shell env chrome keep
+-// complete emoji graphemes instead of UTF-16 .charAt(0) fragments.
+-import path from "node:path";
+-import type { Page } from "playwright";
+-import { beforeEach, expect, it } from "vitest";
++import { expect, it } from "vitest";
+ import { CONTROL_UI_BOOTSTRAP_CONFIG_PATH } from "../../../src/gateway/control-ui-bootstrap-contract.js";
+-import { createControlUiE2eArtifactDir } from "../test-helpers/control-ui-e2e-artifacts.ts";
+ import {
+   createControlUiMockBootstrapConfig,
+   installMockGateway,
+@@ -12,179 +7,52 @@ import {
+ import { createControlUiE2eSuite } from "./control-ui-e2e-suite.test-support.ts";
+ 
+ const suite = createControlUiE2eSuite({
+-  name: "Control UI dashboard and shell grapheme avatars",
++  name: "Control UI shell avatar initials",
+   startServerBeforeBrowser: true,
+-  unavailableMessage: (executablePath) =>
+-    `Playwright Chromium is not available at ${executablePath}`,
+ });
+ 
+-const captureUiProof = process.env.OPENCLAW_CAPTURE_UI_PROOF === "1";
+-let proofDir: string;
+-beforeEach(() => {
+-  if (captureUiProof) {
+-    proofDir = createControlUiE2eArtifactDir("dashboard-shell-avatar-grapheme");
+-  }
+-});
+-
+-const flagAuthorLabel = "🇺🇸Team";
+-const flagGrapheme = "🇺🇸";
+-const emojiAssistantName = "😀Alice";
+-const emojiGrapheme = "😀";
+-const environment = { label: "edge", color: "amber" as const };
+-const dashboardKey = "agent:main:dashboard:12345678-90ab-cdef-1234-567890abcdef";
+-const now = Date.now();
+-
+-async function screenshot(page: Page, name: string, locator?: ReturnType<Page["locator"]>) {
+-  if (!captureUiProof) {
+-    return;
+-  }
+-  const target = locator ?? page;
+-  await target.screenshot({
+-    animations: "disabled",
+-    path: path.join(proofDir, name),
+-  });
+-}
+-
+-async function fulfillBootstrap(
+-  page: Page,
+-  options: { assistantName: string; withEnvironment: boolean },
+-) {
+-  // Stacked after installMockGateway so this handler wins (Playwright LIFO).
+-  await page.route(`**${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}`, (route) =>
+-    route.fulfill({
+-      json: {
+-        ...createControlUiMockBootstrapConfig({
+-          assistantName: options.assistantName || "OpenClaw",
+-        }),
+-        assistantName: options.assistantName,
+-        ...(options.withEnvironment ? { environment } : {}),
+-      },
+-    }),
+-  );
+-}
+-
+-async function collapseNavigation(page: Page) {
+-  await page.locator(".sidebar-brand__collapse").click();
+-  await expect
+-    .poll(() => page.locator(".shell").getAttribute("class"))
+-    .toContain("shell--nav-collapsed");
+-  await page.locator(".shell-chrome-controls__nav-toggle").waitFor();
+-}
+-
+ suite.define(() => {
+-  it("renders a complete flag grapheme in the dashboard author avatar", async () => {
+-    await suite.withPage(
+-      {
+-        locale: "en-US",
+-        serviceWorkers: "block",
+-        viewport: { height: 900, width: 1440 },
+-      },
+-      async ({ page }) => {
+-        await installMockGateway(page, {
+-          sessions: [
+-            {
+-              key: dashboardKey,
+-              kind: "direct",
+-              boardFace: "dashboard",
+-              displayName: "Deploy monitor",
+-              updatedAt: now,
+-              status: "done",
+-              createdActor: { type: "human", id: "team", label: flagAuthorLabel },
+-            },
+-          ],
+-        });
+-
+-        const response = await page.goto(`${suite.server.baseUrl}dashboards`);
+-        expect(response?.status()).toBe(200);
+-        const gallery = page.locator("openclaw-dashboards-page");
+-        const card = gallery.locator("[data-dashboard-session]", { hasText: "Deploy monitor" });
+-        await card.waitFor();
+-        const avatar = card.locator(".dashboard-card__avatar");
+-        await expect.poll(() => avatar.textContent()).toBe(flagGrapheme);
+-        expect(await avatar.textContent()).not.toBe(flagAuthorLabel.charAt(0));
+-        await screenshot(page, "01-dashboard-author-avatar.png", card);
+-        await screenshot(page, "01-dashboard-author-avatar-crop.png", avatar);
+-      },
+-    );
+-  });
+-
+-  it("sets collapsed shell data-env-avatar to a complete emoji grapheme", async () => {
+-    await suite.withPage(
+-      {
+-        locale: "en-US",
+-        serviceWorkers: "block",
+-        viewport: { height: 900, width: 1440 },
+-      },
+-      async ({ page }) => {
+-        await installMockGateway(page, { assistantName: emojiAssistantName });
+-        await fulfillBootstrap(page, {
+-          assistantName: emojiAssistantName,
+-          withEnvironment: true,
+-        });
+-
+-        const response = await page.goto(`${suite.server.baseUrl}dashboards`);
+-        expect(response?.status()).toBe(200);
+-        await page.locator("openclaw-dashboards-page").waitFor();
+-        await collapseNavigation(page);
+-
+-        const toggle = page.locator(".shell-chrome-controls__nav-toggle");
+-        await expect.poll(() => toggle.getAttribute("data-env-avatar")).toBe(emojiGrapheme);
+-        expect(await toggle.getAttribute("data-env-avatar")).not.toBe(emojiAssistantName.charAt(0));
+-        await screenshot(page, "02-collapsed-shell-env-avatar.png");
+-        await screenshot(page, "02-collapsed-shell-env-avatar-crop.png", toggle);
+-      },
+-    );
+-  });
+-
+-  it("omits collapsed shell data-env-avatar when the assistant name is empty", async () => {
+-    await suite.withPage(
+-      {
+-        locale: "en-US",
+-        serviceWorkers: "block",
+-        viewport: { height: 900, width: 1440 },
+-      },
+-      async ({ page }) => {
+-        // Bootstrap empty names normalize to "Assistant", so start with a real
+-        // env chrome avatar then clear the live identity to hit the omit branch.
+-        await installMockGateway(page, { assistantName: emojiAssistantName });
+-        await fulfillBootstrap(page, {
+-          assistantName: emojiAssistantName,
+-          withEnvironment: true,
+-        });
+-
+-        const response = await page.goto(`${suite.server.baseUrl}dashboards`);
+-        expect(response?.status()).toBe(200);
+-        await page.locator("openclaw-dashboards-page").waitFor();
+-        await collapseNavigation(page);
+-
+-        const toggle = page.locator(".shell-chrome-controls__nav-toggle");
+-        await expect.poll(() => toggle.getAttribute("data-env-avatar")).toBe(emojiGrapheme);
+-
+-        await page.locator("openclaw-app-shell").evaluate(async (element) => {
+-          const shell = element as HTMLElement & {
+-            requestUpdate?: () => void;
+-            updateComplete?: Promise<unknown>;
+-            runtime?: {
+-              context?: {
+-                config?: { current?: { assistantIdentity?: { name: string } } };
+-              };
+-            };
+-          };
+-          const identity = shell.runtime?.context?.config?.current?.assistantIdentity;
+-          if (!identity) {
+-            throw new Error("Assistant identity is unavailable on the shell runtime");
+-          }
+-          identity.name = "";
+-          shell.requestUpdate?.();
+-          await shell.updateComplete;
+-        });
+-
+-        await expect
+-          .poll(() => toggle.evaluate((el) => el.hasAttribute("data-env-avatar")))
+-          .toBe(false);
+-        await screenshot(page, "03-collapsed-shell-empty-name.png");
+-        await screenshot(page, "03-collapsed-shell-empty-name-crop.png", toggle);
+-      },
+-    );
++  it.each([
++    { name: "😀Alice", environment: true, initial: "😀" },
++    { name: "alice", environment: true, initial: "a" },
++    { name: "😀Alice", environment: false, initial: null },
++  ])("preserves $name with environment=$environment", async ({ name, environment, initial }) => {
++    await suite.withPage({ viewport: { width: 1440, height: 900 } }, async ({ page }) => {
++      const gateway = await installMockGateway(page, { assistantName: name });
++      await page.route(`**${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}`, (route) =>
++        route.fulfill({
++          json: {
++            ...createControlUiMockBootstrapConfig({ assistantName: name }),
++            ...(environment ? { environment: { label: "edge", color: "amber" } } : {}),
++          },
++        }),
++      );
++      const bootstrap = page.waitForResponse(
++        (response) =>
++          new URL(response.url()).pathname === CONTROL_UI_BOOTSTRAP_CONFIG_PATH &&
++          response.request().method() === "GET",
++      );
++      const [, response] = await Promise.all([
++        page.goto(`${suite.server.baseUrl}dashboards`),
++        bootstrap,
++      ]);
++      expect(response.status()).toBe(200);
++      await page.locator(".sidebar-brand__collapse").click();
++      const toggle = page.locator(".shell-chrome-controls__nav-toggle");
++      await toggle.waitFor();
++      if (environment) {
++        await page.locator(".shell-chrome-controls__nav-toggle[data-env-avatar]").waitFor();
++      }
++      expect(await toggle.getAttribute("data-env-avatar")).toBe(initial);
++      if (initial) {
++        expect(
++          await toggle.evaluate((element) => getComputedStyle(element, "::before").content),
++        ).toContain(initial);
++      }
++      await toggle.click();
++      await page.locator(".sidebar-brand__collapse").waitFor();
++      await expect.poll(() => toggle.count()).toBe(0);
++      expect(await gateway.getRequests("chat.send")).toHaveLength(0);
++    });
+   });
+ });
+diff --git a/ui/src/lib/avatar.ts b/ui/src/lib/avatar.ts
+index 7c9c53612fd02cf84d814641b559ad12dc7469b5..2f250b65d37588ad97a0c673a78367c16539f8d5 100644
+--- a/ui/src/lib/avatar.ts
++++ b/ui/src/lib/avatar.ts
+@@ -50,12 +50,8 @@ export function resolveChatAvatarRenderUrl(
+ }
+ 
+ export function deriveAvatarInitial(value: string | null | undefined): string {
+-  const source = value ?? "";
+-  if (!source) {
+-    return "";
+-  }
+   // Keep the whole leading grapheme so emoji names never expose a broken surrogate.
+-  return takeGraphemes(source, 1).toUpperCase();
++  return takeGraphemes(value ?? "", 1).toUpperCase();
+ }
+ 
+ export function resolveAssistantTextAvatar(value: string | null | undefined): string | null {
+diff --git a/ui/src/pages/dashboards/view.test.ts b/ui/src/pages/dashboards/view.test.ts
+index 2e99e2ddb670b5d13b4812866845789fcfe9240e..2241500bda490e21c4b29d597403a442da0ceb21 100644
+--- a/ui/src/pages/dashboards/view.test.ts
++++ b/ui/src/pages/dashboards/view.test.ts
+@@ -81,6 +81,5 @@ describe("dashboards index", () => {
+ 
+     const avatar = container.querySelector(".dashboard-card__avatar");
+     expect(avatar?.textContent).toBe("🇺🇸");
+-    expect(avatar?.textContent).not.toBe("🇺🇸Team".charAt(0));
+   });
+ });
+diff --git a/ui/src/pages/dashboards/view.ts b/ui/src/pages/dashboards/view.ts
+index da27a42c410ed753708e4ea7c5377b4379f6af44..a52e7940f7df39a0cf8e928691ce9c2f22c24bac 100644
+--- a/ui/src/pages/dashboards/view.ts
++++ b/ui/src/pages/dashboards/view.ts
+@@ -7,8 +7,8 @@ import { icons } from "../../components/icons.ts";
+ import { renderPanelRefreshStatus } from "../../components/panel-refresh-status.ts";
+ import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
+ import { t } from "../../i18n/index.ts";
+-import { deriveAvatarInitial } from "../../lib/avatar.ts";
+ import { formatRelativeTimestamp } from "../../lib/format.ts";
++import { takeGraphemes } from "../../lib/graphemes.ts";
+ import { resolveSessionDisplayName } from "../../lib/session-display.ts";
+ import { sessionNavigationTarget } from "../../lib/sessions/route-navigation.ts";
+ import "../../styles/dashboards.css";
+@@ -105,7 +105,7 @@ function renderDashboardCard(
+   });
+   const author = dashboardAuthor(row, data.fallbackAgentId);
+   const title = resolveSessionDisplayName(row.key, row);
+-  const initial = deriveAvatarInitial(author.label.trim()) || "?";
++  const initial = takeGraphemes(author.label.trim(), 1).toLocaleUpperCase() || "?";
+   return html`<article class="dashboard-card" data-dashboard-session=${row.key}>
+     <a class="dashboard-card__main" href=${target.href} aria-label=${title}>
+       ${renderDashboardPreview(row, gatewaySnapshot, previewError)}

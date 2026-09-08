@@ -1,0 +1,11 @@
+{
+  "name": "avatar-141285-green",
+  "sourceSha": "e3d2236cf231218738ddfb2cbdb415118f7b45dc",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "candidateBase": "8dde3559a5516073694517043cc81efed41737bf",
+  "expected": "9focusedunit +7browser tests pass;22actualcanaryrows14PNGs14videos;nativecandidate5filechangedgate",
+  "productionNet": -2,
+  "testSha256": "b4eda719a087eed5f202fa64db83df884cd8d64cfff4010d7aff902fef192d91"
+}
