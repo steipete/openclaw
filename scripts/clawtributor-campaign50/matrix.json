@@ -1,12 +1,12 @@
 [
   {
-    "id": "avatar-141285-green",
-    "directory": "avatar-141285-green",
+    "id": "automation-defaults-141548",
+    "directory": "automation-defaults-focused-green",
     "runner": "ubuntu-24.04",
-    "source": "e3d2236cf231218738ddfb2cbdb415118f7b45dc",
+    "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "native-avatar-candidate"
+    "variant": "focused-metadata-candidate"
   }
 ]
