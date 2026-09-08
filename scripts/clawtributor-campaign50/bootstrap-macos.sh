@@ -15,7 +15,7 @@ finish() {
   if [[ -e "$evidence_dir/native-process-cleanup-incomplete.json" ]]; then
     proof_exit=1
     printf '%s\n' skipped-incomplete-native-process-cleanup > "$evidence_dir/source-diff-capture.txt"
-  elif ! git -C "$target_dir" diff --binary "$SOURCE_SHA" -- > "$evidence_dir/final-working-tree.patch"; then
+  elif ! git -C "$target_dir" diff --binary "$SOURCE_SHA" -- > "$evidence_dir/bootstrap-final-working-tree.patch"; then
     proof_exit=1
     printf '%s\n' failed > "$evidence_dir/source-diff-capture.txt"
   fi

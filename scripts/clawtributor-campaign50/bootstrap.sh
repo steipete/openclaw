@@ -28,7 +28,7 @@ NODE
 finish() {
   proof_exit=$?
   printf '%s\n' "$proof_exit" > "$evidence_dir/exit-code.txt"
-  git diff --binary "$SOURCE_SHA" -- > "$evidence_dir/final-working-tree.patch"
+  git diff --binary "$SOURCE_SHA" -- > "$evidence_dir/bootstrap-final-working-tree.patch"
   exit "$proof_exit"
 }
 trap finish EXIT

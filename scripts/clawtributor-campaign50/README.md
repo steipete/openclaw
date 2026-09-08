@@ -8,7 +8,7 @@ Each push runs the reviewed `matrix.json` against exact source commits. Workflow
 concurrency serializes runs; at most two proof jobs execute concurrently. Do not
 push successive waves while an earlier queued run still owns required evidence.
 
-All runners are explicit GitHub-hosted Ubuntu images. Checkout credentials are
+Runners use explicitly selected GitHub-hosted images. Checkout credentials are
 not persisted. Target installation and execution receive an allowlisted process
 environment and a fresh HOME, with no repository secrets or hydration. The source
 packageManager must agree with the reviewed manifest, and Node/pnpm versions are
@@ -24,3 +24,9 @@ media files, real descriptor/buffer/inbound paths, and focused regression tests.
 Debian 12 / ffprobe 5 and subsequent reviewed browser/runtime lanes follow as
 separate matrix updates. Artifacts are retained for 14 days; copy them into the
 durable campaign evidence directory promptly.
+
+The shared Linux and macOS bootstraps own `bootstrap-final-working-tree.patch`.
+A lane that captures or seals its own patch owns `final-working-tree.patch`; the
+bootstrap never overwrites it. Readers of a new bootstrap snapshot use its
+bootstrap-prefixed filename. Historical artifacts keep their original names
+and hashes. Lane-local bootstraps must also use a distinct owned filename.
