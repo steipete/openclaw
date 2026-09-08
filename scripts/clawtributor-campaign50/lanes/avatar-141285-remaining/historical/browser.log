@@ -1,0 +1,564 @@
+[2m12:04:51 AM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[36mvite v8.2.2 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 3391 modules transformed.
+rendering chunks...
+Control UI precompression: starting
+Control UI precompression complete: 417 assets (834 sidecars)
+computing gzip size...
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/frame-Cvb396Ae.js                                             4.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/diff.worker-lyLNkqtT.js                                       8.68 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/index.html                                                          18.82 kB │ gzip:   5.21 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/social-card.png                                                    142.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mermaid.min-BZuf2r7K.js                                   3,572.66 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cron-jobs-pagination-WTYglB0y.css                             0.34 kB │ gzip:   0.24 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/device-page-DzxF6N-U.css                                      0.37 kB │ gzip:   0.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/board-document-B0Y4zGJq.css                                   1.18 kB │ gzip:   0.47 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-dashboard-BZzcciLT.css                             1.52 kB │ gzip:   0.56 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tasks-page-Cvtw3Yog.css                                       1.68 kB │ gzip:   0.52 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/native-embed-m2HjHfL8.css                                     1.87 kB │ gzip:   0.63 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/logs-page-DiwHPaoc.css                                        1.89 kB │ gzip:   0.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/connection-page-CMTPawdr.css                                  1.92 kB │ gzip:   0.63 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/wizard-step-controls-CUvrnOcR.css                             1.93 kB │ gzip:   0.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/profile-page-BHDmlBSz.css                                     2.00 kB │ gzip:   0.69 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/report-Cegj5HJR.css                                           2.00 kB │ gzip:   0.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/onboarding-memory-import-DuWLEvoz.css                         2.02 kB │ gzip:   0.64 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/hub-tabs-D2dXz8I8.css                                         2.34 kB │ gzip:   0.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/assistant-panel-Vf7BSqc6.css                                  2.35 kB │ gzip:   0.74 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/update-run-view-BC2Uw3Fp.css                                  2.69 kB │ gzip:   0.81 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/select-picker-CvHp-4fg.css                                    2.75 kB │ gzip:   0.88 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/portals-page-B3O8G1gw.css                                     3.34 kB │ gzip:   1.02 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lobsterdex-page-BYmxmm_r.css                                  3.80 kB │ gzip:   1.19 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/agents-page-CoWopgoO.css                                      3.99 kB │ gzip:   1.24 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/meetings-page-D0oVX6bW.css                                    4.18 kB │ gzip:   1.11 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/devices-page-Do3i-SE3.css                                     4.44 kB │ gzip:   1.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/memory-import-page-744kZiKS.css                               4.48 kB │ gzip:   1.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/apps-page-YnV-N0U5.css                                        4.57 kB │ gzip:   1.24 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/about-page-DaPcd-9T.css                                       4.74 kB │ gzip:   1.46 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-update-card-BF-_KMrW.css                              4.91 kB │ gzip:   1.23 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lane-table-B4rKSBwT.css                                       4.98 kB │ gzip:   1.58 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/github-link-hovercard-sckJWnBv.css                            5.24 kB │ gzip:   1.37 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dashboards-page-D-tGbqgL.css                                  5.40 kB │ gzip:   1.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/secrets-page-CR7OewSk.css                                     5.73 kB │ gzip:   1.36 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/logbook-view-BJCbtib2.css                                     5.75 kB │ gzip:   1.35 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/channel-picker-Dr_cIA_m.css                                   7.69 kB │ gzip:   1.69 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/model-setup-page-B0WDXswA.css                                 8.38 kB │ gzip:   1.96 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/model-providers-page-CrcQRJ-6.css                             8.40 kB │ gzip:   1.84 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/approval-COwc0-bg.css                                         8.73 kB │ gzip:   2.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-progress-hovercard-BM5_ekQd.css                       8.98 kB │ gzip:   1.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/chat-sidebar-region-CA8WlxVq.css                              9.06 kB │ gzip:   1.97 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/custodian-surface-BlvV8Huo.css                               10.86 kB │ gzip:   2.52 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/composer-queue-DviIei7I.css                                  10.96 kB │ gzip:   2.34 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/board-view-Dy3yHmZ7.css                                      11.75 kB │ gzip:   2.75 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-attention-panel-Dj3u30ct.css                         15.28 kB │ gzip:   2.98 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/plugins-hub-header-BuYfmW7w.css                              16.23 kB │ gzip:   3.32 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tool-catalog-B-0ju-Gz.css                                    16.86 kB │ gzip:   3.48 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sessions-page-CCsshFam.css                                   17.47 kB │ gzip:   3.33 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/settings-DR-Ieqvk.css                                        17.92 kB │ gzip:   3.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cron-page-DvGv63Hz.css                                       18.11 kB │ gzip:   3.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/composer-progress-Dce3tQbl.css                               19.40 kB │ gzip:   3.64 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/activity-page-DRS69qhI.css                                   21.58 kB │ gzip:   3.93 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/config-page-D0yRQYzN.css                                     21.70 kB │ gzip:   4.59 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-new-BwiGBzKd.css                             23.67 kB │ gzip:   4.56 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/skill-workshop-page-CUdpJwsY.css                             24.64 kB │ gzip:   4.91 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/usage-DWOUYA21.css                                           31.41 kB │ gzip:   5.79 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-Bs93A4Sj.css                           149.26 kB │ gzip:  24.22 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-CibIhXHx.css                         198.13 kB │ gzip:  32.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-core-BRgpioGt.css                                279.65 kB │ gzip:  45.30 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/agent-select-registration-B-Klg3nY.js                         0.05 kB │ gzip:   0.07 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/composer-status-hPTgjQ1v.js                                   0.05 kB │ gzip:   0.07 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/index-DtaAhiK-.js                                             0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lobster-pet.runtime-LuIc4pcN.js                               0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-progress-hovercard-registration-Q7KCufSi.js           0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-PFCLBU3w.js                                              0.06 kB │ gzip:   0.07 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-gk9IzH8y.js                                              0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/javascript-C7rhitVy.js                                        0.07 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-DDd0doip.js                                              0.07 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/route-loader-BhACaoMf.js                                      0.07 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-6f5bvnw8.js                                              0.08 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/input-dialog-BAMhGitC.js                                      0.08 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/new-session-page-entry-0BELPH5T.js                            0.08 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-placement-recovery-migration.runtime-B_9uK83c.js      0.08 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-placement-startup.runtime-DZ0vahjr.js                 0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/route-loader-BWkFyLz5.js                                      0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/custodian-alert-store-DfB2H-t3.js                             0.09 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/login-gate-BS0Eq8Kx.js                                        0.09 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-update-card-Q7Xc4vEC.js                               0.09 kB │ gzip:   0.11 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/confirm-dialog-C0335gUi.js                                    0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/canvas-surface-lease.runtime-B_gDOnBR.js                      0.10 kB │ gzip:   0.11 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/app-sidebar-session-catalog-render-Dr12VbbP.js                0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/web-push.runtime-BD4JNpAv.js                                  0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/app-sidebar-session-narration-DkfjA4f3.js                     0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/load-OFe1AU5R.js                                              0.12 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/route-view-DlBjUvwI.js                                        0.12 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/swarm-roster-5lRDePXx.js                                      0.13 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/board-view-BdNBNOvw.js                                        0.13 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/modal-dialog-Dpxjfsik.js                                      0.14 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/approval-Dpr9VMH2.js                                          0.14 kB │ gzip:   0.15 kB │ map:    11.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/settings-BirsHu3U.js                                          0.14 kB │ gzip:   0.15 kB │ map:    26.73 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-attention-C0kM_oR4.js                                 0.14 kB │ gzip:   0.11 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/request-usage-snapshot-AbhYu_B9.js                            0.14 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/history-scan-page-controller-DqTcRGb7.js                      0.15 kB │ gzip:   0.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/__vite-browser-external-2447137e-TVBj4TXR.js                  0.16 kB │ gzip:   0.16 kB │ map:     0.35 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/app-sidebar-DCNHPQPd.js                                       0.18 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/outbox-store-projection-C5Hi3IJK.js                           0.19 kB │ gzip:   0.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/chat-page-BWSfKdYI.js                                         0.20 kB │ gzip:   0.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-snapshot-invalidation-DHHhYi4i.js                     0.22 kB │ gzip:   0.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/composer-draft-store.runtime-0lQn_wc5.js                      0.30 kB │ gzip:   0.17 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/approval-result-validators-BNBEdrab.js                        0.32 kB │ gzip:   0.25 kB │ map:     1.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sha2-DUn2ITxO.js                                              0.33 kB │ gzip:   0.20 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/desktop-focus-window-k-mALsZn.js                              0.37 kB │ gzip:   0.27 kB │ map:     0.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/logbook-controller-ChITv0Jx.js                                0.38 kB │ gzip:   0.24 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/route-view-DVyg7pmI.js                                        0.40 kB │ gzip:   0.28 kB │ map:     0.64 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/proposals-D-7UpPTl.js                                         0.41 kB │ gzip:   0.23 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/system-info-BKly3PiY.js                                       0.42 kB │ gzip:   0.30 kB │ map:     0.92 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-D8f4693P.js                              0.42 kB │ gzip:   0.23 kB │ map:   203.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/diff-BCWHhDSU.js                                              0.43 kB │ gzip:   0.33 kB │ map:     1.23 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/slots-BwpPa9Pr.js                                             0.50 kB │ gzip:   0.35 kB │ map:     7.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/theme-color-BwHgSJo3.js                                       0.50 kB │ gzip:   0.39 kB │ map:     1.54 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-C2nulF3z.js                            0.50 kB │ gzip:   0.37 kB │ map:     0.84 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-menus-render-DUfL_i9t.js                              0.52 kB │ gzip:   0.22 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/worktree-preservation-CBXqxTCt.js                             0.55 kB │ gzip:   0.35 kB │ map:     1.32 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cloud-worker-stop.runtime-C6UAZaNf.js                         0.57 kB │ gzip:   0.39 kB │ map:     1.64 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/settings-workspace-gxQUYUSA.js                                0.58 kB │ gzip:   0.35 kB │ map:     1.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/gateway-websocket-url-DeLAU9tz.js                             0.58 kB │ gzip:   0.33 kB │ map:     1.31 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/brainfuck-CxsZo964.js                                         0.74 kB │ gzip:   0.41 kB │ map:     2.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dock-destination-controls-DW09jHh5.js                         0.76 kB │ gzip:   0.46 kB │ map:     2.05 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/custodian-alert-store-C8M3qKFB.js                             0.76 kB │ gzip:   0.40 kB │ map:     2.83 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/properties-BzFeEZmy.js                                        0.80 kB │ gzip:   0.44 kB │ map:     2.53 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/scrollbar-styles-BV4bngNu.js                                  0.82 kB │ gzip:   0.38 kB │ map:     1.16 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-disabled-CC9G3uHY.js                               0.83 kB │ gzip:   0.48 kB │ map:     1.85 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/request-usage-snapshot-bYKkQp2H.js                            0.84 kB │ gzip:   0.51 kB │ map:     3.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cron-jobs-pagination-DVkLm31R.js                              0.84 kB │ gzip:   0.46 kB │ map:     2.06 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cmake-FcSlif4A.js                                             0.89 kB │ gzip:   0.55 kB │ map:     3.24 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/asciiarmor-B6IWxPZf.js                                        0.91 kB │ gzip:   0.49 kB │ map:     2.73 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/near-viewport-observer-BfnpDHlZ.js                            0.93 kB │ gzip:   0.47 kB │ map:     2.41 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/protobuf-JMHwXPRk.js                                          0.94 kB │ gzip:   0.61 kB │ map:     2.50 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/stream-auto-follow-controller-DQpG-yCd.js                     0.95 kB │ gzip:   0.49 kB │ map:     2.90 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/http-B7zkEW3h.js                                              0.98 kB │ gzip:   0.51 kB │ map:     3.27 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/solr-CCCyg-ZR.js                                              1.00 kB │ gzip:   0.55 kB │ map:     3.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/chat-diff-highlight.runtime-DPUPJ1ET.js                       1.08 kB │ gzip:   0.65 kB │ map:     3.93 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/channel-picker-Bw1OQxT6.js                                    1.08 kB │ gzip:   0.62 kB │ map:    13.06 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/troff-cwvmpOmD.js                                             1.09 kB │ gzip:   0.52 kB │ map:     3.24 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/toml-Y1yXN3Kh.js                                              1.18 kB │ gzip:   0.63 kB │ map:     3.81 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sessions-hub-header-BoPpt29Y.js                               1.18 kB │ gzip:   0.54 kB │ map:     2.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/rolldown-runtime-DkW27tQK.js                                  1.19 kB │ gzip:   0.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/spreadsheet-B2QskK0I.js                                       1.27 kB │ gzip:   0.63 kB │ map:     3.96 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sw-refresh.runtime-BL8v9qRy.js                                1.36 kB │ gzip:   0.70 kB │ map:     5.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/channel-avatar-DQe7ht9A.js                                    1.37 kB │ gzip:   0.65 kB │ map:     2.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/agent-scope-control-DmLWp_bw.js                               1.46 kB │ gzip:   0.81 kB │ map:     4.50 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/usage-DuF-AAyn.js                                             1.50 kB │ gzip:   0.76 kB │ map:     6.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/plugins-hub-header-Dgn_mhDn.js                                1.52 kB │ gzip:   0.68 kB │ map:    25.38 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mbox-FBwpKlUC.js                                              1.53 kB │ gzip:   0.76 kB │ map:     4.96 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/native-notifications-D_lyz80n.js                              1.60 kB │ gzip:   0.78 kB │ map:     6.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/update-run-projection-BMSMVIwX.js                             1.62 kB │ gzip:   0.86 kB │ map:     5.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-CVVttsVb.js                              1.73 kB │ gzip:   0.88 kB │ map:     5.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/rpm-BaMRFbtw.js                                               1.75 kB │ gzip:   0.92 kB │ map:     4.54 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sieve-DQdVmNgn.js                                             1.75 kB │ gzip:   0.86 kB │ map:     5.98 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/update-triage.runtime-BIuDQCMW.js                             1.76 kB │ gzip:   0.91 kB │ map:     4.59 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/model-picker-DeVFxBE_.js                                      1.79 kB │ gzip:   0.84 kB │ map:     4.98 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/load-RjCuwC4M.js                                              1.79 kB │ gzip:   0.92 kB │ map:     7.35 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/factor-DYl96iqJ.js                                            1.80 kB │ gzip:   0.70 kB │ map:     4.52 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/eiffel-nZehmd2u.js                                            1.82 kB │ gzip:   1.00 kB │ map:     4.96 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/transcript-search-B0lQQKP6.js                                 1.85 kB │ gzip:   0.94 kB │ map:     7.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/z80-CaZ6Af31.js                                               1.89 kB │ gzip:   0.89 kB │ map:     4.81 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/browser-bootstrap.runtime-CcKxkW_w.js                         1.89 kB │ gzip:   1.06 kB │ map:     6.03 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/en-update-actions-Bs1h1A7d.js                                 1.91 kB │ gzip:   1.01 kB │ map:     3.35 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/brand-icons-BFS7d8E6.js                                       1.92 kB │ gzip:   0.92 kB │ map:     2.33 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mumps-DiRtrj06.js                                             1.97 kB │ gzip:   1.05 kB │ map:     6.41 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/elm-DZxw6TFj.js                                               2.01 kB │ gzip:   0.92 kB │ map:     7.50 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mathematica-C2wHxbxS.js                                       2.05 kB │ gzip:   0.92 kB │ map:     6.86 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dockerfile-Cw1LUDls.js                                        2.06 kB │ gzip:   0.76 kB │ map:     6.45 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/skills-shared-DEDSy0HE.js                                     2.07 kB │ gzip:   0.89 kB │ map:     5.69 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/turtle-CaEYDzGT.js                                            2.08 kB │ gzip:   0.99 kB │ map:     6.85 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ebnf-BMevISf6.js                                              2.11 kB │ gzip:   0.90 kB │ map:     6.69 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-environment-presentation.runtime-ZpTuB8Y5.js       2.12 kB │ gzip:   0.95 kB │ map:     4.87 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/critical-observer-notice.runtime-C_t7OwrQ.js                  2.13 kB │ gzip:   0.99 kB │ map:     7.29 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/smalltalk-DCjGbhBh.js                                         2.15 kB │ gzip:   0.96 kB │ map:     6.63 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/update-failure-report-CLRMIExJ.js                             2.15 kB │ gzip:   0.89 kB │ map:     2.65 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/hub-tabs-BFuKSpZb.js                                          2.16 kB │ gzip:   1.01 kB │ map:    10.46 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/fcl-BZeKn5iW.js                                               2.16 kB │ gzip:   1.05 kB │ map:     6.62 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/presenter-FPauSYO0.js                                         2.19 kB │ gzip:   1.06 kB │ map:     6.86 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ntriples-Dr_YuwMC.js                                          2.20 kB │ gzip:   0.80 kB │ map:     7.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-wTAGidhY.js                                              2.20 kB │ gzip:   1.39 kB │ map:     5.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dtd-BLYU-BVh.js                                               2.22 kB │ gzip:   0.96 kB │ map:     7.04 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/octave-DsuOxwxE.js                                            2.25 kB │ gzip:   1.18 kB │ map:     5.82 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/yacas-4UW7E4Kt.js                                             2.28 kB │ gzip:   1.19 kB │ map:     7.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/pascal-CemkuYI0.js                                            2.39 kB │ gzip:   1.27 kB │ map:     5.74 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/simple-mode-fO7nmy5X.js                                       2.41 kB │ gzip:   1.19 kB │ map:     7.88 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/gateway-scope-upgrade.runtime-CAY9zQUB.js                     2.42 kB │ gzip:   0.97 kB │ map:     8.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/apl-CDdrCZVl.js                                               2.43 kB │ gzip:   1.34 kB │ map:     6.53 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/commonlisp-BkuaFBi8.js                                        2.45 kB │ gzip:   1.20 kB │ map:     6.79 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tcl-Ba8B3QEu.js                                               2.48 kB │ gzip:   1.32 kB │ map:     6.59 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/shell-B1oByMWF.js                                             2.56 kB │ gzip:   1.30 kB │ map:     8.04 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/webidl-C2iEcUXH.js                                            2.62 kB │ gzip:   1.37 kB │ map:     7.82 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-progress-BAdyA9O5.js                                  2.62 kB │ gzip:   1.12 kB │ map:     6.52 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/puppet-vmUf8xpM.js                                            2.65 kB │ gzip:   1.29 kB │ map:     9.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/pig-Bt8Qvkze.js                                               2.65 kB │ gzip:   1.49 kB │ map:     6.70 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/input-dialog-D7KmEDYC.js                                      2.66 kB │ gzip:   1.10 kB │ map:     8.04 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/forth-CEw5LND1.js                                             2.67 kB │ gzip:   1.42 kB │ map:     6.27 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/setup-schema-C27EK4Q9.js                                      2.75 kB │ gzip:   1.38 kB │ map:    13.50 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-CGOVouH_.js                                              2.78 kB │ gzip:   1.60 kB │ map:     5.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/velocity-F0QlomFP.js                                          2.84 kB │ gzip:   1.20 kB │ map:     8.52 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-CrPP26Mr.js                            2.90 kB │ gzip:   1.41 kB │ map:    12.33 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tiddlywiki-DLHM8fNz.js                                        2.92 kB │ gzip:   1.18 kB │ map:    11.19 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/modelica--0xTveIu.js                                          2.94 kB │ gzip:   1.38 kB │ map:     8.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/macos-titlebar-controls.runtime-CRuJk-6j.js                   2.97 kB │ gzip:   1.04 kB │ map:     6.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/oz-DTY2GRqL.js                                                3.03 kB │ gzip:   1.38 kB │ map:     9.57 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/r-CadXD0eR.js                                                 3.06 kB │ gzip:   1.45 kB │ map:    10.02 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-manager-dialog-_m_7vVir.js                         3.08 kB │ gzip:   1.25 kB │ map:     6.58 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/stex-CveJubUk.js                                              3.22 kB │ gzip:   1.26 kB │ map:    11.37 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lua-yYK_8aRA.js                                               3.27 kB │ gzip:   1.51 kB │ map:     7.85 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cypher-CIhKfSWw.js                                            3.33 kB │ gzip:   1.60 kB │ map:     8.61 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/native-link-menu.runtime-CBqSpWJp.js                          3.34 kB │ gzip:   1.18 kB │ map:     5.63 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tiki-CryU3a6e.js                                              3.35 kB │ gzip:   1.35 kB │ map:    12.50 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/en-memory-import-Dt72kB1G.js                                  3.39 kB │ gzip:   1.44 kB │ map:     5.29 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sparql-ChxjJbEr.js                                            3.47 kB │ gzip:   1.70 kB │ map:     9.60 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/vhdl-DlYBPd1w.js                                              3.47 kB │ gzip:   1.61 kB │ map:     9.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-BQyQx3M1.js                                              3.54 kB │ gzip:   1.83 kB │ map:     7.03 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/exec-approval-DGG--OC4.js                                     3.62 kB │ gzip:   1.52 kB │ map:     9.99 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mscgen-Cfn4e7TB.js                                            3.64 kB │ gzip:   1.08 kB │ map:     9.78 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/update-run-view-CBQ0o79j.js                                   3.76 kB │ gzip:   1.41 kB │ map:    10.22 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/vb-CLop06NZ.js                                                3.82 kB │ gzip:   1.95 kB │ map:    11.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/q-BJMSR8Wr.js                                                 3.82 kB │ gzip:   1.78 kB │ map:     9.90 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/d-QPDGRTM0.js                                                 3.83 kB │ gzip:   1.79 kB │ map:    10.97 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/nav-drawer-swipe.runtime-BsO35vDC.js                          3.87 kB │ gzip:   1.45 kB │ map:    10.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/swift-AYiAzsD9.js                                             3.92 kB │ gzip:   1.94 kB │ map:    10.91 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/coffeescript-CA7mxfOL.js                                      4.00 kB │ gzip:   1.79 kB │ map:    13.84 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/fortran-CXYmS400.js                                           4.00 kB │ gzip:   2.03 kB │ map:     9.81 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/widget-sandbox-host-Jl2H_igP.js                               4.00 kB │ gzip:   1.35 kB │ map:    10.80 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/composer-draft-retirement.runtime-Cd0oQ369.js                 4.01 kB │ gzip:   1.49 kB │ map:     9.92 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/keyboard-shortcuts-dialog-CCEbqDxX.js                         4.03 kB │ gzip:   1.39 kB │ map:     5.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lane-table-DNv0RMQd.js                                        4.07 kB │ gzip:   1.62 kB │ map:    16.59 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/asn1-xBq2G-qC.js                                              4.10 kB │ gzip:   2.05 kB │ map:    11.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dylan-7WzUunzT.js                                             4.17 kB │ gzip:   1.73 kB │ map:    14.09 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/asterisk-CIshXaRB.js                                          4.20 kB │ gzip:   1.84 kB │ map:     9.38 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/livescript-XV-s-Eov.js                                        4.22 kB │ gzip:   1.73 kB │ map:    10.08 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ttcn-cfg-XOZ7tOUX.js                                          4.24 kB │ gzip:   1.84 kB │ map:    11.22 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/groovy-2vH43gXR.js                                            4.26 kB │ gzip:   1.86 kB │ map:    12.89 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/haskell-CzANdbdO.js                                           4.31 kB │ gzip:   2.02 kB │ map:    12.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/permissions-page-sf17Ho8J.js                                  4.33 kB │ gzip:   1.44 kB │ map:     9.27 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/home-session.runtime-CeL_dJYL.js                              4.40 kB │ gzip:   1.47 kB │ map:     8.46 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/portaled-hovercard-Cmw3oH9L.js                                4.66 kB │ gzip:   1.63 kB │ map:    13.92 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/gas-Ddcgu4GW.js                                               4.68 kB │ gzip:   1.37 kB │ map:    13.82 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/report-DarC7Fhw.js                                            4.72 kB │ gzip:   2.02 kB │ map:    26.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mllike-DByFsHEc.js                                            4.96 kB │ gzip:   1.68 kB │ map:    12.87 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/logbook-controller-DEQlu9zO.js                                4.98 kB │ gzip:   1.69 kB │ map:    20.31 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ttcn-CnpUl-OE.js                                              5.00 kB │ gzip:   2.27 kB │ map:    13.53 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lobsterdex-page-Dm4tEQyc.js                                   5.03 kB │ gzip:   1.91 kB │ map:    17.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/native-device-settings-Di0JfRMt.js                            5.06 kB │ gzip:   2.10 kB │ map:    21.02 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/question-page-registration-FcVooOAJ.js                        5.07 kB │ gzip:   1.66 kB │ map:    12.33 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/history-scan-page-controller-BxjW2mXP.js                      5.10 kB │ gzip:   1.73 kB │ map:    14.84 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-BggnB332.js                                              5.16 kB │ gzip:   2.49 kB │ map:    10.88 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ruby-oUh05Trd.js                                              5.17 kB │ gzip:   2.25 kB │ map:    16.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/crystal-tIaXxdp_.js                                           5.18 kB │ gzip:   2.22 kB │ map:    17.92 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-placement-move-dialog-CoJreBWo.js                     5.21 kB │ gzip:   1.62 kB │ map:    14.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ecl-BLu10NKu.js                                               5.25 kB │ gzip:   2.42 kB │ map:    12.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-discussion-panel-CzsuvDjk.js                          5.35 kB │ gzip:   1.98 kB │ map:    14.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/julia-DCp_A6wD.js                                             5.43 kB │ gzip:   2.30 kB │ map:    16.20 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/update-confirmation.runtime-CW2s5H3s.js                       5.55 kB │ gzip:   1.88 kB │ map:    16.86 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/vbscript-Dsg51Nc6.js                                          5.57 kB │ gzip:   2.65 kB │ map:    17.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mirc-BPy65nD3.js                                              6.05 kB │ gzip:   2.82 kB │ map:    11.57 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/canvas-widget-view-Cq3iFgIk.js                                6.09 kB │ gzip:   2.28 kB │ map:    15.52 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/xquery-BLXVEG4j.js                                            6.29 kB │ gzip:   2.65 kB │ map:    21.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cobol-QhErn_Fq.js                                             6.37 kB │ gzip:   3.15 kB │ map:    12.03 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/python-COs-kvPa.js                                            6.40 kB │ gzip:   2.77 kB │ map:    21.56 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/config-form.tiers-Bp5AUHaw.js                                 6.42 kB │ gzip:   2.41 kB │ map:    25.61 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/scheme-CE-3ZWRO.js                                            6.51 kB │ gzip:   2.51 kB │ map:    16.02 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/chat-pane-placement.runtime-DFDTKbyB.js                       6.56 kB │ gzip:   2.10 kB │ map:    15.29 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/board-widget-cell-render-ZYqR6-Vi.js                          6.64 kB │ gzip:   1.84 kB │ map:    12.98 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-dashboard-BQP5IYsm.js                              6.71 kB │ gzip:   2.18 kB │ map:    11.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/pug-RXDoR6tl.js                                               6.77 kB │ gzip:   2.08 kB │ map:    20.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/textile-Ch7z9apM.js                                           6.88 kB │ gzip:   2.54 kB │ map:    20.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/nsis-B2VCIoWS.js                                              6.93 kB │ gzip:   3.08 kB │ map:     9.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/board-document-BAVwTY1D.js                                    7.08 kB │ gzip:   2.30 kB │ map:    19.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/en-transcripts-zZDa4ayr.js                                    7.30 kB │ gzip:   2.92 kB │ map:    10.53 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/about-page-ssixSORT.js                                        7.33 kB │ gzip:   2.56 kB │ map:    24.06 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/nginx-CqyriA0n.js                                             7.54 kB │ gzip:   2.83 kB │ map:    12.55 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dock-layout-controller-BhNdTBTF.js                            7.59 kB │ gzip:   2.29 kB │ map:    14.70 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/powershell-BcUGsiXj.js                                        7.83 kB │ gzip:   3.38 kB │ map:    16.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/haxe-B0mYmy-D.js                                              8.00 kB │ gzip:   3.05 kB │ map:    27.77 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/erlang-DPE2rtAo.js                                            8.00 kB │ gzip:   3.00 kB │ map:    27.19 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/labs-page-DNa0FTXm.js                                         8.49 kB │ gzip:   2.64 kB │ map:    26.45 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/verilog-DF5ypeZ6.js                                           8.60 kB │ gzip:   3.64 kB │ map:    30.15 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-CnbjibYP.js                                              8.63 kB │ gzip:   3.74 kB │ map:   102.54 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/chat-sidebar-region.runtime-CPjlM7Do.js                       8.75 kB │ gzip:   3.05 kB │ map:    33.61 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/wizard-step-controls-Gv4u9Rzn.js                              8.88 kB │ gzip:   2.95 kB │ map:    25.36 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/presentation-B7hjmZwz.js                                      9.23 kB │ gzip:   2.88 kB │ map:    21.41 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/usage-DOELEV2N.js                                             9.24 kB │ gzip:   2.82 kB │ map:    64.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sas-CHow9-KW.js                                               9.46 kB │ gzip:   4.21 kB │ map:    18.12 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/onboarding-memory-import-A2dKARR-.js                          9.48 kB │ gzip:   2.87 kB │ map:    25.99 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/clojure-Dj1qubLJ.js                                           9.56 kB │ gzip:   4.16 kB │ map:    21.04 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-Bki5oVaf.js                              9.80 kB │ gzip:   4.09 kB │ map:    28.38 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/custodian-page-9mS8Cx2T.js                                    9.83 kB │ gzip:   2.81 kB │ map:    20.85 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/perl-D9HnB3am.js                                              9.87 kB │ gzip:   3.60 kB │ map:    43.77 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/idl-CNKmfWsB.js                                               9.97 kB │ gzip:   4.52 kB │ map:    15.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/settings-targets-CXtf_rVf.js                                 10.11 kB │ gzip:   2.56 kB │ map:    19.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/worktrees-page-C3IfCVa5.js                                   10.19 kB │ gzip:   3.03 kB │ map:    24.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/gherkin-D1huiSVU.js                                          10.29 kB │ gzip:   5.21 kB │ map:    14.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dashboards-page-BxJ5EPKa.js                                  10.48 kB │ gzip:   3.51 kB │ map:    33.47 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/portals-page-DeI_J9H7.js                                     10.61 kB │ gzip:   3.04 kB │ map:    28.03 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/logs-page-dIlWda8K.js                                        10.64 kB │ gzip:   3.74 kB │ map:    32.90 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/apps-page-Wjbxyqr3.js                                        10.71 kB │ gzip:   3.83 kB │ map:    29.22 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/debug-page-DR28UTY_.js                                       10.74 kB │ gzip:   3.27 kB │ map:    25.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/panel-tab-strip-J4GBET2X.js                                  10.84 kB │ gzip:   3.68 kB │ map:    27.96 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/github-link-hovercard.runtime-DcIz6t_L.js                    10.96 kB │ gzip:   3.65 kB │ map:    38.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/logbook-view-CfRV--Gv.js                                     11.02 kB │ gzip:   2.89 kB │ map:    30.06 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/view-pairing.runtime-QI2k9TTO.js                             11.29 kB │ gzip:   2.58 kB │ map:    19.59 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/browser-CNroQ6wO.js                                          11.53 kB │ gzip:   4.30 kB │ map:    38.03 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-group-defaults-dialog-BaycA-1A.js                    11.68 kB │ gzip:   2.77 kB │ map:    23.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-C3nXxQHV.js                                             11.87 kB │ gzip:   5.38 kB │ map:    31.55 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/connection-page-UoXGoJrI.js                                  12.09 kB │ gzip:   3.78 kB │ map:    34.73 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/assistant-panel-CBcaasMQ.js                                  12.60 kB │ gzip:   3.80 kB │ map:    25.60 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/debug-overlay-B25d_s-W.js                                    12.72 kB │ gzip:   4.14 kB │ map:    33.38 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/settings-sidebar-D-z30sI9.js                                 12.72 kB │ gzip:   4.23 kB │ map:    38.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-DJguqWzJ.js                           12.89 kB │ gzip:   4.51 kB │ map:   158.75 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-people.runtime-Csro_fpy.js                           13.13 kB │ gzip:   4.57 kB │ map:    36.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/approvals-page-D_P25Dyl.js                                   13.49 kB │ gzip:   3.33 kB │ map:    29.73 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-update-card-BwDb34q_.js                              13.55 kB │ gzip:   3.33 kB │ map:    34.75 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/markdown-mermaid-CXQD-Zz_.js                                 13.90 kB │ gzip:   5.30 kB │ map:    32.27 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tasks-page-BiIFTU0O.js                                       14.50 kB │ gzip:   4.38 kB │ map:    42.82 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-Cw6sYv4e.js                                             14.56 kB │ gzip:   5.95 kB │ map:    35.05 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/plugin-page-BKkHFSbD.js                                      14.59 kB │ gzip:   4.02 kB │ map:    35.77 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-organizer-operations.runtime-DRkxaTNs.js             14.68 kB │ gzip:   3.72 kB │ map:    52.94 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/device-page-BMxpNhm2.js                                      15.30 kB │ gzip:   3.53 kB │ map:    33.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/chat-session-rail-BVY3YXIC.js                                15.64 kB │ gzip:   4.05 kB │ map:    35.86 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-LD-Gvvn4.js                           15.64 kB │ gzip:   6.14 kB │ map:   125.77 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cloud-workers-page-A4K4hbcr.js                               15.80 kB │ gzip:   4.43 kB │ map:    41.44 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-D0XGYWuC.js                                             16.43 kB │ gzip:   7.60 kB │ map:    22.13 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/javascript-DX2C-kp4.js                                       17.08 kB │ gzip:   5.82 kB │ map:    63.23 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/approval-page-registration-Bzqo6x3X.js                       17.25 kB │ gzip:   4.42 kB │ map:    39.58 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-CPAXBB7i.js                           17.66 kB │ gzip:   6.97 kB │ map:    89.20 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-loader-DkjyejJl.js                                18.83 kB │ gzip:   6.20 kB │ map:    53.71 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/command-palette-B9MfACth.js                                  18.85 kB │ gzip:   6.21 kB │ map:    56.68 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sidebar-attention-panel.runtime-CrOmERj2.js                  19.15 kB │ gzip:   5.06 kB │ map:    62.50 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/gateway-runtime-DZOC5BCz.js                                  20.20 kB │ gzip:   7.56 kB │ map:   109.53 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/secrets-page-B64Uljbp.js                                     20.88 kB │ gzip:   5.63 kB │ map:    71.02 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-DHMRL106.js                                             20.91 kB │ gzip:   9.50 kB │ map:    35.49 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-DFv-19rV.js                           21.02 kB │ gzip:   7.45 kB │ map:   107.42 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-PKW49LK8.js                                             21.19 kB │ gzip:   9.84 kB │ map:    37.56 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/clike-Ck9jqPvt.js                                            22.19 kB │ gzip:   7.84 kB │ map:    56.77 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-D90LgCCU.js                                             23.31 kB │ gzip:  10.65 kB │ map:    37.75 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/meetings-page-CBv7Bo6Y.js                                    23.44 kB │ gzip:   6.77 kB │ map:    62.92 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/stylus-S2nJdsOO.js                                           23.71 kB │ gzip:   8.76 kB │ map:    55.67 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/github-identity-view-B4WzPBAV.js                             24.45 kB │ gzip:   6.40 kB │ map:    69.63 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/code-language-Cqad_yxb.js                                    24.62 kB │ gzip:   5.47 kB │ map:    55.29 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/css-8bpu84Yw.js                                              24.84 kB │ gzip:   8.38 kB │ map:    53.86 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/file-editor-view-uq5c6VqW.js                                 25.35 kB │ gzip:   8.83 kB │ map:   129.00 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-CUVovbyN.js                                             26.62 kB │ gzip:   8.83 kB │ map:   106.68 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-hyvBLSAA.js                                             27.01 kB │ gzip:  12.83 kB │ map:    45.39 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/en-settings-B5Mdr0O5.js                                      28.45 kB │ gzip:  10.51 kB │ map:    46.07 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/memory-import-page-C3-ZOhUL.js                               28.46 kB │ gzip:   6.54 kB │ map:    75.39 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-BY_kjopq.js                                             28.80 kB │ gzip:  11.82 kB │ map:    72.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/session-progress-hovercard.runtime-BlG_Rgrz.js               29.51 kB │ gzip:   8.37 kB │ map:    73.91 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-BXULJ4tg.js                                             31.04 kB │ gzip:  12.92 kB │ map:    43.93 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-DTiTkOj7.js                                             32.43 kB │ gzip:  13.16 kB │ map:    69.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sql-Cm3b129a.js                                              36.96 kB │ gzip:  11.00 kB │ map:    54.91 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/select-picker-xqsxzv51.js                                    39.00 kB │ gzip:   9.95 kB │ map:    90.51 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/custodian-surface-CvWAjSfW.js                                40.07 kB │ gzip:  11.35 kB │ map:   135.34 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-DKV6ALwJ.js                                             40.92 kB │ gzip:  17.08 kB │ map:    45.89 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/lit-runtime-BBE-IzwH.js                                      43.27 kB │ gzip:  14.73 kB │ map:   257.19 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/desktop-panel-BNJloaHc.js                                    43.45 kB │ gzip:  11.44 kB │ map:   101.14 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-5X8pYvas.js                                             44.22 kB │ gzip:  15.39 kB │ map:   169.17 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-DpM8AwCe.js                             44.48 kB │ gzip:  14.20 kB │ map:   173.28 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-DNT9TbjL.js                                             45.04 kB │ gzip:  19.57 kB │ map:    71.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/profile-page-BYnDSgEB.js                                     47.74 kB │ gzip:  12.27 kB │ map:   147.92 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/proposals-CXphtw9D.js                                        50.62 kB │ gzip:  16.79 kB │ map:   384.07 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/terminal-panel-registration-C00hj6sc.js                      52.48 kB │ gzip:  15.10 kB │ map:   149.89 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/skills-page-CbxXsO33.js                                      53.57 kB │ gzip:  12.90 kB │ map:   128.89 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tool-catalog-CtOrUnwu.js                                     53.66 kB │ gzip:  13.83 kB │ map:   171.35 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/board-view-BxFTb4WB.js                                       54.42 kB │ gzip:  15.10 kB │ map:   161.39 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/model-providers-page-Ae_j6-9H.js                             59.71 kB │ gzip:  16.14 kB │ map:   191.60 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/plugins-page-BRNWkf5a.js                                     59.78 kB │ gzip:  16.40 kB │ map:   174.02 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/skill-workshop-page-BuMqOPqx.js                              61.09 kB │ gzip:  15.72 kB │ map:   186.94 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/model-setup-page-CyACalGH.js                                 63.15 kB │ gzip:  15.89 kB │ map:   194.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/config-form-Betyu1Ks.js                                      64.11 kB │ gzip:  18.86 kB │ map:   250.83 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/mcp-app-view-registration-DKk62mbG.js                        66.40 kB │ gzip:  18.76 kB │ map:   268.51 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/cron-page-CzvnMQrU.js                                        67.29 kB │ gzip:  17.35 kB │ map:   204.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/devices-page-BJHErjAD.js                                     67.79 kB │ gzip:  18.96 kB │ map:   202.68 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/channels-page-DJWH_Aye.js                                    68.68 kB │ gzip:  16.95 kB │ map:   191.70 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/browser-panel-BFBaprUB.js                                    70.74 kB │ gzip:  18.06 kB │ map:   211.33 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-DcvzhyRc.js                                             71.04 kB │ gzip:  26.26 kB │ map:    79.01 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/sessions-page-C1eiPvie.js                                    72.80 kB │ gzip:  18.87 kB │ map:   192.16 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/activity-page-DIl5k9HR.js                                    77.17 kB │ gzip:  20.21 kB │ map:   224.36 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-D3t2O5Bc.js                                             84.78 kB │ gzip:  33.90 kB │ map:   115.40 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-BVdxKXMR.js                                             98.17 kB │ gzip:  28.93 kB │ map:   112.36 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/agents-page-2LqmvsJH.js                                     101.19 kB │ gzip:  24.50 kB │ map:   300.78 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/config-runtime-Cr2H22l0.js                                  102.97 kB │ gzip:  28.77 kB │ map:   448.18 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-0Ev2zWzL.js                                            104.16 kB │ gzip:  34.94 kB │ map:   113.44 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/usage-page-BiPBH5ls.js                                      106.29 kB │ gzip:  27.77 kB │ map:   317.36 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-D6dpX3h6.js                            113.75 kB │ gzip:  35.70 kB │ map:   518.83 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/phone-runtime-D7alg31e.js                                   122.65 kB │ gzip:  30.62 kB │ map:   371.20 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-CLhnaFv2.js                            127.46 kB │ gzip:  40.17 kB │ map:   439.72 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/rfb-3fIY7_Ix.js                                             190.46 kB │ gzip:  57.64 kB │ map:   815.41 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/config-page-DL14tub5.js                                     203.64 kB │ gzip:  50.18 kB │ map:   603.63 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-new-DVAZRKFi.js                             213.67 kB │ gzip:  55.97 kB │ map:   633.73 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/markdown-runtime-Bn6OdBVq.js                                214.56 kB │ gzip:  82.53 kB │ map:   781.98 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-core-BWfvnL8d.js                                 245.65 kB │ gzip:  76.27 kB │ map:   924.64 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-core-D6F6LjeL.js                                 246.79 kB │ gzip:  77.45 kB │ map: 1,021.99 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-foundation-CbW6-L_2.js                           266.74 kB │ gzip:  75.72 kB │ map:   882.46 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/dist-Bkc2S6Bd.js                                            275.53 kB │ gzip:  90.90 kB │ map: 1,235.10 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/zh-CN-R1SoRPR-.js                                           291.50 kB │ gzip: 106.04 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/zh-TW-MWQP9zbr.js                                           298.88 kB │ gzip: 107.15 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-core-B2JV6Eyy.js                                 309.35 kB │ gzip:  98.93 kB │ map:   553.41 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/id-fEaUvDga.js                                              316.76 kB │ gzip: 100.48 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/nl-I3OQ3jPM.js                                              333.56 kB │ gzip: 108.10 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/pt-BR-DnT3WF9a.js                                           338.58 kB │ gzip: 108.08 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/tr-B2iZ3_hQ.js                                              341.29 kB │ gzip: 108.89 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/it-BCYsQ-_Q.js                                              346.04 kB │ gzip: 108.76 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/pl--ReFYPpO.js                                              346.41 kB │ gzip: 114.77 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/es-aZG_lpBf.js                                              348.11 kB │ gzip: 109.53 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/de-BK8hn5Wm.js                                              352.12 kB │ gzip: 112.89 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-T4E1TJF8.js                            355.40 kB │ gzip: 103.29 kB │ map: 1,269.76 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ko-CKO9MKCd.js                                              355.69 kB │ gzip: 109.77 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/fr-BX4dY6fN.js                                              363.77 kB │ gzip: 112.23 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/vi-CFfRxaBA.js                                              391.36 kB │ gzip: 110.07 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ja-JP-BnFrfMzu.js                                           405.69 kB │ gzip: 116.07 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ar-BcYyVS3L.js                                              432.01 kB │ gzip: 118.18 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-DgenhufX.js                          433.70 kB │ gzip: 126.28 kB │ map: 2,293.48 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-By-yohDW.js                          456.51 kB │ gzip: 130.10 kB │ map: 1,662.39 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-chat-NdR4zreN.js                            456.64 kB │ gzip: 120.13 kB │ map: 1,346.34 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/fa-fL6c3C84.js                                              464.49 kB │ gzip: 118.56 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/uk-DCEU0g1i.js                                              513.47 kB │ gzip: 130.26 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ru-C6P_9-fs.js                                              517.14 kB │ gzip: 131.42 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/hi-CUoxN4uU.js                                              616.67 kB │ gzip: 128.30 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/control-ui-boot-shared-DRukWlsy.js                          636.27 kB │ gzip: 183.25 kB │ map: 2,016.74 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/ghostty-web-sxq69bLz.js                                     636.97 kB │ gzip: 187.37 kB │ map:   756.39 kB
+../../../../../../tmp/oc-vt-tTmd2f/openclaw-ui-e2e-n1CpQu/assets/th-0rnZMg_A.js                                              643.48 kB │ gzip: 124.82 kB │ map:     0.25 kB
+
+[32m✓ built in 6.91s[39m
+[90mstdout[2m | ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22m[2mavatar owner graphemes[2m > [22m[2mdashboard initials preserve graphemes and casing en-US
+[22m[39m[control-ui-e2e] retained proof: /home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/dashboard-en-US-cf86Is
+
+[90mstdout[2m | ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22m[2mavatar owner graphemes[2m > [22m[2mshell initials preserve graphemes and casing en-US
+[22m[39m[control-ui-e2e] retained proof: /home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k
+
+ [31m×[39m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mdashboard initials preserve graphemes and casing en-US[33m 1768[2mms[22m[39m
+[31m   → dashboard first graphemes: expected [ '�', '�', '�', '�', 'A', 'SS', …(2) ] to deeply equal [ '😀', '🇺🇸', …(6) ][39m
+[90mstdout[2m | ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22m[2mavatar owner graphemes[2m > [22m[2mdashboard initials preserve graphemes and casing tr-TR
+[22m[39m[control-ui-e2e] retained proof: /home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/dashboard-tr-TR-z9Ki3x
+
+ [31m×[39m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mshell initials preserve graphemes and casing en-US[33m 9254[2mms[22m[39m
+[31m   → shell first graphemes: expected [ '�', '�', '�', '�', 'a', 'ß', …(3) ] to deeply equal [ '😀', '🇺🇸', …(7) ][39m
+[90mstdout[2m | ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22m[2mavatar owner graphemes[2m > [22m[2mdashboard initials preserve graphemes and casing tr-TR
+[22m[39m[control-ui-e2e] retained proof: /home/runner/work/openclaw/openclaw/target/.artifacts/control-ui-e2e-timeouts/local/failure-7L08z0
+
+[90mstderr[2m | ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22m[2mavatar owner graphemes[2m > [22m[2mdashboard initials preserve graphemes and casing tr-TR
+[22m[39m[control-ui-e2e] failure diagnostics: /home/runner/work/openclaw/openclaw/target/.artifacts/control-ui-e2e-timeouts/local/failure-7L08z0/2026-09-08T00-05-13-631Z-avatar-owner-graphemes.json
+[control-ui-e2e] failure screenshot: /home/runner/work/openclaw/openclaw/target/.artifacts/control-ui-e2e-timeouts/local/failure-7L08z0/2026-09-08T00-05-13-631Z-avatar-owner-graphemes.png
+
+[90mstdout[2m | ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22m[2mavatar owner graphemes[2m > [22m[2mshell initials preserve graphemes and casing tr-TR
+[22m[39m[control-ui-e2e] retained proof: /home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO
+
+ [31m×[39m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mdashboard initials preserve graphemes and casing tr-TR[33m 1061[2mms[22m[39m
+[31m   → expected 'I' to be 'İ' // Object.is equality[39m
+ [32m✓[39m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mshell initials preserve graphemes and casing tr-TR[33m 3574[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mdashboard initials preserve graphemes and casing en-US
+[31m[1mAssertionError[22m: dashboard first graphemes: expected [ '�', '�', '�', '�', 'A', 'SS', …(2) ] to deeply equal [ '😀', '🇺🇸', …(6) ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "😀",[39m
+[32m-   "🇺🇸",[39m
+[32m-   "👨‍👩‍👧‍👦",[39m
+[32m-   "𐐀",[39m
+[31m+   "�",[39m
+[31m+   "�",[39m
+[31m+   "�",[39m
+[31m+   "�",[39m
+[2m    "A",[22m
+[2m    "SS",[22m
+[2m    "I",[22m
+[2m    "M",[22m
+[2m  ][22m
+
+[36m [2m❯[22m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts:[2m151:9[22m[39m
+    [90m149|[39m         rows.map(({ actual }) => actual),
+    [90m150|[39m         "dashboard first graphemes",
+    [90m151|[39m       ).toEqual(cases.map(({ dashboard }) => dashboard));
+    [90m   |[39m         [31m^[39m
+    [90m152|[39m     });
+    [90m153|[39m     it(`shell initials preserve graphemes and casing ${locale}`, async…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mshell initials preserve graphemes and casing en-US
+[31m[1mAssertionError[22m: shell first graphemes: expected [ '�', '�', '�', '�', 'a', 'ß', …(3) ] to deeply equal [ '😀', '🇺🇸', …(7) ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,10 +1,10 @@[39m
+[2m  [[22m
+[32m-   "😀",[39m
+[32m-   "🇺🇸",[39m
+[32m-   "👨‍👩‍👧‍👦",[39m
+[32m-   "𐐨",[39m
+[31m+   "�",[39m
+[31m+   "�",[39m
+[31m+   "�",[39m
+[31m+   "�",[39m
+[2m    "a",[22m
+[2m    "ß",[22m
+[2m    "i",[22m
+[2m    "A",[22m
+[2m    null,[22m
+
+[36m [2m❯[22m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts:[2m257:9[22m[39m
+    [90m255|[39m         rows.map(({ actual }) => actual),
+    [90m256|[39m         "shell first graphemes",
+    [90m257|[39m       ).toEqual(cases.map(({ shell }) => shell));
+    [90m   |[39m         [31m^[39m
+    [90m258|[39m     });
+    [90m259|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts[2m > [22mavatar owner graphemes[2m > [22mdashboard initials preserve graphemes and casing tr-TR
+[31m[1mAssertionError[22m: expected 'I' to be 'İ' // Object.is equality[39m
+
+Expected: [32m"İ"[39m
+Received: [31m"I"[39m
+
+[36m [2m❯[22m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts:[2m130:46[22m[39m
+    [90m128|[39m             rows.push(row);
+    [90m129|[39m             save(dir, rows);
+    [90m130|[39m             if (!item.defect) expect(actual).toBe(item.dashboard);
+    [90m   |[39m                                              [31m^[39m
+    [90m131|[39m           }
+    [90m132|[39m           const card = gallery.locator(`[data-dashboard-session="${fir…
+[90m [2m❯[22m ui/src/e2e/control-ui-e2e-suite.test-support.ts:[2m487:20[22m[39m
+[90m [2m❯[22m runQaGatewayFixture test/helpers/qa-gateway-cleanup.ts:[2m15:7[22m[39m
+[90m [2m❯[22m Object.withPage ui/src/e2e/control-ui-e2e-suite.test-support.ts:[2m482:14[22m[39m
+[90m [2m❯[22m ui/src/e2e/avatar-owner-graphemes.e2e.test.ts:[2m90:7[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 00:04:51
+[2m   Duration [22m 28.63s[2m (tests 96%, transform 2%, import 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/vitest.json
+[test] FAILED (exit 1)

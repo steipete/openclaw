@@ -1,0 +1,17 @@
+[test] starting test/vitest/vitest.ui.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/avatar.test.ts[2m > [22mderiveAvatarInitial[2m > [22mreturns the uppercased first grapheme for ASCII names[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/avatar.test.ts[2m > [22mderiveAvatarInitial[2m > [22mkeeps an emoji initial intact instead of a dangling surrogate half[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/avatar.test.ts[2m > [22mderiveAvatarInitial[2m > [22mpreserves complete grapheme clusters for joined emoji and flags[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/avatar.test.ts[2m > [22mderiveAvatarInitial[2m > [22mpreserves existing initial casing and whitespace policy[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/avatar.test.ts[2m > [22mderiveAvatarInitial[2m > [22mreturns an empty string for empty or missing input[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 00:04:49
+[2m   Duration [22m 1.08s[2m (worker 55%, environment 37%, transform 6%, setup 1%, import 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/owner.json
+[test] passed 1 Vitest shard in 1.91s

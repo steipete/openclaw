@@ -1,22 +1,22 @@
 [
   {
-    "id": "progress-width-green-remaining",
-    "directory": "progress-width-green-remaining",
+    "id": "avatar-141285-remaining",
+    "directory": "avatar-141285-remaining",
     "runner": "ubuntu-24.04",
-    "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+    "source": "0ad318398e906aa710af94d61231dfe65946c02d",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "static-remaining-alpha"
+    "mode": "red",
+    "variant": "turkish-dashboard-remaining"
   },
   {
-    "id": "tui-fallback-footer-green",
-    "directory": "tui-fallback-footer-green",
+    "id": "automation-defaults-141548",
+    "directory": "automation-defaults-141548",
     "runner": "ubuntu-24.04",
-    "source": "9c4176406e90ba373d79fc1de173535cb9b003ba",
+    "source": "2a0601f530c912284f08b586987dfc3a0ed8469f",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "candidate",
-    "variant": "accepted-metadata-footer-green"
+    "mode": "red",
+    "variant": "ordinary-form-defaults"
   }
 ]

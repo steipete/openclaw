@@ -1,0 +1,65 @@
+[
+  {
+    "id": "locale",
+    "name": "ilker",
+    "expected": "i",
+    "actual": "i",
+    "computed": "\"i\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "ilker",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": false,
+    "locale": "tr-TR",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO/locale/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO/locale/page@f97bcfd8b6be1ff49226395b4d0f7e20.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "expansion",
+    "name": "ßeta",
+    "expected": "ß",
+    "actual": "ß",
+    "computed": "\"ß\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "ßeta",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": false,
+    "locale": "tr-TR",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO/expansion/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO/expansion/page@8bccba76e2fa2cedd728a9d51da3960d.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "no-environment",
+    "name": "😀Alice",
+    "expected": null,
+    "actual": null,
+    "computed": "none",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "😀Alice",
+      "environment": null
+    },
+    "defect": false,
+    "locale": "tr-TR",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO/no-environment/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-tr-TR-rmCKqO/no-environment/page@4d095d50916fb17a63da49057cff6aee.webm",
+    "chatSends": 0
+  }
+]

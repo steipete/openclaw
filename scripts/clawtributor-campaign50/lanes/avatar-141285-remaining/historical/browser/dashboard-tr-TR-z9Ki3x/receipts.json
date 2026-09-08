@@ -1,0 +1,14 @@
+[
+  {
+    "id": "locale",
+    "name": "ilker",
+    "expected": "İ",
+    "actual": "I",
+    "defect": false,
+    "locale": "tr-TR",
+    "flow": "dashboard",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/dashboard-tr-TR-z9Ki3x/gallery.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/dashboard-tr-TR-z9Ki3x/page@812d3fd2dd1de8de6580a163bad32889.webm",
+    "chatSends": 0
+  }
+]

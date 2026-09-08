@@ -1,0 +1,196 @@
+[
+  {
+    "id": "emoji",
+    "name": "😀Alice",
+    "expected": "😀",
+    "actual": "\ud83d",
+    "computed": "\"�\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "😀Alice",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": true,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/emoji/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/emoji/page@ac1c9282cfa71714b53a1764961e14c2.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "flag",
+    "name": "🇺🇸Team",
+    "expected": "🇺🇸",
+    "actual": "\ud83c",
+    "computed": "\"�\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "🇺🇸Team",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": true,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/flag/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/flag/page@e754ec0d78bfc4a9f8a75cbed2eddaa6.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "joined",
+    "name": "👨‍👩‍👧‍👦Family",
+    "expected": "👨‍👩‍👧‍👦",
+    "actual": "\ud83d",
+    "computed": "\"�\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "👨‍👩‍👧‍👦Family",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": true,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/joined/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/joined/page@662f1e18a40bb00819670b6e94ed269e.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "letter",
+    "name": "𐐨Name",
+    "expected": "𐐨",
+    "actual": "\ud801",
+    "computed": "\"�\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "𐐨Name",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": true,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/letter/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/letter/page@b650dd9d51b709c9d602da93475dbd34.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "lower",
+    "name": "alice",
+    "expected": "a",
+    "actual": "a",
+    "computed": "\"a\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "alice",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": false,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/lower/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/lower/page@953c14785f259facd6c1f2c2e8931c92.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "expansion",
+    "name": "ßeta",
+    "expected": "ß",
+    "actual": "ß",
+    "computed": "\"ß\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "ßeta",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": false,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/expansion/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/expansion/page@85c24dc9e23c9552c7f5619a8d736eda.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "locale",
+    "name": "ilker",
+    "expected": "i",
+    "actual": "i",
+    "computed": "\"i\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "ilker",
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": false,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/locale/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/locale/page@1232784bf1c81fad4f5f64f16c830576.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "default",
+    "expected": "A",
+    "actual": "A",
+    "computed": "\"A\"",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": null,
+      "environment": {
+        "label": "edge",
+        "color": "amber"
+      }
+    },
+    "defect": false,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/default/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/default/page@6f7140438b4c0fe98f6b6010ba256046.webm",
+    "chatSends": 0
+  },
+  {
+    "id": "no-environment",
+    "name": "😀Alice",
+    "expected": null,
+    "actual": null,
+    "computed": "none",
+    "bootstrap": {
+      "path": "/control-ui-config.json",
+      "status": 200,
+      "assistantName": "😀Alice",
+      "environment": null
+    },
+    "defect": false,
+    "locale": "en-US",
+    "flow": "shell",
+    "screenshot": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/no-environment/collapsed.png",
+    "video": "/home/runner/work/openclaw/openclaw/evidence/avatar-141285-red/browser/shell-en-US-OeFG1k/no-environment/page@5b3d9544c4b1413024eea2344ba81e10.webm",
+    "chatSends": 0
+  }
+]
