@@ -1,12 +1,12 @@
 [
   {
-    "source": "c86263abc9c816466eb1dd7abc57bacd25cefedd",
-    "node": "24.19.0",
+    "id": "plugin-recovery-context-red",
+    "directory": "plugin-recovery-context-red",
+    "runner": "ubuntu-24.04",
+    "source": "9ed537071bc430a63fabdd535a0c6dbc7a695f61",
+    "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "tui-helper-acquisition",
-    "id": "tui-helper-acquisition",
-    "directory": "tui-helper-acquisition",
-    "runner": "ubuntu-24.04"
+    "mode": "baseline",
+    "variant": "baseline"
   }
 ]

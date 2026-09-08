@@ -1,0 +1,9 @@
+{
+  "id": "campaign-hint-fixture",
+  "name": "Hint Fixture",
+  "configSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  }
+}
