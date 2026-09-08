@@ -1,0 +1,44 @@
+--- a/src/commands/uninstall.ts
++++ b/src/commands/uninstall.ts
+@@ -248,7 +248,7 @@
+   }
+ 
+   if (!failed) {
+-    runtime.log("CLI still installed. Remove via npm/pnpm if desired.");
++    runtime.log("CLI removal instructions: https://docs.openclaw.ai/install/uninstall");
+   }
+ 
+   if (scopes.has("state") && !scopes.has("workspace") && cleanupPlan) {
+--- a/src/cli/program/register.maintenance.ts
++++ b/src/cli/program/register.maintenance.ts
+@@ -318,7 +318,7 @@
+ 
+   program
+     .command("uninstall")
+-    .description("Uninstall the gateway service + local data (CLI remains)")
++    .description("Uninstall the gateway service + local data")
+     .addHelpText(
+       "after",
+       () =>
+--- a/src/cli/program/core-command-descriptors.ts
++++ b/src/cli/program/core-command-descriptors.ts
+@@ -84,7 +84,7 @@
+   },
+   {
+     name: "uninstall",
+-    description: "Uninstall the gateway service + local data (CLI remains)",
++    description: "Uninstall the gateway service + local data",
+     hasSubcommands: false,
+   },
+   {
+--- a/src/commands/uninstall.test.ts
++++ b/src/commands/uninstall.test.ts
+@@ -75,7 +75,7 @@
+     expect(removeStateAndLinkedPaths).not.toHaveBeenCalled();
+     expect(removeWorkspaceDirs).not.toHaveBeenCalled();
+     expect(cleanupCommandLogMessages(runtime)).not.toContain(
+-      "CLI still installed. Remove via npm/pnpm if desired.",
++      "CLI removal instructions: https://docs.openclaw.ai/install/uninstall",
+     );
+   });
+ 

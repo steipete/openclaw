@@ -1,0 +1,5 @@
+[
+  { "id": "root-help", "argv": ["--help"] },
+  { "id": "uninstall-help", "argv": ["uninstall", "--help"] },
+  { "id": "service-preview", "argv": ["uninstall", "--service", "--dry-run", "--yes", "--non-interactive"] }
+]
