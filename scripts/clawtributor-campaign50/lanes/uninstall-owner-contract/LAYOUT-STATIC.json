@@ -1,0 +1,30 @@
+[
+  {
+    "path": "tooling.py",
+    "sha256": "aa4b5415af90bd12140071e3d17040851d0ad9c0406f87a482aa9891653f91c7",
+    "check": "Python AST only; no imports or execution",
+    "passed": true
+  },
+  {
+    "path": "driver.py",
+    "sha256": "afd548e48561f500e379afc5b76f82a29a54c4e0914630ff21d38a1792431aaa",
+    "check": "Python AST only; no imports or execution",
+    "passed": true
+  },
+  {
+    "path": "check-artifact.py",
+    "sha256": "adf56003a265fc3e16822ac0a1676814cf4abb071063864dd402ddd825869b68",
+    "check": "Python AST only; no imports or execution",
+    "passed": true
+  },
+  {
+    "path": "resolve-pnpm-native.mjs",
+    "sha256": "1b452ed1e217bbc573ed5008ee43ac7a3443741fe103514817f29019f354c1cd",
+    "check": "admitted Node24 --check only; no imports or execution",
+    "passed": true
+  },
+  {
+    "check": "three inert official Arborist copies match source hashes/lengths",
+    "passed": true
+  }
+]

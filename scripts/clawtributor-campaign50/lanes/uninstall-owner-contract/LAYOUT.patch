@@ -1,0 +1,331 @@
+--- a/tooling.py
++++ b/tooling.py
+@@ -109,34 +109,116 @@
+     (evidence / 'runtime-admission.json').write_text(json.dumps(receipt,indent=2)+'\n')
+     return node,npm_cli,path_value
+ 
+-def verify_pnpm_archives(packages, owned, lane, evidence):
++def verify_pnpm_archives(packages, owned, lane, evidence, resolve_native):
+     import base64
+-    spec=json.loads((lane/'TOOL-LOCK.json').read_text())
+-    keys=['pnpm','pnpmWindows' if os.name=='nt' else 'pnpmLinux']
+-    receipts=[]
+-    for key in keys:
+-        package=spec['npmPackages'][key]
+-        archive=owned/'tools'/(key+'.tgz')
+-        digest=hashlib.sha512();total=0
+-        with urllib.request.urlopen(package['tarball'],timeout=30) as source, archive.open('wb') as output:
+-            while data:=source.read(1048576):
+-                total+=len(data)
+-                if total>134217728:raise RuntimeError('pnpm archive admission cap')
+-                digest.update(data);output.write(data)
+-        integrity='sha512-'+base64.b64encode(digest.digest()).decode()
+-        if integrity!=package['integrity']:raise RuntimeError('official pnpm archive integrity mismatch')
+-        rows=[]
+-        with tarfile.open(archive,'r:gz') as bundle:
++    spec = json.loads((lane/'TOOL-LOCK.json').read_text())
++    native_key = 'pnpmWindows' if os.name == 'nt' else 'pnpmLinux'
++    receipts = []
++    progress = {'complete': False, 'packages': receipts, 'current': None}
++    partial = evidence/'pnpm-archive-admission.partial.json'
++
++    def save_progress():
++        temporary = partial.with_suffix('.tmp')
++        temporary.write_text(json.dumps(progress, indent=2)+'\n')
++        temporary.replace(partial)
++
++    def path_facts(file):
++        try:
++            info = file.lstat()
++        except FileNotFoundError:
++            return {'kind': 'missing'}
++        except OSError as error:
++            return {'kind': 'unreadable', 'errno': error.errno, 'winerror': getattr(error, 'winerror', None)}
++        kind = 'symlink' if stat.S_ISLNK(info.st_mode) else 'regular' if stat.S_ISREG(info.st_mode) else 'directory' if stat.S_ISDIR(info.st_mode) else 'special'
++        return {'kind': kind, 'size': info.st_size}
++
++    def verify_one(key, installed_root):
++        package = spec['npmPackages'][key]
++        root_relative = installed_root.relative_to(packages)
++        current = {'package': package['name'], 'version': package['version'],
++                   'installedRoot': str(root_relative), 'archiveVerified': False,
++                   'verifiedMembers': [], 'failedMember': None}
++        progress['current'] = current
++        save_progress()
++        current['rootObserved'] = path_facts(installed_root)
++        if current['rootObserved']['kind'] != 'directory' or not installed_root.resolve().is_relative_to(packages.resolve()):
++            raise RuntimeError('installed pnpm package root is not an owned regular directory: '+str(root_relative))
++        archive = owned/'tools'/(key+'.tgz')
++        digest = hashlib.sha512()
++        total = 0
++        with urllib.request.urlopen(package['tarball'], timeout=30) as source, archive.open('wb') as output:
++            while data := source.read(1048576):
++                total += len(data)
++                if total > 134217728:
++                    raise RuntimeError('pnpm archive admission cap')
++                digest.update(data)
++                output.write(data)
++        integrity = 'sha512-'+base64.b64encode(digest.digest()).decode()
++        if integrity != package['integrity']:
++            raise RuntimeError('official pnpm archive integrity mismatch')
++        current['archiveVerified'] = True
++        save_progress()
++        with tarfile.open(archive, 'r:gz') as bundle:
+             for member in bundle:
+-                relative=Path(member.name)
+-                if relative.is_absolute() or '..' in relative.parts or relative.parts[0]!='package':raise RuntimeError('bad pnpm archive path')
+-                if member.isdir():continue
+-                if not member.isfile():raise RuntimeError('unexpected pnpm archive member kind')
+-                file=packages/package['name']/Path(*relative.parts[1:])
+-                if file.is_symlink() or not file.is_file():raise RuntimeError('installed pnpm member missing/nonregular')
+-                archived=bundle.extractfile(member).read()
+-                if file.read_bytes()!=archived:raise RuntimeError('installed pnpm differs from official archive: '+str(relative))
+-                rows.append({'path':str(relative),'sha256':hashlib.sha256(archived).hexdigest()})
+-        receipts.append({'name':package['name'],'version':package['version'],'url':package['tarball'],
+-                         'integrity':integrity,'archiveBytes':total,'files':rows})
+-    (evidence/'pnpm-archive-admission.json').write_text(json.dumps(receipts,indent=2)+'\n')
++                relative = Path(member.name)
++                if relative.is_absolute() or '..' in relative.parts or relative.parts[0] != 'package':
++                    raise RuntimeError('bad pnpm archive path')
++                if member.isdir():
++                    continue
++                if not member.isfile():
++                    current['failedMember'] = {'archiveMember': str(relative), 'reason': 'unexpected archive member kind'}
++                    raise RuntimeError('unexpected pnpm archive member kind: '+str(relative))
++                file = installed_root/Path(*relative.parts[1:])
++                observed = path_facts(file)
++                failure = {'archiveMember': str(relative), 'installedPath': str(file.relative_to(packages)),
++                           'observed': observed}
++                current['failedMember'] = failure
++                if observed['kind'] != 'regular' or not file.resolve().is_relative_to(installed_root.resolve()):
++                    raise RuntimeError('installed pnpm member missing/nonregular: '+str(relative))
++                archived = bundle.extractfile(member).read()
++                expected_hash = hashlib.sha256(archived).hexdigest()
++                actual_hash = hashlib.sha256(file.read_bytes()).hexdigest()
++                if actual_hash != expected_hash:
++                    current['failedMember'] = {**failure, 'expectedSha256': expected_hash, 'actualSha256': actual_hash}
++                    raise RuntimeError('installed pnpm differs from official archive: '+str(relative))
++                current['verifiedMembers'].append({'path': str(relative), 'sha256': expected_hash})
++                current['failedMember'] = None
++        receipts.append({'name': package['name'], 'version': package['version'], 'url': package['tarball'],
++                         'integrity': integrity, 'archiveBytes': total, 'installedRoot': str(root_relative),
++                         'files': current['verifiedMembers']})
++        current['complete'] = True
++        save_progress()
++
++    try:
++        # The directly requested global package has this npm-owned root; optional dependencies do not.
++        verify_one('pnpm', packages/spec['npmPackages']['pnpm']['name'])
++        progress['current'] = {'stage': 'canonical native dependency resolution'}
++        save_progress()
++        native = json.loads(resolve_native(spec['npmPackages'][native_key]))
++        expected = spec['npmPackages'][native_key]
++        if native['name'] != expected['name'] or native['version'] != expected['version']:
++            raise RuntimeError('canonical resolver returned a different native package')
++        expected_platform = 'win32' if os.name == 'nt' else 'linux'
++        if native['platform'] != expected_platform or native['arch'] != 'x64':
++            raise RuntimeError('canonical resolver returned a different native platform')
++        for key in ['packageRoot', 'packageJson', 'binary']:
++            relative = Path(native[key])
++            if relative.is_absolute() or '..' in relative.parts or not (packages/relative).resolve().is_relative_to(packages.resolve()):
++                raise RuntimeError('canonical native path escapes the owned package installation')
++        native_root = packages/native['packageRoot']
++        if native_root.is_symlink() or not native_root.is_dir():
++            raise RuntimeError('canonical native package root is not a regular directory')
++        if packages/native['packageJson'] != native_root/'package.json':
++            raise RuntimeError('canonical native metadata is outside its package root')
++        if packages/native['binary'] != native_root/('pnpm.exe' if os.name == 'nt' else 'pnpm'):
++            raise RuntimeError('canonical native binary is outside its package root')
++        (evidence/'pnpm-native-resolution.json').write_text(json.dumps(native, indent=2)+'\n')
++        verify_one(native_key, native_root)
++        progress['complete'] = True
++        save_progress()
++        (evidence/'pnpm-archive-admission.json').write_text(json.dumps(receipts, indent=2)+'\n')
++        return native
++    except BaseException as error:
++        progress['failure'] = {'type': type(error).__name__}
++        save_progress()
++        raise
+--- a/driver.py
++++ b/driver.py
+@@ -120,18 +120,22 @@
+         tool_prefix=owned/'pnpm-admission'
+         run([node,npm_cli,'install','-g','--prefix',tool_prefix,'pnpm@12.3.4','--ignore-scripts'],owned,env,'admit-pnpm',120)
+         packages=tool_prefix/('node_modules' if os.name=='nt' else 'lib/node_modules')
+-        verify_pnpm_archives(packages,owned,LANE,evidence)
+-        native_package='@pnpm/exe.win32-x64' if os.name=='nt' else '@pnpm/exe.linux-x64'
+-        native_bin=packages/native_package/('pnpm.exe' if os.name=='nt' else 'pnpm')
++        def resolve_native(expected):
++            return run([node,LANE/'resolve-pnpm-native.mjs',packages,expected['name'],expected['version']],
++                       owned,env,'pnpm-native-resolution')
++        native = verify_pnpm_archives(packages,owned,LANE,evidence,resolve_native)
++        native_package = native['name']
++        native_bin = packages/native['binary']
++        package_roots = {'pnpm': packages/'pnpm', native_package: packages/native['packageRoot']}
+         actual_pnpm=run([native_bin,'--version'],owned,env,'pnpm-version').decode().strip()
+         if actual_pnpm!='12.3.4':raise RuntimeError('wrong admitted pnpm')
+         tool_lock=json.loads((LANE/'TOOL-LOCK.json').read_text())
+         admitted=[]
+         for key,name in [('pnpm','pnpm'),('pnpmWindows' if os.name=='nt' else 'pnpmLinux',native_package)]:
+-            manifest=json.loads((packages/name/'package.json').read_text())
++            manifest=json.loads((package_roots[name]/'package.json').read_text())
+             expected=tool_lock['npmPackages'][key]
+             if manifest['name']!=expected['name'] or manifest['version']!=expected['version']:raise RuntimeError('pnpm package identity mismatch')
+-            admitted.append({'name':name,'version':manifest['version'],'packageJsonSha256':digest(packages/name/'package.json')})
++            admitted.append({'name':name,'version':manifest['version'],'packageJsonSha256':digest(package_roots[name]/'package.json')})
+         (evidence/'pnpm-admission.json').write_text(json.dumps({'packages':admitted,'nativeSha256':digest(native_bin),'version':actual_pnpm},indent=2)+'\n')
+         user_config.write_text('offline=true\nregistry=https://registry.npmjs.org\n')
+         env['NPM_CONFIG_OFFLINE']='true';env['PNPM_CONFIG_OFFLINE']='true'
+--- a/check-artifact.py
++++ b/check-artifact.py
+@@ -1,7 +1,7 @@
+ """Independently join raw process streams, actual wrapper bytes and final fixture facts."""
+ import hashlib
+ import json
+-from pathlib import Path, PureWindowsPath
++from pathlib import Path, PurePosixPath, PureWindowsPath
+ import re
+ import shlex
+ import sys
+@@ -105,6 +105,47 @@
+     assert observed['name']==wanted['name'] and observed['version']==wanted['version']
+     assert observed['url']==wanted['tarball'] and observed['integrity']==wanted['integrity']
+     assert observed['files'] and all(re.fullmatch('[0-9a-f]{64}',row['sha256']) for row in observed['files'])
++native=load('pnpm-native-resolution.json')
++assert native==json.loads(output('pnpm-native-resolution'))
++assert native['resolver']=='pnpm/native-binary.mjs.resolveInstalledBinary + declared package resolution'
++assert native['name']==expected_tools[1]['name'] and native['version']==expected_tools[1]['version']
++assert native['platform']==('win32' if host=='windows' else 'linux') and native['arch']=='x64'
++path_type=PureWindowsPath if host=='windows' else PurePosixPath
++for key in ['packageRoot','packageJson','binary']:
++    relative=path_type(native[key])
++    assert relative.parts and not relative.is_absolute() and not relative.drive and '..' not in relative.parts
++native_root=path_type(native['packageRoot'])
++assert path_type(native['packageJson'])==native_root/'package.json'
++assert path_type(native['binary'])==native_root/('pnpm.exe' if host=='windows' else 'pnpm')
++assert path_type(admitted_archives[0]['installedRoot'])==path_type('pnpm')
++assert path_type(admitted_archives[1]['installedRoot'])==native_root
++partial=load('pnpm-archive-admission.partial.json')
++assert partial['complete'] and 'failure' not in partial and partial['packages']==admitted_archives
++assert partial['current']['complete'] and partial['current']['failedMember'] is None
++assert partial['current']['verifiedMembers']==admitted_archives[1]['files']
++assert len(pnpm['packages'])==2
++for admitted,archive in zip(pnpm['packages'],admitted_archives):
++    members={path_type(row['path']).as_posix():row['sha256'] for row in archive['files']}
++    assert len(members)==len(archive['files'])
++    assert admitted['name']==archive['name'] and admitted['version']==archive['version']
++    assert admitted['packageJsonSha256']==members['package/package.json']
++native_members={path_type(row['path']).as_posix():row['sha256'] for row in admitted_archives[1]['files']}
++assert pnpm['nativeSha256']==native_members['package/'+('pnpm.exe' if host=='windows' else 'pnpm')]
++resolver_rows=[row for row in rows if row['name'].endswith('-pnpm-native-resolution')]
++version_rows=[row for row in rows if row['name'].endswith('-pnpm-version')]
++install_rows=[row for row in rows if row['name'].endswith('-admit-pnpm')]
++assert len(resolver_rows)==len(version_rows)==len(install_rows)==1
++resolver_row=resolver_rows[0];version_row=version_rows[0];install_row=install_rows[0]
++assert rows.index(install_row)<rows.index(resolver_row)<rows.index(version_row)
++assert len(install_row['argv'])==8 and install_row['argv'][2:5]==['install','-g','--prefix']
++assert install_row['argv'][6:]==['pnpm@12.3.4','--ignore-scripts']
++package_base=path_type(install_row['argv'][5])/('node_modules' if host=='windows' else 'lib/node_modules')
++assert len(resolver_row['argv'])==5 and resolver_row['argv'][0]==runtime['node']
++assert path_type(resolver_row['argv'][1]).name=='resolve-pnpm-native.mjs'
++assert path_type(resolver_row['argv'][2])==package_base
++assert resolver_row['argv'][3:]==[native['name'],native['version']]
++assert version_row['argv']==[str(package_base/path_type(native['binary'])),'--version']
++assert output('pnpm-version').decode().strip()==pnpm['version']
+ if host=='windows':
+     assert load('windows-path-before.json')['entry']==cleanup['windowsPathAdded']
+     restored=json.loads(output('windows-path-restore'));assert restored['restored'] and restored['exactOriginal']
+--- a/resolve-pnpm-native.mjs
++++ b/resolve-pnpm-native.mjs
+@@ -0,0 +1,71 @@
++import fs from "node:fs";
++import { createRequire } from "node:module";
++import path from "node:path";
++import { pathToFileURL } from "node:url";
++
++const [packagesArg, expectedName, expectedVersion] = process.argv.slice(2);
++const packages = fs.realpathSync(packagesArg);
++const wrapper = path.join(packages, "pnpm");
++const manifest = JSON.parse(fs.readFileSync(path.join(wrapper, "package.json"), "utf8"));
++if (
++  manifest.name !== "pnpm" ||
++  manifest.version !== expectedVersion ||
++  manifest.optionalDependencies?.[expectedName] !== expectedVersion
++) {
++  throw new Error("Verified pnpm wrapper does not declare the exact native dependency");
++}
++// The caller fully verifies this installed wrapper against its pinned archive before import.
++const upstream = await import(pathToFileURL(path.join(wrapper, "native-binary.mjs")).href);
++const preferred = upstream.getBinCandidates()[0];
++if (!preferred) throw new Error("No canonical pnpm candidate for this platform");
++const selectedSpec = upstream.splitBinSpecifier(preferred);
++if (selectedSpec.packageName !== expectedName) {
++  throw new Error("Preferred pnpm native dependency differs from the reviewed platform");
++}
++const selected = upstream.resolveInstalledBinary();
++if (!selected) throw new Error("Canonical pnpm resolver found no installed native binary");
++const requireFromWrapper = createRequire(path.join(wrapper, "package.json"));
++const metadataPath = requireFromWrapper.resolve(`${expectedName}/package.json`);
++const packageRoot = path.dirname(metadataPath);
++const relative = (value) => {
++  const real = fs.realpathSync(value);
++  const rel = path.relative(packages, real);
++  if (!rel || path.isAbsolute(rel) || rel === ".." || rel.startsWith(`..${path.sep}`)) {
++    throw new Error("Resolved native member is outside the owned package installation");
++  }
++  return rel;
++};
++for (const value of [metadataPath, selected]) {
++  const info = fs.lstatSync(value);
++  if (!info.isFile() || info.isSymbolicLink()) {
++    throw new Error("Resolved native member is not a regular file");
++  }
++}
++relative(packageRoot);
++relative(metadataPath);
++relative(selected);
++const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8"));
++if (
++  metadata.name !== expectedName ||
++  metadata.version !== expectedVersion ||
++  !metadata.os?.includes(process.platform) ||
++  !metadata.cpu?.includes(process.arch) ||
++  (process.platform === "linux" && !metadata.libc?.includes("glibc"))
++) {
++  throw new Error("Resolved native package identity/platform differs from the reviewed package");
++}
++if (fs.realpathSync(selected) !== fs.realpathSync(path.join(packageRoot, selectedSpec.binFile))) {
++  throw new Error("Canonical binary is not in the resolved declared native package");
++}
++process.stdout.write(
++  JSON.stringify({
++    resolver: "pnpm/native-binary.mjs.resolveInstalledBinary + declared package resolution",
++    name: metadata.name,
++    version: metadata.version,
++    platform: process.platform,
++    arch: process.arch,
++    packageRoot: relative(packageRoot),
++    packageJson: relative(metadataPath),
++    binary: relative(selected),
++  }) + "\n",
++);
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # #127254 executable ownership-proof candidate
+ 
+-This packet is FILE-ONLY and has not executed. Root must grant execution after independent executable/tool/backend/controller review. Source/preservation proposal95a17445 and canonical parser acceptance are separate completed evidence. Do not infer execution authorization from a local packet's stage field.
++This successor packet is FILE-ONLY and has not executed. Its predecessor139b ran as docs80 and failed before owner cases on both platforms; see LAYOUT-PROPOSAL.md for exact completed scope and limits. Root must grant any new execution after independent executable/tool/backend/controller review. Source/preservation proposal95a17445 and canonical parser acceptance are separate completed evidence. Do not infer execution authorization from a local packet's stage field.
+ 
+ The invariant is installation ownership: real global npm removal must remove its package control but leave independently owned Git/prefix launchers callable; removing the actual recorded owner must eliminate that launcher while preserving the named synthetic data and shared tools. The credible failure is following the existing uninstall guide's universal npm instruction, or deleting a checkout/prefix while leaving its launcher or deleting unrelated files.
+ 
+--- a/BACKEND-DESIGN.md
++++ b/BACKEND-DESIGN.md
+@@ -1,6 +1,6 @@
+ # #127254 exact backend and execution gate proposal
+ 
+-This is file-only authoring, not a dispatch grant. The source/preservation proposal is independently accepted at95a17445 after the canonical parser fixed the old anchors. No installer owner, package-removal case, guest process, native Windows call, registry write, Git fixture commit or backend acquisition has run.
++This successor is file-only authoring, not a dispatch grant. The historical design below predates docs80; LAYOUT-PROPOSAL.md records that failed actual run and the current correction. No owner case ran, while Linux inert controls and four admission commands did run. The source/preservation proposal is independently accepted at95a17445 after the canonical parser fixed the old anchors. No installer owner, package-removal case, registry write or Git fixture commit ran in docs80. Windows failed in its outer command lookup; the Linux hosted admission stopped before owner cases.
+ 
+ ## Existing route personally inspected
+ 

@@ -109,34 +109,116 @@ def obtain_runtime(owned, lane, evidence):
     (evidence / 'runtime-admission.json').write_text(json.dumps(receipt,indent=2)+'\n')
     return node,npm_cli,path_value
 
-def verify_pnpm_archives(packages, owned, lane, evidence):
+def verify_pnpm_archives(packages, owned, lane, evidence, resolve_native):
     import base64
-    spec=json.loads((lane/'TOOL-LOCK.json').read_text())
-    keys=['pnpm','pnpmWindows' if os.name=='nt' else 'pnpmLinux']
-    receipts=[]
-    for key in keys:
-        package=spec['npmPackages'][key]
-        archive=owned/'tools'/(key+'.tgz')
-        digest=hashlib.sha512();total=0
-        with urllib.request.urlopen(package['tarball'],timeout=30) as source, archive.open('wb') as output:
-            while data:=source.read(1048576):
-                total+=len(data)
-                if total>134217728:raise RuntimeError('pnpm archive admission cap')
-                digest.update(data);output.write(data)
-        integrity='sha512-'+base64.b64encode(digest.digest()).decode()
-        if integrity!=package['integrity']:raise RuntimeError('official pnpm archive integrity mismatch')
-        rows=[]
-        with tarfile.open(archive,'r:gz') as bundle:
+    spec = json.loads((lane/'TOOL-LOCK.json').read_text())
+    native_key = 'pnpmWindows' if os.name == 'nt' else 'pnpmLinux'
+    receipts = []
+    progress = {'complete': False, 'packages': receipts, 'current': None}
+    partial = evidence/'pnpm-archive-admission.partial.json'
+
+    def save_progress():
+        temporary = partial.with_suffix('.tmp')
+        temporary.write_text(json.dumps(progress, indent=2)+'\n')
+        temporary.replace(partial)
+
+    def path_facts(file):
+        try:
+            info = file.lstat()
+        except FileNotFoundError:
+            return {'kind': 'missing'}
+        except OSError as error:
+            return {'kind': 'unreadable', 'errno': error.errno, 'winerror': getattr(error, 'winerror', None)}
+        kind = 'symlink' if stat.S_ISLNK(info.st_mode) else 'regular' if stat.S_ISREG(info.st_mode) else 'directory' if stat.S_ISDIR(info.st_mode) else 'special'
+        return {'kind': kind, 'size': info.st_size}
+
+    def verify_one(key, installed_root):
+        package = spec['npmPackages'][key]
+        root_relative = installed_root.relative_to(packages)
+        current = {'package': package['name'], 'version': package['version'],
+                   'installedRoot': str(root_relative), 'archiveVerified': False,
+                   'verifiedMembers': [], 'failedMember': None}
+        progress['current'] = current
+        save_progress()
+        current['rootObserved'] = path_facts(installed_root)
+        if current['rootObserved']['kind'] != 'directory' or not installed_root.resolve().is_relative_to(packages.resolve()):
+            raise RuntimeError('installed pnpm package root is not an owned regular directory: '+str(root_relative))
+        archive = owned/'tools'/(key+'.tgz')
+        digest = hashlib.sha512()
+        total = 0
+        with urllib.request.urlopen(package['tarball'], timeout=30) as source, archive.open('wb') as output:
+            while data := source.read(1048576):
+                total += len(data)
+                if total > 134217728:
+                    raise RuntimeError('pnpm archive admission cap')
+                digest.update(data)
+                output.write(data)
+        integrity = 'sha512-'+base64.b64encode(digest.digest()).decode()
+        if integrity != package['integrity']:
+            raise RuntimeError('official pnpm archive integrity mismatch')
+        current['archiveVerified'] = True
+        save_progress()
+        with tarfile.open(archive, 'r:gz') as bundle:
             for member in bundle:
-                relative=Path(member.name)
-                if relative.is_absolute() or '..' in relative.parts or relative.parts[0]!='package':raise RuntimeError('bad pnpm archive path')
-                if member.isdir():continue
-                if not member.isfile():raise RuntimeError('unexpected pnpm archive member kind')
-                file=packages/package['name']/Path(*relative.parts[1:])
-                if file.is_symlink() or not file.is_file():raise RuntimeError('installed pnpm member missing/nonregular')
-                archived=bundle.extractfile(member).read()
-                if file.read_bytes()!=archived:raise RuntimeError('installed pnpm differs from official archive: '+str(relative))
-                rows.append({'path':str(relative),'sha256':hashlib.sha256(archived).hexdigest()})
-        receipts.append({'name':package['name'],'version':package['version'],'url':package['tarball'],
-                         'integrity':integrity,'archiveBytes':total,'files':rows})
-    (evidence/'pnpm-archive-admission.json').write_text(json.dumps(receipts,indent=2)+'\n')
+                relative = Path(member.name)
+                if relative.is_absolute() or '..' in relative.parts or relative.parts[0] != 'package':
+                    raise RuntimeError('bad pnpm archive path')
+                if member.isdir():
+                    continue
+                if not member.isfile():
+                    current['failedMember'] = {'archiveMember': str(relative), 'reason': 'unexpected archive member kind'}
+                    raise RuntimeError('unexpected pnpm archive member kind: '+str(relative))
+                file = installed_root/Path(*relative.parts[1:])
+                observed = path_facts(file)
+                failure = {'archiveMember': str(relative), 'installedPath': str(file.relative_to(packages)),
+                           'observed': observed}
+                current['failedMember'] = failure
+                if observed['kind'] != 'regular' or not file.resolve().is_relative_to(installed_root.resolve()):
+                    raise RuntimeError('installed pnpm member missing/nonregular: '+str(relative))
+                archived = bundle.extractfile(member).read()
+                expected_hash = hashlib.sha256(archived).hexdigest()
+                actual_hash = hashlib.sha256(file.read_bytes()).hexdigest()
+                if actual_hash != expected_hash:
+                    current['failedMember'] = {**failure, 'expectedSha256': expected_hash, 'actualSha256': actual_hash}
+                    raise RuntimeError('installed pnpm differs from official archive: '+str(relative))
+                current['verifiedMembers'].append({'path': str(relative), 'sha256': expected_hash})
+                current['failedMember'] = None
+        receipts.append({'name': package['name'], 'version': package['version'], 'url': package['tarball'],
+                         'integrity': integrity, 'archiveBytes': total, 'installedRoot': str(root_relative),
+                         'files': current['verifiedMembers']})
+        current['complete'] = True
+        save_progress()
+
+    try:
+        # The directly requested global package has this npm-owned root; optional dependencies do not.
+        verify_one('pnpm', packages/spec['npmPackages']['pnpm']['name'])
+        progress['current'] = {'stage': 'canonical native dependency resolution'}
+        save_progress()
+        native = json.loads(resolve_native(spec['npmPackages'][native_key]))
+        expected = spec['npmPackages'][native_key]
+        if native['name'] != expected['name'] or native['version'] != expected['version']:
+            raise RuntimeError('canonical resolver returned a different native package')
+        expected_platform = 'win32' if os.name == 'nt' else 'linux'
+        if native['platform'] != expected_platform or native['arch'] != 'x64':
+            raise RuntimeError('canonical resolver returned a different native platform')
+        for key in ['packageRoot', 'packageJson', 'binary']:
+            relative = Path(native[key])
+            if relative.is_absolute() or '..' in relative.parts or not (packages/relative).resolve().is_relative_to(packages.resolve()):
+                raise RuntimeError('canonical native path escapes the owned package installation')
+        native_root = packages/native['packageRoot']
+        if native_root.is_symlink() or not native_root.is_dir():
+            raise RuntimeError('canonical native package root is not a regular directory')
+        if packages/native['packageJson'] != native_root/'package.json':
+            raise RuntimeError('canonical native metadata is outside its package root')
+        if packages/native['binary'] != native_root/('pnpm.exe' if os.name == 'nt' else 'pnpm'):
+            raise RuntimeError('canonical native binary is outside its package root')
+        (evidence/'pnpm-native-resolution.json').write_text(json.dumps(native, indent=2)+'\n')
+        verify_one(native_key, native_root)
+        progress['complete'] = True
+        save_progress()
+        (evidence/'pnpm-archive-admission.json').write_text(json.dumps(receipts, indent=2)+'\n')
+        return native
+    except BaseException as error:
+        progress['failure'] = {'type': type(error).__name__}
+        save_progress()
+        raise

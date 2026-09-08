@@ -1,12 +1,22 @@
 [
   {
-    "id": "plugin-recovery-context-red",
-    "directory": "plugin-recovery-context-red",
+    "id": "uninstall-owner-posix",
+    "directory": "uninstall-owner-contract",
     "runner": "ubuntu-24.04",
-    "source": "9ed537071bc430a63fabdd535a0c6dbc7a695f61",
+    "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "baseline",
-    "variant": "baseline"
+    "variant": "installer-ownership"
+  },
+  {
+    "id": "uninstall-owner-windows",
+    "directory": "uninstall-owner-contract",
+    "runner": "windows-2025",
+    "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "baseline",
+    "variant": "installer-ownership"
   }
 ]

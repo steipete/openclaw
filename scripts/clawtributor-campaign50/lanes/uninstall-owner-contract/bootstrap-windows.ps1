@@ -10,7 +10,7 @@ $TargetDir=(Resolve-Path -LiteralPath $TargetDir).Path
 $LaneDir=(Resolve-Path -LiteralPath $LaneDir).Path
 New-Item -ItemType Directory -Force $EvidenceDir | Out-Null
 $EvidenceDir=(Resolve-Path -LiteralPath $EvidenceDir).Path
-$python=(Get-Command python -CommandType Application).Source
+$python=(Get-Command python -CommandType Application | Select-Object -First 1).Source
 & $python -I -S (Join-Path $LaneDir 'verify-inputs.py') $LaneDir $TargetDir (Join-Path $EvidenceDir 'input-before.json')
 if ($LASTEXITCODE -ne 0) { throw 'Frozen input gate failed' }
 $head=(& git -C $TargetDir rev-parse HEAD).Trim()

@@ -1,7 +1,7 @@
 """Independently join raw process streams, actual wrapper bytes and final fixture facts."""
 import hashlib
 import json
-from pathlib import Path, PureWindowsPath
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 import shlex
 import sys
@@ -105,6 +105,47 @@ for observed,wanted in zip(admitted_archives,expected_tools):
     assert observed['name']==wanted['name'] and observed['version']==wanted['version']
     assert observed['url']==wanted['tarball'] and observed['integrity']==wanted['integrity']
     assert observed['files'] and all(re.fullmatch('[0-9a-f]{64}',row['sha256']) for row in observed['files'])
+native=load('pnpm-native-resolution.json')
+assert native==json.loads(output('pnpm-native-resolution'))
+assert native['resolver']=='pnpm/native-binary.mjs.resolveInstalledBinary + declared package resolution'
+assert native['name']==expected_tools[1]['name'] and native['version']==expected_tools[1]['version']
+assert native['platform']==('win32' if host=='windows' else 'linux') and native['arch']=='x64'
+path_type=PureWindowsPath if host=='windows' else PurePosixPath
+for key in ['packageRoot','packageJson','binary']:
+    relative=path_type(native[key])
+    assert relative.parts and not relative.is_absolute() and not relative.drive and '..' not in relative.parts
+native_root=path_type(native['packageRoot'])
+assert path_type(native['packageJson'])==native_root/'package.json'
+assert path_type(native['binary'])==native_root/('pnpm.exe' if host=='windows' else 'pnpm')
+assert path_type(admitted_archives[0]['installedRoot'])==path_type('pnpm')
+assert path_type(admitted_archives[1]['installedRoot'])==native_root
+partial=load('pnpm-archive-admission.partial.json')
+assert partial['complete'] and 'failure' not in partial and partial['packages']==admitted_archives
+assert partial['current']['complete'] and partial['current']['failedMember'] is None
+assert partial['current']['verifiedMembers']==admitted_archives[1]['files']
+assert len(pnpm['packages'])==2
+for admitted,archive in zip(pnpm['packages'],admitted_archives):
+    members={path_type(row['path']).as_posix():row['sha256'] for row in archive['files']}
+    assert len(members)==len(archive['files'])
+    assert admitted['name']==archive['name'] and admitted['version']==archive['version']
+    assert admitted['packageJsonSha256']==members['package/package.json']
+native_members={path_type(row['path']).as_posix():row['sha256'] for row in admitted_archives[1]['files']}
+assert pnpm['nativeSha256']==native_members['package/'+('pnpm.exe' if host=='windows' else 'pnpm')]
+resolver_rows=[row for row in rows if row['name'].endswith('-pnpm-native-resolution')]
+version_rows=[row for row in rows if row['name'].endswith('-pnpm-version')]
+install_rows=[row for row in rows if row['name'].endswith('-admit-pnpm')]
+assert len(resolver_rows)==len(version_rows)==len(install_rows)==1
+resolver_row=resolver_rows[0];version_row=version_rows[0];install_row=install_rows[0]
+assert rows.index(install_row)<rows.index(resolver_row)<rows.index(version_row)
+assert len(install_row['argv'])==8 and install_row['argv'][2:5]==['install','-g','--prefix']
+assert install_row['argv'][6:]==['pnpm@12.3.4','--ignore-scripts']
+package_base=path_type(install_row['argv'][5])/('node_modules' if host=='windows' else 'lib/node_modules')
+assert len(resolver_row['argv'])==5 and resolver_row['argv'][0]==runtime['node']
+assert path_type(resolver_row['argv'][1]).name=='resolve-pnpm-native.mjs'
+assert path_type(resolver_row['argv'][2])==package_base
+assert resolver_row['argv'][3:]==[native['name'],native['version']]
+assert version_row['argv']==[str(package_base/path_type(native['binary'])),'--version']
+assert output('pnpm-version').decode().strip()==pnpm['version']
 if host=='windows':
     assert load('windows-path-before.json')['entry']==cleanup['windowsPathAdded']
     restored=json.loads(output('windows-path-restore'));assert restored['restored'] and restored['exactOriginal']

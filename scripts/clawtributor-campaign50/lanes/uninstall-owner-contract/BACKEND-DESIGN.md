@@ -1,6 +1,6 @@
 # #127254 exact backend and execution gate proposal
 
-This is file-only authoring, not a dispatch grant. The source/preservation proposal is independently accepted at95a17445 after the canonical parser fixed the old anchors. No installer owner, package-removal case, guest process, native Windows call, registry write, Git fixture commit or backend acquisition has run.
+This successor is file-only authoring, not a dispatch grant. The historical design below predates docs80; LAYOUT-PROPOSAL.md records that failed actual run and the current correction. No owner case ran, while Linux inert controls and four admission commands did run. The source/preservation proposal is independently accepted at95a17445 after the canonical parser fixed the old anchors. No installer owner, package-removal case, registry write or Git fixture commit ran in docs80. Windows failed in its outer command lookup; the Linux hosted admission stopped before owner cases.
 
 ## Existing route personally inspected
 

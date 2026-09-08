@@ -1,10 +1,10 @@
 {
-  "commit": "d08ba196072a37a0e28774859f64b37271d541f1",
-  "priorCommit": "dfa24553933a6dcc6283c98c8521a78c03dfe49e",
+  "commit": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
+  "priorCommit": "d08ba196072a37a0e28774859f64b37271d541f1",
   "files": [
     {
       "path": ".github/workflows/clawtributor-campaign50-proof.yml",
-      "sha256": "015bd9b2bff49d446bb3e3ef4e8af823c053344137bb6ed1fd5e6ab6481d21d6"
+      "sha256": "3a602f51ad4c8271fc8e1e6348f50b721ec21c29a240dfd5dd062dddacc85b0f"
     },
     {
       "path": "scripts/clawtributor-campaign50/select-matrix.py",

@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-08T12:20:27.445187+00:00",
+  "at": "2026-09-08T13:20:18.358421+00:00",
   "stage": "frozen-executable-candidate",
   "pr": 127254,
   "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
@@ -30,18 +30,33 @@
   "files": [
     {
       "path": "BACKEND-DESIGN.md",
-      "sha256": "cff1c67d48bb63cdfb01d29ccbcea6ceac56f6b6a8939ea9506546e866cf357c",
-      "bytes": 9934
+      "sha256": "07e3409ee387cf24e0a6cbf5cb1e709c15650b037947faa3539764f8523c3f8f",
+      "bytes": 10198
     },
     {
       "path": "CONTROLLER-PINS.json",
-      "sha256": "7136f5f5b52e175ef2fd3be5ac780fa4c1626cd0c9f7598276af8c21b74ff617",
+      "sha256": "a2de526f681b250791f33425c0bb82778e789aa669c53162b2ffe1982a1f106b",
       "bytes": 1082
     },
     {
+      "path": "LAYOUT-PROPOSAL.md",
+      "sha256": "0a3be7a338eefad777ded44d57ca7cdf5aadc22735054a6a49cc8fdf8ddb6ec1",
+      "bytes": 6081
+    },
+    {
+      "path": "LAYOUT-STATIC.json",
+      "sha256": "09d5b45370e392fef82f148e07c9cfb2bd833bd7f3d830765b7446ee9abdc5cb",
+      "bytes": 916
+    },
+    {
+      "path": "LAYOUT.patch",
+      "sha256": "10a397f28ccb994795ec877867bee2508e5f4b0915aa4a38b085a869e04df894",
+      "bytes": 21100
+    },
+    {
       "path": "README.md",
-      "sha256": "52eaa4329a2ea4dc15815a240aa109685d747aeddd3cacc765071b9aaca551bb",
-      "bytes": 4013
+      "sha256": "a74cb71529da1bcc5b057986616ea67aa1b6ff1d499b60dcc9efd11b4cf65c41",
+      "bytes": 4175
     },
     {
       "path": "REPAIR-PROPOSAL.md",
@@ -80,8 +95,8 @@
     },
     {
       "path": "bootstrap-windows.ps1",
-      "sha256": "fe3b30d5372ba846cd6a3ad2d87e8fea1f1e4abb788f8828099e67085f901117",
-      "bytes": 4642
+      "sha256": "3d61cc6889b84b80c6cce82ba4fd9bd024cd9db9db3f5f8c62f0318f4ff38b88",
+      "bytes": 4667
     },
     {
       "path": "bridge.py",
@@ -90,8 +105,8 @@
     },
     {
       "path": "check-artifact.py",
-      "sha256": "cc1151a87ba993226df4d8be73acc65954cb7621f3720450493cb1edf2a16870",
-      "bytes": 8213
+      "sha256": "adf56003a265fc3e16822ac0a1676814cf4abb071063864dd402ddd825869b68",
+      "bytes": 11326
     },
     {
       "path": "controller-workflow.patch",
@@ -100,8 +115,8 @@
     },
     {
       "path": "driver.py",
-      "sha256": "0b65bae72e0325e24f5038fcf3007b86cc7188ebcef1de998a842c174e5e46bf",
-      "bytes": 17704
+      "sha256": "afd548e48561f500e379afc5b76f82a29a54c4e0914630ff21d38a1792431aaa",
+      "bytes": 17956
     },
     {
       "path": "fixture/fixture-build.mjs",
@@ -137,6 +152,26 @@
       "path": "launch-driver.py",
       "sha256": "af6b6f3d52b40c569628ab6fac96b19075ebbaa3ee845f56981751643448e778",
       "bytes": 2006
+    },
+    {
+      "path": "layout-source/SOURCE-PINS.json",
+      "sha256": "21f89900cf3f333eca8f84e09cb2ffea30bfbac2a5d19849720964c0d8c719b2",
+      "bytes": 1143
+    },
+    {
+      "path": "layout-source/arborist-index.js.txt",
+      "sha256": "eab368e9ba8b9c3990b5ab02e084bd3ccef724d8cc1c9ceadad92b5cc7a97001",
+      "bytes": 10396
+    },
+    {
+      "path": "layout-source/arborist-package.json.txt",
+      "sha256": "5d91b99a8f0115a31fc50931eb3cf04771739cb4316400e1acf431b7cfc4c40c",
+      "bytes": 2790
+    },
+    {
+      "path": "layout-source/arborist-place-dep.js.txt",
+      "sha256": "67211007f6b1135788d6a1fec7c5307d03477bc648c14c19c18656a527833b8e",
+      "bytes": 20289
     },
     {
       "path": "matrix-proposal.json",
@@ -209,9 +244,14 @@
       "bytes": 1439
     },
     {
+      "path": "resolve-pnpm-native.mjs",
+      "sha256": "1b452ed1e217bbc573ed5008ee43ac7a3443741fe103514817f29019f354c1cd",
+      "bytes": 3076
+    },
+    {
       "path": "run.ps1",
-      "sha256": "0feb74b0accd2f374a1f1b60812191f881afa2700c252f1dfa79a1dc71cce775",
-      "bytes": 939
+      "sha256": "a7da408e885c3adf43202470e766ee55f34a93d8bb6966f22cc41cb372678441",
+      "bytes": 964
     },
     {
       "path": "run.sh",
@@ -310,8 +350,8 @@
     },
     {
       "path": "tooling.py",
-      "sha256": "b108950e5b943a52c38f15b3a69f63ad78eead31177c7e4ecc9788468efd49e5",
-      "bytes": 7552
+      "sha256": "aa4b5415af90bd12140071e3d17040851d0ad9c0406f87a482aa9891653f91c7",
+      "bytes": 12304
     },
     {
       "path": "verify-inputs.py",
@@ -326,7 +366,7 @@
   ],
   "executed": false,
   "executionGrant": false,
-  "controllerCommit": "d08ba196072a37a0e28774859f64b37271d541f1",
+  "controllerCommit": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
   "actualCases": {
     "linux": [
       "global-control",
@@ -347,36 +387,38 @@
     "windows": 900
   },
   "remainingGates": [
-    "independent full executable/tool/containment review",
-    "root decision on observed hosted Python/Git/PowerShell version admission",
-    "exact controller/workflow/bootstrap composition review",
-    "root execution wave grant",
-    "actual output and cleanup qualification"
+    "independent combined packet/controller reacceptance",
+    "normal full managed review and exact commit/publication gates",
+    "root execution grant for this exact combined wave",
+    "actual tool admission, owner outputs and cleanup qualification"
   ],
-  "revision": 5,
-  "previousPacket": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/proof-infra/wave77-v1-frozen/scripts/clawtributor-campaign50/lanes/uninstall-owner-contract/PACKET.json",
-  "previousPacketSha256": "030ccb4ccc46f3cac3b217a437cf9cbc8e2f3434d5686dd9a1ecd4a8be9f090f",
+  "revision": 6,
+  "previousPacket": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/docs-refill-round4/127254-proof-repaired/PACKET.json",
+  "previousPacketSha256": "139b602f38e49196049ee78b5ed7d0252e49c224ad8b93a08f45cdc3279ed503",
   "revisionReason": [
-    "Separate owned npm user/global configuration filenames while retaining explicit empty/global and offline/user layers",
-    "Share precisely owned Windows readonly regular-file cleanup across selective and outer owners; preserve ordinary Linux rmtree and all other errors",
-    "Retain exact official npm/config, GitWindows and CPython source proof as inert text; no target/control execution"
+    "Resolve pnpm native dependency through the archive-verified upstream resolver and declared package metadata; verify the exact selected native archive before any execution",
+    "Retain safe relative partial archive-member diagnostics and bind resolver/package/binary admissions in the independent artifact checker",
+    "Preserve docs80 failures and the unknown first missing member; no runtime, owner cases or Windows lookup changes",
+    "Compose independently accepted two-site Windows Python scalar resolution and rebind current published controller metadata; no tool/source/fixture/process-limit change"
   ],
   "containmentLimit": "Inherited foreground tool/fixture group/job; no generic daemon or detach containment claim; no cgroup or privileged helper added",
   "changedInputs": [
-    "REPAIR-PROPOSAL.md",
-    "REPAIR.patch",
-    "STATIC-SYNTAX.json",
+    "BACKEND-DESIGN.md",
+    "CONTROLLER-PINS.json",
+    "LAYOUT-PROPOSAL.md",
+    "LAYOUT-STATIC.json",
+    "LAYOUT.patch",
+    "README.md",
+    "bootstrap-windows.ps1",
+    "check-artifact.py",
     "driver.py",
-    "launch-driver.py",
-    "owned_cleanup.py",
-    "repair-source/PLATFORM-CONTRACTS.md",
-    "repair-source/SOURCE-PINS.json",
-    "repair-source/cpython-3.12.3-shutil.py.txt",
-    "repair-source/cpython-3.13.0-shutil.py.txt",
-    "repair-source/cpython-3.14.0-shutil.py.txt",
-    "repair-source/git-windows-object-file.c.txt",
-    "repair-source/npm-config-index.js.txt",
-    "repair-source/npm-config-package.json.txt"
+    "layout-source/SOURCE-PINS.json",
+    "layout-source/arborist-index.js.txt",
+    "layout-source/arborist-package.json.txt",
+    "layout-source/arborist-place-dep.js.txt",
+    "resolve-pnpm-native.mjs",
+    "run.ps1",
+    "tooling.py"
   ],
   "inertControlSeconds": [
     15,
@@ -408,5 +450,22 @@
     "P1": "npm duplicate source filename",
     "P2": "Windows readonly Git/cache file cleanup"
   },
-  "requiresIndependentReacceptance": true
+  "requiresIndependentReacceptance": true,
+  "actualPredecessor": {
+    "run": 34227513302,
+    "harness": "886c8ef0f991a8c0c6c8e46d4a55f9ba9346ca79",
+    "conclusion": "failure",
+    "linuxJob": 102065241216,
+    "windowsJob": 102065241117,
+    "ownerCasesStarted": 0,
+    "firstMissingMemberKnown": false,
+    "linuxOwnedRootRetained": true
+  },
+  "windowsPythonCorrectionIncluded": true,
+  "composition": {
+    "linuxPacketSha256": "fb859a66e795a00ba8d270120292d2d86df2754551c59c5e94649040910b4dbb",
+    "windowsPatchSha256": "d12235afeec117991556a1ea7f9dc383a05cadfd6f98830503958b947e309c68",
+    "publishedController": "24dd433bcae9e4f1f81f052ecfb0e0fd6e95b4ab",
+    "workflowRoute": "Already published and byte-bound; controller-workflow.patch is retained initial-route evidence"
+  }
 }

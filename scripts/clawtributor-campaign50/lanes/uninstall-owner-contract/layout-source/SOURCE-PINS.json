@@ -1,0 +1,29 @@
+{
+  "node": "24.20.0",
+  "npm": "11.19.0",
+  "arborist": "9.9.1",
+  "officialBytesMatchInspectedInstalledSources": true,
+  "sources": [
+    {
+      "path": "arborist-package.json.txt",
+      "logicalSourcePath": "package.json",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/node_modules/@npmcli/arborist/package.json",
+      "sha256": "5d91b99a8f0115a31fc50931eb3cf04771739cb4316400e1acf431b7cfc4c40c",
+      "bytes": 2790
+    },
+    {
+      "path": "arborist-index.js.txt",
+      "logicalSourcePath": "lib/arborist/index.js",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/node_modules/@npmcli/arborist/lib/arborist/index.js",
+      "sha256": "eab368e9ba8b9c3990b5ab02e084bd3ccef724d8cc1c9ceadad92b5cc7a97001",
+      "bytes": 10396
+    },
+    {
+      "path": "arborist-place-dep.js.txt",
+      "logicalSourcePath": "lib/place-dep.js",
+      "url": "https://raw.githubusercontent.com/nodejs/node/v24.20.0/deps/npm/node_modules/@npmcli/arborist/lib/place-dep.js",
+      "sha256": "67211007f6b1135788d6a1fec7c5307d03477bc648c14c19c18656a527833b8e",
+      "bytes": 20289
+    }
+  ]
+}

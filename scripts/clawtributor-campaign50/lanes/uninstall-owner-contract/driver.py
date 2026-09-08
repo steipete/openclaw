@@ -120,18 +120,22 @@ def main():
         tool_prefix=owned/'pnpm-admission'
         run([node,npm_cli,'install','-g','--prefix',tool_prefix,'pnpm@12.3.4','--ignore-scripts'],owned,env,'admit-pnpm',120)
         packages=tool_prefix/('node_modules' if os.name=='nt' else 'lib/node_modules')
-        verify_pnpm_archives(packages,owned,LANE,evidence)
-        native_package='@pnpm/exe.win32-x64' if os.name=='nt' else '@pnpm/exe.linux-x64'
-        native_bin=packages/native_package/('pnpm.exe' if os.name=='nt' else 'pnpm')
+        def resolve_native(expected):
+            return run([node,LANE/'resolve-pnpm-native.mjs',packages,expected['name'],expected['version']],
+                       owned,env,'pnpm-native-resolution')
+        native = verify_pnpm_archives(packages,owned,LANE,evidence,resolve_native)
+        native_package = native['name']
+        native_bin = packages/native['binary']
+        package_roots = {'pnpm': packages/'pnpm', native_package: packages/native['packageRoot']}
         actual_pnpm=run([native_bin,'--version'],owned,env,'pnpm-version').decode().strip()
         if actual_pnpm!='12.3.4':raise RuntimeError('wrong admitted pnpm')
         tool_lock=json.loads((LANE/'TOOL-LOCK.json').read_text())
         admitted=[]
         for key,name in [('pnpm','pnpm'),('pnpmWindows' if os.name=='nt' else 'pnpmLinux',native_package)]:
-            manifest=json.loads((packages/name/'package.json').read_text())
+            manifest=json.loads((package_roots[name]/'package.json').read_text())
             expected=tool_lock['npmPackages'][key]
             if manifest['name']!=expected['name'] or manifest['version']!=expected['version']:raise RuntimeError('pnpm package identity mismatch')
-            admitted.append({'name':name,'version':manifest['version'],'packageJsonSha256':digest(packages/name/'package.json')})
+            admitted.append({'name':name,'version':manifest['version'],'packageJsonSha256':digest(package_roots[name]/'package.json')})
         (evidence/'pnpm-admission.json').write_text(json.dumps({'packages':admitted,'nativeSha256':digest(native_bin),'version':actual_pnpm},indent=2)+'\n')
         user_config.write_text('offline=true\nregistry=https://registry.npmjs.org\n')
         env['NPM_CONFIG_OFFLINE']='true';env['PNPM_CONFIG_OFFLINE']='true'
