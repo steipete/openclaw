@@ -1,0 +1,41 @@
+{
+  "status": "EXECUTABLE_PACKET_FOR_INDEPENDENT_REVIEW_UNEXECUTED",
+  "base": "eb470406185fbdf2e8cfc9cd365b7a3e7062fe09",
+  "runtime": {
+    "node": "24.20.0",
+    "pnpm": "12.3.4"
+  },
+  "lane": "fixture-endpoint-isolation",
+  "mode": "compare",
+  "files": {
+    "run.sh": "d3393df240391162c41dd7c46f9390d903ed0d6413f8e896bad0c537171a516b",
+    "verify.mjs": "7a561198dca3ac7ba2940c621a0184e466b80eb6044fa5d76d302df1ba4aee12",
+    "completed-report.mjs": "eac849f61a9142ee9077620e923d5aa1c720ede766d4308b528619a237669a19",
+    "owner.patch": "82c6a6ee700f9ad11fb273c23d023a9f030a607b34c75017ff8894b08698d8ca",
+    "regression.patch": "fcd3ae2a720b3f0beacb24f350b967476803fd96806b230977f296d3f26e2158",
+    "regression.test.ts": "702f19c46cb973f9d45d48578e5fbaee25989e70d434d588fc5219f4ae5630be",
+    "source-before.sha256": "90dce0aaa02fe85488727bba9781ca51dacfb12b7cfea3d009fee47f58aa03c9",
+    "source-after.sha256": "5445df159f41e37e2cdbee5d5dff339b84081f0d943bf4ad2e70fb81c9456ca6",
+    "owner-candidate.sha256": "eb75ea382215ebb87bfab5804daaf981feff06e8582d0507bf687551a49b9d68",
+    "README.md": "67f997af339a5ae90b280e1890c434bc1059ada28cd37a125af9d15fcf9286ac",
+    "REVIEW-DELTA.patch": "51e1fc2cc680dd3a4c252247f2a196f6924dcc5e95bf666e8618f9a7e558c53e"
+  },
+  "sourceBefore": 29,
+  "sourceAfter": 30,
+  "testCases": 5,
+  "baselineExpected": {
+    "passed": 3,
+    "failed": 2
+  },
+  "candidateExpected": {
+    "passed": 5,
+    "failed": 0
+  },
+  "applicationProcessOrListenerStarted": false,
+  "targetExecuted": false,
+  "sharedSourceAdopted": false,
+  "originalCiAttribution": false,
+  "readerControls": "../reader-controls-v4/RESULTS.json",
+  "revision": "Native report capture, exact failed-join diagnostic and literal Vitest titles only",
+  "readerControlCount": 28
+}

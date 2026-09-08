@@ -1,0 +1,93 @@
+--- v3/run.sh
++++ v4/run.sh
+@@ -10,7 +10,7 @@
+ test_file=test/helpers/openclaw-test-instance.env.test.ts
+ owner_file=test/helpers/openclaw-test-instance.ts
+ mkdir -p "$evidence_dir"
+-[[ ! -e "$evidence_dir/red.json" && ! -e "$evidence_dir/green.json" && ! -e "$evidence_dir/complete.txt" ]] || exit 68
++[[ ! -e "$evidence_dir/red.json" && ! -e "$evidence_dir/green.json" && ! -e "$evidence_dir/complete.txt" && ! -e "$evidence_dir/red.json.capture.json" && ! -e "$evidence_dir/green.json.capture.json" ]] || exit 68
+ cd "$target_dir"
+ [[ "$(git rev-parse HEAD)" == "$base" ]] || exit 66
+ git diff --quiet
+@@ -35,7 +35,7 @@
+ sha256sum --check "$lane_dir/source-before.sha256" > "$evidence_dir/baseline-before.log"
+ set +e
+ node scripts/run-vitest.mjs run --config test/vitest/vitest.tooling.config.ts "$test_file" \
+-  --reporter=verbose --reporter=json --outputFile="$evidence_dir/red.json" > "$evidence_dir/red.log" 2>&1
++  --reporter=verbose --reporter=json --reporter=./scripts/lib/vitest-report-capture.mts --outputFile.json="$evidence_dir/red.json" > "$evidence_dir/red.log" 2>&1
+ red_exit=$?
+ set -e
+ printf '%s\n' "$red_exit" > "$evidence_dir/red-exit.txt"
+@@ -49,7 +49,7 @@
+ sha256sum --check "$lane_dir/source-after.sha256" > "$evidence_dir/candidate-before.log"
+ set +e
+ node scripts/run-vitest.mjs run --config test/vitest/vitest.tooling.config.ts "$test_file" \
+-  --reporter=verbose --reporter=json --outputFile="$evidence_dir/green.json" > "$evidence_dir/green.log" 2>&1
++  --reporter=verbose --reporter=json --reporter=./scripts/lib/vitest-report-capture.mts --outputFile.json="$evidence_dir/green.json" > "$evidence_dir/green.log" 2>&1
+ green_exit=$?
+ set -e
+ printf '%s\n' "$green_exit" > "$evidence_dir/green-exit.txt"
+--- v3/verify.mjs
++++ v4/verify.mjs
+@@ -11,6 +11,7 @@
+   path.join(evidenceDir, `${mode}.log`),
+ );
+ assert.doesNotMatch(log, /\[vitest-workers\] retaining |EPROCESSGROUP_CLEANUP_FAILED|ETIMEDOUT|\[vitest-unhandled\]/);
++assert.doesNotMatch(log, /\[vitest\] process group (?:\d+|unknown) remained alive \d+ms after SIGKILL; members:/);
+ assert.equal(Number(exitText), mode === "red" ? 1 : 0);
+ assert.equal(report.success, mode === "green");
+ assert.equal(report.numTotalTests, 5);
+@@ -20,6 +21,26 @@
+ assert.equal(report.numTodoTests ?? 0, 0);
+ assert.equal(report.testResults.length, 1);
+ const file = "test/helpers/openclaw-test-instance.env.test.ts";
++const capture = JSON.parse(fs.readFileSync(path.join(evidenceDir, `${mode}.json.capture.json`), "utf8"));
++assert.equal(capture.root, targetDir);
++assert.ok(Number.isInteger(capture.pid) && capture.pid > 1);
++assert.equal(capture.ignoreUnhandledErrors, false);
++assert.equal(capture.processTimedOut, false);
++assert.deepEqual(capture.ended, {
++  reason: mode === "red" ? "failed" : "passed",
++  unhandledErrors: 0,
++  failedModules: mode === "red" ? 1 : 0,
++  suiteErrors: 0,
++});
++assert.equal(capture.projects.length, 1);
++assert.equal(capture.modules.length, 1);
++for (const owner of [capture.projects[0], capture.modules[0]]) {
++  assert.equal(owner.name, "tooling");
++  assert.equal(owner.root, targetDir);
++  assert.equal(owner.config, path.join(targetDir, "test/vitest/vitest.tooling.config.ts"));
++  assert.equal(owner.pool, "threads");
++}
++assert.equal(capture.modules[0].file, path.join(targetDir, file));
+ const suite = report.testResults[0];
+ assert.equal(suite.name, path.join(targetDir, file));
+ assert.equal(suite.status, mode === "red" ? "failed" : "passed");
+@@ -35,11 +56,7 @@
+ const seen = new Set();
+ for (const result of suite.assertionResults) {
+   assert.deepEqual(result.ancestorTitles, ["test instance endpoint isolation"]);
+-  // Vitest table interpolation may quote string-valued $name; neither form admits a different row.
+-  const row = rows.find((name) => [
+-    `preserves endpoint ownership with ${name}`,
+-    `preserves endpoint ownership with '${name}'`,
+-  ].includes(result.title));
++  const row = rows.find((name) => result.title === `preserves endpoint ownership with ${name}`);
+   assert.ok(row && !seen.has(row));
+   seen.add(row);
+   assert.equal(result.fullName, `test instance endpoint isolation ${result.title}`);
+--- v3/source-before.sha256
++++ v4/source-before.sha256
+@@ -26,3 +26,4 @@
+ cdee6b99f9ffb1bf1f966c6ee25b3e2b865091548505e8635a77ac79cf476917  test/setup.shared.ts
+ bcf89a30672d03cb65d9c7b0086028c389b346d267c7d4eda19d4ee74373e37b  test/test-env.ts
+ eab04618933568b9edf7eb0f3bbc8b8bd74c793f461e83147bfbe648eab95d99  src/test-utils/session-state-cleanup.ts
++efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2  scripts/lib/vitest-report-capture.mts
+--- v3/source-after.sha256
++++ v4/source-after.sha256
+@@ -27,3 +27,4 @@
+ bcf89a30672d03cb65d9c7b0086028c389b346d267c7d4eda19d4ee74373e37b  test/test-env.ts
+ eab04618933568b9edf7eb0f3bbc8b8bd74c793f461e83147bfbe648eab95d99  src/test-utils/session-state-cleanup.ts
+ 702f19c46cb973f9d45d48578e5fbaee25989e70d434d588fc5219f4ae5630be  test/helpers/openclaw-test-instance.env.test.ts
++efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2  scripts/lib/vitest-report-capture.mts
