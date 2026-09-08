@@ -1,0 +1,58 @@
+[
+  {
+    "id": "absent-parents",
+    "config": {},
+    "expected": "Default: On"
+  },
+  {
+    "id": "empty-cron",
+    "config": {
+      "cron": {}
+    },
+    "expected": "Default: On"
+  },
+  {
+    "id": "empty-triggers",
+    "config": {
+      "cron": {
+        "triggers": {}
+      }
+    },
+    "expected": "Default: On"
+  },
+  {
+    "id": "explicit-on",
+    "config": {
+      "cron": {
+        "enabled": true,
+        "triggers": {
+          "enabled": true
+        }
+      }
+    },
+    "expected": "On"
+  },
+  {
+    "id": "explicit-off",
+    "config": {
+      "cron": {
+        "enabled": false,
+        "triggers": {
+          "enabled": false
+        }
+      }
+    },
+    "expected": "Off"
+  },
+  {
+    "id": "roundtrip",
+    "config": {
+      "cron": {
+        "skipMissedJobs": true,
+        "sessionRetention": "36h",
+        "triggers": {}
+      }
+    },
+    "expected": "Default: On"
+  }
+]

@@ -1,0 +1,84 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "id": "absent-parents",
+  "fixture": {},
+  "browserErrors": [],
+  "nonReadRequests": [],
+  "stages": [
+    {
+      "name": "initial",
+      "snapshot": {
+        "id": "absent-parents",
+        "callbacks": [],
+        "dirty": false,
+        "form": {},
+        "original": {},
+        "serialized": "{}",
+        "raw": "{}",
+        "rawOriginal": "{}",
+        "snapshotRaw": "{}",
+        "sourceConfig": {}
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "id": "absent-parents",
+    "callbacks": [],
+    "dirty": false,
+    "form": {},
+    "original": {},
+    "serialized": "{}",
+    "raw": "{}",
+    "rawOriginal": "{}",
+    "snapshotRaw": "{}",
+    "sourceConfig": {}
+  },
+  "captures": [
+    {
+      "name": "initial-0.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "initial-1.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    }
+  ]
+}

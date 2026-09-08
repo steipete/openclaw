@@ -1,12 +1,12 @@
 [
   {
     "id": "automation-defaults-141548",
-    "directory": "automation-defaults-static-remaining",
+    "directory": "automation-defaults-captured-plan",
     "runner": "ubuntu-24.04",
     "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "focused-static-remaining"
+    "variant": "captured-static-plan"
   }
 ]

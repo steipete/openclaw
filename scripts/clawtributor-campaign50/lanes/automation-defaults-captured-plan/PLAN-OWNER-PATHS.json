@@ -1,0 +1,17 @@
+[
+  "scripts/run-tsgo-core-test-shards.mjs",
+  "scripts/run-tsgo-core-test-shards.mts",
+  "scripts/check-coercion-helper-declarations.mts",
+  "scripts/check-deprecated-api-usage.mts",
+  "scripts/check-deadcode-exports.mts",
+  "scripts/run-oxlint.mjs",
+  "scripts/run-oxlint.mts",
+  "scripts/check-native-state-schema-version.mjs",
+  "scripts/check-database-first-legacy-stores.mts",
+  "scripts/check-media-download-helper-roundtrip.mts",
+  "scripts/check-runtime-sidecar-loaders.mts",
+  "scripts/check-import-cycles.ts",
+  "scripts/check-webhook-auth-body-order.mts",
+  "scripts/check-no-pairing-store-group-auth.mts",
+  "scripts/check-pairing-account-scope.mts"
+]

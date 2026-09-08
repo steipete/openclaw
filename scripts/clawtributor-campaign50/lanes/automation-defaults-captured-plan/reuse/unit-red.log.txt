@@ -1,0 +1,53 @@
+[test] starting test/vitest/vitest.runtime-config.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [31m×[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mautomation default hints[2m > [22mnames the inherited state for cron.enabled[32m 22[2mms[22m[39m
+[31m   → expected undefined to be 'Default: On' // Object.is equality[39m
+ [31m×[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mautomation default hints[2m > [22mnames the inherited state for cron.triggers.enabled[32m 12[2mms[22m[39m
+[31m   → expected undefined to be 'Default: On' // Object.is equality[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22msection docs URLs[2m > [22maccounts for every root config section[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22msection docs URLs[2m > [22mmaps every URL to an existing task-oriented docs page[32m 9[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22misSensitiveConfigPath[2m > [22mmatches whitelist suffixes case-insensitively[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22misSensitiveConfigPath[2m > [22mkeeps true sensitive keys redacted[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mplugin-owned channel hint paths[2m > [22mkeeps bundled channel hints out of the core hint map[32m 23[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mshould detect sensitive fields nested inside all structural Zod types[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mshould not detect non-sensitive fields nested inside all structural Zod types[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mmaps sensitive fields nested under object catchall schemas[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mdoes not mark plain catchall values sensitive by default[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mreturns a new hints map without mutating caller-owned entries[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mmain schema yields correct hints (samples)[32m 34[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mmarks buildSecretInputSchema fields as sensitive via registry[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mmapSensitivePaths[2m > [22mtags base-config URL fields that may embed secrets[32m 13[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mautomation default hints[2m > [22mnames the inherited state for cron.enabled
+[41m[1m FAIL [22m[49m [30m[42m runtime-config [49m[39m src/config/schema.hints.test.ts[2m > [22mautomation default hints[2m > [22mnames the inherited state for cron.triggers.enabled
+[31m[1mAssertionError[22m: expected undefined to be 'Default: On' // Object.is equality[39m
+
+[32m- Expected:[39m
+"Default: On"
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/config/schema.hints.test.ts:[2m31:49[22m[39m
+    [90m 29|[39m describe("automation default hints", () => {
+    [90m 30|[39m   it.each(["cron.enabled", "cron.triggers.enabled"])("names the inheri…
+    [90m 31|[39m     expect(buildBaseHints()[path]?.placeholder).toBe("Default: On");
+    [90m   |[39m                                                 [31m^[39m
+    [90m 32|[39m   });
+    [90m 33|[39m });
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m13 passed[39m[22m[90m (15)[39m
+[2m   Start at [22m 04:28:46
+[2m   Duration [22m 1.56s[2m (worker 47%, transform 25%, import 18%, tests 8%, setup 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/unit-red.json
+[test] failed 1 Vitest shard in 2.64s
+[test] FAILED (exit 1)

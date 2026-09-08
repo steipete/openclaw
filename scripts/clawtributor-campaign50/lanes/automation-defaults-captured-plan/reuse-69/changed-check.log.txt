@@ -1,0 +1,117 @@
+[check:changed] lanes=core, coreTests
+[check:changed] src/config/schema.hints.test.ts: core test
+[check:changed] src/config/schema.hints.ts: core production
+
+[check:changed] conflict markers
+Downloading the pnpm 12.3.4 binary for linux-x64...
+$ node scripts/check-no-conflict-markers.mjs
+
+[check:changed] max-lines suppression ratchet
+$ node --import ./scripts/tsx.mjs scripts/check-max-lines-ratchet.mts --base 74fd11e05f2d5730dc03a67e27cc2d227ca5b339
+max-lines ratchet OK: 841 grandfathered suppressions.
+OPENCLAW_* count 493/493
+
+[check:changed] assertion SAFETY comment ratchet
+$ node --import ./scripts/tsx.mjs scripts/check-assertion-safety-ratchet.mts --base 74fd11e05f2d5730dc03a67e27cc2d227ca5b339
+assertion SAFETY ratchet OK: 3968 files, 11783 grandfathered assertions.
+
+[check:changed] changelog attributions
+$ node --import ./scripts/tsx.mjs scripts/check-changelog-attributions.mts
+
+[check:changed] doctor deprecation registry
+$ node --import ./scripts/tsx.mjs scripts/check-doctor-deprecation-registry.ts
+[doctor-deprecation-registry] OK as of 2026-09-08
+
+[check:changed] guarded extension wildcard re-exports
+$ node --import ./scripts/tsx.mjs scripts/check-extension-wildcard-reexports.mts
+No guarded extension wildcard re-exports found.
+
+[check:changed] plugin-sdk wildcard re-exports
+$ node --import ./scripts/tsx.mjs scripts/check-plugin-sdk-wildcard-reexports.mts
+No plugin-sdk wildcard re-exports found in extension API barrels.
+
+[check:changed] duplicate scan target coverage
+$ node scripts/check-duplicates.mjs --coverage
+[dup:check] target coverage ok
+
+[check:changed] dependency pin guard
+$ node --import ./scripts/tsx.mjs scripts/check-dependency-pins.mts
+PASS direct dependency pin guard: checked 670 directly declared dependency specs across 182 tracked package manifests; 0 violations.
+
+[check:changed] format changed files
+$ oxfmt --check --no-error-on-unmatched-pattern -- src/config/schema.hints.test.ts src/config/schema.hints.ts
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 2ms on 2 files using 4 threads.
+
+[check:changed] config docs baseline
+$ node --import ./scripts/tsx.mjs scripts/generate-config-doc-baseline.ts --check
+OK docs/.generated/config-baseline.sha256 and docs/.generated/config-baseline.counts.json
+
+[check:changed] plugin boundaries
+$ node --import ./scripts/tsx.mjs scripts/plugin-boundary-report.ts --summary --fail-on-eligible-compat
+Plugin Boundary Report
+
+compat deprecated=19 eligibleForRemoval=0 removalPending=8 removalPendingDue=0
+  removal-pending 2026-09-30 plugin-sdk-media-understanding-public-demotion due=false blocker=`api.registerMediaUnderstandingProvider(...)` with provider-owned request helpers and types from `openclaw/plugin-sdk/plugin-entry`; retain the public subpath through the 2026-09-30 window while official plugin consumers migrate readerRefs=46 readers=extensions/anthropic/media-understanding-provider.ts,extensions/browser/src/browser/vision.ts,extensions/browser/src/cli/browser-cli-extension.test.ts,extensions/browser/src/cli/browser-cli.test.ts,extensions/browser/src/sdk-setup-tools.ts
+  removal-pending 2026-09-30 plugin-sdk-memory-host-core-public-demotion due=false blocker=host-prepared memory prompts via `openclaw/plugin-sdk/core` and memory capability registration through the injected plugin API; retain the facade through the 2026-09-30 window and until a focused public-artifact read seam exists readerRefs=27 readers=extensions/active-memory/index.test.ts,extensions/active-memory/index.ts,extensions/codex/src/app-server/attempt-context.test.ts,extensions/memory-core/src/memory-get-corpus.test.ts,extensions/memory-core/src/public-artifacts.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-lifecycle-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound`; retain until supported external plugin migration is verified readerRefs=1 readers=src/plugins/contracts/plugin-sdk-subpaths.test.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-message-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound` and `openclaw/plugin-sdk/channel-inbound`; retain until supported external plugin migration is verified readerRefs=3 readers=src/plugin-sdk/channel-message.test.ts,src/plugins/plugin-sdk-native-resolver.test.ts,test/scripts/check-deprecated-api-usage.test.ts
+  removal-pending 2026-10-01 plugin-sdk-channel-reply-pipeline-subpath due=false blocker=`openclaw/plugin-sdk/channel-outbound`; retain until supported external plugin migration is verified readerRefs=3 readers=src/plugin-sdk/channel-message.test.ts,src/plugins/contracts/plugin-sdk-subpaths.test.ts,test/scripts/check-deprecated-api-usage.test.ts
+  removal-pending 2026-10-01 plugin-sdk-config-runtime-subpath due=false blocker=`api.pluginConfig`, `openclaw/plugin-sdk/config-mutation`, `openclaw/plugin-sdk/runtime-config-snapshot`, and `openclaw/plugin-sdk/config-contracts`; retain until supported external plugin migration is verified readerRefs=3 readers=scripts/check-no-monolithic-plugin-sdk-entry-imports.ts,scripts/lib/config-boundary-guard.mts,src/plugins/contracts/config-boundary-guard.test.ts
+  removal-pending 2026-10-01 plugin-sdk-infra-runtime-subpath due=false blocker=focused subpaths including `openclaw/plugin-sdk/delivery-queue-runtime`, `openclaw/plugin-sdk/diagnostic-runtime`, `openclaw/plugin-sdk/error-runtime`, `openclaw/plugin-sdk/exec-approvals-runtime`, `openclaw/plugin-sdk/fetch-runtime`, and `openclaw/plugin-sdk/ssrf-runtime`; retain until supported external plugin migration is verified and system-event snapshot inspection and consumption have a modern public replacement readerRefs=1 readers=scripts/check-no-monolithic-plugin-sdk-entry-imports.ts
+  removal-pending 2026-12-01 plugin-sdk-plugin-config-runtime-public-demotion due=false blocker=`api.pluginConfig`, runtime tool context config, and focused `config-contracts`, `runtime-config-snapshot`, or `config-mutation` subpaths; retain the public subpath through the 2026-12-01 window while official plugin consumers migrate readerRefs=62 readers=extensions/active-memory/index.ts,extensions/active-memory/session-policy.ts,extensions/amazon-bedrock-mantle/register.sync.runtime.ts,extensions/amazon-bedrock/register.sync.runtime.ts,extensions/browser/src/sdk-config.ts
+plugin-sdk entrypoints=359 supportedBundledFacade=2 publicPluginOwned=1
+memory-host-sdk implementation=private-package-core-integrated private=true exports=10 sourceBridgeFiles=0 coreReferenceFiles=18
+
+[check:changed] wrapper shadowing
+$ node --import ./scripts/tsx.mjs scripts/check-wrapper-shadowing.mts
+wrapper shadowing guard passed.
+
+[check:changed] package patch guard
+$ node --import ./scripts/tsx.mjs scripts/check-package-patches.mts
+PASS package patch guard: no new pnpm patches; 6 approved patches allowlisted.
+
+[check:changed] test temp creation report (warning-only)
+No new test temp-directory migration warnings found.
+
+[check:changed] core tsgo graph boundary
+$ node --import ./scripts/tsx.mjs scripts/check-tsgo-core-boundary.mts
+
+[check:changed] typecheck core
+$ node scripts/run-tsgo.mjs -p tsconfig.core.json --incremental --tsBuildInfoFile .artifacts/tsgo-cache/core.tsbuildinfo
+
+[check:changed] typecheck core tests
+$ node scripts/run-tsgo-core-test-shards.mjs
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(10,22): error TS1543: Importing a JSON file into an ECMAScript module requires a 'type: "json"' import attribute when 'module' is set to 'NodeNext'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(45,16): error TS2532: Object is possibly 'undefined'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(129,59): error TS2339: Property 'automationDefaultsProof' does not exist on type 'Window & typeof globalThis'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(133,28): error TS2339: Property 'automationDefaultsProof' does not exist on type 'Window & typeof globalThis'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(193,63): error TS2339: Property 'automationDefaultsProof' does not exist on type 'Window & typeof globalThis'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(198,32): error TS2339: Property 'automationDefaultsProof' does not exist on type 'Window & typeof globalThis'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(223,28): error TS2339: Property 'automationDefaultsProof' does not exist on type 'Window & typeof globalThis'.
+ui/src/e2e/automation-defaults-141548.e2e.test.ts(237,28): error TS2339: Property 'automationDefaultsProof' does not exist on type 'Window & typeof globalThis'.
+[tsgo:core:test] FAILED (exit 1)
+[ELIFECYCLE] Command failed with exit code 1.
+
+[check:changed] summary
+   1.62s  ok         conflict markers
+  27.43s  ok         max-lines suppression ratchet
+  14.54s  ok         assertion SAFETY comment ratchet
+   293ms  ok         changelog attributions
+   262ms  ok         doctor deprecation registry
+   337ms  ok         guarded extension wildcard re-exports
+   317ms  ok         plugin-sdk wildcard re-exports
+   436ms  ok         duplicate scan target coverage
+   367ms  ok         dependency pin guard
+   182ms  ok         format changed files
+   5.44s  ok         config docs baseline
+   2.83s  ok         plugin boundaries
+   9.62s  ok         wrapper shadowing
+   794ms  ok         package patch guard
+   769ms  ok         test temp creation report (warning-only)
+  62.05s  ok         core tsgo graph boundary
+  47.81s  ok         typecheck core
+ 793.03s  failed:1   typecheck core tests
+[check:changed] FAILED (exit 1)

@@ -1,0 +1,869 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "id": "roundtrip",
+  "fixture": {
+    "cron": {
+      "skipMissedJobs": true,
+      "sessionRetention": "36h",
+      "triggers": {}
+    }
+  },
+  "browserErrors": [],
+  "nonReadRequests": [],
+  "stages": [
+    {
+      "name": "initial",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [],
+        "dirty": false,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "raw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "0-On",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          }
+        ],
+        "dirty": true,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {},
+            "enabled": true
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {},\n    \"enabled\": true\n  }\n}\n",
+        "raw": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {},\n    \"enabled\": true\n  }\n}\n",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "0-Off",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": false
+          }
+        ],
+        "dirty": true,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {},
+            "enabled": false
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {},\n    \"enabled\": false\n  }\n}\n",
+        "raw": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {},\n    \"enabled\": false\n  }\n}\n",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Off",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "0-Default: On",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "enabled"
+            ]
+          }
+        ],
+        "dirty": false,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "raw": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {}\n  }\n}\n",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1-On",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "enabled"
+            ]
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": true
+          }
+        ],
+        "dirty": true,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {
+              "enabled": true
+            }
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {\n      \"enabled\": true\n    }\n  }\n}\n",
+        "raw": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {\n      \"enabled\": true\n    }\n  }\n}\n",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1-Off",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "enabled"
+            ]
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": false
+          }
+        ],
+        "dirty": true,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {
+              "enabled": false
+            }
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {\n      \"enabled\": false\n    }\n  }\n}\n",
+        "raw": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {\n      \"enabled\": false\n    }\n  }\n}\n",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Off",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1-Default: On",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "enabled"
+            ]
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ]
+          }
+        ],
+        "dirty": false,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "raw": "{\n  \"cron\": {\n    \"skipMissedJobs\": true,\n    \"sessionRetention\": \"36h\",\n    \"triggers\": {}\n  }\n}\n",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reloaded",
+      "snapshot": {
+        "id": "roundtrip",
+        "callbacks": [
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "enabled"
+            ]
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": true
+          },
+          {
+            "kind": "patch",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ],
+            "value": false
+          },
+          {
+            "kind": "remove",
+            "path": [
+              "cron",
+              "triggers",
+              "enabled"
+            ]
+          }
+        ],
+        "dirty": false,
+        "form": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "original": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        },
+        "serialized": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "raw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "skipMissedJobs": true,
+            "sessionRetention": "36h",
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "id": "roundtrip",
+    "callbacks": [
+      {
+        "kind": "patch",
+        "path": [
+          "cron",
+          "enabled"
+        ],
+        "value": true
+      },
+      {
+        "kind": "patch",
+        "path": [
+          "cron",
+          "enabled"
+        ],
+        "value": false
+      },
+      {
+        "kind": "remove",
+        "path": [
+          "cron",
+          "enabled"
+        ]
+      },
+      {
+        "kind": "patch",
+        "path": [
+          "cron",
+          "triggers",
+          "enabled"
+        ],
+        "value": true
+      },
+      {
+        "kind": "patch",
+        "path": [
+          "cron",
+          "triggers",
+          "enabled"
+        ],
+        "value": false
+      },
+      {
+        "kind": "remove",
+        "path": [
+          "cron",
+          "triggers",
+          "enabled"
+        ]
+      }
+    ],
+    "dirty": false,
+    "form": {
+      "cron": {
+        "skipMissedJobs": true,
+        "sessionRetention": "36h",
+        "triggers": {}
+      }
+    },
+    "original": {
+      "cron": {
+        "skipMissedJobs": true,
+        "sessionRetention": "36h",
+        "triggers": {}
+      }
+    },
+    "serialized": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+    "raw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+    "rawOriginal": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+    "snapshotRaw": "{\"cron\":{\"skipMissedJobs\":true,\"sessionRetention\":\"36h\",\"triggers\":{}}}",
+    "sourceConfig": {
+      "cron": {
+        "skipMissedJobs": true,
+        "sessionRetention": "36h",
+        "triggers": {}
+      }
+    }
+  },
+  "captures": [
+    {
+      "name": "initial-0.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "initial-1.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "choice-0-1.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "choice-0-2.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "choice-0-3.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "choice-1-4.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "choice-1-5.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "choice-1-6.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "reloaded.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    }
+  ]
+}
