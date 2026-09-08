@@ -1,0 +1,93 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  [
+    'conflict markers',
+    'max-lines suppression ratchet',
+    'assertion SAFETY comment ratchet',
+    'changelog attributions',
+...
+    'deprecated API usage',
++   'dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)',
+    'lint core changed files',
+    'native state schema version guard',
+    'database-first legacy-store guard',
+    'media download helper guard',
+    'runtime sidecar loader guard',
+
+    at <anonymous> (/home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/automation-defaults-static-remaining/remaining-checks.mjs:43:8) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [
+    'conflict markers',
+    'max-lines suppression ratchet',
+    'assertion SAFETY comment ratchet',
+    'changelog attributions',
+    'doctor deprecation registry',
+    'guarded extension wildcard re-exports',
+    'plugin-sdk wildcard re-exports',
+    'duplicate scan target coverage',
+    'dependency pin guard',
+    'format changed files',
+    'config docs baseline',
+    'plugin boundaries',
+    'wrapper shadowing',
+    'package patch guard',
+    'test temp creation report (warning-only)',
+    'core tsgo graph boundary',
+    'typecheck core',
+    'typecheck core tests',
+    'coercion helper declaration guard',
+    'deprecated API usage',
+    'dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)',
+    'lint core changed files',
+    'native state schema version guard',
+    'database-first legacy-store guard',
+    'media download helper guard',
+    'runtime sidecar loader guard',
+    'runtime import cycles',
+    'webhook body guard',
+    'pairing store guard',
+    'pairing account guard'
+  ],
+  expected: [
+    'conflict markers',
+    'max-lines suppression ratchet',
+    'assertion SAFETY comment ratchet',
+    'changelog attributions',
+    'doctor deprecation registry',
+    'guarded extension wildcard re-exports',
+    'plugin-sdk wildcard re-exports',
+    'duplicate scan target coverage',
+    'dependency pin guard',
+    'format changed files',
+    'config docs baseline',
+    'plugin boundaries',
+    'wrapper shadowing',
+    'package patch guard',
+    'test temp creation report (warning-only)',
+    'core tsgo graph boundary',
+    'typecheck core',
+    'typecheck core tests',
+    'coercion helper declaration guard',
+    'deprecated API usage',
+    'lint core changed files',
+    'native state schema version guard',
+    'database-first legacy-store guard',
+    'media download helper guard',
+    'runtime sidecar loader guard',
+    'runtime import cycles',
+    'webhook body guard',
+    'pairing store guard',
+    'pairing account guard'
+  ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

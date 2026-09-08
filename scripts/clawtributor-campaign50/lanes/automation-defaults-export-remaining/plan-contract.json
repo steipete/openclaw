@@ -1,0 +1,158 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "capturedRun": 34195063822,
+  "capturedJob": 101960912089,
+  "harness": "4a1357e20aaa5319d3a9ac2d744e1f25abdcd376",
+  "originalJobConclusion": "failure",
+  "logCarrier": "reuse-71/remaining-checks.log.txt",
+  "logSha256": "659a6e2e89719b75c43d8a0a0a0e0857d0cfb41357475c581f5568fa22ae7d4d",
+  "commandNames": [
+    "conflict markers",
+    "max-lines suppression ratchet",
+    "assertion SAFETY comment ratchet",
+    "changelog attributions",
+    "doctor deprecation registry",
+    "guarded extension wildcard re-exports",
+    "plugin-sdk wildcard re-exports",
+    "duplicate scan target coverage",
+    "dependency pin guard",
+    "format changed files",
+    "config docs baseline",
+    "plugin boundaries",
+    "wrapper shadowing",
+    "package patch guard",
+    "test temp creation report (warning-only)",
+    "core tsgo graph boundary",
+    "typecheck core",
+    "typecheck core tests",
+    "coercion helper declaration guard",
+    "deprecated API usage",
+    "dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)",
+    "lint core changed files",
+    "native state schema version guard",
+    "database-first legacy-store guard",
+    "media download helper guard",
+    "runtime sidecar loader guard",
+    "runtime import cycles",
+    "webhook body guard",
+    "pairing store guard",
+    "pairing account guard"
+  ],
+  "retainedPrefix": [
+    "conflict markers",
+    "max-lines suppression ratchet",
+    "assertion SAFETY comment ratchet",
+    "changelog attributions",
+    "doctor deprecation registry",
+    "guarded extension wildcard re-exports",
+    "plugin-sdk wildcard re-exports",
+    "duplicate scan target coverage",
+    "dependency pin guard",
+    "format changed files",
+    "config docs baseline",
+    "plugin boundaries",
+    "wrapper shadowing",
+    "package patch guard",
+    "test temp creation report (warning-only)",
+    "core tsgo graph boundary",
+    "typecheck core",
+    "typecheck core tests",
+    "coercion helper declaration guard",
+    "deprecated API usage"
+  ],
+  "remainingCommands": [
+    {
+      "name": "dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)",
+      "bin": "node",
+      "args": [
+        "--import",
+        "tsx",
+        "scripts/check-deadcode-exports.mts"
+      ]
+    },
+    {
+      "name": "lint core changed files",
+      "bin": "node",
+      "args": [
+        "scripts/run-oxlint.mjs",
+        "--tsconfig",
+        "config/tsconfig/oxlint.core.json",
+        "src/config/schema.hints.test.ts",
+        "src/config/schema.hints.ts"
+      ]
+    },
+    {
+      "name": "native state schema version guard",
+      "bin": "node",
+      "args": [
+        "scripts/check-native-state-schema-version.mjs"
+      ]
+    },
+    {
+      "name": "database-first legacy-store guard",
+      "bin": null,
+      "args": [
+        "check:database-first-legacy-stores"
+      ]
+    },
+    {
+      "name": "media download helper guard",
+      "bin": null,
+      "args": [
+        "check:media-download-helpers"
+      ]
+    },
+    {
+      "name": "runtime sidecar loader guard",
+      "bin": null,
+      "args": [
+        "check:runtime-sidecar-loaders"
+      ]
+    },
+    {
+      "name": "runtime import cycles",
+      "bin": null,
+      "args": [
+        "check:import-cycles"
+      ]
+    },
+    {
+      "name": "webhook body guard",
+      "bin": null,
+      "args": [
+        "lint:webhook:no-low-level-body-read"
+      ]
+    },
+    {
+      "name": "pairing store guard",
+      "bin": null,
+      "args": [
+        "lint:auth:no-pairing-store-group"
+      ]
+    },
+    {
+      "name": "pairing account guard",
+      "bin": null,
+      "args": [
+        "lint:auth:pairing-account-scope"
+      ]
+    }
+  ],
+  "packageAliases": {
+    "tsgo:core:test": "node scripts/run-tsgo-core-test-shards.mjs",
+    "check:coercion-helpers": "node --import ./scripts/tsx.mjs scripts/check-coercion-helper-declarations.mts",
+    "check:deprecated-api-usage": "node --import ./scripts/tsx.mjs scripts/check-deprecated-api-usage.mts",
+    "check:database-first-legacy-stores": "node --import ./scripts/tsx.mjs scripts/check-database-first-legacy-stores.mts",
+    "check:media-download-helpers": "node --import ./scripts/tsx.mjs scripts/check-media-download-helper-roundtrip.mts",
+    "check:runtime-sidecar-loaders": "node --import ./scripts/tsx.mjs scripts/check-runtime-sidecar-loaders.mts",
+    "check:import-cycles": "node --import ./scripts/tsx.mjs scripts/check-import-cycles.ts",
+    "lint:webhook:no-low-level-body-read": "node --import ./scripts/tsx.mjs scripts/check-webhook-auth-body-order.mts",
+    "lint:auth:no-pairing-store-group": "node --import ./scripts/tsx.mjs scripts/check-no-pairing-store-group-auth.mts",
+    "lint:auth:pairing-account-scope": "node --import ./scripts/tsx.mjs scripts/check-pairing-account-scope.mts"
+  },
+  "artifact": {
+    "id": 10043601805,
+    "name": "campaign50-automation-defaults-141548-1",
+    "apiDigest": "sha256:f2a5c3ae87221a76375166d4e5e920217310934efbb8d9633de9bbdb0941e499"
+  }
+}

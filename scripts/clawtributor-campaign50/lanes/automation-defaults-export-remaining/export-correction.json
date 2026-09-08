@@ -1,0 +1,12 @@
+{
+  "scope": "Static type erasure; no target execution",
+  "beforeSha256": "6000456660033f019b60e3fb14e873d46a5667a412aa6548555f4f42efa8905f",
+  "afterSha256": "8194ce41cc3f57e13cfc85e151707189bd0ba0c9075e4db4301d37d48da8f955",
+  "onlyChanges": [
+    "Fixture export modifier removed",
+    "ProofApi export modifier removed"
+  ],
+  "erasedRuntimeEqual": true,
+  "typeBodiesAndGlobalReferenceUnchanged": true,
+  "externalImports": "harness.ts and browser.e2e.test.ts reference only Callback/ProofData/Snapshot; neither imports either removed export"
+}

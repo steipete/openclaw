@@ -1,0 +1,11 @@
+{
+  "artifacts": [
+    {
+      "id": 10043601805,
+      "name": "campaign50-automation-defaults-141548-1",
+      "size_in_bytes": 218426,
+      "digest": "sha256:f2a5c3ae87221a76375166d4e5e920217310934efbb8d9633de9bbdb0941e499",
+      "expired": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "scope": "Static parse/type erasure only; no imported target execution",
+  "files": {
+    "types.ts": {
+      "before": "43d93f7d2918e2538f7267146234c0ac6270940dae771beef27bfa7fbd7d82ee",
+      "after": "6000456660033f019b60e3fb14e873d46a5667a412aa6548555f4f42efa8905f",
+      "typeErasure": "identical"
+    },
+    "harness.ts": {
+      "before": "16ec22a1993caa9b43d55853417dca4ea508ae50c9bcd1ac345dffda0ee47512",
+      "after": "ae56c315ad0713b3397784d1338d0d0ffc049819198259018a7ec68de10145cf",
+      "typeErasure": "identical aside from explicit JSON import attribute"
+    },
+    "browser.e2e.test.ts": {
+      "before": "709b8573a3025d2e8d68c3c1f4408995eb18c6abc80f20ac89493a29f45085dc",
+      "after": "618b1765c5327aee04f17580248798349ab43d8024064bc8e932123a9bd6b63d",
+      "typeErasure": "only JSON import attribute and explicit selected-option guard/selection variable change; actual observed flows always have selectedOptions[0]"
+    }
+  }
+}

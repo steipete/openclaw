@@ -1,0 +1,12 @@
+[
+  {
+    "run": 34198758390,
+    "artifactId": 10045680997,
+    "name": "campaign50-automation-defaults-141548-1",
+    "path": "/Users/steipete/Projects/clawtributor-recovery-20260905/campaign-50/proof-infra/runs/34198758390/campaign50-automation-defaults-141548-1",
+    "apiZipDigest": "sha256:0361a0c6ef96aab1a7caf1a0de4a388c262dc5f925e1bb7f257403329b53df0d",
+    "downloadedOnce": true,
+    "downloadExit": 0,
+    "completedAt": "2026-09-08T07:49:42.639269+00:00"
+  }
+]

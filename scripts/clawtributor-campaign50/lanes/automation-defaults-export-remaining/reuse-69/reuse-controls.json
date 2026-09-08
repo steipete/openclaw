@@ -1,0 +1,26 @@
+{
+  "scope": "inert cached-data lineage controls; no target execution",
+  "positive": 1,
+  "negative": [
+    {
+      "name": "original job relabeled green",
+      "rejected": true
+    },
+    {
+      "name": "source SHA changed",
+      "rejected": true
+    },
+    {
+      "name": "artifact identity changed",
+      "rejected": true
+    },
+    {
+      "name": "unit source receipt changed",
+      "rejected": true
+    },
+    {
+      "name": "unit source candidate changed",
+      "rejected": true
+    }
+  ]
+}

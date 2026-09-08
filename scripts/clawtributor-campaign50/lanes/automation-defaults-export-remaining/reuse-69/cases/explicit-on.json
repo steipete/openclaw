@@ -1,0 +1,133 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "id": "explicit-on",
+  "fixture": {
+    "cron": {
+      "enabled": true,
+      "triggers": {
+        "enabled": true
+      }
+    }
+  },
+  "browserErrors": [],
+  "nonReadRequests": [],
+  "stages": [
+    {
+      "name": "initial",
+      "snapshot": {
+        "id": "explicit-on",
+        "callbacks": [],
+        "dirty": false,
+        "form": {
+          "cron": {
+            "enabled": true,
+            "triggers": {
+              "enabled": true
+            }
+          }
+        },
+        "original": {
+          "cron": {
+            "enabled": true,
+            "triggers": {
+              "enabled": true
+            }
+          }
+        },
+        "serialized": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+        "raw": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+        "rawOriginal": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+        "snapshotRaw": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+        "sourceConfig": {
+          "cron": {
+            "enabled": true,
+            "triggers": {
+              "enabled": true
+            }
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "id": "explicit-on",
+    "callbacks": [],
+    "dirty": false,
+    "form": {
+      "cron": {
+        "enabled": true,
+        "triggers": {
+          "enabled": true
+        }
+      }
+    },
+    "original": {
+      "cron": {
+        "enabled": true,
+        "triggers": {
+          "enabled": true
+        }
+      }
+    },
+    "serialized": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+    "raw": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+    "rawOriginal": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+    "snapshotRaw": "{\"cron\":{\"enabled\":true,\"triggers\":{\"enabled\":true}}}",
+    "sourceConfig": {
+      "cron": {
+        "enabled": true,
+        "triggers": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "captures": [
+    {
+      "name": "initial-0.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "initial-1.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    }
+  ]
+}

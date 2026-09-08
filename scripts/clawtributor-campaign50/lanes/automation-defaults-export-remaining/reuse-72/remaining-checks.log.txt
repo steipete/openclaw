@@ -1,0 +1,39 @@
+[remaining] typecheck core tests
+Downloading the pnpm 12.3.4 binary for linux-x64...
+$ node scripts/run-tsgo-core-test-shards.mjs
+[remaining] coercion helper declaration guard
+$ node --import ./scripts/tsx.mjs scripts/check-coercion-helper-declarations.mts
+Coercion helper declaration guard passed (111 allowlisted declarations).
+[remaining] deprecated API usage
+$ node --import ./scripts/tsx.mjs scripts/check-deprecated-api-usage.mts
+deprecated API usage guard passed
+[remaining] dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)
+[deadcode] Knip production unused-export scan still running after 60s.
+[deadcode] Knip full-tree unused-export scan still running after 60s.
+[deadcode] Knip script unused-export scan still running after 60s.
+[deadcode] Knip script unused-export scan passed with 0 entries.
+[deadcode] Knip production unused-export scan passed with 0 entries.
+full-tree unused-export scan:
+Unused exports are not allowed:
+  ui/src/e2e/fixtures/automation-141548/types.ts: Fixture
+  ui/src/e2e/fixtures/automation-141548/types.ts: ProofApi
+Delete the exports or model their real production consumers in Knip.
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+1 !== 0
+
+    at <anonymous> (/home/runner/work/openclaw/openclaw/proof/scripts/clawtributor-campaign50/lanes/automation-defaults-captured-plan/remaining-checks.mjs:81:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

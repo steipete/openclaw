@@ -1,0 +1,211 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "reusedRun": 34189419890,
+  "capturedPlanRun": 34195063822,
+  "canonicalPlanCount": 30,
+  "expectedRemaining": 13,
+  "reusedCommands": [
+    "conflict markers",
+    "max-lines suppression ratchet",
+    "assertion SAFETY comment ratchet",
+    "changelog attributions",
+    "doctor deprecation registry",
+    "guarded extension wildcard re-exports",
+    "plugin-sdk wildcard re-exports",
+    "duplicate scan target coverage",
+    "dependency pin guard",
+    "format changed files",
+    "config docs baseline",
+    "plugin boundaries",
+    "wrapper shadowing",
+    "package patch guard",
+    "test temp creation report (warning-only)",
+    "core tsgo graph boundary",
+    "typecheck core"
+  ],
+  "planned": [
+    {
+      "name": "typecheck core tests",
+      "bin": "pnpm",
+      "args": [
+        "tsgo:core:test"
+      ]
+    },
+    {
+      "name": "coercion helper declaration guard",
+      "bin": "pnpm",
+      "args": [
+        "check:coercion-helpers"
+      ]
+    },
+    {
+      "name": "deprecated API usage",
+      "bin": "pnpm",
+      "args": [
+        "check:deprecated-api-usage"
+      ]
+    },
+    {
+      "name": "dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)",
+      "bin": "node",
+      "args": [
+        "--import",
+        "tsx",
+        "scripts/check-deadcode-exports.mts"
+      ]
+    },
+    {
+      "name": "lint core changed files",
+      "bin": "node",
+      "args": [
+        "scripts/run-oxlint.mjs",
+        "--tsconfig",
+        "config/tsconfig/oxlint.core.json",
+        "src/config/schema.hints.test.ts",
+        "src/config/schema.hints.ts"
+      ]
+    },
+    {
+      "name": "native state schema version guard",
+      "bin": "node",
+      "args": [
+        "scripts/check-native-state-schema-version.mjs"
+      ]
+    },
+    {
+      "name": "database-first legacy-store guard",
+      "bin": "pnpm",
+      "args": [
+        "check:database-first-legacy-stores"
+      ]
+    },
+    {
+      "name": "media download helper guard",
+      "bin": "pnpm",
+      "args": [
+        "check:media-download-helpers"
+      ]
+    },
+    {
+      "name": "runtime sidecar loader guard",
+      "bin": "pnpm",
+      "args": [
+        "check:runtime-sidecar-loaders"
+      ]
+    },
+    {
+      "name": "runtime import cycles",
+      "bin": "pnpm",
+      "args": [
+        "check:import-cycles"
+      ]
+    },
+    {
+      "name": "webhook body guard",
+      "bin": "pnpm",
+      "args": [
+        "lint:webhook:no-low-level-body-read"
+      ]
+    },
+    {
+      "name": "pairing store guard",
+      "bin": "pnpm",
+      "args": [
+        "lint:auth:no-pairing-store-group"
+      ]
+    },
+    {
+      "name": "pairing account guard",
+      "bin": "pnpm",
+      "args": [
+        "lint:auth:pairing-account-scope"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "name": "typecheck core tests",
+      "bin": "corepack",
+      "args": [
+        "pnpm",
+        "tsgo:core:test"
+      ],
+      "spawned": true,
+      "closed": true,
+      "signals": [],
+      "strictProcessTreeExit": true,
+      "pid": 3517,
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdoutEnded": true,
+      "stderrEnded": true,
+      "status": 0,
+      "strictOwnerResolved": true
+    },
+    {
+      "name": "coercion helper declaration guard",
+      "bin": "corepack",
+      "args": [
+        "pnpm",
+        "check:coercion-helpers"
+      ],
+      "spawned": true,
+      "closed": true,
+      "signals": [],
+      "strictProcessTreeExit": true,
+      "pid": 4380,
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdoutEnded": true,
+      "stderrEnded": true,
+      "status": 0,
+      "strictOwnerResolved": true
+    },
+    {
+      "name": "deprecated API usage",
+      "bin": "corepack",
+      "args": [
+        "pnpm",
+        "check:deprecated-api-usage"
+      ],
+      "spawned": true,
+      "closed": true,
+      "signals": [],
+      "strictProcessTreeExit": true,
+      "pid": 4426,
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdoutEnded": true,
+      "stderrEnded": true,
+      "status": 0,
+      "strictOwnerResolved": true
+    },
+    {
+      "name": "dead export scan (skip with OPENCLAW_CHECK_CHANGED_SKIP_DEADCODE=1)",
+      "bin": "node",
+      "args": [
+        "--import",
+        "tsx",
+        "scripts/check-deadcode-exports.mts"
+      ],
+      "spawned": true,
+      "closed": true,
+      "signals": [],
+      "strictProcessTreeExit": true,
+      "pid": 4469,
+      "exitCode": 1,
+      "exitSignal": null,
+      "stdoutEnded": true,
+      "stderrEnded": true,
+      "status": 1
+    }
+  ],
+  "complete": false,
+  "error": {
+    "name": "AssertionError",
+    "message": "Expected values to be strictly equal:\n\n1 !== 0\n",
+    "code": "ERR_ASSERTION",
+    "unjoinedWork": false
+  },
+  "explicitShimCleanup": true
+}
