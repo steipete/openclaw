@@ -1,0 +1,246 @@
+[
+  {
+    "id": "default-duplicate-link",
+    "owner": "duplicate-link",
+    "rootArgs": [],
+    "env": {},
+    "args": [
+      "plugins",
+      "install",
+      "--link",
+      "<owned-source-directory>",
+      "--force"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw",
+    "contextProof": "Default context"
+  },
+  {
+    "id": "default-missing-update",
+    "owner": "missing-update",
+    "rootArgs": [],
+    "env": {},
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw",
+    "contextProof": "Default context"
+  },
+  {
+    "id": "default-missing-update-dry-run",
+    "owner": "missing-update-dry-run",
+    "rootArgs": [],
+    "env": {},
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture",
+      "--dry-run"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw",
+    "contextProof": "Default context"
+  },
+  {
+    "id": "profile-duplicate-link",
+    "owner": "duplicate-link",
+    "rootArgs": [
+      "--profile",
+      "proof"
+    ],
+    "env": {},
+    "args": [
+      "plugins",
+      "install",
+      "--link",
+      "<owned-source-directory>",
+      "--force"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --profile proof",
+    "contextProof": "Real root profile option"
+  },
+  {
+    "id": "profile-missing-update",
+    "owner": "missing-update",
+    "rootArgs": [
+      "--profile",
+      "proof"
+    ],
+    "env": {},
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --profile proof",
+    "contextProof": "Real root profile option"
+  },
+  {
+    "id": "profile-missing-update-dry-run",
+    "owner": "missing-update-dry-run",
+    "rootArgs": [
+      "--profile",
+      "proof"
+    ],
+    "env": {},
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture",
+      "--dry-run"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --profile proof",
+    "contextProof": "Real root profile option"
+  },
+  {
+    "id": "container-hint-duplicate-link",
+    "owner": "duplicate-link",
+    "rootArgs": [],
+    "env": {
+      "OPENCLAW_CONTAINER_HINT": "proofbox"
+    },
+    "args": [
+      "plugins",
+      "install",
+      "--link",
+      "<owned-source-directory>",
+      "--force"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --container proofbox",
+    "contextProof": "Existing inside-container hint environment boundary, not an actual container launch"
+  },
+  {
+    "id": "container-hint-missing-update",
+    "owner": "missing-update",
+    "rootArgs": [],
+    "env": {
+      "OPENCLAW_CONTAINER_HINT": "proofbox"
+    },
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --container proofbox",
+    "contextProof": "Existing inside-container hint environment boundary, not an actual container launch"
+  },
+  {
+    "id": "container-hint-missing-update-dry-run",
+    "owner": "missing-update-dry-run",
+    "rootArgs": [],
+    "env": {
+      "OPENCLAW_CONTAINER_HINT": "proofbox"
+    },
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture",
+      "--dry-run"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --container proofbox",
+    "contextProof": "Existing inside-container hint environment boundary, not an actual container launch"
+  },
+  {
+    "id": "container-over-profile-duplicate-link",
+    "owner": "duplicate-link",
+    "rootArgs": [
+      "--profile",
+      "proof"
+    ],
+    "env": {
+      "OPENCLAW_CONTAINER_HINT": "proofbox"
+    },
+    "args": [
+      "plugins",
+      "install",
+      "--link",
+      "<owned-source-directory>",
+      "--force"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --container proofbox",
+    "contextProof": "Existing inside-container hint environment boundary, not an actual container launch"
+  },
+  {
+    "id": "container-over-profile-missing-update",
+    "owner": "missing-update",
+    "rootArgs": [
+      "--profile",
+      "proof"
+    ],
+    "env": {
+      "OPENCLAW_CONTAINER_HINT": "proofbox"
+    },
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --container proofbox",
+    "contextProof": "Existing inside-container hint environment boundary, not an actual container launch"
+  },
+  {
+    "id": "container-over-profile-missing-update-dry-run",
+    "owner": "missing-update-dry-run",
+    "rootArgs": [
+      "--profile",
+      "proof"
+    ],
+    "env": {
+      "OPENCLAW_CONTAINER_HINT": "proofbox"
+    },
+    "args": [
+      "plugins",
+      "update",
+      "campaign-untracked-fixture",
+      "--dry-run"
+    ],
+    "exit": 1,
+    "baselinePrefix": "openclaw",
+    "candidatePrefix": "openclaw --container proofbox",
+    "contextProof": "Existing inside-container hint environment boundary, not an actual container launch"
+  },
+  {
+    "id": "no-target",
+    "owner": "input-control",
+    "args": [
+      "plugins",
+      "update"
+    ],
+    "exit": 1,
+    "expected": "Provide a plugin or hook-pack id, or use --all."
+  },
+  {
+    "id": "empty-all-preview",
+    "owner": "empty-control",
+    "args": [
+      "plugins",
+      "update",
+      "--all",
+      "--dry-run"
+    ],
+    "exit": 0,
+    "expected": "No tracked plugins or hook packs to update."
+  }
+]

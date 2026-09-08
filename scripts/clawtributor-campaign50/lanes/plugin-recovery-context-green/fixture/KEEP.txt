@@ -1,0 +1,1 @@
+Synthetic pre-existing plugin bytes must remain unchanged.

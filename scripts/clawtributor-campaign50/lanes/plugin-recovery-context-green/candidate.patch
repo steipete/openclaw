@@ -1,0 +1,227 @@
+diff --git a/src/cli/plugins-command-helpers.ts b/src/cli/plugins-command-helpers.ts
+--- a/src/cli/plugins-command-helpers.ts
++++ b/src/cli/plugins-command-helpers.ts
+@@ -4,6 +4,7 @@
+ import type { OpenClawConfig } from "../config/types.openclaw.js";
+ import { HOOK_INSTALL_ERROR_CODE } from "../hooks/install.js";
+ import { defaultRuntime, type RuntimeEnv } from "../runtime.js";
++import { formatCliCommand } from "./command-format.js";
+ export { quietPluginJsonLogger } from "./plugins-json-logger.js";
+ 
+ type HookInternalEntryLike = Record<string, unknown> & { enabled?: boolean };
+@@ -85,20 +86,17 @@
+   hookFallback: { error: string; code?: string },
+ ): string {
+   const formattedPluginError = formatPluginInstallAttemptError(pluginError);
+-  const formattedHookError = formatPluginInstallAttemptError(hookFallback.error);
+   if (/plugin already exists: .+ \(delete it first\)/.test(pluginError)) {
+-    return `${formattedPluginError}\nUse \`openclaw plugins update <id-or-npm-spec>\` to upgrade the tracked plugin, or rerun install with \`--force\` to replace it.`;
++    return `${formattedPluginError}\nUse \`${formatCliCommand("openclaw plugins update <id-or-npm-spec>")}\` to upgrade the tracked plugin, or rerun install with \`--force\` to replace it.`;
+   }
+   if (
+     pluginError.startsWith("Invalid extensions directory:") ||
+-    pluginError === "Invalid path: must stay within extensions directory"
++    pluginError === "Invalid path: must stay within extensions directory" ||
++    hookFallback.code === HOOK_INSTALL_ERROR_CODE.MISSING_OPENCLAW_HOOKS
+   ) {
+     return formattedPluginError;
+   }
+-  if (hookFallback.code === HOOK_INSTALL_ERROR_CODE.MISSING_OPENCLAW_HOOKS) {
+-    return formattedPluginError;
+-  }
+-  return `${formattedPluginError}\nAlso not a valid hook pack: ${formattedHookError}`;
++  return `${formattedPluginError}\nAlso not a valid hook pack: ${formatPluginInstallAttemptError(hookFallback.error)}`;
+ }
+ 
+ const MISSING_GIT_FOR_NPM_DEPENDENCY_HINT =
+diff --git a/src/cli/plugins-update-command.ts b/src/cli/plugins-update-command.ts
+--- a/src/cli/plugins-update-command.ts
++++ b/src/cli/plugins-update-command.ts
+@@ -61,6 +61,7 @@
+ } from "../plugins/update.js";
+ import { defaultRuntime } from "../runtime.js";
+ import { VERSION } from "../version.js";
++import { formatCliCommand } from "./command-format.js";
+ import { resolveInstallPolicyWarningAcknowledgementCliOptions } from "./install-policy-warning-acknowledgement.js";
+ import { resolvePluginCapabilityConsentCliOptions } from "./plugin-capability-consent.js";
+ import { notifyGatewayPluginMetadataChanged } from "./plugins-update-gateway-signal.js";
+@@ -319,7 +320,7 @@
+     }
+     defaultRuntime.error(
+       params.id
+-        ? `No tracked plugin or hook pack found for "${params.id}". Run "openclaw plugins list" or "openclaw hooks list" to inspect installed packages.`
++        ? `No tracked plugin or hook pack found for "${params.id}". Run "${formatCliCommand("openclaw plugins list")}" or "${formatCliCommand("openclaw hooks list")}" to inspect installed packages.`
+         : "Provide a plugin or hook-pack id, or use --all.",
+     );
+     return defaultRuntime.exit(1);
+diff --git a/src/cli/plugins-cli.install.test.ts b/src/cli/plugins-cli.install.test.ts
+--- a/src/cli/plugins-cli.install.test.ts
++++ b/src/cli/plugins-cli.install.test.ts
+@@ -17,6 +17,7 @@
+ } from "../plugins/official-external-plugin-catalog.js";
+ import * as slotSelection from "../plugins/slot-selection.js";
+ import { createColdPluginFixture } from "../plugins/test-helpers/cold-plugin-fixtures.js";
++import { withEnvAsync } from "../test-utils/env.js";
+ import { withTempDir } from "../test-utils/temp-dir.js";
+ import {
+   applyExclusiveSlotSelectionMock,
+@@ -2923,28 +2924,42 @@
+     expect(npmInstallCall().mode).toBe("update");
+   });
+ 
+-  it("suggests update or --force when npm plugin install target already exists", async () => {
+-    pluginCliConfigMock.mockReturnValue({} as OpenClawConfig);
+-    mockClawHubPackageNotFound("@example/lossless-claw");
+-    installPluginFromNpmSpecMock.mockResolvedValue({
+-      ok: false,
+-      error:
+-        "plugin already exists: /home/openclaw/.openclaw/extensions/lossless-claw (delete it first)",
+-    });
+-    installHooksFromNpmSpecMock.mockResolvedValue({
+-      ok: false,
+-      error: "package.json missing openclaw.hooks",
+-    });
+-
+-    await expect(
+-      runAcknowledgedPluginsInstallCommand(["plugins", "install", "@example/lossless-claw"]),
+-    ).rejects.toThrow("__exit__:1");
+-
+-    expect(runtimeErrors.at(-1)).toContain(
+-      "Use `openclaw plugins update <id-or-npm-spec>` to upgrade the tracked plugin, or rerun install with `--force` to replace it.",
+-    );
+-    expect(runtimeErrors.at(-1)).not.toContain("Also not a valid hook pack");
+-  });
++  it.each([
++    ["default", undefined, undefined, "openclaw"],
++    ["profile", "work", undefined, "openclaw --profile work"],
++    ["container", undefined, "demo", "openclaw --container demo"],
++    ["container before profile", "work", "demo", "openclaw --container demo"],
++  ] as const)(
++    "preserves %s context in duplicate-install recovery guidance",
++    async (_name, profile, container, prefix) => {
++      await withEnvAsync(
++        { OPENCLAW_PROFILE: profile, OPENCLAW_CONTAINER_HINT: container },
++        async () => {
++          pluginCliConfigMock.mockReturnValue({} as OpenClawConfig);
++          mockClawHubPackageNotFound("@example/lossless-claw");
++          installPluginFromNpmSpecMock.mockResolvedValue({
++            ok: false,
++            error:
++              "plugin already exists: /home/openclaw/.openclaw/extensions/lossless-claw (delete it first)",
++          });
++          installHooksFromNpmSpecMock.mockResolvedValue({
++            ok: false,
++            error: "package.json missing openclaw.hooks",
++          });
++
++          await expect(
++            runAcknowledgedPluginsInstallCommand(["plugins", "install", "@example/lossless-claw"]),
++          ).rejects.toThrow("__exit__:1");
++
++          expect(runtimeErrors.at(-1)).toContain(
++            `Use \`${prefix} plugins update <id-or-npm-spec>\` to upgrade the tracked plugin, or rerun install with \`--force\` to replace it.`,
++          );
++          expect(runtimeErrors.at(-1)).not.toContain("Also not a valid hook pack");
++          expect(configWriteMock).not.toHaveBeenCalled();
++        },
++      );
++    },
++  );
+ 
+   it("does not append hook-pack fallback details for managed extensions boundary failures", async () => {
+     const localPluginDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-local-plugin-"));
+diff --git a/src/cli/plugins-cli.update.test.ts b/src/cli/plugins-cli.update.test.ts
+--- a/src/cli/plugins-cli.update.test.ts
++++ b/src/cli/plugins-cli.update.test.ts
+@@ -12,6 +12,7 @@
+   type PluginInstallTransaction,
+ } from "../plugins/install-transaction.js";
+ import { recordInstalledPluginIndexInstallOwner } from "../plugins/installed-plugin-index-install-owner.js";
++import { withEnvAsync } from "../test-utils/env.js";
+ import { VERSION } from "../version.js";
+ import {
+   createTestInstalledPluginIndex,
+@@ -378,26 +379,63 @@
+   });
+ 
+   it.each([
+-    { id: "missing-plugin", args: [] },
+-    { id: "missing-plugin", args: ["--dry-run"] },
+-    { id: "constructor", args: [] },
+-    { id: "@acme/missing-plugin@beta", args: [] },
+-  ])("rejects untracked update target $id $args", async ({ id, args }) => {
+-    const config = {} as OpenClawConfig;
+-    primeUpdateConfigSnapshot({ config });
+-    primePluginUpdate(config, [
+-      { pluginId: id, status: "skipped", message: `No install record for "${id}".` },
+-    ]);
+-
+-    await expect(runPluginsCommand(["plugins", "update", id, ...args])).rejects.toThrow(
+-      "__exit__:1",
+-    );
+-
+-    expect(runtimeErrors.at(-1)).toContain(`No tracked plugin or hook pack found for "${id}".`);
+-    expect(updateNpmInstalledPluginsMock).not.toHaveBeenCalled();
+-    expect(updateNpmInstalledHookPacksMock).not.toHaveBeenCalled();
+-    expect(configWriteMock).not.toHaveBeenCalled();
+-  });
++    ["missing", "missing-plugin", [], undefined, undefined, "openclaw"],
++    ["preview", "missing-plugin", ["--dry-run"], undefined, undefined, "openclaw"],
++    ["object-name", "constructor", [], undefined, undefined, "openclaw"],
++    ["npm-spec", "@acme/missing-plugin@beta", [], undefined, undefined, "openclaw"],
++    ["profile", "missing-plugin", [], "work", undefined, "openclaw --profile work"],
++    [
++      "profile preview",
++      "missing-plugin",
++      ["--dry-run"],
++      "work",
++      undefined,
++      "openclaw --profile work",
++    ],
++    ["container", "missing-plugin", [], undefined, "demo", "openclaw --container demo"],
++    [
++      "container preview",
++      "missing-plugin",
++      ["--dry-run"],
++      undefined,
++      "demo",
++      "openclaw --container demo",
++    ],
++    ["container before profile", "missing-plugin", [], "work", "demo", "openclaw --container demo"],
++    [
++      "container before profile preview",
++      "missing-plugin",
++      ["--dry-run"],
++      "work",
++      "demo",
++      "openclaw --container demo",
++    ],
++  ] as const)(
++    "rejects untracked update target with %s guidance",
++    async (_name, id, args, profile, container, prefix) => {
++      await withEnvAsync(
++        { OPENCLAW_PROFILE: profile, OPENCLAW_CONTAINER_HINT: container },
++        async () => {
++          const config = {} as OpenClawConfig;
++          primeUpdateConfigSnapshot({ config });
++          primePluginUpdate(config, [
++            { pluginId: id, status: "skipped", message: `No install record for "${id}".` },
++          ]);
++
++          await expect(runPluginsCommand(["plugins", "update", id, ...args])).rejects.toThrow(
++            "__exit__:1",
++          );
++
++          expect(runtimeErrors.at(-1)).toBe(
++            `No tracked plugin or hook pack found for "${id}". Run "${prefix} plugins list" or "${prefix} hooks list" to inspect installed packages.`,
++          );
++          expect(updateNpmInstalledPluginsMock).not.toHaveBeenCalled();
++          expect(updateNpmInstalledHookPacksMock).not.toHaveBeenCalled();
++          expect(configWriteMock).not.toHaveBeenCalled();
++        },
++      );
++    },
++  );
+ 
+   it("rejects an npm update target shared by multiple tracked plugins", async () => {
+     const config = {
