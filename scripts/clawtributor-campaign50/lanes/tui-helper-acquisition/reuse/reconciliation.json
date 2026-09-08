@@ -1,0 +1,43 @@
+{
+  "plannerComponentQualified": true,
+  "originalRun": 34224353831,
+  "originalJob": 102054765998,
+  "originalJobConclusion": "failure",
+  "source": "c86263abc9c816466eb1dd7abc57bacd25cefedd",
+  "packetHash": "45776f127b4093270295aaca613e03f5c7fb9146e40bc32993b9ee808d4d12d7",
+  "passed": 3,
+  "filtered": 50,
+  "plannerNames": [
+    "scripts/lib/ci-node-test-plan.mts splits tooling checks independently from built artifacts",
+    "scripts/lib/ci-node-test-plan.mts keeps hosted tooling within the GitHub job cap when its inventory grows",
+    "scripts/lib/ci-node-test-plan.mts retains changed plugin tests once in github compact fallback without changing group policies"
+  ],
+  "admittedAtOrBelow80": true,
+  "exactPlannedJobsAfter": null,
+  "commandExit": 0,
+  "joined": true,
+  "ownedStateRemoved": true,
+  "sourceRestored": true,
+  "acquisitionExecuted": false,
+  "remainingAcquisitionCases": 10,
+  "reason": "Explicit --config selected the direct wrapper; the removed summary assertion belongs to the uninvoked project runner.",
+  "inputHashes": {
+    "apt-update.log": "486b35b000499496f59839084e35c28679f1b7e47d58688b2f295b573d81eef9",
+    "bootstrap-final-working-tree.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "commands.json": "1d08d8e2a7616e841e5edff0c26cf1dfc7cf4e90a513cbd1c59fda5cc6c185e2",
+    "dependencies.log": "dfa8877532be1125a1a5ad01aafa536b82bcad6c21fe214e91d4f2348cac86f1",
+    "exit-code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "host-tools.log": "70775daed2d3b0309b45c50cede405de687015eeeeafda036bf38ba5b98c50f9",
+    "host.json": "586717898ce265969e41e1b631724388c95abc337af5c1cb61504b3f8fac5e67",
+    "planner/vitest.json": "af32c4767e9a8c02a6ca07ed415dacaec494623a787821542bf04ab6298d1bab",
+    "planner/vitest.log": "93ad21c1d46904f9a1d9a05ffc2fe8955b5bec0473ceb44ad8d3da2b8008a452",
+    "pnpm-install.log": "ec9052136c37b43d5491fd653f0ea47ffb5eb9619f31aa45869844668e997a4d",
+    "result.json": "1fc8ec58d2dc3c3e23e1f3e19f6cbb84e9b7b8e44fe40d3c659494b7b09a7953",
+    "source-before-restoration.json": "b67f03b01b776f7f0b229a5783128eee18e5d9bd0e7234703b23a2266c910020",
+    "source-before.json": "19b116a18b451aa3d948b20afc2a7fd11d6f073a64df9a79ce9c4a9406454653",
+    "source-candidate-indexed.json": "b67f03b01b776f7f0b229a5783128eee18e5d9bd0e7234703b23a2266c910020",
+    "source-final.json": "19b116a18b451aa3d948b20afc2a7fd11d6f073a64df9a79ce9c4a9406454653",
+    "source.json": "be4171ef6703d4e2d18f1c4468e3f12cdba55078f3ed245f619cb7efe5f76ad1"
+  },
+  "proposalSha256": "9b7f2a1baaf5d191b4a7cf3a2712df08b38858eb808c79f58a15928d79a52365"
+}

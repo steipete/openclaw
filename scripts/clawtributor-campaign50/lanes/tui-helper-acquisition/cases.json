@@ -1,0 +1,18 @@
+[
+  {
+    "id": "acquisition",
+    "file": "test/helpers/openclaw-test-instance.acquisition.test.ts",
+    "names": [
+      "createOpenClawTestInstance acquisition cleans up available resources after state acquisition failure",
+      "createOpenClawTestInstance acquisition cleans up available resources after merge acquisition failure",
+      "createOpenClawTestInstance acquisition cleans up available resources after serialization acquisition failure",
+      "createOpenClawTestInstance acquisition cleans up available resources after write acquisition failure",
+      "createOpenClawTestInstance acquisition cleans up available resources after cleanup acquisition failure",
+      "test instance endpoint isolation preserves endpoint ownership with clean environment",
+      "test instance endpoint isolation preserves endpoint ownership with inherited port",
+      "test instance endpoint isolation preserves endpoint ownership with inherited URL",
+      "test instance endpoint isolation preserves endpoint ownership with explicit options.env",
+      "test instance endpoint isolation preserves endpoint ownership with explicit undefined deletion"
+    ]
+  }
+]

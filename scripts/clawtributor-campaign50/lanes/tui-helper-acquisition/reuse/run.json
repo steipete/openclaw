@@ -1,0 +1,197 @@
+{
+  "attempt": 1,
+  "conclusion": "failure",
+  "createdAt": "2026-09-08T12:07:45Z",
+  "databaseId": 34224353831,
+  "event": "push",
+  "headSha": "6f835f4ddf129897ff7cfe9a66362e4c6bc1331d",
+  "jobs": [
+    {
+      "databaseId": 102054722834,
+      "name": "plan",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-09-08T12:07:49Z",
+      "completedAt": "2026-09-08T12:07:54Z",
+      "url": "https://github.com/steipete/openclaw/actions/runs/34224353831/job/102054722834",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "startedAt": "2026-09-08T12:07:49Z",
+          "completedAt": "2026-09-08T12:07:50Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "startedAt": "2026-09-08T12:07:50Z",
+          "completedAt": "2026-09-08T12:07:52Z"
+        },
+        {
+          "name": "Resolve pinned proof lanes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "startedAt": "2026-09-08T12:07:52Z",
+          "completedAt": "2026-09-08T12:07:52Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "startedAt": "2026-09-08T12:07:52Z",
+          "completedAt": "2026-09-08T12:07:52Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "startedAt": "2026-09-08T12:07:52Z",
+          "completedAt": "2026-09-08T12:07:52Z"
+        }
+      ]
+    },
+    {
+      "databaseId": 102054765998,
+      "name": "proof (c86263abc9c816466eb1dd7abc57bacd25cefedd, 24.19.0, 12.3.4, green, tui-helper-inventory, tu...",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-09-08T12:07:57Z",
+      "completedAt": "2026-09-08T12:10:35Z",
+      "url": "https://github.com/steipete/openclaw/actions/runs/34224353831/job/102054765998",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "startedAt": "2026-09-08T12:07:58Z",
+          "completedAt": "2026-09-08T12:08:00Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "startedAt": "2026-09-08T12:08:00Z",
+          "completedAt": "2026-09-08T12:08:04Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "startedAt": "2026-09-08T12:08:04Z",
+          "completedAt": "2026-09-08T12:08:27Z"
+        },
+        {
+          "name": "Receive verified package evidence from this run",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4,
+          "startedAt": "2026-09-08T12:08:27Z",
+          "completedAt": "2026-09-08T12:08:27Z"
+        },
+        {
+          "name": "Verify exact macOS proof host",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "startedAt": "2026-09-08T12:08:27Z",
+          "completedAt": "2026-09-08T12:08:27Z"
+        },
+        {
+          "name": "Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "startedAt": "2026-09-08T12:08:27Z",
+          "completedAt": "2026-09-08T12:08:32Z"
+        },
+        {
+          "name": "Run isolated source-bound proof",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "startedAt": "2026-09-08T12:08:32Z",
+          "completedAt": "2026-09-08T12:10:29Z"
+        },
+        {
+          "name": "Run isolated macOS source-bound proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "startedAt": "2026-09-08T12:10:29Z",
+          "completedAt": "2026-09-08T12:10:29Z"
+        },
+        {
+          "name": "Run isolated Windows source-bound proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "startedAt": "2026-09-08T12:10:29Z",
+          "completedAt": "2026-09-08T12:10:29Z"
+        },
+        {
+          "name": "Retain proof artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "startedAt": "2026-09-08T12:10:29Z",
+          "completedAt": "2026-09-08T12:10:30Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "startedAt": "2026-09-08T12:10:30Z",
+          "completedAt": "2026-09-08T12:10:30Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "startedAt": "2026-09-08T12:10:30Z",
+          "completedAt": "2026-09-08T12:10:30Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "startedAt": "2026-09-08T12:10:30Z",
+          "completedAt": "2026-09-08T12:10:30Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "startedAt": "2026-09-08T12:10:30Z",
+          "completedAt": "2026-09-08T12:10:30Z"
+        }
+      ]
+    },
+    {
+      "databaseId": 102054766608,
+      "name": "telemetry-reuse",
+      "status": "completed",
+      "conclusion": "skipped",
+      "startedAt": "2026-09-08T12:07:54Z",
+      "completedAt": "2026-09-08T12:07:54Z",
+      "url": "https://github.com/steipete/openclaw/actions/runs/34224353831/job/102054766608",
+      "steps": []
+    }
+  ],
+  "status": "completed",
+  "updatedAt": "2026-09-08T12:10:36Z",
+  "url": "https://github.com/steipete/openclaw/actions/runs/34224353831"
+}

@@ -1,0 +1,64 @@
+
+ RUN  v5.0.0 /home/runner/work/openclaw/openclaw/target
+
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > binds split timing identity to exact complete-file membership
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains a complete measured generation and ignores complementary partial generations
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps Chromium files in the UI CI owner and Node-driven Playwright files in Node stripes
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps oversized sparse groups nonempty on github
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps oversized sparse groups nonempty on hybrid
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > bounds github child groups by the slower github path
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > bounds hybrid child groups by the slower github path
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > bounds hybrid child groups by the slower blacksmith path
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > inventories source-scanning Control UI policy tests
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > matches policy owners only for exact changed paths
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > projects cache-warm groups from the owned node test plan
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > creates split shards without walking test roots
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > bundles split shards with deterministic unique identities and unchanged coverage
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > prefers blacksmith measurements while retaining unmeasured hints and defaults
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > prefers github measurements while retaining unmeasured hints and defaults
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > prefers hybrid measurements while retaining unmeasured hints and defaults
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps hybrid fallback bounds and unmeasured stripes when other measurements change
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains parent floors and uses higher github child timings without changing test partitions
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains parent floors and uses higher hybrid child timings without changing test partitions
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > partitions whole-config runtime consumers from ordinary serial CLI work
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > spends the hybrid CLI budget only on complete affordable non-build bins
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > preserves coverage and execution policies with committed compact measurements
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > splits the slow core unit shards while keeping paired source/security coverage
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps Doctor session SQLite owners complete and isolated
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > partitions each giant compact group across three deterministic stripes
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > names the node shard checks as core test lanes
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps extension, bundled, contracts, and channels configs out of the core node lane
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps compact agentic config ownership aligned with the full agentic project set
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > marks only dist-dependent shards for built artifact restore
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > preserves runtime preparation and core-only ownership in full and compact plans
+ ✓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > splits tooling checks independently from built artifacts 8128ms
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps non-tooling placement checks independent of singleton tooling split names
+[vitest] still running with no output for 30000ms.
+ ✓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps hosted tooling within the GitHub job cap when its inventory grows 50438ms
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > assigns Blacksmith runners to every core node shard
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > splits core runtime configs into smaller source-only shards
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps the full TUI PTY suite in its dedicated built-CLI shard
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > covers every infra test exactly once across core runtime infra shards
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > covers every cron test exactly once across core runtime cron shards
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > splits the agentic lane into control-plane, command, agent, gateway, SDK, and plugin shards
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps plugin prerelease npm install behavior on the release-only agentic plugin shard
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > covers flat agents-core and explicitly nested isolated tests exactly once
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps embedded-agent tests in four bounded config surfaces
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps expensive plugin shards release-only when normal CI asks for the cheaper plan
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps changed native browser tests in UI jobs and out of extension fallback
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains the changed host plugin test when the store-alias diff forces fallback
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains only exact changed plugin-owner tests in deterministic order
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > does not widen plugin coverage for deleted tests, sources, docs, or directories
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains changed plugin tests once in blacksmith compact fallback without changing group policies
+ ✓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains changed plugin tests once in github compact fallback without changing group policies 6690ms
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > retains changed plugin tests once in hybrid compact fallback without changing group policies
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > splits auto-reply into balanced core/top-level and reply subtree shards
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > covers every auto-reply reply test exactly once across split shards
+ ↓ |tooling| test/scripts/ci-node-test-plan.test.ts > scripts/lib/ci-node-test-plan.mts > keeps each dispatch entrypoint in its own dedicated shard
+
+ Test Files  1 passed (1)
+      Tests  3 passed | 50 skipped (53)
+   Start at  12:09:11
+   Duration  76.41s (tests 87%, import 11%, transform 1%, worker 1%)
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/tui-helper-inventory/planner/vitest.json

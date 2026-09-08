@@ -1,22 +1,12 @@
 [
   {
-    "id": "uninstall-owner-posix",
-    "directory": "uninstall-owner-contract",
-    "runner": "ubuntu-24.04",
-    "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
-    "node": "24.20.0",
+    "source": "c86263abc9c816466eb1dd7abc57bacd25cefedd",
+    "node": "24.19.0",
     "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "installer-ownership"
-  },
-  {
-    "id": "uninstall-owner-windows",
-    "directory": "uninstall-owner-contract",
-    "runner": "windows-2025",
-    "source": "f5a30f8484671abdb422a9ea8b39837a668ed019",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "installer-ownership"
+    "mode": "green",
+    "variant": "tui-helper-acquisition",
+    "id": "tui-helper-acquisition",
+    "directory": "tui-helper-acquisition",
+    "runner": "ubuntu-24.04"
   }
 ]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "planner",
+    "args": [
+      "scripts/run-vitest.mjs",
+      "run",
+      "--config",
+      "test/vitest/vitest.tooling.config.ts",
+      "test/scripts/ci-node-test-plan.test.ts",
+      "--reporter=verbose",
+      "--reporter=json",
+      "--outputFile=/home/runner/work/openclaw/openclaw/evidence/tui-helper-inventory/planner/vitest.json",
+      "--testNamePattern",
+      "(?:splits tooling checks independently from built artifacts|keeps hosted tooling within the GitHub job cap when its inventory grows|retains changed plugin tests once in github compact fallback without changing group policies)$"
+    ],
+    "startedAt": "2026-09-08T12:09:11.003Z",
+    "joined": true,
+    "outputBytes": 9036,
+    "timeoutMs": 600000,
+    "pid": 3403,
+    "exit": 0,
+    "finishedAt": "2026-09-08T12:10:28.484Z",
+    "outputSha256": "93ad21c1d46904f9a1d9a05ffc2fe8955b5bec0473ceb44ad8d3da2b8008a452",
+    "ownedStateRemoved": true
+  }
+]

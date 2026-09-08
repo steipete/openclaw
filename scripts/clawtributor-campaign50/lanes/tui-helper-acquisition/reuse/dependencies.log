@@ -1,0 +1,205 @@
+Scope: all 176 workspace projects
+. pnpm:devPreinstall$ node scripts/check-install-dependency-ownership.mjs
+. pnpm:devPreinstall: Done
+? Verifying lockfile against supply-chain policies (1652 entries)...
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/work/_temp/campaign50-tui-helper-inventory-home/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Downloading cytoscape-fcose@2.2.0: 0.00 B/7.60 MB
+Downloading @openai/codex@0.153.4-linux-x64: 0.00 B/129.27 MB
+Downloading @lancedb/lancedb-linux-x64-gnu@0.37.1: 0.00 B/66.56 MB
+Downloading @rolldown/binding-linux-x64-gnu@1.2.5: 0.00 B/8.16 MB
+Downloading @anthropic-ai/claude-agent-sdk-linux-x64@0.3.232: 0.00 B/96.70 MB
+Downloading @github/copilot-linux-x64@1.0.80: 0.00 B/182.90 MB
+Downloading ogg-opus-decoder@1.7.3: 0.00 B/6.87 MB
+Downloading @oxlint/binding-linux-x64-gnu@1.80.0: 0.00 B/6.53 MB
+Downloading @oxlint-tsgolint/linux-x64@7.0.2001: 0.00 B/7.71 MB
+Downloading @tloncorp/tlon-skill-linux-x64@0.5.0: 0.00 B/40.66 MB
+Downloading node-pty@1.2.0-beta.14: 0.00 B/7.15 MB
+Downloading @microsoft/mxc-sdk@0.7.0: 0.00 B/16.14 MB
+Downloading @trycua/cua-driver-linux-x64-gnu@0.22.2: 0.00 B/12.86 MB
+Downloading mermaid@11.17.2: 0.00 B/17.79 MB
+Downloading @typescript/native-preview-linux-x64@7.0.0-dev.20260707.2: 0.00 B/9.66 MB
+Downloading @wasm-audio-decoders/opus-ml@0.0.2: 0.00 B/6.39 MB
+Downloading typescript@5.2.2: 0.00 B/7.23 MB
+Downloading @anthropic-ai/claude-agent-sdk-linux-x64@0.3.232: 46.18 MB/96.70 MB
+Progress: resolved 1447, reused 0, downloaded 500, added 480
+✓ Lockfile passes supply-chain policies (1652 entries in 4.7s)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1447, reused 0, downloaded 784, added 768
+Downloading @anthropic-ai/claude-agent-sdk-linux-x64@0.3.232: 96.70 MB/96.70 MB, done
+Progress: resolved 1447, reused 0, downloaded 932, added 928
+Progress: resolved 1447, reused 0, downloaded 1105, added 1088
+Progress: resolved 1447, reused 0, downloaded 1177, added 1157
+Downloading @github/copilot-linux-x64@1.0.80: 141.46 MB/182.90 MB
+Progress: resolved 1447, reused 0, downloaded 1375, added 1376
+Progress: resolved 1447, reused 0, downloaded 1420, added 1408
+Downloading @github/copilot-linux-x64@1.0.80: 177.93 MB/182.90 MB
+Progress: resolved 1447, reused 0, downloaded 1435, added 1440
+Packages: +1447
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 1447, reused 0, downloaded 1440, added 1447, done
+.../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+.../node_modules/@google/genai preinstall$ echo 'preinstall: no-op'
+.../@matrix-org/matrix-sdk-crypto-nodejs postinstall$ node download-lib.js
+.../node_modules/@google/genai preinstall: preinstall: no-op
+.../node_modules/@google/genai preinstall: Done
+.../node_modules/node-pty install$ node scripts/prebuild.js || node-gyp rebuild
+.../@matrix-org/matrix-sdk-crypto-nodejs postinstall: Downloading lib matrix-sdk-crypto.linux-x64-gnu.node from https://github.com/matrix-org/matrix-rust-sdk-crypto-nodejs/releases/download/v0.6.6/matrix-sdk-crypto.linux-x64-gnu.node
+.../node_modules/node-pty install: [32m> Checking prebuilds...[0m
+.../node_modules/node-pty install: Done
+.../node_modules/node-pty postinstall$ node scripts/post-install.js
+.../node_modules/node-pty postinstall: [32m> Cleaning release folder...[0m
+.../node_modules/node-pty postinstall: [32m> Moving conpty.dll...[0m
+.../node_modules/node-pty postinstall:   SKIPPED (not Windows)
+.../node_modules/node-pty postinstall: Done
+.../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+.../node_modules/@tloncorp/tlon-skill postinstall$ node scripts/postinstall.js
+.../node_modules/baileys preinstall$ node ./engine-requirements.js
+.../node_modules/@tloncorp/tlon-skill postinstall: [tlon-skill] Binary ready: /home/runner/work/openclaw/openclaw/target/node_modules/.pnpm/@tloncorp+tlon-skill-linux-x64@0.5.0/node_modules/@tloncorp/tlon-skill-linux-x64/tlon
+.../node_modules/@tloncorp/tlon-skill postinstall: Done
+.../node_modules/baileys preinstall: Done
+.../@matrix-org/matrix-sdk-crypto-nodejs postinstall: Download Completed
+.../@matrix-org/matrix-sdk-crypto-nodejs postinstall: Done
+. preinstall$ node scripts/preinstall-package-manager-warning.mjs
+. preinstall: Done
+. postinstall$ node scripts/postinstall-bundled-plugins.mjs
+. postinstall: Done
+. prepare$ node scripts/prepare-git-hooks.mjs
+. prepare: Done
+
+dependencies:
++ @agentclientprotocol/sdk 1.4.0
++ @anthropic-ai/sdk 0.120.0
++ @clack/core 1.4.3
++ @clack/prompts 1.7.0
++ @earendil-works/pi-tui 0.84.4
++ @google/genai 2.19.0
++ @grammyjs/runner 2.0.3
++ @grammyjs/transformer-throttler 1.2.1
++ @homebridge/ciao 1.3.12
++ @lydell/node-pty 1.2.0-beta.15
++ @mistralai/mistralai 2.6.4
++ @modelcontextprotocol/sdk 1.30.0
++ @mozilla/readability 0.6.0
++ @openclaw/ai link:packages/ai
++ @openclaw/fs-safe 0.8.5
++ @openclaw/proxyline 0.3.11
++ @silvia-odwyer/photon-node 0.3.4
++ @trycua/cua-driver 0.22.2
++ acorn 8.18.0
++ chalk 6.0.0
++ chokidar 5.0.0
++ clawpdf 0.3.1
++ commander 15.0.0
++ croner 10.0.1
++ diff 9.0.0
++ dotenv 17.4.2
++ entities 8.0.0
++ execa 10.0.1
++ express 5.2.1
++ file-type 22.0.2
++ grammy 1.46.0
++ highlight.js 11.12.0
++ hosted-git-info 10.1.1
++ iconv-lite 0.7.3
++ ignore 7.0.7
++ jiti 2.7.0
++ json5 2.2.3
++ jszip 3.10.1
++ koffi 3.1.6
++ kysely 0.29.5
++ linkedom 0.18.13
++ minimatch 10.2.6
++ ms 2.1.3
++ node-edge-tts 1.2.10
++ openai 7.8.0
++ p-limit 7.3.1
++ p-map 7.0.7
++ partial-json 0.1.7
++ playwright-core 1.62.1
++ pretty-ms 9.3.1
++ qrcode 1.5.4
++ quickjs-wasi 3.6.0
++ rastermill 0.3.2
++ semver 7.8.5
++ tar 7.5.22
++ tree-sitter-bash 0.25.1
++ tslog 4.11.0
++ typebox 1.3.18
++ typescript 6.0.3
++ undici 8.10.2
++ web-push 3.6.7
++ web-tree-sitter 0.27.0
++ ws 8.21.3
++ yaml 2.9.0
++ zod 4.4.3
+
+optionalDependencies:
++ sqlite-vec 0.1.9
+
+devDependencies:
++ @a2ui/lit 0.10.3
++ @a2ui/web_core 0.10.6
++ @copilotkit/aimock 1.39.0
++ @lit-labs/signals 0.3.0
++ @lit/context 1.1.6
++ @lit/task 1.0.3
++ @mdx-js/mdx 3.1.1
++ @openclaw/crabline 0.1.20
++ @openclaw/session-url-contract link:packages/session-url-contract
++ @opentelemetry/sdk-node 0.221.0
++ @pnpm/parse-overrides 1001.0.4
++ @shikijs/core 4.4.3
++ @shikijs/engine-javascript 4.4.3
++ @shikijs/engine-oniguruma 4.4.3
++ @sindresorhus/slugify 2.2.1
++ @types/express 5.0.6
++ @types/hosted-git-info 3.0.5
++ @types/jsdom 30.0.0
++ @types/markdown-it 14.2.0
++ @types/mdast 4.0.4
++ @types/ms 2.1.0
++ @types/node 26.4.0
++ @types/semver 7.8.0
++ @types/web-push 3.6.4
++ @types/ws 8.18.1
++ @typescript/native-preview 7.0.0-dev.20260707.2
++ @vitest/coverage-v8 5.0.0
++ acpx 0.13.2
++ apache-arrow 18.1.0
++ baileys 7.0.0-rc14
++ esbuild 0.28.2
++ htmlparser2 10.1.0
++ ipaddr.js 2.5.0
++ jscpd 5.0.16
++ jsdom 29.1.1
++ lit 3.3.3
++ lit-analyzer 2.0.3
++ markdown-it 15.0.1
++ markdown-it-anchor 9.2.1
++ marked 18.0.11
++ minipass 7.1.3
++ nostr-tools 2.25.1
++ oxfmt 0.65.0
++ oxlint 1.80.0
++ oxlint-tsgolint 7.0.2001
++ pako 3.0.1
++ playwright 1.62.1
++ postcss 8.5.26
++ postcss-lit 1.4.1
++ postcss-selector-parser 7.1.5
++ shiki 4.4.3
++ signal-utils 0.21.1
++ sigstore 5.0.0
++ string-width 8.2.2
++ stylelint 17.14.1
++ stylelint-config-recommended 18.0.0
++ tinyglobby 0.2.17
++ tsdown 0.22.14
++ tsx 4.23.13
++ unrun 0.3.1
++ vite 8.2.2
++ vitest 5.0.0
+
+Done in 18.6s using pnpm v12.3.4
