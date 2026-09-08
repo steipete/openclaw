@@ -20,6 +20,25 @@ import {
 assert.equal(process.env.CI, "true");
 const config = JSON.parse(await fs.readFile(process.argv[2], "utf8"));
 const observed = config.mode === "observed";
+const MEASURED_TURNS = 7;
+const GROWTH_TURNS = 4;
+const GROWTH_PAYLOAD_BYTES = 16 * 1024;
+const growthPayloads = Array.from({ length: GROWTH_TURNS }, (_, index) =>
+  Array.from(
+    { length: 120 },
+    (_, section) =>
+      `Journal ${index} section ${section} describes a quiet field survey. The team records weather, terrain, plant growth, and the condition of the walking paths. The observations remain ordinary prose for later comparison.`,
+  )
+    .join(" ")
+    .slice(0, GROWTH_PAYLOAD_BYTES),
+);
+assert.ok(growthPayloads.every((payload) => Buffer.byteLength(payload) === GROWTH_PAYLOAD_BYTES));
+const growthPayloadBytes = growthPayloads.reduce(
+  (bytes, payload) => bytes + Buffer.byteLength(payload),
+  0,
+);
+assert.equal(growthPayloadBytes, 64 * 1024);
+assert.ok(growthPayloadBytes <= 128 * 1024);
 const logFile = path.join(config.ownedRoot, "lcm.log");
 const sessionId = randomUUID();
 const now = Date.now();
@@ -148,19 +167,28 @@ function transcript() {
 // Compare only owned synthetic markers, allowing native thread retention to omit prior input.
 const requestContext: Array<{
   turn: string;
-  markers: Array<{ marker: string; occurrences: number }>;
+  markers: Array<{ label: string; sha256: string; bytes: number; occurrences: number }>;
 }> = [];
-const knownMarkers = [
-  ...seedProjection.map((message) => message.text),
-  "Snapshot warmup turn 0.",
-  ...[0, 1, 2].map((index) => `Snapshot measured turn ${index}.`),
-  SNAPSHOT_REPLY,
+const knownPayloads = [
+  ...seedProjection.map((message, index) => ({ label: `seed-${index}`, payload: message.text })),
+  { label: "warmup", payload: "Snapshot warmup turn 0." },
+  ...growthPayloads.map((payload, index) => ({ label: `growth-${index}`, payload })),
+  ...Array.from({ length: MEASURED_TURNS }, (_, index) => ({
+    label: `measured-${index}`,
+    payload: `Snapshot measured turn ${index}.`,
+  })),
+  { label: "reply", payload: SNAPSHOT_REPLY },
 ];
 function recordRequest(input: unknown, turn: string) {
   const wire = JSON.stringify(input);
   requestContext.push({
     turn,
-    markers: knownMarkers.map((marker) => ({ marker, occurrences: wire.split(marker).length - 1 })),
+    markers: knownPayloads.map(({ label, payload }) => ({
+      label,
+      sha256: createHash("sha256").update(payload).digest("hex"),
+      bytes: Buffer.byteLength(payload),
+      occurrences: wire.split(JSON.stringify(payload).slice(1, -1)).length - 1,
+    })),
   });
 }
 const completedTurns: string[] = [];
@@ -214,10 +242,31 @@ const result = await withNativeSnapshotGateway(
       { role: "user", text: warmup.message },
       { role: "assistant", text: SNAPSHOT_REPLY },
     ]);
+    let cursor = initialRequests[0].cursor;
+    // Grow an already bootstrapped session through real turns, preserving LCM's default import cap.
+    for (const [index, payload] of growthPayloads.entries()) {
+      const offset = (await lcmLog()).length;
+      const turn = await runSnapshotTextTurn(gateway, "growth", index, payload);
+      await waitForLcmTurn(offset, false);
+      completedTurns.push(turn.message);
+      const requests = await readSnapshotProviderRequests(model, cursor);
+      assert.equal(requests.length, 1);
+      assert.ok(!requests[0].plannedToolName);
+      assert.ok(JSON.stringify(requests[0].body.input).includes(payload));
+      recordRequest(requests[0].body.input, `growth-${index}`);
+      cursor = requests[0].cursor;
+      assert.deepEqual(transcript().slice(-2), [
+        { role: "user", text: turn.message },
+        { role: "assistant", text: SNAPSHOT_REPLY },
+      ]);
+    }
+    const historyBytesBeforeMeasurement = Buffer.byteLength(JSON.stringify(transcript()));
+    assert.ok(
+      historyBytesBeforeMeasurement >= 64 * 1024 && historyBytesBeforeMeasurement <= 128 * 1024,
+    );
     const before = observed ? await counters() : undefined;
     const samples = [];
-    let cursor = initialRequests[0].cursor;
-    for (let index = 0; index < 3; index += 1) {
+    for (let index = 0; index < MEASURED_TURNS; index += 1) {
       const offset = (await lcmLog()).length;
       const turn = await runSnapshotTextTurn(gateway, "measured", index);
       await waitForLcmTurn(offset, false);
@@ -242,6 +291,8 @@ const result = await withNativeSnapshotGateway(
       }
     }
     const finalTranscript = transcript();
+    const finalTranscriptBytes = Buffer.byteLength(JSON.stringify(finalTranscript));
+    assert.ok(finalTranscriptBytes <= 128 * 1024);
     assert.deepEqual(finalTranscript.slice(0, seeds.length), seedProjection);
     assert.equal(finalTranscript.length, seeds.length + completedTurns.length * 2);
     for (const message of completedTurns) {
@@ -254,7 +305,11 @@ const result = await withNativeSnapshotGateway(
       seedFingerprint,
       requestContext,
       seedMessages: seeds.length,
-      measuredTurns: 3,
+      growthTurns: GROWTH_TURNS,
+      growthPayloadBytes,
+      historyBytesBeforeMeasurement,
+      finalTranscriptBytes,
+      measuredTurns: MEASURED_TURNS,
       samples,
       before,
       finalTranscriptMessages: finalTranscript.length,

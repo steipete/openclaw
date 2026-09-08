@@ -12,6 +12,11 @@ const after = await read("candidate-observed.json");
 const units = await read("unit-proof.json");
 for (const value of [baseline, candidate, before, after]) {
   assert.equal(value.complete, true);
+  assert.equal(value.measuredTurns, 7);
+  assert.equal(value.growthTurns, 4);
+  assert.equal(value.growthPayloadBytes, 64 * 1024);
+  assert.equal(value.historyBytesBeforeMeasurement, baseline.historyBytesBeforeMeasurement);
+  assert.equal(value.finalTranscriptBytes, baseline.finalTranscriptBytes);
   assert.equal(value.cleanupJoined, true);
   assert.equal(value.seedFingerprint, baseline.seedFingerprint);
   assert.equal(value.lcmVersion, "1.0.0");
@@ -36,7 +41,7 @@ assert.equal(units.candidateOwnerAndSiblingTestsPassed, true);
 const median = (values) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
 for (const value of [baseline, candidate]) {
   assert.equal(value.mode, "uninstrumented");
-  assert.equal(value.samples.length, 3);
+  assert.equal(value.samples.length, 7);
 }
 const summary = {
   baseline: baseline.sourceCommit,
@@ -45,6 +50,11 @@ const summary = {
   lcmVersion: "1.0.0",
   codexVersion: "0.153.4",
   seedMessages: baseline.seedMessages,
+  growthTurns: baseline.growthTurns,
+  growthPayloadBytes: baseline.growthPayloadBytes,
+  historyBytesBeforeMeasurement: baseline.historyBytesBeforeMeasurement,
+  finalTranscriptBytes: baseline.finalTranscriptBytes,
+  measuredTurns: baseline.measuredTurns,
   fullReadsPerTurn: { baseline: 2, candidate: 1 },
   uninstrumentedSamples: { baseline: baseline.samples, candidate: candidate.samples },
   medianAgentWaitMs: {
@@ -59,7 +69,7 @@ const summary = {
   semanticContextAndTranscriptChecks: true,
   cleanupJoined: true,
   limitations:
-    "One runner, three warm-turn samples per variant. Timing includes real Gateway/Codex/LCM flow against a scripted provider and debug logging. Read counters came from separate runs. No SQL microtiming, direct maintenance-return, peak-memory, full-prompt-byte-identity or statistical speedup claim.",
+    "One predeclared run, seven warm-turn samples per variant after four ordinary growth turns. Fixed baseline-then-candidate order; no retry-until-win. Timing includes real Gateway/Codex/LCM flow against a scripted provider and debug logging. Read counters came from separate runs. No SQL microtiming, direct maintenance-return, peak-memory, full-prompt-byte-identity or statistical speedup claim.",
 };
 await fs.writeFile(path.join(root, "summary.json"), JSON.stringify(summary, null, 2) + "\n");
 console.log(JSON.stringify(summary, null, 2));

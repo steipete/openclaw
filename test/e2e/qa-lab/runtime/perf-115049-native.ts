@@ -183,10 +183,11 @@ export async function withNativeSnapshotGateway<T>(
 /** Uses the public Gateway turn lifecycle; the native process is never replaced. */
 export async function runSnapshotTextTurn(
   gateway: QaGatewayChild,
-  turn: "warmup" | "measured",
+  turn: "warmup" | "growth" | "measured",
   index = 0,
+  historyText = "",
 ) {
-  const message = `Snapshot ${turn} turn ${index}. Reply with exactly: ${SNAPSHOT_REPLY}`;
+  const message = `Snapshot ${turn} turn ${index}. ${historyText ? `${historyText} ` : ""}Reply with exactly: ${SNAPSHOT_REPLY}`;
   const startedAtMs = performance.now();
   const accepted = (await gateway.call("agent", {
     agentId: "qa",
