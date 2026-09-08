@@ -1,0 +1,56 @@
+[test] native report set: /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm
+[test] starting test/vitest/vitest.cli.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m cli [49m[39m src/cli/progress.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 139[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m15 passed[39m[22m[90m (15)[39m
+[2m   Start at [22m 23:24:57
+[2m   Duration [22m 1.46s[2m (worker 56%, transform 27%, tests 11%, setup 5%, import 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/1/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/1/1/blob.json
+[test] starting test/vitest/vitest.wizard.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[43m wizard [49m[39m src/wizard/clack-prompter.test.ts [2m([22m[2m35 tests[22m[2m)[22m[32m 180[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m35 passed[39m[22m[90m (35)[39m
+[2m   Start at [22m 23:24:59
+[2m   Duration [22m 1.55s[2m (worker 52%, transform 28%, tests 13%, setup 5%, import 2%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/2/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/2/1/blob.json
+[2m11:25:02 PM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+[2m11:25:02 PM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/aggregate.json
+[test] native JSON aggregate: /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json; originals: /home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm. Native merge omits snapshot summaries and JSON coverageMap; startTime is merge time. Use index.json for process outcomes.
+[test] passed 2 Vitest shards in 6.08s

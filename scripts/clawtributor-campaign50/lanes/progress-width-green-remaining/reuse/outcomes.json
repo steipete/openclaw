@@ -1,0 +1,103 @@
+{
+  "mode": "green",
+  "results": [
+    {
+      "id": "core-32",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 2,
+      "baselineDisposition": "observed-row-flood"
+    },
+    {
+      "id": "core-36",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 2,
+      "baselineDisposition": "observed-row-flood"
+    },
+    {
+      "id": "core-80",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 2,
+      "baselineDisposition": "observed-control"
+    },
+    {
+      "id": "core-6",
+      "conforms": true,
+      "frames": 0,
+      "activeRows": 0,
+      "doneRows": 1,
+      "baselineDisposition": "observed-row-flood"
+    },
+    {
+      "id": "core-delayed-shrink",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 2,
+      "baselineDisposition": "observed-row-flood"
+    },
+    {
+      "id": "wizard-clear",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 1,
+      "baselineDisposition": "observed-control"
+    },
+    {
+      "id": "wizard-final",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 3,
+      "baselineDisposition": "observed-control"
+    },
+    {
+      "id": "wizard-tiny",
+      "conforms": true,
+      "frames": 0,
+      "activeRows": 0,
+      "doneRows": 0,
+      "baselineDisposition": "observed-row-flood"
+    },
+    {
+      "id": "wizard-unicode",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 1,
+      "baselineDisposition": "observed-control"
+    },
+    {
+      "id": "wizard-tiny-final",
+      "conforms": true,
+      "frames": 0,
+      "activeRows": 0,
+      "doneRows": 6,
+      "baselineDisposition": "new-completion-control"
+    },
+    {
+      "id": "wizard-tiny-empty",
+      "conforms": true,
+      "frames": 0,
+      "activeRows": 0,
+      "doneRows": 1,
+      "baselineDisposition": "new-completion-control"
+    },
+    {
+      "id": "wizard-multiline",
+      "conforms": true,
+      "frames": 26,
+      "activeRows": 2,
+      "doneRows": 3,
+      "baselineDisposition": "new-completion-control"
+    }
+  ],
+  "failures": [],
+  "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0"
+}

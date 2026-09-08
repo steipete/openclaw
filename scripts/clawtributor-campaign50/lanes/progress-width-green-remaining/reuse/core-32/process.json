@@ -1,0 +1,25 @@
+{
+  "id": "core-32",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 1,
+      "offset": 157
+    },
+    {
+      "byte": "A",
+      "frames": 26,
+      "offset": 2036
+    }
+  ],
+  "pid": 3477,
+  "exitCode": 0,
+  "rawBytes": 2200,
+  "rawSha256": "f87ebc27d4373ebf6c16660761d8adabc5d8e7eb0e625c78f7a1eb8b754f1509"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "wizard-tiny-final",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 0,
+      "offset": 104
+    },
+    {
+      "byte": "A",
+      "frames": 0,
+      "offset": 178
+    }
+  ],
+  "pid": 3737,
+  "exitCode": 0,
+  "rawBytes": 359,
+  "rawSha256": "57b3018586d6c3abd061ac3a7496982342db5bd298dedb36aba8a9b0daa48226"
+}

@@ -1,0 +1,36 @@
+{
+  "base": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+  "nativeHead": "514beeb72718770269a674ffa01a66be904e2f3b",
+  "beforeWizardHash": "4f50ae8ff9bde6f0acf727d6a9b58d6600c66f3d37acba6c335dd7c63d5fe458",
+  "afterWizardHash": "9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e",
+  "repairPatchSha256": "c5461350cdc4c94cb12786c66e2627cb8c8f0d98765c8a92aa87668d0aa3b28a",
+  "fullCandidatePatchSha256": "b1657c66dc5c398a811830ba8f57044707b20f4a915a469a5fa7a25b5a234b51",
+  "counts": {
+    "src/cli/progress.test.ts": {
+      "added": 74,
+      "deleted": 55,
+      "sha256": "d27c02d677070edccf671f68ee6edeb94c3d7c8b26f606c2fb4073417f94745c"
+    },
+    "src/cli/progress.ts": {
+      "added": 66,
+      "deleted": 11,
+      "sha256": "1e4a85feeb0c02cd90df5cee4a42174a476ae7780ed9d32b3e2cf8658094b6da"
+    },
+    "src/wizard/clack-prompter.test.ts": {
+      "added": 56,
+      "deleted": 12,
+      "sha256": "9bdfeb7af6fc0aa8a2d6f3ebd763f01e73eec653d23f74a2b33fe78e4feec28e"
+    },
+    "src/wizard/clack-prompter.ts": {
+      "added": 11,
+      "deleted": 66,
+      "sha256": "439d3dc611e6265973e1824635eb6dc4cb7e6433c1a90b0c9dcae5f2f94da266"
+    }
+  },
+  "productionNet": 0,
+  "testNet": 63,
+  "change": "Capture the existing beforeEach spy handle in a precisely typed suite-local variable; use it in the same unchanged assertions. No additional spy invocation or altered cleanup.",
+  "equivalence": "Packed Vitest5 spyOn installs and returns the same mock; mockImplementation returns it; previous mocked(item) returns item unchanged. The hook assigns before each test; existing restoreAllMocks/clearAllMocks cleanup unchanged.",
+  "evidenceReuse": "Original50 units/12 PTY and20 static passes remain attributed to old4f50 test/source; production1e4a/439d and other testd27c bytes unchanged. No functional rerun.",
+  "formatter": "Trusted standalone oxfmt0.65.0 with explicit exact6aa JSONC config, no target import/execution."
+}

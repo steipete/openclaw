@@ -1,0 +1,25 @@
+{
+  "id": "wizard-multiline",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 1,
+      "offset": 167
+    },
+    {
+      "byte": "A",
+      "frames": 26,
+      "offset": 2296
+    }
+  ],
+  "pid": 3791,
+  "exitCode": 0,
+  "rawBytes": 2490,
+  "rawSha256": "306d70f93f02539e1d49a90e75e0cc2329cc5680886645759571f4bb8fcf7ff8"
+}

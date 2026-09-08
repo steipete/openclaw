@@ -1,0 +1,25 @@
+{
+  "id": "wizard-unicode",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 1,
+      "offset": 219
+    },
+    {
+      "byte": "A",
+      "frames": 26,
+      "offset": 3000
+    }
+  ],
+  "pid": 3708,
+  "exitCode": 0,
+  "rawBytes": 3174,
+  "rawSha256": "e29f480d875c0f36d8a560e6a9355fd75266c92db0c833a35f1b13f0b107c853"
+}

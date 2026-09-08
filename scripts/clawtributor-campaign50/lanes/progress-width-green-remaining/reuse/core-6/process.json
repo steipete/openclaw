@@ -1,0 +1,25 @@
+{
+  "id": "core-6",
+  "spawned": true,
+  "joined": true,
+  "groupState": "dead",
+  "eof": true,
+  "forced": false,
+  "resizeApplied": false,
+  "readySignals": [
+    {
+      "byte": "S",
+      "frames": 0,
+      "offset": 104
+    },
+    {
+      "byte": "A",
+      "frames": 0,
+      "offset": 178
+    }
+  ],
+  "pid": 3567,
+  "exitCode": 0,
+  "rawBytes": 329,
+  "rawSha256": "34442122d516d2cd41a0b3682224568c3549c501c4d0389bad67b644ff2d997d"
+}

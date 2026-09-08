@@ -1,0 +1,767 @@
+{
+  "records": [
+    {
+      "id": "core-32",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 157
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2036
+        }
+      ],
+      "pid": 3477,
+      "exitCode": 0,
+      "rawBytes": 2200,
+      "rawSha256": "f87ebc27d4373ebf6c16660761d8adabc5d8e7eb0e625c78f7a1eb8b754f1509"
+    },
+    {
+      "id": "core-36",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 161
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2140
+        }
+      ],
+      "pid": 3509,
+      "exitCode": 0,
+      "rawBytes": 2304,
+      "rawSha256": "2d904731ee3812cb3c2c8dbf95e71b70bf4e47875689bebacc7c93b68de2ceea"
+    },
+    {
+      "id": "core-80",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 164
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2218
+        }
+      ],
+      "pid": 3539,
+      "exitCode": 0,
+      "rawBytes": 2382,
+      "rawSha256": "9eebb1b874db7b34f1dad0654211f5333aa6462a0b5396a833cd940729b261c3"
+    },
+    {
+      "id": "core-6",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 0,
+          "offset": 104
+        },
+        {
+          "byte": "A",
+          "frames": 0,
+          "offset": 178
+        }
+      ],
+      "pid": 3567,
+      "exitCode": 0,
+      "rawBytes": 329,
+      "rawSha256": "34442122d516d2cd41a0b3682224568c3549c501c4d0389bad67b644ff2d997d"
+    },
+    {
+      "id": "core-delayed-shrink",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": true,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 193
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2072
+        }
+      ],
+      "pid": 3594,
+      "resizeByteOffset": 63,
+      "exitCode": 0,
+      "rawBytes": 2236,
+      "rawSha256": "d738ac0edf36f145454764884d39942a55499f07d07d7f2969161c4831f39a3b"
+    },
+    {
+      "id": "wizard-clear",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 167
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2296
+        }
+      ],
+      "pid": 3622,
+      "exitCode": 0,
+      "rawBytes": 2443,
+      "rawSha256": "7e1f9c946b8cc60867183bd5b7f1e0892edb242092220de2bbc9d7c5dd682181"
+    },
+    {
+      "id": "wizard-final",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 167
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2296
+        }
+      ],
+      "pid": 3650,
+      "exitCode": 0,
+      "rawBytes": 2516,
+      "rawSha256": "b83d0fefa43eaeed685d643afaaca55a37dcfabe0bba9a8cde35284d83e4b703"
+    },
+    {
+      "id": "wizard-tiny",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 0,
+          "offset": 104
+        },
+        {
+          "byte": "A",
+          "frames": 0,
+          "offset": 178
+        }
+      ],
+      "pid": 3681,
+      "exitCode": 0,
+      "rawBytes": 312,
+      "rawSha256": "2faed29ea17886b3df0408ad541daeb56a9fddd8b821f076feed5ca73f6f480b"
+    },
+    {
+      "id": "wizard-unicode",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 219
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 3000
+        }
+      ],
+      "pid": 3708,
+      "exitCode": 0,
+      "rawBytes": 3174,
+      "rawSha256": "e29f480d875c0f36d8a560e6a9355fd75266c92db0c833a35f1b13f0b107c853"
+    },
+    {
+      "id": "wizard-tiny-final",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 0,
+          "offset": 104
+        },
+        {
+          "byte": "A",
+          "frames": 0,
+          "offset": 178
+        }
+      ],
+      "pid": 3737,
+      "exitCode": 0,
+      "rawBytes": 359,
+      "rawSha256": "57b3018586d6c3abd061ac3a7496982342db5bd298dedb36aba8a9b0daa48226"
+    },
+    {
+      "id": "wizard-tiny-empty",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 0,
+          "offset": 104
+        },
+        {
+          "byte": "A",
+          "frames": 0,
+          "offset": 178
+        }
+      ],
+      "pid": 3764,
+      "exitCode": 0,
+      "rawBytes": 329,
+      "rawSha256": "69e9e8df3ff34064a647377e8f42a602c0bb8481b29aa8c60d481aff18f1e831"
+    },
+    {
+      "id": "wizard-multiline",
+      "spawned": true,
+      "joined": true,
+      "groupState": "dead",
+      "eof": true,
+      "forced": false,
+      "resizeApplied": false,
+      "readySignals": [
+        {
+          "byte": "S",
+          "frames": 1,
+          "offset": 167
+        },
+        {
+          "byte": "A",
+          "frames": 26,
+          "offset": 2296
+        }
+      ],
+      "pid": 3791,
+      "exitCode": 0,
+      "rawBytes": 2490,
+      "rawSha256": "306d70f93f02539e1d49a90e75e0cc2329cc5680886645759571f4bb8fcf7ff8"
+    }
+  ],
+  "inspections": [
+    {
+      "phase": "normal",
+      "targetPid": 3477,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3502,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3477,
+        "exitCode": 0,
+        "observerPid": 3502,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3477,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3509,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3532,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3509,
+        "exitCode": 0,
+        "observerPid": 3532,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3509,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3539,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3560,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3539,
+        "exitCode": 0,
+        "observerPid": 3560,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3539,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3567,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3587,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3567,
+        "exitCode": 0,
+        "observerPid": 3587,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3567,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3594,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3615,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3594,
+        "exitCode": 0,
+        "observerPid": 3615,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3594,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3622,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3643,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3622,
+        "exitCode": 0,
+        "observerPid": 3643,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3622,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3650,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3674,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3650,
+        "exitCode": 0,
+        "observerPid": 3674,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3650,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3681,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3701,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3681,
+        "exitCode": 0,
+        "observerPid": 3701,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3681,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3708,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3730,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3708,
+        "exitCode": 0,
+        "observerPid": 3730,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3708,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3737,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3757,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3737,
+        "exitCode": 0,
+        "observerPid": 3757,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3737,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3764,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3784,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3764,
+        "exitCode": 0,
+        "observerPid": 3784,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3764,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    },
+    {
+      "phase": "normal",
+      "targetPid": 3791,
+      "targetExitCode": 0,
+      "spawned": true,
+      "reaped": true,
+      "pipeEOF": true,
+      "kernelGroupAbsent": true,
+      "forcedSignals": [],
+      "canonicalState": "dead",
+      "observerPid": 3812,
+      "exitCode": 0,
+      "observation": {
+        "pid": 3791,
+        "exitCode": 0,
+        "observerPid": 3812,
+        "canonicalState": "dead",
+        "policy": "indeterminate",
+        "observationValid": true,
+        "observations": [
+          {
+            "kind": "kernel",
+            "pid": -3791,
+            "signal": 0,
+            "error": {
+              "name": "Error",
+              "code": "ESRCH",
+              "message": "kill ESRCH"
+            }
+          }
+        ],
+        "builtinBindingsRestored": true
+      },
+      "bytes": {
+        "stdout": 270,
+        "stderr": 0
+      }
+    }
+  ],
+  "quiescent": true,
+  "cancelledSignal": null,
+  "ownedFixtureRemoved": true,
+  "retainedState": null
+}

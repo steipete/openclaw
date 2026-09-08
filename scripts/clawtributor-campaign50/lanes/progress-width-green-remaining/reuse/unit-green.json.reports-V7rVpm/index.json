@@ -1,0 +1,75 @@
+{
+  "requested": "/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json",
+  "complete": true,
+  "entries": [
+    {
+      "invocation": 1,
+      "config": "test/vitest/vitest.cli.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.cli.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile.json=/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/cli/progress.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/1/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/1/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    },
+    {
+      "invocation": 2,
+      "config": "test/vitest/vitest.wizard.config.ts",
+      "args": [
+        "run",
+        "--config",
+        "test/vitest/vitest.wizard.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile.json=/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json",
+        "--passWithNoTests=false"
+      ],
+      "includePatterns": [
+        "src/wizard/clack-prompter.test.ts"
+      ],
+      "state": "finished",
+      "acceptedAttempt": 1,
+      "attempts": [
+        {
+          "json": "/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/2/1/report.json",
+          "blob": "/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json.reports-V7rVpm/2/1/blob.json",
+          "outcome": {
+            "code": 0,
+            "noOutputTimedOut": false,
+            "signal": null,
+            "groupJoined": true
+          }
+        }
+      ]
+    }
+  ],
+  "error": "",
+  "aggregate": "/home/runner/work/openclaw/openclaw/evidence/progress-width-green/unit-green.json",
+  "publication": "",
+  "merge": {
+    "code": 0,
+    "noOutputTimedOut": false,
+    "signal": null,
+    "groupJoined": true
+  }
+}

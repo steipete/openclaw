@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "node --check remaining-checks.mjs",
+    "bash -n run.sh",
+    "Python AST parse of authored .py files"
+  ],
+  "targetExecuted": false,
+  "format": "trusted standalone oxfmt0.65.0, exact6aa JSONC"
+}

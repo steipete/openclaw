@@ -1,0 +1,1 @@
+{"id":"wizard-multiline","label":"Checking channel status (probe)…","updatedLabel":"Checking channel status (ready)…","columns":32,"result":"wizard completed","initialColumns":32,"finalMessage":"FINAL: first line\nSecond line","suppressed":false,"repeatedStop":true,"listenersRestored":true,"rawInputRestored":true,"completed":true}

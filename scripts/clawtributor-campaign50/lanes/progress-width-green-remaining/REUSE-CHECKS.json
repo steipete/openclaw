@@ -1,0 +1,45 @@
+{
+  "dataOnly": true,
+  "results": [
+    {
+      "name": "original immutable successful behavior within failed job",
+      "accepted": true
+    },
+    {
+      "name": "job relabeled green",
+      "rejected": true
+    },
+    {
+      "name": "unit omitted test",
+      "rejected": true
+    },
+    {
+      "name": "original shard unhandled error",
+      "rejected": true
+    },
+    {
+      "name": "accepted retry",
+      "rejected": true
+    },
+    {
+      "name": "unconfirmed cleanup",
+      "rejected": true
+    },
+    {
+      "name": "forced child",
+      "rejected": true
+    },
+    {
+      "name": "observer live group",
+      "rejected": true
+    },
+    {
+      "name": "missing repeated-stop control",
+      "rejected": true
+    },
+    {
+      "name": "source equivalence changed",
+      "rejected": true
+    }
+  ]
+}

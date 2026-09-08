@@ -1,0 +1,13 @@
+{
+  "sri": "sha512-gpsMNoRhMjMktVxPtstOH4/PJuPyovVaMDr4oDilXaGH1EcqM2OE96SoHT2VIQ6fTGtTjqmHDrEu2X9RQiXf8Q==",
+  "files": {
+    "dist/chunks/spy.DPLvp2J7.js": "537be954493014020a2c07df3e6cbc9e8eb3c5524911b19a43b8b4a3db1f4c0c",
+    "dist/chunks/index.OVGXnVRj.js": "57c89e884bab20623afc06a58119c70c4f2e06397ae63e961ad0a0810c9a94b5",
+    "dist/index.d.ts": "3589cb90a45acfb8c2336b34a9e340f036a6aecfdb71742047d37748dfa52816",
+    "dist/chunks/config.d.CU_b-wJj.d.ts": "2493d114a1f01f02d69b4b44265405dfd5bbf135e0f467838808c4137c71ce54"
+  },
+  "sourceOnly": true,
+  "package": "vitest",
+  "version": "5.0.0",
+  "contract": "spyOn installs and returns the same mock; mockImplementation returns that mock; mocked(item) returns item unchanged; restoreAllMocks restores registered descriptors. Type is exact MockInstance<typeof process.stdout.write>."
+}
