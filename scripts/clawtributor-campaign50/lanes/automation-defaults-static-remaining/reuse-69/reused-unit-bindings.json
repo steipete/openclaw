@@ -1,0 +1,10 @@
+{
+  "reusedRun": 34187057922,
+  "reusedJob": 101937436657,
+  "originalJobConclusion": "failure",
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "originalManifest": "04081fa46fe0258408a9d5ecb1a3ab9e9d622e81ca3423d8d890a84ca955f001",
+  "unitOverlayHash": "bd45f73ff69efec5ef63b3aaa57efcd0fb1ca287d801862c9d35e26ab5f508a0",
+  "bindingAccepted": true,
+  "remaining": "unit-green/browser/changed gate; separate strict unit reader must accept reused raw report"
+}

@@ -1,0 +1,112 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "id": "empty-triggers",
+  "fixture": {
+    "cron": {
+      "triggers": {}
+    }
+  },
+  "browserErrors": [],
+  "nonReadRequests": [],
+  "stages": [
+    {
+      "name": "initial",
+      "snapshot": {
+        "id": "empty-triggers",
+        "callbacks": [],
+        "dirty": false,
+        "form": {
+          "cron": {
+            "triggers": {}
+          }
+        },
+        "original": {
+          "cron": {
+            "triggers": {}
+          }
+        },
+        "serialized": "{\"cron\":{\"triggers\":{}}}",
+        "raw": "{\"cron\":{\"triggers\":{}}}",
+        "rawOriginal": "{\"cron\":{\"triggers\":{}}}",
+        "snapshotRaw": "{\"cron\":{\"triggers\":{}}}",
+        "sourceConfig": {
+          "cron": {
+            "triggers": {}
+          }
+        }
+      },
+      "displays": [
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        },
+        {
+          "kind": "select",
+          "label": "Default: On",
+          "options": [
+            "Default: On",
+            "On",
+            "Off"
+          ]
+        }
+      ]
+    }
+  ],
+  "final": {
+    "id": "empty-triggers",
+    "callbacks": [],
+    "dirty": false,
+    "form": {
+      "cron": {
+        "triggers": {}
+      }
+    },
+    "original": {
+      "cron": {
+        "triggers": {}
+      }
+    },
+    "serialized": "{\"cron\":{\"triggers\":{}}}",
+    "raw": "{\"cron\":{\"triggers\":{}}}",
+    "rawOriginal": "{\"cron\":{\"triggers\":{}}}",
+    "snapshotRaw": "{\"cron\":{\"triggers\":{}}}",
+    "sourceConfig": {
+      "cron": {
+        "triggers": {}
+      }
+    }
+  },
+  "captures": [
+    {
+      "name": "initial-0.png",
+      "bounds": {
+        "x": 277,
+        "y": 80.046875,
+        "width": 726,
+        "height": 99.359375
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "initial-1.png",
+      "bounds": {
+        "x": 277,
+        "y": 417.28125,
+        "width": 726,
+        "height": 64.578125
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Accepted candidate: six browser cases, six real selection actions, preserved source/siblings, and all capture bounds.

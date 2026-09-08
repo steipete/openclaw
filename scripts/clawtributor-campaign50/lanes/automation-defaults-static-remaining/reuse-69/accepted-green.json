@@ -1,0 +1,17 @@
+{
+  "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+  "nativeExit": 0,
+  "browserCases": 6,
+  "initialZeroWriteStates": 6,
+  "roundtripActions": 6,
+  "capturesWithViewportBounds": 19,
+  "mediaDirectories": [
+    "/home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/media/automation-defaults-141548-5WnYpN",
+    "/home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/media/automation-defaults-141548-C82mK8",
+    "/home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/media/automation-defaults-141548-HGR3yK",
+    "/home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/media/automation-defaults-141548-QVkvGZ",
+    "/home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/media/automation-defaults-141548-YqfEws",
+    "/home/runner/work/openclaw/openclaw/evidence/automation-defaults-141548/media/automation-defaults-141548-yefdOF"
+  ],
+  "scope": "configuration form/draft/serialization/reload, not live scheduler or save transport"
+}

@@ -1,0 +1,42 @@
+diff --git a/src/config/schema.hints.test.ts b/src/config/schema.hints.test.ts
+index bb574e67..dc880adf 100644
+--- a/src/config/schema.hints.test.ts
++++ b/src/config/schema.hints.test.ts
+@@ -26,6 +26,12 @@ const BUNDLED_CHANNEL_HINT_PREFIXES = [
+   "channels.whatsapp",
+ ] as const;
+ 
++describe("automation default hints", () => {
++  it.each(["cron.enabled", "cron.triggers.enabled"])("names the inherited state for %s", (path) => {
++    expect(buildBaseHints()[path]?.placeholder).toBe("Default: On");
++  });
++});
++
+ describe("section docs URLs", () => {
+   it("accounts for every root config section", () => {
+     const sectionsWithDocsDecisions = new Set([
+diff --git a/src/config/schema.hints.ts b/src/config/schema.hints.ts
+index 11cbbb39..ec9f6dc0 100644
+--- a/src/config/schema.hints.ts
++++ b/src/config/schema.hints.ts
+@@ -110,6 +110,8 @@ const FIELD_PLACEHOLDERS: Record<string, string> = {
+   "gateway.push.apns.relay.baseUrl": "https://ios-push-relay.openclaw.ai",
+   "channels.mattermost.baseUrl": "https://chat.example.com",
+   "agents.entries.*.identity.avatar": "avatars/openclaw.png",
++  "cron.enabled": "Default: On",
++  "cron.triggers.enabled": "Default: On",
+ };
+ 
+ const CHANNEL_NAMESPACE_PREFIX = "channels.";
+@@ -126,10 +128,7 @@ function isKernelOwnedChannelHintPath(path: string): boolean {
+ 
+ /** Return whether a channel hint path belongs to a plugin-owned channel namespace. */
+ function isPluginOwnedChannelHintPath(path: string): boolean {
+-  if (!path.startsWith(CHANNEL_NAMESPACE_PREFIX)) {
+-    return false;
+-  }
+-  return !isKernelOwnedChannelHintPath(path);
++  return path.startsWith(CHANNEL_NAMESPACE_PREFIX) && !isKernelOwnedChannelHintPath(path);
+ }
+ 
+ /** Build core config UI hints while leaving plugin-owned channel hints to plugin schemas. */

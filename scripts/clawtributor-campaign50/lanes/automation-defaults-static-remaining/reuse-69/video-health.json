@@ -1,0 +1,116 @@
+[
+  {
+    "id": "roundtrip",
+    "sha256": "fefc6e2c119b62b1be88d6e363179454eb8187bf640050847101e027d07c88f5",
+    "meta": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900
+        }
+      ],
+      "format": {
+        "duration": "2.680000"
+      }
+    },
+    "fullDecodeExit": 0,
+    "visualRecordingInspected": false
+  },
+  {
+    "id": "empty-triggers",
+    "sha256": "71dc3d2b474f1f2520fcb0c955336afe3ce1d38ea0a9117b832bc56bf15d504e",
+    "meta": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900
+        }
+      ],
+      "format": {
+        "duration": "2.080000"
+      }
+    },
+    "fullDecodeExit": 0,
+    "visualRecordingInspected": false
+  },
+  {
+    "id": "explicit-off",
+    "sha256": "d694e485edcde52d030de7f0770233727ef33d49fabd9198b1c23fedfe193da7",
+    "meta": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900
+        }
+      ],
+      "format": {
+        "duration": "1.200000"
+      }
+    },
+    "fullDecodeExit": 0,
+    "visualRecordingInspected": false
+  },
+  {
+    "id": "empty-cron",
+    "sha256": "b389a76567cc5cd8b8e51a3714d7263ed005360a74d44b08fe00ae76e4dc3ffb",
+    "meta": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900
+        }
+      ],
+      "format": {
+        "duration": "1.200000"
+      }
+    },
+    "fullDecodeExit": 0,
+    "visualRecordingInspected": false
+  },
+  {
+    "id": "explicit-on",
+    "sha256": "5d795d61f5be06c058740fb477aa65954520e7b053b939ab295565d3fe733283",
+    "meta": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900
+        }
+      ],
+      "format": {
+        "duration": "1.720000"
+      }
+    },
+    "fullDecodeExit": 0,
+    "visualRecordingInspected": false
+  },
+  {
+    "id": "absent-parents",
+    "sha256": "5722d4bee3db68a53b89ecfbe111fe1a6d13a6a5c071da9008161e6ccf22767b",
+    "meta": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 1280,
+          "height": 900
+        }
+      ],
+      "format": {
+        "duration": "2.840000"
+      }
+    },
+    "fullDecodeExit": 0,
+    "visualRecordingInspected": false
+  }
+]

@@ -1,12 +1,12 @@
 [
   {
-    "id": "tui-preference-integration",
-    "directory": "tui-preference-integration",
+    "id": "automation-defaults-141548",
+    "directory": "automation-defaults-static-remaining",
     "runner": "ubuntu-24.04",
-    "source": "0ad91c51170adce8d177bc2473ee8558a62f6a83",
-    "node": "24.19.0",
+    "source": "74fd11e05f2d5730dc03a67e27cc2d227ca5b339",
+    "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "candidate",
-    "variant": "preference-owner-only"
+    "mode": "green",
+    "variant": "focused-static-remaining"
   }
 ]
