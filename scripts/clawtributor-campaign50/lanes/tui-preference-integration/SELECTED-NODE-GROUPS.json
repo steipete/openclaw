@@ -1,0 +1,14 @@
+[
+  {
+    "configs": [
+      "test/vitest/vitest.ui.config.ts"
+    ],
+    "env": {
+      "OPENCLAW_VITEST_MAX_WORKERS": "2"
+    },
+    "includePatterns": [
+      "ui/src/app/settings.preferences.node.test.ts"
+    ],
+    "shard_name": "core-runtime-media-ui-1"
+  }
+]

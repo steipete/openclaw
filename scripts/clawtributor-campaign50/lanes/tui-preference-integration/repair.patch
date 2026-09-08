@@ -1,0 +1,41 @@
+--- a/src/tui/tui-pty-harness-fixture-test-support.ts
++++ b/src/tui/tui-pty-harness-fixture-test-support.ts
+@@ -132,18 +132,7 @@
+           expiresAtMs: Date.now() + 120_000,
+         };
+       }
+-      let pendingPluginApproval: {
+-        id: string;
+-        request: {
+-          title: string;
+-          description: string;
+-          toolName: string;
+-          allowedDecisions: string[];
+-          sessionKey: string;
+-        };
+-        createdAtMs: number;
+-        expiresAtMs: number;
+-      } | null = initialPluginApprovalSessionKey
++      let pendingPluginApproval: ReturnType<typeof pluginApproval> | null = initialPluginApprovalSessionKey
+         ? pluginApproval(initialPluginApprovalSessionKey)
+         : null;
+       let pendingPluginApprovalRun: { runId: string; sessionKey: string } | null = null;
+--- a/ui/src/app/settings.preferences.node.test.ts
++++ b/ui/src/app/settings.preferences.node.test.ts
+@@ -50,7 +50,7 @@
+     },
+   );
+ 
+-  it("keeps live preferences scoped through cross-tab edits, gateway switches, and credential rotation", () => {
++  it("keeps live preferences scoped through cross-tab edits, gateway switches, and credential rotation", async () => {
+     setTestLocation({ protocol: "https:", host: "gateway-a.example", pathname: "/" });
+     const events = new EventTarget();
+     vi.stubGlobal("addEventListener", events.addEventListener.bind(events));
+@@ -127,6 +127,7 @@
+       resetServerUiPrefsSync();
+       theme.dispose();
+       gateway.stop();
++      await vi.dynamicImportSettled();
+     }
+   });
+ 
