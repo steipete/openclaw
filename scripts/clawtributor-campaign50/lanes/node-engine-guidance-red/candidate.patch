@@ -1,0 +1,35 @@
+--- a/src/cli/update-cli/update-command-service-plan.ts
++++ b/src/cli/update-cli/update-command-service-plan.ts
+@@ -146,13 +146,13 @@
+     : `Node ${runtime.version ?? "unknown"}`;
+   return resultError(
+     [
+-      `${runtimeLabel} is too old for openclaw@${targetVersion}.`,
++      `${runtimeLabel} is incompatible with openclaw@${targetVersion}.`,
+       `The requested package requires ${target.nodeEngine}.`,
+       runtime.nodeRunner
+-        ? "Upgrade the Node runtime that owns the managed Gateway service, then rerun `openclaw update`."
+-        : "Upgrade to Node 24.16.0+ or Node 26.1.0+, then rerun `openclaw update`.",
++        ? "Use a compatible version of the Node runtime that owns the managed Gateway service, then rerun `openclaw update`."
++        : "Use a Node runtime that satisfies the engine range above, then rerun `openclaw update`.",
+       "Bare `npm i -g openclaw` can silently install an older compatible release.",
+-      "After upgrading Node, use `npm i -g openclaw@latest`.",
++      "After switching Node versions, use `npm i -g openclaw@latest`.",
+     ].join("\n"),
+   );
+ }
+--- a/src/cli/update-cli.test.ts
++++ b/src/cli/update-cli.test.ts
+@@ -10286,8 +10286,10 @@
+     expect(serviceStop).not.toHaveBeenCalled();
+     expect(defaultRuntime.exit).not.toHaveBeenCalled();
+     const report = getLogOutput();
+-    expect(report).toContain(`Node 22.18.0 at ${serviceNode} is too old`);
+-    expect(report).toContain("Upgrade the Node runtime that owns the managed Gateway service");
++    expect(report).toContain(`Node 22.18.0 at ${serviceNode} is incompatible`);
++    expect(report).toContain(
++      "Use a compatible version of the Node runtime that owns the managed Gateway service",
++    );
+   });
+ 
+   it("runs managed service package follow-up commands with the service Node despite heap argv", async () => {

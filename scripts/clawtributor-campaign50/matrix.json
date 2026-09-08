@@ -1,12 +1,22 @@
 [
   {
-    "id": "uninstall-cli-message-remaining",
-    "directory": "uninstall-cli-message-remaining",
+    "id": "chat-identity-142581-red",
+    "directory": "chat-identity-142581-red",
     "runner": "ubuntu-24.04",
-    "source": "d3a2fb0296673d93f6e6e795b0e267c0a22a1f34",
+    "source": "251634acaccd9d0576a915461f7a154cc51b50f4",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "owner-and-changed-checks"
+    "mode": "red",
+    "variant": "baseline"
+  },
+  {
+    "id": "node-engine-guidance",
+    "directory": "node-engine-guidance-red",
+    "runner": "ubuntu-24.04",
+    "source": "85cc7136a9f993e142f94969f718a387ddd2133a",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "owner"
   }
 ]

@@ -1,0 +1,9 @@
+{
+  "name": "chat-identity-142581-red",
+  "sourceSha": "251634acaccd9d0576a915461f7a154cc51b50f4",
+  "mode": "red",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "expectation": "One completed browser case fails only final stale pane identity comparison after successful config/roster/identity responses and draft/session/roundtrip controls;3PNG",
+  "testSha256": "8225daf5a376a0b9a2dfb55aa3276f720a0be6fe87f0a7b2fab964364b2dc6d4"
+}
