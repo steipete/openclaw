@@ -1,0 +1,53 @@
+{
+  "pr": 141436,
+  "mode": "baseline",
+  "source": "8457efbc1b1405887508128b1a7f572892164ee8",
+  "prHead": "9c4176406e90ba373d79fc1de173535cb9b003ba",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "vitest": "5.0.0",
+  "piTui": "0.84.4",
+  "productionChanged": false,
+  "sourceHashes": {
+    "package.json": "abb4690e3a57d2d6c2741ce285dc95b13f85420d686c34fd11795e84b29c9822",
+    "src/infra/runtime-worker-url.ts": "642a3e699b90575516487ac96d2726de539b5a95fe80d667b957979350934982",
+    "src/tui/tui-event-handlers.test.ts": "0753b1de06b233860da7837a52b6e24f2db5fc66e788cab722f84766db6d4f33",
+    "src/tui/tui-pty-test-support.ts": "770b0c708283a5ea753383204d439ec5feaa62d1e8ab5b6b93e70c365ab13ce9",
+    "src/tui/tui-session-identity-pty.e2e.test.ts": "5219b91c6efec4e311c17790f95facf26bed42d26a5610d152b40de0e89ed31f",
+    "src/tui/tui.ts": "e8d1f86e1b748dcb9171f68aa7a1391b79e7f1795e5f22d9dada4b3108c68685",
+    "src/tui/tui-event-handlers.ts": "c980e15f8c27fde75400336a89d3883bd8a27fc3b01c416fae5c65019f3a8e9b",
+    "src/tui/tui-pty-harness-fixture-test-support.ts": "b05258bab6452ca9b829261bb270a1211ddeef848399daba20b5924a78deaf19",
+    "src/tui/tui-command-handlers.ts": "3ce65f785814a60107a698ee12e835b8f5bb9215a0419700094e5ef5b80d2fc6",
+    "src/tui/tui-pty-harness-assertion-test-support.ts": "069825ead245bab10bd0c3c4bf75d2aeb5fe0312d2dc133feecaed357b263148",
+    "src/tui/tui-backend.ts": "763ba3dcf375a965e0fcf4cd033b9de91d2fbff63a42d2e83e914679e5fc4c5a",
+    "src/tui/tui-pty-runtime-test-support.ts": "94f33045240b0939b0400cff0bc1624aa7ce1ff8830e0dd0eadc9fe2cddbb7e1",
+    "src/tui/tui-run-lifecycle.ts": "0d548ca80c49b63f345c5c29d3152bdcbab99b1de609843e1afcd459834184f6",
+    "src/tui/tui-formatters.ts": "a8b74dafa7d72e5b5f235279ad8044e7d059299a544e6672086d4e08417d71ef",
+    "src/tui/tui-session-actions.ts": "8cc1b0bd0d904df320c5d23b839623e807e62f39970736c8c3725c312cf813e5",
+    "src/tui/gateway-chat.ts": "b838b76afc464ddcc5ca3e6dba66292b5b3337e71bb7370ef357a25f7456f8c0",
+    "src/agents/model-fallback-observation.ts": "0ad09f44ed0ae290f9eb843c1a4bd15e665f84b3d8daa5cd4fb9ad73429b9c4a",
+    "src/auto-reply/reply/agent-runner-model-fallback-lifecycle.ts": "212d3fadcf8408a2599df9604626e48a479fa0f3ec1f7d9693a812d66c740805",
+    "test/vitest/vitest.tui-pty.config.ts": "e820a7d8dccd56fd8e454ba0a6193226535c1745b229db9783d226981feb5687"
+  },
+  "patchedTestHashes": {
+    "src/tui/tui-event-handlers.test.ts": "a624604d562ae0ec7e42623a60115bd9518ee313a80e12cfa152601516e018db",
+    "src/tui/tui-fallback-fixture-test-support.ts": "a13c51e040be08bcb5b06a7e8b62e417f444201f859b16c042618c7434921ce3",
+    "src/tui/tui-pty-harness-fixture-test-support.ts": "982095e1ce703187f7c01b09f287be40d96f45e896cb14c3920c8f707fbba711",
+    "src/tui/tui-session-identity-pty.e2e.test.ts": "4ebbf3662d57e2618fa325cdc6f9576d72def09eadc548f74ed64543cf9c34de"
+  },
+  "overlap139990": "Distinct embedded patch-response projector; c909 ancestor verified",
+  "ownerSelectedTests": 17,
+  "ptySelectedTests": 1,
+  "ptyExpectedAssertionMarker": "TUI_FALLBACK_FOOTER_DESTINATION",
+  "artifacts": {
+    "DESIGN.md": "acbd6f4e17f097f274113d35d39bf317aefd3c9aefb2103993d02632e1d52c70",
+    "bind.py": "251bb6bbba4cb09e32211ec8405d76ba46962bc2c2595bc263c6b6c6c8fb586d",
+    "completed-report.mjs": "c69cf669be9c853588ebf223166f38de2492e1118f4d37f6f08d21487c0dc7d2",
+    "final-receipt.py": "ec0cfab0588b588ff141a64db9049489b6d1beebbedc2ac8643abdc3c5596296",
+    "render-frames.mjs": "67b2147522d121acb59e4dc179b06423880a97a1371c9edd404b9999c2d0d124",
+    "run.sh": "9ccd209f847d86a2095e01eaf0e0a144956d527e4bf58d4b6d4924784353c0bb",
+    "test.patch": "c808c8939488efdc2240630277e0dfccd7b786292805b1da8ae131a9e3b12d96",
+    "validate.mjs": "b60f423abe1f646406c60d4bc103df7471ae2e3373522e5f995ec83e81d9bb85"
+  },
+  "status": "Frozen file-only design for independent review; no execution authorization"
+}

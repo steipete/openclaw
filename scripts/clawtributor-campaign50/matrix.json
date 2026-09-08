@@ -1,12 +1,22 @@
 [
   {
-    "id": "progress-width-green",
-    "directory": "progress-width-green",
+    "id": "tui-fallback-footer-red",
+    "directory": "tui-fallback-footer-red",
     "runner": "ubuntu-24.04",
-    "source": "6aa09cbadb594c3d46d5bd49a28c514df1b256b0",
+    "source": "8457efbc1b1405887508128b1a7f572892164ee8",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "ordinary-pty-candidate"
+    "mode": "baseline",
+    "variant": "accepted-metadata-footer"
+  },
+  {
+    "id": "avatar-141285-red",
+    "directory": "avatar-141285-red",
+    "runner": "ubuntu-24.04",
+    "source": "0ad318398e906aa710af94d61231dfe65946c02d",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "ordinary-initials"
   }
 ]

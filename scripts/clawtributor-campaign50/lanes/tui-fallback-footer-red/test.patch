@@ -1,0 +1,209 @@
+--- a/src/tui/tui-event-handlers.test.ts
++++ b/src/tui/tui-event-handlers.test.ts
+@@ -859,6 +859,45 @@
+     expect(setActivityStatus).toHaveBeenCalledWith("error");
+   });
+ 
++  it.each(
++    [
++      null,
++      undefined,
++      true,
++      false,
++      0,
++      1,
++      Number.NaN,
++      Number.POSITIVE_INFINITY,
++      {},
++      ["anthropic/claude-sonnet-4"],
++      "",
++      "malformed",
++      "/model",
++      "provider/",
++    ].map((destination) => ({ destination })),
++  )("preserves model state for an invalid reported destination %#", ({ destination }) => {
++    const { state, handleAgentEvent, dispose } = createHandlersHarness({
++      state: {
++        activeChatRunId: "run-invalid-destination",
++        sessionInfo: { modelProvider: "openai", model: "gpt-4o" },
++      },
++    });
++    try {
++      handleAgentEvent({
++        runId: "run-invalid-destination",
++        data: {
++          phase: "fallback_step",
++          fallbackStepToModel: destination,
++        },
++      });
++      expect(state.sessionInfo.modelProvider).toBe("openai");
++      expect(state.sessionInfo.model).toBe("gpt-4o");
++      expect(state.activeChatRunId).toBe("run-invalid-destination");
++    } finally {
++      dispose();
++    }
++  });
+   it("updates the displayed model from fallback lifecycle steps", () => {
+     const { state, tui, handleAgentEvent } = createHandlersHarness({
+       state: {
+--- /dev/null
++++ b/src/tui/tui-fallback-fixture-test-support.ts
+@@ -0,0 +1,37 @@
++// Synthetic reported destinations for the existing real TUI fixture.
++export const TUI_PTY_FALLBACK_FIXTURE = {
++  variables: `
++    let fallbackFooterRun: { runId: string; sessionKey: string; step: number } | null = null;
++  `,
++  sendChat: `
++    if (opts.message === "fallback footer proof") {
++      fallbackFooterRun = { runId, sessionKey: opts.sessionKey, step: 0 };
++      this.onEvent?.({
++        event: "chat",
++        payload: {
++          runId, sessionKey: opts.sessionKey, seq: 1, state: "delta",
++          message: { role: "assistant", content: [{ type: "text", text: "FALLBACK_RUN_ACTIVE" }] },
++        },
++      });
++      return { runId };
++    }
++  `,
++  getGatewayStatus: `
++    if (fallbackFooterRun) {
++      const step = ++fallbackFooterRun.step;
++      const payload = {
++        runId: step === 1 ? "foreign-run" : fallbackFooterRun.runId,
++        sessionKey: fallbackFooterRun.sessionKey,
++        stream: "lifecycle", seq: step + 1,
++        data: {
++          phase: "fallback_step", fallbackStepFinalOutcome: "next_fallback",
++          fallbackStepToModel: step === 2 ? "malformed" : "anthropic/claude-sonnet-4",
++        },
++      };
++      record("fallbackEvent", payload);
++      this.onEvent?.({ event: "agent", payload });
++      record("fallbackSelection", { step, model: currentModel });
++      return "FALLBACK_EVENT_DELIVERED_" + step;
++    }
++  `,
++};
+--- a/src/tui/tui-pty-harness-fixture-test-support.ts
++++ b/src/tui/tui-pty-harness-fixture-test-support.ts
+@@ -4,6 +4,7 @@
+ import path from "node:path";
+ import { pathToFileURL } from "node:url";
+ import { resolveRuntimeWorkerArgv, resolveRuntimeWorkerUrl } from "../infra/runtime-worker-url.js";
++import { TUI_PTY_FALLBACK_FIXTURE } from "./tui-fallback-fixture-test-support.js";
+ import { TUI_PTY_ASSISTANT_FIXTURE_SCRIPT } from "./tui-pty-assistant-fixture-test-support.js";
+ import { TUI_PTY_GAP_HISTORY_FIXTURE_SCRIPT } from "./tui-pty-gap-fixture-test-support.js";
+ import {
+@@ -97,6 +98,7 @@
+       const safeThinkingLabel = process.env.OPENCLAW_TUI_PTY_SAFE_THINKING_LABEL;
+       const liveReplyHistory: unknown[] = [];
+       let liveReplySequence = 0;
++      ${TUI_PTY_FALLBACK_FIXTURE.variables}
+       const thinkingLevels = [
+         ...(thinkingLabel ? [{ id: "fixture-thinking", label: thinkingLabel }] : []),
+         ...(safeThinkingLabel ? [{ id: "fixture-thinking-safe", label: safeThinkingLabel }] : []),
+@@ -209,6 +211,7 @@
+           record("sendChat", opts);
+           const runId = opts.runId ?? "run-pty-fixture";
+           ${TUI_PTY_RECONNECT_FIXTURE.sendChat}
++          ${TUI_PTY_FALLBACK_FIXTURE.sendChat}
+           if (opts.message.startsWith("live reply dedupe proof: ")) {
+             const reply = opts.message.endsWith("first") ? "TUI_LIVE_FIRST" : "TUI_LIVE_SECOND";
+             const userSequence = ++liveReplySequence;
+@@ -582,6 +585,7 @@
+ 
+         async getGatewayStatus() {
+           record("getGatewayStatus");
++          ${TUI_PTY_FALLBACK_FIXTURE.getGatewayStatus}
+           this.reconnectSessionSubscription();
+           this.emitDisconnect();
+           return gatewayStatus;
+--- a/src/tui/tui-session-identity-pty.e2e.test.ts
++++ b/src/tui/tui-session-identity-pty.e2e.test.ts
+@@ -74,6 +74,84 @@
+   await disposeActiveTuiFixtures();
+ });
+ 
++it("refreshes the footer only for an accepted fallback destination without reloading history", async () => {
++  const fixture = await startTuiFixture({
++    env: {
++      OPENCLAW_TUI_PTY_MODEL: "gpt-4o",
++      OPENCLAW_TUI_PTY_COLS: "100",
++      OPENCLAW_TUI_PTY_ROWS: "30",
++    },
++  });
++  try {
++    await fixture.run.waitForOutput("local ready", STARTUP_TIMEOUT_MS);
++    await fixture.run.write("fallback footer proof\r", { delay: false });
++    const before = await waitForSynchronizedFrameRows(
++      fixture.run,
++      (rows) => rows.some((row) => row.includes("FALLBACK_RUN_ACTIVE")),
++      STARTUP_TIMEOUT_MS,
++    );
++    const footerRows = (rows: string[]) =>
++      rows.filter((row) => row.includes("| session main (Main) |"));
++    expect(footerRows(before)).toHaveLength(1);
++    const initialFooter = footerRows(before)[0]!;
++    expect(initialFooter).toContain("gpt-4o");
++    const backendCalls = (entries: FixtureLogEntry[]) =>
++      entries.filter((entry) =>
++        ["loadHistory", "listSessions", "patchSession", "sendChat"].includes(entry.method),
++      );
++    const initialCalls = backendCalls(await readFixtureLog(fixture.logPath));
++    expect(initialCalls.filter((entry) => entry.method === "sendChat")).toHaveLength(1);
++    expect(initialCalls.filter((entry) => entry.method === "patchSession")).toHaveLength(0);
++
++    for (const step of [1, 2, 3]) {
++      await fixture.run.write("/gateway-status\r", { delay: false });
++      const rows = await waitForSynchronizedFrameRows(
++        fixture.run,
++        (frame) => frame.some((row) => row.includes(`FALLBACK_EVENT_DELIVERED_${step}`)),
++        STARTUP_TIMEOUT_MS,
++      );
++      const entries = await readFixtureLog(fixture.logPath);
++      const calls = backendCalls(entries);
++      expect(calls).toEqual(initialCalls);
++      expect(entries.findLast((entry) => entry.method === "fallbackSelection")?.payload).toEqual({
++        step,
++        model: "gpt-4o",
++      });
++      expect(footerRows(rows)).toHaveLength(1);
++      console.info(
++        "TUI_FALLBACK_FRAME",
++        JSON.stringify({
++          step,
++          cols: fixture.run.cols,
++          rows: fixture.run.rows,
++          before,
++          frame: rows,
++          event: entries.findLast((entry) => entry.method === "fallbackEvent"),
++          selection: entries.findLast((entry) => entry.method === "fallbackSelection"),
++          initialCalls,
++          calls,
++        }),
++      );
++      if (step < 3) {
++        expect(footerRows(rows)[0]).toBe(initialFooter);
++      } else {
++        expect
++          .soft(footerRows(rows)[0], "TUI_FALLBACK_FOOTER_DESTINATION")
++          .toBe(initialFooter.replace("gpt-4o", "claude-sonnet-4"));
++      }
++    }
++  } finally {
++    try {
++      await fixture.run.write("/exit\r", { delay: false });
++      const exit = await fixture.run.waitForExit();
++      console.info("TUI_FALLBACK_EXIT", JSON.stringify(exit));
++      expect(exit.exitCode).toBe(0);
++      expect(exit.signal ?? 0).toBe(0);
++    } finally {
++      await fixture.cleanup();
++    }
++  }
++}, 65_000);
+ it("submits provider-specific thinking labels with one Enter", async () => {
+   const fixture = await startTuiFixture({
+     env: {

@@ -1,0 +1,9 @@
+{
+  "name": "avatar-141285-red",
+  "sourceSha": "0ad318398e906aa710af94d61231dfe65946c02d",
+  "mode": "red",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "expectation": "5 shared helper tests pass; 4 browser scenarios complete, only2English final assertions fail with8supplementary initial defects and14controls",
+  "testSha256": "25597299a022da65c6eeb773150f9602881160b8efa02373d9bfa5c089322133"
+}
