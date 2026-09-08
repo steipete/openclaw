@@ -1,12 +1,12 @@
 [
   {
-    "id": "fixture-endpoint-isolation",
-    "directory": "fixture-endpoint-isolation",
+    "id": "tui-composed-static",
+    "directory": "tui-composed-static",
     "runner": "ubuntu-24.04",
-    "source": "eb470406185fbdf2e8cfc9cd365b7a3e7062fe09",
+    "source": "d3a596d97eca4b66a907d936adc5fc7a9b73a9b4",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "compare",
-    "variant": "pure-helper-endpoints"
+    "mode": "candidate",
+    "variant": "types-helper-lint"
   }
 ]

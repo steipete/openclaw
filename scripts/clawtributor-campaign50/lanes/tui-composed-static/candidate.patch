@@ -1,0 +1,548 @@
+diff --git a/src/tui/tui-attachment-failures.test.ts b/src/tui/tui-attachment-failures.test.ts
+index b529fbc19cf..04e1a28c02e 100644
+--- a/src/tui/tui-attachment-failures.test.ts
++++ b/src/tui/tui-attachment-failures.test.ts
+@@ -48,6 +48,7 @@ function createDisplayHarness() {
+     setActivityStatus: (value) => {
+       state.activityStatus = value;
+     },
++    updateFooter: vi.fn(),
+     loadHistory: async () => ({ loaded: false }),
+     streamingWatchdogMs: 0,
+   });
+diff --git a/src/tui/tui-event-handlers.test.ts b/src/tui/tui-event-handlers.test.ts
+index 8afc2b4f8b2..937ea0da092 100644
+--- a/src/tui/tui-event-handlers.test.ts
++++ b/src/tui/tui-event-handlers.test.ts
+@@ -178,6 +178,7 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+     const btw = createMockBtwPresenter();
+     const tui = { requestRender: vi.fn() } as unknown as MockTui & HandlerTui;
+     const setActivityStatus = vi.fn();
++    const updateFooter = vi.fn();
+     const loadHistory = vi.fn<() => Promise<TuiHistoryLoadResult>>(async () => ({
+       loaded: true,
+       runOutcome: { state: "completed" },
+@@ -203,6 +204,7 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+       tui,
+       state,
+       setActivityStatus,
++      updateFooter,
+       loadHistory,
+       noteLocalRunId,
+       noteLocalBtwRunId,
+@@ -232,6 +234,7 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+       state,
+       localMode: params?.localMode,
+       setActivityStatus: context.setActivityStatus,
++      updateFooter: context.updateFooter,
+       refreshSessionInfo: params?.refreshSessionInfo,
+       loadHistory: context.loadHistory,
+       noteLocalRunId: context.noteLocalRunId,
+@@ -859,8 +862,48 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+     expect(setActivityStatus).toHaveBeenCalledWith("error");
+   });
+ 
++  it.each(
++    [
++      null,
++      undefined,
++      true,
++      false,
++      0,
++      1,
++      Number.NaN,
++      Number.POSITIVE_INFINITY,
++      {},
++      ["anthropic/claude-sonnet-4"],
++      "",
++      "malformed",
++      "/model",
++      "provider/",
++    ].map((destination) => ({ destination })),
++  )("preserves model state for an invalid reported destination %#", ({ destination }) => {
++    const { state, handleAgentEvent, dispose } = createHandlersHarness({
++      state: {
++        activeChatRunId: "run-invalid-destination",
++        sessionInfo: { modelProvider: "openai", model: "gpt-4o" },
++      },
++    });
++    try {
++      handleAgentEvent({
++        runId: "run-invalid-destination",
++        data: {
++          phase: "fallback_step",
++          fallbackStepToModel: destination,
++        },
++      });
++      expect(state.sessionInfo.modelProvider).toBe("openai");
++      expect(state.sessionInfo.model).toBe("gpt-4o");
++      expect(state.activeChatRunId).toBe("run-invalid-destination");
++    } finally {
++      dispose();
++    }
++  });
++
+   it("updates the displayed model from fallback lifecycle steps", () => {
+-    const { state, tui, handleAgentEvent } = createHandlersHarness({
++    const { state, tui, updateFooter, handleAgentEvent } = createHandlersHarness({
+       state: {
+         activeChatRunId: "run-fallback",
+         sessionInfo: {
+@@ -883,14 +926,18 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+ 
+     expect(state.sessionInfo.modelProvider).toBe("openrouter");
+     expect(state.sessionInfo.model).toBe("meta-llama/llama-3.1-70b");
++    expect(updateFooter).toHaveBeenCalledExactlyOnceWith();
++    expect(updateFooter.mock.invocationCallOrder[0]).toBeLessThan(
++      tui.requestRender.mock.invocationCallOrder.at(-1)!,
++    );
+     expect(tui.requestRender).toHaveBeenCalled();
+   });
+ 
+-  it("accepts fallback model updates for the pending run before chat registration", () => {
+-    const { state, tui, handleAgentEvent } = createHandlersHarness({
++  it.each(["pending", "tracked"])("refreshes the fallback model for a %s run", (ownership) => {
++    const { state, tui, updateFooter, handleAgentEvent } = createHandlersHarness({
+       state: {
+-        activeChatRunId: null,
+-        pendingSubmit: acceptedSubmit("run-pending"),
++        activeChatRunId: ownership === "pending" ? null : "other-active-run",
++        pendingSubmit: ownership === "pending" ? acceptedSubmit("run-pending") : null,
+         sessionInfo: {
+           verboseLevel: "on",
+           modelProvider: "llamaforge",
+@@ -899,6 +946,15 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+       },
+     });
+ 
++    if (ownership === "tracked") {
++      handleAgentEvent({
++        runId: "run-pending",
++        sessionKey: state.currentSessionKey,
++        data: { phase: "start" },
++      });
++      expect(state.activeChatRunId).toBe("other-active-run");
++    }
++
+     handleAgentEvent({
+       runId: "run-pending",
+       data: {
+@@ -911,6 +967,7 @@ describe("tui-event-handlers: handleAgentEvent", () => {
+ 
+     expect(state.sessionInfo.modelProvider).toBe("nvidia");
+     expect(state.sessionInfo.model).toBe("deepseek-ai/deepseek-v3.2");
++    expect(updateFooter).toHaveBeenCalledExactlyOnceWith();
+     expect(tui.requestRender).toHaveBeenCalled();
+   });
+ 
+@@ -3995,6 +4052,7 @@ describe("tui-event-handlers: streaming watchdog", () => {
+       tui,
+       state,
+       setActivityStatus,
++      updateFooter: vi.fn(),
+       loadHistory,
+       noteLocalRunId,
+       isLocalRunId: localRunIds.has.bind(localRunIds),
+diff --git a/src/tui/tui-event-handlers.ts b/src/tui/tui-event-handlers.ts
+index cbe60b89bcc..4598546cfa9 100644
+--- a/src/tui/tui-event-handlers.ts
++++ b/src/tui/tui-event-handlers.ts
+@@ -74,6 +74,7 @@ type EventHandlerContext = {
+   tui: EventHandlerTui;
+   state: TuiStateAccess;
+   setActivityStatus: (text: string) => void;
++  updateFooter: () => void;
+   refreshSessionInfo?: () => Promise<void>;
+   loadHistory: () => Promise<TuiHistoryLoadResult>;
+   noteLocalRunId?: (runId: string) => void;
+@@ -593,6 +594,7 @@ export function createEventHandlers(context: EventHandlerContext) {
+       if (isActiveRun) {
+         armStreamingWatchdog(evt.runId);
+       }
++      context.updateFooter();
+       tui.requestRender();
+       return;
+     }
+diff --git a/src/tui/tui-fallback-fixture-test-support.ts b/src/tui/tui-fallback-fixture-test-support.ts
+new file mode 100644
+index 00000000000..d021fa70542
+--- /dev/null
++++ b/src/tui/tui-fallback-fixture-test-support.ts
+@@ -0,0 +1,37 @@
++// Synthetic reported destinations for the existing real TUI fixture.
++export const TUI_PTY_FALLBACK_FIXTURE = {
++  variables: `
++    let fallbackFooterRun: { runId: string; sessionKey: string; step: number } | null = null;
++  `,
++  sendChat: `
++    if (opts.message === "fallback footer proof") {
++      fallbackFooterRun = { runId, sessionKey: opts.sessionKey, step: 0 };
++      this.onEvent?.({
++        event: "chat",
++        payload: {
++          runId, sessionKey: opts.sessionKey, seq: 1, state: "delta",
++          message: { role: "assistant", content: [{ type: "text", text: "FALLBACK_RUN_ACTIVE" }] },
++        },
++      });
++      return { runId };
++    }
++  `,
++  getGatewayStatus: `
++    if (fallbackFooterRun) {
++      const step = ++fallbackFooterRun.step;
++      const payload = {
++        runId: step === 1 ? "foreign-run" : fallbackFooterRun.runId,
++        sessionKey: fallbackFooterRun.sessionKey,
++        stream: "lifecycle", seq: step + 1,
++        data: {
++          phase: "fallback_step", fallbackStepFinalOutcome: "next_fallback",
++          fallbackStepToModel: step === 2 ? "malformed" : "anthropic/claude-sonnet-4",
++        },
++      };
++      record("fallbackEvent", payload);
++      this.onEvent?.({ event: "agent", payload });
++      record("fallbackSelection", { step, model: currentModel });
++      return "FALLBACK_EVENT_DELIVERED_" + step;
++    }
++  `,
++};
+diff --git a/src/tui/tui-pty-harness-fixture-test-support.ts b/src/tui/tui-pty-harness-fixture-test-support.ts
+index 9b0332760ec..70c61aac397 100644
+--- a/src/tui/tui-pty-harness-fixture-test-support.ts
++++ b/src/tui/tui-pty-harness-fixture-test-support.ts
+@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
+ import path from "node:path";
+ import { pathToFileURL } from "node:url";
+ import { resolveRuntimeWorkerArgv, resolveRuntimeWorkerUrl } from "../infra/runtime-worker-url.js";
++import { TUI_PTY_FALLBACK_FIXTURE } from "./tui-fallback-fixture-test-support.js";
+ import { TUI_PTY_ASSISTANT_FIXTURE_SCRIPT } from "./tui-pty-assistant-fixture-test-support.js";
+ import { TUI_PTY_GAP_HISTORY_FIXTURE_SCRIPT } from "./tui-pty-gap-fixture-test-support.js";
+ import {
+@@ -123,6 +124,7 @@ export async function writeTuiPtyFixtureScript(dir: string) {
+       const safeThinkingLabel = process.env.OPENCLAW_TUI_PTY_SAFE_THINKING_LABEL;
+       const liveReplyHistory: unknown[] = [];
+       let liveReplySequence = 0;
++      ${TUI_PTY_FALLBACK_FIXTURE.variables}
+       const thinkingLevels = [
+         ...(thinkingLabel ? [{ id: "fixture-thinking", label: thinkingLabel }] : []),
+         ...(safeThinkingLabel ? [{ id: "fixture-thinking-safe", label: safeThinkingLabel }] : []),
+@@ -156,18 +158,7 @@ export async function writeTuiPtyFixtureScript(dir: string) {
+           expiresAtMs: Date.now() + 120_000,
+         };
+       }
+-      let pendingPluginApproval: {
+-        id: string;
+-        request: {
+-          title: string;
+-          description: string;
+-          toolName: string;
+-          allowedDecisions: string[];
+-          sessionKey: string;
+-        };
+-        createdAtMs: number;
+-        expiresAtMs: number;
+-      } | null = initialPluginApprovalSessionKey
++      let pendingPluginApproval: ReturnType<typeof pluginApproval> | null = initialPluginApprovalSessionKey
+         ? pluginApproval(initialPluginApprovalSessionKey)
+         : null;
+       let pendingPluginApprovalRun: { runId: string; sessionKey: string } | null = null;
+@@ -235,6 +226,7 @@ export async function writeTuiPtyFixtureScript(dir: string) {
+           record("sendChat", opts);
+           const runId = opts.runId ?? "run-pty-fixture";
+           ${TUI_PTY_RECONNECT_FIXTURE.sendChat}
++          ${TUI_PTY_FALLBACK_FIXTURE.sendChat}
+           if (opts.message.startsWith("live reply dedupe proof: ")) {
+             const reply = opts.message.endsWith("first") ? "TUI_LIVE_FIRST" : "TUI_LIVE_SECOND";
+             const userSequence = ++liveReplySequence;
+@@ -609,6 +601,7 @@ export async function writeTuiPtyFixtureScript(dir: string) {
+ 
+         async getGatewayStatus() {
+           record("getGatewayStatus");
++          ${TUI_PTY_FALLBACK_FIXTURE.getGatewayStatus}
+           this.reconnectSessionSubscription();
+           this.emitDisconnect();
+           return gatewayStatus;
+diff --git a/src/tui/tui-run-lifecycle.ts b/src/tui/tui-run-lifecycle.ts
+index 3d43efd4514..103af7c2a9e 100644
+--- a/src/tui/tui-run-lifecycle.ts
++++ b/src/tui/tui-run-lifecycle.ts
+@@ -181,10 +181,7 @@ export function createTuiRunLifecycle(context: TuiRunLifecycleContext) {
+     if (event.stream !== "lifecycle" || formatPrimitiveString(data.phase, "") !== "fallback_step") {
+       return false;
+     }
+-    if (typeof data.fallbackStepToModel !== "string") {
+-      return false;
+-    }
+-    const modelRef = data.fallbackStepToModel.trim();
++    const modelRef = formatPrimitiveString(data.fallbackStepToModel).trim();
+     const separator = modelRef.indexOf("/");
+     if (separator <= 0 || separator >= modelRef.length - 1) {
+       return false;
+diff --git a/src/tui/tui-session-actions.test.ts b/src/tui/tui-session-actions.test.ts
+index a623a70d406..24ce11b26a6 100644
+--- a/src/tui/tui-session-actions.test.ts
++++ b/src/tui/tui-session-actions.test.ts
+@@ -1539,6 +1539,7 @@ describe("tui session actions", () => {
+           tui,
+           state,
+           setActivityStatus,
++          updateFooter: vi.fn(),
+           loadHistory: () => loadSelectedHistory(),
+           streamingWatchdogMs: 100,
+         });
+@@ -2265,6 +2266,7 @@ describe("tui session actions", () => {
+         btw,
+         state,
+         setActivityStatus,
++        updateFooter: vi.fn(),
+         loadHistory: () => {
+           const history = actions.loadHistory();
+           histories.push(history);
+diff --git a/src/tui/tui-session-identity-pty.e2e.test.ts b/src/tui/tui-session-identity-pty.e2e.test.ts
+index e8e1cc6cc7f..090d1881db1 100644
+--- a/src/tui/tui-session-identity-pty.e2e.test.ts
++++ b/src/tui/tui-session-identity-pty.e2e.test.ts
+@@ -74,6 +74,84 @@ afterEach(async () => {
+   await disposeActiveTuiFixtures();
+ });
+ 
++it("refreshes the footer only for an accepted fallback destination without reloading history", async () => {
++  const fixture = await startTuiFixture({
++    env: {
++      OPENCLAW_TUI_PTY_MODEL: "gpt-4o",
++      OPENCLAW_TUI_PTY_COLS: "100",
++      OPENCLAW_TUI_PTY_ROWS: "30",
++    },
++  });
++  try {
++    await fixture.run.waitForOutput("local ready", STARTUP_TIMEOUT_MS);
++    await fixture.run.write("fallback footer proof\r", { delay: false });
++    const before = await waitForSynchronizedFrameRows(
++      fixture.run,
++      (rows) => rows.some((row) => row.includes("FALLBACK_RUN_ACTIVE")),
++      STARTUP_TIMEOUT_MS,
++    );
++    const footerRows = (rows: string[]) =>
++      rows.filter((row) => row.includes("| session main (Main) |"));
++    expect(footerRows(before)).toHaveLength(1);
++    const initialFooter = footerRows(before)[0]!;
++    expect(initialFooter).toContain("gpt-4o");
++    const backendCalls = (entries: FixtureLogEntry[]) =>
++      entries.filter((entry) =>
++        ["loadHistory", "listSessions", "patchSession", "sendChat"].includes(entry.method),
++      );
++    const initialCalls = backendCalls(await readFixtureLog(fixture.logPath));
++    expect(initialCalls.filter((entry) => entry.method === "sendChat")).toHaveLength(1);
++    expect(initialCalls.filter((entry) => entry.method === "patchSession")).toHaveLength(0);
++
++    for (const step of [1, 2, 3]) {
++      await fixture.run.write("/gateway-status\r", { delay: false });
++      const rows = await waitForSynchronizedFrameRows(
++        fixture.run,
++        (frame) => frame.some((row) => row.includes(`FALLBACK_EVENT_DELIVERED_${step}`)),
++        STARTUP_TIMEOUT_MS,
++      );
++      const entries = await readFixtureLog(fixture.logPath);
++      const calls = backendCalls(entries);
++      expect(calls).toEqual(initialCalls);
++      expect(entries.findLast((entry) => entry.method === "fallbackSelection")?.payload).toEqual({
++        step,
++        model: "gpt-4o",
++      });
++      expect(footerRows(rows)).toHaveLength(1);
++      console.info(
++        "TUI_FALLBACK_FRAME",
++        JSON.stringify({
++          step,
++          cols: fixture.run.cols,
++          rows: fixture.run.rows,
++          before,
++          frame: rows,
++          event: entries.findLast((entry) => entry.method === "fallbackEvent"),
++          selection: entries.findLast((entry) => entry.method === "fallbackSelection"),
++          initialCalls,
++          calls,
++        }),
++      );
++      if (step < 3) {
++        expect(footerRows(rows)[0]).toBe(initialFooter);
++      } else {
++        expect
++          .soft(footerRows(rows)[0], "TUI_FALLBACK_FOOTER_DESTINATION")
++          .toBe(initialFooter.replace("gpt-4o", "claude-sonnet-4"));
++      }
++    }
++  } finally {
++    try {
++      await fixture.run.write("/exit\r", { delay: false });
++      const exit = await fixture.run.waitForExit();
++      console.info("TUI_FALLBACK_EXIT", JSON.stringify(exit));
++      expect(exit.exitCode).toBe(0);
++      expect(exit.signal ?? 0).toBe(0);
++    } finally {
++      await fixture.cleanup();
++    }
++  }
++}, 65_000);
+ it("submits provider-specific thinking labels with one Enter", async () => {
+   const fixture = await startTuiFixture({
+     env: {
+diff --git a/src/tui/tui.ts b/src/tui/tui.ts
+index fc8b01169d6..19541430dd5 100644
+--- a/src/tui/tui.ts
++++ b/src/tui/tui.ts
+@@ -1510,6 +1510,7 @@ async function runTuiUnlocked(opts: RunTuiOptions): Promise<TuiResult> {
+     state,
+     localMode: isLocalMode,
+     setActivityStatus,
++    updateFooter,
+     refreshSessionInfo,
+     loadHistory,
+     noteLocalRunId: localRunIds.note,
+diff --git a/test/helpers/openclaw-test-instance.ts b/test/helpers/openclaw-test-instance.ts
+index 788f7d1ff43..c2bd2cbb095 100644
+--- a/test/helpers/openclaw-test-instance.ts
++++ b/test/helpers/openclaw-test-instance.ts
+@@ -544,6 +544,8 @@ function createInstanceEnv(params: {
+     ...params.stateEnv,
+     OPENCLAW_GATEWAY_TOKEN: "",
+     OPENCLAW_GATEWAY_PASSWORD: "",
++    OPENCLAW_GATEWAY_PORT: "",
++    OPENCLAW_GATEWAY_URL: "",
+     OPENCLAW_SKIP_CHANNELS: "1",
+     OPENCLAW_SKIP_PROVIDERS: "1",
+     OPENCLAW_SKIP_GMAIL_WATCHER: "1",
+diff --git a/ui/src/app/settings.preferences.node.test.ts b/ui/src/app/settings.preferences.node.test.ts
+index 1b724f64958..d24276c420f 100644
+--- a/ui/src/app/settings.preferences.node.test.ts
++++ b/ui/src/app/settings.preferences.node.test.ts
+@@ -50,7 +50,7 @@ describe("settings preference persistence", () => {
+     },
+   );
+ 
+-  it("keeps live preferences scoped through cross-tab edits, gateway switches, and credential rotation", () => {
++  it("keeps live preferences scoped through cross-tab edits, gateway switches, and credential rotation", async () => {
+     setTestLocation({ protocol: "https:", host: "gateway-a.example", pathname: "/" });
+     const events = new EventTarget();
+     vi.stubGlobal("addEventListener", events.addEventListener.bind(events));
+@@ -127,6 +127,7 @@ describe("settings preference persistence", () => {
+       resetServerUiPrefsSync();
+       theme.dispose();
+       gateway.stop();
++      await vi.dynamicImportSettled();
+     }
+   });
+ 
+--- /dev/null
++++ b/test/helpers/openclaw-test-instance.env.test.ts
+@@ -0,0 +1,110 @@
++import fs from "node:fs/promises";
++import { describe, expect, it } from "vitest";
++import { resolveGatewayPort } from "../../src/config/paths.js";
++import type { OpenClawConfig } from "../../src/config/types.openclaw.js";
++import { resolveGatewayUrlOverride } from "../../src/gateway/client-bootstrap.js";
++import { withEnvAsync } from "../../src/test-utils/env.js";
++import { createOpenClawTestInstance } from "./openclaw-test-instance.js";
++import { runQaGatewayFixture } from "./qa-gateway-cleanup.js";
++
++type EndpointEnv = {
++  OPENCLAW_GATEWAY_PORT?: string;
++  OPENCLAW_GATEWAY_URL?: string;
++};
++const port = 19701;
++const inheritedUrl = "wss://inherited.fixture.invalid";
++const explicitUrl = "wss://explicit.fixture.invalid";
++const cases: Array<{
++  name: string;
++  inherited: EndpointEnv;
++  explicit?: EndpointEnv;
++  expected: { port: number; override: { url?: string; source?: "env" } };
++}> = [
++  { name: "clean environment", inherited: {}, expected: { port, override: {} } },
++  {
++    name: "inherited port",
++    inherited: { OPENCLAW_GATEWAY_PORT: "19702" },
++    expected: { port, override: {} },
++  },
++  {
++    name: "inherited URL",
++    inherited: { OPENCLAW_GATEWAY_URL: inheritedUrl },
++    expected: { port, override: {} },
++  },
++  {
++    name: "explicit options.env",
++    inherited: { OPENCLAW_GATEWAY_PORT: "19702", OPENCLAW_GATEWAY_URL: inheritedUrl },
++    explicit: { OPENCLAW_GATEWAY_PORT: "19704", OPENCLAW_GATEWAY_URL: explicitUrl },
++    expected: { port: 19704, override: { url: explicitUrl, source: "env" } },
++  },
++  {
++    name: "explicit undefined deletion",
++    inherited: { OPENCLAW_GATEWAY_PORT: "19702", OPENCLAW_GATEWAY_URL: inheritedUrl },
++    explicit: { OPENCLAW_GATEWAY_PORT: undefined, OPENCLAW_GATEWAY_URL: undefined },
++    expected: { port, override: {} },
++  },
++];
++const readParentEndpoints = (): EndpointEnv => ({
++  OPENCLAW_GATEWAY_PORT: process.env.OPENCLAW_GATEWAY_PORT,
++  OPENCLAW_GATEWAY_URL: process.env.OPENCLAW_GATEWAY_URL,
++});
++
++describe("test instance endpoint isolation", () => {
++  it.each(cases)("preserves endpoint ownership with $name", async (scenario) => {
++    const parent = readParentEndpoints();
++    const inherited = {
++      OPENCLAW_GATEWAY_PORT: undefined,
++      OPENCLAW_GATEWAY_URL: undefined,
++      ...scenario.inherited,
++    };
++    await runQaGatewayFixture(
++      () =>
++        withEnvAsync(inherited, async () => {
++          // A supplied port skips reservation; this test never starts a child or listener.
++          const instance = await createOpenClawTestInstance({
++            name: "endpoint-isolation",
++            port,
++            env: { ...scenario.explicit, OPENCLAW_SKIP_CRON: "0" },
++          });
++          await runQaGatewayFixture(
++            async () => {
++              const config: OpenClawConfig = JSON.parse(
++                await fs.readFile(instance.configPath, "utf8"),
++              );
++              expect(config.gateway?.port).toBe(instance.port);
++              expect(instance.child).toBeUndefined();
++              expect(instance.env.OPENCLAW_SKIP_CRON).toBe("0");
++              for (const [key, value] of Object.entries(scenario.explicit ?? {})) {
++                if (value === undefined) {
++                  expect(Object.hasOwn(instance.env, key)).toBe(false);
++                } else {
++                  expect(instance.env[key]).toBe(value);
++                }
++              }
++              expect(readParentEndpoints()).toEqual(inherited);
++              expect(
++                resolveGatewayUrlOverride({ env: instance.env, gatewayUrl: explicitUrl }),
++              ).toEqual({ url: explicitUrl, source: "cli" });
++              expect(
++                resolveGatewayUrlOverride({ env: instance.env, localPortOverride: 19705 }),
++              ).toEqual({});
++              const actual = {
++                port: resolveGatewayPort(config, instance.env),
++                override: resolveGatewayUrlOverride({ env: instance.env }),
++              };
++              expect(actual, `FIXTURE_ENDPOINT_ISOLATION ${JSON.stringify(actual)}`).toEqual(
++                scenario.expected,
++              );
++            },
++            async () => {
++              await instance.cleanup();
++              await expect(fs.stat(instance.state.root)).rejects.toMatchObject({ code: "ENOENT" });
++            },
++          );
++        }),
++      async () => {
++        expect(readParentEndpoints()).toEqual(parent);
++      },
++    );
++  });
++});

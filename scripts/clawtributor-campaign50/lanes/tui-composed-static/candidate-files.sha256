@@ -1,0 +1,12 @@
+14e62dc1761dc3a8c6c4bf5e2788c4e147143c93110a4e0fa822f32673e8fa1d  src/tui/tui-attachment-failures.test.ts
+57fcc8f6ecf267285664fe09d795b59a82edf45310f7d4003694e1efdc8691ab  src/tui/tui-event-handlers.test.ts
+b3740c7e8d9c1cdad277c434ababd42c6c2c4cc545927148d874f6fe42551206  src/tui/tui-event-handlers.ts
+a13c51e040be08bcb5b06a7e8b62e417f444201f859b16c042618c7434921ce3  src/tui/tui-fallback-fixture-test-support.ts
+3dd74d29e6210df834b79e62561df81522d229f2332acbf33a8cd069ae7bac3f  src/tui/tui-pty-harness-fixture-test-support.ts
+ca0d45e7b62685b622ed2952cede059677e9d66dca45afe1af39119653788461  src/tui/tui-run-lifecycle.ts
+b7e20baa28be94ae2aaf2fc3c5ea6010943b41663d3844a3f4019f8ae085e507  src/tui/tui-session-actions.test.ts
+4ebbf3662d57e2618fa325cdc6f9576d72def09eadc548f74ed64543cf9c34de  src/tui/tui-session-identity-pty.e2e.test.ts
+9b9ff97274110786f803f0c5c627659300f9cfae0bf668f676b67cb599cb4f82  src/tui/tui.ts
+702f19c46cb973f9d45d48578e5fbaee25989e70d434d588fc5219f4ae5630be  test/helpers/openclaw-test-instance.env.test.ts
+2bb25150eb1fd63e31cf7e270714ab25fbc4a12c5343e04cc6cb157205616240  test/helpers/openclaw-test-instance.ts
+f40ec3a64ea4df2470b077ac8034fa6cd71b3a52acd35c60beda6c320adf29cd  ui/src/app/settings.preferences.node.test.ts
