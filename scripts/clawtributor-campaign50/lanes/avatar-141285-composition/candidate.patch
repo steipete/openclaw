@@ -1,0 +1,155 @@
+diff --git a/ui/src/app/app-shell-view.ts b/ui/src/app/app-shell-view.ts
+index 2d95cd4f4df9ee37f082693de8b13a8401ea6362..9fc8beddce1dfec03bf1ddf7526ea4d2d120a935 100644
+--- a/ui/src/app/app-shell-view.ts
++++ b/ui/src/app/app-shell-view.ts
+@@ -13,6 +13,7 @@ import {
+ import type { ThemeModeChangeDetail } from "../components/theme-mode-toggle.ts";
+ import { t } from "../i18n/index.ts";
+ import { canCallGatewayMethod } from "../lib/gateway-methods.ts";
++import { takeGraphemes } from "../lib/graphemes.ts";
+ import {
+   formatKeyboardShortcutCombo,
+   KEYBOARD_SHORTCUT_COMBOS,
+@@ -462,7 +463,7 @@ export function renderApplicationShell(host: ShellViewHost) {
+                     aria-label=${t("nav.expand")}
+                     aria-expanded="false"
+                     data-env-avatar=${
+-                      config.environment ? config.assistantIdentity.name.charAt(0) : nothing
++                      config.environment ? takeGraphemes(config.assistantIdentity.name, 1) : nothing
+                     }
+                     @click=${() => host.toggleNavigationSurface()}
+                   >
+diff --git a/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts b/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..f21badb72044ad2548005f17840b25d30d728a8b
+--- /dev/null
++++ b/ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts
+@@ -0,0 +1,58 @@
++import { expect, it } from "vitest";
++import { CONTROL_UI_BOOTSTRAP_CONFIG_PATH } from "../../../src/gateway/control-ui-bootstrap-contract.js";
++import {
++  createControlUiMockBootstrapConfig,
++  installMockGateway,
++} from "../test-helpers/control-ui-e2e.ts";
++import { createControlUiE2eSuite } from "./control-ui-e2e-suite.test-support.ts";
++
++const suite = createControlUiE2eSuite({
++  name: "Control UI shell avatar initials",
++  startServerBeforeBrowser: true,
++});
++
++suite.define(() => {
++  it.each([
++    { name: "😀Alice", environment: true, initial: "😀" },
++    { name: "alice", environment: true, initial: "a" },
++    { name: "😀Alice", environment: false, initial: null },
++  ])("preserves $name with environment=$environment", async ({ name, environment, initial }) => {
++    await suite.withPage({ viewport: { width: 1440, height: 900 } }, async ({ page }) => {
++      const gateway = await installMockGateway(page, { assistantName: name });
++      await page.route(`**${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}`, (route) =>
++        route.fulfill({
++          json: {
++            ...createControlUiMockBootstrapConfig({ assistantName: name }),
++            ...(environment ? { environment: { label: "edge", color: "amber" } } : {}),
++          },
++        }),
++      );
++      const bootstrap = page.waitForResponse(
++        (response) =>
++          new URL(response.url()).pathname === CONTROL_UI_BOOTSTRAP_CONFIG_PATH &&
++          response.request().method() === "GET",
++      );
++      const [, response] = await Promise.all([
++        page.goto(`${suite.server.baseUrl}dashboards`),
++        bootstrap,
++      ]);
++      expect(response.status()).toBe(200);
++      await page.locator(".sidebar-brand__collapse").click();
++      const toggle = page.locator(".shell-chrome-controls__nav-toggle");
++      await toggle.waitFor();
++      if (environment) {
++        await page.locator(".shell-chrome-controls__nav-toggle[data-env-avatar]").waitFor();
++      }
++      expect(await toggle.getAttribute("data-env-avatar")).toBe(initial);
++      if (initial) {
++        expect(
++          await toggle.evaluate((element) => getComputedStyle(element, "::before").content),
++        ).toContain(initial);
++      }
++      await toggle.click();
++      await page.locator(".sidebar-brand__collapse").waitFor();
++      await expect.poll(() => toggle.count()).toBe(0);
++      expect(await gateway.getRequests("chat.send")).toHaveLength(0);
++    });
++  });
++});
+diff --git a/ui/src/lib/avatar.ts b/ui/src/lib/avatar.ts
+index 7c9c53612fd02cf84d814641b559ad12dc7469b5..2f250b65d37588ad97a0c673a78367c16539f8d5 100644
+--- a/ui/src/lib/avatar.ts
++++ b/ui/src/lib/avatar.ts
+@@ -50,12 +50,8 @@ export function resolveChatAvatarRenderUrl(
+ }
+ 
+ export function deriveAvatarInitial(value: string | null | undefined): string {
+-  const source = value ?? "";
+-  if (!source) {
+-    return "";
+-  }
+   // Keep the whole leading grapheme so emoji names never expose a broken surrogate.
+-  return takeGraphemes(source, 1).toUpperCase();
++  return takeGraphemes(value ?? "", 1).toUpperCase();
+ }
+ 
+ export function resolveAssistantTextAvatar(value: string | null | undefined): string | null {
+diff --git a/ui/src/pages/dashboards/view.test.ts b/ui/src/pages/dashboards/view.test.ts
+index d495a36c294403d91832733b3e4c46fac9b7e62e..2241500bda490e21c4b29d597403a442da0ceb21 100644
+--- a/ui/src/pages/dashboards/view.test.ts
++++ b/ui/src/pages/dashboards/view.test.ts
+@@ -60,4 +60,26 @@ describe("dashboards index", () => {
+     expect(empty?.textContent).toContain("No dashboards yet");
+     expect(empty?.textContent).toContain("Dashboards created in your tasks will appear here");
+   });
++
++  it("renders a complete emoji grapheme in the author avatar initial", () => {
++    const container = document.createElement("div");
++    render(
++      renderDashboards(
++        routeData([
++          {
++            key: "agent:main:dashboard:12345678-90ab-cdef-1234-567890abcdef",
++            kind: "direct",
++            boardFace: "dashboard",
++            displayName: "Deploy monitor",
++            updatedAt: 2,
++            createdActor: { type: "human", id: "profile-ada", label: "🇺🇸Team" },
++          },
++        ]),
++      ),
++      container,
++    );
++
++    const avatar = container.querySelector(".dashboard-card__avatar");
++    expect(avatar?.textContent).toBe("🇺🇸");
++  });
+ });
+diff --git a/ui/src/pages/dashboards/view.ts b/ui/src/pages/dashboards/view.ts
+index 891644ce1f3d282bc04c2d9bdaf9ecabacae2409..a52e7940f7df39a0cf8e928691ce9c2f22c24bac 100644
+--- a/ui/src/pages/dashboards/view.ts
++++ b/ui/src/pages/dashboards/view.ts
+@@ -8,6 +8,7 @@ import { renderPanelRefreshStatus } from "../../components/panel-refresh-status.
+ import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
+ import { t } from "../../i18n/index.ts";
+ import { formatRelativeTimestamp } from "../../lib/format.ts";
++import { takeGraphemes } from "../../lib/graphemes.ts";
+ import { resolveSessionDisplayName } from "../../lib/session-display.ts";
+ import { sessionNavigationTarget } from "../../lib/sessions/route-navigation.ts";
+ import "../../styles/dashboards.css";
+@@ -104,7 +105,7 @@ function renderDashboardCard(
+   });
+   const author = dashboardAuthor(row, data.fallbackAgentId);
+   const title = resolveSessionDisplayName(row.key, row);
+-  const initial = author.label.trim().charAt(0).toLocaleUpperCase() || "?";
++  const initial = takeGraphemes(author.label.trim(), 1).toLocaleUpperCase() || "?";
+   return html`<article class="dashboard-card" data-dashboard-session=${row.key}>
+     <a class="dashboard-card__main" href=${target.href} aria-label=${title}>
+       ${renderDashboardPreview(row, gatewaySnapshot, previewError)}

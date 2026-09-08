@@ -1,9 +1,9 @@
 [
   {
-    "id": "plugin-recovery-context-green",
-    "directory": "plugin-recovery-context-green",
+    "id": "avatar-141285-composition",
+    "directory": "avatar-141285-composition",
     "runner": "ubuntu-24.04",
-    "source": "9ed537071bc430a63fabdd535a0c6dbc7a695f61",
+    "source": "9165b329314a7a46916d71018b6d7042c2973685",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",

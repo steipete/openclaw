@@ -1,0 +1,11 @@
+{
+  "name": "avatar-141285-composition",
+  "sourceSha": "9165b329314a7a46916d71018b6d7042c2973685",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "candidateBase": "9165b329314a7a46916d71018b6d7042c2973685",
+  "expected": "9 focused units +7 browser tests pass;22 current-composition rows;14PNGs14videos; canonical5-file changed gate",
+  "productionNet": -2,
+  "testSha256": "b4eda719a087eed5f202fa64db83df884cd8d64cfff4010d7aff902fef192d91"
+}

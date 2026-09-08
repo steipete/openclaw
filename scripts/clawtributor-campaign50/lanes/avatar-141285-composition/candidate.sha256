@@ -1,0 +1,5 @@
+2a840be97c9abea98802c38ac011a106d83bda167e065adcacab46a0d968ac38  ui/src/app/app-shell-view.ts
+c421d33ddbe12b231b6e73fcbb827a630b6e6b0c24d08c553527ddd0d6ac5593  ui/src/pages/dashboards/view.ts
+930859902636402d8fea0a8445b9aa21fe874db1c654fb633cc7d4e7f1597b1a  ui/src/lib/avatar.ts
+0b9ddc0b9aa56d617fa4051317725a963805650ec4768b26c2d9a18f6490cc7c  ui/src/pages/dashboards/view.test.ts
+534897320044f6a680793655c544d20c3a397077163faad58f54a4013a4dc8b3  ui/src/e2e/dashboard-shell-avatar-grapheme.e2e.test.ts

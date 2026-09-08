@@ -1,0 +1,13 @@
+{
+  "PROOF.md": "9293907e1db8d90b9e46c876a4e8f357e5f5eda72d3f3af8d528033c70cf27e1",
+  "avatar-owner-graphemes.e2e.test.ts": "b4eda719a087eed5f202fa64db83df884cd8d64cfff4010d7aff902fef192d91",
+  "candidate.patch": "a3ae19ad5dd7219a50cdba74267a7d2d782b5bf9c812a12d78e18ede9a67e5b8",
+  "candidate.sha256": "0a990e126a07869dcbf902ef6d24cb32f49c1661d1b6b795e4b01b4d82626b82",
+  "completed-report.mjs": "c69cf669be9c853588ebf223166f38de2492e1118f4d37f6f08d21487c0dc7d2",
+  "product.sha256": "48f9ce98d847e164f67c446622241a70cee0f8ffcafacc4d6f17f3dff61832c2",
+  "proof.sha256": "3f39fb23ba53406d2892c819d70fe1a03801ccfe12ef63e1c238e34838064838",
+  "row.json": "ad21d770091537721c29b99b6a1aa1a279347a8e0387db92b68fef4d2656f3e6",
+  "run.sh": "61e613cd70e1eb00e9a6eba63d206aaf4a694f005a65e0e7e9bc1e2670388f70",
+  "unchanged.sha256": "a7c247416c8db177272a96db0bbdb95f8ce2a7d0b50e202908982b4e975d8ba4",
+  "validate.mjs": "aea84ff7ad81d49e68348b073db8ec62904efac8a473ec9e09f838c0d1619fcf"
+}
