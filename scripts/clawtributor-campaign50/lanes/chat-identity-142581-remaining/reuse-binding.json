@@ -1,0 +1,34 @@
+{
+  "source": "251634acaccd9d0576a915461f7a154cc51b50f4",
+  "run": 34296547260,
+  "job": 102294347429,
+  "harness": "f607f0a30faf78aa694ef45e7104e69b875966fa",
+  "oldPacketManifest": "67d88a8b817b1e462f9538bff56bf31e66705c0ed3fc599537dda0247b0b47ab",
+  "oldCandidatePatch": "c8eab28ad59d316a24fd1b8d56264bed72447fdd58bb60afbd3294b1d5b96d40",
+  "oldTest": "8225daf5a376a0b9a2dfb55aa3276f720a0be6fe87f0a7b2fab964364b2dc6d4",
+  "finalCandidatePatch": "21fde5aaccdc1e156fcee7560d69d0c923415ccf558a5dc2a32a8fc6c5f78dbe",
+  "finalTest": "98e0bea2e6efa6bc6b9a772d9be0abbbd9c6114d67d59a02fd4bb493d964ebc1",
+  "ownerTests": 174,
+  "browserTests": 1,
+  "passedStaticStages": 18,
+  "historicalOutcome": "failure only curly lint; never relabel original job success",
+  "stillRequired": [
+    "targeted core Oxlint all4",
+    "targeted UIStylelint all4",
+    "format braces and source/index/hash closure"
+  ],
+  "historicalHashes": {
+    "owner.json": "87808102b7efc94c1dc031b44865c53504baeecd94a1ac18a559ec2a4f18b0a1",
+    "owner.log": "7acddef9ff50c7d27398531ef196a4e1627e2812047fe45ad0bf18142272f879",
+    "vitest.json": "29ea8101f2c27b52389c52202c48ee24aa7a6e49f59a6003d950bfab079a9ecd",
+    "browser.log": "7d1bc3749aaf0c8f64675bde4a22f3d16bec022a90f50ca4f6b4eb39e065b764",
+    "changed-check.log": "f7f2fbbe9bf989dc52f76411fc64fb729a944502e8d3b9e31bcf7217395d3804",
+    "qualified-browser-green.json": "19279b8d1c2c77193e854282c6403b77403d3883c6b5afcc559476ec5ff25029",
+    "final-candidate.patch": "c8eab28ad59d316a24fd1b8d56264bed72447fdd58bb60afbd3294b1d5b96d40"
+  },
+  "ASTEquivalence": {
+    "parser": "TypeScript6.0.3",
+    "onlyDifference": "thenStatement BlockStatement around same throw; all other source bytes exact",
+    "receiptSha256": "8da0d46136cc889d82ac8d82c7588af5d49100a16c9f7138d06907f026834367"
+  }
+}

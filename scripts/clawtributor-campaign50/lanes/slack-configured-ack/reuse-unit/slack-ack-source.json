@@ -40,17 +40,7 @@
     "scripts/lib/vitest-worker-artifacts.mts": "7527559c78fcb03b3d5f483f12204a0d4b34f98d42ea023a2ad4f821a7bfb723",
     "scripts/test-projects-run.mts": "1107fdec3e091258c0fe3df9ce25f1fec09f0ab34b2ae0606a7a6c66f826b763",
     "scripts/vitest-process-group.mts": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
-    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
-    "extensions/slack/src/monitor/replies.ts": "b2685c7dd167b542d6fccb7a60d1b8c1dc36c1126550ea908a4e58c69bf1b8c9",
-    "extensions/slack/src/reply-blocks.ts": "a853a56da34bd08e945176d93aeff81bd2b2b50a67879980fd53dea86f92f2b8",
-    "extensions/slack/src/account-reply-mode.ts": "68be86bcc333372126ba38be4022018bc433390dbc97f7a34f0ff46984b1bd9b",
-    "extensions/slack/src/thread-ts.ts": "ab09ad1c87e4e7e7b91fddff8af164f454b88a23f3e0d2ca9b4be6cc8f4d43b0",
-    "extensions/slack/src/monitor/message-handler/dispatch-streaming.ts": "82fa04c71cc5dd0386b907c32a1897c9bb9465420a39ac0b9a3c4fa1d80ffe14",
-    "extensions/slack/src/send.ts": "27c4d4075663f3edf25e5d8da55e5c984d2dc16457e3f3ad3612bce005fca6f7",
-    "src/plugin-sdk/channel-outbound.ts": "e816c01b02fc64e7155407d64f154adbff6b99fe63682dac8f0695b34ac8d04f",
-    "src/channels/message/receipt.ts": "bdeede91b43a30aa772970f4ceb27aa9f8846f9bf0aedb32ce289f76e4d2154c",
-    "src/auto-reply/reply/dispatch-from-config.execute.ts": "c6a986c58d254f953d22b0dd630b82c36828b215ba759396caa17a44e26072d3",
-    "src/auto-reply/reply/dispatch-from-config.finalize.ts": "a049245fae86fe5a4ddf7e4d34a6501cfe6aad1448bff8d41183ee39bf49058f"
+    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535"
   },
   "candidate": {
     "extensions/slack/src/monitor/message-handler/prepare.ts": "817c94f03af0635e1b6305b7d10a7b0d53f157ee6890ece511efac199395212f",

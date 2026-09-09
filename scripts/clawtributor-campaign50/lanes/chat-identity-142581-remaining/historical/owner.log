@@ -1,0 +1,229 @@
+[test] native report set: /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb
+[test] starting test/vitest/vitest.ui.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrenderChatAvatar[2m > [22mrenders assistant fallback, blob image, and text avatars[32m 31[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrenderChatAvatar[2m > [22mshares authenticated welcome and transcript avatars without an explicit token[32m 84[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrenderChatAvatar[2m > [22mrenders local user image and text avatars[32m 45[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrenderChatAvatar[2m > [22mswaps a failing local user image to initials instead of a broken image[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrenderChatAvatar[2m > [22mretains missing profile initials across rerenders and loads a new revision[32m 60[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mshares one authenticated avatar across retained chat panes[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mreuses the avatar through session changes and pane replacement[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mreplaces a revised avatar without revoking a retained sibling's image[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps only same-context working avatars on a failed replacement[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps only same-context working avatars on a removed replacement[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps only same-context working avatars on a text replacement[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps only same-context working avatars on a gateway replacement[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps only same-context working avatars on a credentials replacement[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mlets the newest same-agent waiter apply a shared avatar fetch[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps a live waiter's shared avatar when a stale waiter settles under cache pressure[32m 54[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mrejects a pending avatar after session changes[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mrejects a pending avatar after connection changes[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mrejects a pending avatar after invalidation changes[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mbounds a stalled image response by the shared deadline[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mbounds a stalled image body by the shared deadline[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshChatAvatar[2m > [22mkeeps missing avatar diagnostics without fetching a remote source[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mkeeps forwarded identity visible through pending and HTTP 200[32m 58[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mkeeps forwarded identity visible through pending and HTTP 404[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mshares sender snapshots with the current-agent cache and skips unknown agents[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mpreserves forwarded-avatar ownership on a failed replacement[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mpreserves forwarded-avatar ownership on a removed replacement[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mpreserves forwarded-avatar ownership on a text replacement[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mloads newly committed forwards and releases cleared senders[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mretires a forwarded batch across invalidation without releasing its replacement[32m 55[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mdoes not publish a sender avatar after its session changes[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mdoes not publish a sender avatar after its request changes[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mdoes not publish a sender avatar after its connection changes[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mdoes not publish a sender avatar after its roster changes[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mdoes not publish a sender avatar after its invalidation changes[32m 51[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mrefreshSenderAgentAvatars[2m > [22mbounds first-seen eligible sender loads without revoking the current agent's blob[32m 9[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mrestores pending initials when the authenticated sender avatar changes[32m 107[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mrenders the sender's profile avatar route for user messages[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mrenders identity-colored initials for unqualified sender alice@example.com[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mrenders identity-colored initials for unqualified sender c3e32452-0467-47e5-aafa-233cd5dae29f[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mkeeps the local viewer identity when no sender is attributed[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mswaps to identity initials when the derived avatar route errors[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar.test.ts[2m > [22mattributed sender avatars[2m > [22mkeeps a missing same-origin sender avatar on initials across rerenders[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/agents/identity.test.ts[2m > [22mrejects stale identities after reconnecting the same client[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/agents/identity.test.ts[2m > [22mrejects an in-flight identity after that agent is invalidated[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/agents/identity.test.ts[2m > [22mpublishes each fetched snapshot once under overlapping roster and stream updates[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/agents/identity.test.ts[2m > [22mshares identity requests between the sidebar and the selected chat[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/agents/identity.test.ts[2m > [22mrevalidates a replaced avatar without events when sidebar refreshes first[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/lib/agents/identity.test.ts[2m > [22mrevalidates a replaced avatar without events when chat refreshes first[32m 0[2mms[22m[39m
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mreconciles live approval events for the selected session[32m 231[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrejects envelope-only sequence for an incomplete imported user identity[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps the persisted sequence for an incomplete imported user identity[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mretires durable mirrored commentary owned by active-run[32m 11[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mretires durable mirrored commentary owned by undefined[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mretires the complete transient projection when the durable terminal arrives[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one durable answer while finishing with persistence before-stream and final[32m 33[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one durable answer while finishing with persistence between-deltas and final[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one durable answer while finishing with persistence after-stream and final[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one durable answer while finishing with persistence after-tool and final[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one durable answer while finishing with persistence before-stream and error[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps reconnected commentary and answer single with persistence before-final (repeated=false, second tool=false)[32m 14[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps reconnected commentary and answer single with persistence after-final (repeated=false, second tool=false)[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps reconnected commentary and answer single with persistence before-final (repeated=true, second tool=false)[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps reconnected commentary and answer single with persistence after-final (repeated=true, second tool=false)[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps reconnected commentary and answer single with persistence after-final (repeated=false, second tool=true)[32m 8[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps reconnected commentary and answer single with persistence after-final (repeated=true, second tool=true)[32m 6[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mpreserves repeated commentary and distinct answers within the same active run[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps cumulative output ordered across a steer (later commentary=false)[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps cumulative output ordered across a steer (later commentary=true)[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one assistant reply when the persisted reply lands after the ter…[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one assistant reply when the persisted reply lands before the te…[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one assistant reply when the producer-owned persisted reply land…[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one assistant reply when the producer-owned persisted reply land…[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrenders one assistant reply when the producer-owned persisted partial la…[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps the owned local prompt before an early durable reply after placement abandonment[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrecovers the durable reply when the terminal message is omitted[32m 53[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar-publication.test.ts[2m > [22mforwarded avatar publication[2m > [22mkeeps settled rows idle after append and publishes revised avatars[32m 163[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar-publication.test.ts[2m > [22mforwarded avatar publication[2m > [22mkeeps settled rows idle after reorder and publishes revised avatars[32m 59[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-avatar-publication.test.ts[2m > [22mforwarded avatar publication[2m > [22mkeeps settled rows idle after identity refresh and publishes revised avatars[32m 42[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrecovers the durable reply when the terminal message is null[32m 53[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrecovers the durable reply when the terminal message is omitted for an idle selected session[32m 55[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrecovers the durable reply when the terminal message is omitted while a session-message reload …[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mrecovers once when history completed the run before its message-less terminal arrives[32m 53[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mstops terminal recovery after a media-only reply becomes durable[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mbounds terminal recovery when no durable reply appears[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not retry terminal recovery after the selected session changes[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not retry terminal recovery after the selected global agent changes[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not retry terminal recovery after a replacement foreground run starts[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not resume terminal recovery after a replacement foreground run finishes[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mcontinues terminal recovery when history backfills another-run[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mcontinues terminal recovery when history backfills nested-tool-only[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mstarts a fresh history request without a pending session-message reload[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mstarts a fresh history request after a pending session-message reload[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not reload for a background run's message-less final[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not reload for a yielded message-less final[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps the live final projection without an unnecessary history reload[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mnever lets an unowned legacy delayed older assistant row displace a newer run's reply[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mnever lets an exactly producer-owned delayed older assistant row displace a newer run's reply[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps an ordinary queued user after the active run assistant[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not rebind an unrelated run from a persisted steer[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps pre-steer output above an earlier ordinary queued user[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps a previous run final before a newer active user turn[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mleaves the active run assistant message on the terminal stream path[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mcoalesces distinct live peers into one frame and their stale history into one load[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdrops pre-reset live and pending messages before accepting a new session turn[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not clear the selected transcript when another agent resets[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mretires current checkout presentation for a structural event[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mpreserves checkout presentation for non-matching event send/agent:main:main[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mpreserves checkout presentation for non-matching event rewind/agent:other:main[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mkeeps the routed row when a hidden pane observes its archive first[32m 3[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not mistake identity-only message invalidation for a session reset[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mreloads selected history for an identity-only persisted message invalidation[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not reload another session for an identity-only message invalidation[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdoes not reload for an already identified session message[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mcanonical session message recovery[2m > [22mdefers branch hydration when a session reconciliation finishes after the pane hides[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mowns attachment views in Files without replacing Detail content[32m 13[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mkeeps the active observer digest when another run streams in the same session[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mrejects a run-less observer digest during an identified active run[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22maccepts only the row-active observer run when attaching mid-run[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22maccepts global observer digests only from the selected agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mkeeps a fresher selected-agent digest when reconnect replays stale global events[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mreconciles a selected global alias with its scoped canonical row after reconnect[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mprefers an exact direct row over a prec…[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mignores a lone global row outside confi…[32m 0[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mtracks waiting approval only for the selected session until resolution[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mskips no-op assistant invalidation while tool changes render on the next frame[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mcoalesces stream invalidations into one animation frame[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mprojects hidden Gateway state without scheduling animation frames[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mkeeps every chat delta while batching their render[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mforces one PR-chips refresh per PR link seen in the live stream[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mrequests a render before selecting the commit promise[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mcancels pending commit effects on disconnect[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mfully tears down realtime Talk when its state owner disconnects[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22maborts attachment reads when a chat pane disconnects[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mrejects lifecycle work from detached and replaced state epochs[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mcancels post-commit paint frames on disconnect[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22minvalidates the render lifecycle when input history recall mutates the draft[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mChatStateController render lifecycle[2m > [22mdoes not invalidate the render lifecycle when input history key is not handled[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22msession pull request refresh[2m > [22mrequests an authoritative refresh after…[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22msession pull request refresh[2m > [22mrefreshes for a visible same-session fi…[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22msession pull request refresh[2m > [22mdoes not inspect the active stream for …[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22msession pull request refresh[2m > [22mdoes not refresh for an issue link[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22msession pull request refresh[2m > [22mdoes not refresh for another session's …[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mimage lightbox lifecycle[2m > [22maccepts only matching base64 video at the page boundary[32m 29[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mimage lightbox lifecycle[2m > [22minvalidates immediately when beginning a deferred image open[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mresolveChatAvatarUrl[2m > [22mprefers the authenticated avatar blob over persisted and protected URLs[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mloadPageAssistantIdentity[2m > [22mmemoizes identity by agent while fetching a cross-agent switch[32m 4[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mfences a late metadata result across same-client reconnect[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mfences a late picker result across same-client reconnect[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mrefreshes only the matching session for command-metadata, not streaming updates[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mrefreshes only the matching session for patch, not streaming updates[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mreads the warm session catalog without provider acquisition[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mreads the cold session catalog without provider acquisition[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mdoes not apply session metadata after a same-agent session switch[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22misolates metadata across sessions and agents[32m 2[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mignores metadata after switching to a different agent[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mkeeps loading owned by the newest agent metadata request[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mdoes not publish metadata after the pane retires its request owner[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mkeeps model reads independent of command metadata failures[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mretains rows after catalog failure and clears failure on a successful empty publication[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatMetadata[2m > [22mkeeps fallback slash commands when chat metadata omits commands[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatModelAuthStatus[2m > [22mscopes auth status to the fixed session agent and records unavailable health: undefined[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatModelAuthStatus[2m > [22mscopes auth status to the fixed session agent and records unavailable health: {"code":"PREPARED_MODEL_AUTH_UNAVAILABLE","message":"Model authentication status is unavailable. Refresh Models after setup finishes."}[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatModelAuthStatus[2m > [22mrebinds selected-global auth and rejects the superseded Main success[32m 53[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatModelAuthStatus[2m > [22mrebinds selected-global auth and rejects the superseded Main failure[32m 52[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatModelAuthStatus[2m > [22mignores a stale auth status success after reconnecting the same client[32m 1[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/chat/chat-state.test.ts[2m > [22mrefreshChatModelAuthStatus[2m > [22mignores a stale auth status failure after reconnecting the same client[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m166 passed[39m[22m[90m (166)[39m
+[2m   Start at [22m 00:51:45
+[2m   Duration [22m 6.98s[2m (transform 34%, environment 22%, tests 18%, import 13%, worker 12%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb/1/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb/1/1/blob.json
+[test] starting test/vitest/vitest.ui-isolated.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mchat pane assistant identity snapshots[2m > [22mkeeps an explicitly owned global Home pane on its agent across work selection[32m 106[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mchat pane assistant identity snapshots[2m > [22mrebinds agent-owned presentation when a retained fixed route changes owner[32m 8[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mchat pane assistant identity snapshots[2m > [22mrebinds approval delivery when the selected global agent changes[32m 174[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mchat pane assistant identity snapshots[2m > [22mkeeps a session-specific assistant identity across ordinary gateway snapshots[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mchat pane assistant identity snapshots[2m > [22mresets a session-specific identity when the logical connection changes[32m 5[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mchat pane approval requester identity[2m > [22mrenders projected approval requester titles from reactive session metadata without changing decision routing[33m 409[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mglobal chat pane feature ownership[2m > [22mloads, refreshes and dismisses the selected agent's global progress card[32m 159[2mms[22m[39m
+ [32m✓[39m [30m[45m ui-isolated [49m[39m ui/src/pages/chat/chat-pane-identity.test.ts[2m > [22mglobal chat pane feature ownership[2m > [22mkeeps Main progress when an old Research response arrives for the same raw global key[32m 59[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 00:51:53
+[2m   Duration [22m 6.72s[2m (transform 61%, import 17%, tests 14%, environment 8%, setup 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb/2/1/report.json
+blob report written to /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb/2/1/blob.json
+[2m12:52:00 AM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+[2m12:52:00 AM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb/aggregate.json
+[test] native JSON aggregate: /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json; originals: /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/owner.json.reports-XMmvsb. Native merge omits snapshot summaries and JSON coverageMap; startTime is merge time. Use index.json for process outcomes.
+[test] passed 2 Vitest shards in 16.63s

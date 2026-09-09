@@ -1,0 +1,22 @@
+{
+  "run": 34296547260,
+  "job": 102294347434,
+  "harness": "f607f0a30faf78aa694ef45e7104e69b875966fa",
+  "packet": "b77fc26ddb7b8b8bec02ad03732e170433ffdcec3488c792d84d693aa4df78b2",
+  "source": "58b294653e792bfe109bc727aee429745065ed82",
+  "overall_run": "FAILURE",
+  "reused_scope": "only baseline unit2 intended failures3controls160filtered; ingress not qualified; candidate unrun",
+  "files": {
+    "manifest.json": "b77fc26ddb7b8b8bec02ad03732e170433ffdcec3488c792d84d693aa4df78b2",
+    "source.json": "31f77515fc81d3cc032bda517669b9f1798f92b0bc80c33867c7171b52d3ad03",
+    "slack-ack-source.json": "73809788e5dea92639a9afb93b93a107030918c2dad94f71c8716ed361749a65",
+    "baseline-unit.json": "9ab7e626579d7ca5b84d01e738f16f656e61ecb3b3843abe005b58b210927d71",
+    "baseline-unit.log.txt": "9a35760a51e31ca952949c598c5b18b522028bce3edc4f6f7b2f2a7fa328181e",
+    "baseline-unit.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline-unit.source.json": "236f2081845ff626230f7b3403752201a003b6d6bc805a5e56e64d2cd205445b",
+    "baseline-unit.verdict.json": "66bfdba5e732799255ea9cc5a3a6dc57842bc5d543055de67f53fe1a1c7eeac0",
+    "source-baseline-before.json": "236f2081845ff626230f7b3403752201a003b6d6bc805a5e56e64d2cd205445b",
+    "ack-ingress.proof.test.ts": "e70abab9319f335db2a683e7ff575734a94f9f620aefeb866077d0c22f98eba4",
+    "candidate.patch": "2d67b26b0d0874d9e5322de2bce3a2819aebbd565070875dbe344250490466fd"
+  }
+}

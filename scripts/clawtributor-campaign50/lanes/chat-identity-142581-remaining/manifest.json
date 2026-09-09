@@ -1,0 +1,20 @@
+{
+  "PROOF.md": "9552d479413a86484a6797761defee0946ab8cc2afa48cbdf54e511973e757b7",
+  "candidate.patch": "21fde5aaccdc1e156fcee7560d69d0c923415ccf558a5dc2a32a8fc6c5f78dbe",
+  "candidate.sha256": "544e939fca447f75079e6be3690781574ba6df0d64897832a1f8eae4a3b4a441",
+  "completed-report.mjs": "4747017774f67812d493ba7b6584cb09bf90e2101a7c239ac87dc43ba4b0de2f",
+  "historical/browser.log": "7d1bc3749aaf0c8f64675bde4a22f3d16bec022a90f50ca4f6b4eb39e065b764",
+  "historical/changed-check.log": "f7f2fbbe9bf989dc52f76411fc64fb729a944502e8d3b9e31bcf7217395d3804",
+  "historical/final-candidate.patch": "c8eab28ad59d316a24fd1b8d56264bed72447fdd58bb60afbd3294b1d5b96d40",
+  "historical/owner.json": "87808102b7efc94c1dc031b44865c53504baeecd94a1ac18a559ec2a4f18b0a1",
+  "historical/owner.log": "7acddef9ff50c7d27398531ef196a4e1627e2812047fe45ad0bf18142272f879",
+  "historical/qualified-browser-green.json": "19279b8d1c2c77193e854282c6403b77403d3883c6b5afcc559476ec5ff25029",
+  "historical/vitest.json": "29ea8101f2c27b52389c52202c48ee24aa7a6e49f59a6003d950bfab079a9ecd",
+  "product.sha256": "ebc3ea5bf1b42489d317184ef91f327a18bfb5e336c9530e4c2b817475d32a5d",
+  "reuse-binding.json": "38e4a0d8aaa376b331f1f5ff1340104bdb664796dc5ce333e862a443241a7bcd",
+  "row.json": "de5a9e9a1183d922823848f1e013dfa50e4718ef50eb0cd944230f3c242f38d4",
+  "run.sh": "6b31ee486a6be08ac640dd16f7ad818cb038e46e38b2e98f713190da65d9125e",
+  "tested-test.ts": "8225daf5a376a0b9a2dfb55aa3276f720a0be6fe87f0a7b2fab964364b2dc6d4",
+  "unchanged.sha256": "a1059a195e931d62a6b5ba39dcc947c64f381f61e84d22279f4b72baa857470c",
+  "verify.mjs": "b8adb56f7e75d7310655ddb46d9031895984e8da68e95122904d5fb711738c1c"
+}

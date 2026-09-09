@@ -1,0 +1,9 @@
+{
+  "phase": "baseline",
+  "kind": "unit",
+  "passed": 3,
+  "failed": 2,
+  "deliberatelyFiltered": 160,
+  "verdict": "PASS",
+  "liveSlack": false
+}

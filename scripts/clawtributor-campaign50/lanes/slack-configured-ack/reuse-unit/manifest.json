@@ -1,0 +1,22 @@
+{
+  "lane": "slack-configured-ack",
+  "mode": "compare",
+  "status": "native skipped-status correction complete; 115 inert controls passed; independent rebind pending; target unrun",
+  "base": "58b294653e792bfe109bc727aee429745065ed82",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "files": {
+    "run.sh": "f3561fd1f5210cfc3871d509d5a6102d8c01cc21a8d1eefb88954b6b312fd5b8",
+    "verify-source.py": "e71850b72282acccb038989421c32d7434e42e1417624564bdba207ded6fb5b1",
+    "verify-tests.mjs": "bf7d523e37eab1c5df4946b3c6691dae481394bde7ea10727f653e6794c32b92",
+    "completed-report.mjs": "152e1278806ae41f52defa9bd8a0feddc64d3e3bbb7e7446b244ecff810a2ae6",
+    "ack-ingress.proof.test.ts": "e70abab9319f335db2a683e7ff575734a94f9f620aefeb866077d0c22f98eba4",
+    "prepare.test.ts": "fdf450e27351e168c382a218fc5933b8b7289ec28f8a01d9a21136664a6b8b89",
+    "source.json": "73809788e5dea92639a9afb93b93a107030918c2dad94f71c8716ed361749a65",
+    "production.patch": "f6b965bce21e62498d7969991c068d5c915a6517b7021f83aec9da6fd88a3112",
+    "tests.patch": "67d22671823946d6801b10bcbb4ac63946bfe071befd8cc5958891204af87b0a",
+    "candidate.patch": "2d67b26b0d0874d9e5322de2bce3a2819aebbd565070875dbe344250490466fd",
+    "DESIGN.md": "159ffe063eb365de5a54c77886951cb85467121c2240781c3e87a1151937de19"
+  },
+  "target_execution": false
+}

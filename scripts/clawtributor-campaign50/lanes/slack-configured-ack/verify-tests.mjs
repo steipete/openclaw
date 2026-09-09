@@ -106,7 +106,38 @@ if (kind === "ingress") {
       stateRemoved: true,
     });
     assert.equal(value.replyCalls, 1);
-    assert.equal(value.visibleSends, 0);
+    const automatic = name === "automatic-disabled";
+    assert.equal(value.visibleSends, automatic ? 1 : 0);
+    assert.deepEqual(
+      value.visibleDeliveryResults,
+      automatic ? [{ messageId: "457", channelId: "C1", platformMessageIds: ["457"] }] : [],
+    );
+    assert.deepEqual(
+      value.visibleSendArguments,
+      automatic
+        ? [
+            [
+              "channel:C1",
+              "Synthetic acknowledgement proof reply.",
+              {
+                cfg: {
+                  messages: {
+                    ackReaction: "eyes",
+                    ackReactionScope: "group-mentions",
+                    groupChat: { visibleReplies: "automatic" },
+                    statusReactions: { enabled: false },
+                  },
+                  channels: { slack: { groupPolicy: "open", streaming: "off" } },
+                },
+                token: "bot-token",
+                threadTs: "[undefined]",
+                accountId: "default",
+                onDeliveryResult: "[function]",
+              },
+            ],
+          ]
+        : [],
+    );
     assert.deepEqual(value.runtimeErrors, []);
     assert.deepEqual(value.reactionRemoves, []);
     assert.ok(value.userLookups.length > 0 && value.channelLookups.length > 0);

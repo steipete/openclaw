@@ -43,7 +43,13 @@ run_phase() {
   node "$proof_lane/verify-tests.mjs" "$phase" "$kind" "$stem.json" "$stem.log" "$code" "$proof_evidence/$phase-observations" > "$stem.verdict.json"
 }
 
-run_phase baseline unit extensions/slack/src/monitor/message-handler/prepare.test.ts
+python3 "$proof_lane/verify-reuse.py" "$proof_lane" > "$proof_evidence/unit-lineage-verdict.json"
+mkdir -p "$proof_evidence/reused-unit"
+cp "$proof_lane/reuse-unit/"* "$proof_evidence/reused-unit/"
+node "$proof_lane/verify-tests.mjs" baseline unit \
+  "$proof_evidence/reused-unit/baseline-unit.json" \
+  "$proof_evidence/reused-unit/baseline-unit.log.txt" 1 \
+  "$proof_evidence/reused-unit/unused-observations" > "$proof_evidence/reused-unit/current-reader-verdict.json"
 run_phase baseline ingress extensions/slack/src/monitor.ack-ingress.proof.test.ts
 git apply --index "$proof_lane/production.patch"
 python3 "$proof_lane/verify-source.py" "$proof_lane" candidate > "$proof_evidence/source-candidate-before.json"

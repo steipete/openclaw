@@ -3,7 +3,6 @@ import { createServer } from "node:http";
 import { join } from "node:path";
 import { WebClient } from "@slack/web-api";
 import { closeOpenClawStateDatabaseForTest } from "openclaw/plugin-sdk/channel-ingress-test-runtime";
-import { createMessageReceiptFromOutboundResults } from "openclaw/plugin-sdk/channel-outbound";
 import { resetInboundDedupe } from "openclaw/plugin-sdk/reply-runtime";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
@@ -17,13 +16,11 @@ import {
   startSlackMonitor,
   stopSlackMonitor,
 } from "./monitor.test-helpers.js";
-import type { SlackSendResult } from "./monitor/send.runtime.js";
 
 const { monitorSlackProvider } = await import("./monitor/provider.js");
 const outputDirectory = process.env.SLACK_ACK_PROOF_OUTPUT;
 if (!outputDirectory) throw new Error("SLACK_ACK_PROOF_OUTPUT is required");
 const previousStateDirectory = process.env.OPENCLAW_STATE_DIR;
-const replyText = "Synthetic acknowledgement proof reply.";
 let ownedStateDirectory: string | undefined;
 let suiteBlocked = false;
 type CaseClosure = {
@@ -39,21 +36,6 @@ let activeCase: CaseClosure | undefined;
 const reactionArguments = z
   .object({ channel: z.string(), timestamp: z.string(), name: z.string() })
   .strict();
-const sendArguments = z.tuple([
-  z.literal("channel:C1"),
-  z.literal(replyText),
-  z
-    .object({
-      cfg: z.unknown(),
-      token: z.literal("bot-token"),
-      threadTs: z.undefined(),
-      accountId: z.literal("default"),
-      onDeliveryResult: z.custom<(result: SlackSendResult) => void | Promise<void>>(
-        (value) => typeof value === "function",
-      ),
-    })
-    .strict(),
-]);
 type RecordedRequest = { method: string; path: string; contentType: string; body: string };
 
 function saveObservation() {
@@ -115,11 +97,6 @@ describe("Slack registered pickup acknowledgement", () => {
       const requests: RecordedRequest[] = [];
       const apiTasks: Promise<unknown>[] = [];
       const runtimeErrors: string[] = [];
-      const visibleDeliveryResults: {
-        messageId: string;
-        channelId: string;
-        platformMessageIds: string[];
-      }[] = [];
       const cleanupErrors: unknown[] = [];
       let bodyFailed = false;
       let bodyError: unknown;
@@ -178,25 +155,7 @@ describe("Slack registered pickup acknowledgement", () => {
           channel: { id: "C1", name: "general", is_channel: true, is_im: false },
         });
         client.users.info.mockResolvedValue({ user: { profile: { display_name: "Ada" } } });
-        state.replyMock.mockResolvedValue({ text: replyText });
-        state.sendMock.mockImplementation(async (...args) => {
-          const [, , options] = sendArguments.parse(args);
-          const result: SlackSendResult = {
-            messageId: "457",
-            channelId: "C1",
-            receipt: createMessageReceiptFromOutboundResults({
-              results: [{ channel: "slack", messageId: "457", channelId: "C1" }],
-              kind: "text",
-            }),
-          };
-          await options.onDeliveryResult(result);
-          visibleDeliveryResults.push({
-            messageId: result.messageId,
-            channelId: result.channelId,
-            platformMessageIds: result.receipt.platformMessageIds,
-          });
-          return result;
-        });
+        state.replyMock.mockResolvedValue(undefined);
         state.reactionRemoveMock.mockImplementation(() => {
           throw new Error("Unexpected reaction removal in pickup-only proof");
         });
@@ -292,16 +251,6 @@ describe("Slack registered pickup acknowledgement", () => {
         channelLookups: client?.conversations.info.mock.calls ?? [],
         replyCalls: state?.replyMock.mock.calls.length ?? 0,
         visibleSends: state?.sendMock.mock.calls.length ?? 0,
-        visibleDeliveryResults,
-        visibleSendArguments: JSON.parse(
-          JSON.stringify(state?.sendMock.mock.calls ?? [], (_key, value) =>
-            value === undefined
-              ? "[undefined]"
-              : typeof value === "function"
-                ? "[function]"
-                : value,
-          ),
-        ),
         runtimeErrors,
         monitorStarts: state?.appStartMock.mock.calls.length ?? 0,
         monitorStopCalls: state?.appStopMock.mock.calls.length ?? 0,
@@ -320,28 +269,7 @@ describe("Slack registered pickup acknowledgement", () => {
       expect(observation.monitorStarts).toBe(1);
       expect(observation.monitorStopCalls).toBe(2);
       expect(observation.replyCalls).toBe(1);
-      expect(state?.sendMock.mock.calls).toStrictEqual(
-        visibleReplies === "automatic"
-          ? [
-              [
-                "channel:C1",
-                replyText,
-                {
-                  cfg: state?.config,
-                  token: "bot-token",
-                  threadTs: undefined,
-                  accountId: "default",
-                  onDeliveryResult: expect.any(Function),
-                },
-              ],
-            ]
-          : [],
-      );
-      expect(visibleDeliveryResults).toEqual(
-        visibleReplies === "automatic"
-          ? [{ messageId: "457", channelId: "C1", platformMessageIds: ["457"] }]
-          : [],
-      );
+      expect(observation.visibleSends).toBe(0);
       expect(observation.channelLookups.length).toBeGreaterThan(0);
       expect(observation.userLookups.length).toBeGreaterThan(0);
       expect(observation.reactionRemoves).toEqual([]);

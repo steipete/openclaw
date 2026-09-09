@@ -1,0 +1,9 @@
+{
+  "name": "chat-identity-142581-remaining",
+  "sourceSha": "251634acaccd9d0576a915461f7a154cc51b50f4",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "expectation": "Only targeted format, canonical core Oxlint and previously unrun UI Stylelint plus source/index closure; reuse source-bound175 runtime passes and18 static stages without replay",
+  "candidatePatchSha256": "21fde5aaccdc1e156fcee7560d69d0c923415ccf558a5dc2a32a8fc6c5f78dbe"
+}

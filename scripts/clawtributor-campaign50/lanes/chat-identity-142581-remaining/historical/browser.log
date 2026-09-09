@@ -1,0 +1,467 @@
+[2m12:52:18 AM[22m [33m[1m[vite][22m[39m [33m[2m(inline)[22m[39m [33mwarning: 
+[36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[33m
+[0m23 |  				...args
+24 |  			];
+25 |  			await import(cliUrl.href);
+   |                  ^^^^^^^^^^^
+26 |  		} catch (error) {
+27 |  			console.error(error);[0m[33m
+The above dynamic import cannot be analyzed by Vite.
+See [34mhttps://vite.dev/guide/features#dynamic-import[33m for supported dynamic import formats. If this is intended to be left as-is, you can use the /* @vite-ignore */ comment inside the import() call to suppress this warning.
+[33m[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/home/runner/work/openclaw/openclaw/target/scripts/lib/vitest-worker-bootstrap.mts[39m
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+[36mvite v8.2.2 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 3416 modules transformed.
+rendering chunks...
+Control UI precompression: starting
+Control UI precompression complete: 421 assets (842 sidecars)
+computing gzip size...
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/frame-BoCsE8xn.js                                             4.41 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/diff.worker-lyLNkqtT.js                                       8.68 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/index.html                                                          18.82 kB │ gzip:   5.21 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/social-card.png                                                    142.28 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mermaid.min-BZuf2r7K.js                                   3,572.66 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cron-jobs-pagination-WTYglB0y.css                             0.34 kB │ gzip:   0.24 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/device-page-DzxF6N-U.css                                      0.37 kB │ gzip:   0.18 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/board-document-B0Y4zGJq.css                                   1.18 kB │ gzip:   0.47 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-dashboard-BZzcciLT.css                             1.52 kB │ gzip:   0.56 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tasks-page-Cvtw3Yog.css                                       1.68 kB │ gzip:   0.52 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/native-embed-m2HjHfL8.css                                     1.87 kB │ gzip:   0.63 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/logs-page-DiwHPaoc.css                                        1.89 kB │ gzip:   0.72 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/connection-page-CMTPawdr.css                                  1.92 kB │ gzip:   0.63 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/wizard-step-controls-CUvrnOcR.css                             1.93 kB │ gzip:   0.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/profile-page-BHDmlBSz.css                                     2.00 kB │ gzip:   0.69 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/report-Cegj5HJR.css                                           2.00 kB │ gzip:   0.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/onboarding-memory-import-DuWLEvoz.css                         2.02 kB │ gzip:   0.64 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/hub-tabs-D2dXz8I8.css                                         2.34 kB │ gzip:   0.76 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/assistant-panel-Vf7BSqc6.css                                  2.35 kB │ gzip:   0.74 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/update-run-view-BC2Uw3Fp.css                                  2.69 kB │ gzip:   0.81 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/portals-page-B3O8G1gw.css                                     3.34 kB │ gzip:   1.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lobsterdex-page-BYmxmm_r.css                                  3.80 kB │ gzip:   1.19 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/agents-page-Co9bBLPm.css                                      4.06 kB │ gzip:   1.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/meetings-page-D0oVX6bW.css                                    4.18 kB │ gzip:   1.11 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/select-picker-GMFFHX6Z.css                                    4.20 kB │ gzip:   1.20 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/devices-page-Do3i-SE3.css                                     4.44 kB │ gzip:   1.18 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/memory-import-page-744kZiKS.css                               4.48 kB │ gzip:   1.18 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/apps-page-YnV-N0U5.css                                        4.57 kB │ gzip:   1.24 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/about-page-DaPcd-9T.css                                       4.74 kB │ gzip:   1.46 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-update-card-BF-_KMrW.css                              4.91 kB │ gzip:   1.23 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/github-link-hovercard-CLv49xkF.css                            4.92 kB │ gzip:   1.31 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lane-table-B4rKSBwT.css                                       4.98 kB │ gzip:   1.58 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dashboards-page-D-tGbqgL.css                                  5.40 kB │ gzip:   1.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/secrets-page-CR7OewSk.css                                     5.73 kB │ gzip:   1.36 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/logbook-view-BJCbtib2.css                                     5.75 kB │ gzip:   1.35 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/channel-picker-Dr_cIA_m.css                                   7.69 kB │ gzip:   1.69 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/model-setup-page-ziOfsJuR.css                                 8.33 kB │ gzip:   1.94 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/model-providers-page-CrcQRJ-6.css                             8.40 kB │ gzip:   1.84 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/approval-COwc0-bg.css                                         8.73 kB │ gzip:   2.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-progress-hovercard-BM5_ekQd.css                       8.98 kB │ gzip:   1.76 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/chat-sidebar-region-CA8WlxVq.css                              9.06 kB │ gzip:   1.97 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/custodian-surface-BlvV8Huo.css                               10.86 kB │ gzip:   2.52 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/composer-queue-DviIei7I.css                                  10.96 kB │ gzip:   2.34 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/board-view-Dy3yHmZ7.css                                      11.75 kB │ gzip:   2.75 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-attention-panel-CE-Xd49j.css                         15.24 kB │ gzip:   2.98 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/plugins-hub-header-BZhnEYZE.css                              16.15 kB │ gzip:   3.29 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tool-catalog-B-0ju-Gz.css                                    16.86 kB │ gzip:   3.48 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sessions-page-CCsshFam.css                                   17.47 kB │ gzip:   3.33 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/settings-BpOrc1Ah.css                                        18.10 kB │ gzip:   3.42 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cron-page-DvGv63Hz.css                                       18.11 kB │ gzip:   3.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/composer-progress-Dce3tQbl.css                               19.40 kB │ gzip:   3.64 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/activity-page-DRS69qhI.css                                   21.58 kB │ gzip:   3.93 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/config-page-D0yRQYzN.css                                     21.70 kB │ gzip:   4.59 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-new-BwiGBzKd.css                             23.67 kB │ gzip:   4.56 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/skill-workshop-page-CUdpJwsY.css                             24.64 kB │ gzip:   4.91 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/usage-DWOUYA21.css                                           31.41 kB │ gzip:   5.79 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-BKGFHV09.css                           149.45 kB │ gzip:  24.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-uMw0unrN.css                         201.20 kB │ gzip:  33.19 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-core-DQENbqmJ.css                                280.80 kB │ gzip:  45.47 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/agent-select-registration-DX77wsVR.js                         0.05 kB │ gzip:   0.07 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/composer-status-hIiucIx2.js                                   0.05 kB │ gzip:   0.07 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/index-CFEDb21u.js                                             0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lobster-pet.runtime-_bH5pe8q.js                               0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-progress-hovercard-registration-BodcuQmJ.js           0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-PFCLBU3w.js                                              0.06 kB │ gzip:   0.07 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-gk9IzH8y.js                                              0.06 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/javascript-C7rhitVy.js                                        0.07 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-DDd0doip.js                                              0.07 kB │ gzip:   0.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/route-loader-DkKthvW2.js                                      0.07 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-6f5bvnw8.js                                              0.08 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/input-dialog-CeYRGvxI.js                                      0.08 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/new-session-page-entry-B_Je_Oks.js                            0.08 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-placement-recovery-migration.runtime-_xOKExOi.js      0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-placement-startup.runtime-BNjwoOw-.js                 0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/route-loader-DE6ZInk6.js                                      0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/custodian-alert-store-DfB2H-t3.js                             0.09 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/login-gate-BKCbTBq5.js                                        0.09 kB │ gzip:   0.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-update-card-LuiR-9D2.js                               0.09 kB │ gzip:   0.11 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/confirm-dialog-CgCxhh9P.js                                    0.09 kB │ gzip:   0.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/canvas-surface-lease.runtime-B_WJ9cse.js                      0.10 kB │ gzip:   0.11 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/app-sidebar-session-catalog-render-rW3NFKTA.js                0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-snapshot-database-BETO0MN-.js                         0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/web-push.runtime-BbG-Vh3j.js                                  0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/app-sidebar-session-narration-D9S59BaR.js                     0.11 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/load-BzYnpprs.js                                              0.12 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/route-view-CixG3072.js                                        0.12 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/swarm-roster-DgC7X8iv.js                                      0.13 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/board-view-RjQnHvmS.js                                        0.13 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-roster-cache.reader-CdwXoDot.js                       0.13 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/modal-dialog-BVYBXTiR.js                                      0.14 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/approval-Dpr9VMH2.js                                          0.14 kB │ gzip:   0.15 kB │ map:    11.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/settings-7PNwSgyf.js                                          0.14 kB │ gzip:   0.15 kB │ map:    26.94 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-attention-Crd9p_Yd.js                                 0.14 kB │ gzip:   0.11 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/request-usage-snapshot-C0nGnEHP.js                            0.14 kB │ gzip:   0.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/history-scan-page-controller-BtqodNB3.js                      0.15 kB │ gzip:   0.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/__vite-browser-external-2447137e-TVBj4TXR.js                  0.16 kB │ gzip:   0.16 kB │ map:     0.35 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/app-sidebar-cQTmt3dq.js                                       0.18 kB │ gzip:   0.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-snapshot-invalidation-DLTQ9KVb.js                     0.18 kB │ gzip:   0.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/outbox-store-projection-HESUEdwg.js                           0.19 kB │ gzip:   0.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/chat-page-ChcMwgtW.js                                         0.20 kB │ gzip:   0.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/composer-draft-store.runtime-wjm5AIXK.js                      0.30 kB │ gzip:   0.17 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/approval-result-validators-P0jhnjJd.js                        0.32 kB │ gzip:   0.25 kB │ map:     1.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sha2-BXU5RWBV.js                                              0.33 kB │ gzip:   0.20 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/desktop-focus-window-BUYGaU4J.js                              0.37 kB │ gzip:   0.27 kB │ map:     0.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/logbook-controller-DXXSheMM.js                                0.38 kB │ gzip:   0.24 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/route-view-BAl61JSv.js                                        0.40 kB │ gzip:   0.28 kB │ map:     0.64 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/proposals-3ArAZsIh.js                                         0.41 kB │ gzip:   0.23 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/system-info-D4DPVZmm.js                                       0.42 kB │ gzip:   0.30 kB │ map:     0.92 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-CRc0tF4k.js                              0.42 kB │ gzip:   0.23 kB │ map:   203.97 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/diff-BCWHhDSU.js                                              0.43 kB │ gzip:   0.33 kB │ map:     1.23 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/slots-udITwEiX.js                                             0.50 kB │ gzip:   0.35 kB │ map:     7.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/theme-color-BwHgSJo3.js                                       0.50 kB │ gzip:   0.39 kB │ map:     1.54 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-C2nulF3z.js                            0.50 kB │ gzip:   0.37 kB │ map:     0.84 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-menus-render-d2_kPcQR.js                              0.52 kB │ gzip:   0.22 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/worktree-preservation-Ddya4tZW.js                             0.55 kB │ gzip:   0.35 kB │ map:     1.32 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cloud-worker-stop.runtime-BjsAgYBh.js                         0.57 kB │ gzip:   0.39 kB │ map:     1.64 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/settings-workspace-V_hwrxIR.js                                0.58 kB │ gzip:   0.35 kB │ map:     1.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/gateway-websocket-url-DeLAU9tz.js                             0.58 kB │ gzip:   0.33 kB │ map:     1.31 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/brainfuck-CxsZo964.js                                         0.74 kB │ gzip:   0.41 kB │ map:     2.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dock-destination-controls-CURG6Ohz.js                         0.76 kB │ gzip:   0.46 kB │ map:     2.05 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/custodian-alert-store-C8M3qKFB.js                             0.76 kB │ gzip:   0.40 kB │ map:     2.83 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/properties-BzFeEZmy.js                                        0.80 kB │ gzip:   0.44 kB │ map:     2.53 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/scrollbar-styles-C-m24Ld9.js                                  0.82 kB │ gzip:   0.37 kB │ map:     1.16 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-disabled-CsSgFosn.js                               0.83 kB │ gzip:   0.48 kB │ map:     1.85 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/request-usage-snapshot-g4sTEVl_.js                            0.84 kB │ gzip:   0.51 kB │ map:     3.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cron-jobs-pagination-DNzVNo1A.js                              0.84 kB │ gzip:   0.46 kB │ map:     2.06 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cmake-FcSlif4A.js                                             0.89 kB │ gzip:   0.55 kB │ map:     3.24 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/asciiarmor-B6IWxPZf.js                                        0.91 kB │ gzip:   0.49 kB │ map:     2.73 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/near-viewport-observer-BfnpDHlZ.js                            0.93 kB │ gzip:   0.47 kB │ map:     2.41 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/protobuf-JMHwXPRk.js                                          0.94 kB │ gzip:   0.61 kB │ map:     2.50 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/stream-auto-follow-controller-DQpG-yCd.js                     0.95 kB │ gzip:   0.49 kB │ map:     2.90 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/http-B7zkEW3h.js                                              0.98 kB │ gzip:   0.51 kB │ map:     3.27 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/solr-CCCyg-ZR.js                                              1.00 kB │ gzip:   0.55 kB │ map:     3.28 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/chat-diff-highlight.runtime-DGju3S-f.js                       1.08 kB │ gzip:   0.64 kB │ map:     3.93 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/channel-picker-BZiZeEOj.js                                    1.08 kB │ gzip:   0.62 kB │ map:    13.06 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/troff-cwvmpOmD.js                                             1.09 kB │ gzip:   0.52 kB │ map:     3.24 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/toml-Y1yXN3Kh.js                                              1.18 kB │ gzip:   0.63 kB │ map:     3.81 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sessions-hub-header-CkhdiHXs.js                               1.18 kB │ gzip:   0.53 kB │ map:     2.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/rolldown-runtime-DkW27tQK.js                                  1.19 kB │ gzip:   0.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/spreadsheet-B2QskK0I.js                                       1.27 kB │ gzip:   0.63 kB │ map:     3.96 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sw-refresh.runtime-BYwvaR9W.js                                1.36 kB │ gzip:   0.70 kB │ map:     5.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/channel-avatar-Ck4UaYXv.js                                    1.37 kB │ gzip:   0.65 kB │ map:     2.76 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/agent-scope-control-N6sWo9Og.js                               1.46 kB │ gzip:   0.80 kB │ map:     4.50 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/usage-DKRC2hzE.js                                             1.50 kB │ gzip:   0.76 kB │ map:     6.18 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/plugins-hub-header-DtnoLR1s.js                                1.52 kB │ gzip:   0.69 kB │ map:    25.20 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mbox-FBwpKlUC.js                                              1.53 kB │ gzip:   0.76 kB │ map:     4.96 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/update-run-projection-BmUbrgxw.js                             1.62 kB │ gzip:   0.86 kB │ map:     5.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/native-notifications-BeaMPz86.js                              1.63 kB │ gzip:   0.80 kB │ map:     6.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-C5hd5YIh.js                              1.73 kB │ gzip:   0.88 kB │ map:     5.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/rpm-BaMRFbtw.js                                               1.75 kB │ gzip:   0.92 kB │ map:     4.54 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sieve-DQdVmNgn.js                                             1.75 kB │ gzip:   0.86 kB │ map:     5.98 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/update-triage.runtime-Bh2n7luU.js                             1.76 kB │ gzip:   0.90 kB │ map:     4.59 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/model-picker-DvJy7GVR.js                                      1.80 kB │ gzip:   0.85 kB │ map:     5.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/factor-DYl96iqJ.js                                            1.80 kB │ gzip:   0.70 kB │ map:     4.52 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/eiffel-nZehmd2u.js                                            1.82 kB │ gzip:   1.00 kB │ map:     4.96 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/transcript-search-Cy4YqCmu.js                                 1.85 kB │ gzip:   0.94 kB │ map:     7.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/z80-CaZ6Af31.js                                               1.89 kB │ gzip:   0.89 kB │ map:     4.81 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/browser-bootstrap.runtime-CmR6prIB.js                         1.89 kB │ gzip:   1.06 kB │ map:     6.03 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/en-update-actions-CViD_ONa.js                                 1.91 kB │ gzip:   1.01 kB │ map:     3.35 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/brand-icons-D6SatL-Q.js                                       1.92 kB │ gzip:   0.92 kB │ map:     2.33 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mumps-DiRtrj06.js                                             1.97 kB │ gzip:   1.05 kB │ map:     6.41 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/load-BKUd91MB.js                                              1.97 kB │ gzip:   1.02 kB │ map:     7.76 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/elm-DZxw6TFj.js                                               2.01 kB │ gzip:   0.92 kB │ map:     7.50 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-roster-cache.runtime-BulNVqRE.js                      2.03 kB │ gzip:   1.03 kB │ map:     6.86 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mathematica-C2wHxbxS.js                                       2.05 kB │ gzip:   0.92 kB │ map:     6.86 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dockerfile-Cw1LUDls.js                                        2.06 kB │ gzip:   0.76 kB │ map:     6.45 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/skills-shared-BiREFZV0.js                                     2.07 kB │ gzip:   0.89 kB │ map:     5.69 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/turtle-CaEYDzGT.js                                            2.08 kB │ gzip:   0.99 kB │ map:     6.85 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ebnf-BMevISf6.js                                              2.11 kB │ gzip:   0.90 kB │ map:     6.69 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-environment-presentation.runtime-BS31E2sF.js       2.12 kB │ gzip:   0.95 kB │ map:     4.87 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/critical-observer-notice.runtime-As5LkFYP.js                  2.13 kB │ gzip:   1.00 kB │ map:     7.29 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/smalltalk-DCjGbhBh.js                                         2.15 kB │ gzip:   0.96 kB │ map:     6.63 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/update-failure-report-Co1T5e75.js                             2.15 kB │ gzip:   0.89 kB │ map:     2.65 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/hub-tabs-Ci1Rcl3U.js                                          2.16 kB │ gzip:   1.01 kB │ map:    10.46 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/fcl-BZeKn5iW.js                                               2.16 kB │ gzip:   1.05 kB │ map:     6.62 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/presenter-CtgcwmkI.js                                         2.19 kB │ gzip:   1.06 kB │ map:     6.96 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ntriples-Dr_YuwMC.js                                          2.20 kB │ gzip:   0.80 kB │ map:     7.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-wTAGidhY.js                                              2.20 kB │ gzip:   1.39 kB │ map:     5.28 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dtd-BLYU-BVh.js                                               2.22 kB │ gzip:   0.96 kB │ map:     7.04 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/octave-DsuOxwxE.js                                            2.25 kB │ gzip:   1.18 kB │ map:     5.82 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/yacas-4UW7E4Kt.js                                             2.28 kB │ gzip:   1.19 kB │ map:     7.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/pascal-CemkuYI0.js                                            2.39 kB │ gzip:   1.27 kB │ map:     5.74 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/simple-mode-fO7nmy5X.js                                       2.41 kB │ gzip:   1.19 kB │ map:     7.88 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/gateway-scope-upgrade.runtime-DJRA6Sms.js                     2.42 kB │ gzip:   0.97 kB │ map:     8.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/apl-CDdrCZVl.js                                               2.43 kB │ gzip:   1.34 kB │ map:     6.53 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/commonlisp-BkuaFBi8.js                                        2.45 kB │ gzip:   1.20 kB │ map:     6.79 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tcl-Ba8B3QEu.js                                               2.48 kB │ gzip:   1.32 kB │ map:     6.59 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/shell-B1oByMWF.js                                             2.56 kB │ gzip:   1.30 kB │ map:     8.04 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/webidl-C2iEcUXH.js                                            2.62 kB │ gzip:   1.37 kB │ map:     7.82 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-progress-B0AHTAr9.js                                  2.62 kB │ gzip:   1.12 kB │ map:     6.52 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/puppet-vmUf8xpM.js                                            2.65 kB │ gzip:   1.29 kB │ map:     9.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/pig-Bt8Qvkze.js                                               2.65 kB │ gzip:   1.49 kB │ map:     6.70 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/input-dialog-BrvqA6UJ.js                                      2.66 kB │ gzip:   1.10 kB │ map:     8.04 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/forth-CEw5LND1.js                                             2.67 kB │ gzip:   1.42 kB │ map:     6.27 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/setup-schema-DHtZcrWa.js                                      2.75 kB │ gzip:   1.38 kB │ map:    13.50 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-CGOVouH_.js                                              2.78 kB │ gzip:   1.60 kB │ map:     5.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-CVdJ6mvL.js                            2.78 kB │ gzip:   1.36 kB │ map:    11.97 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/velocity-F0QlomFP.js                                          2.84 kB │ gzip:   1.20 kB │ map:     8.52 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tiddlywiki-DLHM8fNz.js                                        2.92 kB │ gzip:   1.18 kB │ map:    11.19 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/modelica--0xTveIu.js                                          2.94 kB │ gzip:   1.38 kB │ map:     8.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/macos-titlebar-controls.runtime-CEoa9YUQ.js                   2.97 kB │ gzip:   1.04 kB │ map:     6.28 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/oz-DTY2GRqL.js                                                3.03 kB │ gzip:   1.38 kB │ map:     9.57 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/r-CadXD0eR.js                                                 3.06 kB │ gzip:   1.45 kB │ map:    10.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-manager-dialog-C5drqnI3.js                         3.08 kB │ gzip:   1.25 kB │ map:     6.58 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/stex-CveJubUk.js                                              3.22 kB │ gzip:   1.26 kB │ map:    11.37 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lua-yYK_8aRA.js                                               3.27 kB │ gzip:   1.51 kB │ map:     7.85 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cypher-CIhKfSWw.js                                            3.33 kB │ gzip:   1.60 kB │ map:     8.61 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/native-link-menu.runtime-wu6QD0X6.js                          3.34 kB │ gzip:   1.18 kB │ map:     5.63 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tiki-CryU3a6e.js                                              3.35 kB │ gzip:   1.35 kB │ map:    12.50 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/en-memory-import-DYMa3ks2.js                                  3.39 kB │ gzip:   1.44 kB │ map:     5.29 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sparql-ChxjJbEr.js                                            3.47 kB │ gzip:   1.70 kB │ map:     9.60 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/vhdl-DlYBPd1w.js                                              3.47 kB │ gzip:   1.61 kB │ map:     9.72 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-BQyQx3M1.js                                              3.54 kB │ gzip:   1.83 kB │ map:     7.03 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/exec-approval-BoGM5y-l.js                                     3.62 kB │ gzip:   1.51 kB │ map:     9.99 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mscgen-Cfn4e7TB.js                                            3.64 kB │ gzip:   1.08 kB │ map:     9.78 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/update-run-view-CKwsc9Kr.js                                   3.76 kB │ gzip:   1.41 kB │ map:    10.22 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/vb-CLop06NZ.js                                                3.82 kB │ gzip:   1.95 kB │ map:    11.72 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/q-BJMSR8Wr.js                                                 3.82 kB │ gzip:   1.78 kB │ map:     9.90 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/d-QPDGRTM0.js                                                 3.83 kB │ gzip:   1.79 kB │ map:    10.97 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/nav-drawer-swipe.runtime-ClLYxMDB.js                          3.87 kB │ gzip:   1.45 kB │ map:    10.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/swift-AYiAzsD9.js                                             3.92 kB │ gzip:   1.94 kB │ map:    10.91 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/coffeescript-CA7mxfOL.js                                      4.00 kB │ gzip:   1.79 kB │ map:    13.84 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/fortran-CXYmS400.js                                           4.00 kB │ gzip:   2.03 kB │ map:     9.81 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/widget-sandbox-host-C-I0wSHu.js                               4.00 kB │ gzip:   1.35 kB │ map:    10.80 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/composer-draft-retirement.runtime-DNnvoSNg.js                 4.01 kB │ gzip:   1.48 kB │ map:     9.92 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/keyboard-shortcuts-dialog-Co5bDOuu.js                         4.03 kB │ gzip:   1.39 kB │ map:     5.76 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lane-table-tclBeB16.js                                        4.08 kB │ gzip:   1.63 kB │ map:    16.46 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/asn1-xBq2G-qC.js                                              4.10 kB │ gzip:   2.05 kB │ map:    11.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dylan-7WzUunzT.js                                             4.17 kB │ gzip:   1.73 kB │ map:    14.09 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/asterisk-CIshXaRB.js                                          4.20 kB │ gzip:   1.84 kB │ map:     9.38 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/livescript-XV-s-Eov.js                                        4.22 kB │ gzip:   1.73 kB │ map:    10.08 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ttcn-cfg-XOZ7tOUX.js                                          4.24 kB │ gzip:   1.84 kB │ map:    11.22 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/groovy-2vH43gXR.js                                            4.26 kB │ gzip:   1.86 kB │ map:    12.89 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/haskell-CzANdbdO.js                                           4.31 kB │ gzip:   2.02 kB │ map:    12.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/permissions-page-Dqzlzfvd.js                                  4.33 kB │ gzip:   1.43 kB │ map:     9.27 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/home-session.runtime-v8zbTw2G.js                              4.40 kB │ gzip:   1.46 kB │ map:     8.46 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-roster-cache.reader-5Xk41KED.js                       4.43 kB │ gzip:   1.73 kB │ map:    14.80 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/portaled-hovercard-Dt4ecGAx.js                                4.66 kB │ gzip:   1.62 kB │ map:    13.92 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/gas-Ddcgu4GW.js                                               4.68 kB │ gzip:   1.37 kB │ map:    13.82 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/report-DJc-Hwc7.js                                            4.72 kB │ gzip:   2.02 kB │ map:    26.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mllike-DByFsHEc.js                                            4.96 kB │ gzip:   1.68 kB │ map:    12.87 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/logbook-controller-C4IzhN2G.js                                4.98 kB │ gzip:   1.69 kB │ map:    20.31 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ttcn-CnpUl-OE.js                                              5.00 kB │ gzip:   2.27 kB │ map:    13.53 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lobsterdex-page-BOB6ppD4.js                                   5.03 kB │ gzip:   1.92 kB │ map:    17.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/native-device-settings-BL1uO7C_.js                            5.06 kB │ gzip:   2.09 kB │ map:    21.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/question-page-registration-BpUssE6T.js                        5.07 kB │ gzip:   1.66 kB │ map:    12.33 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/history-scan-page-controller-Bwdfgt4_.js                      5.10 kB │ gzip:   1.73 kB │ map:    14.84 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-BggnB332.js                                              5.16 kB │ gzip:   2.49 kB │ map:    10.88 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ruby-oUh05Trd.js                                              5.17 kB │ gzip:   2.25 kB │ map:    16.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/crystal-tIaXxdp_.js                                           5.18 kB │ gzip:   2.22 kB │ map:    17.92 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ecl-BLu10NKu.js                                               5.25 kB │ gzip:   2.42 kB │ map:    12.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-discussion-panel-DiprGLDm.js                          5.35 kB │ gzip:   1.99 kB │ map:    14.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/julia-DCp_A6wD.js                                             5.43 kB │ gzip:   2.30 kB │ map:    16.20 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/update-confirmation.runtime-B9Fse-Fy.js                       5.55 kB │ gzip:   1.87 kB │ map:    16.86 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/vbscript-Dsg51Nc6.js                                          5.57 kB │ gzip:   2.65 kB │ map:    17.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-placement-move-dialog-D_2K9Yq-.js                     5.78 kB │ gzip:   1.71 kB │ map:    16.70 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mirc-BPy65nD3.js                                              6.05 kB │ gzip:   2.82 kB │ map:    11.57 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/xquery-BLXVEG4j.js                                            6.29 kB │ gzip:   2.65 kB │ map:    21.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cobol-QhErn_Fq.js                                             6.37 kB │ gzip:   3.15 kB │ map:    12.03 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/python-COs-kvPa.js                                            6.40 kB │ gzip:   2.77 kB │ map:    21.56 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/config-form.tiers-BzTwsu7Q.js                                 6.42 kB │ gzip:   2.41 kB │ map:    25.61 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/scheme-CE-3ZWRO.js                                            6.51 kB │ gzip:   2.51 kB │ map:    16.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/chat-pane-placement.runtime-CPZH7glr.js                       6.58 kB │ gzip:   2.08 kB │ map:    15.39 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/board-widget-cell-render-B7x6exOm.js                          6.64 kB │ gzip:   1.84 kB │ map:    12.98 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-dashboard-BdHYzb1S.js                              6.71 kB │ gzip:   2.18 kB │ map:    11.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/pug-RXDoR6tl.js                                               6.77 kB │ gzip:   2.08 kB │ map:    20.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/textile-Ch7z9apM.js                                           6.88 kB │ gzip:   2.54 kB │ map:    20.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/nsis-B2VCIoWS.js                                              6.93 kB │ gzip:   3.08 kB │ map:     9.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/board-document-2BygxcXb.js                                    7.08 kB │ gzip:   2.30 kB │ map:    19.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/about-page-Ds7qgmtd.js                                        7.28 kB │ gzip:   2.55 kB │ map:    24.06 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/en-transcripts-CVFhsm1A.js                                    7.30 kB │ gzip:   2.92 kB │ map:    10.53 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/nginx-CqyriA0n.js                                             7.54 kB │ gzip:   2.83 kB │ map:    12.55 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dock-layout-controller-CL5_wyEl.js                            7.59 kB │ gzip:   2.28 kB │ map:    14.70 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/canvas-widget-view-ab2F_Z1R.js                                7.63 kB │ gzip:   2.80 kB │ map:    19.65 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/powershell-BcUGsiXj.js                                        7.83 kB │ gzip:   3.38 kB │ map:    16.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/haxe-B0mYmy-D.js                                              8.00 kB │ gzip:   3.05 kB │ map:    27.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/erlang-DPE2rtAo.js                                            8.00 kB │ gzip:   3.00 kB │ map:    27.19 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/labs-page-C5cmKzyw.js                                         8.44 kB │ gzip:   2.62 kB │ map:    26.45 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/verilog-DF5ypeZ6.js                                           8.60 kB │ gzip:   3.64 kB │ map:    30.15 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-CnbjibYP.js                                              8.63 kB │ gzip:   3.74 kB │ map:   102.54 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/chat-sidebar-region.runtime-Bpov2txY.js                       8.75 kB │ gzip:   3.05 kB │ map:    33.61 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/select-picker-Cym6FZxR.js                                     8.83 kB │ gzip:   2.88 kB │ map:    25.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/wizard-step-controls-C0hLpQIc.js                              8.88 kB │ gzip:   2.95 kB │ map:    25.36 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/usage-CKM2M2BX.js                                             9.16 kB │ gzip:   2.81 kB │ map:    64.61 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/presentation-DFP-X7kb.js                                      9.23 kB │ gzip:   2.88 kB │ map:    21.41 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sas-CHow9-KW.js                                               9.46 kB │ gzip:   4.21 kB │ map:    18.12 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/onboarding-memory-import-B4Euigco.js                          9.48 kB │ gzip:   2.87 kB │ map:    25.99 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/clojure-Dj1qubLJ.js                                           9.56 kB │ gzip:   4.16 kB │ map:    21.04 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-C1-SNFu7.js                              9.80 kB │ gzip:   4.10 kB │ map:    28.38 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/custodian-page-7blYyJyc.js                                    9.83 kB │ gzip:   2.80 kB │ map:    20.85 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/perl-D9HnB3am.js                                              9.87 kB │ gzip:   3.60 kB │ map:    43.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/idl-CNKmfWsB.js                                               9.97 kB │ gzip:   4.52 kB │ map:    15.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/settings-targets-rXgXDUaf.js                                 10.11 kB │ gzip:   2.55 kB │ map:    19.28 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/worktrees-page-DY78lhU8.js                                   10.14 kB │ gzip:   3.02 kB │ map:    24.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/gherkin-D1huiSVU.js                                          10.29 kB │ gzip:   5.21 kB │ map:    14.28 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dashboards-page-CMgXwRS6.js                                  10.43 kB │ gzip:   3.50 kB │ map:    33.47 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/logs-page-HMwRRdQ-.js                                        10.59 kB │ gzip:   3.73 kB │ map:    32.90 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/portals-page-B8XiswIt.js                                     10.61 kB │ gzip:   3.03 kB │ map:    28.03 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/apps-page-WVBrGY6N.js                                        10.66 kB │ gzip:   3.81 kB │ map:    29.22 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/debug-page-CJpcPopP.js                                       10.75 kB │ gzip:   3.26 kB │ map:    25.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/panel-tab-strip-BvGLsl1Z.js                                  10.84 kB │ gzip:   3.67 kB │ map:    27.96 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/logbook-view-CSvvqR6E.js                                     11.02 kB │ gzip:   2.89 kB │ map:    30.06 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/view-pairing.runtime-ETh9YS1m.js                             11.29 kB │ gzip:   2.57 kB │ map:    19.59 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/browser-B-SSHjyK.js                                          11.53 kB │ gzip:   4.30 kB │ map:    38.03 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-group-defaults-dialog-BLyQcV6u.js                    11.68 kB │ gzip:   2.77 kB │ map:    23.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-C3nXxQHV.js                                             11.87 kB │ gzip:   5.38 kB │ map:    31.55 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/github-link-hovercard.runtime-DHXDS7Vl.js                    12.09 kB │ gzip:   3.99 kB │ map:    41.24 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/connection-page-oXqtfmRS.js                                  12.31 kB │ gzip:   3.85 kB │ map:    35.23 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/assistant-panel-Zw4QohiW.js                                  12.60 kB │ gzip:   3.80 kB │ map:    25.60 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/settings-sidebar-m67NFHlX.js                                 12.72 kB │ gzip:   4.23 kB │ map:    38.31 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/debug-overlay-KWCIkYUf.js                                    12.73 kB │ gzip:   4.14 kB │ map:    33.38 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-people.runtime-m8Tkzp48.js                           13.22 kB │ gzip:   4.60 kB │ map:    37.04 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-BYzGnde6.js                           13.38 kB │ gzip:   4.69 kB │ map:   159.93 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/approvals-page-BgDykHPZ.js                                   13.49 kB │ gzip:   3.33 kB │ map:    29.73 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-update-card-B-dhY52Y.js                              13.50 kB │ gzip:   3.32 kB │ map:    34.75 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/markdown-mermaid-BRvoLvMv.js                                 13.89 kB │ gzip:   5.28 kB │ map:    32.23 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tasks-page-CBt-OlQb.js                                       14.45 kB │ gzip:   4.37 kB │ map:    42.82 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-Cw6sYv4e.js                                             14.56 kB │ gzip:   5.95 kB │ map:    35.05 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/plugin-page-CzIWojDR.js                                      14.59 kB │ gzip:   4.01 kB │ map:    35.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-organizer-operations.runtime-Bc3n909H.js             14.68 kB │ gzip:   3.72 kB │ map:    52.94 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/device-page-DeZKZGhU.js                                      15.30 kB │ gzip:   3.52 kB │ map:    33.72 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/chat-session-rail-D7uZJoLg.js                                15.59 kB │ gzip:   4.04 kB │ map:    35.86 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-CEe26IuH.js                           15.64 kB │ gzip:   6.13 kB │ map:   125.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-D0XGYWuC.js                                             16.43 kB │ gzip:   7.60 kB │ map:    22.13 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/javascript-DX2C-kp4.js                                       17.08 kB │ gzip:   5.82 kB │ map:    63.23 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cloud-workers-page-BQIUvdNP.js                               17.20 kB │ gzip:   4.73 kB │ map:    45.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/approval-page-registration-B8YhCno4.js                       17.25 kB │ gzip:   4.42 kB │ map:    39.58 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-BMPa21m3.js                           17.54 kB │ gzip:   6.91 kB │ map:    87.87 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/command-palette-B2zeyPHK.js                                  18.81 kB │ gzip:   6.22 kB │ map:    56.56 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-loader-DgT2r6tn.js                                18.83 kB │ gzip:   6.20 kB │ map:    53.71 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sidebar-attention-panel.runtime-BkN2z0cM.js                  19.15 kB │ gzip:   5.05 kB │ map:    62.38 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/gateway-runtime-Bdkl02C0.js                                  20.19 kB │ gzip:   7.55 kB │ map:   109.53 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/secrets-page-Dw1TYmbf.js                                     20.83 kB │ gzip:   5.62 kB │ map:    71.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-DHMRL106.js                                             20.91 kB │ gzip:   9.50 kB │ map:    35.49 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-PKW49LK8.js                                             21.19 kB │ gzip:   9.84 kB │ map:    37.56 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-DLp12WM6.js                           21.26 kB │ gzip:   7.51 kB │ map:   108.30 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/clike-Ck9jqPvt.js                                            22.19 kB │ gzip:   7.84 kB │ map:    56.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-D90LgCCU.js                                             23.31 kB │ gzip:  10.65 kB │ map:    37.75 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/meetings-page-CSvFHc6J.js                                    23.38 kB │ gzip:   6.76 kB │ map:    62.92 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/stylus-S2nJdsOO.js                                           23.71 kB │ gzip:   8.76 kB │ map:    55.67 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/github-identity-view-Diouv-NC.js                             24.45 kB │ gzip:   6.40 kB │ map:    69.63 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/code-language-cddt_EDV.js                                    24.62 kB │ gzip:   5.47 kB │ map:    55.29 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/css-8bpu84Yw.js                                              24.84 kB │ gzip:   8.38 kB │ map:    53.86 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/file-editor-view-txRjCNnI.js                                 25.35 kB │ gzip:   8.83 kB │ map:   129.00 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-CUVovbyN.js                                             26.62 kB │ gzip:   8.83 kB │ map:   106.68 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-hyvBLSAA.js                                             27.01 kB │ gzip:  12.83 kB │ map:    45.39 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/memory-import-page-ChdMP73w.js                               28.46 kB │ gzip:   6.54 kB │ map:    75.39 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-BY_kjopq.js                                             28.80 kB │ gzip:  11.82 kB │ map:    72.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/en-settings-Cchya593.js                                      29.24 kB │ gzip:  10.78 kB │ map:    47.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/session-progress-hovercard.runtime-CsmfTmvc.js               29.46 kB │ gzip:   8.37 kB │ map:    73.91 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-BXULJ4tg.js                                             31.04 kB │ gzip:  12.92 kB │ map:    43.93 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-DTiTkOj7.js                                             32.43 kB │ gzip:  13.16 kB │ map:    69.14 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sql-Cm3b129a.js                                              36.96 kB │ gzip:  11.00 kB │ map:    54.91 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/custodian-surface-Cg5XOeET.js                                40.07 kB │ gzip:  11.35 kB │ map:   135.34 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-DKV6ALwJ.js                                             40.92 kB │ gzip:  17.08 kB │ map:    45.89 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/lit-runtime-DGIJ7kmI.js                                      43.27 kB │ gzip:  14.73 kB │ map:   257.19 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-5X8pYvas.js                                             44.22 kB │ gzip:  15.39 kB │ map:   169.17 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/desktop-panel-DZkbUgIv.js                                    44.65 kB │ gzip:  11.77 kB │ map:   104.83 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-Bp8wT1N8.js                             44.67 kB │ gzip:  14.27 kB │ map:   173.83 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-DNT9TbjL.js                                             45.04 kB │ gzip:  19.57 kB │ map:    71.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/profile-page-DRgcfs1A.js                                     46.50 kB │ gzip:  12.15 kB │ map:   144.51 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/proposals-BfaJPA0A.js                                        50.62 kB │ gzip:  16.79 kB │ map:   384.07 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/terminal-panel-registration-CUJjYfZ_.js                      52.86 kB │ gzip:  15.23 kB │ map:   151.44 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/skills-page-CLd9ORbm.js                                      53.50 kB │ gzip:  12.86 kB │ map:   128.89 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tool-catalog-lTvY-Q7F.js                                     53.66 kB │ gzip:  13.83 kB │ map:   171.35 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/board-view-CnGIuPz0.js                                       54.37 kB │ gzip:  15.09 kB │ map:   161.39 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/plugins-page-BViD0CdK.js                                     59.73 kB │ gzip:  16.39 kB │ map:   174.02 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/skill-workshop-page-C_XEFE5W.js                              61.09 kB │ gzip:  15.71 kB │ map:   186.94 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/model-providers-page-C0uaOTzi.js                             62.26 kB │ gzip:  16.70 kB │ map:   201.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/model-setup-page-BBZwiZCD.js                                 63.10 kB │ gzip:  15.89 kB │ map:   194.66 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/config-form-4r2gajQ5.js                                      64.08 kB │ gzip:  18.86 kB │ map:   250.65 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/mcp-app-view-registration-xUxo9cIU.js                        66.40 kB │ gzip:  18.77 kB │ map:   268.51 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/cron-page-D7Kwf_fL.js                                        67.33 kB │ gzip:  17.37 kB │ map:   204.38 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/devices-page-CVujQyX7.js                                     67.74 kB │ gzip:  18.92 kB │ map:   202.68 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/channels-page-DkmQDKP0.js                                    68.63 kB │ gzip:  16.92 kB │ map:   191.70 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-DcvzhyRc.js                                             71.04 kB │ gzip:  26.26 kB │ map:    79.01 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/browser-panel-DEWcT-l6.js                                    71.63 kB │ gzip:  18.27 kB │ map:   214.74 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/sessions-page-DtLRP2Il.js                                    72.99 kB │ gzip:  18.95 kB │ map:   192.81 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/activity-page-DNTpLe-7.js                                    77.12 kB │ gzip:  20.18 kB │ map:   224.36 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-D3t2O5Bc.js                                             84.78 kB │ gzip:  33.90 kB │ map:   115.40 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-BVdxKXMR.js                                             98.17 kB │ gzip:  28.93 kB │ map:   112.36 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/agents-page-Cav4LWjT.js                                     102.03 kB │ gzip:  24.63 kB │ map:   303.48 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/config-runtime-Cr2H22l0.js                                  102.97 kB │ gzip:  28.77 kB │ map:   448.18 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-0Ev2zWzL.js                                            104.16 kB │ gzip:  34.94 kB │ map:   113.44 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/usage-page-BGbs273v.js                                      106.45 kB │ gzip:  27.82 kB │ map:   318.38 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-Df5ydbuy.js                            113.54 kB │ gzip:  35.60 kB │ map:   517.76 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/phone-runtime-D7alg31e.js                                   122.65 kB │ gzip:  30.62 kB │ map:   371.20 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-gmQXi2vg.js                            127.86 kB │ gzip:  40.27 kB │ map:   441.42 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/rfb-3fIY7_Ix.js                                             190.46 kB │ gzip:  57.64 kB │ map:   815.41 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/markdown-runtime-Bn6OdBVq.js                                214.56 kB │ gzip:  82.53 kB │ map:   781.98 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-new-BtXhdWNr.js                             217.13 kB │ gzip:  56.85 kB │ map:   645.33 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/config-page-B52vYRZv.js                                     240.93 kB │ gzip:  59.42 kB │ map:   685.42 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-core-xQgKEf1S.js                                 243.02 kB │ gzip:  76.86 kB │ map: 1,003.83 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-core-B3x0GsVo.js                                 251.29 kB │ gzip:  78.20 kB │ map:   946.27 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-foundation-BdvouwG0.js                           268.91 kB │ gzip:  76.58 kB │ map:   900.63 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/dist-Bkc2S6Bd.js                                            275.53 kB │ gzip:  90.90 kB │ map: 1,235.10 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/zh-CN-Byx8a7vS.js                                           295.22 kB │ gzip: 107.21 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/zh-TW-CpKqlikZ.js                                           302.63 kB │ gzip: 108.30 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-core-CT2Zla_-.js                                 310.81 kB │ gzip:  99.40 kB │ map:   556.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/id-CljCawLl.js                                              320.98 kB │ gzip: 101.58 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/nl-CspxySd4.js                                              337.82 kB │ gzip: 109.26 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/pt-BR-CDAaNalU.js                                           342.81 kB │ gzip: 109.32 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/tr-DA4kJwLe.js                                              345.82 kB │ gzip: 110.22 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/it-CfczmvXv.js                                              350.47 kB │ gzip: 110.03 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/pl-CNtfTObS.js                                              350.73 kB │ gzip: 116.07 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/es-BxsEDOON.js                                              352.60 kB │ gzip: 110.86 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-B7BM7aib.js                            356.30 kB │ gzip: 103.60 kB │ map: 1,272.49 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/de-CoWcG3Pf.js                                              356.73 kB │ gzip: 114.35 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ko-XKLmiSfQ.js                                              360.37 kB │ gzip: 111.09 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/fr-DfTEiEk-.js                                              368.45 kB │ gzip: 113.58 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/vi-eAGRdspW.js                                              396.56 kB │ gzip: 111.39 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-B3iR8lNu.js                          408.92 kB │ gzip: 115.09 kB │ map: 1,452.77 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ja-JP-dhnR9xmY.js                                           411.27 kB │ gzip: 117.46 kB │ map:     0.26 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-B9acwDnx.js                          435.90 kB │ gzip: 126.81 kB │ map: 2,303.04 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ar-O-abl9Cb.js                                              437.87 kB │ gzip: 119.64 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-chat-DMG_CSPL.js                            463.45 kB │ gzip: 121.82 kB │ map: 1,362.72 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/fa-CifAoLgd.js                                              471.02 kB │ gzip: 120.04 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/uk-CPq5DAzE.js                                              520.01 kB │ gzip: 131.76 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ru-BeDAfYYM.js                                              523.73 kB │ gzip: 133.01 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/hi-AvTXMGMO.js                                              624.58 kB │ gzip: 129.78 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/ghostty-web-U8fdtipp.js                                     636.97 kB │ gzip: 187.37 kB │ map:   756.39 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/th-CbmSy8xl.js                                              651.71 kB │ gzip: 126.29 kB │ map:     0.25 kB
+../../../../../../tmp/oc-vt-um23op/openclaw-ui-e2e-C9S40T/assets/control-ui-boot-shared-DvfEKpJM.js                          698.79 kB │ gzip: 202.85 kB │ map: 2,292.06 kB
+
+[32m✓ built in 9.78s[39m
+Measured inside the callback, so queue time is excluded and time the callback itself awaited is not:
+  - control-ui-precompressed-assets writeBundle (42%, 4.1s, 1 call)
+Those rows are 42% of the build; the rest of the 78% is below.
+Not measurable — 2 hooks whose calls overlap, so elapsed time covers work other calls were doing. Profile with `node --cpu-prof`:
+  - vite:css transform (81 calls)
+  - vite:asset load (2 calls)
+See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.
+[39m
+[90mstdout[2m | ui/src/e2e/identity-config-refresh.e2e.test.ts[2m > [22m[2mControl UI mocked Gateway E2E[2m > [22m[2mrefreshes the visible chat identity after a successful config change
+[22m[39m[control-ui-e2e] retained proof: /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/browser/control-ui-mocked-gateway-e2e-zeFfdQ
+
+ [32m✓[39m [30m[46m ui-e2e-bundled [49m[39m ui/src/e2e/identity-config-refresh.e2e.test.ts[2m > [22mControl UI mocked Gateway E2E[2m > [22mrefreshes the visible chat identity after a successful config change[33m 1430[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 00:52:18
+[2m   Duration [22m 13.86s[2m (tests 58%, transform 26%, import 15%, setup 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/chat-identity-142581-green/vitest.json

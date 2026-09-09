@@ -1,0 +1,4 @@
+98e0bea2e6efa6bc6b9a772d9be0abbbd9c6114d67d59a02fd4bb493d964ebc1  ui/src/e2e/identity-config-refresh.e2e.test.ts
+d578b067bea4801283a5fa20f5814d86c68b993143499d4db87d616dab7afde5  ui/src/pages/chat/chat-pane-lifecycle.ts
+4fd398867cae880dd054f23c7ab6e7af9cb0ffc0b857c1dbcabf38198ec73e76  ui/src/pages/chat/chat-pane.test-support.ts
+4ffa9f9f8aa0057484ad639fbb6a39ff7a1f4904339749de127799f6aab9bd1f  ui/src/pages/chat/chat-state-page.ts

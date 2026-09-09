@@ -7,26 +7,26 @@
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "compare",
-    "variant": "registered-ingress"
+    "variant": "remaining"
   },
   {
-    "id": "node-engine-guidance",
-    "directory": "node-engine-guidance-red",
-    "runner": "ubuntu-24.04",
-    "source": "85cc7136a9f993e142f94969f718a387ddd2133a",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "owner"
-  },
-  {
-    "id": "chat-identity-142581-green",
-    "directory": "chat-identity-142581-green",
+    "id": "chat-identity-142581-remaining",
+    "directory": "chat-identity-142581-remaining",
     "runner": "ubuntu-24.04",
     "source": "251634acaccd9d0576a915461f7a154cc51b50f4",
     "node": "24.20.0",
     "pnpm": "12.3.4",
     "mode": "green",
-    "variant": "candidate"
+    "variant": "remaining-static"
+  },
+  {
+    "id": "usage-known-zero-cost-baseline",
+    "directory": "usage-known-zero-cost",
+    "runner": "ubuntu-24.04",
+    "source": "7f7aeb699013db4400f9ec6cfa430168e208d7bd",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "baseline",
+    "variant": "recorded-cost-hint"
   }
 ]

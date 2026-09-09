@@ -1,0 +1,300 @@
+diff --git a/ui/src/e2e/identity-config-refresh.e2e.test.ts b/ui/src/e2e/identity-config-refresh.e2e.test.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..1c801e052c2d436dff5d4b30b2bf9d57413a8698
+--- /dev/null
++++ b/ui/src/e2e/identity-config-refresh.e2e.test.ts
+@@ -0,0 +1,192 @@
++import { writeFile } from "node:fs/promises";
++import path from "node:path";
++import { expect, it } from "vitest";
++import type { AgentsListResult } from "../api/types.ts";
++import type { ControlUiMockGateway } from "../test-helpers/control-ui-e2e.ts";
++import {
++  controlUiSessionUrl,
++  createChatFlowE2eSuite,
++  installMockGateway,
++  requireRecord,
++  requireString,
++} from "./chat-flow.test-support.ts";
++import { createControlUiE2eContextOptions } from "./control-ui-e2e-suite.test-support.ts";
++
++const suite = createChatFlowE2eSuite();
++const initialName = "Atlas";
++const nextName = "Cedar";
++const initialAvatar = "🦞";
++const nextAvatar = "🌻";
++const draft = "Keep this unsent garden note.";
++const reply = "The garden note stayed in this chat.";
++const identity = (name: string, avatar: string) => ({
++  agentId: "main",
++  name,
++  avatar,
++  avatarStatus: "none",
++  nameSource: "agent",
++});
++const roster = (name: string, avatar: string): AgentsListResult => ({
++  defaultId: "main",
++  mainKey: "main",
++  scope: "per-sender",
++  agents: [
++    { id: "main", name, identity: { name, emoji: avatar }, model: { primary: "openai/gpt-5.5" } },
++  ],
++});
++
++suite.define(() => {
++  it("refreshes the visible chat identity after a successful config change", async () => {
++    const context = await suite.newBrowserContext({
++      ...createControlUiE2eContextOptions(),
++      locale: "en-US",
++      viewport: { width: 1440, height: 900 },
++    });
++    const page = await context.newPage();
++    const screenshots: string[] = [];
++    const capture = async (name: string) => {
++      const file = path.join(suite.artifactDir, name);
++      await page.screenshot({ path: file });
++      screenshots.push(file);
++    };
++    try {
++      const gateway = await installMockGateway(page, {
++        assistantName: initialName,
++        historyMessages: [],
++        communityInvite: false,
++        methodResponses: {
++          "agent.identity.get": identity(initialName, initialAvatar),
++          "agents.list": roster(initialName, initialAvatar),
++        },
++      });
++      await page.goto(controlUiSessionUrl(suite.server.baseUrl, "main"));
++      const heading = page.locator(".agent-chat__welcome-identity h2");
++      const avatar = page.locator(".agent-chat__welcome-identity .agent-chat__avatar--text");
++      const composer = page.locator(".agent-chat__composer-combobox textarea");
++      await expect.poll(() => heading.textContent()).toBe(initialName);
++      await expect.poll(async () => (await avatar.textContent())?.trim()).toBe(initialAvatar);
++      await expect.poll(() => composer.getAttribute("placeholder")).toContain(initialName);
++      await composer.fill(draft);
++      const sessionUrl = page.url();
++      expect(await page.locator(".chat-group").count()).toBe(0);
++      await capture("initial.png");
++
++      const successfulResponses = await page.evaluateHandle(
++        ({ nextIdentity, nextRoster }) => {
++          const fixture = (
++            window as Window & {
++              openclawControlUiE2eGateway?: ControlUiMockGateway;
++            }
++          ).openclawControlUiE2eGateway;
++          if (!fixture) {
++            throw new Error("Mock Gateway is not installed");
++          }
++          const rows: Array<{ method: string; params: unknown; response: unknown }> = [];
++          for (const [method, response] of [
++            ["agent.identity.get", nextIdentity],
++            ["agents.list", nextRoster],
++          ] as const) {
++            fixture.setRequestHandler(method, ({ params, respond }) => {
++              respond(response);
++              rows.push({ method, params, response });
++            });
++          }
++          return rows;
++        },
++        { nextIdentity: identity(nextName, nextAvatar), nextRoster: roster(nextName, nextAvatar) },
++      );
++      try {
++        await gateway.emitGatewayEvent("config.changed", { hash: "synthetic-identity-change" });
++        await expect
++          .poll(() =>
++            successfulResponses.evaluate(
++              (rows) => rows.filter((row) => row.method === "agents.list").length,
++            ),
++          )
++          .toBeGreaterThanOrEqual(1);
++        await expect
++          .poll(() =>
++            successfulResponses.evaluate(
++              (rows) => rows.filter((row) => row.method === "agent.identity.get").length,
++            ),
++          )
++          .toBeGreaterThanOrEqual(2);
++        await expect.poll(() => page.title()).toContain(nextName);
++        const observed = {
++          name: (await heading.textContent())?.trim(),
++          avatar: (await avatar.textContent())?.trim(),
++          avatarLabel: await avatar.getAttribute("aria-label"),
++          placeholder: await composer.getAttribute("placeholder"),
++        };
++        expect([initialName, nextName]).toContain(observed.name);
++        expect([initialAvatar, nextAvatar]).toContain(observed.avatar);
++        expect(await composer.inputValue()).toBe(draft);
++        expect(page.url()).toBe(sessionUrl);
++        expect(await page.locator(".chat-group").count()).toBe(0);
++        expect((await gateway.getRequests("chat.send")).length).toBe(0);
++        await capture("settled.png");
++
++        await page.getByRole("button", { name: "Send message" }).click();
++        const request = await gateway.waitForRequest("chat.send");
++        const params = requireRecord(request.params);
++        expect(params.sessionKey).toBe("agent:main:main");
++        expect(params.message).toBe(draft);
++        const runId = requireString(params.idempotencyKey, "chat run id");
++        await gateway.emitChatFinal({ runId, text: reply });
++        await page.locator(".chat-group.assistant .chat-text", { hasText: reply }).waitFor();
++        const sender = (
++          await page.locator(".chat-group.assistant .chat-sender-name").first().textContent()
++        )?.trim();
++        expect(page.url()).toBe(sessionUrl);
++        expect((await gateway.getRequests("chat.send")).length).toBe(1);
++        await capture("roundtrip.png");
++        const responses = await successfulResponses.jsonValue();
++        await writeFile(
++          path.join(suite.artifactDir, "receipts.json"),
++          JSON.stringify(
++            {
++              initial: {
++                name: initialName,
++                avatar: initialAvatar,
++                sessionUrl,
++                draft,
++                transcriptRows: 0,
++              },
++              observed,
++              sender,
++              responses,
++              screenshots,
++              controls: {
++                sessionPreserved: true,
++                draftPreserved: true,
++                transcriptPreserved: true,
++                sendsBeforeSubmit: 0,
++                sendsAfterSubmit: 1,
++                sentSession: params.sessionKey,
++                sentMessage: params.message,
++                reply,
++                replyVisible: true,
++              },
++            },
++            null,
++            2,
++          ),
++        );
++        expect(
++          { ...observed, sender },
++          "config identity display follows committed identity",
++        ).toEqual({
++          name: nextName,
++          avatar: nextAvatar,
++          avatarLabel: nextName,
++          placeholder: "Message Cedar",
++          sender: nextName,
++        });
++      } finally {
++        await successfulResponses.dispose();
++      }
++    } finally {
++      await suite.closeBrowserContext(context);
++    }
++  });
++});
+diff --git a/ui/src/pages/chat/chat-pane-lifecycle.ts b/ui/src/pages/chat/chat-pane-lifecycle.ts
+index b036fd5729a37be11d0df8edc78f44f05af88d20..cd15062e84d4928d105b60ff78f03ae6f4d174ae 100644
+--- a/ui/src/pages/chat/chat-pane-lifecycle.ts
++++ b/ui/src/pages/chat/chat-pane-lifecycle.ts
+@@ -381,6 +381,9 @@ export abstract class ChatPaneLifecycle extends ChatPaneSessionCreation {
+       }
+     }
+     chatState.attach(pageState);
++    chatState.addCleanup(
++      this.context.agentIdentity.subscribe(() => void pageState.loadAssistantIdentity()),
++    );
+     chatState.restoreComposer({ preserveCurrent: true });
+     const sessionHandoff = this.takeSessionHandoff(pageState.sessionKey);
+     if (sessionHandoff?.restore) {
+@@ -481,7 +484,6 @@ export abstract class ChatPaneLifecycle extends ChatPaneSessionCreation {
+             state.mediaPolicyEpoch = (state.mediaPolicyEpoch ?? 0) + 1;
+             state.requestUpdate?.();
+             chatAvatars.invalidateChatAvatarCache(state);
+-            state.assistantIdentityRequestVersion += 1;
+             void chatAvatars.refreshChatAvatar(state).finally(() => state.requestUpdate?.());
+           }
+           handleQuestionPromptEvent(this.questionPromptState, event);
+diff --git a/ui/src/pages/chat/chat-pane.test-support.ts b/ui/src/pages/chat/chat-pane.test-support.ts
+index b194ec2519111e46d635b4b6d0506b518430f0cc..aea0426741e36af9a6ad8eed37625e7bf7757fb1 100644
+--- a/ui/src/pages/chat/chat-pane.test-support.ts
++++ b/ui/src/pages/chat/chat-pane.test-support.ts
+@@ -26,6 +26,7 @@ import type { ApplicationContext } from "../../app/context.ts";
+ import type { ApplicationPlacementStartupStatus } from "../../app/session-placement-startup.ts";
+ import { loadSettings } from "../../app/settings.ts";
+ import type { MarkdownRenderOptions } from "../../components/markdown-render-options.ts";
++import { createAgentIdentityCapability } from "../../lib/agents/identity.ts";
+ import type { CatalogSessionKey } from "../../lib/sessions/catalog-key.ts";
+ import type { SessionCapability } from "../../lib/sessions/index.ts";
+ import "./chat-pane.ts";
+@@ -200,13 +201,15 @@ export function createGatewayBrowserClientFixture(
+   return client;
+ }
+ 
+-function withLivePreferences(context: Omit<ApplicationContext, "theme">): ApplicationContext {
++function withLivePreferences(
++  context: Omit<ApplicationContext, "theme" | "agentIdentity">,
++): ApplicationContext {
+   const theme = createApplicationTheme(
+     loadSettings(context.gateway.connection.gatewayUrl),
+     context.gateway,
+   );
+   onTestFinished(() => theme.dispose());
+-  return { ...context, theme };
++  return { ...context, theme, agentIdentity: createAgentIdentityCapability(context.gateway) };
+ }
+ 
+ export function createInitializationContext(): ApplicationContext {
+@@ -266,7 +269,7 @@ export function createInitializationContext(): ApplicationContext {
+     chatSubmissions: createChatSubmissions(),
+     chatAttachmentHandoff: createChatAttachmentHandoff(),
+     sessions: { state: { modelOverrides: {} } },
+-  } as unknown as Omit<ApplicationContext, "theme">);
++  } as unknown as Omit<ApplicationContext, "theme" | "agentIdentity">);
+ }
+ 
+ export function nativeHistoryMessage(seq: number, text = `message ${seq}`) {
+@@ -355,7 +358,7 @@ export function createSessionContext(
+     nativeChatDrafts: { subscribe: () => () => undefined },
+     placementStartup: { get: vi.fn(() => null), hasPendingTurn: () => false, pause: vi.fn() },
+     sessions,
+-  } as unknown as Omit<ApplicationContext, "theme">);
++  } as unknown as Omit<ApplicationContext, "theme" | "agentIdentity">);
+ }
+ 
+ export function createTestChatPane(params: {
+diff --git a/ui/src/pages/chat/chat-state-page.ts b/ui/src/pages/chat/chat-state-page.ts
+index 30dbf5395a45122d9c69466b4146c6a20fa34e13..8a4e18e2077d699a71c55c6519de35762a0d83a1 100644
+--- a/ui/src/pages/chat/chat-state-page.ts
++++ b/ui/src/pages/chat/chat-state-page.ts
+@@ -83,16 +83,12 @@ export function invalidateImageLightbox(state: ChatPageHost) {
+   return state.imageLightboxRequestVersion;
+ }
+ 
+-async function loadPageAssistantIdentity(
+-  state: ChatPageHost,
+-  opts?: { sessionKey?: string; expectedSessionKey?: string },
+-) {
++async function loadPageAssistantIdentity(state: ChatPageHost) {
+   if (!state.client || !state.connected) {
+     return;
+   }
+   const client = state.client;
+-  const sessionKey = opts?.sessionKey?.trim() || state.sessionKey.trim();
+-  const expectedSessionKey = opts?.expectedSessionKey?.trim() || sessionKey;
++  const sessionKey = state.sessionKey.trim();
+   const agentId = resolveAgentIdForSession({
+     sessionKey,
+     assistantAgentId: state.assistantAgentId,
+@@ -109,7 +105,7 @@ async function loadPageAssistantIdentity(
+       state.client !== client ||
+       !state.connected ||
+       state.assistantIdentityRequestVersion !== requestVersion ||
+-      state.sessionKey.trim() !== expectedSessionKey ||
++      state.sessionKey.trim() !== sessionKey ||
+       resolveAgentIdForSession(state) !== agentId ||
+       !identity
+     ) {
