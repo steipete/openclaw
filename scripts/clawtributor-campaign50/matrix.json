@@ -1,42 +1,12 @@
 [
   {
-    "id": "sessions-archive-json-red",
-    "directory": "sessions-archive-json-red",
+    "id": "node-engine-guidance-remaining-guards",
+    "directory": "node-engine-guidance-remaining-guards",
     "runner": "ubuntu-24.04",
-    "source": "b72b30249fd0fe97651328360a93289073325cdd",
+    "source": "2799f04cb729b34eb2ffeba827df25fb7836d493",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "read-only-inventory"
-  },
-  {
-    "id": "ui-error-unicode-baseline",
-    "directory": "ui-error-unicode-baseline",
-    "runner": "ubuntu-24.04",
-    "source": "2bac366b0b370cdbf8b7691f106eebc3d931c5a1",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "ordinary-projections"
-  },
-  {
-    "id": "usage-known-zero-cost-candidate",
-    "directory": "usage-known-zero-cost-candidate",
-    "runner": "ubuntu-24.04",
-    "source": "7f7aeb699013db4400f9ec6cfa430168e208d7bd",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "candidate",
-    "variant": "recorded-cost-hint"
-  },
-  {
-    "id": "doctor-bootstrap-142773-baseline",
-    "directory": "doctor-bootstrap-142773-baseline",
-    "runner": "ubuntu-24.04",
-    "source": "7c6ca652ef75c7bea81659879424551fabfdafe3",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "two-doctor-owners-readonly-output"
+    "mode": "green",
+    "variant": "remaining-static"
   }
 ]

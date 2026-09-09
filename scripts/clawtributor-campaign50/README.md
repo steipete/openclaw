@@ -1,12 +1,18 @@
 # Campaign proof harness
 
-Task-owned harness for the 50-fix campaign. Publish only on the personal fork's
-`codex/clawtributor-campaign50-proof-20260905` branch; never merge upstream.
-Prior campaign proof files and branch history remain intact.
+Task-owned Node #142322 proof branch for the 50-fix campaign. Publish only to
+`steipete/openclaw` on `codex/clawtributor-campaign50-node142322-20260909`; never merge upstream.
+This branch starts at committed `4e19a001e28038df9088242c3e863b3a48d1a5e1`. Its new proof scope is
+only the reviewed `node-engine-guidance-remaining-guards` lane and one matrix row.
+Previously committed campaign history remains unchanged; unpublished held lanes
+are not copied into this branch.
 
-Each push runs the reviewed `matrix.json` against exact source commits. Workflow
-concurrency serializes runs; at most two proof jobs execute concurrently. Do not
-push successive waves while an earlier queued run still owns required evidence.
+Each push runs the reviewed one-row `matrix.json` against its exact source commit.
+The shared `clawtributor-campaign50-proof` concurrency group remains unchanged and
+serializes campaign proof workflows. Publish only after the controller verifies
+no campaign proof run is active or pending and records an explicit run grant.
+The controller owns one exact run watch and one artifact cache. No automatic
+retry or second push is authorized by a failed or incomplete run.
 
 Runners use explicitly selected GitHub-hosted images. Checkout credentials are
 not persisted. Target installation and execution receive an allowlisted process

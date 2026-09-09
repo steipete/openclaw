@@ -1,7 +1,7 @@
 name: Clawtributor campaign proof
 on:
   push:
-    branches: [codex/clawtributor-campaign50-proof-20260905]
+    branches: [codex/clawtributor-campaign50-node142322-20260909]
 permissions:
   contents: read
 concurrency:
