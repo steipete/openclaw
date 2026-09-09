@@ -1,0 +1,86 @@
+{
+  "status": "accepted-baseline",
+  "source": "7f7aeb699013db4400f9ec6cfa430168e208d7bd",
+  "browserRun": 34310080906,
+  "browserJob": 102334792677,
+  "browserHarness": "fc51b1f4093302a7b612824e9269752fe3fca63b",
+  "browserPacket": "894823114f9425b1c7b925060a7d0ab6db8b85f4403a72dd1e086056920d6506",
+  "rendererRun": 34304097761,
+  "rendererJob": 102317092344,
+  "originalRendererRunConclusion": "FAILURE",
+  "rendererFixtureSha256": "73fe0b917f2b5b95b71b52af4a55b2e4b3420ebbd6598dd2f7780e7818a41006",
+  "browserFixtureSha256": "8fc0466a56bad36270918d5edc6ea851442a8b9f80b22fe4164921627d37a474",
+  "capturesInspectedByOwnerAndIndependent": true,
+  "baselineRepeatedInCandidate": false,
+  "captureHashes": [
+    {
+      "stage": "mixed",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed-geometry.json",
+      "geometrySha256": "493c062a65c8608f9018a0d535b7e5046caf1c5a7ad123a3f06c4925b0081ea2",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png",
+      "screenshotSha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+    },
+    {
+      "stage": "known-zero",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero-geometry.json",
+      "geometrySha256": "bc32fa476b1f7a7791d37d26849118215f4006d45a3b8e3e972811519a604fad",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png",
+      "screenshotSha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+    },
+    {
+      "stage": "cleared",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared-geometry.json",
+      "geometrySha256": "e79e35008523c55e94e5889e7f1508b8fbcafaef43dd830509788b3f87c90913",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared.png",
+      "screenshotSha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+    },
+    {
+      "stage": "positive",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive-geometry.json",
+      "geometrySha256": "28db85ff7e4396739b7bd2b2abbf9c46663fed9a3201d32bf4c021207e7ea177",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive.png",
+      "screenshotSha256": "53e8bb7d31a8ee1ad8204bde9f80da14e15981f3aff35161a770ab6d1be99d56"
+    },
+    {
+      "stage": "unknown",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown-geometry.json",
+      "geometrySha256": "c41248b82d987afe472fa3130b491bae54af0b117af7ca6434f0c457eb10e6e3",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown.png",
+      "screenshotSha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+    }
+  ],
+  "files": {
+    "baseline/bootstrap-final-working-tree.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline/browser.log": "cff30dc23bf31162a74b970c600aa926797f8f6a2c012218469301c646c7336a",
+    "baseline/final-status.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline/qualified-renderer.json": "4c0f625021e2466023b388f9ed6fa983582c782f5aa4747bc92517400f3c16c4",
+    "baseline/source.json": "8914d94e93de65525bb2005ac10f10779897ebadfe3b3e85a43045d6e517db1f",
+    "baseline/source-before-restoration.json": "b1ecb8773b9bac79ff63aba6f236d53087806c81621f7df5c9daac224689b89e",
+    "baseline/mixed-geometry.json": "493c062a65c8608f9018a0d535b7e5046caf1c5a7ad123a3f06c4925b0081ea2",
+    "baseline/applied.patch": "7ad915b72dd3331af856533141cf74afa173addb7d343e5130963c9f17b9c395",
+    "baseline/source-before.json": "9efa2353d1ad37db8a26b251637616b61a16ba0f19c75448b610ccb5419a1c1d",
+    "baseline/renderer-reuse.json": "de57f7bbeaa68ff0d78ff4b91267f7c3a55cf1fa03aa80813cccdba9712d6a66",
+    "baseline/cleared-geometry.json": "e79e35008523c55e94e5889e7f1508b8fbcafaef43dd830509788b3f87c90913",
+    "baseline/source-restored.json": "9efa2353d1ad37db8a26b251637616b61a16ba0f19c75448b610ccb5419a1c1d",
+    "baseline/renderer.json": "36101a3eca29651a08f019b92b0cc6f876a20efa7345653389aa86f065f11280",
+    "baseline/final-working-tree.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline/known-zero-geometry.json": "bc32fa476b1f7a7791d37d26849118215f4006d45a3b8e3e972811519a604fad",
+    "baseline/renderer-source-applied.json": "810f3d2a71291876f61cb267b95334f32f6ac0c1461d2bb0376235ecb16ae9b5",
+    "baseline/lane-exit.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "baseline/chromium-install.log": "5fc07329e53d9230d41dfb6615555a4d4efb1ce70d4351d684bb0b7c8eb3cf32",
+    "baseline/phase.txt": "37a40f08d8548dba289b9b0bb35bcf63b359f6d37ee86044ebc6b6da080b9ec1",
+    "baseline/renderer-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline/unknown-geometry.json": "c41248b82d987afe472fa3130b491bae54af0b117af7ca6434f0c457eb10e6e3",
+    "baseline/job.json": "18d2d7e5863f6e937cc60a02f61b021f2b776e937689d713ffc24eceb2f7f424",
+    "baseline/positive-geometry.json": "28db85ff7e4396739b7bd2b2abbf9c46663fed9a3201d32bf4c021207e7ea177",
+    "baseline/packet-check.log": "bd6bdb5cc11f7594dcdacbe5b9e99caf70c5919a5855567646bd11f3abd8fffb",
+    "baseline/source-applied.json": "b1ecb8773b9bac79ff63aba6f236d53087806c81621f7df5c9daac224689b89e",
+    "baseline/browser-receipts.json": "b71303835b284cd7cb6f185ab814486becf47b36e150bf1c9c1e6b778a8854c9",
+    "baseline/browser-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "baseline/exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "baseline/qualified-browser.json": "80353cfe4e5160c4341594d2bed97722d84b9a0b35e0ce64efb3bb395be77153",
+    "baseline/browser.json": "8c730d0e99aaf139901bc9e4a567304ae795202911bcb7b289ad13ca20045cac",
+    "baseline/renderer.log": "64925634c3d684ed63b2d5ae854786022dfb394eddda64e896b3c73b0e3789e0",
+    "baseline/receipt.json": "f781057836b2392f45f2d27090764780b3dcf88c6d69472d765d1146e6db138a"
+  }
+}

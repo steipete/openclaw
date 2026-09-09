@@ -1,0 +1,19 @@
+{
+  "mode": "baseline",
+  "kind": "renderer",
+  "passed": 4,
+  "expectedFailed": 4,
+  "deliberatelyFiltered": 26,
+  "activeNames": [
+    "Usage recorded cost availability renders the recorded cost hint for known zero",
+    "Usage recorded cost availability renders the recorded cost hint for known positive",
+    "Usage recorded cost availability renders the recorded cost hint for unknown zero",
+    "Usage recorded cost availability renders the recorded cost hint for mixed positive",
+    "Usage recorded cost availability restores the missing-cost hint after clearing the known-zero query filter",
+    "Usage recorded cost availability restores the missing-cost hint after clearing the known-zero session filter",
+    "Usage recorded cost availability restores the missing-cost hint after clearing the known-zero day filter",
+    "renderUsage shows the empty state for an all-zero successful response"
+  ],
+  "componentQualified": true,
+  "wholeLaneQualified": false
+}

@@ -1,0 +1,90 @@
+{
+  "dataOnly": true,
+  "targetExecution": false,
+  "tests": [
+    {
+      "name": "valid full persisted owner CLI and aggregate receipts",
+      "passed": true
+    },
+    {
+      "name": "fact JSON roundtrip {}",
+      "passed": true
+    },
+    {
+      "name": "fact JSON roundtrip {\"archived\":null,\"archivedAt\":null}",
+      "passed": true
+    },
+    {
+      "name": "fact JSON roundtrip {\"archived\":false}",
+      "passed": true
+    },
+    {
+      "name": "fact JSON roundtrip {\"archived\":true,\"archivedAt\":0}",
+      "passed": true
+    },
+    {
+      "name": "explicit undefined presence remains distinct from absence",
+      "passed": true
+    },
+    {
+      "name": "reject persisted owner presence flag",
+      "passed": true
+    },
+    {
+      "name": "reject persisted persisted CLI fact",
+      "passed": true
+    },
+    {
+      "name": "reject persisted aggregate fact",
+      "passed": true
+    },
+    {
+      "name": "reject persisted timestamp zero lost",
+      "passed": true
+    },
+    {
+      "name": "reject persisted wrong value rather than missing field",
+      "passed": true
+    },
+    {
+      "name": "reject persisted known token total",
+      "passed": true
+    },
+    {
+      "name": "reject persisted native nonzero",
+      "passed": true
+    },
+    {
+      "name": "reject persisted missing EOF",
+      "passed": true
+    },
+    {
+      "name": "reject persisted unjoined command",
+      "passed": true
+    },
+    {
+      "name": "reject persisted raw hash mismatch",
+      "passed": true
+    },
+    {
+      "name": "reject persisted all-agent metadata",
+      "passed": true
+    },
+    {
+      "name": "reject persisted store preservation",
+      "passed": true
+    },
+    {
+      "name": "reject persisted post-read row mutation",
+      "passed": true
+    },
+    {
+      "name": "reject persisted source binding",
+      "passed": true
+    },
+    {
+      "name": "reject persisted copied input bytes",
+      "passed": true
+    }
+  ]
+}

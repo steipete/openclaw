@@ -1,0 +1,94 @@
+{
+  "sourceImports": false,
+  "targetExecution": false,
+  "tests": [
+    {
+      "name": "valid baseline single-agent",
+      "passed": true
+    },
+    {
+      "name": "valid baseline all-agents",
+      "passed": true
+    },
+    {
+      "name": "valid owner baseline",
+      "passed": true
+    },
+    {
+      "name": "zero remains archived",
+      "passed": true
+    },
+    {
+      "name": "absent timestamp is unarchived",
+      "passed": true
+    },
+    {
+      "name": "reject wrong count",
+      "passed": true
+    },
+    {
+      "name": "reject missing row",
+      "passed": true
+    },
+    {
+      "name": "reject wrong all-agents",
+      "passed": true
+    },
+    {
+      "name": "reject wrong store",
+      "passed": true
+    },
+    {
+      "name": "reject wrong explicit model",
+      "passed": true
+    },
+    {
+      "name": "reject nonfresh lost",
+      "passed": true
+    },
+    {
+      "name": "reject known total lost",
+      "passed": true
+    },
+    {
+      "name": "reject runtime label leak",
+      "passed": true
+    },
+    {
+      "name": "reject prepared model leak",
+      "passed": true
+    },
+    {
+      "name": "reject clock outside interval",
+      "passed": true
+    },
+    {
+      "name": "reject reordered rows",
+      "passed": true
+    },
+    {
+      "name": "reject stderr",
+      "passed": true
+    },
+    {
+      "name": "reject stdout noise",
+      "passed": true
+    },
+    {
+      "name": "reject rewritten archive fact",
+      "passed": true
+    },
+    {
+      "name": "reject missing close",
+      "passed": true
+    },
+    {
+      "name": "reject wrong-value instead of expected missing projection",
+      "passed": true
+    },
+    {
+      "name": "reject fixed output as baseline",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "agents": ["alpha", "beta"],
+  "entries": [
+    {
+      "agentId": "alpha",
+      "key": "agent:alpha:inventory-active",
+      "entry": {
+        "sessionId": "inventory-active",
+        "updatedAt": 1788000300000,
+        "modelProvider": "openai",
+        "model": "gpt-5.5",
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0,
+        "totalTokensFresh": true,
+        "totalTokensVersion": 1,
+        "label": "Synthetic active row",
+        "thinkingLevel": "low",
+        "verboseLevel": "off"
+      },
+      "expectedModel": "gpt-5.5"
+    },
+    {
+      "agentId": "alpha",
+      "key": "agent:alpha:inventory-archived",
+      "entry": {
+        "sessionId": "inventory-archived",
+        "updatedAt": 1788000200000,
+        "archivedAt": 1788000100000,
+        "modelProvider": "openai",
+        "model": "gpt-5.5",
+        "providerOverride": "openai",
+        "modelOverride": "gpt-5.4",
+        "inputTokens": 1000,
+        "outputTokens": 200,
+        "totalTokens": 1200,
+        "totalTokensFresh": true,
+        "totalTokensVersion": 1,
+        "label": "Synthetic archived row",
+        "thinkingLevel": "low",
+        "verboseLevel": "off"
+      },
+      "expectedModel": "gpt-5.4"
+    },
+    {
+      "agentId": "beta",
+      "key": "agent:beta:inventory-epoch",
+      "entry": {
+        "sessionId": "inventory-epoch",
+        "updatedAt": 1788000000000,
+        "archivedAt": 0,
+        "modelProvider": "openai",
+        "model": "gpt-5.5",
+        "inputTokens": 400,
+        "outputTokens": 50,
+        "totalTokens": 450,
+        "totalTokensFresh": false,
+        "totalTokensVersion": 1,
+        "label": "Synthetic epoch archive row",
+        "thinkingLevel": "low",
+        "verboseLevel": "off"
+      },
+      "expectedModel": "gpt-5.5"
+    }
+  ],
+  "commands": [
+    {
+      "id": "single-agent",
+      "argv": ["sessions", "list", "--json", "--agent", "alpha", "--limit", "all"],
+      "agents": ["alpha"]
+    },
+    {
+      "id": "all-agents",
+      "argv": ["sessions", "list", "--json", "--all-agents", "--limit", "all"],
+      "agents": ["alpha", "beta"]
+    }
+  ]
+}

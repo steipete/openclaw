@@ -1,0 +1,10 @@
+{
+  "dataOnly": true,
+  "targetExecution": false,
+  "tests": [
+    {
+      "name": "original full persisted receipt rejects undefined fact keys",
+      "passed": true
+    }
+  ]
+}

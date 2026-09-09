@@ -1,0 +1,24 @@
+{
+  "source": "2bac366b0b370cdbf8b7691f106eebc3d931c5a1",
+  "mode": "baseline",
+  "lane": "ui-error-unicode-baseline",
+  "variant": "ordinary-projections",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "runner": "ubuntu-24.04",
+  "inputs": {
+    "run.sh": "c89de2b0b04470eb1a1651b396f25a15baf9696cc60089f361e346a7158a0664",
+    "verify-source.mjs": "a81a4b4677fe59fcef8d8f474a630220970dfd5c9e57c146285ba0ab84f521fa",
+    "validate.mjs": "015919e48f18500675280f5c7516e30b5b1fe6aa81c28fdb925a97ccb1baeb01",
+    "completed-report.mjs": "e2b2fc6385025df5450f7e1634c5f48f1652cc3ac44f97578b163d8d2e845c02",
+    "finalize.mjs": "c1caf1ff6da6979d22020982bccad7db4c7e59a34a619b402cb30b539ae987de",
+    "error-projection-unicode.e2e.test.ts": "29c93e0b1467c4057beecae30fc3bce0e8946d13f906f2732c62d01446d996f3",
+    "browser.patch": "02cc74a5b47355a22510518cd2a41187ae6986d633356e79848c4767c277d113",
+    "source.json": "7ffd5fb83304fe75043ed7c97b392760e16bacc5f9bed9bf947e8bfdc48cff77",
+    "README.md": "ef1a43957213ca4b81a7ae3e60d4a99102b694eb35f1c0dfc130948701d58536"
+  },
+  "executed": false,
+  "nativeCases": 2,
+  "expectedNativeFailures": 2,
+  "candidateIncluded": false
+}

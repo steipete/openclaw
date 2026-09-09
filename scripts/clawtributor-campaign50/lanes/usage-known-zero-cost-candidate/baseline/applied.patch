@@ -1,0 +1,222 @@
+diff --git a/ui/src/e2e/usage-cost-analysis.e2e.test.ts b/ui/src/e2e/usage-cost-analysis.e2e.test.ts
+index c8fdfa7ee3b32655e02693964d33b873c40cf912..8209765b69489c929ae45163d2f79e63dac0bfd8 100644
+--- a/ui/src/e2e/usage-cost-analysis.e2e.test.ts
++++ b/ui/src/e2e/usage-cost-analysis.e2e.test.ts
+@@ -1,7 +1,11 @@
+ import { mkdir, writeFile } from "node:fs/promises";
+ import path from "node:path";
+ import { expect, it } from "vitest";
+-import { takeControlUiViewportScreenshot } from "../test-helpers/control-ui-e2e-screenshot.ts";
++import { createControlUiE2eArtifactDir } from "../test-helpers/control-ui-e2e-artifacts.ts";
++import {
++  takeControlUiViewportScreenshot,
++  waitForControlUiProofSurface,
++} from "../test-helpers/control-ui-e2e-screenshot.ts";
+ import { installMockGateway } from "../test-helpers/control-ui-e2e.ts";
+ import { createControlUiE2eSuite } from "./control-ui-e2e-suite.test-support.ts";
+ 
+@@ -98,6 +102,204 @@ function emptyUsageResponses() {
+ }
+ 
+ suite.define(() => {
++  it("shows the recorded cost hint through ordinary Usage filters", async () => {
++    const normalHint = "Average cost per message when providers report costs.";
++    const missingHint = `${normalHint} Cost data is missing for some or all sessions in this range.`;
++    const updatedAt = Date.now();
++    const date = dayOffset(0);
++    const empty = emptyUsageResponses();
++    const knownTotals = {
++      ...emptyTotals,
++      input: 1_000,
++      output: 500,
++      cacheRead: 200,
++      totalTokens: 1_700,
++    };
++    const messages = { total: 2, user: 1, assistant: 1, toolCalls: 0, toolResults: 0, errors: 0 };
++    const sessions = [
++      { label: "Known zero", totalCost: 0, missingCostEntries: 0 },
++      { label: "Known positive", totalCost: 0.2, missingCostEntries: 0 },
++      { label: "Unpriced usage", totalCost: 0, missingCostEntries: 1 },
++    ].map(({ label, totalCost, missingCostEntries }, index) => ({
++      key: `agent:main:cost-hint-${index}`,
++      label,
++      agentId: "main",
++      updatedAt,
++      usage: {
++        ...knownTotals,
++        totalCost,
++        inputCost: totalCost,
++        missingCostEntries,
++        activityDates: [date],
++        firstActivity: updatedAt - 1_000,
++        lastActivity: updatedAt,
++        durationMs: 1_000,
++        messageCounts: messages,
++      },
++    }));
++    const combined = {
++      ...knownTotals,
++      input: 3_000,
++      output: 1_500,
++      cacheRead: 600,
++      totalTokens: 5_100,
++      totalCost: 0.2,
++      inputCost: 0.2,
++      missingCostEntries: 1,
++    };
++    const responses = {
++      "sessions.usage": {
++        ...empty["sessions.usage"],
++        updatedAt,
++        sessions,
++        totals: combined,
++        aggregates: {
++          ...empty["sessions.usage"].aggregates,
++          messages: { ...messages, total: 6, user: 3, assistant: 3 },
++        },
++      },
++      "usage.cost": { updatedAt, days: 1, daily: [{ date, ...combined }], totals: combined },
++      "usage.status": { updatedAt, providers: [] },
++    };
++    const initialResponses = structuredClone(responses);
++    const artifactDir = recordVisuals
++      ? createControlUiE2eArtifactDir("usage-known-zero-cost", suite.artifactDir)
++      : null;
++    const observations: Array<{
++      stage: string;
++      query: string;
++      hint: string;
++      value: string;
++      labels: string[];
++      visible: boolean;
++    }> = [];
++    const screenshots: string[] = [];
++    const diagnostics: Array<{ stage: string; geometryFile: string; screenshot: string }> = [];
++    await suite.withPage(
++      {
++        locale: "en-US",
++        timezoneId: "UTC",
++        serviceWorkers: "block",
++        viewport: { height: 900, width: 1440 },
++      },
++      async ({ page }) => {
++        await page.clock.setFixedTime(new Date(updatedAt));
++        const gateway = await installMockGateway(page, {
++          communityInviteDismissed: true,
++          methodResponses: responses,
++        });
++        await page.goto(`${suite.server.baseUrl}usage`);
++        const query = page.locator(".usage-query-input");
++        const hintButton = page.locator("#usage-summary-hint-average-cost");
++        const card = page.locator(".usage-summary-card").filter({ has: hintButton });
++        const tooltipHost = hintButton.locator("xpath=..");
++        const tooltip = tooltipHost.locator("wa-tooltip");
++        const tooltipBody = tooltip.locator('[part="body"]');
++        const popup = tooltip.locator('wa-popup [part="popup"]');
++        const hintContent = tooltipHost.locator('[slot="content"]');
++        const value = card.locator(".usage-summary-value");
++        const steps = [
++          { stage: "mixed", query: "", count: 3, value: "$0.03" },
++          { stage: "known-zero", query: 'label:"Known zero"', count: 1, value: "$0.00" },
++          { stage: "cleared", query: "", count: 3, value: "$0.03" },
++          { stage: "positive", query: 'label:"Known positive"', count: 1, value: "$0.10" },
++          { stage: "unknown", query: 'label:"Unpriced usage"', count: 1, value: "$0.00" },
++        ];
++        for (const step of steps) {
++          if (step.stage !== "mixed") {
++            await query.fill(step.query);
++            await query.press("Enter");
++          }
++          await expect.poll(() => page.locator(".session-bar-title").count()).toBe(step.count);
++          await expect.poll(async () => (await value.textContent())?.trim()).toBe(step.value);
++          await card.evaluate((element) =>
++            element.scrollIntoView({ block: "center", behavior: "instant" }),
++          );
++          await hintButton.click();
++          await expect.poll(() => tooltip.getAttribute("open")).toBe("");
++          await expect.poll(() => tooltipBody.isVisible()).toBe(true);
++          await expect.poll(() => hintContent.isVisible()).toBe(true);
++          await waitForControlUiProofSurface(popup, [hintContent, value]);
++          const geometry: Array<{
++            name: string;
++            bounds: Awaited<ReturnType<typeof card.boundingBox>>;
++          }> = [];
++          for (const [name, surface] of [
++            ["card", card],
++            ["tooltip-body", tooltipBody],
++            ["hint-content", hintContent],
++          ] as const) {
++            geometry.push({ name, bounds: await surface.boundingBox() });
++          }
++          if (artifactDir) {
++            const geometryFile = path.join(artifactDir, `${step.stage}-geometry.json`);
++            const screenshot = path.join(artifactDir, `${step.stage}.png`);
++            await writeFile(geometryFile, JSON.stringify({ stage: step.stage, geometry }, null, 2));
++            await writeFile(
++              screenshot,
++              await takeControlUiViewportScreenshot(page, popup, [hintButton, hintContent, value]),
++            );
++            diagnostics.push({ stage: step.stage, geometryFile, screenshot });
++            if (["mixed", "known-zero"].includes(step.stage)) {
++              screenshots.push(screenshot);
++            }
++          }
++          for (const { name, bounds } of geometry) {
++            if (!bounds) {
++              throw new Error(`Expected visible cost hint bounds: ${step.stage}/${name}`);
++            }
++            const label = `${step.stage}/${name}`;
++            expect(bounds.width, `${label} width`).toBeGreaterThan(0);
++            expect(bounds.height, `${label} height`).toBeGreaterThan(0);
++            expect(bounds.x, `${label} left`).toBeGreaterThanOrEqual(0);
++            expect(bounds.y, `${label} top`).toBeGreaterThanOrEqual(0);
++            expect(bounds.x + bounds.width, `${label} right`).toBeLessThanOrEqual(1440);
++            expect(bounds.y + bounds.height, `${label} bottom`).toBeLessThanOrEqual(900);
++          }
++          const observed = {
++            stage: step.stage,
++            query: await query.inputValue(),
++            hint: (await hintContent.textContent())?.trim() ?? "",
++            value: (await value.textContent())?.trim() ?? "",
++            labels: (await page.locator(".session-bar-title").allTextContents()).toSorted(),
++            visible: await tooltipBody.isVisible(),
++          };
++          observations.push(observed);
++          if (step.stage !== "known-zero") {
++            expect(observed.hint).toBe(step.stage === "positive" ? normalHint : missingHint);
++          }
++          await hintButton.press("Escape");
++          await expect.poll(() => tooltip.getAttribute("open")).toBeNull();
++          await expect.poll(() => tooltipBody.isVisible()).toBe(false);
++        }
++        expect(responses).toEqual(initialResponses);
++        const requests = await gateway.getRequests();
++        const forbidden = requests.filter(({ method }) =>
++          ["chat.send", "config.set", "config.patch", "sessions.patch"].includes(method),
++        );
++        expect(forbidden).toEqual([]);
++        expect(requests.some(({ method }) => method === "sessions.usage")).toBe(true);
++        expect(requests.some(({ method }) => method === "usage.status")).toBe(true);
++        const record = {
++          observations,
++          screenshots,
++          diagnostics,
++          responses,
++          responsesUnchanged: true,
++          forbiddenRequests: forbidden,
++          requests: requests.map(({ method }) => method),
++        };
++        if (artifactDir) {
++          await writeFile(path.join(artifactDir, "receipts.json"), JSON.stringify(record, null, 2));
++        }
++        expect(
++          observations.find(({ stage }) => stage === "known-zero")?.hint,
++          "USAGE_KNOWN_ZERO_BROWSER",
++        ).toBe(normalHint);
++      },
++    );
++  });
++
+   it.each([
+     { timeZone: "utc", quarterIndex: 8 },
+     { timeZone: "local", quarterIndex: 28 },

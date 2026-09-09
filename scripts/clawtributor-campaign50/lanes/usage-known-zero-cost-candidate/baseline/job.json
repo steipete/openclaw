@@ -1,0 +1,11 @@
+{
+  "run": 34310080906,
+  "attempt": 1,
+  "harness": "fc51b1f4093302a7b612824e9269752fe3fca63b",
+  "wholeRunAtObservation": "in_progress",
+  "job": {
+    "databaseId": 102334792677,
+    "status": "completed",
+    "conclusion": "success"
+  }
+}

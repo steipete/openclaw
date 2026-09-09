@@ -1,0 +1,32 @@
+{
+  "stage": "mixed",
+  "geometry": [
+    {
+      "name": "card",
+      "bounds": {
+        "x": 322,
+        "y": 384.0625,
+        "width": 522,
+        "height": 132
+      }
+    },
+    {
+      "name": "tooltip-body",
+      "bounds": {
+        "x": 332.578125,
+        "y": 325.0625,
+        "width": 260,
+        "height": 67
+      }
+    },
+    {
+      "name": "hint-content",
+      "bounds": {
+        "x": 340.578125,
+        "y": 330.0625,
+        "width": 238.65625,
+        "height": 55.25
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "targetExecution": false,
+  "localNode": "v24.20.0",
+  "syntax": [
+    {
+      "file": "persisted-reader-selfcheck.mjs",
+      "exit": 0
+    },
+    {
+      "file": "proof.mjs",
+      "exit": 0
+    },
+    {
+      "file": "read-output.mjs",
+      "exit": 0
+    },
+    {
+      "file": "reader-selfcheck.mjs",
+      "exit": 0
+    },
+    {
+      "file": "source-audit.mjs",
+      "exit": 0
+    },
+    {
+      "file": "store-fixture.mjs",
+      "exit": 0
+    },
+    {
+      "file": "validate-artifact.mjs",
+      "exit": 0
+    }
+  ],
+  "bashSyntaxExit": 0,
+  "readerDataOnlyExit": 0,
+  "readerControls": 22,
+  "persistedReceiptControls": 21,
+  "legacyPersistedFailureReproduction": 1,
+  "formatter": "Trusted cached oxfmt0.65 on inert author files; no target imports or package install"
+}

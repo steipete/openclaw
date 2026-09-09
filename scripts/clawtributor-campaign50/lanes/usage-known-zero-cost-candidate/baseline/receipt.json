@@ -1,0 +1,189 @@
+{
+  "source": "7f7aeb699013db4400f9ec6cfa430168e208d7bd",
+  "tree": "7f3abda19d295d451616113e7784370b0fdfb730",
+  "mode": "baseline",
+  "renderer": {
+    "mode": "baseline",
+    "kind": "renderer",
+    "passed": 4,
+    "expectedFailed": 4,
+    "deliberatelyFiltered": 26,
+    "activeNames": [
+      "Usage recorded cost availability renders the recorded cost hint for known zero",
+      "Usage recorded cost availability renders the recorded cost hint for known positive",
+      "Usage recorded cost availability renders the recorded cost hint for unknown zero",
+      "Usage recorded cost availability renders the recorded cost hint for mixed positive",
+      "Usage recorded cost availability restores the missing-cost hint after clearing the known-zero query filter",
+      "Usage recorded cost availability restores the missing-cost hint after clearing the known-zero session filter",
+      "Usage recorded cost availability restores the missing-cost hint after clearing the known-zero day filter",
+      "renderUsage shows the empty state for an all-zero successful response"
+    ],
+    "componentQualified": true,
+    "wholeLaneQualified": false
+  },
+  "rendererReuse": {
+    "historicalRun": 34304097761,
+    "historicalJob": 102317092344,
+    "historicalRunConclusion": "FAILURE",
+    "historicalBrowserQualified": false,
+    "historicalRestorationPerformed": false,
+    "rendererExecutedThisRun": false,
+    "rendererQualified": true,
+    "source": "7f7aeb699013db4400f9ec6cfa430168e208d7bd",
+    "inputHashes": {
+      "reuse/final-status.txt": "89d8ffe0056782f26c97fa99f833dfef190ee72877062c8e7725038f08920529",
+      "reuse/packet-source.json": "b3eaa4418bfe17649c612d017bd20a05da78a09839608a1dab9ee81037214ec1",
+      "reuse/qualified-renderer.json": "4c0f625021e2466023b388f9ed6fa983582c782f5aa4747bc92517400f3c16c4",
+      "reuse/source.json": "a89c189051695d45dda3fe70a7686fdce41f7a591df13ea5b39b396005d41168",
+      "reuse/applied.patch": "a32a4b99f02f37aadd24a9b525fb76b009e1d5c99ecd99bc6661d44b614c8261",
+      "reuse/source-before.json": "9efa2353d1ad37db8a26b251637616b61a16ba0f19c75448b610ccb5419a1c1d",
+      "reuse/renderer.json": "36101a3eca29651a08f019b92b0cc6f876a20efa7345653389aa86f065f11280",
+      "reuse/final-working-tree.patch": "a32a4b99f02f37aadd24a9b525fb76b009e1d5c99ecd99bc6661d44b614c8261",
+      "reuse/lane-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "reuse/packet-manifest.json": "4b29e0d537718e119ab5963f42024f40b445e40177fffbc33f5e92b8a800808b",
+      "reuse/phase.txt": "35802ec7e9607b3da0ca67809845f3ba9fb9a2120feee9ab7047a06a292ad305",
+      "reuse/historical-run.json": "1009fbc74c182fa4063802b9d47aac7d0b4ee076a251b988144e78c5c771c570",
+      "reuse/renderer-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "reuse/source-applied.json": "810f3d2a71291876f61cb267b95334f32f6ac0c1461d2bb0376235ecb16ae9b5",
+      "reuse/exit-code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "reuse/renderer.log": "64925634c3d684ed63b2d5ae854786022dfb394eddda64e896b3c73b0e3789e0"
+    }
+  },
+  "browser": {
+    "mode": "baseline",
+    "kind": "browser",
+    "passed": 0,
+    "expectedFailed": 1,
+    "deliberatelyFiltered": 10,
+    "activeNames": [
+      "Control UI usage cost analysis mocked Gateway E2E shows the recorded cost hint through ordinary Usage filters"
+    ],
+    "componentQualified": true,
+    "wholeLaneQualified": false,
+    "captures": [
+      {
+        "path": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png",
+        "sha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+      },
+      {
+        "path": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png",
+        "sha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+      }
+    ],
+    "diagnosticCaptures": [
+      {
+        "stage": "mixed",
+        "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed-geometry.json",
+        "geometrySha256": "493c062a65c8608f9018a0d535b7e5046caf1c5a7ad123a3f06c4925b0081ea2",
+        "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png",
+        "screenshotSha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+      },
+      {
+        "stage": "known-zero",
+        "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero-geometry.json",
+        "geometrySha256": "bc32fa476b1f7a7791d37d26849118215f4006d45a3b8e3e972811519a604fad",
+        "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png",
+        "screenshotSha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+      },
+      {
+        "stage": "cleared",
+        "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared-geometry.json",
+        "geometrySha256": "e79e35008523c55e94e5889e7f1508b8fbcafaef43dd830509788b3f87c90913",
+        "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared.png",
+        "screenshotSha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+      },
+      {
+        "stage": "positive",
+        "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive-geometry.json",
+        "geometrySha256": "28db85ff7e4396739b7bd2b2abbf9c46663fed9a3201d32bf4c021207e7ea177",
+        "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive.png",
+        "screenshotSha256": "53e8bb7d31a8ee1ad8204bde9f80da14e15981f3aff35161a770ab6d1be99d56"
+      },
+      {
+        "stage": "unknown",
+        "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown-geometry.json",
+        "geometrySha256": "c41248b82d987afe472fa3130b491bae54af0b117af7ca6434f0c457eb10e6e3",
+        "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown.png",
+        "screenshotSha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+      }
+    ],
+    "captureInspection": "pending full synthetic capture inspection",
+    "observations": [
+      {
+        "stage": "mixed",
+        "query": "",
+        "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+        "value": "$0.03",
+        "labels": [
+          "Known positive",
+          "Known zero",
+          "Unpriced usage"
+        ],
+        "visible": true
+      },
+      {
+        "stage": "known-zero",
+        "query": "label:\"Known zero\"",
+        "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+        "value": "$0.00",
+        "labels": [
+          "Known zero"
+        ],
+        "visible": true
+      },
+      {
+        "stage": "cleared",
+        "query": "",
+        "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+        "value": "$0.03",
+        "labels": [
+          "Known positive",
+          "Known zero",
+          "Unpriced usage"
+        ],
+        "visible": true
+      },
+      {
+        "stage": "positive",
+        "query": "label:\"Known positive\"",
+        "hint": "Average cost per message when providers report costs.",
+        "value": "$0.10",
+        "labels": [
+          "Known positive"
+        ],
+        "visible": true
+      },
+      {
+        "stage": "unknown",
+        "query": "label:\"Unpriced usage\"",
+        "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+        "value": "$0.00",
+        "labels": [
+          "Unpriced usage"
+        ],
+        "visible": true
+      }
+    ]
+  },
+  "sourceRestored": true,
+  "proofComponentsQualified": true,
+  "outerExitStillRequired": true,
+  "files": {
+    "source-before.json": "9efa2353d1ad37db8a26b251637616b61a16ba0f19c75448b610ccb5419a1c1d",
+    "source-applied.json": "b1ecb8773b9bac79ff63aba6f236d53087806c81621f7df5c9daac224689b89e",
+    "source-before-restoration.json": "b1ecb8773b9bac79ff63aba6f236d53087806c81621f7df5c9daac224689b89e",
+    "source-restored.json": "9efa2353d1ad37db8a26b251637616b61a16ba0f19c75448b610ccb5419a1c1d",
+    "renderer.json": "36101a3eca29651a08f019b92b0cc6f876a20efa7345653389aa86f065f11280",
+    "renderer.log": "64925634c3d684ed63b2d5ae854786022dfb394eddda64e896b3c73b0e3789e0",
+    "renderer-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "browser.json": "8c730d0e99aaf139901bc9e4a567304ae795202911bcb7b289ad13ca20045cac",
+    "browser.log": "cff30dc23bf31162a74b970c600aa926797f8f6a2c012218469301c646c7336a",
+    "browser-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "qualified-renderer.json": "4c0f625021e2466023b388f9ed6fa983582c782f5aa4747bc92517400f3c16c4",
+    "qualified-browser.json": "80353cfe4e5160c4341594d2bed97722d84b9a0b35e0ce64efb3bb395be77153",
+    "applied.patch": "7ad915b72dd3331af856533141cf74afa173addb7d343e5130963c9f17b9c395",
+    "chromium-install.log": "5fc07329e53d9230d41dfb6615555a4d4efb1ce70d4351d684bb0b7c8eb3cf32",
+    "packet-check.log": "bd6bdb5cc11f7594dcdacbe5b9e99caf70c5919a5855567646bd11f3abd8fffb",
+    "renderer-reuse.json": "de57f7bbeaa68ff0d78ff4b91267f7c3a55cf1fa03aa80813cccdba9712d6a66"
+  }
+}

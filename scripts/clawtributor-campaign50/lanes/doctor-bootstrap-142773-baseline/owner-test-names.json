@@ -1,0 +1,15 @@
+{
+  "src/commands/doctor-bootstrap-size.test.ts": [
+    "noteBootstrapFileSize emits a warning when bootstrap files are truncated",
+    "noteBootstrapFileSize reports a budget-dropped file that repeats a sibling basename as fully truncated",
+    "noteBootstrapFileSize threads the default agent id through bootstrap size resolution",
+    "noteBootstrapFileSize stays silent when files are comfortably within limits",
+    "noteBootstrapFileSize labels a secondary agent whose bootstrap files exceed the limit"
+  ],
+  "src/flows/doctor-core-bootstrap-size-check.test.ts": [
+    "core/doctor/bootstrap-size does not create shared state while inspecting bootstrap files",
+    "core/doctor/bootstrap-size counts files added by the bundled bootstrap-extra-files hook without the hook runtime",
+    "core/doctor/bootstrap-size reports a hook-added extra file the total bootstrap budget dropped",
+    "core/doctor/bootstrap-size honors the per-agent bootstrapMaxChars override in health findings"
+  ]
+}

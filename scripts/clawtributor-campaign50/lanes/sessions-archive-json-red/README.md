@@ -1,0 +1,35 @@
+# #124540 read-only archive inventory baseline
+
+This is a baseline-only packet for b72b30249fd0fe97651328360a93289073325cdd, Node24.20.0 and pnpm12.3.4 in the existing secretless Ubuntu24.04 proof lane. No candidate patch is applied or imported. The original native contributor checkout stays outside this proof. Actual baseline outcomes are still unobserved.
+
+## Boundary and cases
+
+The canonical list projection preserves archivedAt, but toSessionDisplayRow drops archived and archivedAt before CLI JSON emission. Cases are three pre-authored valid SessionEntry records: an active alpha row with absent timestamp and known fresh zero total; a positive-timestamp alpha archive with explicit gpt-5.4 selection and fresh1200 total; and beta's archive timestamp0 with nonfresh450 total. Timestamp0 is a present epoch-ms value under the existing !==undefined contract. It is not coerced to false or treated as missing. No malformed timestamp or forced private state is used.
+
+One initial seed child creates these rows only in fresh absent synthetic stores using replaceSessionEntrySync, then reads them with listSessionEntriesReadOnly and observes the actual shared row helper. The real current config snapshot validates; ordinary getRuntimeConfig is used, without injected mocks or NODE_ENV/VITEST. Existing plugins.enabled=false confines this fixture to reporting without optional plugin activation. It does not prove default plugin policy. Session model metadata is projected in its existing mode; no provider, agent, Gateway or runtime session is launched.
+
+After one normal pnpm build, the two actual package-bin calls are `node openclaw.mjs sessions list --json --agent alpha --limit all` and `node openclaw.mjs sessions list --json --all-agents --limit all`. They select two and three rows respectively. Single-store path and omission of allAgents/stores, aggregate paths/stores/allAgents, counts, ordering, limit and hasMore are checked. Model/provider, known and nonfresh token values, context shape and existing JSON field omission are independently checked. Full raw JSON is retained for later exact candidate parity; only naturally clock-derived ageMs may vary, and its value must lie inside the captured command wall-clock interval.
+
+The initial source row projection supplies three measured missing-field facts; the actual CLI supplies five. The baseline reader requires all eight to be the exact missing-projection case while other controls pass. Natural command exits are zero. Wrapper success means the known defect was confirmed, never product green. There is no forced red subprocess exit or generic error-message acceptance.
+
+No archive, restore, delete, cleanup, migration-repair, lifecycle, invalid-config, provider or authentication operation is part of this packet. Initial canonical fixture creation is the only data-write action. Post-CLI children use only read-only inventory and ordinary production database-close APIs. They compare entire canonical rows against the seed. Session database and optional WAL/SHM/journal file identities/hashes are observed before and after each call. Authored config/home/workspace marker type/hash receipts must remain equal. This packet makes no complete incidental-cache inventory claim.
+
+## Process and source ownership
+
+All six commands (build, seed, two CLI calls, two read-only snapshots) use the exact b72 canonical managed-child-process owner, byte-identical to the previously reviewed d3a2 owner and direct import closure. Natural exit0, no signal, pipe EOF and strict process-tree join are mandatory, with existing canonical5s cleanup grace. Build is bounded at1200s/8MiB; other commands120s/2MiB. No timeout/retry/worker/cache policy is overridden. Source fixture children use the current canonical `--import ./scripts/tsx.mjs` preload; its own TSX_DISABLE_CACHE behavior and esm registration remain source-owned.
+
+The parent captures raw stdout/stderr and lifecycle facts on every exit. Unknown joins retain the owned root. Any driver command, assertion, preservation or final guard failure retains it as well. The final independent data reader runs after successful driver cleanup; if that reader rejects, the lane fails and all raw outputs/snapshots remain, but the already-joined disposable stores have been removed. Normal removal only follows all successful joins and source/preservation checks. No recursive observer or guessed zombie state is introduced. Cancellation reaches the same canonical managed owner.
+
+Before any target imports, the parent verifies all packet inputs, exact source HEAD/tree, tracked clean index/disk and pinned file hashes/modes. It repeats source/input checks after every managed command and at finalization. No target files are copied or patched. Normal built output is inventoried completely, including only the existing literal relative plugin dependency-link shapes; no dependency links are followed. Final and post-CLI build inventories must match.
+
+A separate data-only validator re-reads original raw command streams, snapshots, lifecycle receipts, source/input receipts and inventories. It recomputes projection facts and metadata rather than accepting result.completed alone. `reader-selfcheck.mjs` imports only author data readers and built-ins; its positive/negative controls are not target proof. No local target code has executed.
+
+## Remaining work
+
+This packet qualifies only the current missing projection. Candidate source adoption, focused regression/CLI green and full remaining JSON parity, relevant unchanged runtime-provenance tests, changed checks, code reviews, exact-head CI and native landing remain pending. Related #124524 only: its broader recorded-vs-effective runtime request is not resolved. Production source design8f9a remains+6/-9, but is not included for application here.
+
+## Receipt serialization correction
+
+Original unexecuted packet5dd5 is preserved in baseline-5dd5. Full infrastructure review found that archiveFact constructed undefined value properties which disappeared during JSON persistence, causing strict recomputation comparisons to reject the intended baseline. The successor changes only this fact producer: hasArchived/hasArchivedAt remain exact ownership flags, while value properties are included only when not undefined. Explicit null, false and zero remain unchanged. Matching logic, all behavior oracles, target commands, source, raw CLI bytes and cleanup are unchanged.
+
+The existing22 inert reader controls remain. persisted-reader-selfcheck.mjs additionally constructs a complete synthetic saved receipt tree, calls the actual final data validator after all JSON roundtrips, and rejects presence/value, aggregate, zero-timestamp, token, exit/EOF/join, raw-hash, metadata, store, post-read row, source and copied-input corruption. Its legacy mode runs only the preserved author readers and reproduces the original undefined-property mismatch. These tests contain no target imports/commands/databases and remove only their own temporary files. Neither packet has executed a target baseline.

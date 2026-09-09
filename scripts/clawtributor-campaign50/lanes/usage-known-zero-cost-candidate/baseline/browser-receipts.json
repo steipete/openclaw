@@ -1,0 +1,290 @@
+{
+  "observations": [
+    {
+      "stage": "mixed",
+      "query": "",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.03",
+      "labels": [
+        "Known positive",
+        "Known zero",
+        "Unpriced usage"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "known-zero",
+      "query": "label:\"Known zero\"",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.00",
+      "labels": [
+        "Known zero"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "cleared",
+      "query": "",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.03",
+      "labels": [
+        "Known positive",
+        "Known zero",
+        "Unpriced usage"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "positive",
+      "query": "label:\"Known positive\"",
+      "hint": "Average cost per message when providers report costs.",
+      "value": "$0.10",
+      "labels": [
+        "Known positive"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "unknown",
+      "query": "label:\"Unpriced usage\"",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.00",
+      "labels": [
+        "Unpriced usage"
+      ],
+      "visible": true
+    }
+  ],
+  "screenshots": [
+    "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png",
+    "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png"
+  ],
+  "diagnostics": [
+    {
+      "stage": "mixed",
+      "geometryFile": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed-geometry.json",
+      "screenshot": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png"
+    },
+    {
+      "stage": "known-zero",
+      "geometryFile": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero-geometry.json",
+      "screenshot": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png"
+    },
+    {
+      "stage": "cleared",
+      "geometryFile": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared-geometry.json",
+      "screenshot": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared.png"
+    },
+    {
+      "stage": "positive",
+      "geometryFile": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive-geometry.json",
+      "screenshot": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive.png"
+    },
+    {
+      "stage": "unknown",
+      "geometryFile": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown-geometry.json",
+      "screenshot": "/home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-browser-remaining/browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown.png"
+    }
+  ],
+  "responses": {
+    "sessions.usage": {
+      "updatedAt": 1788927330931,
+      "startDate": "2026-09-09",
+      "endDate": "2026-09-09",
+      "sessions": [
+        {
+          "key": "agent:main:cost-hint-0",
+          "label": "Known zero",
+          "agentId": "main",
+          "updatedAt": 1788927330931,
+          "usage": {
+            "input": 1000,
+            "output": 500,
+            "cacheRead": 200,
+            "cacheWrite": 0,
+            "totalTokens": 1700,
+            "totalCost": 0,
+            "inputCost": 0,
+            "outputCost": 0,
+            "cacheReadCost": 0,
+            "cacheWriteCost": 0,
+            "missingCostEntries": 0,
+            "activityDates": [
+              "2026-09-09"
+            ],
+            "firstActivity": 1788927329931,
+            "lastActivity": 1788927330931,
+            "durationMs": 1000,
+            "messageCounts": {
+              "total": 2,
+              "user": 1,
+              "assistant": 1,
+              "toolCalls": 0,
+              "toolResults": 0,
+              "errors": 0
+            }
+          }
+        },
+        {
+          "key": "agent:main:cost-hint-1",
+          "label": "Known positive",
+          "agentId": "main",
+          "updatedAt": 1788927330931,
+          "usage": {
+            "input": 1000,
+            "output": 500,
+            "cacheRead": 200,
+            "cacheWrite": 0,
+            "totalTokens": 1700,
+            "totalCost": 0.2,
+            "inputCost": 0.2,
+            "outputCost": 0,
+            "cacheReadCost": 0,
+            "cacheWriteCost": 0,
+            "missingCostEntries": 0,
+            "activityDates": [
+              "2026-09-09"
+            ],
+            "firstActivity": 1788927329931,
+            "lastActivity": 1788927330931,
+            "durationMs": 1000,
+            "messageCounts": {
+              "total": 2,
+              "user": 1,
+              "assistant": 1,
+              "toolCalls": 0,
+              "toolResults": 0,
+              "errors": 0
+            }
+          }
+        },
+        {
+          "key": "agent:main:cost-hint-2",
+          "label": "Unpriced usage",
+          "agentId": "main",
+          "updatedAt": 1788927330931,
+          "usage": {
+            "input": 1000,
+            "output": 500,
+            "cacheRead": 200,
+            "cacheWrite": 0,
+            "totalTokens": 1700,
+            "totalCost": 0,
+            "inputCost": 0,
+            "outputCost": 0,
+            "cacheReadCost": 0,
+            "cacheWriteCost": 0,
+            "missingCostEntries": 1,
+            "activityDates": [
+              "2026-09-09"
+            ],
+            "firstActivity": 1788927329931,
+            "lastActivity": 1788927330931,
+            "durationMs": 1000,
+            "messageCounts": {
+              "total": 2,
+              "user": 1,
+              "assistant": 1,
+              "toolCalls": 0,
+              "toolResults": 0,
+              "errors": 0
+            }
+          }
+        }
+      ],
+      "totals": {
+        "input": 3000,
+        "output": 1500,
+        "cacheRead": 600,
+        "cacheWrite": 0,
+        "totalTokens": 5100,
+        "totalCost": 0.2,
+        "inputCost": 0.2,
+        "outputCost": 0,
+        "cacheReadCost": 0,
+        "cacheWriteCost": 0,
+        "missingCostEntries": 1
+      },
+      "aggregates": {
+        "messages": {
+          "total": 6,
+          "user": 3,
+          "assistant": 3,
+          "toolCalls": 0,
+          "toolResults": 0,
+          "errors": 0
+        },
+        "tools": {
+          "totalCalls": 0,
+          "uniqueTools": 0,
+          "tools": []
+        },
+        "byModel": [],
+        "byProvider": [],
+        "byAgent": [],
+        "byChannel": [],
+        "daily": []
+      }
+    },
+    "usage.cost": {
+      "updatedAt": 1788927330931,
+      "days": 1,
+      "daily": [
+        {
+          "date": "2026-09-09",
+          "input": 3000,
+          "output": 1500,
+          "cacheRead": 600,
+          "cacheWrite": 0,
+          "totalTokens": 5100,
+          "totalCost": 0.2,
+          "inputCost": 0.2,
+          "outputCost": 0,
+          "cacheReadCost": 0,
+          "cacheWriteCost": 0,
+          "missingCostEntries": 1
+        }
+      ],
+      "totals": {
+        "input": 3000,
+        "output": 1500,
+        "cacheRead": 600,
+        "cacheWrite": 0,
+        "totalTokens": 5100,
+        "totalCost": 0.2,
+        "inputCost": 0.2,
+        "outputCost": 0,
+        "cacheReadCost": 0,
+        "cacheWriteCost": 0,
+        "missingCostEntries": 1
+      }
+    },
+    "usage.status": {
+      "updatedAt": 1788927330931,
+      "providers": []
+    }
+  },
+  "responsesUnchanged": true,
+  "forbiddenRequests": [],
+  "requests": [
+    "connect",
+    "sessions.subscribe",
+    "config.get",
+    "update.status",
+    "exec.approval.list",
+    "plugin.approval.list",
+    "openclaw.approval.list",
+    "agents.list",
+    "sessions.list",
+    "sessions.observer.visibility",
+    "usage.status",
+    "sessions.usage",
+    "usage.cost",
+    "sessions.groups.list",
+    "agent.identity.get",
+    "cron.list",
+    "cron.status",
+    "models.authStatus",
+    "sessions.groups.defaults"
+  ]
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "sessions-archive-json-red",
+    "directory": "sessions-archive-json-red",
+    "runner": "ubuntu-24.04",
+    "source": "b72b30249fd0fe97651328360a93289073325cdd",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "red",
+    "variant": "read-only-inventory"
+  }
+]

@@ -1,0 +1,116 @@
+{
+  "mode": "baseline",
+  "kind": "browser",
+  "passed": 0,
+  "expectedFailed": 1,
+  "deliberatelyFiltered": 10,
+  "activeNames": [
+    "Control UI usage cost analysis mocked Gateway E2E shows the recorded cost hint through ordinary Usage filters"
+  ],
+  "componentQualified": true,
+  "wholeLaneQualified": false,
+  "captures": [
+    {
+      "path": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png",
+      "sha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+    },
+    {
+      "path": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png",
+      "sha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+    }
+  ],
+  "diagnosticCaptures": [
+    {
+      "stage": "mixed",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed-geometry.json",
+      "geometrySha256": "493c062a65c8608f9018a0d535b7e5046caf1c5a7ad123a3f06c4925b0081ea2",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/mixed.png",
+      "screenshotSha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+    },
+    {
+      "stage": "known-zero",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero-geometry.json",
+      "geometrySha256": "bc32fa476b1f7a7791d37d26849118215f4006d45a3b8e3e972811519a604fad",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/known-zero.png",
+      "screenshotSha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+    },
+    {
+      "stage": "cleared",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared-geometry.json",
+      "geometrySha256": "e79e35008523c55e94e5889e7f1508b8fbcafaef43dd830509788b3f87c90913",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/cleared.png",
+      "screenshotSha256": "4169578c2bdd41af75e07e6ba16c371389afae6fdcda86029983b58cf0e46f64"
+    },
+    {
+      "stage": "positive",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive-geometry.json",
+      "geometrySha256": "28db85ff7e4396739b7bd2b2abbf9c46663fed9a3201d32bf4c021207e7ea177",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/positive.png",
+      "screenshotSha256": "53e8bb7d31a8ee1ad8204bde9f80da14e15981f3aff35161a770ab6d1be99d56"
+    },
+    {
+      "stage": "unknown",
+      "geometry": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown-geometry.json",
+      "geometrySha256": "c41248b82d987afe472fa3130b491bae54af0b117af7ca6434f0c457eb10e6e3",
+      "screenshot": "browser/control-ui-usage-cost-analysis-mocked-gateway-e2e-533Cbp/usage-known-zero-cost-Gqn6WO/unknown.png",
+      "screenshotSha256": "616ede935dbd7589ea09e12c2f4db3256cb40c2c2fada1cbb14c9469baa2f9d8"
+    }
+  ],
+  "captureInspection": "pending full synthetic capture inspection",
+  "observations": [
+    {
+      "stage": "mixed",
+      "query": "",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.03",
+      "labels": [
+        "Known positive",
+        "Known zero",
+        "Unpriced usage"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "known-zero",
+      "query": "label:\"Known zero\"",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.00",
+      "labels": [
+        "Known zero"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "cleared",
+      "query": "",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.03",
+      "labels": [
+        "Known positive",
+        "Known zero",
+        "Unpriced usage"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "positive",
+      "query": "label:\"Known positive\"",
+      "hint": "Average cost per message when providers report costs.",
+      "value": "$0.10",
+      "labels": [
+        "Known positive"
+      ],
+      "visible": true
+    },
+    {
+      "stage": "unknown",
+      "query": "label:\"Unpriced usage\"",
+      "hint": "Average cost per message when providers report costs. Cost data is missing for some or all sessions in this range.",
+      "value": "$0.00",
+      "labels": [
+        "Unpriced usage"
+      ],
+      "visible": true
+    }
+  ]
+}
