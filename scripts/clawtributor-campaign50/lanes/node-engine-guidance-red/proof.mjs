@@ -239,7 +239,7 @@ async function command(id, bin, args, timeoutMs, maxOutputBytes, expectedExit = 
 }
 
 try {
-  assert(["red", "green"].includes(mode));
+  assert.equal(mode, "green");
   assert.equal(process.env.PROOF_MODE, mode);
   assert.equal(process.env.PROOF_LANE, packet.lane);
   assert.equal(process.env.PROOF_VARIANT, packet.variant);
@@ -294,7 +294,7 @@ try {
     ],
     packet.testTimeoutMs,
     packet.testOutputLimitBytes,
-    mode === "red" ? 1 : 0,
+    0,
   );
   result.ownerTests = owner.row.ownerReport;
   assert(result.ownerTests);
@@ -325,7 +325,7 @@ try {
     path.join(evidence, "final-overlay.patch"),
     git(target, "diff", "--cached", "--binary"),
   );
-  assert.equal(result.commands.length, mode === "red" ? 1 : 2);
+  assert.equal(result.commands.length, 2);
   result.gatesPassed = true;
 } catch (error) {
   unjoinedWork ||= supervisor?.hasUnjoinedWork(error) ?? false;

@@ -1,0 +1,13 @@
+{
+  "databaseId": 34304097761,
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "failure",
+  "headSha": "6b4afc6b3659af285db44895c4f554d28743d88c",
+  "job": {
+    "databaseId": 102317092344,
+    "name": "proof (usage-known-zero-cost-baseline, usage-known-zero-cost, ubuntu-24.04, 7f7aeb699013db4400f9e...",
+    "status": "completed",
+    "conclusion": "failure"
+  }
+}

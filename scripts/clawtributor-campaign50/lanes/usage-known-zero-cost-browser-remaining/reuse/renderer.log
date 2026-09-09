@@ -1,0 +1,88 @@
+[test] starting test/vitest/vitest.ui.config.ts
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90m/home/runner/work/openclaw/openclaw/target[39m
+
+ [31m×[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrenders the recorded cost hint for known zero[32m 124[2mms[22m[39m
+[31m   → USAGE_KNOWN_ZERO_HINT: expected 'Average cost per message when provide…' to be 'Average cost per message when provide…' // Object.is equality[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrenders the recorded cost hint for known positive[32m 47[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrenders the recorded cost hint for unknown zero[32m 32[2mms[22m[39m
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrenders the recorded cost hint for mixed positive[32m 40[2mms[22m[39m
+ [31m×[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrestores the missing-cost hint after clearing the known-zero query filter[32m 121[2mms[22m[39m
+[31m   → USAGE_KNOWN_ZERO_FILTER: expected 'Average cost per message when provide…' to be 'Average cost per message when provide…' // Object.is equality[39m
+ [31m×[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrestores the missing-cost hint after clearing the known-zero session filter[32m 87[2mms[22m[39m
+[31m   → USAGE_KNOWN_ZERO_FILTER: expected 'Average cost per message when provide…' to be 'Average cost per message when provide…' // Object.is equality[39m
+ [31m×[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrestores the missing-cost hint after clearing the known-zero day filter[32m 67[2mms[22m[39m
+[31m   → USAGE_KNOWN_ZERO_FILTER: expected 'Average cost per message when provide…' to be 'Average cost per message when provide…' // Object.is equality[39m
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mintersects selected days with the session scope {"query":"provider:openai"}
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mintersects selected days with the session scope {"agentId":"main"}
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mintersects selected days with the session scope {"selectedSessions":["agent:main:matched"]}
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mintersects selected days with the session scope {"selectedSessions":["agent:main:matched","agent:main:earlier"]}
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mintersects selected days with the session scope {"query":"provider:openai","selectedHours":[12]}
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenders shared skeletons while initial usage is loading
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22msurfaces a provider-usage failure instead of hiding the panel
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps the provider panel hidden when usage is empty without a failure
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps pending sessions on their selected local or UTC activity day
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps insight aggregates scoped to the selected agent
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mdoes not fall back to global insights when a query matches no sessions
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mpreserves missing-cost attribution in session-filtered JSON exports
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mpreserves missing-cost attribution in day-filtered JSON exports
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps selected session labels on UTF-16 boundaries
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22momits the duplicate inner page heading because the shell owns tab headings
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mleaves agent scoping to the shared page header control
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps filter option values distinct from menu commands
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps bounded filter inventories in source order across observed and aggregate values
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mrefreshes filter order and draft selections when chart mode, agent, or source changes
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mreports a stalled provider refresh instead of hiding the section
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps available provider usage visible when refresh stalls
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mrenders provider plans, quotas, and billing independently of session usage
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mfilters visible sessions when an agent scope is selected
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mkeeps session-derived insights scoped to the visible page when the page limit is hit
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mhides range-wide cost windows when a post-load filter is active
+ [32m✓[39m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mshows the empty state for an all-zero successful response[32m 5[2mms[22m[39m
+ [2m[90m↓[39m[22m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mrenderUsage[2m > [22mdoes not render the empty state under an error callout
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 4 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrenders the recorded cost hint for known zero
+[31m[1mAssertionError[22m: USAGE_KNOWN_ZERO_HINT: expected 'Average cost per message when provide…' to be 'Average cost per message when provide…' // Object.is equality[39m
+
+Expected: [32m"Average cost per message when providers report costs."[39m
+Received: [31m"Average cost per message when providers report costs.[7m Cost data is missing for some or all sessions in this range.[27m"[39m
+
+[36m [2m❯[22m ui/src/pages/usage/view.test.ts:[2m250:54[22m[39m
+    [90m248|[39m       expect(observed.value).toBe(value);
+    [90m249|[39m       expect(observed.empty).toBe(false);
+    [90m250|[39m       expect(observed.hint, "USAGE_KNOWN_ZERO_HINT").toBe(hint);
+    [90m   |[39m                                                      [31m^[39m
+    [90m251|[39m     },
+    [90m252|[39m   );
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrestores the missing-cost hint after clearing the known-zero query filter
+[41m[1m FAIL [22m[49m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrestores the missing-cost hint after clearing the known-zero session filter
+[41m[1m FAIL [22m[49m [30m[45m ui [49m[39m ui/src/pages/usage/view.test.ts[2m > [22mUsage recorded cost availability[2m > [22mrestores the missing-cost hint after clearing the known-zero day filter
+[31m[1mAssertionError[22m: USAGE_KNOWN_ZERO_FILTER: expected 'Average cost per message when provide…' to be 'Average cost per message when provide…' // Object.is equality[39m
+
+Expected: [32m"Average cost per message when providers report costs."[39m
+Received: [31m"Average cost per message when providers report costs.[7m Cost data is missing for some or all sessions in this range.[27m"[39m
+
+[36m [2m❯[22m ui/src/pages/usage/view.test.ts:[2m309:64[22m[39m
+    [90m307|[39m       expect(observations[0]?.hint).toBe(missingHint);
+    [90m308|[39m       expect(observations[2]?.hint).toBe(missingHint);
+    [90m309|[39m       expect(observations[1]?.hint, "USAGE_KNOWN_ZERO_FILTER").toBe(no…
+    [90m   |[39m                                                                [31m^[39m
+    [90m310|[39m     },
+    [90m311|[39m   );
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[2m | [22m[33m26 skipped[39m[90m (34)[39m
+[2m   Start at [22m 02:42:36
+[2m   Duration [22m 2.42s[2m (worker 32%, tests 23%, environment 20%, transform 18%, import 5%, setup 1%)[22m
+
+JSON report written to /home/runner/work/openclaw/openclaw/evidence/usage-known-zero-cost-baseline/renderer.json
+[test] failed 1 Vitest shard in 3.52s
+[test] FAILED (exit 1)

@@ -7,7 +7,5 @@
     "package runtime compatibility guidance preserves a compatible target",
     "package runtime compatibility guidance preserves an absent target"
   ],
-  "redFailed": 2,
-  "redPassed": 2,
   "greenPassed": 4
 }

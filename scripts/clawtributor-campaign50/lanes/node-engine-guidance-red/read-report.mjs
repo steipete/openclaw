@@ -16,17 +16,14 @@ export function nativeOwnershipUncertainty(output) {
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => {
-      const expectedAssertion = /^AssertionError: PR142322_DIAGNOSTIC_MISMATCH: /.test(line);
       const nativeError = /^\[?(?:[A-Za-z_$][\w$]*)?Error(?: \[[^\]\n]+\])?:/.test(line);
-      return (
-        diagnostics.some((pattern) => pattern.test(line)) || (nativeError && !expectedAssertion)
-      );
+      return diagnostics.some((pattern) => pattern.test(line)) || nativeError;
     })
     .slice(0, 20);
 }
 
 export function readReport(reportFile, logFile, expectedFile, cases, mode) {
-  assert(["red", "green"].includes(mode));
+  assert.equal(mode, "green");
   for (const file of [reportFile, logFile]) {
     assert(fs.lstatSync(file).isFile());
     assert(fs.statSync(file).size <= 4_000_000);
@@ -34,39 +31,29 @@ export function readReport(reportFile, logFile, expectedFile, cases, mode) {
   const report = JSON.parse(fs.readFileSync(reportFile, "utf8"));
   const log = fs.readFileSync(logFile, "utf8").replace(/\x1b\[[0-?]*[ -/]*[@-~]/g, "");
   assert.deepEqual(nativeOwnershipUncertainty(log), [], "Native completion or disposal failed");
-  const failed = mode === "red" ? cases.redFailed : 0;
-  const passed = mode === "red" ? cases.redPassed : cases.greenPassed;
-  assert.equal(report.success, mode === "green");
+  const passed = cases.greenPassed;
+  assert.equal(report.success, true);
   assert.equal(report.testResults.length, 1);
-  assert.equal(report.numFailedTests, failed);
+  assert.equal(report.numFailedTests, 0);
   assert.equal(report.numPassedTests, passed);
   assert.equal(report.numTotalTests, cases.names.length);
-  assert.equal(report.numFailedTestSuites, mode === "red" ? 2 : 0);
+  assert.equal(report.numFailedTestSuites, 0);
   assert.equal(report.numPendingTestSuites, 0);
   assert.equal(report.numPendingTests, 0);
   assert.equal(report.numTodoTests ?? 0, 0);
   const suite = report.testResults[0];
   assert.equal(suite.name, expectedFile);
-  assert.equal(suite.status, mode === "red" ? "failed" : "passed");
+  assert.equal(suite.status, "passed");
   assert.equal(suite.message, "");
   const rows = suite.assertionResults;
   assert.deepEqual(
     rows.map((row) => row.fullName),
     cases.names,
   );
-  for (const [index, row] of rows.entries()) {
-    const expectFailure = mode === "red" && index < cases.redFailed;
-    assert.equal(row.status, expectFailure ? "failed" : "passed", row.fullName);
+  for (const row of rows) {
+    assert.equal(row.status, "passed", row.fullName);
     assert(Number.isFinite(row.duration) && row.duration >= 0, row.fullName);
-    if (expectFailure) {
-      assert.equal(row.failureMessages.length, 1);
-      const lines = row.failureMessages[0].split("\n");
-      assert.match(lines[0], /^AssertionError: PR142322_DIAGNOSTIC_MISMATCH: /);
-      assert(
-        lines.slice(1).every((line) => /^\s+at /.test(line) || line === ""),
-        row.fullName,
-      );
-    } else assert.deepEqual(row.failureMessages, []);
+    assert.deepEqual(row.failureMessages, []);
   }
   assert.doesNotMatch(
     log,
@@ -89,27 +76,10 @@ export function readReport(reportFile, logFile, expectedFile, cases, mode) {
   ];
   for (const diagnostic of fatalLines) assert.doesNotMatch(log, diagnostic);
   assert.doesNotMatch(log, /^[ \t]*Errors[ \t]+[1-9]/m);
-  const fileSummary =
-    mode === "red"
-      ? /^\s*Test Files\s+1 failed \(1\)\s*$/gm
-      : /^\s*Test Files\s+1 passed \(1\)\s*$/gm;
-  assert.equal([...log.matchAll(fileSummary)].length, 1);
-  const testSummary =
-    mode === "red"
-      ? /^\s*Tests\s+(\d+) failed \| (\d+) passed \((\d+)\)\s*$/gm
-      : /^\s*Tests\s+(\d+) passed \((\d+)\)\s*$/gm;
-  const summaries = [...log.matchAll(testSummary)];
+  assert.equal([...log.matchAll(/^\s*Test Files\s+1 passed \(1\)\s*$/gm)].length, 1);
+  const summaries = [...log.matchAll(/^\s*Tests\s+(\d+) passed \((\d+)\)\s*$/gm)];
   assert.equal(summaries.length, 1);
-  if (mode === "red") {
-    assert.deepEqual(summaries[0].slice(1).map(Number), [failed, passed, cases.names.length]);
-  } else assert.deepEqual(summaries[0].slice(1).map(Number), [passed, cases.names.length]);
+  assert.deepEqual(summaries[0].slice(1).map(Number), [passed, cases.names.length]);
   assert.equal([...log.matchAll(/^\s*Duration\s+\S.+$/gm)].length, 1);
-  return {
-    mode,
-    names: cases.names,
-    failed,
-    passed,
-    noSkips: true,
-    intendedFailureMarker: mode === "red" ? "PR142322_DIAGNOSTIC_MISMATCH" : null,
-  };
+  return { mode, names: cases.names, failed: 0, passed, noSkips: true };
 }

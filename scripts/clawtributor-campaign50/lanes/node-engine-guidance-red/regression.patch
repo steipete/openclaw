@@ -21,12 +21,12 @@
 +        target: { version, nodeEngine: engine },
 +      });
 +      if (result.ok) {
-+        throw new Error("PR142322_REFUSAL_NOT_REACHED");
++        throw new Error("Expected an incompatible Node runtime to be refused");
 +      }
 +      expect(result.error.split("\n")).toHaveLength(5);
 +      expect(result.error).toContain(`The requested package requires ${engine}.`);
 +      const runtime = `Node ${process.versions.node}`;
-+      expect(result.error, "PR142322_DIAGNOSTIC_MISMATCH").toBe(
++      expect(result.error, "Node compatibility guidance must describe the target range").toBe(
 +        [
 +          `${runtime} is incompatible with openclaw@${version}.`,
 +          `The requested package requires ${engine}.`,

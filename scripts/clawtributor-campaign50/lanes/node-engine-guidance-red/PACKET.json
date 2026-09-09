@@ -1,10 +1,9 @@
 {
-  "source": "85cc7136a9f993e142f94969f718a387ddd2133a",
-  "tree": "9fdb512b1a5de8e44f15fcf6e8489fcfba3092ab",
+  "source": "d9ddab2b9b72a37e8799790902327eb4b656571a",
+  "tree": "8f37d19c38db75ffe557460743cd5865e05e0aff",
   "lane": "node-engine-guidance",
   "variant": "owner",
   "modes": [
-    "red",
     "green"
   ],
   "node": "v24.20.0",
@@ -20,7 +19,7 @@
     "pnpm-lock.yaml": "423f646db6a70e906efd7173cb87d6438c9c78d3f39fedb1c7afb1c6023352d3",
     "scripts/changed-lanes.mts": "6dbd85651ae3402854dbb7c85ba1c4cf86fa34629630f0c280a502e20eea0e6e",
     "scripts/check-changed.mjs": "8f3a65590bd58f2395e33294ef0d6d406cdb94170799a48d407f652eaaddb382",
-    "scripts/check-changed.mts": "bd73503b1f523f540529b84c0b24a3d0fe516d0113959674c38dc301c8b30dcc",
+    "scripts/check-changed.mts": "072e62086482f9fac9557b424306d1c827ffc83cc46d7ed205a80d224b0cbb10",
     "scripts/ci-changed-scope.mjs": "e23ee9bc366aa4045fef2614b90c4783fe06fe556484d325860acbd4358a3633",
     "scripts/lib/arg-utils.mts": "4d16bb31557da83e1b4fcaf0c3ee37f9106c494cf14b167b94cee72495ae654e",
     "scripts/lib/changed-path-facts.mjs": "29d2a0c86e440345b4cec9758a3cdab29db31220e08d073f6f0d0dc8be8a57da",
@@ -30,7 +29,7 @@
     "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535",
     "scripts/lib/tsgo-sparse-guard.mts": "8bf287bd79a310ea66d005ed92fbedd950e17cdb5f3ccdde045443109fa7ee7d",
     "scripts/lib/tsx-cli-shim.mjs": "ab3e7f5976e09a7e7a31c680ea85dc4becf4497e53c1d8afdd0637c781e85214",
-    "scripts/lib/vitest-build-prerequisites.mts": "3005a6d29f561ffdc401e9fc6c41be491f44570ede8f56b9c0ac4fec613e4190",
+    "scripts/lib/vitest-build-prerequisites.mts": "704950082ebd5eae4848f196ed47c717d391f4a74772b98e713e9d1ebc4102b4",
     "scripts/lib/vitest-process-env.mts": "8bc578a07098f7c17d8ee11e211741736d4086292aeb140d9ae8b68786088fab",
     "scripts/lib/vitest-process.mts": "d23e85b474105f57e80aab0910e38d1d7061a937d6266615a0d940045258378e",
     "scripts/lib/vitest-report-capture.mts": "efed891ab104940d6342fa902306809dc714083be53b73a1970d22a12a10a2a2",
@@ -39,19 +38,23 @@
     "scripts/lib/vitest-runtime-selection.mts": "676b97effc9606f6ac2c71f006504d34179571807e68f3d6355964b253759a87",
     "scripts/lib/vitest-worker-run.mts": "86f9d735649a288bec8f1b454f1977a40b5118cf479439fe869273a24578fad2",
     "scripts/lib/windows-taskkill.mjs": "9100b4bda17e716e721a44132641190e8346a77260dc2194304bfee20fa1958d",
+    "scripts/plugin-boundary-report.ts": "07b499421d1e4c1b943ce56fa8e1aa85c14ab68c1cce3bbd5b98d30665182162",
     "scripts/run-tsgo-core-test-shards.mts": "8144a4d1d422a44d3d4d72b2f423543ab72a9e774a45a8fd4510f791ef5b3138",
     "scripts/run-vitest-child.mts": "7a31d1d0af29e53d080f6c216400c4cc6b4d88190edb4d577a58b3236836b292",
     "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
     "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
     "scripts/test-projects.test-support.mts": "cd92b01b1d1d6fd369406cb3cedcc8d3d4fdbbc1c7a90eb672e6ce1a9b38ca70",
     "scripts/windows-cmd-helpers.mjs": "a2a52f2cbc6e890dee15ca7f514f0ebacd0479f1d58785b6c3fccccc0720b24b",
-    "src/cli/update-cli.test.ts": "f0a2e25c6816fabf40c3823cdc96627f582fb2815b0f531d7f0ca14b72135861",
+    "src/cli/update-cli.test.ts": "45c99fab5f1cee434f8b652c36dd25c5173644639dcd05a64a2557e1b6725fda",
     "src/cli/update-cli/progress.ts": "d67534b74c8b7aab4a4b67bc063aeca12039c5666269ba5ded8651728f76ec58",
     "src/cli/update-cli/update-command-result.ts": "273b0bb72cbc9c6c455ad8473c274bea1b65858feadd47a5100d5c24b6bd0b27",
     "src/cli/update-cli/update-command-service-plan.ts": "0ca173c1ace7b8dc26c942e7bbdff086f5c2f8031f647b8d61a1f2bdff52dbba",
     "src/cli/update-cli/update-command.ts": "9e8fb5039ba7c231f6464a6fa3c48c7364c6ccad972497ad88ab243b385f4d44",
     "src/infra/runtime-guard.ts": "e0ad6bddf231613ace51d68b82b844a73ecc7e45e7a2904b8ee4a74badbe063f",
-    "src/process/exec.ts": "2b53d61b58aa47bddf4f6400907a8b44718d5dbffe84c98fc69c7e2f72de2408",
+    "src/plugins/compat/registry-records.ts": "7969f5a0dd6febe143f5eddebde4768d1d68390c6fab08da866abaad1245141d",
+    "src/plugins/compat/registry.ts": "0039edb121b2994ed00e2e873474642cd6d2b9560bcaf6a78da30805a02822ce",
+    "src/plugins/compat/types.ts": "54b23d1a95b4d1c03f6133551829dfecd30809d881996aae789ca3de6bfe6ab2",
+    "src/process/exec.ts": "ebec62be5902b14473580182ab47af3ea9f8a145ee3b2a451b79efb00afc38dc",
     "src/runtime.ts": "75433fd1e07ca6d13bca35603c04fdea4f842136c1947f5be3599174f26d8519",
     "test/non-isolated-runner.ts": "233065f12b3ff268dc0a163db4c36ff3dda34f34bf51bae017aabcf2520d24ab",
     "test/repository-test-api-publications.ts": "72ee91747eb1154661488fdc7e47c76b2a0593727c9d0fb83424cc7ee1c5e130",
@@ -105,6 +108,7 @@
     "scripts/lib/vitest-runtime-selection.mts": "100644",
     "scripts/lib/vitest-worker-run.mts": "100644",
     "scripts/lib/windows-taskkill.mjs": "100644",
+    "scripts/plugin-boundary-report.ts": "100644",
     "scripts/run-tsgo-core-test-shards.mts": "100644",
     "scripts/run-vitest-child.mts": "100644",
     "scripts/run-vitest.mjs": "100644",
@@ -117,6 +121,9 @@
     "src/cli/update-cli/update-command-service-plan.ts": "100644",
     "src/cli/update-cli/update-command.ts": "100644",
     "src/infra/runtime-guard.ts": "100644",
+    "src/plugins/compat/registry-records.ts": "100644",
+    "src/plugins/compat/registry.ts": "100644",
+    "src/plugins/compat/types.ts": "100644",
     "src/process/exec.ts": "100644",
     "src/runtime.ts": "100644",
     "test/non-isolated-runner.ts": "100644",
@@ -143,27 +150,27 @@
     "test/vitest/vitest.worker-artifacts.ts": "100644"
   },
   "regressionHashes": {
-    "src/cli/update-cli/update-command-service-plan.test.ts": "e6c14d9aa32bf96631cefe992939ebf1432fc3e3ce3c53a785fa34e53fc6ec1b"
+    "src/cli/update-cli/update-command-service-plan.test.ts": "691333b143e844dd2975b323ff344bbd21a8fca03df6eac4e1e2ef58effca765"
   },
   "regressionModes": {
     "src/cli/update-cli/update-command-service-plan.test.ts": "100644"
   },
   "candidateHashes": {
     "src/cli/update-cli/update-command-service-plan.ts": "77b062e5692a6cc1aa22649eabf231f6270ee26a49889b3fbe1c17ba42c70b8e",
-    "src/cli/update-cli.test.ts": "f9907958dfed3454ad4c9ecd6f725f9e91f4ab758a014a49b8430d106b7b6a40"
+    "src/cli/update-cli.test.ts": "9cd0b2c10e067eedbbb55b60cb5a879babc921d793b6a209f81ec718d5c17f75"
   },
   "files": {
     "run.sh": "5f1a0fd7a0cbf90e10d3f7279b55b7a30b15d754ab0d3ae9f958e8ac57799051",
-    "proof.mjs": "cf7fabf4b8c27243bd83bb6f06b83d9fb152ee40a44361c482be246439e8a76d",
+    "proof.mjs": "279d42b5615c2ee6e27d0d3dcf2e83408a2810f8caed5ee28c7cdc3f743cb8a9",
     "source-audit.mjs": "ce001832c624ec802fe8c9c51793d9439eead4123a0e6191f8a2e973c734e233",
-    "read-report.mjs": "ca776bb7288890caa9939cb1c6d846b664324e28e48d177965fde6c2a3d345d6",
-    "cases.json": "10885ed53f23657eab38579b34b38cc1824c1161413af6bf7bd09e3cfac73f35",
-    "regression.patch": "3d18dec9056ab6b2c3d75a58185be73fb708fdbc3c95289962d8f61e73b027c7",
-    "candidate.patch": "7011082963a5efbf96245f3da0364fc8e6c6b40e10d6cedc1630298af03d8e26"
+    "read-report.mjs": "e09e2df1124c1fc309a3548b0c82e6eb5eafd095d2dbf4ef525f0252d0abbdc5",
+    "cases.json": "916b5b7e9a42a4cfe9edf096bbd1203498ee931b41e894cec71a9c10644dc959",
+    "regression.patch": "118665079cf27ab124a700883ca300db0fbe570be3ef1670df61226565898f47",
+    "candidate.patch": "f4f1abe0369be187fa896fee01248362fd41965fe5e86c6b7cc664363d3e88be"
   },
   "testTimeoutMs": 120000,
   "testOutputLimitBytes": 2000000,
   "checkTimeoutMs": 900000,
   "checkOutputLimitBytes": 3000000,
-  "scope": "Four real unmanaged preflight owner cases only. No Node runner subprocess, no updater/install/build/provider/service operation. Existing managed wording assertions changed but not included in this runtime selection."
+  "scope": "Four real unmanaged preflight cases and current-base canonical changed checks only. No baseline replay, product build, updater/install or managed-runtime operation."
 }

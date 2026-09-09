@@ -20,7 +20,7 @@
  }
 --- a/src/cli/update-cli.test.ts
 +++ b/src/cli/update-cli.test.ts
-@@ -10286,8 +10286,10 @@
+@@ -10439,8 +10439,10 @@
      expect(serviceStop).not.toHaveBeenCalled();
      expect(defaultRuntime.exit).not.toHaveBeenCalled();
      const report = getLogOutput();
