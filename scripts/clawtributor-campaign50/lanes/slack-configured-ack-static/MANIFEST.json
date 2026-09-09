@@ -1,0 +1,18 @@
+{
+  "lane": "slack-configured-ack-static",
+  "mode": "candidate",
+  "variant": "committed-changed-checks",
+  "source": "0fb043343719937687064f4a47d0730d4a97bfcb",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "committedHead": "763b1efa24178c22c80f9d38a9bc0012b6da0f5d",
+  "status": "canonical changed checks include six existing Doctor audits; independent narrow rebind pending; unrun",
+  "files": {
+    "README.md": "a6f0c8b6c65d69903699d443221db990b23ecdaf755eaf3d6e99dfa264f07589",
+    "candidate.patch": "2d67b26b0d0874d9e5322de2bce3a2819aebbd565070875dbe344250490466fd",
+    "run.sh": "536e723f0ac765178acbb1887759048973c6c66c5143843070e146e776f2af4e",
+    "source.json": "bc63bcc8e7cb966f6171158a1a940e2e55eb35df51ce9b72e1f552b35d5e30c3",
+    "validate.py": "ffe7d5c6a87f8b4176dab2edada47efb65150dc3bf831173267394d0646b85f7",
+    "verify.py": "5342280ec6101c0c26423403bcbaf4e94339d6d7bb2f618fda327b88ff11fcbb"
+  }
+}

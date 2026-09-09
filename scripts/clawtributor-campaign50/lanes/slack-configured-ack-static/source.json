@@ -1,0 +1,30 @@
+{
+  "base": "0fb043343719937687064f4a47d0730d4a97bfcb",
+  "sourceTree": "3f3a6dc5f413b7d724d70a0b5676845fe81875c9",
+  "committedHead": "763b1efa24178c22c80f9d38a9bc0012b6da0f5d",
+  "committedTree": "4b0b09474a099e6828a051d3d546e14d5035f947",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "baseline": {
+    "scripts/check-changed.mjs": "8f3a65590bd58f2395e33294ef0d6d406cdb94170799a48d407f652eaaddb382",
+    "scripts/check-changed.mts": "072e62086482f9fac9557b424306d1c827ffc83cc46d7ed205a80d224b0cbb10",
+    "scripts/changed-lanes.mjs": "f2289b18490bd63a8f691cec3bcbe9944df36f1baef6b8e506d371ee25a62e13",
+    "scripts/changed-lanes.mts": "6dbd85651ae3402854dbb7c85ba1c4cf86fa34629630f0c280a502e20eea0e6e",
+    "scripts/lib/check-timing-summary.mts": "e0b6d0c30bd94f86304402d63051e3dbab3ad1f55829b50e1b1745fc6edcc9a9",
+    "scripts/lib/failed-trailer.mts": "86ba752b93f3101839d2cac39cb4f0d13477807c8ed5ad569ba23dddaf986796",
+    "src/plugins/compat/registry-records.ts": "7969f5a0dd6febe143f5eddebde4768d1d68390c6fab08da866abaad1245141d",
+    "package.json": "eb0442e16e79c65958174bd04f6f57f68b7bc07c9e86980a36be7ad826bee3d9",
+    "pnpm-lock.yaml": "423f646db6a70e906efd7173cb87d6438c9c78d3f39fedb1c7afb1c6023352d3",
+    "extensions/slack/src/monitor/message-handler/prepare.ts": "fd5e17029453602bad6f3c2604ef953b33fd2346b3c53af9002a52e77c160abb",
+    "extensions/slack/src/monitor/message-handler/prepare.test.ts": "be3637d1060e6f93e36de520ed5d12f63a7095f4fd904b3e43ee8ea0020b023a",
+    "src/plugins/doctor-contract-declarations.test.ts": "02662a5742f849bcd7d4476715524807f393d5eb620d964e7ebd40f59c211e5d",
+    "src/plugins/doctor-contract-closure-guard.test.ts": "78c551748f8ab80f227f1a642b98359cbe75fabdca644a631cbd5bf069e43655"
+  },
+  "candidate": {
+    "extensions/slack/src/monitor/message-handler/prepare.ts": "817c94f03af0635e1b6305b7d10a7b0d53f157ee6890ece511efac199395212f",
+    "extensions/slack/src/monitor/message-handler/prepare.test.ts": "fdf450e27351e168c382a218fc5933b8b7289ec28f8a01d9a21136664a6b8b89"
+  },
+  "slackBehaviorTestsRepeated": false,
+  "canonicalDoctorAuditCases": 6
+}

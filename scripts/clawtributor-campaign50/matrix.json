@@ -1,22 +1,12 @@
 [
   {
-    "id": "node-engine-guidance",
-    "directory": "node-engine-guidance-red",
+    "id": "slack-configured-ack-static",
+    "directory": "slack-configured-ack-static",
     "runner": "ubuntu-24.04",
-    "source": "d9ddab2b9b72a37e8799790902327eb4b656571a",
+    "source": "0fb043343719937687064f4a47d0730d4a97bfcb",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "green",
-    "variant": "owner"
-  },
-  {
-    "id": "usage-known-zero-cost-browser-remaining",
-    "directory": "usage-known-zero-cost-browser-remaining",
-    "runner": "ubuntu-24.04",
-    "source": "7f7aeb699013db4400f9ec6cfa430168e208d7bd",
-    "node": "24.20.0",
-    "pnpm": "12.3.4",
-    "mode": "baseline",
-    "variant": "recorded-cost-hint"
+    "mode": "candidate",
+    "variant": "committed-changed-checks"
   }
 ]
