@@ -1,0 +1,10 @@
+{
+  "name": "chat-identity-142581-green",
+  "sourceSha": "251634acaccd9d0576a915461f7a154cc51b50f4",
+  "mode": "green",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "expectation": "five full owner suites, exact same1browsercase with name/emoji refresh and3PNG, explicit4-file changedgate/sourcecleanup allpass",
+  "candidatePatchSha256": "c8eab28ad59d316a24fd1b8d56264bed72447fdd58bb60afbd3294b1d5b96d40",
+  "testSha256": "8225daf5a376a0b9a2dfb55aa3276f720a0be6fe87f0a7b2fab964364b2dc6d4"
+}

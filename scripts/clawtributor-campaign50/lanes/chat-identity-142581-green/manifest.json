@@ -1,0 +1,14 @@
+{
+  "PROOF.md": "bb5708dbe93204d4b8009198e0403adf45a1d291faee30f78043fa738a5e1d7a",
+  "baseline-qualified.json": "e227e3ae242a589d602db48ca7a74188ca2e72eefff96fe95d23dec9f485c4da",
+  "candidate.patch": "c8eab28ad59d316a24fd1b8d56264bed72447fdd58bb60afbd3294b1d5b96d40",
+  "candidate.sha256": "6520a22e8f862fb264798e01760e1fcb6f540b450ef063c18421aba57cb1a62f",
+  "completed-report.mjs": "4747017774f67812d493ba7b6584cb09bf90e2101a7c239ac87dc43ba4b0de2f",
+  "formatter.jsonc": "14b80d5a4adf7197e58a96d3824affa437555b815c498f53e38f302972c0ed70",
+  "owner-files.json": "f9fc6e91695b464b8ca5e180ab0fcb4499609b16788c28c1db9d0dda811fff45",
+  "product.sha256": "7034cc3769d1d9cbbecbcb21d3410565d489525d92ef7c1e5dfc6298f150a40b",
+  "row.json": "117d2c9a2f4df8b6fd10c6c99976b8ff74c9e39eb6ed337b6f8e39661a20f5cb",
+  "run.sh": "85db6fdcee2792cdb282cb2dadb20a681c0b7b8b0651fbd464f5bbc554a88f66",
+  "unchanged.sha256": "efde75ad0bfe09e6a984862a3d02253ab84d4c1f1ea70f8d0f027d6ffc00bf79",
+  "validate.mjs": "1286210b60a14656ec356c761f5e88b9c3089b80d3464a20a8a6da2e40021172"
+}

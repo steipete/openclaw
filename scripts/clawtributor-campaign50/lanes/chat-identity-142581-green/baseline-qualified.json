@@ -1,0 +1,104 @@
+{
+  "status": "expected-stale-pane-identity",
+  "observed": {
+    "name": "Atlas",
+    "avatar": "🦞",
+    "avatarLabel": "Atlas",
+    "placeholder": "Message Atlas"
+  },
+  "sender": "Atlas",
+  "controls": {
+    "sessionPreserved": true,
+    "draftPreserved": true,
+    "transcriptPreserved": true,
+    "sendsBeforeSubmit": 0,
+    "sendsAfterSubmit": 1,
+    "sentSession": "agent:main:main",
+    "sentMessage": "Keep this unsent garden note.",
+    "reply": "The garden note stayed in this chat.",
+    "replyVisible": true
+  },
+  "responses": [
+    {
+      "method": "agent.identity.get",
+      "params": {
+        "agentId": "main"
+      },
+      "response": {
+        "agentId": "main",
+        "name": "Cedar",
+        "avatar": "🌻",
+        "avatarStatus": "none",
+        "nameSource": "agent"
+      }
+    },
+    {
+      "method": "agents.list",
+      "params": {},
+      "response": {
+        "defaultId": "main",
+        "mainKey": "main",
+        "scope": "per-sender",
+        "agents": [
+          {
+            "id": "main",
+            "name": "Cedar",
+            "identity": {
+              "name": "Cedar",
+              "emoji": "🌻"
+            },
+            "model": {
+              "primary": "openai/gpt-5.5"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "method": "agent.identity.get",
+      "params": {
+        "agentId": "main"
+      },
+      "response": {
+        "agentId": "main",
+        "name": "Cedar",
+        "avatar": "🌻",
+        "avatarStatus": "none",
+        "nameSource": "agent"
+      }
+    }
+  ],
+  "captures": [
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/initial.png",
+      "sha256": "0f7469ab7e76ce9a07e7b63386a29e74d0ca79621cd2e30748e7155b3691340c"
+    },
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/settled.png",
+      "sha256": "7d4ac55aef79f6a1b74b218c5f6fc8646af8471cabf8c77d479688126cf59092"
+    },
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/roundtrip.png",
+      "sha256": "db1a47e3c9c1dc1c4c0e0ba47d7625f1718d14c18c2bf4f8f1643927790e2e69"
+    }
+  ],
+  "captureInspection": "pending full synthetic-image inspection",
+  "artifactInventory": [
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/initial.png",
+      "sha256": "0f7469ab7e76ce9a07e7b63386a29e74d0ca79621cd2e30748e7155b3691340c"
+    },
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/receipts.json",
+      "sha256": "55103c0d03383357b4bc32b73f2abb4d46aa144fe9b660dd045744c71244f1d4"
+    },
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/roundtrip.png",
+      "sha256": "db1a47e3c9c1dc1c4c0e0ba47d7625f1718d14c18c2bf4f8f1643927790e2e69"
+    },
+    {
+      "path": "browser/control-ui-mocked-gateway-e2e-StDxxZ/settled.png",
+      "sha256": "7d4ac55aef79f6a1b74b218c5f6fc8646af8471cabf8c77d479688126cf59092"
+    }
+  ]
+}

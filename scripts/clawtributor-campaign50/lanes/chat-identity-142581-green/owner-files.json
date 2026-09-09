@@ -1,0 +1,7 @@
+[
+  "ui/src/lib/agents/identity.test.ts",
+  "ui/src/pages/chat/chat-pane-identity.test.ts",
+  "ui/src/pages/chat/chat-state.test.ts",
+  "ui/src/pages/chat/chat-avatar.test.ts",
+  "ui/src/pages/chat/chat-avatar-publication.test.ts"
+]

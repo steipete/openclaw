@@ -1,0 +1,51 @@
+{
+  "base": "58b294653e792bfe109bc727aee429745065ed82",
+  "node": "24.20.0",
+  "pnpm": "12.3.4",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "sdkVersion": "8.1.1",
+  "sdkFiles": {
+    "WebClient.js": "c4f6d9bcacd248b7135e36562bf9ef59ad4cf109862d2881cf7cc3fd6a769e65",
+    "methods.js": "0f8554e3646714a97867cc023421d9add2e5a93f478cbd5ef747a8a489845259",
+    "reactions.d.ts": "7ab37e2105dce7038202187a0b7f7d908b29300a38eb132ed03dad9d78f1dd30",
+    "common.d.ts": "a88cd1c3aea6f2ad7f197fc2c95c8c7862170f2a84b3f50e13161b7b3349d143"
+  },
+  "baseline": {
+    "extensions/slack/src/monitor/message-handler/prepare.ts": "fd5e17029453602bad6f3c2604ef953b33fd2346b3c53af9002a52e77c160abb",
+    "extensions/slack/src/monitor/message-handler/dispatch-setup.ts": "4fbbd72bc89b59b4fb304fd43ba612220cde2744ae5c1c27acb5fdb5f59c1beb",
+    "extensions/slack/src/monitor/message-handler/dispatch.ts": "692facda23160c784cfdce62492c43d429ed46f57d8e777dd7ff01351445135c",
+    "extensions/slack/src/monitor/message-handler/types.ts": "6b738a7996fd18ec657a476f039da10dc08acb70e9d0c48a03c1c421b46ae7f5",
+    "extensions/slack/src/monitor/message-handler/prepare.test.ts": "be3637d1060e6f93e36de520ed5d12f63a7095f4fd904b3e43ee8ea0020b023a",
+    "extensions/slack/src/monitor/message-handler/prepare.test-helpers.ts": "d7a693e853206826031cda3dcfcab8ec3e9c210ed651aee260cd4e05274637cc",
+    "extensions/slack/src/actions.ts": "e4d0f60f193778cbaf6df2c257d5c4059f45414e40ab967bdc69994246f78dd2",
+    "src/channels/ack-reactions.ts": "bc5004bd28ff5191fe1610d35331ca34f1c0c348c600020028d1e82006304d83",
+    "extensions/discord/src/monitor/ack-reactions.ts": "12945283a9a19d9f5f1b0d956e55b4a0c8726591539432183e8165a43b2d3da2",
+    "extensions/telegram/src/bot-message-context.ts": "4496758aeefdd260aad6d20b99e2229f82f22811c83eadce864067c9ff7744be",
+    "docs/channels/slack/messaging.md": "307c267328862439a2d4c26d1f502099eda9ae375cefdae0ac48547390c63775",
+    "src/config/types.messages.ts": "98b42a18f2d62c20df9f7813d8ef37f03d429cbc9fe131dad02f2f0a55ff818a",
+    "extensions/slack/package.json": "1680bd3a8ca8d5ceb9f00b99ec25bea29158be4e2be4ffd3368423b5c80d1ed8",
+    "pnpm-lock.yaml": "423f646db6a70e906efd7173cb87d6438c9c78d3f39fedb1c7afb1c6023352d3",
+    "package.json": "eb0442e16e79c65958174bd04f6f57f68b7bc07c9e86980a36be7ad826bee3d9",
+    "extensions/slack/src/monitor.test-helpers.ts": "5667a4b1d2edf4cf08fbebffa4b304ea4b39403ae83299f95b39a32e7648d0dc",
+    "extensions/slack/src/monitor/provider.ts": "1cef0f18542e4e44c7dca15c2134f3b0cbdec0c8f21a2e3ee6281122aae877e6",
+    "extensions/slack/src/monitor/message-handler.ts": "52177a7a415df8e7e49c06633b3d047e57bff32429b444fd73e065667f32ba2d",
+    "extensions/slack/src/monitor/events/messages.ts": "6effd1434ce075ed31ed35e9f74832c0d94479c5f8fac5b03790b5eb8e23ddeb",
+    "extensions/slack/src/monitor/context.ts": "e940ff5222a2699adad9e990c8ff5ce23d4eff9a14fe767aa478e3a860af0b8e",
+    "extensions/slack/src/monitor/message-handler/pipeline.runtime.ts": "cc4793dc63ab14a7758fe6d09f6653372e5dee91182174b3f085578aa013330b",
+    "src/channels/status-reactions.ts": "bd1dc491c62dc0fae72238c2e50fee679aa9daf93fcfa26e6c317242798f5e06",
+    "scripts/run-vitest.mjs": "e625b71a1498a167c2d0b5078118b83bb935e00837de8bef1485cf5617d8691c",
+    "scripts/run-vitest.mts": "4efd8505ec8afc0ba3b94e413de4f45951ef8c71bd7b3ed008703783074eda71",
+    "scripts/lib/vitest-process.mts": "d23e85b474105f57e80aab0910e38d1d7061a937d6266615a0d940045258378e",
+    "scripts/lib/vitest-worker-run.mts": "86f9d735649a288bec8f1b454f1977a40b5118cf479439fe869273a24578fad2",
+    "scripts/lib/vitest-worker-artifacts.mts": "7527559c78fcb03b3d5f483f12204a0d4b34f98d42ea023a2ad4f821a7bfb723",
+    "scripts/test-projects-run.mts": "1107fdec3e091258c0fe3df9ce25f1fec09f0ab34b2ae0606a7a6c66f826b763",
+    "scripts/vitest-process-group.mts": "e54670bb6e3ab7ae50d42f69177d2e0ddd81f09a16aea0f7bd5236a16bc18c3c",
+    "scripts/lib/managed-child-process.mts": "7fdbae255e64db37c4f5d91d522777f66ca947857b460d5aba9b5abc0a415535"
+  },
+  "candidate": {
+    "extensions/slack/src/monitor/message-handler/prepare.ts": "817c94f03af0635e1b6305b7d10a7b0d53f157ee6890ece511efac199395212f",
+    "extensions/slack/src/monitor/message-handler/prepare.test.ts": "fdf450e27351e168c382a218fc5933b8b7289ec28f8a01d9a21136664a6b8b89"
+  },
+  "test_path": "extensions/slack/src/monitor.ack-ingress.proof.test.ts",
+  "unit_path": "extensions/slack/src/monitor/message-handler/prepare.test.ts"
+}

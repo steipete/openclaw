@@ -1,13 +1,13 @@
 [
   {
-    "id": "chat-identity-142581-red",
-    "directory": "chat-identity-142581-red",
+    "id": "slack-configured-ack",
+    "directory": "slack-configured-ack",
     "runner": "ubuntu-24.04",
-    "source": "251634acaccd9d0576a915461f7a154cc51b50f4",
+    "source": "58b294653e792bfe109bc727aee429745065ed82",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "red",
-    "variant": "baseline"
+    "mode": "compare",
+    "variant": "registered-ingress"
   },
   {
     "id": "node-engine-guidance",
@@ -16,7 +16,17 @@
     "source": "85cc7136a9f993e142f94969f718a387ddd2133a",
     "node": "24.20.0",
     "pnpm": "12.3.4",
-    "mode": "red",
+    "mode": "green",
     "variant": "owner"
+  },
+  {
+    "id": "chat-identity-142581-green",
+    "directory": "chat-identity-142581-green",
+    "runner": "ubuntu-24.04",
+    "source": "251634acaccd9d0576a915461f7a154cc51b50f4",
+    "node": "24.20.0",
+    "pnpm": "12.3.4",
+    "mode": "green",
+    "variant": "candidate"
   }
 ]
