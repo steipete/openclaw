@@ -14,7 +14,7 @@ Telegraph style. Root rules only. Read scoped `AGENTS.md` before subtree work.
 - CODEOWNERS: maint/refactor/tests ok. Larger behavior/product/security/ownership: owner ask/review.
 - Wording: product/docs/UI/changelog say "plugin/plugins"; `extensions/` is internal.
 - New channel/plugin/app/doc surface: update `.github/labeler.yml` + GH labels.
-- New `AGENTS.md`: add sibling `CLAUDE.md` symlink.
+- Edit canonical `AGENTS.md` files directly; do not add `CLAUDE.md` aliases.
 
 ## Map
 
